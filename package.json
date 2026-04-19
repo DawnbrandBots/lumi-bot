@@ -1,0 +1,44 @@
+{
+  "name": "lumi-bot",
+  "version": "0.0.1",
+  "repository": "https://github.com/DawnbrandBots/lumi-bot.git",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "postclean": "tsc --build --clean",
+    "start": "node --enable-source-maps -r dotenv/config dist",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "engines": {
+    "node": ">=24",
+    "yarn": "1.22.x"
+  },
+  "dependencies": {
+    "debug": "^4.4.3",
+    "discord.js": "~14.26.3",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tsconfig/node24": "^24.0.4",
+    "@types/debug": "^4.1.13",
+    "@types/node": "^24.12.2",
+    "eslint": "^10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.5.0",
+    "jiti": "^2.6.1",
+    "prettier": "3.8.3",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.58.2"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.1.0",
+    "zlib-sync": "^0.1.10"
+  }
+}
