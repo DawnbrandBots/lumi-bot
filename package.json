@@ -10,6 +10,7 @@
     "clean": "rm -rf dist",
     "postclean": "tsc --build --clean",
     "start": "node --enable-source-maps -r dotenv/config dist",
+    "register": "node --enable-source-maps -r dotenv/config dist/commands",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
