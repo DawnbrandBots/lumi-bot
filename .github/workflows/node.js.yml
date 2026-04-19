@@ -1,0 +1,26 @@
+name: Compile and lint
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: yarn
+      - run: yarn
+      - run: yarn build
+      - run: yarn lint
+        continue-on-error: true
+      - run: yarn format:check
