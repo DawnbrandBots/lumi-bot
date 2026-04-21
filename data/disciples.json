@@ -2,196 +2,196 @@
     {
         "id": "KURT",
         "name": "Kurt",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "SWORD",
         "prf": "ROYAL_SWORD_PLUS"
     },
     {
         "id": "GOTTHOLD",
         "name": "Gotthold",
-        "type": "ARMORED",
+        "movement": "ARMORED",
         "weapon": "LANCE",
         "prf": "SHIELD_LANCE_PLUS"
     },
     {
         "id": "CARINA",
         "name": "Carina",
-        "type": "CAVALRY",
+        "movement": "CAVALRY",
         "weapon": "AXE",
         "prf": "BULL_AXE_PLUS"
     },
     {
         "id": "ALBERTA",
         "name": "Alberta",
-        "type": "CAVALRY",
+        "movement": "CAVALRY",
         "weapon": "STAFF",
         "prf": "PANTHER_STAFF_PLUS"
     },
     {
         "id": "ZASHA",
         "name": "Zasha",
-        "type": "FLYING",
+        "movement": "FLYING",
         "weapon": "SWORD",
         "prf": "CROW_SWORD_PLUS"
     },
     {
         "id": "ROSE",
         "name": "Rose",
-        "type": "FLYING",
+        "movement": "FLYING",
         "weapon": "TOME",
         "prf": "IVORY_TOME_PLUS"
     },
     {
         "id": "SAI",
         "name": "Sai",
-        "type": "FLYING",
+        "movement": "FLYING",
         "weapon": "STONE",
         "prf": "SOUND_STONE_PLUS"
     },
     {
         "id": "SHEA",
         "name": "Shea",
-        "type": "FLYING",
+        "movement": "FLYING",
         "weapon": "STONE",
         "prf": "SIGHT_STONE_PLUS"
     },
     {
         "id": "SKOLL",
         "name": "Skoll",
-        "type": "CAVALRY",
+        "movement": "CAVALRY",
         "weapon": "CLAWS",
         "prf": "SOLAR_CLAWS_PLUS"
     },
     {
         "id": "HATI",
         "name": "Hati",
-        "type": "CAVALRY",
+        "movement": "CAVALRY",
         "weapon": "CLAWS",
         "prf": "LUNAR_CLAWS_PLUS"
     },
     {
         "id": "TAMAMO",
         "name": "Tamamo",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "STAFF",
         "prf": "WILY_STAFF_PLUS"
     },
     {
         "id": "DIMITRI",
         "name": "Dimitri",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "LANCE",
         "prf": "AREADBHAR_PLUS"
     },
     {
         "id": "LYN",
         "name": "Lyn",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "BOW",
         "prf": "MULAGIR_PLUS"
     },
     {
         "id": "BARTOLOMEUS",
         "name": "Bartolomeus",
-        "type": "ARMORED",
+        "movement": "ARMORED",
         "weapon": "AXE",
         "prf": "RAVENOUS_AXE_PLUS"
     },
     {
         "id": "JOACHIM",
         "name": "Joachim",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "SWORD",
         "prf": "LYCAN_EDGE_PLUS"
     },
     {
         "id": "CORRIN",
         "name": "Corrin",
-        "type": "ARMORED",
+        "movement": "ARMORED",
         "weapon": "STONE",
         "prf": "PRIMORDIAL_STONE_PLUS"
     },
     {
         "id": "MICAELA",
         "name": "Micaela",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "STAFF",
         "prf": "ANCESTRAL_STAFF_PLUS"
     },
     {
         "id": "VERONICA",
         "name": "Veronica",
-        "type": "FLYING",
+        "movement": "FLYING",
         "weapon": "TOME",
         "prf": "ENCLOSING_DARK_PLUS"
     },
     {
         "id": "ESTEL",
         "name": "Estel",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "BOW",
         "prf": "SWIFT_BOW_PLUS"
     },
     {
         "id": "IKE",
         "name": "Ike",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "SWORD",
         "prf": "RAGNELL_PLUS"
     },
     {
         "id": "ERMA",
         "name": "Erma",
-        "type": "FLYING",
+        "movement": "FLYING",
         "weapon": "LANCE",
         "prf": "AERIAL_LANCE_PLUS"
     },
     {
         "id": "EDELGARD",
         "name": "Edelgard",
-        "type": "ARMORED",
+        "movement": "ARMORED",
         "weapon": "AXE",
         "prf": "AYMR_PLUS"
     },
     {
         "id": "YUNI",
         "name": "Yuni",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "STONE",
         "prf": "SOLITARY_STONE_PLUS"
     },
     {
         "id": "EPHRAIM",
         "name": "Ephraim",
-        "type": "CAVALRY",
+        "movement": "CAVALRY",
         "weapon": "LANCE",
         "prf": "SIEGMUND_PLUS"
     },
     {
         "id": "UKA",
         "name": "Uka",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "TOME",
         "prf": "TREACHERY_TOME_PLUS"
     },
     {
         "id": "YUNAKA",
         "name": "Yunaka",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "BOW",
         "prf": "SHADED_BOW_PLUS"
     },
     {
         "id": "RUSTY",
         "name": "Rusty",
-        "type": "INFANTRY",
+        "movement": "INFANTRY",
         "weapon": "AXE",
         "prf": "SOLO_MERC_AXE_PLUS"
     },
     {
         "id": "ANANKE",
         "name": "Ananke",
-        "type": "CAVALRY",
+        "movement": "CAVALRY",
         "weapon": "STAFF",
         "prf": "FOREST_EDGE_STAFF_PLUS"
     }
