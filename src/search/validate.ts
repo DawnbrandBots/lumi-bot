@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const id = z.string();
+export const id = z.string().regex(/[A-Z][A-Z0-9]*(_[A-Z0-9]+)*/);
 export const name = z.string();
 
 export const color = z.object({
