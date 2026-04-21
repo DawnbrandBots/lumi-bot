@@ -8,11 +8,13 @@ import {
     SlashCommandBuilder,
 } from "discord.js";
 import helpCommand from "./commands/help.js";
+import searchCommand from "./commands/search.js";
 
 const log = debug("commands");
 
 const commands = [
     helpCommand,
+    searchCommand,
 ];
 
 const api = new REST().setToken(process.env.DISCORD_TOKEN!);
