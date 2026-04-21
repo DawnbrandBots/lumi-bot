@@ -26,3 +26,12 @@ export interface IMovement {
     readonly name: string;
     readonly distance: number;
 }
+
+export interface IDisciple {
+    readonly kind: "disciple";
+    readonly id: string;
+    readonly name: string;
+    readonly movement: IMovement;
+    readonly weapon: IWeaponType;
+    readonly prf: IWeapon;
+}
