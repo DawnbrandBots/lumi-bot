@@ -1,0 +1,50 @@
+[
+    {
+        "id": "SWORD",
+        "name": "Sword",
+        "color": "RED",
+        "range": 1
+    },
+    {
+        "id": "LANCE",
+        "name": "Lance",
+        "color": "BLUE",
+        "range": 1
+    },
+    {
+        "id": "AXE",
+        "name": "Axe",
+        "color": "GREEN",
+        "range": 1
+    },
+    {
+        "id": "CLAWS",
+        "name": "Claws",
+        "color": "GREEN",
+        "range": 1
+    },
+    {
+        "id": "TOME",
+        "name": "Tome",
+        "color": "RED",
+        "range": 2
+    },
+    {
+        "id": "STAFF",
+        "name": "Staff",
+        "color": "BLUE",
+        "range": 2
+    },
+    {
+        "id": "BOW",
+        "name": "Bow",
+        "color": "GREEN",
+        "range": 2
+    },
+    {
+        "id": "STONE",
+        "name": "Stone",
+        "color": "BLUE",
+        "range": 2
+    }
+]
