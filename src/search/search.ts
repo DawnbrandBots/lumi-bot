@@ -1,11 +1,12 @@
-import { IWeapon } from "../types.js";
+import { IDisciple, IWeapon } from "../types.js";
 import Fuse from "fuse.js/basic";
 
 export type SearchIndex = Record<string, IWeapon>;
-export type SearchItem = IWeapon;
+export type SearchItem = IWeapon | IDisciple;
+export type SearchItems = SearchItem[];
 export type SearchResult = { success: true, value: SearchItem } | { success: false, msg: string };
 
-export function createFuse({ items }: { items: (SearchItem)[] }): Fuse<SearchItem> {
+export function createFuse({ items }: { items: SearchItems }): Fuse<SearchItem> {
     return new Fuse(items, { keys: ["name"], ignoreDiacritics: true, isCaseSensitive: false });
 }
 
