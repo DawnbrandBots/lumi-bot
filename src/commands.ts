@@ -7,16 +7,12 @@ import {
     Routes,
     SlashCommandBuilder,
 } from "discord.js";
+import help from "./commands/help.js";
 
 const log = debug("commands");
 
 const commands = [
-    new SlashCommandBuilder()
-        .setIntegrationTypes(ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall)
-        .setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
-        .setName("help")
-        .setDescription("Lorem ipsum dolor sit amet")
-        .toJSON(),
+    help,
 ];
 
 const api = new REST().setToken(process.env.DISCORD_TOKEN!);
