@@ -1,0 +1,22 @@
+[
+    {
+        "id": "INFANTRY",
+        "name": "Infantry",
+        "distance": 2
+    },
+    {
+        "id": "CAVALRY",
+        "name": "Cavalry",
+        "distance": 3
+    },
+    {
+        "id": "FLYING",
+        "name": "Flying",
+        "distance": 2
+    },
+    {
+        "id": "ARMORED",
+        "name": "Armored",
+        "distance": 2
+    }
+]
