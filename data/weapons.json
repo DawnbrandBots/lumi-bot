@@ -1,18 +1,18 @@
 [
   {
-    "id": "ROYAL_SWORD PLUS",
+    "id": "ROYAL_SWORD_PLUS",
     "name": "Royal Sword +",
     "type": "SWORD",
     "level": 8
   },
   {
-    "id": "CROW_SWORD PLUS",
+    "id": "CROW_SWORD_PLUS",
     "name": "Crow Sword +",
     "type": "SWORD",
     "level": 8
   },
   {
-    "id": "LYCAN_EDGE PLUS",
+    "id": "LYCAN_EDGE_PLUS",
     "name": "Lycan Edge +",
     "type": "SWORD",
     "level": 8
@@ -24,7 +24,7 @@
     "level": 8
   },
   {
-    "id": "SHIELD_LANCE PLUS",
+    "id": "SHIELD_LANCE_PLUS",
     "name": "Shield Lance +",
     "type": "LANCE",
     "level": 8
@@ -36,7 +36,7 @@
     "level": 8
   },
   {
-    "id": "AERIAL_LANCE PLUS",
+    "id": "AERIAL_LANCE_PLUS",
     "name": "Aerial Lance +",
     "type": "LANCE",
     "level": 8
@@ -48,13 +48,13 @@
     "level": 8
   },
   {
-    "id": "BULL_AXE PLUS",
+    "id": "BULL_AXE_PLUS",
     "name": "Bull Axe +",
     "type": "AXE",
     "level": 8
   },
   {
-    "id": "RAVENOUS_AXE PLUS",
+    "id": "RAVENOUS_AXE_PLUS",
     "name": "Ravenous Axe +",
     "type": "AXE",
     "level": 8
@@ -66,61 +66,61 @@
     "level": 8
   },
   {
-    "id": "SOLO_MERC AXE PLUS",
+    "id": "SOLO_MERC_AXE_PLUS",
     "name": "Solo Merc Axe +",
     "type": "AXE",
     "level": 8
   },
   {
-    "id": "SOLAR_CLAWS PLUS",
+    "id": "SOLAR_CLAWS_PLUS",
     "name": "Solar Claws +",
     "type": "CLAWS",
     "level": 8
   },
   {
-    "id": "LUNAR_CLAWS PLUS",
+    "id": "LUNAR_CLAWS_PLUS",
     "name": "Lunar Claws +",
     "type": "CLAWS",
     "level": 8
   },
   {
-    "id": "IVORY_TOME PLUS",
+    "id": "IVORY_TOME_PLUS",
     "name": "Ivory Tome +",
     "type": "TOME",
     "level": 8
   },
   {
-    "id": "ENCLOSING_DARK PLUS",
+    "id": "ENCLOSING_DARK_PLUS",
     "name": "Enclosing Dark +",
     "type": "TOME",
     "level": 8
   },
   {
-    "id": "TREACHERY_TOME PLUS",
+    "id": "TREACHERY_TOME_PLUS",
     "name": "Treachery Tome +",
     "type": "TOME",
     "level": 8
   },
   {
-    "id": "PANTHER_STAFF PLUS",
+    "id": "PANTHER_STAFF_PLUS",
     "name": "Panther Staff +",
     "type": "STAFF",
     "level": 8
   },
   {
-    "id": "WILY_STAFF PLUS",
+    "id": "WILY_STAFF_PLUS",
     "name": "Wily Staff +",
     "type": "STAFF",
     "level": 8
   },
   {
-    "id": "ANCESTRAL_STAFF PLUS",
+    "id": "ANCESTRAL_STAFF_PLUS",
     "name": "Ancestral Staff +",
     "type": "STAFF",
     "level": 8
   },
   {
-    "id": "FOREST_EDGE STAFF PLUS",
+    "id": "FOREST_EDGE_STAFF_PLUS",
     "name": "Forest Edge Staff +",
     "type": "STAFF",
     "level": 8
@@ -132,37 +132,37 @@
     "level": 8
   },
   {
-    "id": "SWIFT_BOW PLUS",
+    "id": "SWIFT_BOW_PLUS",
     "name": "Swift Bow +",
     "type": "BOW",
     "level": 8
   },
   {
-    "id": "SHADED_BOW PLUS",
+    "id": "SHADED_BOW_PLUS",
     "name": "Shaded Bow +",
     "type": "BOW",
     "level": 8
   },
   {
-    "id": "SIGHT_STONE PLUS",
+    "id": "SIGHT_STONE_PLUS",
     "name": "Sight Stone +",
     "type": "STONE",
     "level": 8
   },
   {
-    "id": "SOUND_STONE PLUS",
+    "id": "SOUND_STONE_PLUS",
     "name": "Sound Stone +",
     "type": "STONE",
     "level": 8
   },
   {
-    "id": "PRIMORDIAL_STONE PLUS",
+    "id": "PRIMORDIAL_STONE_PLUS",
     "name": "Primordial Stone +",
     "type": "STONE",
     "level": 8
   },
   {
-    "id": "SOLITARY_STONE PLUS",
+    "id": "SOLITARY_STONE_PLUS",
     "name": "Solitary Stone +",
     "type": "STONE",
     "level": 8
@@ -234,7 +234,7 @@
     "level": 7
   },
   {
-    "id": "SOLO_MERC AXE",
+    "id": "SOLO_MERC_AXE",
     "name": "Solo Merc Axe",
     "type": "AXE",
     "level": 7
@@ -288,7 +288,7 @@
     "level": 7
   },
   {
-    "id": "FOREST_EDGE STAFF",
+    "id": "FOREST_EDGE_STAFF",
     "name": "Forest Edge Staff",
     "type": "STAFF",
     "level": 7
