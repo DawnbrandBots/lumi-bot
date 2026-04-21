@@ -3,7 +3,7 @@ import { ActivityType, Client, Colors, EmbedBuilder, Events, GatewayIntentBits }
 
 import colorDtos from "../data/colors.json" with { type: "json" };
 import weaponTypeDtos from "../data/weaponTypes.json" with { type: "json" };
-import weaponDtos from "../json/weapon/weapons.json" with { type: "json" };
+import weaponDtos from "../data/weapons.json" with { type: "json" };
 
 import initData from "./data/init.js";
 import { searchTermsOptionName, searchCommandName } from "./commands/search.js";
