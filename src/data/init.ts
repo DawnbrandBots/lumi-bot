@@ -1,15 +1,19 @@
-import { IColor, IWeapon, IWeaponType } from "../types.js"
+import { IColor, IDisciple, IMovement, IWeapon, IWeaponType } from "../types.js"
 import { indexById } from "../search/utils/indexById.js"
-import { ColorDto, WeaponDto, WeaponTypeDto } from "../search/validate.js"
+import { ColorDto, DiscipleDto, MovementDto, WeaponDto, WeaponTypeDto } from "../search/validate.js"
 
 function initData({
     colorDtos,
     weaponTypeDtos,
-    weaponDtos
+    weaponDtos,
+    movementDtos,
+    discipleDtos
 }: {
     colorDtos: ColorDto[]
     weaponTypeDtos: WeaponTypeDto[]
     weaponDtos: WeaponDto[]
+    movementDtos: MovementDto[]
+    discipleDtos: DiscipleDto[]
 }) {
     const colors: IColor[] = colorDtos.map(dto => ({
         kind: "color",
@@ -48,6 +52,33 @@ function initData({
     });
     const weaponMap = indexById(weapons)
 
+    const movements: IMovement[] = movementDtos.map(dto => ({ kind: "movement", ...dto }))
+    const movementMap = indexById(movements)
+
+    const disciples: IDisciple[] = discipleDtos.map(dto => {
+        const weapon = weaponTypeMap[dto.weapon];
+        if (!weapon) {
+            throw new Error(`Weapon type not found for id: ${dto.weapon}`);
+        }
+        const movement = movementMap[dto.movement];
+        if (!movement) {
+            throw new Error(`Movement not found for id: ${dto.movement}`);
+        }
+        const prf = weaponMap[dto.prf];
+        if (!prf) {
+            throw new Error(`PRF not found for id: ${dto.prf}`);
+        }
+        return {
+            kind: "disciple",
+            id: dto.id,
+            name: dto.name,
+            movement: movement,
+            prf: prf,
+            weapon: weapon
+        };
+    })
+    const discipleMap = indexById(disciples)
+
     return {
         colors,
         colorMap,
@@ -55,6 +86,10 @@ function initData({
         weaponTypeMap,
         weapons,
         weaponMap,
+        movements,
+        movementMap,
+        disciples,
+        discipleMap
     }
 }
 
