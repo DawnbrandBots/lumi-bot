@@ -19,3 +19,10 @@ export interface IWeapon {
     readonly type: IWeaponType;
     readonly level: number;
 }
+
+export interface IMovement {
+    readonly kind: "movement";
+    readonly id: string;
+    readonly name: string;
+    readonly distance: number;
+}
