@@ -1,0 +1,698 @@
+[
+  {
+    "id": "ROYAL_SWORD PLUS",
+    "name": "Royal Sword +",
+    "type": "SWORD",
+    "level": 8
+  },
+  {
+    "id": "CROW_SWORD PLUS",
+    "name": "Crow Sword +",
+    "type": "SWORD",
+    "level": 8
+  },
+  {
+    "id": "LYCAN_EDGE PLUS",
+    "name": "Lycan Edge +",
+    "type": "SWORD",
+    "level": 8
+  },
+  {
+    "id": "RAGNELL_PLUS",
+    "name": "Ragnell +",
+    "type": "SWORD",
+    "level": 8
+  },
+  {
+    "id": "SHIELD_LANCE PLUS",
+    "name": "Shield Lance +",
+    "type": "LANCE",
+    "level": 8
+  },
+  {
+    "id": "AREADBHAR_PLUS",
+    "name": "AREADBHAR +",
+    "type": "LANCE",
+    "level": 8
+  },
+  {
+    "id": "AERIAL_LANCE PLUS",
+    "name": "Aerial Lance +",
+    "type": "LANCE",
+    "level": 8
+  },
+  {
+    "id": "SIEGMUND_PLUS",
+    "name": "Siegmund +",
+    "type": "LANCE",
+    "level": 8
+  },
+  {
+    "id": "BULL_AXE PLUS",
+    "name": "Bull Axe +",
+    "type": "AXE",
+    "level": 8
+  },
+  {
+    "id": "RAVENOUS_AXE PLUS",
+    "name": "Ravenous Axe +",
+    "type": "AXE",
+    "level": 8
+  },
+  {
+    "id": "AYMR_PLUS",
+    "name": "Aymr +",
+    "type": "AXE",
+    "level": 8
+  },
+  {
+    "id": "SOLO_MERC AXE PLUS",
+    "name": "Solo Merc Axe +",
+    "type": "AXE",
+    "level": 8
+  },
+  {
+    "id": "SOLAR_CLAWS PLUS",
+    "name": "Solar Claws +",
+    "type": "CLAWS",
+    "level": 8
+  },
+  {
+    "id": "LUNAR_CLAWS PLUS",
+    "name": "Lunar Claws +",
+    "type": "CLAWS",
+    "level": 8
+  },
+  {
+    "id": "IVORY_TOME PLUS",
+    "name": "Ivory Tome +",
+    "type": "TOME",
+    "level": 8
+  },
+  {
+    "id": "ENCLOSING_DARK PLUS",
+    "name": "Enclosing Dark +",
+    "type": "TOME",
+    "level": 8
+  },
+  {
+    "id": "TREACHERY_TOME PLUS",
+    "name": "Treachery Tome +",
+    "type": "TOME",
+    "level": 8
+  },
+  {
+    "id": "PANTHER_STAFF PLUS",
+    "name": "Panther Staff +",
+    "type": "STAFF",
+    "level": 8
+  },
+  {
+    "id": "WILY_STAFF PLUS",
+    "name": "Wily Staff +",
+    "type": "STAFF",
+    "level": 8
+  },
+  {
+    "id": "ANCESTRAL_STAFF PLUS",
+    "name": "Ancestral Staff +",
+    "type": "STAFF",
+    "level": 8
+  },
+  {
+    "id": "FOREST_EDGE STAFF PLUS",
+    "name": "Forest Edge Staff +",
+    "type": "STAFF",
+    "level": 8
+  },
+  {
+    "id": "MULAGIR_PLUS",
+    "name": "Mulagir +",
+    "type": "BOW",
+    "level": 8
+  },
+  {
+    "id": "SWIFT_BOW PLUS",
+    "name": "Swift Bow +",
+    "type": "BOW",
+    "level": 8
+  },
+  {
+    "id": "SHADED_BOW PLUS",
+    "name": "Shaded Bow +",
+    "type": "BOW",
+    "level": 8
+  },
+  {
+    "id": "SIGHT_STONE PLUS",
+    "name": "Sight Stone +",
+    "type": "STONE",
+    "level": 8
+  },
+  {
+    "id": "SOUND_STONE PLUS",
+    "name": "Sound Stone +",
+    "type": "STONE",
+    "level": 8
+  },
+  {
+    "id": "PRIMORDIAL_STONE PLUS",
+    "name": "Primordial Stone +",
+    "type": "STONE",
+    "level": 8
+  },
+  {
+    "id": "SOLITARY_STONE PLUS",
+    "name": "Solitary Stone +",
+    "type": "STONE",
+    "level": 8
+  },
+  {
+    "id": "ROYAL_SWORD",
+    "name": "Royal Sword",
+    "type": "SWORD",
+    "level": 7
+  },
+  {
+    "id": "CROW_SWORD",
+    "name": "Crow Sword",
+    "type": "SWORD",
+    "level": 7
+  },
+  {
+    "id": "LYCAN_EDGE",
+    "name": "Lycan Edge",
+    "type": "SWORD",
+    "level": 7
+  },
+  {
+    "id": "RAGNELL",
+    "name": "Ragnell",
+    "type": "SWORD",
+    "level": 7
+  },
+  {
+    "id": "SHIELD_LANCE",
+    "name": "Shield Lance",
+    "type": "LANCE",
+    "level": 7
+  },
+  {
+    "id": "AREADBHAR",
+    "name": "AREADBHAR",
+    "type": "LANCE",
+    "level": 7
+  },
+  {
+    "id": "AERIAL_LANCE",
+    "name": "Aerial Lance",
+    "type": "LANCE",
+    "level": 7
+  },
+  {
+    "id": "SIEGMUND",
+    "name": "Siegmund",
+    "type": "LANCE",
+    "level": 7
+  },
+  {
+    "id": "BULL_AXE",
+    "name": "Bull Axe",
+    "type": "AXE",
+    "level": 7
+  },
+  {
+    "id": "RAVENOUS_AXE",
+    "name": "Ravenous Axe",
+    "type": "AXE",
+    "level": 7
+  },
+  {
+    "id": "AYMR",
+    "name": "Aymr",
+    "type": "AXE",
+    "level": 7
+  },
+  {
+    "id": "SOLO_MERC AXE",
+    "name": "Solo Merc Axe",
+    "type": "AXE",
+    "level": 7
+  },
+  {
+    "id": "SOLAR_CLAWS",
+    "name": "Solar Claws",
+    "type": "CLAWS",
+    "level": 7
+  },
+  {
+    "id": "LUNAR_CLAWS",
+    "name": "Lunar Claws",
+    "type": "CLAWS",
+    "level": 7
+  },
+  {
+    "id": "IVORY_TOME",
+    "name": "Ivory Tome",
+    "type": "TOME",
+    "level": 7
+  },
+  {
+    "id": "ENCLOSING_DARK",
+    "name": "Enclosing Dark",
+    "type": "TOME",
+    "level": 7
+  },
+  {
+    "id": "TREACHERY_TOME",
+    "name": "Treachery Tome",
+    "type": "TOME",
+    "level": 7
+  },
+  {
+    "id": "PANTHER_STAFF",
+    "name": "Panther Staff",
+    "type": "STAFF",
+    "level": 7
+  },
+  {
+    "id": "WILY_STAFF",
+    "name": "Wily Staff",
+    "type": "STAFF",
+    "level": 7
+  },
+  {
+    "id": "ANCESTRAL_STAFF",
+    "name": "Ancestral Staff",
+    "type": "STAFF",
+    "level": 7
+  },
+  {
+    "id": "FOREST_EDGE STAFF",
+    "name": "Forest Edge Staff",
+    "type": "STAFF",
+    "level": 7
+  },
+  {
+    "id": "MULAGIR",
+    "name": "Mulagir",
+    "type": "BOW",
+    "level": 7
+  },
+  {
+    "id": "SWIFT_BOW",
+    "name": "Swift Bow",
+    "type": "BOW",
+    "level": 7
+  },
+  {
+    "id": "SHADED_BOW",
+    "name": "Shaded Bow",
+    "type": "BOW",
+    "level": 7
+  },
+  {
+    "id": "SIGHT_STONE",
+    "name": "Sight Stone",
+    "type": "STONE",
+    "level": 7
+  },
+  {
+    "id": "SOUND_STONE",
+    "name": "Sound Stone",
+    "type": "STONE",
+    "level": 7
+  },
+  {
+    "id": "PRIMORDIAL_STONE",
+    "name": "Primordial Stone",
+    "type": "STONE",
+    "level": 7
+  },
+  {
+    "id": "SOLITARY_STONE",
+    "name": "Solitary Stone",
+    "type": "STONE",
+    "level": 7
+  },
+  {
+    "id": "SAKURA_BOW",
+    "name": "Sakura Bow",
+    "type": "BOW",
+    "level": 6
+  },
+  {
+    "id": "MOCHI_STONE",
+    "name": "Mochi Stone",
+    "type": "STONE",
+    "level": 6
+  },
+  {
+    "id": "SILVER_SWORD",
+    "name": "Silver Sword",
+    "type": "SWORD",
+    "level": 5
+  },
+  {
+    "id": "FERAL_SWORD",
+    "name": "Feral Sword",
+    "type": "SWORD",
+    "level": 5
+  },
+  {
+    "id": "PLUSHIE_SWORD",
+    "name": "Plushie Sword",
+    "type": "SWORD",
+    "level": 5
+  },
+  {
+    "id": "CARVED_SWORD",
+    "name": "Carved Sword",
+    "type": "SWORD",
+    "level": 5
+  },
+  {
+    "id": "SILVER_LANCE",
+    "name": "Silver Lance",
+    "type": "LANCE",
+    "level": 5
+  },
+  {
+    "id": "FERAL_LANCE",
+    "name": "Feral Lance",
+    "type": "LANCE",
+    "level": 5
+  },
+  {
+    "id": "PLUSHIE_LANCE",
+    "name": "Plushie Lance",
+    "type": "LANCE",
+    "level": 5
+  },
+  {
+    "id": "CARVED_LANCE",
+    "name": "Carved Lance",
+    "type": "LANCE",
+    "level": 5
+  },
+  {
+    "id": "SILVER_AXE",
+    "name": "Silver Axe",
+    "type": "AXE",
+    "level": 5
+  },
+  {
+    "id": "FERAL_AXE",
+    "name": "Feral Axe",
+    "type": "AXE",
+    "level": 5
+  },
+  {
+    "id": "PLUSHIE_AXE",
+    "name": "Plushie Axe",
+    "type": "AXE",
+    "level": 5
+  },
+  {
+    "id": "CARVED_AXE",
+    "name": "Carved Axe",
+    "type": "AXE",
+    "level": 5
+  },
+  {
+    "id": "SILVER_CLAWS",
+    "name": "Silver Claws",
+    "type": "CLAWS",
+    "level": 5
+  },
+  {
+    "id": "FERAL_CLAWS",
+    "name": "Feral Claws",
+    "type": "CLAWS",
+    "level": 5
+  },
+  {
+    "id": "PLUSHIE_CLAWS",
+    "name": "Plushie Claws",
+    "type": "CLAWS",
+    "level": 5
+  },
+  {
+    "id": "CARVED_CLAWS",
+    "name": "Carved Claws",
+    "type": "CLAWS",
+    "level": 5
+  },
+  {
+    "id": "SILVER_TOME",
+    "name": "Silver Tome",
+    "type": "TOME",
+    "level": 5
+  },
+  {
+    "id": "FERAL_TOME",
+    "name": "Feral Tome",
+    "type": "TOME",
+    "level": 5
+  },
+  {
+    "id": "PLUSHIE_TOME",
+    "name": "Plushie Tome",
+    "type": "TOME",
+    "level": 5
+  },
+  {
+    "id": "CARVED_TOME",
+    "name": "Carved Tome",
+    "type": "TOME",
+    "level": 5
+  },
+  {
+    "id": "SILVER_STAFF",
+    "name": "Silver Staff",
+    "type": "STAFF",
+    "level": 5
+  },
+  {
+    "id": "FERAL_STAFF",
+    "name": "Feral Staff",
+    "type": "STAFF",
+    "level": 5
+  },
+  {
+    "id": "PLUSHIE_STAFF",
+    "name": "Plushie Staff",
+    "type": "STAFF",
+    "level": 5
+  },
+  {
+    "id": "CARVED_STAFF",
+    "name": "Carved Staff",
+    "type": "STAFF",
+    "level": 5
+  },
+  {
+    "id": "SILVER_BOW",
+    "name": "Silver Bow",
+    "type": "BOW",
+    "level": 5
+  },
+  {
+    "id": "FERAL_BOW",
+    "name": "Feral Bow",
+    "type": "BOW",
+    "level": 5
+  },
+  {
+    "id": "PLUSHIE_BOW",
+    "name": "Plushie Bow",
+    "type": "BOW",
+    "level": 5
+  },
+  {
+    "id": "CARVED_BOW",
+    "name": "Carved Bow",
+    "type": "BOW",
+    "level": 5
+  },
+  {
+    "id": "SILVER_STONE",
+    "name": "Silver Stone",
+    "type": "STONE",
+    "level": 5
+  },
+  {
+    "id": "FERAL_STONE",
+    "name": "Feral Stone",
+    "type": "STONE",
+    "level": 5
+  },
+  {
+    "id": "PLUSHIE_STONE",
+    "name": "Plushie Stone",
+    "type": "STONE",
+    "level": 5
+  },
+  {
+    "id": "CARVED_STONE",
+    "name": "Carved Stone",
+    "type": "STONE",
+    "level": 5
+  },
+  {
+    "id": "KADOMATSU_SWORD",
+    "name": "Kadomatsu Sword",
+    "type": "SWORD",
+    "level": 4
+  },
+  {
+    "id": "TRI-DANGO_LANCE",
+    "name": "Tri-Dango Lance",
+    "type": "LANCE",
+    "level": 4
+  },
+  {
+    "id": "IRON_SWORD",
+    "name": "Iron Sword",
+    "type": "SWORD",
+    "level": 3
+  },
+  {
+    "id": "STEEL_SWORD",
+    "name": "Steel Sword",
+    "type": "SWORD",
+    "level": 3
+  },
+  {
+    "id": "IRON_LANCE",
+    "name": "Iron Lance",
+    "type": "LANCE",
+    "level": 3
+  },
+  {
+    "id": "STEEL_LANCE",
+    "name": "Steel Lance",
+    "type": "LANCE",
+    "level": 3
+  },
+  {
+    "id": "IRON_AXE",
+    "name": "Iron Axe",
+    "type": "AXE",
+    "level": 3
+  },
+  {
+    "id": "STEEL_AXE",
+    "name": "Steel Axe",
+    "type": "AXE",
+    "level": 3
+  },
+  {
+    "id": "IRON_CLAWS",
+    "name": "Iron Claws",
+    "type": "CLAWS",
+    "level": 3
+  },
+  {
+    "id": "STEEL_CLAWS",
+    "name": "Steel Claws",
+    "type": "CLAWS",
+    "level": 3
+  },
+  {
+    "id": "IRON_TOME",
+    "name": "Iron Tome",
+    "type": "TOME",
+    "level": 3
+  },
+  {
+    "id": "STEEL_TOME",
+    "name": "Steel Tome",
+    "type": "TOME",
+    "level": 3
+  },
+  {
+    "id": "IRON_STAFF",
+    "name": "Iron Staff",
+    "type": "STAFF",
+    "level": 3
+  },
+  {
+    "id": "STEEL_STAFF",
+    "name": "Steel Staff",
+    "type": "STAFF",
+    "level": 3
+  },
+  {
+    "id": "IRON_BOW",
+    "name": "Iron Bow",
+    "type": "BOW",
+    "level": 3
+  },
+  {
+    "id": "STEEL_BOW",
+    "name": "Steel Bow",
+    "type": "BOW",
+    "level": 3
+  },
+  {
+    "id": "IRON_STONE",
+    "name": "Iron Stone",
+    "type": "STONE",
+    "level": 3
+  },
+  {
+    "id": "STEEL_STONE",
+    "name": "Steel Stone",
+    "type": "STONE",
+    "level": 3
+  },
+  {
+    "id": "BRONZE_SWORD",
+    "name": "Bronze Sword",
+    "type": "SWORD",
+    "level": 1
+  },
+  {
+    "id": "BRONZE_LANCE",
+    "name": "Bronze Lance",
+    "type": "LANCE",
+    "level": 1
+  },
+  {
+    "id": "BRONZE_AXE",
+    "name": "Bronze Axe",
+    "type": "AXE",
+    "level": 1
+  },
+  {
+    "id": "BASIC_CLAWS",
+    "name": "Basic Claws",
+    "type": "CLAWS",
+    "level": 1
+  },
+  {
+    "id": "NOVICE_TOME",
+    "name": "Novice Tome",
+    "type": "TOME",
+    "level": 1
+  },
+  {
+    "id": "NOVICE_STAFF",
+    "name": "Novice Staff",
+    "type": "STAFF",
+    "level": 1
+  },
+  {
+    "id": "BRONZE_BOW",
+    "name": "Bronze Bow",
+    "type": "BOW",
+    "level": 1
+  },
+  {
+    "id": "BASIC_STONE",
+    "name": "Basic Stone",
+    "type": "STONE",
+    "level": 1
+  }
+]
