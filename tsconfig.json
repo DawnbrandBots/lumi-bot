@@ -6,6 +6,7 @@
     "outDir": "./dist",
     "resolveJsonModule": true,
     "sourceMap": true,
-    "incremental": true
+    "incremental": true,
+    "noUncheckedIndexedAccess": true
   }
 }
