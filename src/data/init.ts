@@ -12,6 +12,7 @@ function initData({
     weaponDtos: WeaponDto[]
 }) {
     const colors: IColor[] = colorDtos.map(dto => ({
+        kind: "color",
         id: dto.id,
         name: dto.name,
     }));
@@ -23,6 +24,7 @@ function initData({
             throw new Error(`Color not found for id: ${dto.color}`);
         }
         return {
+            kind: "weaponType",
             id: dto.id,
             name: dto.name,
             color: color,
@@ -37,6 +39,7 @@ function initData({
             throw new Error(`Weapon type not found for id: ${dto.type}`);
         }
         return {
+            kind: "weapon",
             id: dto.id,
             name: dto.name,
             type: type,

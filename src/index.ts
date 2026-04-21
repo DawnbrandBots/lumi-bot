@@ -42,7 +42,17 @@ bot.on(Events.InteractionCreate, async (interaction) => {
             throw new Error(`No value provided for "${searchTermsOptionName}" option.`)
         }
         const result = search({ fuse, search: input });
-        const message = result.success ? `**${result.value.name}** is a level ${result.value.level} ${result.value.type.name}.` : result.msg;
+        const message = (() => {
+            if (!result.success) {
+                return result.msg
+            }
+            const value = result.value
+            if (value.kind === "weapon") {
+                return `**${value.name}** is a level ${value.level} ${value.type.name}.`
+            } else {
+                throw new Error(`Unhandled value kind for search.`)
+            }
+        })();
         await interaction.reply({
             embeds: [
                 new EmbedBuilder()
