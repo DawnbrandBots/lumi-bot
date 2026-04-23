@@ -31,7 +31,7 @@
   },
   {
     "id": "AREADBHAR_PLUS",
-    "name": "AREADBHAR +",
+    "name": "Areadbhar +",
     "type": "LANCE",
     "level": 8
   },
@@ -199,7 +199,7 @@
   },
   {
     "id": "AREADBHAR",
-    "name": "AREADBHAR",
+    "name": "Areadbhar",
     "type": "LANCE",
     "level": 7
   },
@@ -546,7 +546,7 @@
     "level": 4
   },
   {
-    "id": "TRI-DANGO_LANCE",
+    "id": "TRI_DANGO_LANCE",
     "name": "Tri-Dango Lance",
     "type": "LANCE",
     "level": 4
