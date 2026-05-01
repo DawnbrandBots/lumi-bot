@@ -1,0 +1,142 @@
+[
+    {
+        "id": "ROYAL_SCION",
+        "name": "Royal Scion",
+        "effect": "ROYAL_SWORD"
+    },
+    {
+        "id": "CROW_S_VENGEANCE",
+        "name": "Crow's Vengeance",
+        "effect": "CROW_SWORD"
+    },
+    {
+        "id": "LUPINE_SURVIVAL_INSTINCT",
+        "name": "Lupine Survival Instinct",
+        "effect": "IVORY_TOME"
+    },
+    {
+        "id": "UNBREAKABLE_WILL",
+        "name": "Unbreakable Will",
+        "effect": "AREADBHAR"
+    },
+    {
+        "id": "GUARDIAN_S_SOUL",
+        "name": "Guardian's Soul",
+        "effect": "SHIELD_LANCE"
+    },
+    {
+        "id": "BLUE_LION_PRIDE",
+        "name": "Blue Lion Pride",
+        "effect": "AREADBHAR"
+    },
+    {
+        "id": "AERIAL_KNIGHT_S_PROWESS",
+        "name": "Aerial Knight's Prowess",
+        "effect": "RAVENOUS_AXE"
+    },
+    {
+        "id": "INTO_THE_FIRE",
+        "name": "Into the Fire",
+        "effect": "SIEGMUND"
+    },
+    {
+        "id": "BULL_S_STRENGTH",
+        "name": "Bull's Strength",
+        "effect": "BULL_AXE"
+    },
+    {
+        "id": "BEAST_FRENZY",
+        "name": "Beast Frenzy",
+        "effect": "RAVENOUS_AXE"
+    },
+    {
+        "id": "HEGEMON_S_WILL",
+        "name": "Hegemon's Will",
+        "effect": "AYMR"
+    },
+    {
+        "id": "DEMON_REPELLER",
+        "name": "Demon Repeller",
+        "effect": "CROW_SWORD"
+    },
+    {
+        "id": "SOLAR_SHIELD",
+        "name": "Solar Shield",
+        "effect": "SOLAR_CLAWS"
+    },
+    {
+        "id": "LUNAR_STRIKE",
+        "name": "Lunar Strike",
+        "effect": "BULL_AXE"
+    },
+    {
+        "id": "WHITE_WING_S_GRACE",
+        "name": "White Wing's Grace",
+        "effect": "LYCAN_EDGE"
+    },
+    {
+        "id": "BAT_S_GLOOM",
+        "name": "Bat's Gloom",
+        "effect": "ROYAL_SWORD"
+    },
+    {
+        "id": "FOX_S_TRICKERY",
+        "name": "Fox's Trickery",
+        "effect": "WILY_STAFF"
+    },
+    {
+        "id": "PANTHER_S_PROTECTION",
+        "name": "Panther's Protection",
+        "effect": "PANTHER_STAFF"
+    },
+    {
+        "id": "FOX_S_SUNBURST",
+        "name": "Fox's Sunburst",
+        "effect": "WILY_STAFF"
+    },
+    {
+        "id": "ANCESTRAL_WARD",
+        "name": "Ancestral Ward",
+        "effect": "SOUND_STONE"
+    },
+    {
+        "id": "THIST_FOR_LIFE",
+        "name": "Thist for Life",
+        "effect": "RAVENOUS_AXE"
+    },
+    {
+        "id": "PLAIN_S_WIND",
+        "name": "Plain's Wind",
+        "effect": "MULAGIR"
+    },
+    {
+        "id": "SKILLED_HUNTER",
+        "name": "Skilled Hunter",
+        "effect": "SWIFT_BOW"
+    },
+    {
+        "id": "WILY_DEFENSE",
+        "name": "Wily Defense",
+        "effect": "SHADED_BOW"
+    },
+    {
+        "id": "SHINING_EYE",
+        "name": "Shining Eye",
+        "effect": "RAVENOUS_AXE"
+    },
+    {
+        "id": "SHINING_EAR",
+        "name": "Shining Ear",
+        "effect": "SOUND_STONE"
+    },
+    {
+        "id": "DIVINE_ANCESTOR_S_FANG",
+        "name": "Divine Ancestor's Fang",
+        "effect": "PANTHER_STAFF"
+    },
+    {
+        "id": "DRAGONSCALE",
+        "name": "Dragonscale",
+        "effect": "SOLITARY_STONE"
+    }
+]
