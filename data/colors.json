@@ -1,14 +1,26 @@
 [
     {
         "id": "RED",
-        "name": "Red"
+        "name": "Red",
+        "strongAgainst": "GREEN",
+        "weakAgainst": "BLUE"
     },
     {
         "id": "BLUE",
-        "name": "Blue"
+        "name": "Blue",
+        "strongAgainst": "RED",
+        "weakAgainst": "GREEN"
     },
     {
         "id": "GREEN",
-        "name": "Green"
+        "name": "Green",
+        "strongAgainst": "BLUE",
+        "weakAgainst": "RED"
+    },
+    {
+        "id": "COLORLESS",
+        "name": "Colorless",
+        "strongAgainst": null,
+        "weakAgainst": null
     }
 ]
