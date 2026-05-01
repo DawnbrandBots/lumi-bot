@@ -1,16 +1,22 @@
 import Fuse from "fuse.js/basic";
-import { IDisciple, IWeapon } from "../types.js";
+import { TId } from "../types.ts";
 
-export type SearchIndex = Record<string, IWeapon>;
-export type SearchItem = IWeapon | IDisciple;
-export type SearchItems = SearchItem[];
-export type SearchResult = { success: true, value: SearchItem } | { success: false, msg: string };
-
-export function createFuse({ items }: { items: SearchItems }): Fuse<SearchItem> {
-    return new Fuse(items, { keys: ["name"], ignoreDiacritics: true, isCaseSensitive: false });
+export interface ISearchItem {
+    readonly kind: string;
+    readonly id: TId;
+    readonly name: string;
 }
 
-export function search({ fuse, search }: { fuse: Fuse<SearchItem>, search: string }): SearchResult {
+export type _ISearchItem<Kind extends string> = ISearchItem & { kind: Kind }
+
+export type SearchResult<Kind extends string> = { success: true, value: _ISearchItem<Kind> } | { success: false, msg: string };
+
+export function createFuse<Kind extends string>({ items }: { items: _ISearchItem<Kind>[] }): Fuse<_ISearchItem<Kind>> {
+    const keys: (keyof _ISearchItem<Kind>)[] = ["name"]
+    return new Fuse(items, { keys, ignoreDiacritics: true, isCaseSensitive: false });
+}
+
+export function search<Kind extends string>({ fuse, search }: { fuse: Fuse<_ISearchItem<Kind>>, search: string }): SearchResult<Kind> {
     const results = fuse.search(search, { limit: 1 });
     const result = results[0];
 
