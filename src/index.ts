@@ -6,27 +6,20 @@ import { helpCommand } from "./commands/help.js";
 import { getSearchCommand } from "./commands/search.js";
 import { createFuse } from "./search/search.js";
 
-import colorDtos from "../data/colors.json" with { type: "json" };
-import weaponTypeDtos from "../data/weaponTypes.json" with { type: "json" };
-import weaponDtos from "../data/weapons.json" with { type: "json" };
-import movementDtos from "../data/movements.json" with { type: "json" };
-import discipleDtos from "../data/disciples.json" with { type: "json" };
 
-import initData from "./data/init.js";
-import { searchTermsOptionName, searchCommandName } from "./commands/search.js";
-import { createFuse, search } from "./search/search.js";
-import z from "zod";
-import { color, disciple, movement, weapon, weaponType } from "./search/validate.js";
+import { MikroORM } from "@mikro-orm/sqlite";
 
-const validatedDtos = {
-    colorDtos: z.array(color).parse(colorDtos),
-    weaponTypeDtos: z.array(weaponType).parse(weaponTypeDtos),
-    weaponDtos: z.array(weapon).parse(weaponDtos),
-    movementDtos: z.array(movement).parse(movementDtos),
-    discipleDtos: z.array(disciple).parse(discipleDtos),
-}
 
-const { weapons, disciples } = initData(validatedDtos);
+import mikroOrmConfig from './mikro-orm.config.ts';
+import { Disciple, Weapon } from "./models.js";
+
+const orm = await MikroORM.init(mikroOrmConfig)
+const em = orm.em.fork()
+
+const weapons = await em.findAll(Weapon, { populate: ["*"] })
+const disciples = await em.findAll(Disciple, { populate: ["*"] })
+
+
 const fuseItems = [...weapons, ...disciples]
 const fuse = createFuse({ items: fuseItems })
 
