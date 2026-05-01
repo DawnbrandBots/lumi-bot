@@ -3,696 +3,1056 @@
     "id": "ROYAL_SWORD_PLUS",
     "name": "Royal Sword +",
     "type": "SWORD",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "ROYAL_SCION"
   },
   {
     "id": "CROW_SWORD_PLUS",
     "name": "Crow Sword +",
     "type": "SWORD",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "CROW_S_VENGEANCE"
   },
   {
     "id": "LYCAN_EDGE_PLUS",
     "name": "Lycan Edge +",
     "type": "SWORD",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "LUPINE_SURVIVAL_INSTINCT"
   },
   {
     "id": "RAGNELL_PLUS",
     "name": "Ragnell +",
     "type": "SWORD",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "UNBREAKABLE_WILL"
   },
   {
     "id": "SHIELD_LANCE_PLUS",
     "name": "Shield Lance +",
     "type": "LANCE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "GUARDIAN_S_SOUL"
   },
   {
     "id": "AREADBHAR_PLUS",
-    "name": "Areadbhar +",
+    "name": "AREADBHAR +",
     "type": "LANCE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "BLUE_LION_PRIDE"
   },
   {
     "id": "AERIAL_LANCE_PLUS",
     "name": "Aerial Lance +",
     "type": "LANCE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "AERIAL_KNIGHT_S_PROWESS"
   },
   {
     "id": "SIEGMUND_PLUS",
     "name": "Siegmund +",
     "type": "LANCE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "INTO_THE_FIRE"
   },
   {
     "id": "BULL_AXE_PLUS",
     "name": "Bull Axe +",
     "type": "AXE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "BULL_S_STRENGTH"
   },
   {
     "id": "RAVENOUS_AXE_PLUS",
     "name": "Ravenous Axe +",
     "type": "AXE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "BEAST_FRENZY"
   },
   {
     "id": "AYMR_PLUS",
     "name": "Aymr +",
     "type": "AXE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "HEGEMON_S_WILL"
   },
   {
     "id": "SOLO_MERC_AXE_PLUS",
     "name": "Solo Merc Axe +",
     "type": "AXE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "DEMON_REPELLER"
   },
   {
     "id": "SOLAR_CLAWS_PLUS",
     "name": "Solar Claws +",
     "type": "CLAWS",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "SOLAR_SHIELD"
   },
   {
     "id": "LUNAR_CLAWS_PLUS",
     "name": "Lunar Claws +",
     "type": "CLAWS",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "LUNAR_STRIKE"
   },
   {
     "id": "IVORY_TOME_PLUS",
     "name": "Ivory Tome +",
     "type": "TOME",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "WHITE_WING_S_GRACE"
   },
   {
     "id": "ENCLOSING_DARK_PLUS",
     "name": "Enclosing Dark +",
     "type": "TOME",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "BAT_S_GLOOM"
   },
   {
     "id": "TREACHERY_TOME_PLUS",
     "name": "Treachery Tome +",
     "type": "TOME",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "FOX_S_TRICKERY"
   },
   {
     "id": "PANTHER_STAFF_PLUS",
     "name": "Panther Staff +",
     "type": "STAFF",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "PANTHER_S_PROTECTION"
   },
   {
     "id": "WILY_STAFF_PLUS",
     "name": "Wily Staff +",
     "type": "STAFF",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "FOX_S_SUNBURST"
   },
   {
     "id": "ANCESTRAL_STAFF_PLUS",
     "name": "Ancestral Staff +",
     "type": "STAFF",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "ANCESTRAL_WARD"
   },
   {
     "id": "FOREST_EDGE_STAFF_PLUS",
     "name": "Forest Edge Staff +",
     "type": "STAFF",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "THIST_FOR_LIFE"
   },
   {
     "id": "MULAGIR_PLUS",
     "name": "Mulagir +",
     "type": "BOW",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "PLAIN_S_WIND"
   },
   {
     "id": "SWIFT_BOW_PLUS",
     "name": "Swift Bow +",
     "type": "BOW",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "SKILLED_HUNTER"
   },
   {
     "id": "SHADED_BOW_PLUS",
     "name": "Shaded Bow +",
     "type": "BOW",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "WILY_DEFENSE"
   },
   {
     "id": "SIGHT_STONE_PLUS",
     "name": "Sight Stone +",
     "type": "STONE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "SHINING_EYE"
   },
   {
     "id": "SOUND_STONE_PLUS",
     "name": "Sound Stone +",
     "type": "STONE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "SHINING_EAR"
   },
   {
     "id": "PRIMORDIAL_STONE_PLUS",
     "name": "Primordial Stone +",
     "type": "STONE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "DIVINE_ANCESTOR_S_FANG"
   },
   {
     "id": "SOLITARY_STONE_PLUS",
     "name": "Solitary Stone +",
     "type": "STONE",
-    "level": 8
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "uniqueSkill": "DRAGONSCALE"
   },
   {
     "id": "ROYAL_SWORD",
     "name": "Royal Sword",
     "type": "SWORD",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "ROYAL_SCION"
   },
   {
     "id": "CROW_SWORD",
     "name": "Crow Sword",
     "type": "SWORD",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "CROW_S_VENGEANCE"
   },
   {
     "id": "LYCAN_EDGE",
     "name": "Lycan Edge",
     "type": "SWORD",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "LUPINE_SURVIVAL_INSTINCT"
   },
   {
     "id": "RAGNELL",
     "name": "Ragnell",
     "type": "SWORD",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "UNBREAKABLE_WILL"
   },
   {
     "id": "SHIELD_LANCE",
     "name": "Shield Lance",
     "type": "LANCE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "GUARDIAN_S_SOUL"
   },
   {
     "id": "AREADBHAR",
-    "name": "Areadbhar",
+    "name": "AREADBHAR",
     "type": "LANCE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "BLUE_LION_PRIDE"
   },
   {
     "id": "AERIAL_LANCE",
     "name": "Aerial Lance",
     "type": "LANCE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "AERIAL_KNIGHT_S_PROWESS"
   },
   {
     "id": "SIEGMUND",
     "name": "Siegmund",
     "type": "LANCE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "INTO_THE_FIRE"
   },
   {
     "id": "BULL_AXE",
     "name": "Bull Axe",
     "type": "AXE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "BULL_S_STRENGTH"
   },
   {
     "id": "RAVENOUS_AXE",
     "name": "Ravenous Axe",
     "type": "AXE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "BEAST_FRENZY"
   },
   {
     "id": "AYMR",
     "name": "Aymr",
     "type": "AXE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "HEGEMON_S_WILL"
   },
   {
     "id": "SOLO_MERC_AXE",
     "name": "Solo Merc Axe",
     "type": "AXE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "DEMON_REPELLER"
   },
   {
     "id": "SOLAR_CLAWS",
     "name": "Solar Claws",
     "type": "CLAWS",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "SOLAR_SHIELD"
   },
   {
     "id": "LUNAR_CLAWS",
     "name": "Lunar Claws",
     "type": "CLAWS",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "LUNAR_STRIKE"
   },
   {
     "id": "IVORY_TOME",
     "name": "Ivory Tome",
     "type": "TOME",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "WHITE_WING_S_GRACE"
   },
   {
     "id": "ENCLOSING_DARK",
     "name": "Enclosing Dark",
     "type": "TOME",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "BAT_S_GLOOM"
   },
   {
     "id": "TREACHERY_TOME",
     "name": "Treachery Tome",
     "type": "TOME",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "FOX_S_TRICKERY"
   },
   {
     "id": "PANTHER_STAFF",
     "name": "Panther Staff",
     "type": "STAFF",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "PANTHER_S_PROTECTION"
   },
   {
     "id": "WILY_STAFF",
     "name": "Wily Staff",
     "type": "STAFF",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "FOX_S_SUNBURST"
   },
   {
     "id": "ANCESTRAL_STAFF",
     "name": "Ancestral Staff",
     "type": "STAFF",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "ANCESTRAL_WARD"
   },
   {
     "id": "FOREST_EDGE_STAFF",
     "name": "Forest Edge Staff",
     "type": "STAFF",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "THIST_FOR_LIFE"
   },
   {
     "id": "MULAGIR",
     "name": "Mulagir",
     "type": "BOW",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "PLAIN_S_WIND"
   },
   {
     "id": "SWIFT_BOW",
     "name": "Swift Bow",
     "type": "BOW",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "SKILLED_HUNTER"
   },
   {
     "id": "SHADED_BOW",
     "name": "Shaded Bow",
     "type": "BOW",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "WILY_DEFENSE"
   },
   {
     "id": "SIGHT_STONE",
     "name": "Sight Stone",
     "type": "STONE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "SHINING_EYE"
   },
   {
     "id": "SOUND_STONE",
     "name": "Sound Stone",
     "type": "STONE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "SHINING_EAR"
   },
   {
     "id": "PRIMORDIAL_STONE",
     "name": "Primordial Stone",
     "type": "STONE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "DIVINE_ANCESTOR_S_FANG"
   },
   {
     "id": "SOLITARY_STONE",
     "name": "Solitary Stone",
     "type": "STONE",
-    "level": 7
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "uniqueSkill": "DRAGONSCALE"
   },
   {
     "id": "SAKURA_BOW",
     "name": "Sakura Bow",
     "type": "BOW",
-    "level": 6
+    "level": 6,
+    "hp": 5,
+    "atk": 30,
+    "uniqueSkill": "SKILLED_HUNTER"
   },
   {
     "id": "MOCHI_STONE",
     "name": "Mochi Stone",
     "type": "STONE",
-    "level": 6
+    "level": 6,
+    "hp": 5,
+    "atk": 30,
+    "uniqueSkill": "SHINING_EYE"
   },
   {
     "id": "SILVER_SWORD",
     "name": "Silver Sword",
     "type": "SWORD",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "FERAL_SWORD",
     "name": "Feral Sword",
     "type": "SWORD",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2
   },
   {
     "id": "PLUSHIE_SWORD",
     "name": "Plushie Sword",
     "type": "SWORD",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "CARVED_SWORD",
     "name": "Carved Sword",
     "type": "SWORD",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2,
+    "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
     "id": "SILVER_LANCE",
     "name": "Silver Lance",
     "type": "LANCE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "FERAL_LANCE",
     "name": "Feral Lance",
     "type": "LANCE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2
   },
   {
     "id": "PLUSHIE_LANCE",
     "name": "Plushie Lance",
     "type": "LANCE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "CARVED_LANCE",
     "name": "Carved Lance",
     "type": "LANCE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2,
+    "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
     "id": "SILVER_AXE",
     "name": "Silver Axe",
     "type": "AXE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "FERAL_AXE",
     "name": "Feral Axe",
     "type": "AXE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2
   },
   {
     "id": "PLUSHIE_AXE",
     "name": "Plushie Axe",
     "type": "AXE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "CARVED_AXE",
     "name": "Carved Axe",
     "type": "AXE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2,
+    "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
     "id": "SILVER_CLAWS",
     "name": "Silver Claws",
     "type": "CLAWS",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "FERAL_CLAWS",
     "name": "Feral Claws",
     "type": "CLAWS",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2
   },
   {
     "id": "PLUSHIE_CLAWS",
     "name": "Plushie Claws",
     "type": "CLAWS",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "CARVED_CLAWS",
     "name": "Carved Claws",
     "type": "CLAWS",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2,
+    "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
     "id": "SILVER_TOME",
     "name": "Silver Tome",
     "type": "TOME",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "FERAL_TOME",
     "name": "Feral Tome",
     "type": "TOME",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2
   },
   {
     "id": "PLUSHIE_TOME",
     "name": "Plushie Tome",
     "type": "TOME",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "CARVED_TOME",
     "name": "Carved Tome",
     "type": "TOME",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2,
+    "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
     "id": "SILVER_STAFF",
     "name": "Silver Staff",
     "type": "STAFF",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "FERAL_STAFF",
     "name": "Feral Staff",
     "type": "STAFF",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2
   },
   {
     "id": "PLUSHIE_STAFF",
     "name": "Plushie Staff",
     "type": "STAFF",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "CARVED_STAFF",
     "name": "Carved Staff",
     "type": "STAFF",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2,
+    "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
     "id": "SILVER_BOW",
     "name": "Silver Bow",
     "type": "BOW",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "FERAL_BOW",
     "name": "Feral Bow",
     "type": "BOW",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2
   },
   {
     "id": "PLUSHIE_BOW",
     "name": "Plushie Bow",
     "type": "BOW",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "CARVED_BOW",
     "name": "Carved Bow",
     "type": "BOW",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2,
+    "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
     "id": "SILVER_STONE",
     "name": "Silver Stone",
     "type": "STONE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "FERAL_STONE",
     "name": "Feral Stone",
     "type": "STONE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2
   },
   {
     "id": "PLUSHIE_STONE",
     "name": "Plushie Stone",
     "type": "STONE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "CARVED_STONE",
     "name": "Carved Stone",
     "type": "STONE",
-    "level": 5
+    "level": 5,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 2,
+    "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
     "id": "KADOMATSU_SWORD",
     "name": "Kadomatsu Sword",
     "type": "SWORD",
-    "level": 4
+    "level": 4,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
-    "id": "TRI_DANGO_LANCE",
+    "id": "TRI-DANGO_LANCE",
     "name": "Tri-Dango Lance",
     "type": "LANCE",
-    "level": 4
+    "level": 4,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
   },
   {
     "id": "IRON_SWORD",
     "name": "Iron Sword",
     "type": "SWORD",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 10,
+    "freeSkillSlots": 2
   },
   {
     "id": "STEEL_SWORD",
     "name": "Steel Sword",
     "type": "SWORD",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 15,
+    "freeSkillSlots": 1
   },
   {
     "id": "IRON_LANCE",
     "name": "Iron Lance",
     "type": "LANCE",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 10,
+    "freeSkillSlots": 2
   },
   {
     "id": "STEEL_LANCE",
     "name": "Steel Lance",
     "type": "LANCE",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 15,
+    "freeSkillSlots": 1
   },
   {
     "id": "IRON_AXE",
     "name": "Iron Axe",
     "type": "AXE",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 10,
+    "freeSkillSlots": 2
   },
   {
     "id": "STEEL_AXE",
     "name": "Steel Axe",
     "type": "AXE",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 15,
+    "freeSkillSlots": 1
   },
   {
     "id": "IRON_CLAWS",
     "name": "Iron Claws",
     "type": "CLAWS",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 10,
+    "freeSkillSlots": 2
   },
   {
     "id": "STEEL_CLAWS",
     "name": "Steel Claws",
     "type": "CLAWS",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 15,
+    "freeSkillSlots": 1
   },
   {
     "id": "IRON_TOME",
     "name": "Iron Tome",
     "type": "TOME",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 10,
+    "freeSkillSlots": 2
   },
   {
     "id": "STEEL_TOME",
     "name": "Steel Tome",
     "type": "TOME",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 15,
+    "freeSkillSlots": 1
   },
   {
     "id": "IRON_STAFF",
     "name": "Iron Staff",
     "type": "STAFF",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 10,
+    "freeSkillSlots": 2
   },
   {
     "id": "STEEL_STAFF",
     "name": "Steel Staff",
     "type": "STAFF",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 15,
+    "freeSkillSlots": 1
   },
   {
     "id": "IRON_BOW",
     "name": "Iron Bow",
     "type": "BOW",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 10,
+    "freeSkillSlots": 2
   },
   {
     "id": "STEEL_BOW",
     "name": "Steel Bow",
     "type": "BOW",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 15,
+    "freeSkillSlots": 1
   },
   {
     "id": "IRON_STONE",
     "name": "Iron Stone",
     "type": "STONE",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 10,
+    "freeSkillSlots": 2
   },
   {
     "id": "STEEL_STONE",
     "name": "Steel Stone",
     "type": "STONE",
-    "level": 3
+    "level": 3,
+    "hp": 5,
+    "atk": 15,
+    "freeSkillSlots": 1
   },
   {
     "id": "BRONZE_SWORD",
     "name": "Bronze Sword",
     "type": "SWORD",
-    "level": 1
+    "level": 1,
+    "hp": 0,
+    "atk": 0,
+    "freeSkillSlots": 0
   },
   {
     "id": "BRONZE_LANCE",
     "name": "Bronze Lance",
     "type": "LANCE",
-    "level": 1
+    "level": 1,
+    "hp": 0,
+    "atk": 0,
+    "freeSkillSlots": 0
   },
   {
     "id": "BRONZE_AXE",
     "name": "Bronze Axe",
     "type": "AXE",
-    "level": 1
+    "level": 1,
+    "hp": 0,
+    "atk": 0,
+    "freeSkillSlots": 0
   },
   {
     "id": "BASIC_CLAWS",
     "name": "Basic Claws",
     "type": "CLAWS",
-    "level": 1
+    "level": 1,
+    "hp": 0,
+    "atk": 0,
+    "freeSkillSlots": 0
   },
   {
     "id": "NOVICE_TOME",
     "name": "Novice Tome",
     "type": "TOME",
-    "level": 1
+    "level": 1,
+    "hp": 0,
+    "atk": 0,
+    "freeSkillSlots": 0
   },
   {
     "id": "NOVICE_STAFF",
     "name": "Novice Staff",
     "type": "STAFF",
-    "level": 1
+    "level": 1,
+    "hp": 0,
+    "atk": 0,
+    "freeSkillSlots": 0
   },
   {
     "id": "BRONZE_BOW",
     "name": "Bronze Bow",
     "type": "BOW",
-    "level": 1
+    "level": 1,
+    "hp": 0,
+    "atk": 0,
+    "freeSkillSlots": 0
   },
   {
     "id": "BASIC_STONE",
     "name": "Basic Stone",
     "type": "STONE",
-    "level": 1
+    "level": 1,
+    "hp": 0,
+    "atk": 0,
+    "freeSkillSlots": 0
   }
 ]
