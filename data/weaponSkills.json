@@ -138,5 +138,55 @@
         "id": "DRAGONSCALE",
         "name": "Dragonscale",
         "effect": "SOLITARY_STONE"
+    },
+    {
+        "id": "RIDER_BANE_1",
+        "name": "Rider Bane 1",
+        "effect": "RIDER_BANE_1"
+    },
+    {
+        "id": "RIDER_BANE_2",
+        "name": "Rider Bane 2",
+        "effect": "RIDER_BANE_2"
+    },
+    {
+        "id": "RIDER_BANE_3",
+        "name": "Rider Bane 3",
+        "effect": "RIDER_BANE_3"
+    },
+    {
+        "id": "FLIER_BANE_1",
+        "name": "Flier Bane 1",
+        "effect": "FLIER_BANE_1"
+    },
+    {
+        "id": "FLIER_BANE_2",
+        "name": "Flier Bane 2",
+        "effect": "FLIER_BANE_2"
+    },
+    {
+        "id": "FLIER_BANE_3",
+        "name": "Flier Bane 3",
+        "effect": "FLIER_BANE_3"
+    },
+    {
+        "id": "ARMOR_BANE_1",
+        "name": "Armor Bane 1",
+        "effect": "ARMOR_BANE_1"
+    },
+    {
+        "id": "ARMOR_BANE_2",
+        "name": "Armor Bane 2",
+        "effect": "ARMOR_BANE_2"
+    },
+    {
+        "id": "ARMOR_BANE_3",
+        "name": "Armor Bane 3",
+        "effect": "ARMOR_BANE_3"
+    },
+    {
+        "id": "SPIRITED_ATTACK",
+        "name": "Spirited Attack",
+        "effect": "SPIRITED_ATTACK"
     }
 ]
