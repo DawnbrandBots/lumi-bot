@@ -7,6 +7,8 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "incremental": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true
   }
 }

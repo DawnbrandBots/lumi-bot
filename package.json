@@ -21,6 +21,8 @@
     "yarn": "1.22.x"
   },
   "dependencies": {
+    "@mikro-orm/core": "^7.0.13",
+    "@mikro-orm/sqlite": "^7.0.13",
     "debug": "^4.4.3",
     "discord.js": "~14.26.3",
     "fuse.js": "^7.3.0",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@mikro-orm/cli": "^7.0.13",
     "@tsconfig/node24": "^24.0.4",
     "@types/debug": "^4.1.13",
     "@types/node": "^24.12.2",
@@ -41,5 +44,11 @@
   "optionalDependencies": {
     "bufferutil": "^4.1.0",
     "zlib-sync": "^0.1.10"
+  },
+  "mikro-orm": {
+    "preferTs": true,
+    "configPaths": [
+      "./src/mikro-orm.config.ts"
+    ]
   }
 }

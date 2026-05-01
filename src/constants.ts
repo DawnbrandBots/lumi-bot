@@ -1,0 +1,6 @@
+export const DISCIPLE_BASE_HP = 80
+export const DISCIPLE_BASE_ATK = 36
+export const DISCIPLE_MINIMUM_RELEVANT_LEVEL = 8;
+export const DISCIPLE_MAX_LEVEL = 11;
+
+export const WEAPON_MINIMUM_RELEVANT_LEVEL = 6;
