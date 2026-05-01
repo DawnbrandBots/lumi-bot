@@ -11,9 +11,10 @@ import { MikroORM } from "@mikro-orm/sqlite";
 
 
 import mikroOrmConfig from './mikro-orm.config.ts';
-import { Disciple, Weapon } from "./models.js";
+import { Disciple, Weapon, WeaponSkill } from "./models.js";
 import discipleSearchHandler from "./searchHandlers/disciple.ts";
 import weaponSearchHandler from "./searchHandlers/weapon.ts";
+import weaponSkillSearchHandler from "./searchHandlers/weaponSkill.ts";
 
 const orm = await MikroORM.init(mikroOrmConfig)
 const em = orm.em.fork()
@@ -21,8 +22,9 @@ const em = orm.em.fork()
 // No need to populate entities. We only care about the id, name and kind for the sake of the search.
 const weapons = await em.findAll(Weapon)
 const disciples = await em.findAll(Disciple)
+const weaponSkills = await em.findAll(WeaponSkill)
 
-const fuseItems = [...weapons, ...disciples]
+const fuseItems = [...weapons, ...disciples, ...weaponSkills]
 const fuse = createFuse({ items: fuseItems })
 
 const log = debug("bot");
@@ -36,7 +38,8 @@ bot.on(Events.ClientReady, () => {
 
 const handlers = {
     "disciple": discipleSearchHandler,
-    "weapon": weaponSearchHandler
+    "weapon": weaponSearchHandler,
+    "weaponSkill": weaponSkillSearchHandler,
 } as const
 
 const commands: Record<string, ICommand> = {

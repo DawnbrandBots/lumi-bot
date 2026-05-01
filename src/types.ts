@@ -25,6 +25,8 @@ export interface IWeaponSkill {
     readonly id: TId;
     readonly name: string;
     readonly effect: IWeaponSkillEffect;
+    readonly weapons: Iterable<IWeapon, object>
+    readonly description: string;
 }
 
 export interface IWeapon {
@@ -33,6 +35,9 @@ export interface IWeapon {
     readonly name: string;
     readonly weaponType: IWeaponType;
     readonly level: number;
+    readonly hp: number;
+    readonly atk: number;
+    readonly uniqueSkill: IWeaponSkill;
 }
 
 export interface IMovementType {

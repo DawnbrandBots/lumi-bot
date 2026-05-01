@@ -76,7 +76,8 @@ export const WeaponSkillSchema = defineEntity({
     properties: {
         id: p.string().primary(),
         name: p.string(),
-        effect: () => p.manyToOne(WeaponSkillEffect)
+        effect: () => p.manyToOne(WeaponSkillEffect),
+        weapons: () => p.oneToMany(Weapon).mappedBy("uniqueSkill")
     },
 });
 
@@ -95,7 +96,11 @@ export const WeaponSchema = defineEntity({
         id: p.string().primary(),
         name: p.string(),
         weaponType: () => p.manyToOne(WeaponType),
-        level: p.integer()
+        level: p.integer(),
+        hp: p.integer(),
+        atk: p.integer(),
+        freeSkillSlots: p.integer(),
+        uniqueSkill: () => p.manyToOne(WeaponSkill).inversedBy("weapons").owner(),
     },
 });
 
@@ -120,14 +125,13 @@ export const DiscipleSchema = defineEntity({
 })
 
 export class Disciple extends DiscipleSchema.class implements IDisciple {
-    get kind() { return "disciple" as const }
+    public get kind() { return "disciple" as const }
 
     public get baseHp() {
         return Math.floor(DISCIPLE_BASE_HP * this.movementType.discipleBaseHpModifier)
     }
 
     public get baseAtk() {
-        console.info(DISCIPLE_BASE_ATK * this.movementType.discipleBaseAtkModifier * this.weaponType.discipleBaseAtkModifier, DISCIPLE_BASE_ATK, this.movementType.discipleBaseAtkModifier, this.weaponType.discipleBaseAtkModifier)
         return Math.floor(DISCIPLE_BASE_ATK * this.movementType.discipleBaseAtkModifier * this.weaponType.discipleBaseAtkModifier)
     }
 
