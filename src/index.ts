@@ -1,6 +1,11 @@
 import debug from "debug";
 import { ActivityType, Client, Colors, EmbedBuilder, Events, GatewayIntentBits } from "discord.js";
 
+import { ICommand } from "./commands/base.js";
+import { helpCommand } from "./commands/help.js";
+import { getSearchCommand } from "./commands/search.js";
+import { createFuse } from "./search/search.js";
+
 import colorDtos from "../data/colors.json" with { type: "json" };
 import weaponTypeDtos from "../data/weaponTypes.json" with { type: "json" };
 import weaponDtos from "../data/weapons.json" with { type: "json" };
@@ -34,39 +39,20 @@ bot.on(Events.ClientReady, () => {
     bot.user?.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
 });
 
+const commands: Record<string, ICommand> = {
+    search: getSearchCommand({ fuse }),
+    help: helpCommand
+}
+
 bot.on(Events.InteractionCreate, async (interaction) => {
     log(interaction);
     if (!interaction.isChatInputCommand()) {
         return;
     }
-    if (interaction.commandName === searchCommandName) {
-        const input = interaction.options.getString(searchTermsOptionName)
-        if (!input) {
-            throw new Error(`No value provided for "${searchTermsOptionName}" option.`)
-        }
-        const result = search({ fuse, search: input });
-        const message = (() => {
-            if (!result.success) {
-                return result.msg
-            }
-            const value = result.value
-            if (value.kind === "disciple") {
-                return `**${value.name}** is a ${value.weapon.name}-wielding ${value.movement.name} disciple.`
-            } else if (value.kind === "weapon") {
-                return `**${value.name}** is a level ${value.level} ${value.type.name}.`
-            } else {
-                throw new Error(`Unhandled value kind for search.`)
-            }
-        })();
-        await interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(Colors.DarkGold)
-                    .setTitle("Lumi")
-                    .setDescription(message)
-                    .setFooter({ text: "Fire Emblem" }),
-            ],
-        });
+
+    const command = commands[interaction.commandName]
+    if (command) {
+        await command.run(interaction)
     } else {
         await interaction.reply({
             embeds: [

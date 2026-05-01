@@ -1,5 +1,5 @@
-import { IDisciple, IWeapon } from "../types.js";
 import Fuse from "fuse.js/basic";
+import { IDisciple, IWeapon } from "../types.js";
 
 export type SearchIndex = Record<string, IWeapon>;
 export type SearchItem = IWeapon | IDisciple;
