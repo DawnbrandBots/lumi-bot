@@ -1,20 +1,18 @@
 import debug from "debug";
 import {
     APIUser,
-    ApplicationIntegrationType,
-    InteractionContextType,
     REST,
+    RESTPostAPIChatInputApplicationCommandsJSONBody,
     Routes,
-    SlashCommandBuilder,
 } from "discord.js";
-import helpCommand from "./commands/help.js";
-import searchCommand from "./commands/search.js";
+import { helpCommandInfo } from "./commandInfo/help.js";
+import { searchCommandInfo } from "./commandInfo/search.js";
 
 const log = debug("commands");
 
 const commands = [
-    helpCommand,
-    searchCommand,
+    helpCommandInfo,
+    searchCommandInfo,
 ];
 
 const api = new REST().setToken(process.env.DISCORD_TOKEN!);
@@ -22,11 +20,12 @@ const api = new REST().setToken(process.env.DISCORD_TOKEN!);
 async function registerSlashCommands(guild?: `${bigint}` | "user-install") {
     const botUser = (await api.get(Routes.user())) as APIUser;
     log(`${botUser.username}#${botUser.discriminator} (${botUser.id})`);
+    const info: RESTPostAPIChatInputApplicationCommandsJSONBody[] = commands.map(command => command.info)
     const created = await api.put(
         guild === undefined || guild === "user-install"
             ? Routes.applicationCommands(botUser.id)
             : Routes.applicationGuildCommands(botUser.id, guild),
-        { body: commands },
+        { body: info },
     );
     log(JSON.stringify(created, null, 2));
 }

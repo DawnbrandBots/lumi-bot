@@ -1,10 +1,18 @@
-import { SlashCommandBuilder, ApplicationIntegrationType, InteractionContextType } from "discord.js";
+import { Colors, EmbedBuilder } from "discord.js";
+import { helpCommandInfo } from "../commandInfo/help.js";
+import { Command, ICommand } from "./base.ts";
 
-const helpCommand = new SlashCommandBuilder()
-    .setIntegrationTypes(ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall)
-    .setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
-    .setName("help")
-    .setDescription("Lorem ipsum dolor sit amet")
-    .toJSON()
-
-export default helpCommand
+export const helpCommand: ICommand = new Command({
+    info: helpCommandInfo,
+    run: function (interaction) {
+        return interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(Colors.DarkGold)
+                    .setTitle("Lumi")
+                    .setDescription("Umbra serves the shadow")
+                    .setFooter({ text: "Fire Emblem" }),
+            ],
+        });
+    }
+})
