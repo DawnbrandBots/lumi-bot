@@ -70,5 +70,41 @@
     {
         "id": "SIEGMUND",
         "description": "Deal 50% more weapon damage against monsters."
+    },
+    {
+        "id": "RIDER_BANE_1",
+        "description": "Deals 30% more weapon damage against Cavalry foes."
+    },
+    {
+        "id": "RIDER_BANE_2",
+        "description": "Deals 40% more weapon damage against Cavalry foes."
+    },
+    {
+        "id": "RIDER_BANE_3",
+        "description": "Deals 50% more weapon damage against Cavalry foes."
+    },
+    {
+        "id": "FLIER_BANE_1",
+        "description": "Deals 30% more weapon damage against Flying foes."
+    },
+    {
+        "id": "FLIER_BANE_2",
+        "description": "Deals 40% more weapon damage against Flying foes."
+    },
+    {
+        "id": "FLIER_BANE_3",
+        "description": "Deals 50% more weapon damage against Flying foes."
+    },
+    {
+        "id": "ARMOR_BANE_1",
+        "description": "Deals 30% more weapon damage against Armored foes."
+    },
+    {
+        "id": "ARMOR_BANE_2",
+        "description": "Deals 40% more weapon damage against Armored foes."
+    },
+    {
+        "id": "ARMOR_BANE_3",
+        "description": "Deals 50% more weapon damage against Armored foes."
     }
 ]
