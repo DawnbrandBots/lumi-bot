@@ -16,6 +16,10 @@
         "name": "Received Spell Damage"
     },
     {
+        "id": "MOVEMENT",
+        "name": "Movement"
+    },
+    {
         "id": "COLOR_AFFINITY",
         "name": "Color Affinity"
     }
