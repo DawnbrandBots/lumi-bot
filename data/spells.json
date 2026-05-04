@@ -200,7 +200,7 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 45,
                         "unit": {
@@ -836,11 +836,12 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 30,
                         "unit": {
-                            "kind": "FIXED"
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
                         }
                     },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
@@ -1498,7 +1499,7 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 30,
                         "unit": {
@@ -1612,7 +1613,7 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 30,
                         "unit": {
@@ -1684,7 +1685,7 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 25,
                         "unit": {
@@ -2282,7 +2283,11 @@
                     "statChange": "INCREASE",
                     "amount": {
                         "scale": null,
-                        "base": 40
+                        "base": 0.16666666666666667,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "COLOR_AFFINITY"
+                        }
                     },
                     "stat": "COLOR_AFFINITY"
                 }
@@ -2348,7 +2353,7 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 30,
                         "unit": {
@@ -2374,7 +2379,7 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 20,
                         "unit": {
@@ -2600,15 +2605,16 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 10,
+                        "scale": null,
                         "unit": {
                             "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                            "stat": "HP"
                         }
                     },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
+                    "stat": "HP"
                 }
             },
             {
@@ -2636,7 +2642,7 @@
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "statChange": "INCREASE",
+                    "statChange": "DECREASE",
                     "amount": {
                         "base": 20,
                         "unit": {
