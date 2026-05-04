@@ -11,10 +11,12 @@
             {
                 "kind": "DAMAGE",
                 "amount": {
-                    "scale": 0,
-                    "base": 50
+                    "base": 50,
+                    "scale": null,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
                 },
-                "unit": "FIXED",
                 "color": "RED"
             }
         ]
@@ -31,10 +33,12 @@
             {
                 "kind": "HEAL",
                 "amount": {
-                    "scale": 0,
-                    "base": 50
-                },
-                "unit": "FIXED"
+                    "base": 50,
+                    "scale": null,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ]
     },
@@ -66,10 +70,12 @@
             {
                 "kind": "DAMAGE",
                 "amount": {
-                    "scale": 0,
-                    "base": 70
+                    "base": 70,
+                    "scale": null,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
                 },
-                "unit": "FIXED",
                 "color": "COLORLESS"
             }
         ]
@@ -88,11 +94,11 @@
                 "movementType": "FLYING",
                 "weaponType": "SWORD",
                 "hp": {
-                    "scale": 0,
+                    "scale": null,
                     "base": 80
                 },
                 "atk": {
-                    "scale": 0,
+                    "scale": null,
                     "base": 50
                 }
             }
@@ -109,8 +115,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 40,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             }
         ]
@@ -126,8 +136,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 60,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 60,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             }
         ]
@@ -143,8 +157,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 50,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ]
     },
@@ -159,8 +177,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 70,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 70,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "COLORLESS"
             }
         ]
@@ -175,11 +197,18 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 45,
-                "unit": "FIXED",
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 45,
+                        "unit": {
+                            "kind": "FIXED"
+                        }
+                    },
+                    "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -195,10 +224,17 @@
             {
                 "kind": "DAMAGE",
                 "amount": {
-                    "NORMAL": 40,
-                    "RANGED": 70
+                    "base": 40,
+                    "effectiveness": [
+                        {
+                            "kind": "RANGED",
+                            "base": 70
+                        }
+                    ],
+                    "unit": {
+                        "kind": "FIXED"
+                    }
                 },
-                "unit": "FIXED",
                 "color": "BLUE"
             }
         ]
@@ -214,8 +250,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 40,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ]
     },
@@ -232,8 +272,12 @@
                 "kind": "SUMMON",
                 "movementType": "ARMORED",
                 "weaponType": "LANCE",
-                "hp": 140,
-                "atk": 50
+                "hp": {
+                    "base": 140
+                },
+                "atk": {
+                    "base": 50
+                }
             }
         ]
     },
@@ -247,11 +291,18 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 60,
-                "unit": "FIXED",
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 60,
+                        "unit": {
+                            "kind": "FIXED"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             }
         ]
     },
@@ -271,10 +322,17 @@
                     "effect": {
                         "kind": "DAMAGE",
                         "amount": {
-                            "NORMAL": 20,
-                            "RANGED": 40
+                            "base": 20,
+                            "unit": {
+                                "kind": "FIXED"
+                            },
+                            "effectiveness": [
+                                {
+                                    "kind": "FLYING",
+                                    "base": 40
+                                }
+                            ]
                         },
-                        "unit": "FIXED",
                         "color": "GREEN"
                     },
                     "times": 2,
@@ -294,8 +352,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 30,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 30,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             },
             {
                 "kind": "MOVEMENT",
@@ -315,8 +377,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 120,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 120,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ]
     },
@@ -331,8 +397,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 70,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 70,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             }
         ]
@@ -348,8 +418,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 60,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 60,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             }
         ]
@@ -365,8 +439,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 40,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "target": "SELF"
             },
             {
@@ -388,8 +466,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 80,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 80,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "COLORLESS"
             }
         ]
@@ -405,8 +487,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 30,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 30,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             },
             {
@@ -424,14 +510,19 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "BUFF",
-                "change": "DECREASE",
-                "amount": 35,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
-                },
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "DECREASE",
+                    "amount": {
+                        "base": 35,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             }
         ]
     },
@@ -450,8 +541,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 30,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 30,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "COLORLESS"
                     },
                     "times": 5,
@@ -472,12 +567,12 @@
             {
                 "kind": "DAMAGE",
                 "amount": {
+                    "base": 170,
                     "scale": 5,
-                    "base": 170
-                },
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
+                    "unit": {
+                        "kind": "PERCENT",
+                        "stat": "ATK"
+                    }
                 },
                 "color": "COLORLESS"
             }
@@ -494,8 +589,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 60,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 60,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ]
     },
@@ -510,8 +609,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             }
         ]
@@ -527,8 +630,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 80,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 80,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "target": "SELF"
             }
         ]
@@ -546,8 +653,12 @@
                 "kind": "SUMMON",
                 "movementType": "FLYING",
                 "weaponType": "SWORD",
-                "hp": 100,
-                "atk": 60
+                "hp": {
+                    "base": 100
+                },
+                "atk": {
+                    "base": 60
+                }
             }
         ]
     },
@@ -562,8 +673,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 50,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             },
             {
                 "kind": "WARP"
@@ -585,8 +700,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 40,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 40,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "BLUE"
                     },
                     "times": 2,
@@ -605,14 +724,19 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 50,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
-                },
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 50,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             }
         ]
     },
@@ -631,8 +755,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "HEAL",
-                        "amount": 40,
-                        "unit": "FIXED"
+                        "amount": {
+                            "base": 40,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        }
                     },
                     "times": 5,
                     "interval": 6
@@ -655,8 +783,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 40,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 40,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "BLUE"
                     },
                     "times": 2,
@@ -682,8 +814,12 @@
                 "kind": "SUMMON",
                 "movementType": "FLYING",
                 "weaponType": "STAFF",
-                "hp": 50,
-                "atk": 40
+                "hp": {
+                    "base": 50
+                },
+                "atk": {
+                    "base": 40
+                }
             }
         ]
     },
@@ -697,11 +833,18 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 30,
-                "unit": "FIXED",
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 30,
+                        "unit": {
+                            "kind": "FIXED"
+                        }
+                    },
+                    "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -716,8 +859,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 70,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 70,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             }
         ]
@@ -733,8 +880,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -750,8 +901,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -767,8 +922,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 70,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 70,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ]
     },
@@ -783,8 +942,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 75,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 75,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -800,8 +963,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 70,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 70,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -817,8 +984,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 60,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 60,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -834,8 +1005,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             },
             {
@@ -858,8 +1033,12 @@
                 "kind": "SUMMON",
                 "movementType": "CAVALRY",
                 "weaponType": "BOW",
-                "hp": 100,
-                "atk": 60
+                "hp": {
+                    "base": 100
+                },
+                "atk": {
+                    "base": 60
+                }
             }
         ]
     },
@@ -873,14 +1052,19 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 20,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 20,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "HP"
+                        }
+                    },
                     "stat": "HP"
-                },
-                "stat": "HP"
+                }
             }
         ]
     },
@@ -895,8 +1079,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -912,8 +1100,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 50,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             },
             {
                 "kind": "MOVEMENT",
@@ -933,8 +1125,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 60,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 60,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "COLORLESS"
             }
         ]
@@ -950,8 +1146,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 40,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             }
         ]
@@ -971,8 +1171,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 45,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 45,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "BLUE"
                     },
                     "times": 2,
@@ -992,8 +1196,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 40,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             }
         ]
@@ -1008,14 +1216,19 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "BUFF",
-                "change": "DECREASE",
-                "amount": 80,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 80,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -1035,10 +1248,20 @@
                     "effect": {
                         "kind": "DAMAGE",
                         "amount": {
-                            "NORMAL": 25,
-                            "FLYING": 40
+                            "base": 25,
+                            "unit": {
+                                "kind": "FIXED"
+                            },
+                            "effectiveness": [
+                                {
+                                    "kind": "FLYING",
+                                    "base": 40
+                                }
+                            ]
                         },
-                        "unit": "FIXED",
+                        "unit": {
+                            "kind": "FIXED"
+                        },
                         "color": "GREEN"
                     },
                     "times": 2,
@@ -1060,8 +1283,12 @@
                 "kind": "SUMMON",
                 "movementType": "INFANTRY",
                 "weaponType": "BOW",
-                "hp": 50,
-                "atk": 50
+                "hp": {
+                    "base": 50
+                },
+                "atk": {
+                    "base": 50
+                }
             }
         ]
     },
@@ -1075,14 +1302,19 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "BUFF",
-                "change": "DECREASE",
-                "amount": 100,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 100,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -1101,8 +1333,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 30,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 30,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "COLORLESS"
                     },
                     "times": 5,
@@ -1122,8 +1358,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 40,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -1139,8 +1379,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             },
             {
@@ -1161,8 +1405,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 40,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -1178,8 +1426,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 90,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 90,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ]
     },
@@ -1194,8 +1446,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 70,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 70,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             }
         ]
@@ -1215,8 +1471,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 40,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 40,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "RED"
                     },
                     "times": 2,
@@ -1235,14 +1495,19 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 30,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 30,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             },
             {
                 "kind": "MOVEMENT",
@@ -1262,8 +1527,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 70,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 70,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             }
         ]
@@ -1279,19 +1548,28 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 40,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             },
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 25,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
-                },
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "DECREASE",
+                    "amount": {
+                        "base": 25,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             }
         ]
     },
@@ -1306,8 +1584,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             },
             {
@@ -1327,14 +1609,19 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 30,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 30,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -1353,8 +1640,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 25,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 25,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "COLORLESS"
                     },
                     "times": 5,
@@ -1378,22 +1669,31 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "HEAL",
-                        "amount": 35,
-                        "unit": "FIXED"
+                        "amount": {
+                            "base": 35,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        }
                     },
                     "times": 5,
                     "interval": 6
                 }
             },
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 25,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 25,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -1413,10 +1713,20 @@
                     "effect": {
                         "kind": "DAMAGE",
                         "amount": {
-                            "NORMAL": 20,
-                            "CAVALRY": 40
+                            "base": 20,
+                            "unit": {
+                                "kind": "FIXED"
+                            },
+                            "effectiveness": [
+                                {
+                                    "kind": "CAVALRY",
+                                    "base": 40
+                                }
+                            ]
                         },
-                        "unit": "FIXED",
+                        "unit": {
+                            "kind": "FIXED"
+                        },
                         "color": "BLUE"
                     },
                     "times": 2,
@@ -1436,8 +1746,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 30,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 30,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             },
             {
                 "kind": "MOVEMENT",
@@ -1457,8 +1771,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 90,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 90,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             }
         ]
@@ -1474,19 +1792,28 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 60,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 60,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             },
             {
-                "kind": "BUFF",
-                "change": "DECREASE",
-                "amount": 50,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 50,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -1501,8 +1828,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             },
             {
@@ -1526,14 +1857,19 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 50,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
-                },
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 50,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             },
             {
                 "kind": "MOVEMENT",
@@ -1552,14 +1888,19 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "BUFF",
-                "change": "DECREASE",
-                "amount": 50,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "DECREASE",
+                    "amount": {
+                        "base": 50,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "HP"
+                        }
+                    },
                     "stat": "HP"
-                },
-                "stat": "HP"
+                }
             }
         ]
     },
@@ -1573,27 +1914,40 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 30,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
-                },
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 30,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             },
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": {
-                    "NORMAL": 0,
-                    "INFANTRY": {
-                        "scale": 0,
-                        "base": 1
-                    }
-                },
-                "unit": "FIXED",
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 0,
+                        "scale": null,
+                        "effectiveness": [
+                            {
+                                "kind": "INFANTRY",
+                                "base": 1
+                            }
+                        ],
+                        "unit": {
+                            "kind": "FIXED"
+                        }
+                    },
+                    "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -1610,8 +1964,12 @@
                 "kind": "SUMMON",
                 "movementType": "INFANTRY",
                 "weaponType": "AXE",
-                "hp": 75,
-                "atk": 60
+                "hp": {
+                    "base": 75
+                },
+                "atk": {
+                    "base": 60
+                }
             }
         ],
         "onlyFor": {
@@ -1634,8 +1992,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 40,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 40,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "GREEN"
                     },
                     "times": 2,
@@ -1655,8 +2017,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 90,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 90,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             }
         ]
@@ -1672,19 +2038,22 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             },
             {
                 "kind": "HEAL",
                 "amount": {
-                    "scale": 2,
-                    "base": 30
-                },
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
+                    "base": 30,
+                    "unit": {
+                        "kind": "PERCENT",
+                        "stat": "ATK"
+                    }
                 },
                 "target": "SELF"
             }
@@ -1700,14 +2069,19 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "BUFF",
-                "change": "DECREASE",
-                "amount": 55,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 55,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             },
             {
                 "kind": "MOVEMENT",
@@ -1727,8 +2101,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             },
             {
@@ -1749,8 +2127,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 75,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 75,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             }
         ]
@@ -1766,8 +2148,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 30,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 30,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             },
             {
@@ -1785,19 +2171,28 @@
         "cooldown": 4,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 10,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 10,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "HP"
+                        }
+                    },
                     "stat": "HP"
-                },
-                "stat": "HP"
+                }
             },
             {
                 "kind": "HEAL",
-                "amount": 10,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 10,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             },
             {
                 "kind": "MOVEMENT",
@@ -1821,8 +2216,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             },
             {
@@ -1841,14 +2240,19 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 40,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
-                },
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 40,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             }
         ]
     },
@@ -1863,17 +2267,21 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             },
             {
                 "kind": "STATUS",
                 "effect": {
                     "kind": "STAT",
-                    "change": "INCREASE",
+                    "statChange": "INCREASE",
                     "amount": {
-                        "scale": 0,
+                        "scale": null,
                         "base": 40
                     },
                     "stat": "COLOR_AFFINITY"
@@ -1892,8 +2300,12 @@
         "effects": [
             {
                 "kind": "HEAL",
-                "amount": 50,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ],
         "onlyFor": {
@@ -1914,8 +2326,12 @@
                 "kind": "SUMMON",
                 "movementType": "ARMORED",
                 "weaponType": "AXE",
-                "hp": 70,
-                "atk": 35
+                "hp": {
+                    "base": 70
+                },
+                "atk": {
+                    "base": 35
+                }
             }
         ]
     },
@@ -1929,14 +2345,19 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 30,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 30,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -1950,14 +2371,19 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 20,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 20,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_SPELL_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_SPELL_DAMAGE"
-                },
-                "stat": "RECEIVED_SPELL_DAMAGE"
+                }
             }
         ]
     },
@@ -1976,8 +2402,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "HEAL",
-                        "amount": 25,
-                        "unit": "FIXED"
+                        "amount": {
+                            "base": 25,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        }
                     },
                     "times": 5,
                     "interval": 3
@@ -1996,8 +2426,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             },
             {
@@ -2020,8 +2454,12 @@
                 "kind": "SUMMON",
                 "movementType": "INFANTRY",
                 "weaponType": "STAFF",
-                "hp": 100,
-                "atk": 70
+                "hp": {
+                    "base": 100
+                },
+                "atk": {
+                    "base": 70
+                }
             }
         ]
     },
@@ -2036,19 +2474,28 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 60,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 60,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             },
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 30,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
-                },
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 30,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             }
         ]
     },
@@ -2064,10 +2511,17 @@
             {
                 "kind": "DAMAGE",
                 "amount": {
-                    "NORMAL": 30,
-                    "MINION": 90
+                    "base": 30,
+                    "effectiveness": [
+                        {
+                            "kind": "MINION",
+                            "base": 90
+                        }
+                    ],
+                    "unit": {
+                        "kind": "FIXED"
+                    }
                 },
-                "unit": "FIXED",
                 "color": "BLUE"
             }
         ]
@@ -2083,19 +2537,28 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             },
             {
-                "kind": "BUFF",
-                "change": "DECREASE",
-                "amount": 40,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 40,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ],
         "onlyFor": {
@@ -2114,8 +2577,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 30,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 30,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "BLUE"
             }
         ]
@@ -2130,19 +2597,28 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 10,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 10,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             },
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             }
         ]
@@ -2157,14 +2633,19 @@
         "cooldown": 5,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 20,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 20,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_SPELL_DAMAGE"
+                        }
+                    },
                     "stat": "RECEIVED_SPELL_DAMAGE"
-                },
-                "stat": "RECEIVED_SPELL_DAMAGE"
+                }
             }
         ]
     },
@@ -2181,8 +2662,12 @@
                 "kind": "SUMMON",
                 "movementType": "INFANTRY",
                 "weaponType": "SWORD",
-                "hp": 75,
-                "atk": 60
+                "hp": {
+                    "base": 75
+                },
+                "atk": {
+                    "base": 60
+                }
             }
         ],
         "onlyFor": {
@@ -2201,8 +2686,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 65,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 65,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "RED"
             }
         ]
@@ -2218,8 +2707,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 60,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 60,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             },
             {
@@ -2240,11 +2733,19 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "BUFF",
-                "change": "DECREASE",
-                "amount": 30,
-                "unit": "% of weapon damage",
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "DECREASE",
+                    "amount": {
+                        "base": 30,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
             }
         ]
     },
@@ -2263,8 +2764,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 25,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 25,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "COLORLESS"
                     },
                     "times": 5,
@@ -2284,8 +2789,12 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 30,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 30,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             },
             {
@@ -2304,16 +2813,22 @@
         "effects": [
             {
                 "kind": "DAMAGE",
-                "amount": 40,
-                "unit": "FIXED",
+                "amount": {
+                    "base": 40,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
                 "color": "GREEN"
             },
             {
                 "kind": "DAMAGE",
-                "amount": 50,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
+                "amount": {
+                    "base": 50,
+                    "unit": {
+                        "kind": "PERCENT",
+                        "stat": "ATK"
+                    }
                 },
                 "color": "GREEN"
             }
@@ -2335,10 +2850,17 @@
                     "effect": {
                         "kind": "DAMAGE",
                         "amount": {
-                            "NORMAL": 20,
-                            "CAVALRY": 40
+                            "base": 20,
+                            "effectiveness": [
+                                {
+                                    "kind": "CAVALRY",
+                                    "base": 40
+                                }
+                            ],
+                            "unit": {
+                                "kind": "FIXED"
+                            }
                         },
-                        "unit": "FIXED",
                         "color": "GREEN"
                     },
                     "times": 2,
@@ -2357,14 +2879,19 @@
         "cooldown": 1,
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 50,
-                "unit": {
-                    "kind": "PERCENT",
-                    "stat": "ATTACK"
-                },
-                "stat": "ATTACK"
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 50,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
             }
         ]
     },
@@ -2381,8 +2908,12 @@
                 "kind": "SUMMON",
                 "movementType": "ARMORED",
                 "weaponType": "AXE",
-                "hp": 180,
-                "atk": 50
+                "hp": {
+                    "base": 180
+                },
+                "atk": {
+                    "base": 50
+                }
             }
         ],
         "onlyFor": {
@@ -2401,19 +2932,28 @@
         "target": "DUAL",
         "effects": [
             {
-                "kind": "STAT",
-                "change": "INCREASE",
-                "amount": 10,
-                "unit": {
-                    "kind": "PERCENT",
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 10,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "HP"
+                        }
+                    },
                     "stat": "HP"
-                },
-                "stat": "HP"
+                }
             },
             {
                 "kind": "HEAL",
-                "amount": 10,
-                "unit": "FIXED"
+                "amount": {
+                    "base": 10,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                }
             }
         ]
     },
@@ -2432,8 +2972,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "HEAL",
-                        "amount": 30,
-                        "unit": "FIXED"
+                        "amount": {
+                            "base": 30,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        }
                     },
                     "times": 5,
                     "interval": 6
@@ -2456,8 +3000,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "HEAL",
-                        "amount": 20,
-                        "unit": "FIXED"
+                        "amount": {
+                            "base": 20,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        }
                     },
                     "times": 5,
                     "interval": 6
@@ -2480,8 +3028,12 @@
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
-                        "amount": 40,
-                        "unit": "FIXED",
+                        "amount": {
+                            "base": 40,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
                         "color": "COLORLESS"
                     },
                     "times": 5,
