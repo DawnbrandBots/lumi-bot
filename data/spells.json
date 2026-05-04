@@ -3045,5 +3045,141 @@
             "kind": "movementType",
             "which": "CAVALRY"
         }
+    },
+    {
+        "id": "TRINITY_SHIELD_EDGE_EX",
+        "name": "Trinity Shield Edge EX",
+        "disciple": "ROBIN",
+        "role": "EX",
+        "shape": "3X3_CROSS",
+        "uses": 1,
+        "cooldown": 1,
+        "effects": [
+            {
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "DECREASE",
+                    "amount": {
+                        "base": 20,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "RECEIVED_WEAPON_DAMAGE"
+                        }
+                    },
+                    "stat": "RECEIVED_WEAPON_DAMAGE"
+                }
+            },
+            {
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "INCREASE",
+                    "amount": {
+                        "base": 30,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "ATK"
+                        }
+                    },
+                    "stat": "ATK"
+                }
+            },
+            {
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "STAT",
+                    "statChange": "DECREASE",
+                    "amount": {
+                        "base": 16.666666666666666,
+                        "unit": {
+                            "kind": "PERCENT",
+                            "stat": "COLOR_AFFINITY"
+                        },
+                        "scale": null
+                    },
+                    "stat": "COLOR_AFFINITY"
+                }
+            }
+        ]
+    },
+    {
+        "id": "DARK_CROSSFIRE_PLUS_TOME",
+        "name": "Dark Crossfire + Tome",
+        "disciple": "ROBIN",
+        "role": "SHADOW",
+        "shape": "3X3_CROSS",
+        "uses": null,
+        "cooldown": 4,
+        "effects": [
+            {
+                "kind": "STATUS",
+                "effect": {
+                    "kind": "REPEAT",
+                    "effect": {
+                        "kind": "DAMAGE",
+                        "amount": {
+                            "base": 40,
+                            "unit": {
+                                "kind": "FIXED"
+                            }
+                        },
+                        "color": "RED"
+                    },
+                    "times": 2,
+                    "interval": 6
+                }
+            }
+        ],
+        "onlyFor": {
+            "kind": "weaponType",
+            "which": "TOME"
+        }
+    },
+    {
+        "id": "ENNEA_FIRE_PLUS_TOME",
+        "name": "Ennea Fire + Tome",
+        "disciple": "ROBIN",
+        "role": "LIGHT",
+        "shape": "3X3_SQUARE",
+        "uses": null,
+        "cooldown": 4,
+        "effects": [
+            {
+                "kind": "DAMAGE",
+                "amount": {
+                    "base": 30,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
+                "color": "RED"
+            }
+        ],
+        "onlyFor": {
+            "kind": "weaponType",
+            "which": "TOME"
+        }
+    },
+    {
+        "id": "FINAL_DARK_TETRAFIRE",
+        "name": "Final Dark Tetrafire",
+        "disciple": "ROBIN",
+        "role": "SHADOW",
+        "shape": "2X2_SQUARE",
+        "uses": 1,
+        "cooldown": 5,
+        "effects": [
+            {
+                "kind": "DAMAGE",
+                "amount": {
+                    "base": 110,
+                    "unit": {
+                        "kind": "FIXED"
+                    }
+                },
+                "color": "RED"
+            }
+        ]
     }
 ]
