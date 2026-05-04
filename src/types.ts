@@ -57,6 +57,7 @@ export interface IDisciple {
     readonly movementType: IMovementType;
     readonly weaponType: IWeaponType;
     readonly prfWeapon: IWeapon;
+    readonly spells: Iterable<ISpell>;
 
     readonly baseAtk: number;
     readonly baseHp: number;
@@ -78,23 +79,63 @@ export interface ISpell {
 export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "COLOR_AFFINITY";
 export type TDirection = "UP" | "DOWN";
 export type TStatChange = "INCREASE" | "DECREASE"
+export type TSpellValueUnitKind = "FIXED" | "PERCENT"
 
 export type TStatDTO = TStat
 export type TDirectionDTO = TDirection
 export type TStatChangeDTO = TStatChange
+export type TSpellValueUnitKindDTO = TSpellValueUnitKind
 
-export type TScaleAndBaseSpellValue = { readonly scale: number; readonly base: number };
+export interface ISpellValueUnit {
+    readonly kind: TSpellValueUnitKind;
+    readonly format: ({ base }: { base: number }) => string;
+}
 
-export interface ISpellValueDTO {
-    readonly unit: { readonly kind: "FIXED" } | { readonly kind: "PERCENT", readonly stat: TStatDTO }
-    readonly normal: TScaleAndBaseSpellValue;
-    readonly effectiveness: Record<string, TScaleAndBaseSpellValue>
-};
+export interface ISpellValueUnitDTO {
+    readonly kind: TSpellValueUnitKindDTO;
+}
+
+export interface ISpellValueFixedUnit extends ISpellValueUnit {
+    readonly kind: "FIXED";
+}
+
+export interface ISpellValueFixedUnitDTO extends ISpellValueUnitDTO {
+    readonly kind: "FIXED";
+}
+
+export interface ISpellValuePercentUnit extends ISpellValueUnit {
+    readonly kind: "PERCENT";
+    readonly stat: IStat;
+}
+
+export interface ISpellValuePercentUnitDTO extends ISpellValueUnitDTO {
+    readonly kind: "PERCENT";
+    readonly stat: TStatDTO;
+}
+
+// TODO: non-DTO TSpellValueEffectivenessItem must refer to some selector (eg. range = 2, movementType = CAVALRY, etc...)
+export interface ISpellValueEffectivenessItem {
+    readonly kind: string;
+    readonly base: number;
+}
+
+export type TSpellValueUnitDTO = ISpellValueFixedUnitDTO | ISpellValuePercentUnitDTO
+export interface ISpellValueEffectivenessItemDTO {
+    readonly kind: string;
+    readonly base: number;
+}
 
 export interface ISpellValue {
-    readonly unit: { readonly kind: "FIXED" } | { readonly kind: "PERCENT", readonly stat: IStat }
-    readonly normal: TScaleAndBaseSpellValue;
-    readonly effectiveness: Record<string, TScaleAndBaseSpellValue>
+    readonly base: number;
+    readonly unit: ISpellValueUnit
+    // TODO: null on top of ?: is annoying
+    readonly effectiveness?: ISpellValueEffectivenessItem[] | null
+};
+
+export interface ISpellValueDTO {
+    readonly base: number;
+    readonly unit: TSpellValueUnitDTO
+    readonly effectiveness?: ISpellValueEffectivenessItemDTO[]
 };
 
 export interface IStat {
@@ -227,16 +268,17 @@ export interface ISummonEffectDTO extends ISpellEffectDTO {
     readonly kind: "SUMMON";
     readonly movementType: TId;
     readonly weaponType: TId;
-    readonly hp: number;
-    readonly atk: number;
+    readonly hp: { base: number, scale?: number | null };
+    readonly atk: { base: number, scale?: number | null };
 }
 
 export interface ISummonEffect extends ISpellEffect {
     readonly kind: "SUMMON";
     readonly movementType: IMovementType;
     readonly weaponType: IWeaponType;
-    readonly hp: number;
-    readonly atk: number;
+    // TODO: a proper type will be needed to compute value at various levels
+    readonly hp: { base: number, scale?: number | null };
+    readonly atk: { base: number, scale?: number | null };
 }
 
 export type TSpellEffectDTO = IDamageEffectDTO

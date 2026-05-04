@@ -11,8 +11,9 @@ import { MikroORM } from "@mikro-orm/sqlite";
 
 
 import mikroOrmConfig from './mikro-orm.config.ts';
-import { Disciple, Weapon, WeaponSkill } from "./models.js";
+import { Color, Direction, Disciple, MovementType, Spell, Stat, StatChange, Weapon, WeaponSkill, WeaponType } from "./models.js";
 import discipleSearchHandler from "./searchHandlers/disciple.ts";
+import spellSearchHandler from "./searchHandlers/spell.ts";
 import weaponSearchHandler from "./searchHandlers/weapon.ts";
 import weaponSkillSearchHandler from "./searchHandlers/weaponSkill.ts";
 
@@ -23,8 +24,16 @@ const em = orm.em.fork()
 const weapons = await em.findAll(Weapon)
 const disciples = await em.findAll(Disciple)
 const weaponSkills = await em.findAll(WeaponSkill)
+const spells = await em.findAll(Spell)
 
-const fuseItems = [...weapons, ...disciples, ...weaponSkills]
+await em.findAll(Color)
+await em.findAll(Stat)
+await em.findAll(StatChange)
+await em.findAll(Direction)
+await em.findAll(WeaponType)
+await em.findAll(MovementType)
+
+const fuseItems = [...weapons, ...disciples, ...weaponSkills, ...spells]
 const fuse = createFuse({ items: fuseItems })
 
 const log = debug("bot");
@@ -40,6 +49,7 @@ const handlers = {
     "disciple": discipleSearchHandler,
     "weapon": weaponSearchHandler,
     "weaponSkill": weaponSkillSearchHandler,
+    "spell": spellSearchHandler
 } as const
 
 const commands: Record<string, ICommand> = {
