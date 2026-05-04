@@ -6,6 +6,7 @@ const discipleSearchHandler = {
     class: Disciple,
     response: (disciple: Disciple) => {
         // TODO: adding at least a thumbnail with the character's face would be nice
+        // TODO: mention prf weapon
         const columnCountAsideFromHeaderAndLevel1 = DISCIPLE_MAX_LEVEL - DISCIPLE_MINIMUM_RELEVANT_LEVEL + 1
         const baseStatsTable = [
             ["Level", 1, ...Array.from({ length: columnCountAsideFromHeaderAndLevel1 }, (_, i) => i + DISCIPLE_MINIMUM_RELEVANT_LEVEL)],
