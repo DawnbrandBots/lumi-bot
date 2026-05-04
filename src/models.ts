@@ -388,7 +388,7 @@ export class HealEffect extends HealEffectSchema.class implements IHealEffect {
         const targetStr = this.target ? ` to ${this.target.asString}` : ""
         let str = `Restores ${this.amount.unit.format({ base: this.amount.base })} HP${targetStr}`
         if (this.amount.effectiveness?.length) {
-            const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} for ${kind} units.`).join(", ")})`
+            const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} for ${kind} units`).join(", ")})`
             str += " " + effectivenessString
         }
         str += "."
@@ -437,7 +437,16 @@ export class StatEffect extends StatEffectSchema.class implements IStatEffect {
     public get description() {
         // TODO: feels like call to format could be simplified...
         // TODO: string should be simplified when unit stat is same as target stat...
-        return `${this.statChange.verb} ${this.stat.name} by ${this.amount.unit.format({ base: this.amount.base })}.`
+        // TODO: COLOR_AFFINITY_BOOST's base values are unusual compared to other stats and do not render nicely (eg. 16.66666666...),
+        // consider formatting otherwise or changing how values are expressed
+        let str = `${this.statChange.verb} ${this.stat.name} by ${this.amount.unit.format({ base: this.amount.base })}`
+        // TODO: this pattern is also repeated in damageeffect, healeffect
+        if (this.amount.effectiveness?.length) {
+            const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} for ${kind} units`).join(", ")})`
+            str += " " + effectivenessString
+        }
+        str += "."
+        return str
     }
 }
 StatEffectSchema.setClass(StatEffect);
