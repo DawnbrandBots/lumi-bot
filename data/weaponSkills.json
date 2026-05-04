@@ -85,6 +85,11 @@
         "effect": "WILY_STAFF"
     },
     {
+        "id": "DRAGON_S_ROAR",
+        "name": "Dragon's Roar",
+        "effect": "SOUND_STONE"
+    },
+    {
         "id": "PANTHER_S_PROTECTION",
         "name": "Panther's Protection",
         "effect": "PANTHER_STAFF"
