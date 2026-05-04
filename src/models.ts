@@ -316,7 +316,7 @@ export class MovementEffect implements IMovementEffect {
     }
 
     public get description() {
-        return `Swaps position of target and units ${this.count} tiles ${this.direction.noun}.`
+        return `Swaps position of target and units ${this.count} tile${this.count > 1 ? "s" : ""} ${this.direction.noun}.`
     }
 }
 
