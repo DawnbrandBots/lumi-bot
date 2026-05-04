@@ -182,14 +182,14 @@ export interface IStatusEffect extends ISpellEffect {
 }
 
 export interface IRepeatEffectDTO extends ISpellEffectDTO {
-    readonly kind: "DOT";
+    readonly kind: "REPEAT";
     readonly effect: IDamageEffectDTO | IHealEffectDTO;
     readonly times: number;
     readonly interval: number;
 }
 
 export interface IRepeatEffect extends ISpellEffect {
-    readonly kind: "DOT";
+    readonly kind: "REPEAT";
     readonly effect: IDamageEffect | IHealEffect;
     readonly times: number;
     readonly interval: number;
