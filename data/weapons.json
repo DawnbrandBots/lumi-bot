@@ -160,6 +160,16 @@
     "uniqueSkill": "BAT_S_GLOOM"
   },
   {
+    "id": "TACTICS_TOME_PLUS",
+    "name": "Tactitcs Tome +",
+    "weaponType": "TOME",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "DRAGON_S_ROAR"
+  },
+  {
     "id": "TREACHERY_TOME_PLUS",
     "name": "Treachery Tome +",
     "weaponType": "TOME",
@@ -438,6 +448,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "BAT_S_GLOOM"
+  },
+  {
+    "id": "TACTICS_TOME",
+    "name": "Tactitcs Tome",
+    "weaponType": "TOME",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "DRAGON_S_ROAR"
   },
   {
     "id": "TREACHERY_TOME",
