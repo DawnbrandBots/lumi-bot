@@ -153,12 +153,22 @@ export interface IStatChange {
     readonly verb: string;
 }
 
+export type TSpellEffectTargetDTO = "ANY" | "SELF" | "DUAL";
+export type TSpellEffectTarget = TSpellEffectTargetDTO;
+
+export interface ISpellEffectTarget {
+    readonly kind: TSpellEffectTarget;
+    readonly asString: string;
+}
+
 export interface ISpellEffectDTO {
     readonly kind: string;
+    readonly target?: TSpellEffectTargetDTO;
 }
 
 export interface ISpellEffect {
     readonly kind: string;
+    readonly target: ISpellEffectTarget;
     readonly description: string;
 }
 
