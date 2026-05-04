@@ -2038,7 +2038,7 @@
                             "kind": "FIXED"
                         }
                     },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
+                    "stat": "MOVEMENT"
                 },
                 "target": "ANY"
             }
