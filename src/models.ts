@@ -122,6 +122,7 @@ export const DiscipleSchema = defineEntity({
         movementType: () => p.manyToOne(MovementType),
         weaponType: () => p.manyToOne(WeaponType),
         prfWeapon: () => p.oneToOne(Weapon).inversedBy("prfDisciple"),
+        spells: () => p.oneToMany(Spell).mappedBy("disciple")
     },
 })
 
@@ -166,7 +167,7 @@ export const SpellSchema = defineEntity({
     properties: {
         id: p.string().primary(),
         name: p.string(),
-        disciple: () => p.manyToOne(Disciple),
+        disciple: () => p.manyToOne(Disciple).inversedBy("spells").owner(),
         role: p.string(),
         shape: p.string(),
         uses: p.integer().nullable(),
