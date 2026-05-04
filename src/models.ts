@@ -189,7 +189,7 @@ export const SpellEffectSchema = defineEntity({
     properties: {
         kind: p.string(),
         // TODO: it does not make sense for nested effects (STAT, REPEAT and DAMAGE or HEALING when nested) to have a target property
-        target: p.type(SpellEffectTargetType)
+        target: p.type(SpellEffectTargetType).nullable()
     },
 })
 export abstract class SpellEffect extends SpellEffectSchema.class implements ISpellEffect {
@@ -359,7 +359,8 @@ export class DamageEffect extends DamageEffectSchema.class implements IDamageEff
 
     public get description() {
         // TODO: at this point, shouldn't descriptions be handled by search handlers entirely?
-        let str = `Deals ${this.amount.unit.format({ base: this.amount.base })} ${this.color.name} damage to ${this.target.asString}`
+        const targetStr = this.target ? ` to ${this.target.asString}` : ""
+        let str = `Deals ${this.amount.unit.format({ base: this.amount.base })} ${this.color.name} damage${targetStr}`
         if (this.amount.effectiveness?.length) {
             const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} against ${kind} units`).join(", ")})`
             str += " " + effectivenessString
@@ -384,7 +385,8 @@ export const HealEffectSchema = defineEntity({
 export class HealEffect extends HealEffectSchema.class implements IHealEffect {
 
     public get description() {
-        let str = `Restores ${this.amount.unit.format({ base: this.amount.base })} HP to ${this.target.asString}`
+        const targetStr = this.target ? ` to ${this.target.asString}` : ""
+        let str = `Restores ${this.amount.unit.format({ base: this.amount.base })} HP${targetStr}`
         if (this.amount.effectiveness?.length) {
             const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} for ${kind} units.`).join(", ")})`
             str += " " + effectivenessString
@@ -403,7 +405,8 @@ export const MovementEffectSchema = defineEntity({
     properties: {
         kind: p.enum(["MOVEMENT"]),
         direction: () => p.manyToOne(Direction),
-        count: p.integer()
+        count: p.integer(),
+        target: p.type(SpellEffectTargetType)
     },
 })
 
@@ -434,7 +437,7 @@ export class StatEffect extends StatEffectSchema.class implements IStatEffect {
     public get description() {
         // TODO: feels like call to format could be simplified...
         // TODO: string should be simplified when unit stat is same as target stat...
-        return `${this.statChange.verb} ${this.stat.name} of ${this.target.asString} by ${this.amount.unit.format({ base: this.amount.base })}.`
+        return `${this.statChange.verb} ${this.stat.name} by ${this.amount.unit.format({ base: this.amount.base })}.`
     }
 }
 StatEffectSchema.setClass(StatEffect);
@@ -446,7 +449,8 @@ export const StatusEffectSchema = defineEntity({
     discriminatorValue: "STATUS",
     properties: {
         kind: p.enum(["STATUS"]),
-        effect: () => p.embedded([RepeatEffect, StatEffect]).object()
+        effect: () => p.embedded([RepeatEffect, StatEffect]).object(),
+        target: p.type(SpellEffectTargetType)
     },
 })
 
@@ -493,7 +497,7 @@ export const WarpEffectSchema = defineEntity({
 export class WarpEffect extends WarpEffectSchema.class implements IWarpEffect {
 
     public get description() {
-        return `Moves disciple to target tile.`
+        return `Moves user to target tile.`
     }
 }
 WarpEffectSchema.setClass(WarpEffect);

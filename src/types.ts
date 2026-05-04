@@ -163,12 +163,12 @@ export interface ISpellEffectTarget {
 
 export interface ISpellEffectDTO {
     readonly kind: string;
-    readonly target?: TSpellEffectTargetDTO;
+    readonly target?: TSpellEffectTargetDTO | null;
 }
 
 export interface ISpellEffect {
     readonly kind: string;
-    readonly target: ISpellEffectTarget;
+    readonly target?: ISpellEffectTarget | null;
     readonly description: string;
 }
 
@@ -198,12 +198,14 @@ export interface IMovementEffectDTO extends ISpellEffectDTO {
     readonly kind: "MOVEMENT";
     readonly direction: TDirectionDTO;
     readonly count: number;
+    readonly target: TSpellEffectTargetDTO;
 }
 
 export interface IMovementEffect extends ISpellEffect {
     readonly kind: "MOVEMENT";
     readonly direction: IDirection;
     readonly count: number;
+    readonly target: ISpellEffectTarget;
 }
 
 export interface IStatEffectDTO extends ISpellEffectDTO {
@@ -225,11 +227,13 @@ export interface IStatEffect extends ISpellEffect {
 export interface IStatusEffectDTO extends ISpellEffectDTO {
     readonly kind: "STATUS";
     readonly effect: IStatEffectDTO | IRepeatEffectDTO
+    readonly target: TSpellEffectTargetDTO;
 }
 
 export interface IStatusEffect extends ISpellEffect {
     readonly kind: "STATUS";
     readonly effect: IStatEffect | IRepeatEffect
+    readonly target: ISpellEffectTarget;
 }
 
 export interface IRepeatEffectDTO extends ISpellEffectDTO {
