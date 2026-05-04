@@ -1,8 +1,8 @@
 import js from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
+import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import { defineConfig } from "eslint/config";
-import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default defineConfig([
     {
@@ -11,6 +11,25 @@ export default defineConfig([
         extends: ["js/recommended"],
         languageOptions: { globals: globals.node },
     },
-    tseslint.configs.recommended,
+    /**
+     * https://typescript-eslint.io/getting-started/typed-linting/
+     * 
+     * You might also need to update your IDE's settings with options:
+     * 
+     * ```
+     * "eslint.options": {
+     *     "flags": ["unstable_native_nodejs_ts_config"]
+     * },
+     * "eslint.execArgv": ["--experimental-strip-types"],
+     * ```
+     */
+    tseslint.configs.recommendedTypeChecked,
+    {
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+            },
+        },
+    },
     eslintConfigPrettier,
 ]);
