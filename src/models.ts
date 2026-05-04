@@ -1,6 +1,6 @@
-import { defineEntity, p, Platform, Type } from '@mikro-orm/core';
+import { defineEntity, p } from '@mikro-orm/core';
 import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from './constants.ts';
-import type { IColor, IDamageEffect, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellEffect, ISpellValue, IStat, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType } from './types.ts';
+import type { IColor, IDamageEffect, IDirection, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellEffect, ISpellValue, ISpellValueEffectivenessItem, ISpellValueFixedUnit, ISpellValuePercentUnit, ISpellValueUnit, IStat, IStatChange, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType } from './types.ts';
 
 export const ColorSchema = defineEntity({
     name: 'Color',
@@ -135,7 +135,6 @@ export class Disciple extends DiscipleSchema.class implements IDisciple {
         return Math.floor(DISCIPLE_BASE_ATK * this.movementType.discipleBaseAtkModifier * this.weaponType.discipleBaseAtkModifier)
     }
 
-    // TODO: disciple level?
     public getHp({ level }: { level: number; }): number {
         return Math.floor(this.baseHp * (1 + 0.1 * (level - 1)))
     }
@@ -146,79 +145,20 @@ export class Disciple extends DiscipleSchema.class implements IDisciple {
 }
 DiscipleSchema.setClass(Disciple);
 
-export class SpellValue implements ISpellValue {
-    readonly unit: ISpellValue["unit"]
-    readonly normal: ISpellValue["normal"]
-    readonly effectiveness: ISpellValue["effectiveness"]
-
-    constructor(data: ISpellValue) {
-        this.unit = data.unit
-        this.normal = data.normal
-        this.effectiveness = data.effectiveness
-    }
+export const SpellEffectSchema = defineEntity({
+    name: 'SpellEffect',
+    embeddable: true,
+    discriminatorColumn: 'kind',
+    abstract: true,
+    // TODO: I wish I could make this class `abstract: true`, but I keep getting the error "Entity 'SpellEffect' was not discovered, please make sure to provide it in 'entities' array when initializing the ORM (used in Spell.effects)"
+    properties: {
+        kind: p.string(),
+    },
+})
+export abstract class SpellEffect extends SpellEffectSchema.class implements ISpellEffect {
+    public abstract readonly description: ISpellEffect["description"];
 }
-
-// TODO: naming? since it's not a db type
-// TODO: JSON object or string from db? (second type)
-export class SpellEffects extends Type<ISpellEffect[], string> {
-    public convertToDatabaseValue(value: ISpellEffect[] | null | undefined, platform: Platform): string {
-        return "[]"
-        // throw new Error("Not supposed to happen, not handled")
-    }
-
-    // Note: null values from the database are handled by the ORM and won't reach this method
-    public convertToJSValue(value: string, platform: Platform): ISpellEffect[] {
-        // // TODO: unchecked, this assumes that the DB's content was validated beforehand.
-        // // const json: TSpellEffectDTO[] = JSON.parse(value)
-
-        // TODO: TO BE IMPLEMENTED
-
-        return []
-
-        // return json.map(effectDto => {
-        //     const kind = effectDto.kind
-        //     switch (kind) {
-        //         case "DAMAGE":
-        //             return new DamageEffect({
-        //                 ...effectDto,
-        //                 color: "uh"
-        //             });
-        //         case "HEAL":
-        //             const a = effectDto.amount.unit.kind === "PERCENT" ? {
-        //                 kind: "PERCENT",
-        //                 stat: getStatFromId(effectDto.amount.unit.stat)
-        //             } : { kind: "FIXED" }
-        //             return new HealEffect({
-        //                 ...effectDto,
-        //                 amount: new SpellValue({ ...effectDto.amount, unit: a })
-        //             });
-        //         case "MOVEMENT":
-        //             return new MovementEffect({
-        //                 ...effectDto,
-        //                 direction: getDirectionFromId(effectDto.direction)
-        //             });
-        //         case "STAT":
-        //             // Distinguish between StatEffect and StatusEffect by checking for statChange property
-        //             return new StatEffect(effectDto);
-        //         case "STATUS":
-        //             // Distinguish between StatEffect and StatusEffect by checking for statChange property
-        //             return new StatusEffect(effectDto);
-        //         case "DOT":
-        //             return new RepeatEffect(effectDto);
-        //         case "WARP":
-        //             return new WarpEffect();
-        //         case "ICE_BLOCK":
-        //             return new IceBlockEffect(effectDto);
-        //         case "TILE":
-        //             return new TileEffect(effectDto);
-        //         case "SUMMON":
-        //             return new SummonEffect(effectDto);
-        //         default:
-        //             throw new Error(`Unknown effect kind: ${kind}`);
-        //     }
-        // })
-    }
-}
+SpellEffectSchema.setClass(SpellEffect)
 
 export const SpellSchema = defineEntity({
     name: 'Spell',
@@ -230,7 +170,7 @@ export const SpellSchema = defineEntity({
         shape: p.string(),
         uses: p.integer().nullable(),
         cooldown: p.integer(),
-        effects: p.json().type(SpellEffects).$type<ISpellEffect[]>()
+        effects: () => p.embedded([DamageEffect, HealEffect, WarpEffect, MovementEffect, TileEffect, IceBlockEffect, SummonEffect, StatusEffect]).array()
     },
 })
 
@@ -242,186 +182,352 @@ export class Spell extends SpellSchema.class implements ISpell {
 }
 SpellSchema.setClass(Spell);
 
-export class Stat implements IStat {
-    readonly id: string;
-    readonly name: string;
+export const DirectionSchema = defineEntity({
+    name: 'Direction',
+    properties: {
+        id: p.string().primary(),
+        noun: p.string()
+    },
+})
 
-    constructor(data: {
-        readonly id: string;
-        readonly name: string;
-    }) {
-        this.id = data.id
-        this.name = data.name
+export class Direction extends DirectionSchema.class implements IDirection {
+}
+DirectionSchema.setClass(Direction);
+
+export const StatChangeSchema = defineEntity({
+    name: 'StatChange',
+    properties: {
+        id: p.string().primary(),
+        verb: p.string()
+    },
+})
+
+export class StatChange extends StatChangeSchema.class implements IStatChange {
+}
+StatChangeSchema.setClass(StatChange);
+
+export const SpellValueUnitSchema = defineEntity({
+    name: 'SpellValueUnit',
+    embeddable: true,
+    abstract: true,
+    discriminatorColumn: "kind",
+    properties: {
+        // TODO: do the same for other abstract classes kinds?
+        kind: p.enum(["FIXED", "PERCENT"])
+    },
+})
+export abstract class SpellValueUnit extends SpellValueUnitSchema.class implements ISpellValueUnit {
+    public abstract format({ base }: { base: number }): string;
+}
+SpellValueUnitSchema.setClass(SpellValueUnit);
+
+export const SpellValueFixedUnitSchema = defineEntity({
+    name: 'SpellValueFixedUnit',
+    embeddable: true,
+    extends: SpellValueUnit,
+    // TODO: enforce correct enum value at compile-time?
+    discriminatorValue: "FIXED",
+    properties: {
+        kind: p.enum(["FIXED"])
+    },
+})
+export class SpellValueFixedUnit extends SpellValueFixedUnitSchema.class implements ISpellValueFixedUnit {
+    // TODO: fix type here :|
+    // @ts-ignore
+    public format({ base }) {
+        return base.toString()
     }
 }
+SpellValueFixedUnitSchema.setClass(SpellValueFixedUnit);
 
-// Type helper to extract SpellEffect properties excluding ISpellEffect base properties
-type SpellEffectCtorArg<T extends ISpellEffect> = Omit<T, keyof ISpellEffect>;
-
-// Regular classes for spell effects
-export class DamageEffect implements IDamageEffect {
-    public get kind() { return "DAMAGE" as const; }
-    readonly amount: IDamageEffect["amount"];
-    readonly color: IDamageEffect["color"];
-
-    constructor(data: SpellEffectCtorArg<IDamageEffect>) {
-        this.amount = data.amount;
-        this.color = data.color;
+export const SpellValuePercentUnitSchema = defineEntity({
+    name: 'SpellValuePercentUnit',
+    embeddable: true,
+    extends: SpellValueUnit,
+    // TODO: enforce correct enum value at compile-time?
+    discriminatorValue: "PERCENT",
+    properties: {
+        kind: p.enum(["PERCENT"]),
+        stat: () => p.manyToOne(Stat)
+    },
+})
+export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {
+    // TODO: fix type here :|
+    // @ts-ignore
+    public format({ base }) {
+        return `(${base}% of ${this.stat.name})`
     }
+}
+SpellValuePercentUnitSchema.setClass(SpellValuePercentUnit);
+
+// TODO: need to add some check that classes are assigned to the right schemas
+// some combinations are not incompatible and not reported by TypeScript,
+// namely when assigning an extending class
+// to an extended schema, and this causes errors during discovery
+
+export const SpellValueEffectivenessItemSchema = defineEntity({
+    name: "SpellValueEffectivenessItem",
+    embeddable: true,
+    properties: {
+        kind: p.string(),
+        base: p.integer()
+    }
+})
+export class SpellValueEffectivenessItem extends SpellValueEffectivenessItemSchema.class implements ISpellValueEffectivenessItem { }
+SpellValueEffectivenessItemSchema.setClass(SpellValueEffectivenessItem);
+
+export const SpellValueSchema = defineEntity({
+    name: 'SpellValue',
+    embeddable: true,
+    properties: {
+        base: p.integer(),
+        unit: () => p.embedded([SpellValueFixedUnit, SpellValuePercentUnit]).object(),
+        effectiveness: () => p.embedded(SpellValueEffectivenessItem).array().nullable()
+    },
+})
+
+export class SpellValue extends SpellValueSchema.class implements ISpellValue { }
+SpellValueSchema.setClass(SpellValue);
+
+export const StatSchema = defineEntity({
+    name: 'Stat',
+    properties: {
+        id: p.string().primary(),
+        name: p.string()
+    },
+})
+
+export class Stat extends StatSchema.class implements IStat {
+}
+StatSchema.setClass(Stat);
+
+// TODO: with the current class definitions for spell effects,
+// "kind" will be a property of instances instead of being inherited from the prototype.
+// Look for a way to move kind back to the prototype while
+// keeping the discriminator working and remaining type-safe.
+
+export const DamageEffectSchema = defineEntity({
+    name: 'DamageEffect',
+    embeddable: true,
+    discriminatorValue: "DAMAGE",
+    extends: SpellEffect,
+    properties: {
+        kind: p.enum(["DAMAGE"]),
+        amount: () => p.embedded(SpellValue).object(),
+        color: () => p.manyToOne(Color)
+    },
+})
+
+export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect {
 
     public get description() {
-        // TODO: string for effectiveness should be handled more properly
-        const damageAmountString = this.amount.unit.kind === "FIXED" ? `${this.amount.normal.base} ${this.color.name}` : `${this.amount.normal.base}% of ${this.amount.unit.stat.name} as`
-        let str = `Deals ${damageAmountString} damage to targets`
-        const effectivenessEntries = Object.entries(this.amount.effectiveness)
-        if (effectivenessEntries.length) {
-            const effectivenessString = `(${effectivenessEntries.map(([key, { base }]) => `${base} against ${key} units.`).join(", ")})`
+        // TODO: at this point, shouldn't descriptions be handled by search handlers entirely?
+        let str = `Deals ${this.amount.unit.format({ base: this.amount.base })} ${this.color.name} damage to targets`
+        if (this.amount.effectiveness?.length) {
+            const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} against ${kind} units`).join(", ")})`
             str += " " + effectivenessString
         }
         str += "."
         return str
     }
 }
+DamageEffectSchema.setClass(DamageEffect);
 
-export class HealEffect implements IHealEffect {
-    public get kind() { return "HEAL" as const; }
-    readonly amount: IHealEffect["amount"];
+export const HealEffectSchema = defineEntity({
+    name: 'HealEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "HEAL",
+    properties: {
+        kind: p.enum(["HEAL"]),
+        amount: () => p.embedded(SpellValue).object()
+    },
+})
 
-    constructor(data: SpellEffectCtorArg<IHealEffect>) {
-        this.amount = data.amount;
-    }
+export class HealEffect extends HealEffectSchema.class implements IHealEffect {
 
     public get description() {
-        const healAmountString = this.amount.unit.kind === "FIXED" ? this.amount.normal.base : `${this.amount.normal.base}% of ${this.amount.unit.stat.name} as`
-        let str = `Heals ${healAmountString} HP to targets`
-        const effectivenessEntries = Object.entries(this.amount.effectiveness)
-        if (effectivenessEntries.length) {
-            const effectivenessString = `(${effectivenessEntries.map(([key, { base }]) => `${base} for ${key} units.`).join(", ")})`
+        let str = `Restores ${this.amount.unit.format({ base: this.amount.base })} HP to targets`
+        if (this.amount.effectiveness?.length) {
+            const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} for ${kind} units.`).join(", ")})`
             str += " " + effectivenessString
         }
         str += "."
         return str
     }
 }
+HealEffectSchema.setClass(HealEffect);
 
-export class MovementEffect implements IMovementEffect {
-    public get kind() { return "MOVEMENT" as const; }
-    // TODO: direction should probably get its own class
-    readonly direction: IMovementEffect["direction"];
-    readonly count: IMovementEffect["count"];
+export const MovementEffectSchema = defineEntity({
+    name: 'MovementEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "MOVEMENT",
+    properties: {
+        kind: p.enum(["MOVEMENT"]),
+        direction: () => p.manyToOne(Direction),
+        count: p.integer()
+    },
+})
 
-    constructor(data: SpellEffectCtorArg<IMovementEffect>) {
-        this.direction = data.direction;
-        this.count = data.count;
-    }
+export class MovementEffect extends MovementEffectSchema.class implements IMovementEffect {
 
     public get description() {
         return `Swaps position of target and units ${this.count} tile${this.count > 1 ? "s" : ""} ${this.direction.noun}.`
     }
 }
+MovementEffectSchema.setClass(MovementEffect);
 
-export class StatEffect implements IStatEffect {
-    public get kind() { return "STAT" as const; }
-    readonly statChange: IStatEffect["statChange"];
-    readonly amount: IStatEffect["amount"];
-    readonly duration: IStatEffect["duration"];
-    readonly stat: IStatEffect["stat"]
+export const StatEffectSchema = defineEntity({
+    name: 'StatEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "STAT",
+    properties: {
+        kind: p.enum(["STAT"]),
+        statChange: () => p.manyToOne(StatChange),
+        amount: () => p.embedded(SpellValue).object(),
+        duration: p.integer().nullable(),
+        stat: () => p.manyToOne(Stat)
+    },
+})
 
-    constructor(data: SpellEffectCtorArg<IStatEffect>) {
-        this.statChange = data.statChange;
-        this.amount = data.amount;
-        this.duration = data.duration;
-        this.stat = data.stat;
-    }
+export class StatEffect extends StatEffectSchema.class implements IStatEffect {
 
     public get description() {
-        // TODO: not DONE :(
-        return `${this.statChange.verb} ${this.stat.name} by.`
+        // TODO: feels like call to format could be simplified...
+        // TODO: string should be simplified when unit stat is same as target stat...
+        return `${this.statChange.verb} ${this.stat.name} by ${this.amount.unit.format({ base: this.amount.base })}.`
     }
 }
+StatEffectSchema.setClass(StatEffect);
 
-export class StatusEffect implements IStatusEffect {
-    public get kind() { return "STATUS" as const; }
-    readonly effect: IStatusEffect["effect"]
+export const StatusEffectSchema = defineEntity({
+    name: 'StatusEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "STATUS",
+    properties: {
+        kind: p.enum(["STATUS"]),
+        effect: () => p.embedded([RepeatEffect, StatEffect]).object()
+    },
+})
 
-    constructor(data: SpellEffectCtorArg<IStatusEffect>) {
-        this.effect = data.effect;
-    }
+export class StatusEffect extends StatusEffectSchema.class implements IStatusEffect {
 
     public get description() {
-        // TODO: trailing dot?
-        return `Grants status effect: ${this.effect.description}`
+        // TODO: how should punctuation be handled when description getters call other description getters?
+        return `Status: ${this.effect.description}`
     }
 }
+StatusEffectSchema.setClass(StatusEffect);
 
-export class RepeatEffect implements IRepeatEffect {
-    public get kind() { return "DOT" as const; }
-    readonly effect: IRepeatEffect["effect"];
-    readonly times: IRepeatEffect["times"];
-    readonly interval: IRepeatEffect["interval"];
+export const RepeatEffectSchema = defineEntity({
+    name: 'RepeatEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "REPEAT",
+    properties: {
+        kind: p.enum(["REPEAT"]),
+        effect: () => p.embedded([DamageEffect, HealEffect]).object(),
+        times: p.integer(),
+        interval: p.integer()
+    },
+})
 
-    constructor(data: SpellEffectCtorArg<IRepeatEffect>) {
-        this.effect = data.effect;
-        this.times = data.times;
-        this.interval = data.interval;
-    }
+export class RepeatEffect extends RepeatEffectSchema.class implements IRepeatEffect {
 
     public get description() {
-        // TODO: trailing dot?
         return `Every ${this.interval} seconds, ${this.times} times: ${this.effect.description}`
     }
 }
+RepeatEffectSchema.setClass(RepeatEffect);
 
-export class WarpEffect implements IWarpEffect {
-    public get kind() { return "WARP" as const; }
+export const WarpEffectSchema = defineEntity({
+    name: 'WarpEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "WARP",
+    properties: {
+        kind: p.enum(["WARP"]),
+    },
+})
+
+export class WarpEffect extends WarpEffectSchema.class implements IWarpEffect {
 
     public get description() {
         return `Moves disciple to target tile.`
     }
 }
+WarpEffectSchema.setClass(WarpEffect);
 
-export class IceBlockEffect implements IIceBlockEffect {
-    public get kind() { return "ICE_BLOCK" as const; }
-    readonly hp: IIceBlockEffect["hp"];
+export const IceBlockEffectSchema = defineEntity({
+    name: 'IceBlockEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "ICE_BLOCK",
+    properties: {
+        kind: p.enum(["ICE_BLOCK"]),
+        hp: p.integer()
+    },
+})
 
-    constructor(data: SpellEffectCtorArg<IIceBlockEffect>) {
-        this.hp = data.hp;
-    }
+export class IceBlockEffect extends IceBlockEffectSchema.class implements IIceBlockEffect {
 
     public get description() {
         return `Summons ice blocks with ${this.hp} HP.`
     }
 }
+IceBlockEffectSchema.setClass(IceBlockEffect);
 
-export class TileEffect implements ITileEffect {
-    public get kind() { return "TILE" as const; }
-    readonly effect: ITileEffect["effect"];
+export const TileEffectSchema = defineEntity({
+    name: 'TileEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "TILE",
+    properties: {
+        kind: p.enum(["TILE"]),
+        effect: () => p.embedded(RepeatEffect).object()
+    },
+})
 
-    constructor(data: SpellEffectCtorArg<ITileEffect>) {
-        this.effect = data.effect;
-    }
-
+export class TileEffect extends TileEffectSchema.class implements ITileEffect {
     public get description() {
-        // TODO: trailing dot?
         return `Grants effect to target tiles: ${this.effect.description}`
     }
 }
+TileEffectSchema.setClass(TileEffect);
 
-export class SummonEffect implements ISummonEffect {
-    public get kind() { return "SUMMON" as const; }
-    readonly movementType: ISummonEffect["movementType"];
-    readonly weaponType: ISummonEffect["weaponType"];
-    readonly hp: ISummonEffect["hp"];
-    readonly atk: ISummonEffect["atk"];
-
-    constructor(data: SpellEffectCtorArg<ISummonEffect>) {
-        this.movementType = data.movementType;
-        this.weaponType = data.weaponType;
-        this.hp = data.hp;
-        this.atk = data.atk;
+export const SummonEffectStatSchema = defineEntity({
+    name: "SummonEffectStat",
+    embeddable: true,
+    properties: {
+        base: p.integer(),
+        scale: p.integer().nullable()
     }
+})
+export class SummonEffectStat extends SummonEffectStatSchema.class { }
+SummonEffectStatSchema.setClass(SummonEffectStat)
+
+export const SummonEffectSchema = defineEntity({
+    name: 'SummonEffect',
+    embeddable: true,
+    extends: SpellEffect,
+    discriminatorValue: "SUMMON",
+    properties: {
+        kind: p.enum(["SUMMON"]),
+        movementType: () => p.manyToOne(MovementType),
+        weaponType: () => p.manyToOne(WeaponType),
+        hp: () => p.embedded(SummonEffectStat).object(),
+        atk: () => p.embedded(SummonEffectStat).object()
+    },
+})
+
+export class SummonEffect extends SummonEffectSchema.class implements ISummonEffect {
 
     public get description() {
-        return `Summons ${this.weaponType.name}-wielding ${this.movementType} minion with ${this.hp} HP and ${this.atk} Atk.`
+        // TODO: technically should use HP and Atk entities names, but that's something more advanced to handle later...
+        return `Summons ${this.weaponType.name} ${this.movementType.name} minion with ${this.hp.base} HP and ${this.atk.base} Atk.`
     }
 }
+SummonEffectSchema.setClass(SummonEffect);

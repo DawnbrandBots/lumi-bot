@@ -20,7 +20,12 @@ export function getSearchCommand<SearchItemKind extends string, SearchHandlers e
                 }
                 const value = result.value
                 const handler = handlers[value.kind]
-                const entity = await em.findOne(handler.class, { id: result.value.id }, { populate: ["*"] })
+                // Use specific populate paths instead of ["*"] to avoid issues with relationships in embedded types
+                // TODO: explain what issue this solves
+                // TODO: for some reason, this works, but I need to adapt it to any Schema that is susceptible to contain entities within embeddables
+                // const populatePaths = ["*"]
+                const populatePaths = value.kind === "spell" ? ["disciple"] : ["*"]
+                const entity = await em.findOne(handler.class, { id: result.value.id }, { populate: populatePaths })
                 if (!entity) {
                     throw new Error(`Entity of kind ${value.kind} id ${value.id} not found.`)
                 }
