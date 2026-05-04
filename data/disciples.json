@@ -194,5 +194,12 @@
         "movement": "CAVALRY",
         "weapon": "STAFF",
         "prf": "FOREST_EDGE_STAFF_PLUS"
+    },
+    {
+        "id": "ROBIN",
+        "name": "Robin",
+        "movement": "INFANTRY",
+        "weapon": "TOME",
+        "prf": "TACTICS_TOME_PLUS"
     }
 ]
