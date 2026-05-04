@@ -101,6 +101,7 @@ export const WeaponSchema = defineEntity({
         atk: p.integer(),
         freeSkillSlots: p.integer(),
         uniqueSkill: () => p.manyToOne(WeaponSkill).inversedBy("weapons").owner(),
+        prfDisciple: () => p.oneToOne(Disciple).mappedBy("prfWeapon")
     },
 });
 
@@ -120,7 +121,7 @@ export const DiscipleSchema = defineEntity({
         name: p.string(),
         movementType: () => p.manyToOne(MovementType),
         weaponType: () => p.manyToOne(WeaponType),
-        prfWeapon: () => p.manyToOne(Weapon),
+        prfWeapon: () => p.oneToOne(Weapon).inversedBy("prfDisciple"),
     },
 })
 
