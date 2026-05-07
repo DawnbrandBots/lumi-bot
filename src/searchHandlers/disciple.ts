@@ -1,10 +1,11 @@
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../constants.ts"
 import { Disciple } from "../models.ts"
+import { IDisciple } from "../types.ts"
 import { toAsciiTable } from "../utils/table.ts"
 
 const discipleSearchHandler = {
     class: Disciple,
-    response: (disciple: Disciple) => {
+    response: (disciple: IDisciple) => {
         // TODO: adding at least a thumbnail with the character's face would be nice
         // TODO: mention prf weapon
 

@@ -4,6 +4,8 @@ export interface IColor {
     readonly kind: "color";
     readonly id: TId;
     readonly name: string;
+    readonly strongAgainst: IColor | null | undefined;
+    readonly weakAgainst: IColor | null | undefined;
 }
 
 export interface IWeaponType {
@@ -13,6 +15,7 @@ export interface IWeaponType {
     readonly color: IColor;
     readonly range: number;
     readonly discipleBaseAtkModifier: number;
+    readonly description: string;
 }
 
 export interface IWeaponSkillEffect {
@@ -38,6 +41,9 @@ export interface IWeapon {
     readonly hp: number;
     readonly atk: number;
     readonly uniqueSkill: IWeaponSkill;
+    readonly description: string;
+    readonly freeSkillSlots: number;
+    readonly prfDisciple: IDisciple;
 }
 
 export interface IMovementType {
