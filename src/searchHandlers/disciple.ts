@@ -1,4 +1,4 @@
-import { DISCIPLE_MAX_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../constants.ts"
+import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../constants.ts"
 import { Disciple } from "../models.ts"
 import { toAsciiTable } from "../utils/table.ts"
 
@@ -13,7 +13,7 @@ const discipleSearchHandler = {
         const spellsListStr = disciple.spells.map(spell => `- ${spell.name}`).join(", ")
         const spellsStr = `**Spells**: ${spellsListStr}`
 
-        const columnCountAsideFromHeaderAndLevel1 = DISCIPLE_MAX_LEVEL - DISCIPLE_MINIMUM_RELEVANT_LEVEL + 1
+        const columnCountAsideFromHeaderAndLevel1 = DISCIPLE_MAXIXUM_LEVEL - DISCIPLE_MINIMUM_RELEVANT_LEVEL + 1
         const baseStatsTable = [
             ["Level", 1, ...Array.from({ length: columnCountAsideFromHeaderAndLevel1 }, (_, i) => i + DISCIPLE_MINIMUM_RELEVANT_LEVEL)],
             ["HP", disciple.getHp({ level: 1 }), ...Array.from({ length: columnCountAsideFromHeaderAndLevel1 }, (_, i) => disciple.getHp({ level: i + DISCIPLE_MINIMUM_RELEVANT_LEVEL }))],
