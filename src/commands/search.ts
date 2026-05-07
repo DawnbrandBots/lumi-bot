@@ -2,10 +2,12 @@ import { EntityManager } from "@mikro-orm/sqlite";
 import { CacheType, ChatInputCommandInteraction, Colors, EmbedBuilder } from "discord.js";
 import Fuse from "fuse.js";
 import { SEARCH_TERMS_OPTION_NAME, searchCommandInfo } from "../commandInfo/search.js";
-import { _ISearchItem, search } from "../search/search.js";
+import searchFeature, { ISearchItem, SearchHandlers } from "../features/search.ts";
 import { Command } from "./base.js";
 
-export function getSearchCommand<SearchItemKind extends string, SearchHandlers extends { [K in SearchItemKind]: { class: (new () => _ISearchItem<K>) & Parameters<EntityManager["findOne"]>[0], response: (entity: InstanceType<SearchHandlers[K]["class"]>) => string } }>({ fuse, em, handlers }: { fuse: Fuse<_ISearchItem<SearchItemKind>>, em: EntityManager, handlers: SearchHandlers }) {
+export function getSearchCommand<Items extends ISearchItem>(
+    { fuse, em, handlers }: { fuse: Fuse<Items>, em: EntityManager, handlers: SearchHandlers<Items> }
+) {
     return new Command({
         info: searchCommandInfo,
         run: async function (interaction: ChatInputCommandInteraction<CacheType>) {
@@ -13,25 +15,7 @@ export function getSearchCommand<SearchItemKind extends string, SearchHandlers e
             if (!input) {
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`)
             }
-            const result = search<SearchItemKind>({ fuse: fuse, search: input });
-            const message = await (async () => {
-                if (!result.success) {
-                    return result.msg
-                }
-                const value = result.value
-                const handler = handlers[value.kind]
-                // Use specific populate paths instead of ["*"] to avoid issues with relationships in embedded types
-                // TODO: explain what issue this solves
-                // TODO: for some reason, this works, but I need to adapt it to any Schema that is susceptible to contain entities within embeddables
-                // const populatePaths = ["*"]
-                const populatePaths = value.kind === "spell" ? ["disciple"] : ["*"]
-                const entity = await em.findOne(handler.class, { id: result.value.id }, { populate: populatePaths })
-                if (!entity) {
-                    throw new Error(`Entity of kind ${value.kind} id ${value.id} not found.`)
-                }
-                const response = handler.response(entity)
-                return response
-            })();
+            const message = await searchFeature({ em, fuse, handlers, input })
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
