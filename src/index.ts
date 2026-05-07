@@ -4,12 +4,12 @@ import { ActivityType, Client, Colors, EmbedBuilder, Events, GatewayIntentBits }
 import { ICommand } from "./commands/base.js";
 import { helpCommand } from "./commands/help.js";
 import { getSearchCommand } from "./commands/search.js";
-import { createFuse } from "./search/search.js";
 
 
 import { MikroORM } from "@mikro-orm/sqlite";
 
 
+import searchFeature, { createFuse } from "./features/search.ts";
 import mikroOrmConfig from './mikro-orm.config.ts';
 import { Color, Direction, Disciple, MovementType, Spell, Stat, StatChange, Weapon, WeaponSkill, WeaponType } from "./models.js";
 import discipleSearchHandler from "./searchHandlers/disciple.ts";
@@ -38,7 +38,7 @@ const fuse = createFuse({ items: fuseItems })
 
 const log = debug("bot");
 
-const bot = new Client({ intents: [GatewayIntentBits.Guilds] });
+const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages] });
 
 bot.on(Events.ClientReady, () => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
@@ -57,6 +57,36 @@ const commands: Record<string, ICommand> = {
     help: helpCommand
 }
 
+bot.on(Events.MessageCreate, async interaction => {
+    log(interaction)
+
+    if (interaction.author.bot) {
+        return
+    }
+    const mentionedUsers = interaction.mentions.parsedUsers
+    if (!bot.user) {
+        throw new Error("Bot should have a user property when monitoring messages")
+    }
+    if (!mentionedUsers.has(bot.user.id)) {
+        return
+    }
+    const startingBotMentionStr = `<@${bot.user.id}> `
+    if (!interaction.content.startsWith(startingBotMentionStr) || interaction.content.length - startingBotMentionStr.length > 32) {
+        return
+    }
+    const input = interaction.content.slice(startingBotMentionStr.length)
+    const searchResult = await searchFeature({ em, fuse, handlers, input })
+    await interaction.reply({
+        embeds: [
+            new EmbedBuilder()
+                .setColor(Colors.DarkGold)
+                .setTitle("Lumi")
+                .setDescription(searchResult)
+                .setFooter({ text: "Fire Emblem" }),
+        ],
+    })
+})
+
 bot.on(Events.InteractionCreate, async (interaction) => {
     log(interaction);
 
@@ -65,7 +95,7 @@ bot.on(Events.InteractionCreate, async (interaction) => {
     }
 
     const command = commands[interaction.commandName] || helpCommand
-        await command.run(interaction)
+    await command.run(interaction)
 });
 
 // Implicitly use DISCORD_TOKEN
