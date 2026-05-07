@@ -59,24 +59,13 @@ const commands: Record<string, ICommand> = {
 
 bot.on(Events.InteractionCreate, async (interaction) => {
     log(interaction);
+
     if (!interaction.isChatInputCommand()) {
         return;
     }
 
-    const command = commands[interaction.commandName]
-    if (command) {
+    const command = commands[interaction.commandName] || helpCommand
         await command.run(interaction)
-    } else {
-        await interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(Colors.DarkGold)
-                    .setTitle("Lumi")
-                    .setDescription("Umbra serves the shadow")
-                    .setFooter({ text: "Fire Emblem" }),
-            ],
-        });
-    }
 });
 
 // Implicitly use DISCORD_TOKEN
