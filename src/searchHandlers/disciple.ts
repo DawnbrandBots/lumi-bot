@@ -1,18 +1,17 @@
+import { APIEmbed } from "discord.js"
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../constants.ts"
+import { SearchHandler } from "../features/search.ts"
 import { Disciple } from "../models.ts"
 import { IDisciple } from "../types.ts"
 import { toAsciiTable } from "../utils/table.ts"
 
-const discipleSearchHandler = {
+const discipleSearchHandler: SearchHandler<Disciple> = {
     class: Disciple,
     response: (disciple: IDisciple) => {
         // TODO: adding at least a thumbnail with the character's face would be nice
         // TODO: mention prf weapon
 
-        const introduction = `**${disciple.name}** is a ${disciple.weaponType.name}-wielding ${disciple.movementType.name} disciple.`
-
-        const spellsListStr = [...disciple.spells].map(spell => `- ${spell.name}`).join("\n")
-        const spellsStr = `**Spells**:\n${spellsListStr}`
+        const spellsStr = [...disciple.spells].map(spell => `- ${spell.name}`).join("\n")
 
         const columnCountAsideFromHeaderAndLevel1 = DISCIPLE_MAXIXUM_LEVEL - DISCIPLE_MINIMUM_RELEVANT_LEVEL + 1
         const baseStatsTable = [
@@ -21,9 +20,33 @@ const discipleSearchHandler = {
             ["Atk", disciple.getAtk({ level: 1 }), ...Array.from({ length: columnCountAsideFromHeaderAndLevel1 }, (_, i) => disciple.getAtk({ level: i + DISCIPLE_MINIMUM_RELEVANT_LEVEL }))],
         ]
         const baseStatsTableAscii = toAsciiTable({ data: baseStatsTable, cellPadding: 3 })
-        const baseStatsStr = `**Base stats**\n\`\`\`\n${baseStatsTableAscii}\n\`\`\``
+        const baseStatsStr = `\`\`\`\n${baseStatsTableAscii}\n\`\`\``
 
-        return [introduction, spellsStr, baseStatsStr].join("\n\n")
+        const fields: NonNullable<APIEmbed["fields"]> = [
+            {
+                name: "Weapon Type",
+                value: disciple.weaponType.name,
+                inline: true,
+            },
+            {
+                name: "Movement Type",
+                value: disciple.movementType.name,
+                inline: true,
+            },
+            {
+                name: "Spells",
+                value: spellsStr,
+            },
+            {
+                name: "Base stats",
+                value: baseStatsStr,
+            },
+        ]
+
+        return {
+            title: disciple.name,
+            fields,
+        }
     }
 } as const
 

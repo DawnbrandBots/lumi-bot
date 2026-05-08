@@ -1,6 +1,8 @@
 import Fuse from "fuse.js/basic";
 
 import { EntityManager, EntityName } from "@mikro-orm/sqlite";
+import { APIEmbed } from "discord.js";
+import { DISCORD_MESSAGE_ERROR_COLOR, DISCORD_MESSAGE_SUCCESS_COLOR, NOTABOT_DISCORD_MENTION } from "../constants.ts";
 import { TId } from "../types.ts";
 
 export interface ISearchItem {
@@ -14,9 +16,12 @@ export function createFuse<Items extends ISearchItem>({ items }: { items: Items[
     return new Fuse(items, { keys, ignoreDiacritics: true, isCaseSensitive: false });
 }
 
+export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>
+export type SearchFeatureReturnType = Required<Pick<APIEmbed, "title" | "color">> & Pick<APIEmbed, "fields" | "description">
+
 export type SearchHandler<EntityType extends ISearchItem> = {
     class: EntityName<EntityType>,
-    response: (item: EntityType) => string
+    response: (item: EntityType) => SearchHandlerResponseReturnType
 }
 
 export type SearchHandlers<Items extends ISearchItem> = {
@@ -37,12 +42,15 @@ async function searchFeature<
     fuse: Fuse<Items>,
     handlers: SearchHandlers<Items>,
     em: EntityManager
-}): Promise<string> {
+}): Promise<SearchFeatureReturnType> {
     const results = fuse.search(input, { limit: 1 });
     const result = results[0];
 
     if (!result) {
-        return "Search yielded no result."
+        return {
+            title: "Search yield no result",
+            color: DISCORD_MESSAGE_ERROR_COLOR
+        }
     }
 
     const handler = handlers[result.item.kind]
@@ -50,10 +58,14 @@ async function searchFeature<
     // TODO: figure out the correct types here and remove as never
     const entity = await em.findOne(handler.class, { id: result.item.id } as never, { populate: ["*"] } as never)
     if (!entity) {
-        throw new Error(`Entity of kind ${result.item.kind} id ${result.item.id} not found.`)
+        return {
+            title: "Result found in search engine but not in database",
+            description: NOTABOT_DISCORD_MENTION,
+            fields: [{ name: "Entity kind", value: result.item.kind, inline: true }, { name: "Id", value: result.item.id, inline: true }],
+            color: DISCORD_MESSAGE_ERROR_COLOR
+        }
     }
-    const response = handler.response(entity)
-    return response
+    return { ...handler.response(entity), color: DISCORD_MESSAGE_SUCCESS_COLOR }
 }
 
 export default searchFeature
