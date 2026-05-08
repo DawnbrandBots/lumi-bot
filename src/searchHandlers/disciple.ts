@@ -11,8 +11,8 @@ const discipleSearchHandler = {
 
         const introduction = `**${disciple.name}** is a ${disciple.weaponType.name}-wielding ${disciple.movementType.name} disciple.`
 
-        const spellsListStr = disciple.spells.map(spell => `- ${spell.name}`).join(", ")
-        const spellsStr = `**Spells**: ${spellsListStr}`
+        const spellsListStr = [...disciple.spells].map(spell => `- ${spell.name}`).join("\n")
+        const spellsStr = `**Spells**:\n${spellsListStr}`
 
         const columnCountAsideFromHeaderAndLevel1 = DISCIPLE_MAXIXUM_LEVEL - DISCIPLE_MINIMUM_RELEVANT_LEVEL + 1
         const baseStatsTable = [
