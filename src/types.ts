@@ -87,6 +87,7 @@ export interface ISpell {
     readonly kind: "spell",
     readonly id: TId,
     readonly name: string,
+    readonly disciple: IDisciple,
     readonly uses: number | null | undefined
     readonly cooldown: number
     readonly effects: ISpellEffect[]
