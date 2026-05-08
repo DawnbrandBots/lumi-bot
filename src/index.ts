@@ -5,13 +5,11 @@ import { ICommand } from "./commands/base.js";
 import { helpCommand } from "./commands/help.js";
 import { getSearchCommand } from "./commands/search.js";
 
-
 import { MikroORM } from "@mikro-orm/sqlite";
-
 
 import searchFeature, { createFuse } from "./features/search.ts";
 import mikroOrmConfig from './mikro-orm.config.ts';
-import { Color, Direction, Disciple, MovementType, Spell, Stat, StatChange, Weapon, WeaponSkill, WeaponType } from "./models.js";
+import { Disciple, Spell, Weapon, WeaponSkill } from "./models.js";
 import discipleSearchHandler from "./searchHandlers/disciple.ts";
 import spellSearchHandler from "./searchHandlers/spell.ts";
 import weaponSearchHandler from "./searchHandlers/weapon.ts";
@@ -21,17 +19,10 @@ const orm = await MikroORM.init(mikroOrmConfig)
 const em = orm.em.fork()
 
 // No need to populate entities. We only care about the id, name and kind for the sake of the search.
-const weapons = await em.findAll(Weapon)
-const disciples = await em.findAll(Disciple)
-const weaponSkills = await em.findAll(WeaponSkill)
-const spells = await em.findAll(Spell)
-
-await em.findAll(Color)
-await em.findAll(Stat)
-await em.findAll(StatChange)
-await em.findAll(Direction)
-await em.findAll(WeaponType)
-await em.findAll(MovementType)
+const weapons: Weapon[] = await em.findAll(Weapon)
+const disciples: Disciple[] = await em.findAll(Disciple)
+const weaponSkills: WeaponSkill[] = await em.findAll(WeaponSkill)
+const spells: Spell[] = await em.findAll(Spell)
 
 const fuseItems = [...weapons, ...disciples, ...weaponSkills, ...spells]
 const fuse = createFuse({ items: fuseItems })

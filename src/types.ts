@@ -276,12 +276,12 @@ export interface IIceBlockEffect extends ISpellEffect {
 
 export interface ITileEffectDTO extends ISpellEffectDTO {
     readonly kind: "TILE";
-    readonly effect: IRepeatEffectDTO;
+    readonly repeat: IRepeatEffectDTO;
 }
 
 export interface ITileEffect extends ISpellEffect {
     readonly kind: "TILE";
-    readonly effect: IRepeatEffect;
+    readonly repeat: IRepeatEffect;
 }
 
 export interface ISummonEffectDTO extends ISpellEffectDTO {
