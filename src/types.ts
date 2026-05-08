@@ -71,6 +71,18 @@ export interface IDisciple {
     readonly getHp: ({ level }: { level: number }) => number;
 }
 
+export interface ISpellShape {
+    readonly id: string
+    readonly name: string
+    /**
+     * 25 characters representing tiles part of a shape.
+     * - `X` for the tile in the shape that's dragged on the battle grid
+     * - `O` for other tiles part of the shape
+     * - `.` for tiles not part of the shape
+     */
+    readonly tiles: string
+}
+
 export interface ISpell {
     readonly kind: "spell",
     readonly id: TId,
@@ -78,6 +90,7 @@ export interface ISpell {
     readonly uses: number | null | undefined
     readonly cooldown: number
     readonly effects: ISpellEffect[]
+    readonly shape: ISpellShape;
 }
 
 export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "COLOR_AFFINITY";

@@ -1,6 +1,6 @@
 import { defineEntity, p, Type } from '@mikro-orm/core';
 import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP, WEAPON_VARIANTS_BONUSES } from './constants.ts';
-import type { IColor, IDamageEffect, IDirection, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellEffect, ISpellEffectTarget, ISpellValue, ISpellValueEffectivenessItem, ISpellValueFixedUnit, ISpellValuePercentUnit, ISpellValueUnit, IStat, IStatChange, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType, TSpellEffectTarget } from './types.ts';
+import type { IColor, IDamageEffect, IDirection, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellEffect, ISpellEffectTarget, ISpellShape, ISpellValue, ISpellValueEffectivenessItem, ISpellValueFixedUnit, ISpellValuePercentUnit, ISpellValueUnit, IStat, IStatChange, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType, TSpellEffectTarget } from './types.ts';
 
 export const ColorSchema = defineEntity({
     name: 'Color',
@@ -176,6 +176,17 @@ export class SpellEffectTargetType extends Type<SpellEffectTarget, string | null
     }
 }
 
+export const SpellShapeSchema = defineEntity({
+    name: "SpellShape",
+    properties: {
+        id: p.string().primary(),
+        name: p.string(),
+        tiles: p.string().length(25)
+    }
+})
+export abstract class SpellShape extends SpellShapeSchema.class implements ISpellShape { }
+SpellShapeSchema.setClass(SpellShape)
+
 export const SpellEffectSchema = defineEntity({
     name: 'SpellEffect',
     embeddable: true,
@@ -200,10 +211,10 @@ export const SpellSchema = defineEntity({
         name: p.string(),
         disciple: () => p.manyToOne(Disciple).inversedBy("spells").owner(),
         role: p.string(),
-        shape: p.string(),
+        shape: p.manyToOne(SpellShape),
         uses: p.integer().nullable(),
         cooldown: p.integer(),
-        effects: () => p.embedded([DamageEffect, HealEffect, WarpEffect, MovementEffect, TileEffect, IceBlockEffect, SummonEffect, StatusEffect]).array()
+        effects: () => p.embedded([DamageEffect, HealEffect, WarpEffect, MovementEffect, TileEffect, IceBlockEffect, SummonEffect, StatusEffect]).array(),
     },
 })
 
