@@ -24,6 +24,11 @@ const spellSearchHandler: SearchHandler<Spell> = {
 
         const fields: APIEmbed["fields"] = [
             {
+                name: "Disciple",
+                value: spell.disciple.name,
+                inline: true
+            },
+            {
                 name: "Shape",
                 value: shapeStr,
                 inline: true
