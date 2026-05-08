@@ -25,8 +25,7 @@
     "@mikro-orm/sqlite": "^7.0.13",
     "debug": "^4.4.3",
     "discord.js": "~14.26.3",
-    "fuse.js": "^7.3.0",
-    "zod": "^4.3.6"
+    "fuse.js": "^7.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
