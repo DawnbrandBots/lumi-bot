@@ -22,6 +22,11 @@ const weaponSearchHandler: SearchHandler<Weapon> = {
             inline: true,
         }
 
+        const uniqueSkill = weapon.uniqueSkill && {
+            name: "Unique skill",
+            value: `${weapon.uniqueSkill.name}: ${weapon.uniqueSkill.description}`,
+        }
+
         const fields: APIEmbed["fields"] = [
             {
                 name: "Level",
@@ -34,6 +39,7 @@ const weaponSearchHandler: SearchHandler<Weapon> = {
                 inline: true,
             },
             ...(exclusivity ? [exclusivity] : []),
+            ...(uniqueSkill ? [uniqueSkill] : []),
             {
                 name: "Stats",
                 value: statsTableStr,
