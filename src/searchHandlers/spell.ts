@@ -34,6 +34,11 @@ const spellSearchHandler: SearchHandler<Spell> = {
                 inline: true
             },
             {
+                name: "Cooldown",
+                value: spell.cooldown + " seconds",
+                inline: true
+            },
+            {
                 name: "Shape",
                 value: shapeStr,
                 inline: true
