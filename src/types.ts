@@ -15,7 +15,6 @@ export interface IWeaponType {
     readonly color: IColor;
     readonly range: number;
     readonly discipleBaseAtkModifier: number;
-    readonly description: string;
 }
 
 export interface IWeaponSkillEffect {
@@ -41,7 +40,6 @@ export interface IWeapon {
     readonly hp: number;
     readonly atk: number;
     readonly uniqueSkill: IWeaponSkill;
-    readonly description: string;
     readonly freeSkillSlots: number;
     readonly prfDisciple: IDisciple;
     readonly getWeaponVariantStat: (args: { variant: "HP" | "NEUTRAL" | "ATK", stat: "hp" | "atk" }) => number
@@ -80,7 +78,6 @@ export interface ISpell {
     readonly uses: number | null | undefined
     readonly cooldown: number
     readonly effects: ISpellEffect[]
-    readonly description: string;
 }
 
 export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "COLOR_AFFINITY";

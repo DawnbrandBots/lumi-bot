@@ -9,7 +9,7 @@ const spellSearchHandler: SearchHandler<Spell> = {
         const fields: APIEmbed["fields"] = [
             {
                 name: "Effects",
-                value: spell.description
+                value: spell.effects.map(effect => `- ${effect.description}`).join("\n")
             }
         ]
 

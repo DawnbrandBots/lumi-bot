@@ -31,10 +31,6 @@ export const WeaponTypeSchema = defineEntity({
 export class WeaponType extends WeaponTypeSchema.class implements IWeaponType {
     get kind() { return "weaponType" as const }
 
-    get description(): string {
-        return `${this.name} is a ${this.range}-ranged ${this.color.name} weapon type.`
-    }
-
     get discipleBaseAtkModifier(): number {
         return this.range === 1 ? 1 : 2 / 3;
     }
@@ -213,9 +209,6 @@ export const SpellSchema = defineEntity({
 
 export class Spell extends SpellSchema.class implements ISpell {
     get kind() { return "spell" as const }
-
-    // TODO: incomplete description
-    get description() { return this.effects.map(effect => `- ${effect.description}`).join("\n") }
 }
 SpellSchema.setClass(Spell);
 
@@ -358,7 +351,6 @@ export const DamageEffectSchema = defineEntity({
 export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect {
 
     public get description() {
-        // TODO: at this point, shouldn't descriptions be handled by search handlers entirely?
         const targetStr = this.target ? ` to ${this.target.asString}` : ""
         let str = `Deals ${this.amount.unit.format({ base: this.amount.base })} ${this.color.name} damage${targetStr}`
         if (this.amount.effectiveness?.length) {
