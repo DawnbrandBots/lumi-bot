@@ -1713,7 +1713,7 @@
         "effects": [
             {
                 "kind": "TILE",
-                "effect": {
+                "repeat": {
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "DAMAGE",
@@ -2518,7 +2518,7 @@
         "effects": [
             {
                 "kind": "TILE",
-                "effect": {
+                "repeat": {
                     "kind": "REPEAT",
                     "effect": {
                         "kind": "HEAL",

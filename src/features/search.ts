@@ -47,12 +47,8 @@ async function searchFeature<
 
     const handler = handlers[result.item.kind]
 
-    // Use specific populate paths instead of ["*"] to avoid issues with relationships in embedded types
-    // TODO: explain what issue this solves
-    // TODO: for some reason, this works, but I need to adapt it to any Schema that is susceptible to contain entities within embeddables
-    const populatePaths = result.item.kind === "spell" ? ["disciple"] : ["*"]
     // TODO: figure out the correct types here and remove as never
-    const entity = await em.findOne(handler.class, { id: result.item.id } as never, { populate: populatePaths } as never)
+    const entity = await em.findOne(handler.class, { id: result.item.id } as never, { populate: ["*"] } as never)
     if (!entity) {
         throw new Error(`Entity of kind ${result.item.kind} id ${result.item.id} not found.`)
     }
