@@ -34,6 +34,11 @@ const discipleSearchHandler: SearchHandler<Disciple> = {
                 inline: true,
             },
             {
+                name: "PRF Weapon",
+                value: disciple.prfWeapon.name,
+                inline: true,
+            },
+            {
                 name: "Spells",
                 value: spellsStr,
             },

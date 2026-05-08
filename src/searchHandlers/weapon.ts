@@ -6,6 +6,12 @@ import { IWeapon } from "../types.ts";
 const weaponSearchHandler: SearchHandler<Weapon> = {
     class: Weapon,
     response: (weapon: IWeapon) => {
+        const exclusivity = weapon.prfDisciple && {
+            name: "Exclusive to",
+            value: weapon.prfDisciple.name,
+            inline: true,
+        }
+
         const fields: APIEmbed["fields"] = [
             {
                 name: "Level",
@@ -17,6 +23,7 @@ const weaponSearchHandler: SearchHandler<Weapon> = {
                 value: weapon.weaponType.name,
                 inline: true,
             },
+            ...(exclusivity ? [exclusivity] : [])
         ]
         return {
             title: weapon.name,
