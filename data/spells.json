@@ -2815,7 +2815,7 @@
         "name": "Dark Stabbing Fire",
         "disciple": "UKA",
         "role": "SHADOW",
-        "shape": "5X1_COLUMN",
+        "shape": "5_VERTICAL",
         "uses": null,
         "cooldown": 5,
         "effects": [
