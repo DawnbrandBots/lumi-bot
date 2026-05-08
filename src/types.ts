@@ -71,6 +71,13 @@ export interface IDisciple {
     readonly getHp: ({ level }: { level: number }) => number;
 }
 
+export type TSpellRole = "EX" | "LIGHT" | "SHADOW"
+
+export interface ISpellRole {
+    readonly kind: TSpellRole
+    readonly name: string
+}
+
 export interface ISpellShape {
     readonly id: string
     readonly name: string
@@ -88,6 +95,7 @@ export interface ISpell {
     readonly id: TId,
     readonly name: string,
     readonly disciple: IDisciple,
+    readonly role: ISpellRole
     readonly uses: number | null | undefined
     readonly cooldown: number
     readonly effects: ISpellEffect[]

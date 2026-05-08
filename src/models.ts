@@ -1,6 +1,6 @@
 import { defineEntity, p, Type } from '@mikro-orm/core';
 import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP, WEAPON_VARIANTS_BONUSES } from './constants.ts';
-import type { IColor, IDamageEffect, IDirection, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellEffect, ISpellEffectTarget, ISpellShape, ISpellValue, ISpellValueEffectivenessItem, ISpellValueFixedUnit, ISpellValuePercentUnit, ISpellValueUnit, IStat, IStatChange, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType, TSpellEffectTarget } from './types.ts';
+import type { IColor, IDamageEffect, IDirection, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellEffect, ISpellEffectTarget, ISpellRole, ISpellShape, ISpellValue, ISpellValueEffectivenessItem, ISpellValueFixedUnit, ISpellValuePercentUnit, ISpellValueUnit, IStat, IStatChange, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType, TSpellEffectTarget, TSpellRole } from './types.ts';
 
 export const ColorSchema = defineEntity({
     name: 'Color',
@@ -169,8 +169,39 @@ export class SpellEffectTargetType extends Type<SpellEffectTarget, string | null
 
     public convertToJSValue(value: string): SpellEffectTarget {
         if (value in SPELL_EFFECT_TARGETS) {
-            // assertion is true as long as record remains unchanged
             return SPELL_EFFECT_TARGETS[value as keyof typeof SPELL_EFFECT_TARGETS]
+        }
+        throw new Error("Invalid spell effect target id")
+    }
+}
+
+export class SpellRole implements ISpellRole {
+    readonly kind: ISpellRole["kind"];
+    readonly name: ISpellRole["name"];
+
+    public constructor({ kind, name }: {
+        readonly kind: ISpellRole["kind"],
+        readonly name: ISpellRole["name"],
+    }) {
+        this.kind = kind
+        this.name = name
+    }
+}
+
+const SPELL_EFFECT_ROLES = {
+    EX: new SpellRole({ kind: "EX", "name": "EX" }),
+    LIGHT: new SpellRole({ kind: "LIGHT", "name": "Light", }),
+    SHADOW: new SpellRole({ kind: "SHADOW", "name": "Shadow", }),
+} as const satisfies { [K in TSpellRole]: ISpellRole }
+
+export class SpellRoleType extends Type<SpellRole, string | null | undefined> {
+    public convertToDatabaseValue(value: SpellRole | null | undefined): string | null | undefined {
+        return value?.kind;
+    }
+
+    public convertToJSValue(value: string): SpellRole {
+        if (value in SPELL_EFFECT_ROLES) {
+            return SPELL_EFFECT_ROLES[value as keyof typeof SPELL_EFFECT_ROLES]
         }
         throw new Error("Invalid spell effect target id")
     }
@@ -210,7 +241,7 @@ export const SpellSchema = defineEntity({
         id: p.string().primary(),
         name: p.string(),
         disciple: () => p.manyToOne(Disciple).inversedBy("spells").owner(),
-        role: p.string(),
+        role: p.type(SpellRoleType),
         shape: p.manyToOne(SpellShape),
         uses: p.integer().nullable(),
         cooldown: p.integer(),
