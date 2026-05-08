@@ -28,7 +28,7 @@ export interface IWeaponSkill {
     readonly id: TId;
     readonly name: string;
     readonly effect: IWeaponSkillEffect;
-    readonly weapons: Iterable<IWeapon, object>
+    readonly weapons: Iterable<IWeapon>;
     readonly description: string;
 }
 
