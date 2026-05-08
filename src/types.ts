@@ -44,6 +44,7 @@ export interface IWeapon {
     readonly description: string;
     readonly freeSkillSlots: number;
     readonly prfDisciple: IDisciple;
+    readonly getWeaponVariantStat: (args: { variant: "HP" | "NEUTRAL" | "ATK", stat: "hp" | "atk" }) => number
 }
 
 export interface IMovementType {
