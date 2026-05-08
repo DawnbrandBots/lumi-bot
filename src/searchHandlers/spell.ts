@@ -29,6 +29,11 @@ const spellSearchHandler: SearchHandler<Spell> = {
                 inline: true
             },
             {
+                name: "Uses",
+                value: !spell.uses ? "Infinite" : spell.uses + "",
+                inline: true
+            },
+            {
                 name: "Shape",
                 value: shapeStr,
                 inline: true
