@@ -39,6 +39,11 @@ const spellSearchHandler: SearchHandler<Spell> = {
                 inline: true
             },
             {
+                name: "Role",
+                value: spell.role.name,
+                inline: true
+            },
+            {
                 name: "Shape",
                 value: shapeStr,
                 inline: true
