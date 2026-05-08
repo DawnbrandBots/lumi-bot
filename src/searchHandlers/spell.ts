@@ -1,10 +1,22 @@
+import { APIEmbed } from "discord.js";
+import { SearchHandler } from "../features/search.ts";
 import { Spell } from "../models.ts";
 import { ISpell } from "../types.ts";
 
-const spellSearchHandler = {
+const spellSearchHandler: SearchHandler<Spell> = {
     class: Spell,
     response: (spell: ISpell) => {
-        return `**${spell.name}**:\n${spell.description}`
+        const fields: APIEmbed["fields"] = [
+            {
+                name: "Effects",
+                value: spell.description
+            }
+        ]
+
+        return {
+            title: spell.name,
+            fields
+        }
     }
 } as const
 

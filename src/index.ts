@@ -1,5 +1,5 @@
 import debug from "debug";
-import { ActivityType, Client, Colors, EmbedBuilder, Events, GatewayIntentBits } from "discord.js";
+import { ActivityType, Client, Events, GatewayIntentBits } from "discord.js";
 
 import { ICommand } from "./commands/base.js";
 import { helpCommand } from "./commands/help.js";
@@ -66,15 +66,9 @@ bot.on(Events.MessageCreate, async interaction => {
         return
     }
     const input = interaction.content.slice(startingBotMentionStr.length)
-    const searchResult = await searchFeature({ em, fuse, handlers, input })
+    const embed = await searchFeature({ em, fuse, handlers, input })
     await interaction.reply({
-        embeds: [
-            new EmbedBuilder()
-                .setColor(Colors.DarkGold)
-                .setTitle("Lumi")
-                .setDescription(searchResult)
-                .setFooter({ text: "Fire Emblem" }),
-        ],
+        embeds: [embed],
     })
 })
 

@@ -1,5 +1,5 @@
 import { EntityManager } from "@mikro-orm/sqlite";
-import { CacheType, ChatInputCommandInteraction, Colors, EmbedBuilder } from "discord.js";
+import { CacheType, ChatInputCommandInteraction } from "discord.js";
 import Fuse from "fuse.js";
 import { SEARCH_TERMS_OPTION_NAME, searchCommandInfo } from "../commandInfo/search.js";
 import searchFeature, { ISearchItem, SearchHandlers } from "../features/search.ts";
@@ -15,15 +15,9 @@ export function getSearchCommand<Items extends ISearchItem>(
             if (!input) {
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`)
             }
-            const message = await searchFeature({ em, fuse, handlers, input })
+            const embed = await searchFeature({ em, fuse, handlers, input })
             return interaction.reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(Colors.DarkGold)
-                        .setTitle("Lumi")
-                        .setDescription(message)
-                        .setFooter({ text: "Fire Emblem" }),
-                ],
+                embeds: [embed],
             })
         }
     })
