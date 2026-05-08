@@ -38,6 +38,11 @@ const weaponSearchHandler: SearchHandler<Weapon> = {
                 value: weapon.weaponType.name,
                 inline: true,
             },
+            {
+                name: "Free skill slots count",
+                value: weapon.freeSkillSlots + "",
+                inline: true,
+            },
             ...(exclusivity ? [exclusivity] : []),
             ...(uniqueSkill ? [uniqueSkill] : []),
             {
