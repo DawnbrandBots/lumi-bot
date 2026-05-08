@@ -630,7 +630,7 @@
         "name": "Tetrafire",
         "disciple": "ROSE",
         "role": "LIGHT",
-        "shape": "1_TILE",
+        "shape": "2X2_SQUARE",
         "uses": null,
         "cooldown": 5,
         "effects": [
