@@ -10,6 +10,16 @@ export default defineConfig([
         plugins: { js },
         extends: ["js/recommended"],
         languageOptions: { globals: globals.node },
+        rules: {
+            "@typescript-eslint/no-misused-promises": [
+                "error",
+                {
+                    // Feels like using async callbacks is too common to be considered an error.
+                    // Example: discord.js event handlers being async to call the search feature without .then() or IIFE
+                    "checksVoidReturn": false
+                }
+            ]
+        }
     },
     /**
      * https://typescript-eslint.io/getting-started/typed-linting/
