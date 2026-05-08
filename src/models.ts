@@ -1,5 +1,5 @@
 import { defineEntity, p, Type } from '@mikro-orm/core';
-import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from './constants.ts';
+import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP, WEAPON_VARIANTS_BONUSES } from './constants.ts';
 import type { IColor, IDamageEffect, IDirection, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellEffect, ISpellEffectTarget, ISpellValue, ISpellValueEffectivenessItem, ISpellValueFixedUnit, ISpellValuePercentUnit, ISpellValueUnit, IStat, IStatChange, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType, TSpellEffectTarget } from './types.ts';
 
 export const ColorSchema = defineEntity({
@@ -108,8 +108,8 @@ export const WeaponSchema = defineEntity({
 export class Weapon extends WeaponSchema.class implements IWeapon {
     get kind() { return "weapon" as const }
 
-    get description(): string {
-        return `${this.name} is a level ${this.level} ${this.weaponType.name}`
+    public getWeaponVariantStat({ stat, variant }: { variant: 'HP' | 'NEUTRAL' | 'ATK'; stat: 'hp' | 'atk'; }): number {
+        return this.level === 1 ? 0 : this[stat] + WEAPON_VARIANTS_BONUSES[variant][stat]
     }
 }
 WeaponSchema.setClass(Weapon);
