@@ -1698,7 +1698,7 @@
                     },
                     "stat": "RECEIVED_WEAPON_DAMAGE"
                 },
-                "target": "ANY"
+                "target": "SELF"
             }
         ]
     },
@@ -2621,7 +2621,7 @@
                     },
                     "stat": "ATK"
                 },
-                "target": "ANY"
+                "target": "SELF"
             }
         ]
     },
@@ -2779,7 +2779,7 @@
                     },
                     "stat": "RECEIVED_SPELL_DAMAGE"
                 },
-                "target": "ANY"
+                "target": "SELF"
             }
         ]
     },
@@ -3036,7 +3036,7 @@
                     },
                     "stat": "ATK"
                 },
-                "target": "ANY"
+                "target": "SELF"
             }
         ]
     },
