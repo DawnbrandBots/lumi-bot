@@ -614,7 +614,7 @@
     "weaponType": "SWORD",
     "level": 5,
     "hp": 5,
-    "atk": 20,
+    "atk": 25,
     "freeSkillSlots": 2
   },
   {
@@ -651,7 +651,7 @@
     "weaponType": "LANCE",
     "level": 5,
     "hp": 5,
-    "atk": 20,
+    "atk": 25,
     "freeSkillSlots": 2
   },
   {
@@ -688,7 +688,7 @@
     "weaponType": "AXE",
     "level": 5,
     "hp": 5,
-    "atk": 20,
+    "atk": 25,
     "freeSkillSlots": 2
   },
   {
@@ -725,7 +725,7 @@
     "weaponType": "CLAWS",
     "level": 5,
     "hp": 5,
-    "atk": 20,
+    "atk": 25,
     "freeSkillSlots": 2
   },
   {
@@ -762,7 +762,7 @@
     "weaponType": "TOME",
     "level": 5,
     "hp": 5,
-    "atk": 20,
+    "atk": 25,
     "freeSkillSlots": 2
   },
   {
@@ -799,7 +799,7 @@
     "weaponType": "STAFF",
     "level": 5,
     "hp": 5,
-    "atk": 20,
+    "atk": 25,
     "freeSkillSlots": 2
   },
   {
@@ -836,7 +836,7 @@
     "weaponType": "BOW",
     "level": 5,
     "hp": 5,
-    "atk": 20,
+    "atk": 25,
     "freeSkillSlots": 2
   },
   {
@@ -873,7 +873,7 @@
     "weaponType": "STONE",
     "level": 5,
     "hp": 5,
-    "atk": 20,
+    "atk": 25,
     "freeSkillSlots": 2
   },
   {
