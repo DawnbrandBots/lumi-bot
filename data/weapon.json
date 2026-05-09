@@ -430,6 +430,16 @@
     "uniqueSkill": "LUNAR_STRIKE"
   },
   {
+    "id": "RESOLUTE_CLAWS",
+    "name": "Resolute Claws",
+    "weaponType": "CLAWS",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "LUNAR_STRIKE"
+  },
+  {
     "id": "IVORY_TOME",
     "name": "Ivory Tome",
     "weaponType": "TOME",
