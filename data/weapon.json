@@ -637,6 +637,14 @@
     "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
+    "id": "MOONLIT_SWORD",
+    "name": "Moonlit Sword",
+    "type": "SWORD",
+    "level": 5,
+    "atk": 25,
+    "freeSkillSlots": 2
+  },
+  {
     "id": "SILVER_LANCE",
     "name": "Silver Lance",
     "weaponType": "LANCE",
