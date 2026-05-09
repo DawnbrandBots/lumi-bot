@@ -223,7 +223,6 @@ export const SpellEffectSchema = defineEntity({
     embeddable: true,
     discriminatorColumn: 'kind',
     abstract: true,
-    // TODO: I wish I could make this class `abstract: true`, but I keep getting the error "Entity 'SpellEffect' was not discovered, please make sure to provide it in 'entities' array when initializing the ORM (used in Spell.effects)"
     properties: {
         kind: p.string(),
         // TODO: it does not make sense for nested effects (STAT, REPEAT and DAMAGE or HEALING when nested) to have a target property
