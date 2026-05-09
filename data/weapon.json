@@ -905,7 +905,7 @@
     "freeSkillSlots": 3
   },
   {
-    "id": "TRI-DANGO_LANCE",
+    "id": "TRI_DANGO_LANCE",
     "name": "Tri-Dango Lance",
     "weaponType": "LANCE",
     "level": 4,
