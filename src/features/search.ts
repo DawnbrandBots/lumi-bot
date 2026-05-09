@@ -2,7 +2,7 @@ import Fuse from "fuse.js/basic";
 
 import { EntityManager, EntityName } from "@mikro-orm/sqlite";
 import { APIEmbed } from "discord.js";
-import { DISCORD_MESSAGE_ERROR_COLOR, DISCORD_MESSAGE_SUCCESS_COLOR, NOTABOT_DISCORD_MENTION } from "../constants.ts";
+import { DISCORD_MESSAGE_ERROR_COLOR, DISCORD_MESSAGE_SUCCESS_COLOR, NOTABOT_DISCORD_MENTION, SEARCH_MAX_INPUT_LENGTH } from "../constants.ts";
 import { TId } from "../types.ts";
 
 export interface ISearchItem {
@@ -43,6 +43,14 @@ async function searchFeature<
     handlers: SearchHandlers<Items>,
     em: EntityManager
 }): Promise<SearchFeatureReturnType> {
+    if (input.length > SEARCH_MAX_INPUT_LENGTH) {
+        return {
+            title: "Input",
+            color: DISCORD_MESSAGE_ERROR_COLOR,
+            description: `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`
+        }
+    }
+
     const results = fuse.search(input, { limit: 1 });
     const result = results[0];
 

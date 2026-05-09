@@ -24,3 +24,6 @@ export const DISCORD_BLUE_SQUARE_EMOJI_ID = "blue_square"
 export const DISCORD_BLUE_SQUARE_EMOJI_CALL = `:${DISCORD_BLUE_SQUARE_EMOJI_ID}:`
 export const DISCORD_BLACK_SQUARE_EMOJI_ID = "black_large_square"
 export const DISCORD_BLACK_SQUARE_EMOJI_CALL = `:${DISCORD_BLACK_SQUARE_EMOJI_ID}:`
+
+export const SEARCH_TERMS_OPTION_NAME = "terms";
+export const SEARCH_MAX_INPUT_LENGTH = 32;
