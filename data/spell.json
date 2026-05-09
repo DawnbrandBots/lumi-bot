@@ -20,7 +20,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "MINOR_HEAL",
@@ -42,7 +43,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "MINOR_PULL",
@@ -59,7 +61,8 @@
                 "count": 1,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "MINOR_STING",
@@ -82,7 +85,8 @@
                 "color": "COLORLESS",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "MINOR_DARK_SWORD_FLIER",
@@ -107,7 +111,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ENNEA_FIRE_EX",
@@ -129,7 +134,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ELFIRE",
@@ -151,7 +157,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRAHEAL",
@@ -172,7 +179,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "CROSS_STING",
@@ -194,7 +202,8 @@
                 "color": "COLORLESS",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "CROSS_SHIELD_EX",
@@ -220,7 +229,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DISTANT_THUNDER",
@@ -248,7 +258,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "CROSSHEAL",
@@ -269,7 +280,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_LANCE_ARMOR",
@@ -292,7 +304,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "CROSSEDGE_EX",
@@ -318,7 +331,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ARROW_WIND",
@@ -354,7 +368,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "HEAL_PULL",
@@ -381,7 +396,8 @@
                 "count": 1,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_HEAL",
@@ -402,7 +418,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ELTHUNDER_EX",
@@ -424,7 +441,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ELTHUNDER",
@@ -446,7 +464,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SELF_HEAL_PUSH",
@@ -473,7 +492,8 @@
                 "count": 1,
                 "target": "SELF"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRASTING",
@@ -495,7 +515,8 @@
                 "color": "COLORLESS",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "FIRE_WARP_EX",
@@ -521,7 +542,8 @@
                 "kind": "WARP",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "EDGE_BREAK",
@@ -548,7 +570,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "POISON",
@@ -578,7 +601,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_SLASH",
@@ -602,7 +626,8 @@
                 "color": "COLORLESS",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "CROSSHEAL_EX",
@@ -623,7 +648,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRAFIRE",
@@ -645,7 +671,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SELF_MEND",
@@ -666,7 +693,8 @@
                 },
                 "target": "SELF"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_SWORD_FLIER",
@@ -689,7 +717,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "HEAL_WARP_EX",
@@ -714,7 +743,8 @@
                 "kind": "WARP",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "HEAVY_CROSSTHUNDER",
@@ -744,7 +774,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRAEDGE",
@@ -771,7 +802,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_REGEN",
@@ -800,7 +832,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRATHUNDER_WALL_EX",
@@ -835,7 +868,8 @@
                 "hp": 60,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "STAFF_FLIER",
@@ -858,7 +892,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRASHIELD",
@@ -885,7 +920,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_CROSSTHUNDER",
@@ -907,7 +943,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "EXWIND_EX",
@@ -929,7 +966,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRAWIND",
@@ -951,7 +989,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "MEND",
@@ -972,7 +1011,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_TETRAWIND",
@@ -994,7 +1034,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ELWIND_EX",
@@ -1016,7 +1057,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ELWIND",
@@ -1038,7 +1080,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "WIND_STRIKE",
@@ -1066,7 +1109,8 @@
                 "count": 2,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_BOW_KNIGHT",
@@ -1089,7 +1133,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "INVIGORATE_EX",
@@ -1116,7 +1161,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRATHUNDER",
@@ -1138,7 +1184,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "RAPID_HEAL_PULL",
@@ -1165,7 +1212,8 @@
                 "count": 1,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "FLASH_STING",
@@ -1187,7 +1235,8 @@
                 "color": "COLORLESS",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "MEGA_CROSSTHUNDER_EX",
@@ -1209,7 +1258,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "FINAL_TETRATHUNDER",
@@ -1239,7 +1289,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "STABBING_THUNDER",
@@ -1261,7 +1312,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_SHIELD_BREAK",
@@ -1288,7 +1340,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ARROW_WIND_EX",
@@ -1327,7 +1380,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "BOW_FIGHTER",
@@ -1350,7 +1404,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SHIELD_BREAK",
@@ -1377,7 +1432,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_TETRAPOISON",
@@ -1407,7 +1463,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ENNEA_WIND_EX",
@@ -1429,7 +1486,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "RAPID_WIND_STRIKE",
@@ -1457,7 +1515,8 @@
                 "count": 2,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SLICING_WIND",
@@ -1479,7 +1538,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_TETRAHEAL",
@@ -1500,7 +1560,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "ELFIRE_EX",
@@ -1522,7 +1583,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "HEAVY_CROSSFIRE",
@@ -1552,7 +1614,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SHIELD_STRIKE",
@@ -1585,7 +1648,8 @@
                 "count": 2,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_CROSS_FIRE",
@@ -1607,7 +1671,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "THUNDER_EDGE_BREAK_EX",
@@ -1645,7 +1710,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "THUNDER_STRIKE",
@@ -1673,7 +1739,8 @@
                 "count": 2,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SELF_CROSS_SHIELD",
@@ -1700,7 +1767,8 @@
                 },
                 "target": "SELF"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_CROSS_POISON_PATCH",
@@ -1730,7 +1798,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "CROSS_AID_EX",
@@ -1775,7 +1844,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "PIKE_THUNDER",
@@ -1814,7 +1884,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "HEAL_PUSH",
@@ -1841,7 +1912,8 @@
                 "count": 1,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_ELTHUNDER",
@@ -1863,7 +1935,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "FIRE_SHIELD_BREAK_EX",
@@ -1901,7 +1974,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "FIRE_STRIKE_PLUS_FLYING",
@@ -1966,7 +2040,8 @@
                 "count": 2,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_FRAGILITY",
@@ -1993,7 +2068,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "CROSSEDGE_BOOST_EX",
@@ -2042,7 +2118,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "AXE_FIGHTER_PLUS_INFANTRY",
@@ -2099,7 +2176,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_ELWIND",
@@ -2121,7 +2199,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "AETHER_EX",
@@ -2154,7 +2233,8 @@
                 },
                 "target": "SELF"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SHIELD_BREAK_PULL",
@@ -2187,7 +2267,8 @@
                 "count": 2,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "FIRE_STRIKE",
@@ -2215,7 +2296,8 @@
                 "count": 2,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_TETRAFIRE",
@@ -2237,7 +2319,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "THUNDER_WARP_EX",
@@ -2263,7 +2346,8 @@
                 "kind": "WARP",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "STAMINA_PULL_PLUS_FLYING",
@@ -2337,7 +2421,8 @@
                 "hp": 60,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_TETRAEDGE",
@@ -2364,7 +2449,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRAWIND_TRILEMMA_EX",
@@ -2403,7 +2489,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRAHEAL_PLUS_ARMORED",
@@ -2451,7 +2538,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_TETRASHIELD",
@@ -2478,7 +2566,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "WARD_EX",
@@ -2505,7 +2594,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRAHEAL_ZONE",
@@ -2534,7 +2624,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "RAPID_THUNDER_STRIKE",
@@ -2562,7 +2653,8 @@
                 "count": 2,
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_STAFF_FIGHTER",
@@ -2585,7 +2677,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "THUNDER_SELF_EDGE_EX",
@@ -2623,7 +2716,8 @@
                 },
                 "target": "SELF"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "HOLY_THUNDER",
@@ -2651,7 +2745,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "THUNDER_SHIELD_BREAK_PLUS_CAVALRY",
@@ -2715,7 +2810,8 @@
                 "color": "BLUE",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "FRAGILITY_FIRE_EX",
@@ -2754,7 +2850,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SELF_WARD",
@@ -2781,7 +2878,8 @@
                 },
                 "target": "SELF"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SWORD_FIGHTER_PLUS_INFANTRY",
@@ -2830,7 +2928,8 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "WIND_SELF_PULL_EX",
@@ -2858,7 +2957,8 @@
                 "count": 1,
                 "target": "SELF"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_EDGE_BREAK",
@@ -2885,7 +2985,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "TETRAPOISON",
@@ -2915,7 +3016,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "WIND_WARP",
@@ -2941,7 +3043,8 @@
                 "kind": "WARP",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "WIND_AXE_EX",
@@ -2975,7 +3078,8 @@
                 "color": "GREEN",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "PIKE_WIND",
@@ -3011,7 +3115,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "SELF_CROSSEDGE",
@@ -3038,7 +3143,8 @@
                 },
                 "target": "SELF"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_AXE_ARMOR_PLUS_INFANTRY",
@@ -3102,7 +3208,8 @@
                 },
                 "target": "DUAL"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_TETRAREGEN",
@@ -3131,7 +3238,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "CROSS_REGEN",
@@ -3160,7 +3268,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_POISON_PLUS_CAVALRY",
@@ -3254,7 +3363,8 @@
                 },
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     },
     {
         "id": "DARK_CROSSFIRE_PLUS_TOME",
@@ -3336,6 +3446,7 @@
                 "color": "RED",
                 "target": "ANY"
             }
-        ]
+        ],
+        "onlyFor": null
     }
 ]
