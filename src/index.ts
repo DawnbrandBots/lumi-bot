@@ -62,7 +62,7 @@ bot.on(Events.MessageCreate, async interaction => {
         return
     }
     const startingBotMentionStr = `<@${bot.user.id}> `
-    if (!interaction.content.startsWith(startingBotMentionStr) || interaction.content.length - startingBotMentionStr.length > 32) {
+    if (!interaction.content.startsWith(startingBotMentionStr)) {
         return
     }
     const input = interaction.content.slice(startingBotMentionStr.length)
