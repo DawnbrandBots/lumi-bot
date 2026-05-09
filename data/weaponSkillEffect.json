@@ -48,10 +48,6 @@
         "description": "Deal 30% more weapon damage against Staff foes."
     },
     {
-        "id": "SPIRITED_ATTACK",
-        "description": "Deal 20% more weapon damage while HP equals or is greater than 50%."
-    },
-    {
         "id": "SWIFT_BOW",
         "description": "Deal 20% more weapon damage against Cavalry foes."
     },
@@ -106,5 +102,13 @@
     {
         "id": "ARMOR_BANE_3",
         "description": "Deals 50% more weapon damage against Armored foes."
+    },
+    {
+        "id": "SPIRITED_ATTACK",
+        "description": "Deal 20% more weapon damage while HP equals or is greater than 50%."
+    },
+    {
+        "id": "BATTLE_FERVOR",
+        "description": "After defeating a foe with a weapon attack, grant \"boost Atk by 50%\" (3 turns) to unit."
     }
 ]

@@ -193,5 +193,10 @@
         "id": "SPIRITED_ATTACK",
         "name": "Spirited Attack",
         "effect": "SPIRITED_ATTACK"
+    },
+    {
+        "id": "BATTLE_FERVOR",
+        "name": "Battle Fervor",
+        "effect": "BATTLE_FERVOR"
     }
 ]
