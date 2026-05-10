@@ -51,7 +51,7 @@
   },
   {
     "id": "AREADBHAR_PLUS",
-    "name": "AREADBHAR +",
+    "name": "Areadbhar +",
     "weaponType": "LANCE",
     "level": 8,
     "hp": 6,
@@ -341,7 +341,7 @@
   },
   {
     "id": "AREADBHAR",
-    "name": "AREADBHAR",
+    "name": "Areadbhar",
     "weaponType": "LANCE",
     "level": 7,
     "hp": 6,
