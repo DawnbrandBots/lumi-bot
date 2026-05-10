@@ -1,114 +1,114 @@
 [
-    {
-        "id": "ROYAL_SWORD",
-        "description": "Deal 30% more weapon damage against Axe foes."
-    },
-    {
-        "id": "SHIELD_LANCE",
-        "description": "Deal 30% more weapon damage against Sword foes."
-    },
-    {
-        "id": "BULL_AXE",
-        "description": "Deal 30% more weapon damage against Lance foes."
-    },
-    {
-        "id": "PANTHER_STAFF",
-        "description": "Take 30% less weapon damage from Sword foes."
-    },
-    {
-        "id": "CROW_SWORD",
-        "description": "Deal 120% more weapon damage while HP equals or is lower than 50%."
-    },
-    {
-        "id": "SOUND_STONE",
-        "description": "Take 15% less weapon damage while HP equals or is greater than 50%."
-    },
-    {
-        "id": "IVORY_TOME",
-        "description": "Take 40% less weapon damage while HP equals or is lower than 50%."
-    },
-    {
-        "id": "SOLAR_CLAWS",
-        "description": "Take 30% less weapon damage from Lance foes."
-    },
-    {
-        "id": "WILY_STAFF",
-        "description": "Boost max HP by 5%."
-    },
-    {
-        "id": "AREADBHAR",
-        "description": "Deal 15% more weapon damage."
-    },
-    {
-        "id": "RAVENOUS_AXE",
-        "description": "Deal 30% more weapon damage while HP equals or is greater than 50%."
-    },
-    {
-        "id": "MULAGIR",
-        "description": "Deal 30% more weapon damage against Staff foes."
-    },
-    {
-        "id": "SWIFT_BOW",
-        "description": "Deal 20% more weapon damage against Cavalry foes."
-    },
-    {
-        "id": "SHADED_BOW",
-        "description": "After defeating a foe with a weapon attack, grant \"take 40% less magic damage\" (1 turn) to unit."
-    },
-    {
-        "id": "AYMR",
-        "description": "After defeating a foe with a weapon attack, grant \"reduce magic cooldown by 20%\" (1 turn) to unit."
-    },
-    {
-        "id": "SOLITARY_STONE",
-        "description": "Deal 20% more weapon damage against Armored foes."
-    },
-    {
-        "id": "SIEGMUND",
-        "description": "Deal 50% more weapon damage against monsters."
-    },
-    {
-        "id": "RIDER_BANE_1",
-        "description": "Deals 30% more weapon damage against Cavalry foes."
-    },
-    {
-        "id": "RIDER_BANE_2",
-        "description": "Deals 40% more weapon damage against Cavalry foes."
-    },
-    {
-        "id": "RIDER_BANE_3",
-        "description": "Deals 50% more weapon damage against Cavalry foes."
-    },
-    {
-        "id": "FLIER_BANE_1",
-        "description": "Deals 30% more weapon damage against Flying foes."
-    },
-    {
-        "id": "FLIER_BANE_2",
-        "description": "Deals 40% more weapon damage against Flying foes."
-    },
-    {
-        "id": "FLIER_BANE_3",
-        "description": "Deals 50% more weapon damage against Flying foes."
-    },
-    {
-        "id": "ARMOR_BANE_1",
-        "description": "Deals 30% more weapon damage against Armored foes."
-    },
-    {
-        "id": "ARMOR_BANE_2",
-        "description": "Deals 40% more weapon damage against Armored foes."
-    },
-    {
-        "id": "ARMOR_BANE_3",
-        "description": "Deals 50% more weapon damage against Armored foes."
-    },
-    {
-        "id": "SPIRITED_ATTACK",
-        "description": "Deal 20% more weapon damage while HP equals or is greater than 50%."
-    },
-    {
-        "id": "BATTLE_FERVOR",
-        "description": "After defeating a foe with a weapon attack, grant \"boost Atk by 50%\" (3 turns) to unit."
-    }
+  {
+    "id": "ROYAL_SWORD",
+    "description": "Deal 30% more weapon damage against Axe foes."
+  },
+  {
+    "id": "SHIELD_LANCE",
+    "description": "Deal 30% more weapon damage against Sword foes."
+  },
+  {
+    "id": "BULL_AXE",
+    "description": "Deal 30% more weapon damage against Lance foes."
+  },
+  {
+    "id": "PANTHER_STAFF",
+    "description": "Take 30% less weapon damage from Sword foes."
+  },
+  {
+    "id": "CROW_SWORD",
+    "description": "Deal 120% more weapon damage while HP equals or is lower than 50%."
+  },
+  {
+    "id": "SOUND_STONE",
+    "description": "Take 15% less weapon damage while HP equals or is greater than 50%."
+  },
+  {
+    "id": "IVORY_TOME",
+    "description": "Take 40% less weapon damage while HP equals or is lower than 50%."
+  },
+  {
+    "id": "SOLAR_CLAWS",
+    "description": "Take 30% less weapon damage from Lance foes."
+  },
+  {
+    "id": "WILY_STAFF",
+    "description": "Boost max HP by 5%."
+  },
+  {
+    "id": "AREADBHAR",
+    "description": "Deal 15% more weapon damage."
+  },
+  {
+    "id": "RAVENOUS_AXE",
+    "description": "Deal 30% more weapon damage while HP equals or is greater than 50%."
+  },
+  {
+    "id": "MULAGIR",
+    "description": "Deal 30% more weapon damage against Staff foes."
+  },
+  {
+    "id": "SWIFT_BOW",
+    "description": "Deal 20% more weapon damage against Cavalry foes."
+  },
+  {
+    "id": "SHADED_BOW",
+    "description": "After defeating a foe with a weapon attack, grant \"take 40% less magic damage\" (1 turn) to unit."
+  },
+  {
+    "id": "AYMR",
+    "description": "After defeating a foe with a weapon attack, grant \"reduce magic cooldown by 20%\" (1 turn) to unit."
+  },
+  {
+    "id": "SOLITARY_STONE",
+    "description": "Deal 20% more weapon damage against Armored foes."
+  },
+  {
+    "id": "SIEGMUND",
+    "description": "Deal 50% more weapon damage against monsters."
+  },
+  {
+    "id": "RIDER_BANE_1",
+    "description": "Deals 30% more weapon damage against Cavalry foes."
+  },
+  {
+    "id": "RIDER_BANE_2",
+    "description": "Deals 40% more weapon damage against Cavalry foes."
+  },
+  {
+    "id": "RIDER_BANE_3",
+    "description": "Deals 50% more weapon damage against Cavalry foes."
+  },
+  {
+    "id": "FLIER_BANE_1",
+    "description": "Deals 30% more weapon damage against Flying foes."
+  },
+  {
+    "id": "FLIER_BANE_2",
+    "description": "Deals 40% more weapon damage against Flying foes."
+  },
+  {
+    "id": "FLIER_BANE_3",
+    "description": "Deals 50% more weapon damage against Flying foes."
+  },
+  {
+    "id": "ARMOR_BANE_1",
+    "description": "Deals 30% more weapon damage against Armored foes."
+  },
+  {
+    "id": "ARMOR_BANE_2",
+    "description": "Deals 40% more weapon damage against Armored foes."
+  },
+  {
+    "id": "ARMOR_BANE_3",
+    "description": "Deals 50% more weapon damage against Armored foes."
+  },
+  {
+    "id": "SPIRITED_ATTACK",
+    "description": "Deal 20% more weapon damage while HP equals or is greater than 50%."
+  },
+  {
+    "id": "BATTLE_FERVOR",
+    "description": "After defeating a foe with a weapon attack, grant \"boost Atk by 50%\" (3 turns) to unit."
+  }
 ]

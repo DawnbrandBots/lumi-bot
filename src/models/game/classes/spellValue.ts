@@ -5,14 +5,14 @@ import { SpellValueFixedUnit } from "./spellValueFixedUnit.ts";
 import { SpellValuePercentUnit } from "./spellValuePercentUnit.ts";
 
 export const SpellValueSchema = defineEntity({
-    name: 'SpellValue',
+    name: "SpellValue",
     embeddable: true,
     properties: {
         base: p.integer(),
         unit: () => p.embedded([SpellValueFixedUnit, SpellValuePercentUnit]).object(),
-        effectiveness: () => p.embedded(SpellValueEffectivenessItem).array().nullable()
+        effectiveness: () => p.embedded(SpellValueEffectivenessItem).array().nullable(),
     },
-})
+});
 
-export class SpellValue extends SpellValueSchema.class implements ISpellValue { }
+export class SpellValue extends SpellValueSchema.class implements ISpellValue {}
 SpellValueSchema.setClass(SpellValue);

@@ -7,7 +7,9 @@ const weaponSkillSearchHandler: SearchHandler<WeaponSkill> = {
     class: WeaponSkill,
     // TODO: no join operator on iterators yet :( (https://github.com/tc39/proposal-iterator-join)
     response: (weaponSkill: IWeaponSkill) => {
-        const weapons = Array.from(weaponSkill.weapons).map(weapon => weapon.name).join(", ")
+        const weapons = Array.from(weaponSkill.weapons)
+            .map((weapon) => weapon.name)
+            .join(", ");
         const fields: APIEmbed["fields"] = [
             {
                 name: "Effect",
@@ -18,12 +20,12 @@ const weaponSkillSearchHandler: SearchHandler<WeaponSkill> = {
                 name: "Weapons",
                 value: weapons,
             },
-        ]
+        ];
         return {
             title: weaponSkill.name,
-            fields: fields
-        }
-    }
-} as const
+            fields: fields,
+        };
+    },
+} as const;
 
-export default weaponSkillSearchHandler
+export default weaponSkillSearchHandler;

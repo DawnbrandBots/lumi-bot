@@ -4,19 +4,19 @@ import { SpellValueUnit } from "./spellValueUnit.ts";
 import { Stat } from "./stat.ts";
 
 export const SpellValuePercentUnitSchema = defineEntity({
-    name: 'SpellValuePercentUnit',
+    name: "SpellValuePercentUnit",
     embeddable: true,
     extends: SpellValueUnit,
     // TODO: enforce correct enum value at compile-time?
     discriminatorValue: "PERCENT",
     properties: {
         kind: p.enum(["PERCENT"]),
-        stat: () => p.manyToOne(Stat)
+        stat: () => p.manyToOne(Stat),
     },
-})
+});
 export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {
     public format({ base }: { base: number }) {
-        return `(${base}% of ${this.stat.name})`
+        return `(${base}% of ${this.stat.name})`;
     }
 }
 SpellValuePercentUnitSchema.setClass(SpellValuePercentUnit);

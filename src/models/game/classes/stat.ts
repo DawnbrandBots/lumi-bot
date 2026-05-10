@@ -2,13 +2,12 @@ import { defineEntity, p } from "@mikro-orm/core";
 import type { IStat } from "../types.ts";
 
 export const StatSchema = defineEntity({
-    name: 'Stat',
+    name: "Stat",
     properties: {
         id: p.string().primary(),
-        name: p.string()
+        name: p.string(),
     },
-})
+});
 
-export class Stat extends StatSchema.class implements IStat {
-}
+export class Stat extends StatSchema.class implements IStat {}
 StatSchema.setClass(Stat);

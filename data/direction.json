@@ -1,10 +1,10 @@
 [
-    {
-        "id": "UP",
-        "noun": "up"
-    },
-    {
-        "id": "DOWN",
-        "noun": "down"
-    }
+  {
+    "id": "UP",
+    "noun": "up"
+  },
+  {
+    "id": "DOWN",
+    "noun": "down"
+  }
 ]

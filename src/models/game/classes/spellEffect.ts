@@ -8,17 +8,17 @@ import { SpellEffectTargetType } from "./spellEffectTarget.ts";
 // keeping the discriminator working and remaining type-safe.
 
 export const SpellEffectSchema = defineEntity({
-    name: 'SpellEffect',
+    name: "SpellEffect",
     embeddable: true,
-    discriminatorColumn: 'kind',
+    discriminatorColumn: "kind",
     abstract: true,
     properties: {
         kind: p.string(),
         // TODO: it does not make sense for nested effects (STAT, REPEAT and DAMAGE or HEALING when nested) to have a target property
-        target: p.type(SpellEffectTargetType).nullable()
+        target: p.type(SpellEffectTargetType).nullable(),
     },
-})
+});
 export abstract class SpellEffect extends SpellEffectSchema.class implements ISpellEffect {
     public abstract readonly description: ISpellEffect["description"];
 }
-SpellEffectSchema.setClass(SpellEffect)
+SpellEffectSchema.setClass(SpellEffect);

@@ -6,7 +6,7 @@ import { WeaponSkill } from "./weaponSkill.ts";
 import { WeaponType } from "./weaponType.ts";
 
 export const WeaponSchema = defineEntity({
-    name: 'Weapon',
+    name: "Weapon",
     properties: {
         id: p.string().primary(),
         name: p.string(),
@@ -16,15 +16,17 @@ export const WeaponSchema = defineEntity({
         atk: p.integer(),
         freeSkillSlots: p.integer(),
         uniqueSkill: () => p.manyToOne(WeaponSkill).inversedBy("weapons"),
-        prfDisciple: () => p.oneToOne(Disciple).mappedBy("prfWeapon")
+        prfDisciple: () => p.oneToOne(Disciple).mappedBy("prfWeapon"),
     },
 });
 
 export class Weapon extends WeaponSchema.class implements IWeapon {
-    get kind() { return "weapon" as const }
+    get kind() {
+        return "weapon" as const;
+    }
 
-    public getWeaponVariantStat({ stat, variant }: { variant: 'HP' | 'NEUTRAL' | 'ATK'; stat: 'hp' | 'atk'; }): number {
-        return this.level === 1 ? 0 : this[stat] + WEAPON_VARIANTS_BONUSES[variant][stat]
+    public getWeaponVariantStat({ stat, variant }: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number {
+        return this.level === 1 ? 0 : this[stat] + WEAPON_VARIANTS_BONUSES[variant][stat];
     }
 }
 WeaponSchema.setClass(Weapon);
