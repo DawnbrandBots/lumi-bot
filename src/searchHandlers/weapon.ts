@@ -4,10 +4,14 @@ import { Weapon } from "../models.ts";
 import { IWeapon } from "../types.ts";
 import { toAsciiTable } from "../utils/table.ts";
 
-const weaponSearchHandler: SearchHandler<Weapon> = {
+// TODO: specifying "*" in the list will cause nested relationships to not be loaded, even when specifying these nested relationships.
+// eg: ["*", "uniqueSkill.effect"] won't populate effect
+// Is that even mentioned anywhere in the docs?
+const populate = ["weaponType.*", "uniqueSkill.*", "prfDisciple.*"] as const
+const weaponSearchHandler: SearchHandler<Weapon, typeof populate[number]> = {
     class: Weapon,
+    populate: populate,
     response: (weapon: IWeapon) => {
-
         const statsTable = [
             ["Variant", "Atk", "(-)", "HP"],
             ["HP", weapon.getWeaponVariantStat({ stat: "hp", variant: "ATK" }), weapon.getWeaponVariantStat({ stat: "hp", variant: "NEUTRAL" }), weapon.getWeaponVariantStat({ stat: "hp", variant: "HP" })],
