@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/core";
-import { WEAPON_TYPE_RANGE_ATK_MODIFIER } from "../../../constants.ts";
+import { WEAPON_TYPE_RANGE_ATK_MODIFIER } from "../constants.ts";
 import type { IWeaponType } from "../types.ts";
 import { Color } from "./color.ts";
 

@@ -1,4 +1,4 @@
-import { BOT_NAME } from "../constants.ts"
+import { BOT_NAME } from "../models/discord/constants.ts"
 import { CommandInfo, ICommandInfo } from "./base.js"
 
 
