@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/core";
-import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from "../constants.ts";
+import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from "../../../constants.ts";
 import type { IDisciple } from "../types.ts";
 import { MovementType } from "./movementType.ts";
 import { Spell } from "./spell.ts";

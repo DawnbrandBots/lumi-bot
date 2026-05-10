@@ -3,7 +3,7 @@ import Fuse from "fuse.js/basic";
 import { EntityManager, EntityName, Populate } from "@mikro-orm/sqlite";
 import { APIEmbed } from "discord.js";
 import { DISCORD_MESSAGE_ERROR_COLOR, DISCORD_MESSAGE_SUCCESS_COLOR, NOTABOT_DISCORD_MENTION, SEARCH_MAX_INPUT_LENGTH } from "../constants.ts";
-import { TId } from "../types.ts";
+import { TId } from "../models/game/types.ts";
 
 export interface ISearchItem {
     readonly kind: string;
