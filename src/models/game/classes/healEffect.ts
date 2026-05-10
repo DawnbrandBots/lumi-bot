@@ -23,7 +23,6 @@ export class HealEffect extends HealEffectSchema.class implements IHealEffect {
             const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} for ${kind} units`).join(", ")})`
             str += " " + effectivenessString
         }
-        str += "."
         return str
     }
 }

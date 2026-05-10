@@ -35,7 +35,6 @@ export class StatEffect extends StatEffectSchema.class implements IStatEffect {
             const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} for ${kind} units`).join(", ")})`
             str += " " + effectivenessString
         }
-        str += "."
         return str
     }
 }

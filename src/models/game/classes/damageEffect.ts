@@ -25,7 +25,6 @@ export class DamageEffect extends DamageEffectSchema.class implements IDamageEff
             const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} against ${kind} units`).join(", ")})`
             str += " " + effectivenessString
         }
-        str += "."
         return str
     }
 }

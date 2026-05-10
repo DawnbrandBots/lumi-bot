@@ -15,7 +15,7 @@ export const WarpEffectSchema = defineEntity({
 export class WarpEffect extends WarpEffectSchema.class implements IWarpEffect {
 
     public get description() {
-        return `Moves user to target tile.`
+        return `Moves user to target tile`
     }
 }
 WarpEffectSchema.setClass(WarpEffect);
