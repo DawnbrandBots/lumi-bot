@@ -20,7 +20,6 @@ export const StatusEffectSchema = defineEntity({
 export class StatusEffect extends StatusEffectSchema.class implements IStatusEffect {
 
     public get description() {
-        // TODO: how should punctuation be handled when description getters call other description getters?
         return `Grants ${this.target.asString} status: ${this.effect.description}`
     }
 }

@@ -18,6 +18,8 @@ const spellSearchHandler: SearchHandler<Spell> = {
             .replaceAll(/./g, tile => tileEmojis[tile] ?? tile)
         const shapeStr = `${shapeEmojis}\n-# "${spell.shape.name}"`
 
+        const effectsStr = spell.effects.map(effect => `1. ${effect.description}.`).join("\n")
+
         const fields: APIEmbed["fields"] = [
             {
                 name: "Disciple",
@@ -54,7 +56,7 @@ const spellSearchHandler: SearchHandler<Spell> = {
             },
             {
                 name: "Effects",
-                value: spell.effects.map(effect => `- ${effect.description}`).join("\n"),
+                value: effectsStr,
                 inline: true
             }
         ]
