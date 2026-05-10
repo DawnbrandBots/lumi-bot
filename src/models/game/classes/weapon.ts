@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/core";
-import { WEAPON_VARIANTS_BONUSES } from "../constants.ts";
+import { WEAPON_VARIANTS_BONUSES } from "../../../constants.ts";
 import type { IWeapon } from "../types.ts";
 import { Disciple } from "./disciple.ts";
 import { WeaponSkill } from "./weaponSkill.ts";
