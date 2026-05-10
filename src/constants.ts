@@ -14,6 +14,11 @@ export const WEAPON_VARIANTS_BONUSES = {
     "ATK": { hp: 0, atk: 20 },
 } as const
 
+export const WEAPON_TYPE_RANGE_ATK_MODIFIER = {
+    1: 1,
+    2: 2 / 3
+} as const
+
 export const NOTABOT_DISCORD_ID = "1454944471358898209"
 export const NOTABOT_DISCORD_MENTION = `<@${NOTABOT_DISCORD_ID}>`
 
