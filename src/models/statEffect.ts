@@ -23,10 +23,13 @@ export class StatEffect extends StatEffectSchema.class implements IStatEffect {
 
     public get description() {
         // TODO: feels like call to format could be simplified...
-        // TODO: string should be simplified when unit stat is same as target stat...
         // TODO: COLOR_AFFINITY_BOOST's base values are unusual compared to other stats and do not render nicely (eg. 16.66666666...),
         // consider formatting otherwise or changing how values are expressed
-        let str = `${this.statChange.verb} ${this.stat.name} by ${this.amount.unit.format({ base: this.amount.base })}`
+        console.log(this.amount, this.stat)
+        const valueStr = this.amount.unit.kind === "PERCENT" && this.stat.id === this.amount.unit.stat.id
+            ? this.amount.base + "%"
+            : this.amount.unit.format({ base: this.amount.base })
+        let str = `${this.statChange.verb} ${this.stat.name} by ${valueStr}`
         // TODO: this pattern is also repeated in damageeffect, healeffect
         if (this.amount.effectiveness?.length) {
             const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} for ${kind} units`).join(", ")})`
