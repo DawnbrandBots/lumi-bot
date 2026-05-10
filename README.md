@@ -13,4 +13,5 @@ A free and open-source Discord bot for Fire Emblem Shadows.
    ```
 1. `yarn build`
 1. `yarn register user-install`
+1. `./scripts/recreate_db.sh`
 1. `yarn start`
