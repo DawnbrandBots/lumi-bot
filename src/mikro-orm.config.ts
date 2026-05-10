@@ -50,7 +50,7 @@ export default defineConfig({
         Disciple,
         MovementType,
         Spell,
-        /*SpellValueUnit, */ SpellValueEffectivenessItem,
+        SpellValueEffectivenessItem,
         SpellValueFixedUnit,
         SpellValuePercentUnit,
         SpellShape,
