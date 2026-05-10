@@ -245,6 +245,9 @@ export const SpellSchema = defineEntity({
         uses: p.integer().nullable(),
         cooldown: p.integer(),
         effects: () => p.embedded([DamageEffect, HealEffect, WarpEffect, MovementEffect, TileEffect, IceBlockEffect, SummonEffect, StatusEffect]).array(),
+        // TODO: onlyFor will get a proper type in a later update. Right now it has the same issues as TileEffect when using polymorphic relationships
+        // as type for the "which" nested property, which can reference either MovementType or WeaponType
+        onlyFor: p.json<{ kind: string, which: string }>().nullable()
     },
 })
 
