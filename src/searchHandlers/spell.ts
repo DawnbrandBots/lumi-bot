@@ -39,14 +39,18 @@ const spellSearchHandler: SearchHandler<Spell> = {
                 value: spell.role.name,
                 inline: true
             },
+            // Shape and effects are separated because they may
+            // take a lot of vertical space compared to other fields.
+            { name: "", value: "" },
             {
                 name: "Shape",
                 value: shapeStr,
-                inline: true
+                inline: true,
             },
             {
                 name: "Effects",
-                value: spell.effects.map(effect => `- ${effect.description}`).join("\n")
+                value: spell.effects.map(effect => `- ${effect.description}`).join("\n"),
+                inline: true
             }
         ]
 
