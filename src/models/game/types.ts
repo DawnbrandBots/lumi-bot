@@ -118,19 +118,24 @@ export type TSpellValueUnitKind = "FIXED" | "PERCENT"
 
 export interface ISpellValueUnit {
     readonly kind: TSpellValueUnitKind;
-    readonly format: ({ base }: { base: number }) => string;
+    // TODO: format method is absent from this interface due to MikroORM interpreting
+    // abstract methods as instance member properties by extending classes.
+    // The interface should normally contain format anyway and not depend on MikroORM
+    // implementation details, but it'll remain that way until a type-safe solution is found.
 }
-
 
 export interface ISpellValueFixedUnit extends ISpellValueUnit {
     readonly kind: "FIXED";
+    format({ base }: { base: number }): string;
 }
-
 
 export interface ISpellValuePercentUnit extends ISpellValueUnit {
     readonly kind: "PERCENT";
     readonly stat: IStat;
+    format({ base }: { base: number }): string;
 }
+
+export type TSpellValueUnit = ISpellValueFixedUnit | ISpellValuePercentUnit
 
 export interface ISpellValueEffectivenessItem {
     readonly kind: string;

@@ -13,9 +13,7 @@ export const SpellValueFixedUnitSchema = defineEntity({
     },
 })
 export class SpellValueFixedUnit extends SpellValueFixedUnitSchema.class implements ISpellValueFixedUnit {
-    // TODO: fix type here :|
-    // @ts-ignore
-    public format({ base }) {
+    public format({ base }: { base: number }) {
         return base.toString()
     }
 }

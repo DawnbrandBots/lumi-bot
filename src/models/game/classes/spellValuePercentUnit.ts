@@ -15,9 +15,7 @@ export const SpellValuePercentUnitSchema = defineEntity({
     },
 })
 export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {
-    // TODO: fix type here :|
-    // @ts-ignore
-    public format({ base }) {
+    public format({ base }: { base: number }) {
         return `(${base}% of ${this.stat.name})`
     }
 }
