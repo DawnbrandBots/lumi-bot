@@ -1,7 +1,7 @@
 import { APIEmbed } from "discord.js"
-import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../constants.ts"
 import { SearchHandler } from "../features/search.ts"
 import { Disciple } from "../models/game/classes/disciple.ts"
+import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../models/game/constants.ts"
 import { IDisciple } from "../models/game/types.ts"
 import { toAsciiTable } from "../utils/table.ts"
 
