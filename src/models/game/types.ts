@@ -116,46 +116,23 @@ export type TDirection = "UP" | "DOWN";
 export type TStatChange = "INCREASE" | "DECREASE"
 export type TSpellValueUnitKind = "FIXED" | "PERCENT"
 
-export type TStatDTO = TStat
-export type TDirectionDTO = TDirection
-export type TStatChangeDTO = TStatChange
-export type TSpellValueUnitKindDTO = TSpellValueUnitKind
-
 export interface ISpellValueUnit {
     readonly kind: TSpellValueUnitKind;
     readonly format: ({ base }: { base: number }) => string;
 }
 
-export interface ISpellValueUnitDTO {
-    readonly kind: TSpellValueUnitKindDTO;
-}
 
 export interface ISpellValueFixedUnit extends ISpellValueUnit {
     readonly kind: "FIXED";
 }
 
-export interface ISpellValueFixedUnitDTO extends ISpellValueUnitDTO {
-    readonly kind: "FIXED";
-}
 
 export interface ISpellValuePercentUnit extends ISpellValueUnit {
     readonly kind: "PERCENT";
     readonly stat: IStat;
 }
 
-export interface ISpellValuePercentUnitDTO extends ISpellValueUnitDTO {
-    readonly kind: "PERCENT";
-    readonly stat: TStatDTO;
-}
-
-// TODO: non-DTO TSpellValueEffectivenessItem must refer to some selector (eg. range = 2, movementType = CAVALRY, etc...)
 export interface ISpellValueEffectivenessItem {
-    readonly kind: string;
-    readonly base: number;
-}
-
-export type TSpellValueUnitDTO = ISpellValueFixedUnitDTO | ISpellValuePercentUnitDTO
-export interface ISpellValueEffectivenessItemDTO {
     readonly kind: string;
     readonly base: number;
 }
@@ -165,12 +142,6 @@ export interface ISpellValue {
     readonly unit: ISpellValueUnit
     // TODO: null on top of ?: is annoying
     readonly effectiveness?: ISpellValueEffectivenessItem[] | null
-};
-
-export interface ISpellValueDTO {
-    readonly base: number;
-    readonly unit: TSpellValueUnitDTO
-    readonly effectiveness?: ISpellValueEffectivenessItemDTO[]
 };
 
 export interface IStat {
@@ -188,17 +159,11 @@ export interface IStatChange {
     readonly verb: string;
 }
 
-export type TSpellEffectTargetDTO = "ANY" | "SELF" | "DUAL";
-export type TSpellEffectTarget = TSpellEffectTargetDTO;
+export type TSpellEffectTarget = "ANY" | "SELF" | "DUAL";
 
 export interface ISpellEffectTarget {
     readonly kind: TSpellEffectTarget;
     readonly asString: string;
-}
-
-export interface ISpellEffectDTO {
-    readonly kind: string;
-    readonly target?: TSpellEffectTargetDTO | null;
 }
 
 export interface ISpellEffect {
@@ -207,21 +172,10 @@ export interface ISpellEffect {
     readonly description: string;
 }
 
-export interface IDamageEffectDTO extends ISpellEffectDTO {
-    readonly kind: "DAMAGE";
-    readonly amount: ISpellValue;
-    readonly color: TId;
-}
-
 export interface IDamageEffect extends ISpellEffect {
     readonly kind: "DAMAGE";
     readonly amount: ISpellValue;
     readonly color: IColor;
-}
-
-export interface IHealEffectDTO extends ISpellEffectDTO {
-    readonly kind: "HEAL";
-    readonly amount: ISpellValueDTO;
 }
 
 export interface IHealEffect extends ISpellEffect {
@@ -229,26 +183,11 @@ export interface IHealEffect extends ISpellEffect {
     readonly amount: ISpellValue;
 }
 
-export interface IMovementEffectDTO extends ISpellEffectDTO {
-    readonly kind: "MOVEMENT";
-    readonly direction: TDirectionDTO;
-    readonly count: number;
-    readonly target: TSpellEffectTargetDTO;
-}
-
 export interface IMovementEffect extends ISpellEffect {
     readonly kind: "MOVEMENT";
     readonly direction: IDirection;
     readonly count: number;
     readonly target: ISpellEffectTarget;
-}
-
-export interface IStatEffectDTO extends ISpellEffectDTO {
-    readonly kind: "STAT";
-    readonly statChange: TStatChangeDTO
-    readonly amount: ISpellValueDTO
-    readonly duration: number | null | undefined
-    readonly stat: TStatDTO
 }
 
 export interface IStatEffect extends ISpellEffect {
@@ -259,23 +198,10 @@ export interface IStatEffect extends ISpellEffect {
     readonly stat: IStat
 }
 
-export interface IStatusEffectDTO extends ISpellEffectDTO {
-    readonly kind: "STATUS";
-    readonly effect: IStatEffectDTO | IRepeatEffectDTO
-    readonly target: TSpellEffectTargetDTO;
-}
-
 export interface IStatusEffect extends ISpellEffect {
     readonly kind: "STATUS";
     readonly effect: IStatEffect | IRepeatEffect
     readonly target: ISpellEffectTarget;
-}
-
-export interface IRepeatEffectDTO extends ISpellEffectDTO {
-    readonly kind: "REPEAT";
-    readonly effect: IDamageEffectDTO | IHealEffectDTO;
-    readonly times: number;
-    readonly interval: number;
 }
 
 export interface IRepeatEffect extends ISpellEffect {
@@ -285,17 +211,8 @@ export interface IRepeatEffect extends ISpellEffect {
     readonly interval: number;
 }
 
-export interface IWarpEffectDTO extends ISpellEffectDTO {
-    readonly kind: "WARP";
-}
-
 export interface IWarpEffect extends ISpellEffect {
     readonly kind: "WARP";
-}
-
-export interface IIceBlockEffectDTO extends ISpellEffectDTO {
-    readonly kind: "ICE_BLOCK";
-    readonly hp: number;
 }
 
 export interface IIceBlockEffect extends ISpellEffect {
@@ -303,22 +220,9 @@ export interface IIceBlockEffect extends ISpellEffect {
     readonly hp: number;
 }
 
-export interface ITileEffectDTO extends ISpellEffectDTO {
-    readonly kind: "TILE";
-    readonly repeat: IRepeatEffectDTO;
-}
-
 export interface ITileEffect extends ISpellEffect {
     readonly kind: "TILE";
     readonly repeat: IRepeatEffect;
-}
-
-export interface ISummonEffectDTO extends ISpellEffectDTO {
-    readonly kind: "SUMMON";
-    readonly movementType: TId;
-    readonly weaponType: TId;
-    readonly hp: { base: number, scale?: number | null };
-    readonly atk: { base: number, scale?: number | null };
 }
 
 export interface ISummonEffect extends ISpellEffect {
@@ -329,17 +233,6 @@ export interface ISummonEffect extends ISpellEffect {
     readonly hp: { base: number, scale?: number | null };
     readonly atk: { base: number, scale?: number | null };
 }
-
-export type TSpellEffectDTO = IDamageEffectDTO
-    | IHealEffectDTO
-    | IMovementEffectDTO
-    | IStatEffectDTO
-    | IStatusEffectDTO
-    | IRepeatEffectDTO
-    | IWarpEffectDTO
-    | IIceBlockEffectDTO
-    | ITileEffectDTO
-    | ISummonEffectDTO
 
 export type TSpellEffect = IDamageEffect
     | IHealEffect
