@@ -42,7 +42,7 @@ export interface IWeapon {
     readonly uniqueSkill: IWeaponSkill;
     readonly freeSkillSlots: number;
     readonly prfDisciple: IDisciple;
-    readonly getWeaponVariantStat: (args: { variant: "HP" | "NEUTRAL" | "ATK", stat: "hp" | "atk" }) => number
+    getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK", stat: "hp" | "atk" }): number
 }
 
 export interface IMovementType {
@@ -67,8 +67,8 @@ export interface IDisciple {
     readonly baseAtk: number;
     readonly baseHp: number;
 
-    readonly getAtk: ({ level }: { level: number }) => number;
-    readonly getHp: ({ level }: { level: number }) => number;
+    getAtk({ level }: { level: number }): number;
+    getHp({ level }: { level: number }): number;
 }
 
 export type TSpellRole = "EX" | "LIGHT" | "SHADOW"
