@@ -13,7 +13,7 @@ export interface IWeaponType {
     readonly id: TId;
     readonly name: string;
     readonly color: IColor;
-    readonly range: number;
+    readonly range: 1 | 2;
     readonly discipleBaseAtkModifier: number;
 }
 
