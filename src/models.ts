@@ -96,7 +96,7 @@ export const WeaponSchema = defineEntity({
         hp: p.integer(),
         atk: p.integer(),
         freeSkillSlots: p.integer(),
-        uniqueSkill: () => p.manyToOne(WeaponSkill).inversedBy("weapons").owner(),
+        uniqueSkill: () => p.manyToOne(WeaponSkill).inversedBy("weapons"),
         prfDisciple: () => p.oneToOne(Disciple).mappedBy("prfWeapon")
     },
 });
@@ -239,7 +239,7 @@ export const SpellSchema = defineEntity({
     properties: {
         id: p.string().primary(),
         name: p.string(),
-        disciple: () => p.manyToOne(Disciple).inversedBy("spells").owner(),
+        disciple: () => p.manyToOne(Disciple).inversedBy("spells"),
         role: p.type(SpellRoleType),
         shape: p.manyToOne(SpellShape),
         uses: p.integer().nullable(),
