@@ -1,3 +1,4 @@
+import { BOT_NAME } from "../constants.ts"
 import { CommandInfo, ICommandInfo } from "./base.js"
 
 
@@ -6,5 +7,5 @@ export const helpCommandInfo: ICommandInfo = new CommandInfo({
         return baseInfo
     },
     name: "help",
-    description: "Lorem ipsum dolor sit amet",
+    description: `Displays help for ${BOT_NAME} bot.`,
 })

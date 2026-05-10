@@ -1,5 +1,7 @@
 import { Colors } from "discord.js";
 
+export const BOT_NAME = "Lumi"
+
 export const DISCIPLE_BASE_HP = 80
 export const DISCIPLE_BASE_ATK = 36
 export const DISCIPLE_MINIMUM_RELEVANT_LEVEL = 8;
@@ -17,6 +19,7 @@ export const NOTABOT_DISCORD_MENTION = `<@${NOTABOT_DISCORD_ID}>`
 
 export const DISCORD_MESSAGE_SUCCESS_COLOR = Colors.Green
 export const DISCORD_MESSAGE_ERROR_COLOR = Colors.Red
+export const DISCORD_MESSAGE_NEUTRAL_COLOR = Colors.DarkGold
 
 export const DISCORD_RED_SQUARE_EMOJI_ID = "red_square"
 export const DISCORD_RED_SQUARE_EMOJI_CALL = `:${DISCORD_RED_SQUARE_EMOJI_ID}:`

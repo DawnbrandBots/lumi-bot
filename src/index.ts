@@ -7,6 +7,7 @@ import { getSearchCommand } from "./commands/search.js";
 
 import { MikroORM } from "@mikro-orm/sqlite";
 
+import helpFeature from "./features/help.ts";
 import searchFeature, { createFuse } from "./features/search.ts";
 import mikroOrmConfig from './mikro-orm.config.ts';
 import { Disciple, Spell, Weapon, WeaponSkill } from "./models.js";
@@ -61,11 +62,17 @@ bot.on(Events.MessageCreate, async interaction => {
     if (!mentionedUsers.has(bot.user.id)) {
         return
     }
-    const startingBotMentionStr = `<@${bot.user.id}> `
-    if (!interaction.content.startsWith(startingBotMentionStr)) {
+    const startingBotMentionStr = `<@${bot.user.id}>`
+    if (interaction.content === startingBotMentionStr) {
+        const help = helpFeature()
+        await interaction.reply({ embeds: [help] })
         return
     }
-    const input = interaction.content.slice(startingBotMentionStr.length)
+    const startingBotMentionAndSpaceStr = startingBotMentionStr + " "
+    if (!interaction.content.startsWith(startingBotMentionAndSpaceStr)) {
+        return
+    }
+    const input = interaction.content.slice(startingBotMentionAndSpaceStr.length)
     const embed = await searchFeature({ em, fuse, handlers, input })
     await interaction.reply({
         embeds: [embed],
