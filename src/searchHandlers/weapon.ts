@@ -1,6 +1,6 @@
 import { APIEmbed } from "discord.js";
 import { SearchHandler } from "../features/search.ts";
-import { Weapon } from "../models.ts";
+import { Weapon } from "../models/weapon.ts";
 import { IWeapon } from "../types.ts";
 import { toAsciiTable } from "../utils/table.ts";
 
