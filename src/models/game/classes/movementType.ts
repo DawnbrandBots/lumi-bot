@@ -2,7 +2,7 @@ import { defineEntity, p } from "@mikro-orm/core";
 import type { IMovementType } from "../types.ts";
 
 export const MovementTypeSchema = defineEntity({
-    name: 'MovementType',
+    name: "MovementType",
     properties: {
         id: p.string().primary(),
         name: p.string(),
@@ -11,9 +11,11 @@ export const MovementTypeSchema = defineEntity({
         discipleBaseHpModifier: p.integer(),
         discipleBaseAtkModifier: p.integer(),
     },
-})
+});
 
 export class MovementType extends MovementTypeSchema.class implements IMovementType {
-    get kind() { return "movement" as const }
+    get kind() {
+        return "movement" as const;
+    }
 }
 MovementTypeSchema.setClass(MovementType);

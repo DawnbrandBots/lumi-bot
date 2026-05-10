@@ -3,7 +3,12 @@ import Fuse from "fuse.js/basic";
 import { EntityManager, EntityName, Populate } from "@mikro-orm/sqlite";
 import { APIEmbed } from "discord.js";
 import { TId } from "../models/game/types.ts";
-import { SEARCH_MAX_INPUT_LENGTH, DISCORD_MESSAGE_ERROR_COLOR, NOTABOT_DISCORD_MENTION, DISCORD_MESSAGE_SUCCESS_COLOR } from "../models/discord/constants.ts";
+import {
+    SEARCH_MAX_INPUT_LENGTH,
+    DISCORD_MESSAGE_ERROR_COLOR,
+    NOTABOT_DISCORD_MENTION,
+    DISCORD_MESSAGE_SUCCESS_COLOR,
+} from "../models/discord/constants.ts";
 
 export interface ISearchItem {
     readonly kind: string;
@@ -12,55 +17,56 @@ export interface ISearchItem {
 }
 
 export function createFuse<Items extends ISearchItem>({ items }: { items: Items[] }): Fuse<Items> {
-    const keys: (keyof Items & string)[] = ["name"]
+    const keys: (keyof Items & string)[] = ["name"];
     return new Fuse(items, { keys, ignoreDiacritics: true, isCaseSensitive: false });
 }
 
-export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>
-export type SearchFeatureReturnType = Required<Pick<APIEmbed, "title" | "color">> & Pick<APIEmbed, "fields" | "description">
+export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
+export type SearchFeatureReturnType = Required<Pick<APIEmbed, "title" | "color">> &
+    Pick<APIEmbed, "fields" | "description">;
 
 // TODO: "response" argument type should be refined to take populate's type into account
 // (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
 export type SearchHandler<EntityType extends ISearchItem, PopulateHint extends string = never> = {
-    class: EntityName<EntityType>,
-    response: (item: EntityType) => SearchHandlerResponseReturnType,
+    class: EntityName<EntityType>;
+    response: (item: EntityType) => SearchHandlerResponseReturnType;
     /**
      * MikroORM populate paths for fetched entities.
      * Search handlers might need deeply nested properties that need to be referred to explicitly
      * because just using ["*"] won't populate them.
-     * 
+     *
      * Example: Weapon's search handler displaying the unique skill's effect description.
      * That's a property twice nested that needs to be explictly populated with ["uniqueSkill.effect"]
      */
-    populate?: Populate<EntityType, PopulateHint>
+    populate?: Populate<EntityType, PopulateHint>;
     // TODO: ideally, this file should be void of any mention to MikroORM, in case there's ever a switch to a different method to read the DB
-}
+};
 
 export type SearchHandlers<Items extends ISearchItem> = {
-    [Kind in Items["kind"]]: SearchHandler<Items & { kind: Kind }, string>
-}
+    [Kind in Items["kind"]]: SearchHandler<Items & { kind: Kind }, string>;
+};
 
 async function searchFeature<
     Items extends ISearchItem & { kind: Kinds },
     // TODO: I am not sure why result.item.kind cannot index handlers without specifying this second type argument
-    Kinds extends ISearchItem["kind"] = ISearchItem["kind"]
+    Kinds extends ISearchItem["kind"] = ISearchItem["kind"],
 >({
     input,
     fuse,
     handlers,
-    em
+    em,
 }: {
-    input: string,
-    fuse: Fuse<Items>,
-    handlers: SearchHandlers<Items>,
-    em: EntityManager
+    input: string;
+    fuse: Fuse<Items>;
+    handlers: SearchHandlers<Items>;
+    em: EntityManager;
 }): Promise<SearchFeatureReturnType> {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
         return {
             title: "Input",
             color: DISCORD_MESSAGE_ERROR_COLOR,
-            description: `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`
-        }
+            description: `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`,
+        };
     }
 
     const results = fuse.search(input, { limit: 1 });
@@ -69,23 +75,28 @@ async function searchFeature<
     if (!result) {
         return {
             title: "Search yield no result",
-            color: DISCORD_MESSAGE_ERROR_COLOR
-        }
+            color: DISCORD_MESSAGE_ERROR_COLOR,
+        };
     }
 
-    const handler = handlers[result.item.kind]
+    const handler = handlers[result.item.kind];
 
     // TODO: figure out the correct types here and remove as never
-    const entity = await em.findOne(handler.class, { id: result.item.id } as never, { populate: (handler.populate ?? ["*"]) as never })
+    const entity = await em.findOne(handler.class, { id: result.item.id } as never, {
+        populate: (handler.populate ?? ["*"]) as never,
+    });
     if (!entity) {
         return {
             title: "Result found in search engine but not in database",
             description: NOTABOT_DISCORD_MENTION,
-            fields: [{ name: "Entity kind", value: result.item.kind, inline: true }, { name: "Id", value: result.item.id, inline: true }],
-            color: DISCORD_MESSAGE_ERROR_COLOR
-        }
+            fields: [
+                { name: "Entity kind", value: result.item.kind, inline: true },
+                { name: "Id", value: result.item.id, inline: true },
+            ],
+            color: DISCORD_MESSAGE_ERROR_COLOR,
+        };
     }
-    return { ...handler.response(entity), color: DISCORD_MESSAGE_SUCCESS_COLOR }
+    return { ...handler.response(entity), color: DISCORD_MESSAGE_SUCCESS_COLOR };
 }
 
-export default searchFeature
+export default searchFeature;

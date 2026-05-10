@@ -5,20 +5,17 @@ export class SpellRole implements ISpellRole {
     readonly kind: ISpellRole["kind"];
     readonly name: ISpellRole["name"];
 
-    public constructor({ kind, name }: {
-        readonly kind: ISpellRole["kind"],
-        readonly name: ISpellRole["name"],
-    }) {
-        this.kind = kind
-        this.name = name
+    public constructor({ kind, name }: { readonly kind: ISpellRole["kind"]; readonly name: ISpellRole["name"] }) {
+        this.kind = kind;
+        this.name = name;
     }
 }
 
 const SPELL_EFFECT_ROLES = {
-    EX: new SpellRole({ kind: "EX", "name": "EX" }),
-    LIGHT: new SpellRole({ kind: "LIGHT", "name": "Light", }),
-    SHADOW: new SpellRole({ kind: "SHADOW", "name": "Shadow", }),
-} as const satisfies { [K in TSpellRole]: ISpellRole }
+    EX: new SpellRole({ kind: "EX", name: "EX" }),
+    LIGHT: new SpellRole({ kind: "LIGHT", name: "Light" }),
+    SHADOW: new SpellRole({ kind: "SHADOW", name: "Shadow" }),
+} as const satisfies { [K in TSpellRole]: ISpellRole };
 
 export class SpellRoleType extends Type<SpellRole, string | null | undefined> {
     public convertToDatabaseValue(value: SpellRole | null | undefined): string | null | undefined {
@@ -27,8 +24,8 @@ export class SpellRoleType extends Type<SpellRole, string | null | undefined> {
 
     public convertToJSValue(value: string): SpellRole {
         if (value in SPELL_EFFECT_ROLES) {
-            return SPELL_EFFECT_ROLES[value as keyof typeof SPELL_EFFECT_ROLES]
+            return SPELL_EFFECT_ROLES[value as keyof typeof SPELL_EFFECT_ROLES];
         }
-        throw new Error("Invalid spell effect target id")
+        throw new Error("Invalid spell effect target id");
     }
 }

@@ -1,10 +1,10 @@
 [
-    {
-        "id": "INCREASE",
-        "verb": "increases"
-    },
-    {
-        "id": "DECREASE",
-        "verb": "decreases"
-    }
+  {
+    "id": "INCREASE",
+    "verb": "increases"
+  },
+  {
+    "id": "DECREASE",
+    "verb": "decreases"
+  }
 ]

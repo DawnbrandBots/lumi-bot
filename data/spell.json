@@ -1,3452 +1,3452 @@
 [
-    {
-        "id": "MINOR_IMPACT",
-        "name": "Minor Impact",
-        "disciple": null,
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "scale": null,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
+  {
+    "id": "MINOR_IMPACT",
+    "name": "Minor Impact",
+    "disciple": null,
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "scale": null,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "MINOR_HEAL",
+    "name": "Minor Heal",
+    "disciple": null,
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 50,
+          "scale": null,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "MINOR_PULL",
+    "name": "Minor Pull",
+    "disciple": null,
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 1,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "MINOR_STING",
+    "name": "Minor Sting",
+    "disciple": null,
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "scale": null,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "COLORLESS",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "MINOR_DARK_SWORD_FLIER",
+    "name": "Minor Dark Sword Flier",
+    "disciple": null,
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "FLYING",
+        "weaponType": "SWORD",
+        "hp": {
+          "scale": null,
+          "base": 80
+        },
+        "atk": {
+          "scale": null,
+          "base": 50
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ENNEA_FIRE_EX",
+    "name": "Ennea Fire EX",
+    "disciple": "KURT",
+    "role": "EX",
+    "shape": "3X3_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ELFIRE",
+    "name": "Elfire",
+    "disciple": "KURT",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRAHEAL",
+    "name": "Tetraheal",
+    "disciple": "KURT",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "CROSS_STING",
+    "name": "Cross Sting",
+    "disciple": "KURT",
+    "role": "SHADOW",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "COLORLESS",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "CROSS_SHIELD_EX",
+    "name": "Cross Shield EX",
+    "disciple": "GOTTHOLD",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 45,
+            "unit": {
+              "kind": "FIXED"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "MINOR_HEAL",
-        "name": "Minor Heal",
-        "disciple": null,
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DISTANT_THUNDER",
+    "name": "Distant Thunder",
+    "disciple": "GOTTHOLD",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "effectiveness": [
             {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 50,
-                    "scale": null,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
+              "kind": "RANGED",
+              "base": 70
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "MINOR_PULL",
-        "name": "Minor Pull",
-        "disciple": null,
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "MOVEMENT",
-                "direction": "DOWN",
-                "count": 1,
-                "target": "ANY"
+          ],
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "CROSSHEAL",
+    "name": "Crossheal",
+    "disciple": "GOTTHOLD",
+    "role": "LIGHT",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_LANCE_ARMOR",
+    "name": "Dark Lance Armor",
+    "disciple": "GOTTHOLD",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "ARMORED",
+        "weaponType": "LANCE",
+        "hp": {
+          "base": 140
+        },
+        "atk": {
+          "base": 50
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "CROSSEDGE_EX",
+    "name": "Crossedge EX",
+    "disciple": "CARINA",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 60,
+            "unit": {
+              "kind": "FIXED"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "MINOR_STING",
-        "name": "Minor Sting",
-        "disciple": null,
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 70,
-                    "scale": null,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "COLORLESS",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "MINOR_DARK_SWORD_FLIER",
-        "name": "Minor Dark Sword Flier",
-        "disciple": null,
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "FLYING",
-                "weaponType": "SWORD",
-                "hp": {
-                    "scale": null,
-                    "base": 80
-                },
-                "atk": {
-                    "scale": null,
-                    "base": 50
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ENNEA_FIRE_EX",
-        "name": "Ennea Fire EX",
-        "disciple": "KURT",
-        "role": "EX",
-        "shape": "3X3_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ELFIRE",
-        "name": "Elfire",
-        "disciple": "KURT",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 60,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRAHEAL",
-        "name": "Tetraheal",
-        "disciple": "KURT",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "CROSS_STING",
-        "name": "Cross Sting",
-        "disciple": "KURT",
-        "role": "SHADOW",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 70,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "COLORLESS",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "CROSS_SHIELD_EX",
-        "name": "Cross Shield EX",
-        "disciple": "GOTTHOLD",
-        "role": "EX",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 45,
-                        "unit": {
-                            "kind": "FIXED"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DISTANT_THUNDER",
-        "name": "Distant Thunder",
-        "disciple": "GOTTHOLD",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 40,
-                    "effectiveness": [
-                        {
-                            "kind": "RANGED",
-                            "base": 70
-                        }
-                    ],
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "CROSSHEAL",
-        "name": "Crossheal",
-        "disciple": "GOTTHOLD",
-        "role": "LIGHT",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_LANCE_ARMOR",
-        "name": "Dark Lance Armor",
-        "disciple": "GOTTHOLD",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "ARMORED",
-                "weaponType": "LANCE",
-                "hp": {
-                    "base": 140
-                },
-                "atk": {
-                    "base": 50
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "CROSSEDGE_EX",
-        "name": "Crossedge EX",
-        "disciple": "CARINA",
-        "role": "EX",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 60,
-                        "unit": {
-                            "kind": "FIXED"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ARROW_WIND",
-        "name": "Arrow Wind",
-        "disciple": "CARINA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 20,
-                            "unit": {
-                                "kind": "FIXED"
-                            },
-                            "effectiveness": [
-                                {
-                                    "kind": "FLYING",
-                                    "base": 40
-                                }
-                            ]
-                        },
-                        "color": "GREEN"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "HEAL_PULL",
-        "name": "Heal Pull",
-        "disciple": "CARINA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 30,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ARROW_WIND",
+    "name": "Arrow Wind",
+    "disciple": "CARINA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              },
+              "effectiveness": [
+                {
+                  "kind": "FLYING",
+                  "base": 40
+                }
+              ]
             },
-            {
-                "kind": "MOVEMENT",
-                "direction": "DOWN",
-                "count": 1,
-                "target": "ANY"
+            "color": "GREEN"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "HEAL_PULL",
+    "name": "Heal Pull",
+    "disciple": "CARINA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 1,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_HEAL",
+    "name": "Dark Heal",
+    "disciple": "CARINA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 120,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ELTHUNDER_EX",
+    "name": "Elthunder EX",
+    "disciple": "ALBERTA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ELTHUNDER",
+    "name": "Elthunder",
+    "disciple": "ALBERTA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SELF_HEAL_PUSH",
+    "name": "Self Heal Push",
+    "disciple": "ALBERTA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 1,
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRASTING",
+    "name": "Tetrasting",
+    "disciple": "ALBERTA",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 80,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "COLORLESS",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "FIRE_WARP_EX",
+    "name": "Fire Warp EX",
+    "disciple": "ZASHA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 9,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "EDGE_BREAK",
+    "name": "Edge Break",
+    "disciple": "ZASHA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 35,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_HEAL",
-        "name": "Dark Heal",
-        "disciple": "CARINA",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 120,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ELTHUNDER_EX",
-        "name": "Elthunder EX",
-        "disciple": "ALBERTA",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 70,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ELTHUNDER",
-        "name": "Elthunder",
-        "disciple": "ALBERTA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 60,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SELF_HEAL_PUSH",
-        "name": "Self Heal Push",
-        "disciple": "ALBERTA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "SELF"
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "POISON",
+    "name": "Poison",
+    "disciple": "ZASHA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 9,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 30,
+              "unit": {
+                "kind": "FIXED"
+              }
             },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 1,
-                "target": "SELF"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRASTING",
-        "name": "Tetrasting",
-        "disciple": "ALBERTA",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 80,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "COLORLESS",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "FIRE_WARP_EX",
-        "name": "Fire Warp EX",
-        "disciple": "ZASHA",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 9,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 30,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
+            "color": "COLORLESS"
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_SLASH",
+    "name": "Dark Slash",
+    "disciple": "ZASHA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 7,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 170,
+          "scale": 5,
+          "unit": {
+            "kind": "PERCENT",
+            "stat": "ATK"
+          }
+        },
+        "color": "COLORLESS",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "CROSSHEAL_EX",
+    "name": "Crossheal EX",
+    "disciple": "ROSE",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRAFIRE",
+    "name": "Tetrafire",
+    "disciple": "ROSE",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SELF_MEND",
+    "name": "Self Mend",
+    "disciple": "ROSE",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 80,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_SWORD_FLIER",
+    "name": "Dark Sword Flier",
+    "disciple": "ROSE",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "FLYING",
+        "weaponType": "SWORD",
+        "hp": {
+          "base": 100
+        },
+        "atk": {
+          "base": 60
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "HEAL_WARP_EX",
+    "name": "Heal Warp EX",
+    "disciple": "SAI",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "HEAVY_CROSSTHUNDER",
+    "name": "Heavy Crossthunder",
+    "disciple": "SAI",
+    "role": "LIGHT",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 9,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 40,
+              "unit": {
+                "kind": "FIXED"
+              }
             },
-            {
-                "kind": "WARP",
-                "target": "ANY"
+            "color": "BLUE"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRAEDGE",
+    "name": "Tetraedge",
+    "disciple": "SAI",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 50,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "EDGE_BREAK",
-        "name": "Edge Break",
-        "disciple": "ZASHA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 35,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "ANY"
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_REGEN",
+    "name": "Dark Regen",
+    "disciple": "SAI",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "HEAL",
+            "amount": {
+              "base": 40,
+              "unit": {
+                "kind": "FIXED"
+              }
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "POISON",
-        "name": "Poison",
-        "disciple": "ZASHA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 9,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 30,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "COLORLESS"
-                    },
-                    "times": 5,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_SLASH",
-        "name": "Dark Slash",
-        "disciple": "ZASHA",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 7,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 170,
-                    "scale": 5,
-                    "unit": {
-                        "kind": "PERCENT",
-                        "stat": "ATK"
-                    }
-                },
-                "color": "COLORLESS",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "CROSSHEAL_EX",
-        "name": "Crossheal EX",
-        "disciple": "ROSE",
-        "role": "EX",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 60,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRAFIRE",
-        "name": "Tetrafire",
-        "disciple": "ROSE",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SELF_MEND",
-        "name": "Self Mend",
-        "disciple": "ROSE",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 80,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "SELF"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_SWORD_FLIER",
-        "name": "Dark Sword Flier",
-        "disciple": "ROSE",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "FLYING",
-                "weaponType": "SWORD",
-                "hp": {
-                    "base": 100
-                },
-                "atk": {
-                    "base": 60
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "HEAL_WARP_EX",
-        "name": "Heal Warp EX",
-        "disciple": "SAI",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRATHUNDER_WALL_EX",
+    "name": "Tetrathunder Wall EX",
+    "disciple": "SHEA",
+    "role": "EX",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 40,
+              "unit": {
+                "kind": "FIXED"
+              }
             },
-            {
-                "kind": "WARP",
-                "target": "ANY"
+            "color": "BLUE"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "ICE_BLOCK",
+        "hp": 60,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "STAFF_FLIER",
+    "name": "Staff Flier",
+    "disciple": "SHEA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "FLYING",
+        "weaponType": "STAFF",
+        "hp": {
+          "base": 50
+        },
+        "atk": {
+          "base": 40
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRASHIELD",
+    "name": "Tetrashield",
+    "disciple": "SHEA",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "HEAVY_CROSSTHUNDER",
-        "name": "Heavy Crossthunder",
-        "disciple": "SAI",
-        "role": "LIGHT",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 9,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 40,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "BLUE"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_CROSSTHUNDER",
+    "name": "Dark Crossthunder",
+    "disciple": "SHEA",
+    "role": "SHADOW",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "EXWIND_EX",
+    "name": "Exwind EX",
+    "disciple": "SKOLL",
+    "role": "EX",
+    "shape": "3X3_X",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRAWIND",
+    "name": "Tetrawind",
+    "disciple": "SKOLL",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "MEND",
+    "name": "Mend",
+    "disciple": "SKOLL",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_TETRAWIND",
+    "name": "Dark Tetrawind",
+    "disciple": "SKOLL",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 75,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ELWIND_EX",
+    "name": "Elwind EX",
+    "disciple": "HATI",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ELWIND",
+    "name": "Elwind",
+    "disciple": "HATI",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "WIND_STRIKE",
+    "name": "Wind Strike",
+    "disciple": "HATI",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_BOW_KNIGHT",
+    "name": "Dark Bow Knight",
+    "disciple": "HATI",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "CAVALRY",
+        "weaponType": "BOW",
+        "hp": {
+          "base": 100
+        },
+        "atk": {
+          "base": 60
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "INVIGORATE_EX",
+    "name": "Invigorate EX",
+    "disciple": "TAMAMO",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "HP"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRAEDGE",
-        "name": "Tetraedge",
-        "disciple": "SAI",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 50,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_REGEN",
-        "name": "Dark Regen",
-        "disciple": "SAI",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "HEAL",
-                        "amount": {
-                            "base": 40,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        }
-                    },
-                    "times": 5,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRATHUNDER_WALL_EX",
-        "name": "Tetrathunder Wall EX",
-        "disciple": "SHEA",
-        "role": "EX",
-        "shape": "2X2_SQUARE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 40,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "BLUE"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
+          },
+          "stat": "HP"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRATHUNDER",
+    "name": "Tetrathunder",
+    "disciple": "TAMAMO",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "RAPID_HEAL_PULL",
+    "name": "Rapid Heal Pull",
+    "disciple": "TAMAMO",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 1,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "FLASH_STING",
+    "name": "Flash Sting",
+    "disciple": "TAMAMO",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "COLORLESS",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "MEGA_CROSSTHUNDER_EX",
+    "name": "Mega Crossthunder EX",
+    "disciple": "DIMITRI",
+    "role": "EX",
+    "shape": "5X5_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "FINAL_TETRATHUNDER",
+    "name": "Final Tetrathunder",
+    "disciple": "DIMITRI",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 45,
+              "unit": {
+                "kind": "FIXED"
+              }
             },
-            {
-                "kind": "ICE_BLOCK",
-                "hp": 60,
-                "target": "ANY"
+            "color": "BLUE"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "STABBING_THUNDER",
+    "name": "Stabbing Thunder",
+    "disciple": "DIMITRI",
+    "role": "LIGHT",
+    "shape": "5_VERTICAL",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_SHIELD_BREAK",
+    "name": "Dark Shield Break",
+    "disciple": "DIMITRI",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 80,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "STAFF_FLIER",
-        "name": "Staff Flier",
-        "disciple": "SHEA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "FLYING",
-                "weaponType": "STAFF",
-                "hp": {
-                    "base": 50
-                },
-                "atk": {
-                    "base": 40
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRASHIELD",
-        "name": "Tetrashield",
-        "disciple": "SHEA",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 30,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_CROSSTHUNDER",
-        "name": "Dark Crossthunder",
-        "disciple": "SHEA",
-        "role": "SHADOW",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 70,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "EXWIND_EX",
-        "name": "Exwind EX",
-        "disciple": "SKOLL",
-        "role": "EX",
-        "shape": "3X3_X",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRAWIND",
-        "name": "Tetrawind",
-        "disciple": "SKOLL",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "MEND",
-        "name": "Mend",
-        "disciple": "SKOLL",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 70,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_TETRAWIND",
-        "name": "Dark Tetrawind",
-        "disciple": "SKOLL",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 75,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ELWIND_EX",
-        "name": "Elwind EX",
-        "disciple": "HATI",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 70,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ELWIND",
-        "name": "Elwind",
-        "disciple": "HATI",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 60,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "WIND_STRIKE",
-        "name": "Wind Strike",
-        "disciple": "HATI",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ARROW_WIND_EX",
+    "name": "Arrow Wind EX",
+    "disciple": "LYN",
+    "role": "EX",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 25,
+              "unit": {
+                "kind": "FIXED"
+              },
+              "effectiveness": [
+                {
+                  "kind": "FLYING",
+                  "base": 40
+                }
+              ]
             },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_BOW_KNIGHT",
-        "name": "Dark Bow Knight",
-        "disciple": "HATI",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "CAVALRY",
-                "weaponType": "BOW",
-                "hp": {
-                    "base": 100
-                },
-                "atk": {
-                    "base": 60
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "INVIGORATE_EX",
-        "name": "Invigorate EX",
-        "disciple": "TAMAMO",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 20,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "HP"
-                        }
-                    },
-                    "stat": "HP"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRATHUNDER",
-        "name": "Tetrathunder",
-        "disciple": "TAMAMO",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "RAPID_HEAL_PULL",
-        "name": "Rapid Heal Pull",
-        "disciple": "TAMAMO",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
+            "unit": {
+              "kind": "FIXED"
             },
-            {
-                "kind": "MOVEMENT",
-                "direction": "DOWN",
-                "count": 1,
-                "target": "ANY"
+            "color": "GREEN"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "BOW_FIGHTER",
+    "name": "Bow Fighter",
+    "disciple": "LYN",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "INFANTRY",
+        "weaponType": "BOW",
+        "hp": {
+          "base": 50
+        },
+        "atk": {
+          "base": 50
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SHIELD_BREAK",
+    "name": "Shield Break",
+    "disciple": "LYN",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 100,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "FLASH_STING",
-        "name": "Flash Sting",
-        "disciple": "TAMAMO",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 60,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "COLORLESS",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "MEGA_CROSSTHUNDER_EX",
-        "name": "Mega Crossthunder EX",
-        "disciple": "DIMITRI",
-        "role": "EX",
-        "shape": "5X5_CROSS",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "FINAL_TETRATHUNDER",
-        "name": "Final Tetrathunder",
-        "disciple": "DIMITRI",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 45,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "BLUE"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "STABBING_THUNDER",
-        "name": "Stabbing Thunder",
-        "disciple": "DIMITRI",
-        "role": "LIGHT",
-        "shape": "5_VERTICAL",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_SHIELD_BREAK",
-        "name": "Dark Shield Break",
-        "disciple": "DIMITRI",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 80,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ARROW_WIND_EX",
-        "name": "Arrow Wind EX",
-        "disciple": "LYN",
-        "role": "EX",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 25,
-                            "unit": {
-                                "kind": "FIXED"
-                            },
-                            "effectiveness": [
-                                {
-                                    "kind": "FLYING",
-                                    "base": 40
-                                }
-                            ]
-                        },
-                        "unit": {
-                            "kind": "FIXED"
-                        },
-                        "color": "GREEN"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "BOW_FIGHTER",
-        "name": "Bow Fighter",
-        "disciple": "LYN",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "INFANTRY",
-                "weaponType": "BOW",
-                "hp": {
-                    "base": 50
-                },
-                "atk": {
-                    "base": 50
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SHIELD_BREAK",
-        "name": "Shield Break",
-        "disciple": "LYN",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 100,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_TETRAPOISON",
-        "name": "Dark Tetrapoison",
-        "disciple": "LYN",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 30,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "COLORLESS"
-                    },
-                    "times": 5,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ENNEA_WIND_EX",
-        "name": "Ennea Wind EX",
-        "disciple": "BARTOLOMEUS",
-        "role": "EX",
-        "shape": "3X3_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "RAPID_WIND_STRIKE",
-        "name": "Rapid Wind Strike",
-        "disciple": "BARTOLOMEUS",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_TETRAPOISON",
+    "name": "Dark Tetrapoison",
+    "disciple": "LYN",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 30,
+              "unit": {
+                "kind": "FIXED"
+              }
             },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SLICING_WIND",
-        "name": "Slicing Wind",
-        "disciple": "BARTOLOMEUS",
-        "role": "LIGHT",
-        "shape": "5_HORIZONTAL",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_TETRAHEAL",
-        "name": "Dark Tetraheal",
-        "disciple": "BARTOLOMEUS",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 90,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "ELFIRE_EX",
-        "name": "Elfire EX",
-        "disciple": "JOACHIM",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 70,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "HEAVY_CROSSFIRE",
-        "name": "Heavy Crossfire",
-        "disciple": "JOACHIM",
-        "role": "LIGHT",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 9,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 40,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "RED"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SHIELD_STRIKE",
-        "name": "Shield Strike",
-        "disciple": "JOACHIM",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 30,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
+            "color": "COLORLESS"
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ENNEA_WIND_EX",
+    "name": "Ennea Wind EX",
+    "disciple": "BARTOLOMEUS",
+    "role": "EX",
+    "shape": "3X3_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "RAPID_WIND_STRIKE",
+    "name": "Rapid Wind Strike",
+    "disciple": "BARTOLOMEUS",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SLICING_WIND",
+    "name": "Slicing Wind",
+    "disciple": "BARTOLOMEUS",
+    "role": "LIGHT",
+    "shape": "5_HORIZONTAL",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_TETRAHEAL",
+    "name": "Dark Tetraheal",
+    "disciple": "BARTOLOMEUS",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 90,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "ELFIRE_EX",
+    "name": "Elfire EX",
+    "disciple": "JOACHIM",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "HEAVY_CROSSFIRE",
+    "name": "Heavy Crossfire",
+    "disciple": "JOACHIM",
+    "role": "LIGHT",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 9,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 40,
+              "unit": {
+                "kind": "FIXED"
+              }
             },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
+            "color": "RED"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SHIELD_STRIKE",
+    "name": "Shield Strike",
+    "disciple": "JOACHIM",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_CROSS_FIRE",
-        "name": "Dark Cross Fire",
-        "disciple": "JOACHIM",
-        "role": "SHADOW",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 70,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_CROSS_FIRE",
+    "name": "Dark Cross Fire",
+    "disciple": "JOACHIM",
+    "role": "SHADOW",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "THUNDER_EDGE_BREAK_EX",
+    "name": "Thunder Edge Break EX",
+    "disciple": "CORRIN",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 25,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "THUNDER_EDGE_BREAK_EX",
-        "name": "Thunder Edge Break EX",
-        "disciple": "CORRIN",
-        "role": "EX",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "THUNDER_STRIKE",
+    "name": "Thunder Strike",
+    "disciple": "CORRIN",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SELF_CROSS_SHIELD",
+    "name": "Self Cross Shield",
+    "disciple": "CORRIN",
+    "role": "LIGHT",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_CROSS_POISON_PATCH",
+    "name": "Dark Cross Poison Patch",
+    "disciple": "CORRIN",
+    "role": "SHADOW",
+    "shape": "3X3_CROSS",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "TILE",
+        "repeat": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 25,
+              "unit": {
+                "kind": "FIXED"
+              }
             },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 25,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "ANY"
+            "color": "COLORLESS"
+          },
+          "times": 5,
+          "interval": 3
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "CROSS_AID_EX",
+    "name": "Cross Aid EX",
+    "disciple": "MICAELA",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "HEAL",
+            "amount": {
+              "base": 35,
+              "unit": {
+                "kind": "FIXED"
+              }
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "THUNDER_STRIKE",
-        "name": "Thunder Strike",
-        "disciple": "CORRIN",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 25,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "PIKE_THUNDER",
+    "name": "Pike Thunder",
+    "disciple": "MICAELA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              },
+              "effectiveness": [
+                {
+                  "kind": "CAVALRY",
+                  "base": 40
+                }
+              ]
             },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SELF_CROSS_SHIELD",
-        "name": "Self Cross Shield",
-        "disciple": "CORRIN",
-        "role": "LIGHT",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 30,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "SELF"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_CROSS_POISON_PATCH",
-        "name": "Dark Cross Poison Patch",
-        "disciple": "CORRIN",
-        "role": "SHADOW",
-        "shape": "3X3_CROSS",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "TILE",
-                "repeat": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 25,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "COLORLESS"
-                    },
-                    "times": 5,
-                    "interval": 3
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "CROSS_AID_EX",
-        "name": "Cross Aid EX",
-        "disciple": "MICAELA",
-        "role": "EX",
-        "shape": "3X3_CROSS",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "HEAL",
-                        "amount": {
-                            "base": 35,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        }
-                    },
-                    "times": 5,
-                    "interval": 6
-                },
-                "target": "ANY"
+            "unit": {
+              "kind": "FIXED"
             },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 25,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
+            "color": "BLUE"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "HEAL_PUSH",
+    "name": "Heal Push",
+    "disciple": "MICAELA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 1,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_ELTHUNDER",
+    "name": "Dark Elthunder",
+    "disciple": "MICAELA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 90,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "FIRE_SHIELD_BREAK_EX",
+    "name": "Fire Shield Break EX",
+    "disciple": "VERONICA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 50,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
             }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "PIKE_THUNDER",
-        "name": "Pike Thunder",
-        "disciple": "MICAELA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 20,
-                            "unit": {
-                                "kind": "FIXED"
-                            },
-                            "effectiveness": [
-                                {
-                                    "kind": "CAVALRY",
-                                    "base": 40
-                                }
-                            ]
-                        },
-                        "unit": {
-                            "kind": "FIXED"
-                        },
-                        "color": "BLUE"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "HEAL_PUSH",
-        "name": "Heal Push",
-        "disciple": "MICAELA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 30,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 1,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_ELTHUNDER",
-        "name": "Dark Elthunder",
-        "disciple": "MICAELA",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 90,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "FIRE_SHIELD_BREAK_EX",
-        "name": "Fire Shield Break EX",
-        "disciple": "VERONICA",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 60,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 50,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "FIRE_STRIKE_PLUS_FLYING",
-        "name": "Fire Strike + Flying",
-        "disciple": "VERONICA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 4,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "movementType",
-            "which": "FLYING"
-        }
-    },
-    {
-        "id": "EDGE_STRIKE",
-        "name": "Edge Strike",
-        "disciple": "VERONICA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 50,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_FRAGILITY",
-        "name": "Dark Fragility",
-        "disciple": "VERONICA",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 50,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "HP"
-                        }
-                    },
-                    "stat": "HP"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "CROSSEDGE_BOOST_EX",
-        "name": "Crossedge Boost EX",
-        "disciple": "ESTEL",
-        "role": "EX",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 30,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 0,
-                        "scale": null,
-                        "effectiveness": [
-                            {
-                                "kind": "INFANTRY",
-                                "base": 1
-                            }
-                        ],
-                        "unit": {
-                            "kind": "FIXED"
-                        }
-                    },
-                    "stat": "MOVEMENT"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "AXE_FIGHTER_PLUS_INFANTRY",
-        "name": "Axe Fighter + Infantry",
-        "disciple": "ESTEL",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "INFANTRY",
-                "weaponType": "AXE",
-                "hp": {
-                    "base": 75
-                },
-                "atk": {
-                    "base": 60
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "movementType",
-            "which": "INFANTRY"
-        }
-    },
-    {
-        "id": "HEAVY_CROSSWIND",
-        "name": "Heavy Crosswind",
-        "disciple": "ESTEL",
-        "role": "LIGHT",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 9,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 40,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "GREEN"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_ELWIND",
-        "name": "Dark Elwind",
-        "disciple": "ESTEL",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 90,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "AETHER_EX",
-        "name": "Aether EX",
-        "disciple": "IKE",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            },
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 30,
-                    "unit": {
-                        "kind": "PERCENT",
-                        "stat": "ATK"
-                    }
-                },
-                "target": "SELF"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SHIELD_BREAK_PULL",
-        "name": "Shield Break Pull",
-        "disciple": "IKE",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 55,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "FIRE_STRIKE",
-        "name": "Fire Strike",
-        "disciple": "IKE",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_TETRAFIRE",
-        "name": "Dark Tetrafire",
-        "disciple": "IKE",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 75,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "THUNDER_WARP_EX",
-        "name": "Thunder Warp EX",
-        "disciple": "ERMA",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 9,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 30,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            },
-            {
-                "kind": "WARP",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "STAMINA_PULL_PLUS_FLYING",
-        "name": "Stamina Pull + Flying",
-        "disciple": "ERMA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 4,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 10,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "HP"
-                        }
-                    },
-                    "stat": "HP"
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 10,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "MOVEMENT",
-                "direction": "DOWN",
-                "count": 1,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "movementType",
-            "which": "FLYING"
-        }
-    },
-    {
-        "id": "TETRATHUNDER_WALL",
-        "name": "Tetrathunder Wall",
-        "disciple": "ERMA",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            },
-            {
-                "kind": "ICE_BLOCK",
-                "hp": 60,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_TETRAEDGE",
-        "name": "Dark Tetraedge",
-        "disciple": "ERMA",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 40,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRAWIND_TRILEMMA_EX",
-        "name": "Tetrawind Trilemma EX",
-        "disciple": "EDELGARD",
-        "role": "EX",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 9,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "scale": null,
-                        "base": 0.16666666666666667,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "COLOR_AFFINITY"
-                        }
-                    },
-                    "stat": "COLOR_AFFINITY"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRAHEAL_PLUS_ARMORED",
-        "name": "Tetraheal + Armored",
-        "disciple": "EDELGARD",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 4,
-        "effects": [
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "movementType",
-            "which": "ARMORED"
-        }
-    },
-    {
-        "id": "AXE_KNIGHT",
-        "name": "Axe Knight",
-        "disciple": "EDELGARD",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "ARMORED",
-                "weaponType": "AXE",
-                "hp": {
-                    "base": 70
-                },
-                "atk": {
-                    "base": 35
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_TETRASHIELD",
-        "name": "Dark Tetrashield",
-        "disciple": "EDELGARD",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 30,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "WARD_EX",
-        "name": "Ward EX",
-        "disciple": "YUNI",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 20,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_SPELL_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_SPELL_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRAHEAL_ZONE",
-        "name": "Tetraheal Zone",
-        "disciple": "YUNI",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "TILE",
-                "repeat": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "HEAL",
-                        "amount": {
-                            "base": 25,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        }
-                    },
-                    "times": 5,
-                    "interval": 3
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "RAPID_THUNDER_STRIKE",
-        "name": "Rapid Thunder Strike",
-        "disciple": "YUNI",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            },
-            {
-                "kind": "MOVEMENT",
-                "direction": "UP",
-                "count": 2,
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_STAFF_FIGHTER",
-        "name": "Dark Staff Fighter",
-        "disciple": "YUNI",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "INFANTRY",
-                "weaponType": "STAFF",
-                "hp": {
-                    "base": 100
-                },
-                "atk": {
-                    "base": 70
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "THUNDER_SELF_EDGE_EX",
-        "name": "Thunder Self Edge EX",
-        "disciple": "EPHRAIM",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 60,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 30,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "SELF"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "HOLY_THUNDER",
-        "name": "Holy Thunder",
-        "disciple": "EPHRAIM",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 30,
-                    "effectiveness": [
-                        {
-                            "kind": "MINION",
-                            "base": 90
-                        }
-                    ],
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "THUNDER_SHIELD_BREAK_PLUS_CAVALRY",
-        "name": "Thunder Shield Break + Cavalry",
-        "disciple": "EPHRAIM",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 4,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 40,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "movementType",
-            "which": "CAVALRY"
-        }
-    },
-    {
-        "id": "DARK_RAPID_THUNDER",
-        "name": "Dark Rapid Thunder",
-        "disciple": "EPHRAIM",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 3,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 30,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "BLUE",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "FRAGILITY_FIRE_EX",
-        "name": "Fragility Fire EX",
-        "disciple": "UKA",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 10,
-                        "scale": null,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "HP"
-                        }
-                    },
-                    "stat": "HP"
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SELF_WARD",
-        "name": "Self Ward",
-        "disciple": "YUNI",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 20,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_SPELL_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_SPELL_DAMAGE"
-                },
-                "target": "SELF"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SWORD_FIGHTER_PLUS_INFANTRY",
-        "name": "Sword Fighter + Infantry",
-        "disciple": "UKA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "INFANTRY",
-                "weaponType": "SWORD",
-                "hp": {
-                    "base": 75
-                },
-                "atk": {
-                    "base": 60
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "movementType",
-            "which": "INFANTRY"
-        }
-    },
-    {
-        "id": "DARK_STABBING_FIRE",
-        "name": "Dark Stabbing Fire",
-        "disciple": "UKA",
-        "role": "SHADOW",
-        "shape": "5_VERTICAL",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 65,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "WIND_SELF_PULL_EX",
-        "name": "Wind Self Pull EX",
-        "disciple": "YUNAKA",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 60,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            },
-            {
-                "kind": "MOVEMENT",
-                "direction": "DOWN",
-                "count": 1,
-                "target": "SELF"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_EDGE_BREAK",
-        "name": "Dark Edge Break",
-        "disciple": "YUNAKA",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 30,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "TETRAPOISON",
-        "name": "Tetrapoison",
-        "disciple": "YUNAKA",
-        "role": "LIGHT",
-        "shape": "2X2_SQUARE",
-        "uses": 1,
-        "cooldown": 9,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 25,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "COLORLESS"
-                    },
-                    "times": 5,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "WIND_WARP",
-        "name": "Wind Warp",
-        "disciple": "YUNAKA",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 7,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 30,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            },
-            {
-                "kind": "WARP",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "WIND_AXE_EX",
-        "name": "Wind Axe EX",
-        "disciple": "RUSTY",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 40,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            },
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 50,
-                    "unit": {
-                        "kind": "PERCENT",
-                        "stat": "ATK"
-                    }
-                },
-                "color": "GREEN",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "PIKE_WIND",
-        "name": "Pike Wind",
-        "disciple": "RUSTY",
-        "role": "LIGHT",
-        "shape": "1_TILE",
-        "uses": null,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 20,
-                            "effectiveness": [
-                                {
-                                    "kind": "CAVALRY",
-                                    "base": 40
-                                }
-                            ],
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "GREEN"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "SELF_CROSSEDGE",
-        "name": "Self Crossedge",
-        "disciple": "RUSTY",
-        "role": "LIGHT",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 50,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "SELF"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_AXE_ARMOR_PLUS_INFANTRY",
-        "name": "Dark Axe Armor + Infantry",
-        "disciple": "RUSTY",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "SUMMON",
-                "movementType": "ARMORED",
-                "weaponType": "AXE",
-                "hp": {
-                    "base": 180
-                },
-                "atk": {
-                    "base": 50
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "movementType",
-            "which": "INFANTRY"
-        }
-    },
-    {
-        "id": "DUAL_INVIGORATE_EX",
-        "name": "Dual Invigorate EX",
-        "disciple": "ANANKE",
-        "role": "EX",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 10,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "HP"
-                        }
-                    },
-                    "stat": "HP"
-                },
-                "target": "DUAL"
-            },
-            {
-                "kind": "HEAL",
-                "amount": {
-                    "base": 10,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "target": "DUAL"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_TETRAREGEN",
-        "name": "Dark Tetraregen",
-        "disciple": "ANANKE",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "HEAL",
-                        "amount": {
-                            "base": 30,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        }
-                    },
-                    "times": 5,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "CROSS_REGEN",
-        "name": "Cross Regen",
-        "disciple": "ANANKE",
-        "role": "LIGHT",
-        "shape": "3X3_CROSS",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "HEAL",
-                        "amount": {
-                            "base": 20,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        }
-                    },
-                    "times": 5,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_POISON_PLUS_CAVALRY",
-        "name": "Dark Poison + Cavalry",
-        "disciple": "ANANKE",
-        "role": "SHADOW",
-        "shape": "1_TILE",
-        "uses": 1,
-        "cooldown": 4,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 40,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "COLORLESS"
-                    },
-                    "times": 5,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "movementType",
-            "which": "CAVALRY"
-        }
-    },
-    {
-        "id": "TRINITY_SHIELD_EDGE_EX",
-        "name": "Trinity Shield Edge EX",
-        "disciple": "ROBIN",
-        "role": "EX",
-        "shape": "3X3_CROSS",
-        "uses": 1,
-        "cooldown": 1,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 20,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "RECEIVED_WEAPON_DAMAGE"
-                        }
-                    },
-                    "stat": "RECEIVED_WEAPON_DAMAGE"
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "INCREASE",
-                    "amount": {
-                        "base": 30,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "ATK"
-                        }
-                    },
-                    "stat": "ATK"
-                },
-                "target": "ANY"
-            },
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "STAT",
-                    "statChange": "DECREASE",
-                    "amount": {
-                        "base": 16.666666666666666,
-                        "unit": {
-                            "kind": "PERCENT",
-                            "stat": "COLOR_AFFINITY"
-                        },
-                        "scale": null
-                    },
-                    "stat": "COLOR_AFFINITY"
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
-    },
-    {
-        "id": "DARK_CROSSFIRE_PLUS_TOME",
-        "name": "Dark Crossfire + Tome",
-        "disciple": "ROBIN",
-        "role": "SHADOW",
-        "shape": "3X3_CROSS",
-        "uses": null,
-        "cooldown": 4,
-        "effects": [
-            {
-                "kind": "STATUS",
-                "effect": {
-                    "kind": "REPEAT",
-                    "effect": {
-                        "kind": "DAMAGE",
-                        "amount": {
-                            "base": 40,
-                            "unit": {
-                                "kind": "FIXED"
-                            }
-                        },
-                        "color": "RED"
-                    },
-                    "times": 2,
-                    "interval": 6
-                },
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "weaponType",
-            "which": "TOME"
-        }
-    },
-    {
-        "id": "ENNEA_FIRE_PLUS_TOME",
-        "name": "Ennea Fire + Tome",
-        "disciple": "ROBIN",
-        "role": "LIGHT",
-        "shape": "3X3_SQUARE",
-        "uses": null,
-        "cooldown": 4,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 30,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": {
-            "kind": "weaponType",
-            "which": "TOME"
-        }
-    },
-    {
-        "id": "FINAL_DARK_TETRAFIRE",
-        "name": "Final Dark Tetrafire",
-        "disciple": "ROBIN",
-        "role": "SHADOW",
-        "shape": "2X2_SQUARE",
-        "uses": 1,
-        "cooldown": 5,
-        "effects": [
-            {
-                "kind": "DAMAGE",
-                "amount": {
-                    "base": 110,
-                    "unit": {
-                        "kind": "FIXED"
-                    }
-                },
-                "color": "RED",
-                "target": "ANY"
-            }
-        ],
-        "onlyFor": null
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "FIRE_STRIKE_PLUS_FLYING",
+    "name": "Fire Strike + Flying",
+    "disciple": "VERONICA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "movementType",
+      "which": "FLYING"
     }
+  },
+  {
+    "id": "EDGE_STRIKE",
+    "name": "Edge Strike",
+    "disciple": "VERONICA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 50,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_FRAGILITY",
+    "name": "Dark Fragility",
+    "disciple": "VERONICA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 50,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "HP"
+            }
+          },
+          "stat": "HP"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "CROSSEDGE_BOOST_EX",
+    "name": "Crossedge Boost EX",
+    "disciple": "ESTEL",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 0,
+            "scale": null,
+            "effectiveness": [
+              {
+                "kind": "INFANTRY",
+                "base": 1
+              }
+            ],
+            "unit": {
+              "kind": "FIXED"
+            }
+          },
+          "stat": "MOVEMENT"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "AXE_FIGHTER_PLUS_INFANTRY",
+    "name": "Axe Fighter + Infantry",
+    "disciple": "ESTEL",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "INFANTRY",
+        "weaponType": "AXE",
+        "hp": {
+          "base": 75
+        },
+        "atk": {
+          "base": 60
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "movementType",
+      "which": "INFANTRY"
+    }
+  },
+  {
+    "id": "HEAVY_CROSSWIND",
+    "name": "Heavy Crosswind",
+    "disciple": "ESTEL",
+    "role": "LIGHT",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 9,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 40,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "GREEN"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_ELWIND",
+    "name": "Dark Elwind",
+    "disciple": "ESTEL",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 90,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "AETHER_EX",
+    "name": "Aether EX",
+    "disciple": "IKE",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "PERCENT",
+            "stat": "ATK"
+          }
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SHIELD_BREAK_PULL",
+    "name": "Shield Break Pull",
+    "disciple": "IKE",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 55,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "FIRE_STRIKE",
+    "name": "Fire Strike",
+    "disciple": "IKE",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_TETRAFIRE",
+    "name": "Dark Tetrafire",
+    "disciple": "IKE",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 75,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "THUNDER_WARP_EX",
+    "name": "Thunder Warp EX",
+    "disciple": "ERMA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 9,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "STAMINA_PULL_PLUS_FLYING",
+    "name": "Stamina Pull + Flying",
+    "disciple": "ERMA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 10,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "HP"
+            }
+          },
+          "stat": "HP"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 10,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 1,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "movementType",
+      "which": "FLYING"
+    }
+  },
+  {
+    "id": "TETRATHUNDER_WALL",
+    "name": "Tetrathunder Wall",
+    "disciple": "ERMA",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      },
+      {
+        "kind": "ICE_BLOCK",
+        "hp": 60,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_TETRAEDGE",
+    "name": "Dark Tetraedge",
+    "disciple": "ERMA",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 40,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRAWIND_TRILEMMA_EX",
+    "name": "Tetrawind Trilemma EX",
+    "disciple": "EDELGARD",
+    "role": "EX",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 9,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "scale": null,
+            "base": 0.16666666666666667,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "COLOR_AFFINITY"
+            }
+          },
+          "stat": "COLOR_AFFINITY"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRAHEAL_PLUS_ARMORED",
+    "name": "Tetraheal + Armored",
+    "disciple": "EDELGARD",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "movementType",
+      "which": "ARMORED"
+    }
+  },
+  {
+    "id": "AXE_KNIGHT",
+    "name": "Axe Knight",
+    "disciple": "EDELGARD",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "ARMORED",
+        "weaponType": "AXE",
+        "hp": {
+          "base": 70
+        },
+        "atk": {
+          "base": 35
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_TETRASHIELD",
+    "name": "Dark Tetrashield",
+    "disciple": "EDELGARD",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "WARD_EX",
+    "name": "Ward EX",
+    "disciple": "YUNI",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_SPELL_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_SPELL_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRAHEAL_ZONE",
+    "name": "Tetraheal Zone",
+    "disciple": "YUNI",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "TILE",
+        "repeat": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "HEAL",
+            "amount": {
+              "base": 25,
+              "unit": {
+                "kind": "FIXED"
+              }
+            }
+          },
+          "times": 5,
+          "interval": 3
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "RAPID_THUNDER_STRIKE",
+    "name": "Rapid Thunder Strike",
+    "disciple": "YUNI",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 2,
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_STAFF_FIGHTER",
+    "name": "Dark Staff Fighter",
+    "disciple": "YUNI",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "INFANTRY",
+        "weaponType": "STAFF",
+        "hp": {
+          "base": 100
+        },
+        "atk": {
+          "base": 70
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "THUNDER_SELF_EDGE_EX",
+    "name": "Thunder Self Edge EX",
+    "disciple": "EPHRAIM",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "HOLY_THUNDER",
+    "name": "Holy Thunder",
+    "disciple": "EPHRAIM",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "effectiveness": [
+            {
+              "kind": "MINION",
+              "base": 90
+            }
+          ],
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "THUNDER_SHIELD_BREAK_PLUS_CAVALRY",
+    "name": "Thunder Shield Break + Cavalry",
+    "disciple": "EPHRAIM",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 40,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "movementType",
+      "which": "CAVALRY"
+    }
+  },
+  {
+    "id": "DARK_RAPID_THUNDER",
+    "name": "Dark Rapid Thunder",
+    "disciple": "EPHRAIM",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 3,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "FRAGILITY_FIRE_EX",
+    "name": "Fragility Fire EX",
+    "disciple": "UKA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 10,
+            "scale": null,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "HP"
+            }
+          },
+          "stat": "HP"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SELF_WARD",
+    "name": "Self Ward",
+    "disciple": "YUNI",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_SPELL_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_SPELL_DAMAGE"
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SWORD_FIGHTER_PLUS_INFANTRY",
+    "name": "Sword Fighter + Infantry",
+    "disciple": "UKA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "INFANTRY",
+        "weaponType": "SWORD",
+        "hp": {
+          "base": 75
+        },
+        "atk": {
+          "base": 60
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "movementType",
+      "which": "INFANTRY"
+    }
+  },
+  {
+    "id": "DARK_STABBING_FIRE",
+    "name": "Dark Stabbing Fire",
+    "disciple": "UKA",
+    "role": "SHADOW",
+    "shape": "5_VERTICAL",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 65,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "WIND_SELF_PULL_EX",
+    "name": "Wind Self Pull EX",
+    "disciple": "YUNAKA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 1,
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_EDGE_BREAK",
+    "name": "Dark Edge Break",
+    "disciple": "YUNAKA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "TETRAPOISON",
+    "name": "Tetrapoison",
+    "disciple": "YUNAKA",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 9,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 25,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "COLORLESS"
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "WIND_WARP",
+    "name": "Wind Warp",
+    "disciple": "YUNAKA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 7,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "WIND_AXE_EX",
+    "name": "Wind Axe EX",
+    "disciple": "RUSTY",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "PERCENT",
+            "stat": "ATK"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "PIKE_WIND",
+    "name": "Pike Wind",
+    "disciple": "RUSTY",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "effectiveness": [
+                {
+                  "kind": "CAVALRY",
+                  "base": 40
+                }
+              ],
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "GREEN"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "SELF_CROSSEDGE",
+    "name": "Self Crossedge",
+    "disciple": "RUSTY",
+    "role": "LIGHT",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 50,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_AXE_ARMOR_PLUS_INFANTRY",
+    "name": "Dark Axe Armor + Infantry",
+    "disciple": "RUSTY",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "ARMORED",
+        "weaponType": "AXE",
+        "hp": {
+          "base": 180
+        },
+        "atk": {
+          "base": 50
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "movementType",
+      "which": "INFANTRY"
+    }
+  },
+  {
+    "id": "DUAL_INVIGORATE_EX",
+    "name": "Dual Invigorate EX",
+    "disciple": "ANANKE",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 10,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "HP"
+            }
+          },
+          "stat": "HP"
+        },
+        "target": "DUAL"
+      },
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 10,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "DUAL"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_TETRAREGEN",
+    "name": "Dark Tetraregen",
+    "disciple": "ANANKE",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "HEAL",
+            "amount": {
+              "base": 30,
+              "unit": {
+                "kind": "FIXED"
+              }
+            }
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "CROSS_REGEN",
+    "name": "Cross Regen",
+    "disciple": "ANANKE",
+    "role": "LIGHT",
+    "shape": "3X3_CROSS",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "HEAL",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              }
+            }
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_POISON_PLUS_CAVALRY",
+    "name": "Dark Poison + Cavalry",
+    "disciple": "ANANKE",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 40,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "COLORLESS"
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "movementType",
+      "which": "CAVALRY"
+    }
+  },
+  {
+    "id": "TRINITY_SHIELD_EDGE_EX",
+    "name": "Trinity Shield Edge EX",
+    "disciple": "ROBIN",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 16.666666666666666,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "COLOR_AFFINITY"
+            },
+            "scale": null
+          },
+          "stat": "COLOR_AFFINITY"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  },
+  {
+    "id": "DARK_CROSSFIRE_PLUS_TOME",
+    "name": "Dark Crossfire + Tome",
+    "disciple": "ROBIN",
+    "role": "SHADOW",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 40,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "RED"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "weaponType",
+      "which": "TOME"
+    }
+  },
+  {
+    "id": "ENNEA_FIRE_PLUS_TOME",
+    "name": "Ennea Fire + Tome",
+    "disciple": "ROBIN",
+    "role": "LIGHT",
+    "shape": "3X3_SQUARE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": {
+      "kind": "weaponType",
+      "which": "TOME"
+    }
+  },
+  {
+    "id": "FINAL_DARK_TETRAFIRE",
+    "name": "Final Dark Tetrafire",
+    "disciple": "ROBIN",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 110,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": null
+  }
 ]

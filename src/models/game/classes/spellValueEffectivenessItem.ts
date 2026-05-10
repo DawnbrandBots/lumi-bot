@@ -6,8 +6,10 @@ export const SpellValueEffectivenessItemSchema = defineEntity({
     embeddable: true,
     properties: {
         kind: p.string(),
-        base: p.integer()
-    }
-})
-export class SpellValueEffectivenessItem extends SpellValueEffectivenessItemSchema.class implements ISpellValueEffectivenessItem { }
+        base: p.integer(),
+    },
+});
+export class SpellValueEffectivenessItem
+    extends SpellValueEffectivenessItemSchema.class
+    implements ISpellValueEffectivenessItem {}
 SpellValueEffectivenessItemSchema.setClass(SpellValueEffectivenessItem);

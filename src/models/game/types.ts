@@ -42,7 +42,7 @@ export interface IWeapon {
     readonly uniqueSkill: IWeaponSkill;
     readonly freeSkillSlots: number;
     readonly prfDisciple: IDisciple;
-    getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK", stat: "hp" | "atk" }): number
+    getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number;
 }
 
 export interface IMovementType {
@@ -71,41 +71,41 @@ export interface IDisciple {
     getHp({ level }: { level: number }): number;
 }
 
-export type TSpellRole = "EX" | "LIGHT" | "SHADOW"
+export type TSpellRole = "EX" | "LIGHT" | "SHADOW";
 
 export interface ISpellRole {
-    readonly kind: TSpellRole
-    readonly name: string
+    readonly kind: TSpellRole;
+    readonly name: string;
 }
 
 export interface ISpellShape {
-    readonly id: string
-    readonly name: string
+    readonly id: string;
+    readonly name: string;
     /**
      * 25 characters representing tiles part of a shape.
      * - `X` for the tile in the shape that's dragged on the battle grid
      * - `O` for other tiles part of the shape
      * - `.` for tiles not part of the shape
      */
-    readonly tiles: string
+    readonly tiles: string;
 }
 
-export type TSpellDraggingMode = "ANY" | "SELF"
+export type TSpellDraggingMode = "ANY" | "SELF";
 
 export interface ISpellDraggingMode {
-    readonly kind: TSpellDraggingMode
-    readonly asString: string
+    readonly kind: TSpellDraggingMode;
+    readonly asString: string;
 }
 
 export interface ISpell {
-    readonly kind: "spell",
-    readonly id: TId,
-    readonly name: string,
-    readonly disciple: IDisciple,
-    readonly role: ISpellRole
-    readonly uses: number | null | undefined
-    readonly cooldown: number
-    readonly effects: ISpellEffect[]
+    readonly kind: "spell";
+    readonly id: TId;
+    readonly name: string;
+    readonly disciple: IDisciple;
+    readonly role: ISpellRole;
+    readonly uses: number | null | undefined;
+    readonly cooldown: number;
+    readonly effects: ISpellEffect[];
     readonly shape: ISpellShape;
     readonly onlyFor?: object | null;
     readonly draggingMode: ISpellDraggingMode;
@@ -113,8 +113,8 @@ export interface ISpell {
 
 export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "COLOR_AFFINITY";
 export type TDirection = "UP" | "DOWN";
-export type TStatChange = "INCREASE" | "DECREASE"
-export type TSpellValueUnitKind = "FIXED" | "PERCENT"
+export type TStatChange = "INCREASE" | "DECREASE";
+export type TSpellValueUnitKind = "FIXED" | "PERCENT";
 
 export interface ISpellValueUnit {
     readonly kind: TSpellValueUnitKind;
@@ -135,7 +135,7 @@ export interface ISpellValuePercentUnit extends ISpellValueUnit {
     format({ base }: { base: number }): string;
 }
 
-export type TSpellValueUnit = ISpellValueFixedUnit | ISpellValuePercentUnit
+export type TSpellValueUnit = ISpellValueFixedUnit | ISpellValuePercentUnit;
 
 export interface ISpellValueEffectivenessItem {
     readonly kind: string;
@@ -144,10 +144,10 @@ export interface ISpellValueEffectivenessItem {
 
 export interface ISpellValue {
     readonly base: number;
-    readonly unit: ISpellValueUnit
+    readonly unit: ISpellValueUnit;
     // TODO: null on top of ?: is annoying
-    readonly effectiveness?: ISpellValueEffectivenessItem[] | null
-};
+    readonly effectiveness?: ISpellValueEffectivenessItem[] | null;
+}
 
 export interface IStat {
     readonly id: TId;
@@ -197,15 +197,15 @@ export interface IMovementEffect extends ISpellEffect {
 
 export interface IStatEffect extends ISpellEffect {
     readonly kind: "STAT";
-    readonly statChange: IStatChange
-    readonly amount: ISpellValue
-    readonly duration: number | null | undefined
-    readonly stat: IStat
+    readonly statChange: IStatChange;
+    readonly amount: ISpellValue;
+    readonly duration: number | null | undefined;
+    readonly stat: IStat;
 }
 
 export interface IStatusEffect extends ISpellEffect {
     readonly kind: "STATUS";
-    readonly effect: IStatEffect | IRepeatEffect
+    readonly effect: IStatEffect | IRepeatEffect;
     readonly target: ISpellEffectTarget;
 }
 
@@ -235,11 +235,12 @@ export interface ISummonEffect extends ISpellEffect {
     readonly movementType: IMovementType;
     readonly weaponType: IWeaponType;
     // TODO: a proper type will be needed to compute value at various levels
-    readonly hp: { base: number, scale?: number | null };
-    readonly atk: { base: number, scale?: number | null };
+    readonly hp: { base: number; scale?: number | null };
+    readonly atk: { base: number; scale?: number | null };
 }
 
-export type TSpellEffect = IDamageEffect
+export type TSpellEffect =
+    | IDamageEffect
     | IHealEffect
     | IMovementEffect
     | IStatEffect
@@ -248,4 +249,4 @@ export type TSpellEffect = IDamageEffect
     | IWarpEffect
     | IIceBlockEffect
     | ITileEffect
-    | ISummonEffect
+    | ISummonEffect;
