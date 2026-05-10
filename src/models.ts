@@ -1,6 +1,6 @@
 import { defineEntity, p, Type } from '@mikro-orm/core';
 import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP, WEAPON_VARIANTS_BONUSES } from './constants.ts';
-import type { IColor, IDamageEffect, IDirection, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellEffect, ISpellEffectTarget, ISpellRole, ISpellShape, ISpellValue, ISpellValueEffectivenessItem, ISpellValueFixedUnit, ISpellValuePercentUnit, ISpellValueUnit, IStat, IStatChange, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType, TSpellEffectTarget, TSpellRole } from './types.ts';
+import type { IColor, IDamageEffect, IDirection, IDisciple, IHealEffect, IIceBlockEffect, IMovementEffect, IMovementType, IRepeatEffect, ISpell, ISpellDraggingMode, ISpellEffect, ISpellEffectTarget, ISpellRole, ISpellShape, ISpellValue, ISpellValueEffectivenessItem, ISpellValueFixedUnit, ISpellValuePercentUnit, ISpellValueUnit, IStat, IStatChange, IStatEffect, IStatusEffect, ISummonEffect, ITileEffect, IWarpEffect, IWeapon, IWeaponSkill, IWeaponSkillEffect, IWeaponType, TSpellDraggingMode, TSpellEffectTarget, TSpellRole } from './types.ts';
 
 export const ColorSchema = defineEntity({
     name: 'Color',
@@ -234,6 +234,37 @@ export abstract class SpellEffect extends SpellEffectSchema.class implements ISp
 }
 SpellEffectSchema.setClass(SpellEffect)
 
+export class SpellDraggingMode implements ISpellDraggingMode {
+    readonly kind: ISpellDraggingMode["kind"];
+    readonly asString: ISpellDraggingMode["asString"];
+
+    public constructor({ kind, asString }: {
+        readonly kind: ISpellDraggingMode["kind"],
+        readonly asString: ISpellDraggingMode["asString"],
+    }) {
+        this.kind = kind
+        this.asString = asString
+    }
+}
+
+const SPELL_DRAGGING_MODE = {
+    ANY: new SpellDraggingMode({ kind: "ANY", "asString": "Any tile" }),
+    SELF: new SpellDraggingMode({ kind: "SELF", "asString": "User tile only", }),
+} as const satisfies { [K in TSpellDraggingMode]: ISpellDraggingMode }
+
+export class SpellDraggingModeType extends Type<SpellDraggingMode, string | null | undefined> {
+    public convertToDatabaseValue(value: SpellDraggingMode | null | undefined): string | null | undefined {
+        return value?.kind;
+    }
+
+    public convertToJSValue(value: string): SpellDraggingMode {
+        if (value in SPELL_DRAGGING_MODE) {
+            return SPELL_DRAGGING_MODE[value as keyof typeof SPELL_DRAGGING_MODE]
+        }
+        throw new Error("Invalid spell effect target id")
+    }
+}
+
 export const SpellSchema = defineEntity({
     name: 'Spell',
     properties: {
@@ -253,6 +284,14 @@ export const SpellSchema = defineEntity({
 
 export class Spell extends SpellSchema.class implements ISpell {
     get kind() { return "spell" as const }
+
+    get draggingMode() {
+        // TODO: target being nullable is due to some spell effects being wrongly typed:
+        // damage and healing effects can be nested, in which case they don't have a target,
+        // but they always have a target at the root as effects at the rool level of Spell.effects
+        // This needs to be fixed eventually!!
+        return this.effects.every(effect => effect.target!.kind === "SELF") ? SPELL_DRAGGING_MODE.SELF : SPELL_DRAGGING_MODE.ANY
+    }
 }
 SpellSchema.setClass(Spell);
 

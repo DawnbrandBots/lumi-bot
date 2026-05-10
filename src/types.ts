@@ -90,6 +90,13 @@ export interface ISpellShape {
     readonly tiles: string
 }
 
+export type TSpellDraggingMode = "ANY" | "SELF"
+
+export interface ISpellDraggingMode {
+    readonly kind: TSpellDraggingMode
+    readonly asString: string
+}
+
 export interface ISpell {
     readonly kind: "spell",
     readonly id: TId,
@@ -101,6 +108,7 @@ export interface ISpell {
     readonly effects: ISpellEffect[]
     readonly shape: ISpellShape;
     readonly onlyFor?: object | null;
+    readonly draggingMode: ISpellDraggingMode;
 }
 
 export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "COLOR_AFFINITY";
