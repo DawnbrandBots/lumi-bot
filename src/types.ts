@@ -100,6 +100,7 @@ export interface ISpell {
     readonly cooldown: number
     readonly effects: ISpellEffect[]
     readonly shape: ISpellShape;
+    readonly onlyFor?: object | null;
 }
 
 export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "COLOR_AFFINITY";
