@@ -4,22 +4,18 @@ import { SearchHandler } from "../features/search.ts";
 import { Spell } from "../models.ts";
 import { ISpell } from "../types.ts";
 
+const tileEmojis: Record<string, string> = {
+    "X": DISCORD_RED_SQUARE_EMOJI_CALL,
+    "O": DISCORD_BLUE_SQUARE_EMOJI_CALL,
+    ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
+}
+
 const spellSearchHandler: SearchHandler<Spell> = {
     class: Spell,
     response: (spell: ISpell) => {
         const shapeEmojis = spell.shape.tiles
             .replaceAll(/(.{5})(?<!$)/g, "$1\n")
-            .replaceAll(
-                /./g,
-                tile =>
-                    tile === "X"
-                        ? DISCORD_RED_SQUARE_EMOJI_CALL
-                        : tile === "O"
-                            ? DISCORD_BLUE_SQUARE_EMOJI_CALL
-                            : tile === "."
-                                ? DISCORD_BLACK_SQUARE_EMOJI_CALL
-                                : tile
-            )
+            .replaceAll(/./g, tile => tileEmojis[tile] ?? tile)
         const shapeStr = `${shapeEmojis}\n-# "${spell.shape.name}"`
 
         const fields: APIEmbed["fields"] = [
