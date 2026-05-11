@@ -1,17 +1,17 @@
 import { EntityManager } from "@mikro-orm/core";
 import { CacheType, ChatInputCommandInteraction } from "discord.js";
-import Fuse from "fuse.js";
 import { searchCommandInfo } from "../commandInfo/search.js";
 import searchFeature, { ISearchItem, SearchHandlers } from "../features/search.ts";
+import { SearchEngine } from "../loaders/searchEngine.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../models/discord/constants.ts";
 import { Command } from "./base.js";
 
 export function getSearchCommand<Items extends ISearchItem>({
-    fuse,
+    searchEngine,
     em,
     handlers,
 }: {
-    fuse: Fuse<Items>;
+    searchEngine: SearchEngine<Items>;
     em: EntityManager;
     handlers: SearchHandlers<Items>;
 }) {
@@ -22,7 +22,7 @@ export function getSearchCommand<Items extends ISearchItem>({
             if (!input) {
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`);
             }
-            const embed = await searchFeature({ em, fuse, handlers, input });
+            const embed = await searchFeature({ em, searchEngine, handlers, input });
             return interaction.reply({
                 embeds: [embed],
             });
