@@ -39,9 +39,9 @@ export interface IWeapon {
     readonly level: number;
     readonly hp: number;
     readonly atk: number;
-    readonly uniqueSkill: IWeaponSkill;
+    readonly uniqueSkill?: IWeaponSkill | null;
     readonly freeSkillSlots: number;
-    readonly prfDisciple: IDisciple;
+    readonly prfDisciple?: IDisciple | null;
     getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number;
 }
 
