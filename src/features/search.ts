@@ -1,7 +1,6 @@
-import Fuse from "fuse.js/basic";
-
 import { EntityManager, EntityName, Populate } from "@mikro-orm/core";
 import { APIEmbed } from "discord.js";
+import { SearchEngine } from "../loaders/searchEngine.ts";
 import {
     DISCORD_MESSAGE_ERROR_COLOR,
     DISCORD_MESSAGE_SUCCESS_COLOR,
@@ -47,12 +46,12 @@ async function searchFeature<
     Kinds extends ISearchItem["kind"] = ISearchItem["kind"],
 >({
     input,
-    fuse,
+    searchEngine,
     handlers,
     em,
 }: {
     input: string;
-    fuse: Fuse<Items>;
+    searchEngine: SearchEngine<Items>;
     handlers: SearchHandlers<Items>;
     em: EntityManager;
 }): Promise<SearchFeatureReturnType> {
@@ -64,20 +63,19 @@ async function searchFeature<
         };
     }
 
-    const results = fuse.search(input, { limit: 1 });
-    const result = results[0];
+    const item = searchEngine.searchOne(input);
 
-    if (!result) {
+    if (!item) {
         return {
             title: "Search yield no result",
             color: DISCORD_MESSAGE_ERROR_COLOR,
         };
     }
 
-    const handler = handlers[result.item.kind];
+    const handler = handlers[item.kind];
 
     // TODO: figure out the correct types here and remove as never
-    const entity = await em.findOne(handler.class, { id: result.item.id } as never, {
+    const entity = await em.findOne(handler.class, { id: item.id } as never, {
         populate: (handler.populate ?? ["*"]) as never,
     });
     if (!entity) {
@@ -85,8 +83,8 @@ async function searchFeature<
             title: "Result found in search engine but not in database",
             description: NOTABOT_DISCORD_MENTION,
             fields: [
-                { name: "Entity kind", value: result.item.kind, inline: true },
-                { name: "Id", value: result.item.id, inline: true },
+                { name: "Entity kind", value: item.kind, inline: true },
+                { name: "Id", value: item.id, inline: true },
             ],
             color: DISCORD_MESSAGE_ERROR_COLOR,
         };
