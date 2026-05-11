@@ -28,7 +28,7 @@ describe(FuseSearchEngine.name, () => {
 
     // "+" in names could not weight enough to appear first in results,
     // so the implementation should handle them specially.
-    test.each(["Royal Sword +", "Sword + Royal", "royalsword+", "ROYAL SWORD +", "Royal +"])(
+    test.each(["Royal Sword +", "Sword + Royal", "royalsword+", "ROYAL SWORD +", "Royal +", "Royal Sword Plus"])(
         "%s returns Royal Sword +",
         (input) => {
             expect(searchEngine.searchOne(input)?.id).toBe("ROYAL_SWORD_PLUS");
