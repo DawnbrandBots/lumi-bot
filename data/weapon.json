@@ -161,7 +161,7 @@
   },
   {
     "id": "TACTICS_TOME_PLUS",
-    "name": "Tactitcs Tome +",
+    "name": "TACTICS Tome +",
     "weaponType": "TOME",
     "level": 8,
     "hp": 6,
@@ -461,7 +461,7 @@
   },
   {
     "id": "TACTICS_TOME",
-    "name": "Tactitcs Tome",
+    "name": "TACTICS Tome",
     "weaponType": "TOME",
     "level": 7,
     "hp": 6,
