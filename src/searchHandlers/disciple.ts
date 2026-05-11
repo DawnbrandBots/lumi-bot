@@ -9,7 +9,6 @@ const discipleSearchHandler: SearchHandler<Disciple> = {
     class: Disciple,
     response: (disciple: IDisciple) => {
         // TODO: adding at least a thumbnail with the character's face would be nice
-        // TODO: mention prf weapon
 
         const spellsStr = [...disciple.spells].map((spell) => `- ${spell.name}`).join("\n");
 
