@@ -15,7 +15,13 @@ export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<It
     public constructor({ items }: { items: Items[] }) {
         super();
         const keys: (keyof Items & string)[] = ["aliases"];
-        this.fuse = new Fuse(items, { keys, ignoreDiacritics: true, isCaseSensitive: false });
+        this.fuse = new Fuse(items, {
+            keys,
+            ignoreDiacritics: true,
+            isCaseSensitive: false,
+            useTokenSearch: true,
+            ignoreLocation: true,
+        });
     }
 
     protected static normalize = normalizeSearchText;
