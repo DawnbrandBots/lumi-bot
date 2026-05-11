@@ -1,6 +1,6 @@
 import Fuse from "fuse.js";
 import type { ISearchItem } from "../features/search.ts";
-
+import { normalizeSearchText } from "./searchables.ts";
 export interface ISearchEngine<Items extends ISearchItem> {
     searchOne(input: string): Items | undefined;
 }
@@ -14,11 +14,13 @@ export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<It
 
     public constructor({ items }: { items: Items[] }) {
         super();
-        const keys: (keyof Items & string)[] = ["name"];
+        const keys: (keyof Items & string)[] = ["aliases"];
         this.fuse = new Fuse(items, { keys, ignoreDiacritics: true, isCaseSensitive: false });
     }
 
+    protected static normalize = normalizeSearchText;
+
     public searchOne(input: string): Items | undefined {
-        return this.fuse.search(input, { limit: 1 })[0]?.item;
+        return this.fuse.search(FuseSearchEngine.normalize(input), { limit: 1 })[0]?.item;
     }
 }

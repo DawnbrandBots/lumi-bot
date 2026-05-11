@@ -1,6 +1,6 @@
 import { EntityManager, EntityName, Populate } from "@mikro-orm/core";
 import { APIEmbed } from "discord.js";
-import { SearchEngine } from "../loaders/searchEngine.ts";
+import type { ISearchEngine } from "../loaders/searchEngine.ts";
 import {
     DISCORD_MESSAGE_ERROR_COLOR,
     DISCORD_MESSAGE_SUCCESS_COLOR,
@@ -9,10 +9,25 @@ import {
 } from "../models/discord/constants.ts";
 import { TId } from "../models/game/types.ts";
 
+/**
+ * Properties required for entities to be searchable.
+ */
+export interface ISearchableEntity {
+    readonly id: TId;
+    readonly kind: string;
+    readonly name: string;
+}
+
+/**
+ * Properties of objects stored and retrieved by the search engine.
+ */
 export interface ISearchItem {
     readonly kind: string;
     readonly id: TId;
-    readonly name: string;
+    /**
+     * All searchable terms associated with the entity.
+     */
+    readonly aliases: string[];
 }
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
@@ -21,7 +36,7 @@ export type SearchFeatureReturnType = Required<Pick<APIEmbed, "title" | "color">
 
 // TODO: "response" argument type should be refined to take populate's type into account
 // (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
-export type SearchHandler<EntityType extends ISearchItem, PopulateHint extends string = never> = {
+export type SearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> = {
     class: EntityName<EntityType>;
     response: (item: EntityType) => SearchHandlerResponseReturnType;
     /**
@@ -36,14 +51,14 @@ export type SearchHandler<EntityType extends ISearchItem, PopulateHint extends s
     // TODO: ideally, this file should be void of any mention to MikroORM, in case there's ever a switch to a different method to read the DB
 };
 
-export type SearchHandlers<Items extends ISearchItem> = {
+export type SearchHandlers<Items extends ISearchableEntity> = {
     [Kind in Items["kind"]]: SearchHandler<Items & { kind: Kind }, string>;
 };
 
 async function searchFeature<
-    Items extends ISearchItem & { kind: Kinds },
+    Items extends ISearchableEntity & { kind: Kinds },
     // TODO: I am not sure why result.item.kind cannot index handlers without specifying this second type argument
-    Kinds extends ISearchItem["kind"] = ISearchItem["kind"],
+    Kinds extends ISearchableEntity["kind"] = ISearchableEntity["kind"],
 >({
     input,
     searchEngine,
@@ -51,7 +66,7 @@ async function searchFeature<
     em,
 }: {
     input: string;
-    searchEngine: SearchEngine<Items>;
+    searchEngine: ISearchEngine<ISearchItem & { kind: Kinds }>;
     handlers: SearchHandlers<Items>;
     em: EntityManager;
 }): Promise<SearchFeatureReturnType> {
