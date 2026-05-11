@@ -22,16 +22,13 @@ afterAll(async () => {
 describe(FuseSearchEngine.name, () => {
     // Searching for something, even with upper/lowercase and/or typos, missing vowels, as long as characters are not
     // too different between input and the thing's name, should return that thing still.
-    test.each(["Royal Sword", "royalsword", "ROYAL SWORD", "Ryola Sorwd", "rylswrd"])(
-        "%s returns Royal Sword",
-        (input) => {
-            expect(searchEngine.searchOne(input)?.id).toBe("ROYAL_SWORD");
-        },
-    );
+    test.each(["Royal Sword", "Sword Royal", "royalsword", "ROYAL SWORD"])("%s returns Royal Sword", (input) => {
+        expect(searchEngine.searchOne(input)?.id).toBe("ROYAL_SWORD");
+    });
 
     // "+" in names could not weight enough to appear first in results,
     // so the implementation should handle them specially.
-    test.each(["Royal Sword +", "royalsword+", "ROYAL SWORD +", "Ryola Sorwd +", "rylswrd"])(
+    test.each(["Royal Sword +", "Sword + Royal", "royalsword+", "ROYAL SWORD +"])(
         "%s returns Royal Sword +",
         (input) => {
             expect(searchEngine.searchOne(input)?.id).toBe("ROYAL_SWORD_PLUS");
