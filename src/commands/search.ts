@@ -1,10 +1,10 @@
-import { EntityManager } from "@mikro-orm/sqlite";
+import { EntityManager } from "@mikro-orm/core";
 import { CacheType, ChatInputCommandInteraction } from "discord.js";
 import Fuse from "fuse.js";
 import { searchCommandInfo } from "../commandInfo/search.js";
 import searchFeature, { ISearchItem, SearchHandlers } from "../features/search.ts";
-import { Command } from "./base.js";
 import { SEARCH_TERMS_OPTION_NAME } from "../models/discord/constants.ts";
+import { Command } from "./base.js";
 
 export function getSearchCommand<Items extends ISearchItem>({
     fuse,

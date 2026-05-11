@@ -1,24 +1,19 @@
 import Fuse from "fuse.js/basic";
 
-import { EntityManager, EntityName, Populate } from "@mikro-orm/sqlite";
+import { EntityManager, EntityName, Populate } from "@mikro-orm/core";
 import { APIEmbed } from "discord.js";
-import { TId } from "../models/game/types.ts";
 import {
-    SEARCH_MAX_INPUT_LENGTH,
     DISCORD_MESSAGE_ERROR_COLOR,
-    NOTABOT_DISCORD_MENTION,
     DISCORD_MESSAGE_SUCCESS_COLOR,
+    NOTABOT_DISCORD_MENTION,
+    SEARCH_MAX_INPUT_LENGTH,
 } from "../models/discord/constants.ts";
+import { TId } from "../models/game/types.ts";
 
 export interface ISearchItem {
     readonly kind: string;
     readonly id: TId;
     readonly name: string;
-}
-
-export function createFuse<Items extends ISearchItem>({ items }: { items: Items[] }): Fuse<Items> {
-    const keys: (keyof Items & string)[] = ["name"];
-    return new Fuse(items, { keys, ignoreDiacritics: true, isCaseSensitive: false });
 }
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
