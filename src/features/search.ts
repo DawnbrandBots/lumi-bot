@@ -22,9 +22,9 @@ export interface ISearchableEntity {
  * Properties of objects stored and retrieved by the search engine.
  */
 export interface ISearchItem {
-    readonly kind: string;
     readonly id: TId;
-    readonly name: string;
+    readonly kind: string;
+    readonly aliases: string[];
 }
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
