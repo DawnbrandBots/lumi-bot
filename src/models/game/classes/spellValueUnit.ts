@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/core";
-import type { ISpellValueUnit } from "../types.ts";
+import { ESpellValueUnitKind, type ISpellValueUnit } from "../types.ts";
 
 export const SpellValueUnitSchema = defineEntity({
     name: "SpellValueUnit",
@@ -8,8 +8,8 @@ export const SpellValueUnitSchema = defineEntity({
     discriminatorColumn: "kind",
     properties: {
         // TODO: do the same for other abstract classes kinds?
-        kind: p.enum(["FIXED", "PERCENT"]),
+        kind: p.enum([ESpellValueUnitKind.FIXED, ESpellValueUnitKind.PERCENT]),
     },
 });
-export abstract class SpellValueUnit extends SpellValueUnitSchema.class implements ISpellValueUnit {}
+export abstract class SpellValueUnit extends SpellValueUnitSchema.class implements ISpellValueUnit { }
 SpellValueUnitSchema.setClass(SpellValueUnit);

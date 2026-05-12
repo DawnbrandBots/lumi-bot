@@ -1,5 +1,5 @@
 import { Type } from "@mikro-orm/core";
-import type { ISpellRole, TSpellRole } from "../types.ts";
+import { ESpellRole, ISpellRole } from "../types.ts";
 
 export class SpellRole implements ISpellRole {
     readonly kind: ISpellRole["kind"];
@@ -12,10 +12,10 @@ export class SpellRole implements ISpellRole {
 }
 
 const SPELL_EFFECT_ROLES = {
-    EX: new SpellRole({ kind: "EX", name: "EX" }),
-    LIGHT: new SpellRole({ kind: "LIGHT", name: "Light" }),
-    SHADOW: new SpellRole({ kind: "SHADOW", name: "Shadow" }),
-} as const satisfies { [K in TSpellRole]: ISpellRole };
+    EX: new SpellRole({ kind: ESpellRole.EX, name: "EX" }),
+    LIGHT: new SpellRole({ kind: ESpellRole.LIGHT, name: "Light" }),
+    SHADOW: new SpellRole({ kind: ESpellRole.SHADOW, name: "Shadow" }),
+} as const satisfies { [K in ESpellRole]: ISpellRole };
 
 export class SpellRoleType extends Type<SpellRole, string | null | undefined> {
     public convertToDatabaseValue(value: SpellRole | null | undefined): string | null | undefined {

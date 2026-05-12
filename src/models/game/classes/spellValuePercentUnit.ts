@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/core";
-import type { ISpellValuePercentUnit } from "../types.ts";
+import { ESpellValueUnitKind, type ISpellValuePercentUnit } from "../types.ts";
 import { SpellValueUnit } from "./spellValueUnit.ts";
 import { Stat } from "./stat.ts";
 
@@ -8,9 +8,9 @@ export const SpellValuePercentUnitSchema = defineEntity({
     embeddable: true,
     extends: SpellValueUnit,
     // TODO: enforce correct enum value at compile-time?
-    discriminatorValue: "PERCENT",
+    discriminatorValue: ESpellValueUnitKind.PERCENT,
     properties: {
-        kind: p.enum(["PERCENT"]),
+        kind: p.enum([ESpellValueUnitKind.PERCENT]),
         stat: () => p.manyToOne(Stat),
     },
 });

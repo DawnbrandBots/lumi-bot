@@ -1,5 +1,5 @@
 import { Type } from "@mikro-orm/core";
-import type { ISpellEffectTarget, TSpellEffectTarget } from "../types.ts";
+import { ESpellEffectTarget, ISpellEffectTarget } from "../types.ts";
 
 export class SpellEffectTarget implements ISpellEffectTarget {
     readonly kind: ISpellEffectTarget["kind"];
@@ -18,10 +18,10 @@ export class SpellEffectTarget implements ISpellEffectTarget {
 }
 
 const SPELL_EFFECT_TARGETS = {
-    ANY: new SpellEffectTarget({ kind: "ANY", asString: "targets" }),
-    SELF: new SpellEffectTarget({ kind: "SELF", asString: "user" }),
-    DUAL: new SpellEffectTarget({ kind: "DUAL", asString: "user and targets" }),
-} as const satisfies { [K in TSpellEffectTarget]: ISpellEffectTarget };
+    ANY: new SpellEffectTarget({ kind: ESpellEffectTarget.ANY, asString: "targets" }),
+    SELF: new SpellEffectTarget({ kind: ESpellEffectTarget.SELF, asString: "user" }),
+    DUAL: new SpellEffectTarget({ kind: ESpellEffectTarget.DUAL, asString: "user and targets" }),
+} as const satisfies { [K in ESpellEffectTarget]: ISpellEffectTarget };
 
 export class SpellEffectTargetType extends Type<SpellEffectTarget, string | null | undefined> {
     public convertToDatabaseValue(value: SpellEffectTarget | null | undefined): string | null | undefined {
