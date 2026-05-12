@@ -30,7 +30,7 @@ async function findSpell(name: string): Promise<Spell> {
 }
 
 async function findWeapon(name: string): Promise<Weapon> {
-    return em.findOneOrFail(Weapon, { name }, { populate: ["weaponType._weaponTypeSkills.weaponSkill"] });
+    return em.findOneOrFail(Weapon, { name }, { populate: ["weaponType.weaponSkills"] });
 }
 
 describe(Disciple.name, () => {

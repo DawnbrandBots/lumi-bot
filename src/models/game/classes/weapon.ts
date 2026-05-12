@@ -30,15 +30,15 @@ export class Weapon extends WeaponSchema.class implements IWeapon {
     }
 
     public get weaponTypeSkill() {
-        const skills = this.weaponType._weaponTypeSkills.getItems();
+        const skills = this.weaponType.weaponSkills.getItems();
         if (!skills || this.level <= 1) {
             return null;
         } else if (this.level <= 3) {
-            return skills[0]?.weaponSkill;
+            return skills[0];
         } else if (this.level <= 5) {
-            return skills[1]?.weaponSkill;
+            return skills[1];
         } else {
-            return skills[2]?.weaponSkill;
+            return skills[2];
         }
     }
 }
