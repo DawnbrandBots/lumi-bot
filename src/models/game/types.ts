@@ -90,6 +90,9 @@ export interface IWeapon {
      * How many additional weapon skills may be infused to this weapon.
      */
     readonly freeSkillSlots: number;
+    /**
+     * Only disciple by which this weapon can be wielded.
+     */
     readonly prfDisciple?: IDisciple | null;
     /**
      * A weapon has an immutable variant which influences the stats modifiers it grants to its wielder.
