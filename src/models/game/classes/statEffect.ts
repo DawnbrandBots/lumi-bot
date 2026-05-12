@@ -24,7 +24,6 @@ export class StatEffect extends StatEffectSchema.class implements IStatEffect {
         // TODO: feels like call to format could be simplified...
         // TODO: COLOR_AFFINITY_BOOST's base values are unusual compared to other stats and do not render nicely (eg. 16.66666666...),
         // consider formatting otherwise or changing how values are expressed
-        console.log(this.amount, this.stat);
         const valueStr =
             this.amount.unit.kind === "PERCENT" && this.stat.id === this.amount.unit.stat.id
                 ? this.amount.base + "%"
