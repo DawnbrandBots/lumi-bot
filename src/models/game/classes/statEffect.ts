@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/core";
-import type { IStatEffect } from "../types.ts";
+import { ESpellValueUnitKind, type IStatEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SpellValue } from "./spellValue.ts";
 import { Stat } from "./stat.ts";
@@ -25,7 +25,7 @@ export class StatEffect extends StatEffectSchema.class implements IStatEffect {
         // TODO: COLOR_AFFINITY_BOOST's base values are unusual compared to other stats and do not render nicely (eg. 16.66666666...),
         // consider formatting otherwise or changing how values are expressed
         const valueStr =
-            this.amount.unit.kind === "PERCENT" && this.stat.id === this.amount.unit.stat.id
+            this.amount.unit.kind === ESpellValueUnitKind.PERCENT && this.stat.id === this.amount.unit.stat.id
                 ? this.amount.base + "%"
                 : this.amount.unit.format({ base: this.amount.base });
         let str = `${this.statChange.verb} ${this.stat.name} by ${valueStr}`;
