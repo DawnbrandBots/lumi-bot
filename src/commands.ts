@@ -1,5 +1,6 @@
 import debug from "debug";
-import { APIUser, REST, RESTPostAPIChatInputApplicationCommandsJSONBody, Routes } from "discord.js";
+import type { APIUser, RESTPostAPIChatInputApplicationCommandsJSONBody} from "discord.js";
+import { REST, Routes } from "discord.js";
 import { helpCommandInfo } from "./commandInfo/help.js";
 import { searchCommandInfo } from "./commandInfo/search.js";
 

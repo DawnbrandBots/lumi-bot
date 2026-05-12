@@ -1,5 +1,6 @@
 import { Type } from "@mikro-orm/core";
-import { ESpellRole, ISpellRole } from "../types.ts";
+import type { ISpellRole } from "../types.ts";
+import { ESpellRole } from "../types.ts";
 
 export class SpellRole implements ISpellRole {
     readonly kind: ISpellRole["kind"];

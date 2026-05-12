@@ -1,7 +1,8 @@
+import type {
+    SharedSlashCommand} from "discord.js";
 import {
     ApplicationIntegrationType,
     InteractionContextType,
-    SharedSlashCommand,
     SlashCommandBuilder,
 } from "discord.js";
 

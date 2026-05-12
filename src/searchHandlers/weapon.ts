@@ -1,7 +1,7 @@
-import { APIEmbed } from "discord.js";
-import { SearchHandler } from "../features/search.ts";
+import type { APIEmbed } from "discord.js";
+import type { SearchHandler } from "../features/search.ts";
 import { Weapon } from "../models/game/classes/weapon.ts";
-import { IWeapon } from "../models/game/types.ts";
+import type { IWeapon } from "../models/game/types.ts";
 import { toAsciiTable } from "../utils/table.ts";
 
 // TODO: specifying "*" in the list will cause nested relationships to not be loaded, even when specifying these nested relationships.

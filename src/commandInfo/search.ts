@@ -1,5 +1,6 @@
-import { SlashCommandBuilder } from "discord.js";
-import { CommandInfo, ICommandInfo } from "./base.js";
+import type { SlashCommandBuilder } from "discord.js";
+import type { ICommandInfo } from "./base.js";
+import { CommandInfo } from "./base.js";
 import { SEARCH_TERMS_OPTION_NAME, SEARCH_MAX_INPUT_LENGTH } from "../models/discord/constants.ts";
 
 export const searchCommandInfo: ICommandInfo = new CommandInfo({

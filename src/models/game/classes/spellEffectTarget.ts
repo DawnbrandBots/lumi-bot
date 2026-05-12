@@ -1,5 +1,6 @@
 import { Type } from "@mikro-orm/core";
-import { ESpellEffectTarget, ISpellEffectTarget } from "../types.ts";
+import type { ISpellEffectTarget } from "../types.ts";
+import { ESpellEffectTarget } from "../types.ts";
 
 export class SpellEffectTarget implements ISpellEffectTarget {
     readonly kind: ISpellEffectTarget["kind"];

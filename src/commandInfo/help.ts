@@ -1,5 +1,6 @@
 import { BOT_NAME } from "../models/discord/constants.ts";
-import { CommandInfo, ICommandInfo } from "./base.js";
+import type { ICommandInfo } from "./base.js";
+import { CommandInfo } from "./base.js";
 
 export const helpCommandInfo: ICommandInfo = new CommandInfo({
     customInfo: function (baseInfo) {

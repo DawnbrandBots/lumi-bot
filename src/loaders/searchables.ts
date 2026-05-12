@@ -1,5 +1,5 @@
-import { EntityManager } from "@mikro-orm/core";
-import { ISearchableEntity, ISearchItem } from "../features/search.ts";
+import type { EntityManager } from "@mikro-orm/core";
+import type { ISearchableEntity, ISearchItem } from "../features/search.ts";
 import { Disciple } from "../models/game/classes/disciple.ts";
 import { Spell } from "../models/game/classes/spell.ts";
 import { Weapon } from "../models/game/classes/weapon.ts";
