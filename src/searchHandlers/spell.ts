@@ -17,10 +17,9 @@ const tileEmojis: Record<string, string> = {
 const spellSearchHandler: SearchHandler<Spell> = {
     class: Spell,
     response: (spell: ISpell) => {
-        const shapeEmojis = spell.shape.tiles
+        const shapeStr = spell.shape.tiles
             .replaceAll(/(.{5})(?<!$)/g, "$1\n")
             .replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
-        const shapeStr = `${shapeEmojis}\n-# "${spell.shape.name}"`;
 
         const effectsStr = spell.effects.map((effect) => `1. ${effect.description}.`).join("\n");
 
