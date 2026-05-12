@@ -1,4 +1,4 @@
-import { APIEmbed } from "discord.js";
+import type { APIEmbed } from "discord.js";
 import allCommandInfo from "../commandInfo/all.ts";
 import { BOT_NAME, DISCORD_MESSAGE_NEUTRAL_COLOR } from "../models/discord/constants.ts";
 

@@ -1,5 +1,5 @@
-import { CacheType, ChatInputCommandInteraction, InteractionResponse } from "discord.js";
-import { ICommandInfo } from "../commandInfo/base.js";
+import type { CacheType, ChatInputCommandInteraction, InteractionResponse } from "discord.js";
+import type { ICommandInfo } from "../commandInfo/base.js";
 
 export interface ICommand {
     readonly info: ICommandInfo;

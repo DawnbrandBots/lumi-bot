@@ -1,7 +1,7 @@
 import debug from "debug";
 import { ActivityType, Events } from "discord.js";
 
-import { ICommand } from "./commands/base.js";
+import type { ICommand } from "./commands/base.js";
 import { helpCommand } from "./commands/help.js";
 import { getSearchCommand } from "./commands/search.js";
 
@@ -9,7 +9,8 @@ import helpFeature from "./features/help.ts";
 import searchFeature from "./features/search.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
-import getSearchables, { TSearchableEntity } from "./loaders/searchables.ts";
+import type { TSearchableEntity } from "./loaders/searchables.ts";
+import getSearchables from "./loaders/searchables.ts";
 import { FuseSearchEngine } from "./loaders/searchEngine.ts";
 import mikroOrmConfig from "./mikro-orm.config.ts";
 import SEARCH_HANDLERS from "./searchHandlers/all.ts";

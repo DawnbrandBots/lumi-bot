@@ -1,7 +1,8 @@
-import { EntityManager } from "@mikro-orm/core";
-import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import type { EntityManager } from "@mikro-orm/core";
+import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { searchCommandInfo } from "../commandInfo/search.js";
-import searchFeature, { ISearchableEntity, ISearchItem, SearchHandlers } from "../features/search.ts";
+import type { ISearchableEntity, ISearchItem, SearchHandlers } from "../features/search.ts";
+import searchFeature from "../features/search.ts";
 import type { ISearchEngine } from "../loaders/searchEngine.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../models/discord/constants.ts";
 import { Command } from "./base.js";

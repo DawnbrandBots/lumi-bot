@@ -1,5 +1,5 @@
-import { EntityManager, EntityName, Populate } from "@mikro-orm/core";
-import { APIEmbed } from "discord.js";
+import type { EntityManager, EntityName, Populate } from "@mikro-orm/core";
+import type { APIEmbed } from "discord.js";
 import type { ISearchEngine } from "../loaders/searchEngine.ts";
 import {
     DISCORD_MESSAGE_ERROR_COLOR,
@@ -7,7 +7,7 @@ import {
     NOTABOT_DISCORD_MENTION,
     SEARCH_MAX_INPUT_LENGTH,
 } from "../models/discord/constants.ts";
-import { TId } from "../models/game/types.ts";
+import type { TId } from "../models/game/types.ts";
 
 /**
  * Properties required for entities to be searchable.

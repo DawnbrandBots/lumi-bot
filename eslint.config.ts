@@ -19,6 +19,7 @@ export default defineConfig([
                     checksVoidReturn: false,
                 },
             ],
+            "@typescript-eslint/consistent-type-imports": "error",
         },
     },
     /**

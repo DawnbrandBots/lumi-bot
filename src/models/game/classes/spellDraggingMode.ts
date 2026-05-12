@@ -1,5 +1,6 @@
 import { Type } from "@mikro-orm/core";
-import { ESpellDraggingMode, ISpellDraggingMode } from "../types.ts";
+import type { ISpellDraggingMode } from "../types.ts";
+import { ESpellDraggingMode } from "../types.ts";
 
 export class SpellDraggingMode implements ISpellDraggingMode {
     readonly kind: ISpellDraggingMode["kind"];
