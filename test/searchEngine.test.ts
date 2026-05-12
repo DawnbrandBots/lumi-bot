@@ -35,6 +35,15 @@ describe(FuseSearchEngine.name, () => {
         },
     );
 
+    // Spell names can include + as well.
+    // Spells can also be searched by acronym.
+    test.each(["Thunder Shield Break + Cavalry", "TSB+", "TSB+C", "TSBPC", "tsbpc"])(
+        "%s returns Thunder Shield Break + Cavalry",
+        (input) => {
+            expect(searchEngine.searchOne(input)?.id).toBe("THUNDER_SHIELD_BREAK_PLUS_CAVALRY");
+        },
+    );
+
     // There used to be a bug where weapons with level < 6 would not be retrieved by the DB,
     // therefore ensure that simply retrieving one weapon per level works.
     test.each([
