@@ -16,7 +16,7 @@ csv_path_to_column_name() {
     basename "$1" .csv | camel_to_snake
 }
 
-npx mikro-orm schema:create --run --config "$mikro_orm_config" \
+NODE_OPTIONS="--experimental-transform-types" npx mikro-orm schema:create --run --config "$mikro_orm_config" \
 && {
     node scripts/json-data-to-csv.ts "$csv_dir"
     for i in "$csv_dir"/*.csv; do
