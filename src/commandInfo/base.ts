@@ -1,27 +1,25 @@
-import type {
-    SharedSlashCommand} from "discord.js";
-import {
-    ApplicationIntegrationType,
-    InteractionContextType,
-    SlashCommandBuilder,
-} from "discord.js";
+import type { SharedSlashCommand } from "discord.js";
+import { ApplicationIntegrationType, InteractionContextType, SlashCommandBuilder } from "discord.js";
 
 export interface ICommandInfo {
     readonly info: ReturnType<SharedSlashCommand["toJSON"]>;
     readonly name: string;
     readonly description: string;
     readonly customInfo: (this: ICommandInfo, baseInfo: SlashCommandBuilder) => SharedSlashCommand;
+    readonly pingEquivalent?: string;
 }
 
 export class CommandInfo {
     public readonly name: ICommandInfo["name"];
     public readonly description: ICommandInfo["description"];
     public readonly customInfo: ICommandInfo["customInfo"];
+    public readonly pingEquivalent: ICommandInfo["pingEquivalent"];
 
     public constructor(arg: Omit<ICommandInfo, "info">) {
         this.name = arg.name;
         this.description = arg.description;
         this.customInfo = arg.customInfo;
+        this.pingEquivalent = arg.pingEquivalent;
     }
 
     public get info(): ICommandInfo["info"] {
