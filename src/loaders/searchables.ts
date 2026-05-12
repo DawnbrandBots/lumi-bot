@@ -64,7 +64,5 @@ export default async function getSearchables(em: EntityManager) {
     const weaponSkillSearchItems = weaponSkills.flatMap(getToSearchItemMapper(normalizeEntityName));
     const spellSearchItems = spells.flatMap(getToSearchItemMapper(normalizeSpellName));
 
-    console.log(JSON.stringify({ spellSearchItems: spellSearchItems.map((s) => s.name) }));
-
     return [...weaponSearchItems, ...discipleSearchItems, ...weaponSkillSearchItems, ...spellSearchItems];
 }
