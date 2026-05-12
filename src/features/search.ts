@@ -29,13 +29,13 @@ export interface ISearchItem {
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
 export type SearchFeatureReturnType = Required<Pick<APIEmbed, "title" | "color">> &
-    Pick<APIEmbed, "fields" | "description">;
+    Pick<APIEmbed, "fields" | "description" | "footer">;
 
 // TODO: "response" argument type should be refined to take populate's type into account
 // (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
 export type SearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> = {
     class: EntityName<EntityType>;
-    response: (item: EntityType) => SearchHandlerResponseReturnType;
+    response: (entity: EntityType) => SearchHandlerResponseReturnType;
     /**
      * MikroORM populate paths for fetched entities.
      * Search handlers might need deeply nested properties that need to be referred to explicitly
@@ -75,19 +75,19 @@ async function searchFeature<
         };
     }
 
-    const item = searchEngine.searchOne(input);
+    const searchItem = searchEngine.searchOne(input);
 
-    if (!item) {
+    if (!searchItem) {
         return {
             title: "Search yield no result",
             color: DISCORD_MESSAGE_ERROR_COLOR,
         };
     }
 
-    const handler = handlers[item.kind];
+    const handler = handlers[searchItem.kind];
 
     // TODO: figure out the correct types here and remove as never
-    const entity = await em.findOne(handler.class, { id: item.id } as never, {
+    const entity = await em.findOne(handler.class, { id: searchItem.id } as never, {
         populate: (handler.populate ?? ["*"]) as never,
     });
     if (!entity) {
@@ -95,13 +95,19 @@ async function searchFeature<
             title: "Result found in search engine but not in database",
             description: NOTABOT_DISCORD_MENTION,
             fields: [
-                { name: "Entity kind", value: item.kind, inline: true },
-                { name: "Id", value: item.id, inline: true },
+                { name: "Entity kind", value: searchItem.kind, inline: true },
+                { name: "Id", value: searchItem.id, inline: true },
             ],
             color: DISCORD_MESSAGE_ERROR_COLOR,
         };
     }
-    return { ...handler.response(entity), color: DISCORD_MESSAGE_SUCCESS_COLOR };
+    return {
+        ...handler.response(entity),
+        color: DISCORD_MESSAGE_SUCCESS_COLOR,
+        footer: {
+            text: `Search aliases: ${searchItem.aliases.join(", ")}`,
+        },
+    };
 }
 
 export default searchFeature;
