@@ -2479,7 +2479,7 @@
           "statChange": "INCREASE",
           "amount": {
             "scale": null,
-            "base": 0.16666666666666667,
+            "base": 20,
             "unit": {
               "kind": "PERCENT",
               "stat": "COLOR_AFFINITY"
@@ -3352,7 +3352,7 @@
           "kind": "STAT",
           "statChange": "DECREASE",
           "amount": {
-            "base": 16.666666666666666,
+            "base": 20,
             "unit": {
               "kind": "PERCENT",
               "stat": "COLOR_AFFINITY"
