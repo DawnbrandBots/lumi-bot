@@ -38,6 +38,14 @@ export interface IWeaponType {
      */
     // TODO: Currently only range influences Atk so maybe this should be a property of range rather than WeaponType. Not a big deal.
     readonly discipleBaseAtkModifier: number;
+    readonly weaponTypeSkills: Iterable<IWeaponSkill>;
+}
+
+// TODO: Actually represents a join table, not an in-game concept.
+export interface IWeaponTypeWeaponSkill {
+    readonly kind: "weaponTypeWeaponSkill";
+    readonly weaponType: IWeaponType;
+    readonly weaponSkill: IWeaponSkill;
 }
 
 /**
@@ -82,6 +90,10 @@ export interface IWeapon {
     readonly level: number;
     readonly hp: number;
     readonly atk: number;
+    /**
+     * Weapons of certain types have an immutable weapon skill.
+     */
+    readonly weaponTypeSkill?: IWeaponSkill | null;
     /**
      * Weapons may have a weapon skill that cannot be removed.
      */

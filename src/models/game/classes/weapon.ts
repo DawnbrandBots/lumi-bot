@@ -28,5 +28,18 @@ export class Weapon extends WeaponSchema.class implements IWeapon {
     public getWeaponVariantStat({ stat, variant }: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number {
         return this.level === 1 ? 0 : this[stat] + WEAPON_VARIANTS_BONUSES[variant][stat];
     }
+
+    public get weaponTypeSkill() {
+        const skills = this.weaponType._weaponTypeSkills.getItems();
+        if (!skills || this.level <= 1) {
+            return null;
+        } else if (this.level <= 3) {
+            return skills[0]?.weaponSkill;
+        } else if (this.level <= 5) {
+            return skills[1]?.weaponSkill;
+        } else {
+            return skills[2]?.weaponSkill;
+        }
+    }
 }
 WeaponSchema.setClass(Weapon);

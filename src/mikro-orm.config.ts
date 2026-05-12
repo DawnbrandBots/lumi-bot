@@ -25,6 +25,7 @@ import { Weapon } from "./models/game/classes/weapon.ts";
 import { WeaponSkill } from "./models/game/classes/weaponSkill.ts";
 import { WeaponSkillEffect } from "./models/game/classes/weaponSkillEffect.ts";
 import { WeaponType } from "./models/game/classes/weaponType.ts";
+import { WeaponTypeWeaponSkill } from "./models/game/classes/weaponTypeWeaponSkill.ts";
 
 export default defineConfig({
     entities: [
@@ -33,6 +34,7 @@ export default defineConfig({
         WeaponSkillEffect,
         Weapon,
         WeaponType,
+        WeaponTypeWeaponSkill,
         Color,
         Direction,
         StatChange,
