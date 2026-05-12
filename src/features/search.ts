@@ -101,12 +101,19 @@ async function searchFeature<
             color: DISCORD_MESSAGE_ERROR_COLOR,
         };
     }
+
+    const footer: APIEmbed["footer"] =
+        // Showing aliases when there is only one is redundant.
+        searchItem.aliases.length > 1
+            ? {
+                text: `Search aliases: ${searchItem.aliases.join(", ")}`,
+            }
+            : undefined;
+
     return {
         ...handler.response(entity),
         color: DISCORD_MESSAGE_SUCCESS_COLOR,
-        footer: {
-            text: `Search aliases: ${searchItem.aliases.join(", ")}`,
-        },
+        footer,
     };
 }
 
