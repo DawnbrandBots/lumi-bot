@@ -30,7 +30,7 @@ async function findSpell(name: string): Promise<Spell> {
 }
 
 async function findWeapon(name: string): Promise<Weapon> {
-    return em.findOneOrFail(Weapon, { name });
+    return em.findOneOrFail(Weapon, { name }, { populate: ["weaponType._weaponTypeSkills.weaponSkill"] });
 }
 
 describe(Disciple.name, () => {
@@ -133,5 +133,57 @@ describe(Weapon.name, () => {
         expect(weapon.getWeaponVariantStat({ variant: "NEUTRAL", stat: "atk" })).toBe(45);
         expect(weapon.getWeaponVariantStat({ variant: "ATK", stat: "hp" })).toBe(6);
         expect(weapon.getWeaponVariantStat({ variant: "ATK", stat: "atk" })).toBe(55);
+    });
+
+    describe("Weapon type skills", () => {
+        describe("Weapons which should have a weapn type skill", () => {
+            test.each([
+                ["Basic Claws", null],
+                ["Iron Claws", "RIDER_BANE_1"],
+                ["Silver Claws", "RIDER_BANE_2"],
+                ["Solar Claws +", "RIDER_BANE_3"],
+                ["Novice Staff", null],
+                ["Iron Staff", "ARMOR_BANE_1"],
+                ["Silver Staff", "ARMOR_BANE_2"],
+                ["Panther Staff +", "ARMOR_BANE_3"],
+                ["Novice Tome", null],
+                ["Iron Tome", "ARMOR_BANE_1"],
+                ["Silver Tome", "ARMOR_BANE_2"],
+                ["Ivory Tome +", "ARMOR_BANE_3"],
+                ["Bronze Bow", null],
+                ["Iron Bow", "FLIER_BANE_1"],
+                ["Silver Bow", "FLIER_BANE_2"],
+                ["Mulagir +", "FLIER_BANE_3"],
+            ])("%s => %s", async (name, expectedSkillId) => {
+                const weapon = await findWeapon(name);
+
+                expect(weapon.weaponTypeSkill?.id ?? null).toBe(expectedSkillId);
+            });
+        });
+
+        describe("Weapons which should have a weapn type skill", () => {
+            test.each([
+                "Bronze Sword",
+                "Iron Sword",
+                "Silver Sword",
+                "Royal Sword +",
+                "Bronze Lance",
+                "Iron Lance",
+                "Silver Lance",
+                "Shield Lance +",
+                "Bronze Axe",
+                "Iron Axe",
+                "Silver Axe",
+                "Bull Axe +",
+                "Basic Stone",
+                "Iron Stone",
+                "Silver Stone",
+                "Sight Stone +",
+            ])("%s => null", async (name) => {
+                const weapon = await findWeapon(name);
+
+                expect(weapon.weaponTypeSkill).toBeNullable();
+            });
+        });
     });
 });
