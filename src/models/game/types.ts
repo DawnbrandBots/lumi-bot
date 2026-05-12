@@ -38,7 +38,7 @@ export interface IWeaponType {
      */
     // TODO: Currently only range influences Atk so maybe this should be a property of range rather than WeaponType. Not a big deal.
     readonly discipleBaseAtkModifier: number;
-    readonly weaponTypeSkills: Iterable<IWeaponSkill>;
+    readonly weaponSkills: Iterable<IWeaponSkill>;
 }
 
 // TODO: Actually represents a join table, not an in-game concept.

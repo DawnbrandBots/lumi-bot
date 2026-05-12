@@ -7,12 +7,7 @@ import { toAsciiTable } from "../utils/table.ts";
 // TODO: specifying "*" in the list will cause nested relationships to not be loaded, even when specifying these nested relationships.
 // eg: ["*", "uniqueSkill.effect"] won't populate effect
 // Is that even mentioned anywhere in the docs?
-const populate = [
-    "weaponType",
-    "weaponType._weaponTypeSkills.weaponSkill.effect",
-    "uniqueSkill.effect",
-    "prfDisciple",
-] as const;
+const populate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.effect", "prfDisciple"] as const;
 const weaponSearchHandler: SearchHandler<Weapon, (typeof populate)[number]> = {
     class: Weapon,
     populate: populate,
