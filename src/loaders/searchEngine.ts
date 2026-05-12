@@ -13,7 +13,7 @@ export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<It
 
     public constructor({ items }: { items: Items[] }) {
         super();
-        const keys: (keyof Items & string)[] = ["name"];
+        const keys: (keyof Items & string)[] = ["aliases"];
         this.fuse = new Fuse(items, {
             keys,
             ignoreDiacritics: true,
