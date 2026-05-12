@@ -24,10 +24,7 @@ export interface ISearchableEntity {
 export interface ISearchItem {
     readonly kind: string;
     readonly id: TId;
-    /**
-     * All searchable terms associated with the entity.
-     */
-    readonly aliases: string[];
+    readonly name: string;
 }
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
