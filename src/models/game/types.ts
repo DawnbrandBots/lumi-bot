@@ -101,7 +101,12 @@ export interface ISpell {
     readonly kind: "spell";
     readonly id: TId;
     readonly name: string;
-    readonly disciple: IDisciple;
+    /**
+     * Disciple who provides the spell.
+     *
+     * Some spells, like "Minor" ones, don't have an associated disciple.
+     */
+    readonly disciple?: IDisciple | null;
     readonly role: ISpellRole;
     readonly uses: number | null | undefined;
     readonly cooldown: number;

@@ -27,7 +27,7 @@ const spellSearchHandler: SearchHandler<Spell> = {
         const fields: APIEmbed["fields"] = [
             {
                 name: "Disciple",
-                value: spell.disciple.name,
+                value: spell.disciple?.name || "*None*",
                 inline: true,
             },
             {
