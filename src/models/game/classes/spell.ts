@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/core";
-import type { ISpell } from "../types.ts";
+import { ESpellEffectTarget, type ISpell } from "../types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { Disciple } from "./disciple.ts";
 import { HealEffect } from "./healEffect.ts";
@@ -52,7 +52,7 @@ export class Spell extends SpellSchema.class implements ISpell {
         // damage and healing effects can be nested, in which case they don't have a target,
         // but they always have a target at the root as effects at the rool level of Spell.effects
         // This needs to be fixed eventually!!
-        return this.effects.every((effect) => effect.target!.kind === "SELF")
+        return this.effects.every((effect) => effect.target!.kind === ESpellEffectTarget.SELF)
             ? SPELL_DRAGGING_MODE.SELF
             : SPELL_DRAGGING_MODE.ANY;
     }

@@ -2,7 +2,9 @@ import type { EntityManager } from "@mikro-orm/core";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { Disciple } from "../src/models/game/classes/disciple.ts";
 import { Spell } from "../src/models/game/classes/spell.ts";
+import { SPELL_DRAGGING_MODE } from "../src/models/game/classes/spellDraggingMode.ts";
 import { Weapon } from "../src/models/game/classes/weapon.ts";
+import { ESpellDraggingMode } from "../src/models/game/types.ts";
 import { initTestOrm } from "./orm.ts";
 
 const LEVELS = Array.from({ length: 11 }, (_, index) => index + 1);
@@ -87,7 +89,7 @@ describe(Spell.name, () => {
     test.each(["Self Mend", "Self Heal Push", "Self Crossedge"])("%s has SELF dragging mode", async (name) => {
         const spell = await findSpell(name);
 
-        expect(spell.draggingMode.kind).toBe("SELF");
+        expect(spell.draggingMode.kind).toBe(SPELL_DRAGGING_MODE.SELF.kind);
     });
 
     test.each([
@@ -108,7 +110,7 @@ describe(Spell.name, () => {
     ])("%s has ANY dragging mode", async (name) => {
         const spell = await findSpell(name);
 
-        expect(spell.draggingMode.kind).toBe("ANY");
+        expect(spell.draggingMode.kind).toBe(ESpellDraggingMode.ANY);
     });
 });
 
