@@ -791,6 +791,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "INCREASE",
+          "duration": 3,
           "amount": {
             "base": 50,
             "unit": {
@@ -909,6 +910,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "DECREASE",
+          "duration": 3,
           "amount": {
             "base": 30,
             "unit": {
@@ -1329,6 +1331,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "INCREASE",
+          "duration": 3,
           "amount": {
             "base": 80,
             "unit": {
@@ -1631,6 +1634,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "DECREASE",
+          "duration": 3,
           "amount": {
             "base": 30,
             "unit": {
@@ -1756,6 +1760,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "DECREASE",
+          "duration": 3,
           "amount": {
             "base": 30,
             "unit": {
@@ -2023,6 +2028,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "INCREASE",
+          "duration": 3,
           "amount": {
             "base": 50,
             "unit": {
@@ -2583,6 +2589,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "DECREASE",
+          "duration": 3,
           "amount": {
             "base": 20,
             "unit": {
@@ -2867,6 +2874,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "DECREASE",
+          "duration": 1,
           "amount": {
             "base": 20,
             "unit": {
@@ -2974,6 +2982,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "DECREASE",
+          "duration": 3,
           "amount": {
             "base": 30,
             "unit": {
@@ -3132,6 +3141,7 @@
         "effect": {
           "kind": "STAT",
           "statChange": "INCREASE",
+          "duration": 3,
           "amount": {
             "base": 50,
             "unit": {
