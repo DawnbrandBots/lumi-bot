@@ -6,9 +6,6 @@ export interface ICommandInfo {
      * Object with info about the command to be included in payload to register commands.
      */
     readonly info: ReturnType<SharedSlashCommand["toJSON"]>;
-    /**
-     * Briefly explains what the command does.
-     */
     readonly name: string;
     /**
      * Briefly explains what the command does.
