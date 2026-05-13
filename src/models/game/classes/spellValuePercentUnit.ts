@@ -14,11 +14,7 @@ export const SpellValuePercentUnitSchema = defineEntity({
         stat: p.type(StatType),
     },
 });
-export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {
-    public format({ base }: { base: number }) {
-        return `(${base}% of ${this.stat.name})`;
-    }
-}
+export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {}
 SpellValuePercentUnitSchema.setClass(SpellValuePercentUnit);
 
 // TODO: need to add some check that classes are assigned to the right schemas

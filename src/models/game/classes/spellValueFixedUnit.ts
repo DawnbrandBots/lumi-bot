@@ -13,9 +13,5 @@ export const SpellValueFixedUnitSchema = defineEntity({
         kind: p.enum([ESpellValueUnitKind.FIXED]),
     },
 });
-export class SpellValueFixedUnit extends SpellValueFixedUnitSchema.class implements ISpellValueFixedUnit {
-    public format({ base }: { base: number }) {
-        return base.toString();
-    }
-}
+export class SpellValueFixedUnit extends SpellValueFixedUnitSchema.class implements ISpellValueFixedUnit {}
 SpellValueFixedUnitSchema.setClass(SpellValueFixedUnit);
