@@ -198,6 +198,10 @@ export interface ISpellShape {
      * - `.` for tiles not part of the shape
      */
     readonly tiles: string;
+    /**
+     * Covers more than one tile.
+     */
+    readonly isAoe: boolean;
 }
 
 export enum ESpellDraggingMode {
@@ -247,7 +251,7 @@ export interface ISpell {
     /**
      * Effects created by the spell when dragged on the grid, in order of activation.
      */
-    readonly effects: ISpellEffect[];
+    readonly effects: TRootSpellEffect[];
     readonly shape: ISpellShape;
     /**
      * Kind of units that this spell can only be used by.
@@ -356,7 +360,6 @@ export interface ISpellEffectTarget {
 export interface ISpellEffect {
     readonly kind: string;
     readonly target?: ISpellEffectTarget | null;
-    readonly description: string;
 }
 
 /**
@@ -451,14 +454,17 @@ export interface ISummonEffect extends ISpellEffect {
     readonly atk: { base: number; scale?: number | null };
 }
 
-export type TSpellEffect =
+/**
+ * Spell effects which do not only appear as nested inside other effects.
+ */
+export type TRootSpellEffect =
     | IDamageEffect
     | IHealEffect
     | IMovementEffect
-    | IStatEffect
     | IStatusEffect
-    | IRepeatEffect
     | IWarpEffect
     | IIceBlockEffect
     | ITileEffect
     | ISummonEffect;
+
+export type TSpellEffect = TRootSpellEffect | IStatEffect | IRepeatEffect;

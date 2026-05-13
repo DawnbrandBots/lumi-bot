@@ -18,8 +18,5 @@ export const RepeatEffectSchema = defineEntity({
 });
 
 export class RepeatEffect extends RepeatEffectSchema.class implements IRepeatEffect {
-    public get description() {
-        return `${this.effect.description} every ${this.interval} seconds, ${this.times} times`;
-    }
 }
 RepeatEffectSchema.setClass(RepeatEffect);

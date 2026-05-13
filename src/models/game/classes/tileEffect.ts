@@ -27,9 +27,5 @@ export const TileEffectSchema = defineEntity({
 });
 
 export class TileEffect extends TileEffectSchema.class implements ITileEffect {
-    public get description() {
-        // TODO: but not urgent: using the target property in TileEffect's description
-        return `Grants effect to target tiles: ${this.repeat.description}`;
-    }
 }
 TileEffectSchema.setClass(TileEffect);

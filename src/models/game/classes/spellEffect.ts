@@ -1,5 +1,4 @@
 import { defineEntity, p } from "@mikro-orm/core";
-import type { ISpellEffect } from "../types.ts";
 import { SpellEffectTargetType } from "./spellEffectTarget.ts";
 
 // TODO: with the current class definitions for spell effects,
@@ -18,7 +17,5 @@ export const SpellEffectSchema = defineEntity({
         target: p.type(SpellEffectTargetType).nullable(),
     },
 });
-export abstract class SpellEffect extends SpellEffectSchema.class implements ISpellEffect {
-    public abstract readonly description: ISpellEffect["description"];
-}
+export abstract class SpellEffect extends SpellEffectSchema.class {}
 SpellEffectSchema.setClass(SpellEffect);

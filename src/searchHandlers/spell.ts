@@ -6,6 +6,7 @@ import {
     DISCORD_RED_SQUARE_EMOJI_CALL,
 } from "../models/discord/constants.ts";
 import { Spell } from "../models/game/classes/spell.ts";
+import { describeSpellEffects } from "../models/game/spellEffectDescriptions.ts";
 import type { ISpell } from "../models/game/types.ts";
 
 const tileEmojis: Record<string, string> = {
@@ -21,7 +22,7 @@ const spellSearchHandler: SearchHandler<Spell> = {
             .replaceAll(/(.{5})(?<!$)/g, "$1\n")
             .replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
 
-        const effectsStr = spell.effects.map((effect) => `1. ${effect.description}.`).join("\n");
+        const effectsStr = describeSpellEffects(spell);
 
         const fields: APIEmbed["fields"] = [
             {
