@@ -138,7 +138,7 @@ describe(Weapon.name, () => {
     });
 
     describe("Weapon type skills", () => {
-        describe("Weapons which should have a weapn type skill", () => {
+        describe("Should have a weapon type skill", () => {
             test.each([
                 ["Basic Claws", null],
                 ["Iron Claws", "RIDER_BANE_1"],
@@ -163,7 +163,7 @@ describe(Weapon.name, () => {
             });
         });
 
-        describe("Weapons which should have a weapn type skill", () => {
+        describe("Should not have a weapon type skill", () => {
             test.each([
                 "Bronze Sword",
                 "Iron Sword",
