@@ -1,11 +1,11 @@
 import type { APIEmbed } from "discord.js";
-import type { SearchHandler } from "../features/search.ts";
+import type { ISearchHandler } from "../features/search.ts";
 import { Disciple } from "../models/game/classes/disciple.ts";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../models/game/constants.ts";
 import type { IDisciple } from "../models/game/types.ts";
 import { toAsciiTable } from "../utils/table.ts";
 
-const discipleSearchHandler: SearchHandler<Disciple> = {
+const discipleSearchHandler: ISearchHandler<Disciple> = {
     class: Disciple,
     response: (disciple: IDisciple) => {
         // TODO: adding at least a thumbnail with the character's face would be nice

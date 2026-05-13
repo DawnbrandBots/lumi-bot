@@ -1,5 +1,5 @@
 import type { APIEmbed } from "discord.js";
-import type { SearchHandler } from "../features/search.ts";
+import type { ISearchHandler } from "../features/search.ts";
 import { Weapon } from "../models/game/classes/weapon.ts";
 import type { IWeapon } from "../models/game/types.ts";
 import { toAsciiTable } from "../utils/table.ts";
@@ -8,7 +8,7 @@ import { toAsciiTable } from "../utils/table.ts";
 // eg: ["*", "uniqueSkill.effect"] won't populate effect
 // Is that even mentioned anywhere in the docs?
 const populate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.effect", "prfDisciple"] as const;
-const weaponSearchHandler: SearchHandler<Weapon, (typeof populate)[number]> = {
+const weaponSearchHandler: ISearchHandler<Weapon, (typeof populate)[number]> = {
     class: Weapon,
     populate: populate,
     response: (weapon: IWeapon) => {
