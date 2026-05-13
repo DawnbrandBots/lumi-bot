@@ -125,9 +125,9 @@ describe(Spell.name, () => {
         test.each([
             [
                 "Self Cross Shield",
-                "Grants status to targets in shape centered around user:\n1. decreases Received Weapon Damage by 30%.",
+                "Grants status to targets in shape centered around user:\n1. Decreases Received Weapon Damage by 30%.",
             ],
-            ["Self Crossedge", "Grants status to targets in shape centered around user:\n1. increases Atk by 50%."],
+            ["Self Crossedge", "Grants status to targets in shape centered around user:\n1. Increases Atk by 50%."],
         ])("uses shape-aware target wording for %s", async (name, expected) => {
             const spell = await findSpell(name);
 
@@ -141,9 +141,9 @@ describe(Spell.name, () => {
             expect(describeSpellEffects(spell)).toBe(
                 [
                     "Grants status to targets:",
-                    "1. decreases Received Weapon Damage by 20%.",
-                    "1. increases Atk by 30%.",
-                    "1. decreases Color Affinity by 20%.",
+                    "1. Decreases Received Weapon Damage by 20%.",
+                    "1. Increases Atk by 30%.",
+                    "1. Decreases Color Affinity by 20%.",
                 ].join("\n"),
             );
         });
@@ -152,7 +152,7 @@ describe(Spell.name, () => {
             const spell = await findSpell("Thunder Self Edge EX");
 
             expect(describeSpellEffects(spell)).toBe(
-                ["1. Deals 60 Blue damage to targets.", "1. Grants status to user: increases Atk by 30%."].join("\n"),
+                ["1. Deals 60 Blue damage to targets.", "1. Grants status to user: Increases Atk by 30%."].join("\n"),
             );
         });
 

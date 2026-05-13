@@ -12,8 +12,8 @@ export class StatChange implements IStatChange {
 }
 
 const STAT_CHANGES = {
-    INCREASE: new StatChange({ id: "INCREASE", verb: "increases" }),
-    DECREASE: new StatChange({ id: "DECREASE", verb: "decreases" }),
+    INCREASE: new StatChange({ id: "INCREASE", verb: "Increases" }),
+    DECREASE: new StatChange({ id: "DECREASE", verb: "Decreases" }),
 } as const satisfies { [K in TStatChange]: IStatChange };
 
 export class StatChangeType extends Type<StatChange, string | null | undefined> {
