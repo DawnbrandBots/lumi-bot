@@ -1,7 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/core";
 import { ESpellValueUnitKind, type ISpellValuePercentUnit } from "../types.ts";
 import { SpellValueUnit } from "./spellValueUnit.ts";
-import { Stat } from "./stat.ts";
+import { StatType } from "./stat.ts";
 
 export const SpellValuePercentUnitSchema = defineEntity({
     name: "SpellValuePercentUnit",
@@ -11,7 +11,7 @@ export const SpellValuePercentUnitSchema = defineEntity({
     discriminatorValue: ESpellValueUnitKind.PERCENT,
     properties: {
         kind: p.enum([ESpellValueUnitKind.PERCENT]),
-        stat: () => p.manyToOne(Stat),
+        stat: p.type(StatType),
     },
 });
 export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {
