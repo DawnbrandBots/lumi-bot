@@ -12,8 +12,8 @@ import searchFeature, {
     SEARCH_ALIASES_FOOTER_PREFIX,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "../src/features/search.ts";
-import getSearchables, { type TSearchableEntity } from "../src/loaders/searchables.ts";
 import { FuseSearchEngine, type ISearchEngine } from "../src/loaders/searchEngine.ts";
+import getSearchItems, { type TSearchableEntity } from "../src/loaders/searchItems.ts";
 import { SEARCH_MAX_INPUT_LENGTH } from "../src/models/discord/constants.ts";
 import SEARCH_HANDLERS from "../src/searchHandlers/all.ts";
 import { initTestOrm } from "./orm.ts";
@@ -26,7 +26,7 @@ type SearchItem = ISearchItem & { kind: TSearchableEntity["kind"] };
 beforeAll(async () => {
     orm = await initTestOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<ISearchItem>({ items: await getSearchables(em) });
+    searchEngine = new FuseSearchEngine<ISearchItem>({ items: await getSearchItems(em) });
 });
 
 afterAll(async () => {

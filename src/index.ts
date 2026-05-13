@@ -9,9 +9,9 @@ import helpFeature from "./features/help.ts";
 import searchFeature from "./features/search.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
-import type { TSearchableEntity } from "./loaders/searchables.ts";
-import getSearchables from "./loaders/searchables.ts";
 import { FuseSearchEngine } from "./loaders/searchEngine.ts";
+import type { TSearchableEntity } from "./loaders/searchItems.ts";
+import getSearchItems from "./loaders/searchItems.ts";
 import mikroOrmConfig from "./mikro-orm.config.ts";
 import SEARCH_HANDLERS from "./searchHandlers/all.ts";
 
@@ -19,8 +19,8 @@ const log = debug("bot");
 
 const orm = await getOrm(mikroOrmConfig);
 const em = orm.em.fork();
-const searchables = await getSearchables(em);
-const searchEngine = new FuseSearchEngine({ items: searchables });
+const searchItems = await getSearchItems(em);
+const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const commands: Record<string, ICommand> = {

@@ -5,20 +5,15 @@ import { Spell } from "../models/game/classes/spell.ts";
 import { Weapon } from "../models/game/classes/weapon.ts";
 import { WeaponSkill } from "../models/game/classes/weaponSkill.ts";
 
-// TODO: redundant?
 export function* id(value: string) {
     yield value;
 }
 
-export function* normalizeWeaponName(value: string) {
-    // No need to remove diacritics and replace with lowercase: the search engine takes care of it already.
-    // Do not remove spaces.
-    // TODO: having written the comments above, moving this logic into the FuseSearchEngine class might be more appropriate.
+export function* aliasWeaponName(value: string) {
     yield value.replace("+", "Plus");
 }
 
-// TODO: "normalize" has lost a bit of its meaning here
-export function* normalizeSpellName(value: string): Generator<string> {
+export function* aliasSpellName(value: string): Generator<string> {
     const norm = value.replace("+", "Plus");
     yield norm;
     // TODO: constants for regex?
@@ -27,10 +22,10 @@ export function* normalizeSpellName(value: string): Generator<string> {
 }
 
 function getToSearchItemMapper<Kind extends string>(
-    normalizer: (value: string) => Iterable<string>,
+    aliaser: (value: string) => Iterable<string>,
 ): (entity: ISearchableEntity & { kind: Kind }) => ISearchItem & { kind: Kind } {
     return ({ id, name, kind }: ISearchableEntity & { kind: Kind }) => {
-        const aliases = [...normalizer(name)];
+        const aliases = [...aliaser(name)];
         return {
             id,
             aliases,
@@ -41,17 +36,17 @@ function getToSearchItemMapper<Kind extends string>(
 
 export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell;
 
-export default async function getSearchables(em: EntityManager) {
+export default async function getSearchItems(em: EntityManager) {
     // No need to populate entities. We only care about the id, name and kind for the sake of the search.
     const weapons: Weapon[] = await em.findAll(Weapon);
     const disciples: Disciple[] = await em.findAll(Disciple);
     const weaponSkills: WeaponSkill[] = await em.findAll(WeaponSkill);
     const spells: Spell[] = await em.findAll(Spell);
 
-    const weaponSearchItems = weapons.flatMap(getToSearchItemMapper(normalizeWeaponName));
+    const weaponSearchItems = weapons.flatMap(getToSearchItemMapper(aliasWeaponName));
     const discipleSearchItems = disciples.flatMap(getToSearchItemMapper(id));
     const weaponSkillSearchItems = weaponSkills.flatMap(getToSearchItemMapper(id));
-    const spellSearchItems = spells.flatMap(getToSearchItemMapper(normalizeSpellName));
+    const spellSearchItems = spells.flatMap(getToSearchItemMapper(aliasSpellName));
 
     return [...weaponSearchItems, ...discipleSearchItems, ...weaponSkillSearchItems, ...spellSearchItems];
 }
