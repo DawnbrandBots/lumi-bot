@@ -1,8 +1,8 @@
 import type { EntityManager } from "@mikro-orm/core";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import type { ISearchItem } from "../src/features/search.ts";
-import getSearchables from "../src/loaders/searchables.ts";
 import { FuseSearchEngine, type ISearchEngine } from "../src/loaders/searchEngine.ts";
+import getSearchItems from "../src/loaders/searchItems.ts";
 import { initTestOrm } from "./orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
@@ -12,7 +12,7 @@ let searchEngine: ISearchEngine<ISearchItem>;
 beforeAll(async () => {
     orm = await initTestOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<ISearchItem>({ items: await getSearchables(em) });
+    searchEngine = new FuseSearchEngine<ISearchItem>({ items: await getSearchItems(em) });
 });
 
 afterAll(async () => {
