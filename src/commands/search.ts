@@ -23,10 +23,8 @@ export function getSearchCommand<Items extends ISearchableEntity>({
             if (!input) {
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`);
             }
-            const embed = await searchFeature({ em, searchEngine, handlers, input });
-            return interaction.reply({
-                embeds: [embed],
-            });
+            const response = await searchFeature({ em, searchEngine, handlers, input });
+            return interaction.reply(response);
         },
     });
 }

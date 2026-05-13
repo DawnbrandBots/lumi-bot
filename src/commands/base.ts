@@ -3,10 +3,10 @@ import type { ICommandInfo } from "../commandInfo/base.js";
 
 export interface ICommand {
     readonly info: ICommandInfo;
-    readonly run: (
-        this: ICommand,
-        interaction: ChatInputCommandInteraction<CacheType>,
-    ) => Promise<InteractionResponse<boolean>>;
+    /**
+     * What the command does. Must reply to the interaction.
+     */
+    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<InteractionResponse<boolean>>;
 }
 
 export class Command implements ICommand {

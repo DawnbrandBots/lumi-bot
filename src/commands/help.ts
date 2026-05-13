@@ -6,9 +6,7 @@ import { Command } from "./base.ts";
 export const helpCommand: ICommand = new Command({
     info: helpCommandInfo,
     run: function (interaction) {
-        const help = helpFeature();
-        return interaction.reply({
-            embeds: [help],
-        });
+        const response = helpFeature();
+        return interaction.reply(response);
     },
 });
