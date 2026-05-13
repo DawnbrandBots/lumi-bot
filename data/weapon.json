@@ -649,8 +649,9 @@
   {
     "id": "MOONLIT_SWORD",
     "name": "Moonlit Sword",
-    "type": "SWORD",
+    "weaponType": "SWORD",
     "level": 5,
+    "hp": 5,
     "atk": 25,
     "freeSkillSlots": 2
   },
