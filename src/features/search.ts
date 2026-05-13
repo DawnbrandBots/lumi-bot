@@ -27,6 +27,15 @@ export interface ISearchItem {
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
 export type SearchFeatureReturnType = IFeatureResponse;
 
+export const INVALID_INPUT_TITLE = "Invalid input";
+export const INPUT_TOO_LONG_DESCRIPTION = `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`;
+export const INPUT_TITLE = "Input";
+export const SEARCH_YIELDED_NO_RESULT_DESCRIPTION = "Search yielded no result";
+export const MISSING_DATABASE_RESULT_TITLE = "Result found in search engine but not in database";
+export const ENTITY_KIND_FIELD_NAME = "Entity kind";
+export const ID_FIELD_NAME = "Id";
+export const SEARCH_ALIASES_FOOTER_PREFIX = "Search aliases:";
+
 // TODO: "response" argument type should be refined to take populate's type into account
 // (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
 export type SearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> = {
@@ -66,8 +75,8 @@ async function searchFeature<
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
         return new ErrorFeatureResponse({
             embed: {
-                title: "Input",
-                description: `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`,
+                title: INVALID_INPUT_TITLE,
+                description: INPUT_TOO_LONG_DESCRIPTION,
             },
         });
     }
@@ -77,8 +86,8 @@ async function searchFeature<
     if (!searchItem) {
         return new ErrorFeatureResponse({
             embed: {
-                title: "Input",
-                description: `Search yield no result`,
+                title: INPUT_TITLE,
+                description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
             },
         });
     }
@@ -92,10 +101,10 @@ async function searchFeature<
     if (!entity) {
         return new ErrorFeatureResponse({
             embed: {
-                title: "Result found in search engine but not in database",
+                title: MISSING_DATABASE_RESULT_TITLE,
                 fields: [
-                    { name: "Entity kind", value: searchItem.kind, inline: true },
-                    { name: "Id", value: searchItem.id, inline: true },
+                    { name: ENTITY_KIND_FIELD_NAME, value: searchItem.kind, inline: true },
+                    { name: ID_FIELD_NAME, value: searchItem.id, inline: true },
                 ],
             },
         });
@@ -105,7 +114,7 @@ async function searchFeature<
         // Showing aliases when there is only one is redundant.
         searchItem.aliases.length > 1
             ? {
-                text: `Search aliases: ${searchItem.aliases.join(", ")}`,
+                text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem.aliases.join(", ")}`,
             }
             : undefined;
 
