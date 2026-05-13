@@ -14,10 +14,5 @@ export const SpellValuePercentUnitSchema = defineEntity({
         stat: p.type(StatType),
     },
 });
-export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {}
+export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit { }
 SpellValuePercentUnitSchema.setClass(SpellValuePercentUnit);
-
-// TODO: need to add some check that classes are assigned to the right schemas
-// some combinations are not incompatible and not reported by TypeScript,
-// namely when assigning an extending class
-// to an extended schema, and this causes errors during discovery
