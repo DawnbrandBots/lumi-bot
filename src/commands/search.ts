@@ -1,7 +1,7 @@
 import type { EntityManager } from "@mikro-orm/core";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { searchCommandInfo } from "../commandInfo/search.js";
-import type { ISearchableEntity, ISearchItem, SearchHandlers } from "../features/search.ts";
+import type { ISearchableEntity, ISearchHandlers, ISearchItem } from "../features/search.ts";
 import searchFeature from "../features/search.ts";
 import type { ISearchEngine } from "../loaders/searchEngine.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../models/discord/constants.ts";
@@ -14,7 +14,7 @@ export function getSearchCommand<Items extends ISearchableEntity>({
 }: {
     searchEngine: ISearchEngine<ISearchItem & { kind: Items["kind"] }>;
     em: EntityManager;
-    handlers: SearchHandlers<Items>;
+    handlers: ISearchHandlers<Items>;
 }) {
     return new Command({
         info: searchCommandInfo,

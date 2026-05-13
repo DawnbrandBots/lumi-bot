@@ -1,5 +1,5 @@
 import type { APIEmbed } from "discord.js";
-import type { SearchHandler } from "../features/search.ts";
+import type { ISearchHandler } from "../features/search.ts";
 import {
     DISCORD_BLACK_SQUARE_EMOJI_CALL,
     DISCORD_BLUE_SQUARE_EMOJI_CALL,
@@ -15,7 +15,7 @@ const tileEmojis: Record<string, string> = {
     ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
 };
 
-const spellSearchHandler: SearchHandler<Spell> = {
+const spellSearchHandler: ISearchHandler<Spell> = {
     class: Spell,
     response: (spell: ISpell) => {
         const shapeStr = spell.shape.tiles

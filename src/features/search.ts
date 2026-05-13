@@ -38,7 +38,7 @@ export const SEARCH_ALIASES_FOOTER_PREFIX = "Search aliases:";
 
 // TODO: "response" argument type should be refined to take populate's type into account
 // (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
-export type SearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> = {
+export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
     class: EntityName<EntityType>;
     response: (entity: EntityType) => SearchHandlerResponseReturnType;
     /**
@@ -51,15 +51,14 @@ export type SearchHandler<EntityType extends ISearchableEntity, PopulateHint ext
      */
     populate?: Populate<EntityType, PopulateHint>;
     // TODO: ideally, this file should be void of any mention to MikroORM, in case there's ever a switch to a different method to read the DB
-};
+}
 
-export type SearchHandlers<Items extends ISearchableEntity> = {
-    [Kind in Items["kind"]]: SearchHandler<Items & { kind: Kind }, string>;
+export type ISearchHandlers<Items extends ISearchableEntity> = {
+    [Kind in Items["kind"]]: ISearchHandler<Items & { kind: Kind }, string>;
 };
 
 async function searchFeature<
     Items extends ISearchableEntity & { kind: Kinds },
-    // TODO: I am not sure why result.item.kind cannot index handlers without specifying this second type argument
     Kinds extends ISearchableEntity["kind"] = ISearchableEntity["kind"],
 >({
     input,
@@ -69,7 +68,7 @@ async function searchFeature<
 }: {
     input: string;
     searchEngine: ISearchEngine<ISearchItem & { kind: Kinds }>;
-    handlers: SearchHandlers<Items>;
+    handlers: ISearchHandlers<Items>;
     em: EntityManager;
 }): Promise<SearchFeatureReturnType> {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
