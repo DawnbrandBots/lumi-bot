@@ -37,7 +37,7 @@ export class SuccessFeatureResponse extends FeatureResponse implements IFeatureR
 }
 
 export class ErrorFeatureResponse extends FeatureResponse implements IFeatureResponse {
-    protected report: boolean;
+    public readonly report: boolean;
 
     public constructor({
         embed,
