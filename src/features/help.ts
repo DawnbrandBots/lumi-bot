@@ -1,6 +1,7 @@
-import type { APIEmbed } from "discord.js";
 import allCommandInfo from "../commandInfo/all.ts";
-import { BOT_NAME, DISCORD_MESSAGE_NEUTRAL_COLOR } from "../models/discord/constants.ts";
+import { BOT_NAME } from "../models/discord/constants.ts";
+import type { IFeatureResponse } from "./featureResponse.ts";
+import { NeutralFeatureResponse } from "./featureResponse.ts";
 
 const commandsStr = allCommandInfo
     .map(
@@ -10,12 +11,13 @@ const commandsStr = allCommandInfo
     .join("\n");
 const description = `### Commands\n${commandsStr}`;
 
-function helpFeature(): APIEmbed {
-    return {
-        title: BOT_NAME,
-        color: DISCORD_MESSAGE_NEUTRAL_COLOR,
-        description,
-    };
+function helpFeature(): IFeatureResponse {
+    return new NeutralFeatureResponse({
+        embed: {
+            title: BOT_NAME,
+            description,
+        },
+    });
 }
 
 export default helpFeature;

@@ -48,8 +48,8 @@ bot.on(Events.MessageCreate, async (interaction) => {
     }
     const startingBotMentionStr = `<@${bot.user.id}>`;
     if (interaction.content === startingBotMentionStr) {
-        const help = helpFeature();
-        await interaction.reply({ embeds: [help] });
+        const response = helpFeature();
+        await interaction.reply(response);
         return;
     }
     const startingBotMentionAndSpaceStr = startingBotMentionStr + " ";
@@ -57,10 +57,8 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const embed = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
-    await interaction.reply({
-        embeds: [embed],
-    });
+    const response = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
+    await interaction.reply(response);
 });
 
 bot.on(Events.InteractionCreate, async (interaction) => {

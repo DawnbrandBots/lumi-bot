@@ -2,10 +2,25 @@ import type { SharedSlashCommand } from "discord.js";
 import { ApplicationIntegrationType, InteractionContextType, SlashCommandBuilder } from "discord.js";
 
 export interface ICommandInfo {
+    /**
+     * Object with info about the command to be included in payload to register commands.
+     */
     readonly info: ReturnType<SharedSlashCommand["toJSON"]>;
+    /**
+     * Briefly explains what the command does.
+     */
     readonly name: string;
+    /**
+     * Briefly explains what the command does.
+     */
     readonly description: string;
+    /**
+     * Additional info about the command to be registered.
+     */
     readonly customInfo: (this: ICommandInfo, baseInfo: SlashCommandBuilder) => SharedSlashCommand;
+    /**
+     * Describes how to format a message pinging the bot to use the feature.
+     */
     readonly pingEquivalent?: string;
 }
 

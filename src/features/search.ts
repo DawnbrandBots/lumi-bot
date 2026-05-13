@@ -1,13 +1,10 @@
 import type { EntityManager, EntityName, Populate } from "@mikro-orm/core";
 import type { APIEmbed } from "discord.js";
 import type { ISearchEngine } from "../loaders/searchEngine.ts";
-import {
-    DISCORD_MESSAGE_ERROR_COLOR,
-    DISCORD_MESSAGE_SUCCESS_COLOR,
-    NOTABOT_DISCORD_MENTION,
-    SEARCH_MAX_INPUT_LENGTH,
-} from "../models/discord/constants.ts";
+import { SEARCH_MAX_INPUT_LENGTH } from "../models/discord/constants.ts";
 import type { TId } from "../models/game/types.ts";
+import type { IFeatureResponse } from "./featureResponse.ts";
+import { ErrorFeatureResponse, SuccessFeatureResponse } from "./featureResponse.ts";
 
 /**
  * Properties required for entities to be searchable.
@@ -28,8 +25,7 @@ export interface ISearchItem {
 }
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
-export type SearchFeatureReturnType = Required<Pick<APIEmbed, "title" | "color">> &
-    Pick<APIEmbed, "fields" | "description" | "footer">;
+export type SearchFeatureReturnType = IFeatureResponse;
 
 // TODO: "response" argument type should be refined to take populate's type into account
 // (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
@@ -68,20 +64,23 @@ async function searchFeature<
     em: EntityManager;
 }): Promise<SearchFeatureReturnType> {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
-        return {
-            title: "Input",
-            color: DISCORD_MESSAGE_ERROR_COLOR,
-            description: `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`,
-        };
+        return new ErrorFeatureResponse({
+            embed: {
+                title: "Input",
+                description: `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`,
+            },
+        });
     }
 
     const searchItem = searchEngine.searchOne(input);
 
     if (!searchItem) {
-        return {
-            title: "Search yield no result",
-            color: DISCORD_MESSAGE_ERROR_COLOR,
-        };
+        return new ErrorFeatureResponse({
+            embed: {
+                title: "Input",
+                description: `Search yield no result`,
+            },
+        });
     }
 
     const handler = handlers[searchItem.kind];
@@ -91,15 +90,15 @@ async function searchFeature<
         populate: (handler.populate ?? ["*"]) as never,
     });
     if (!entity) {
-        return {
-            title: "Result found in search engine but not in database",
-            description: NOTABOT_DISCORD_MENTION,
-            fields: [
-                { name: "Entity kind", value: searchItem.kind, inline: true },
-                { name: "Id", value: searchItem.id, inline: true },
-            ],
-            color: DISCORD_MESSAGE_ERROR_COLOR,
-        };
+        return new ErrorFeatureResponse({
+            embed: {
+                title: "Result found in search engine but not in database",
+                fields: [
+                    { name: "Entity kind", value: searchItem.kind, inline: true },
+                    { name: "Id", value: searchItem.id, inline: true },
+                ],
+            },
+        });
     }
 
     const footer: APIEmbed["footer"] =
@@ -110,11 +109,7 @@ async function searchFeature<
             }
             : undefined;
 
-    return {
-        ...handler.response(entity),
-        color: DISCORD_MESSAGE_SUCCESS_COLOR,
-        footer,
-    };
+    return new SuccessFeatureResponse({ embed: { ...handler.response(entity), footer } });
 }
 
 export default searchFeature;
