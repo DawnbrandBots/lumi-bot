@@ -1,7 +1,6 @@
 import { defineConfig } from "@mikro-orm/sqlite";
 import { Color } from "./models/game/classes/color.ts";
 import { DamageEffect } from "./models/game/classes/damageEffect.ts";
-import { Direction } from "./models/game/classes/direction.ts";
 import { Disciple } from "./models/game/classes/disciple.ts";
 import { HealEffect } from "./models/game/classes/healEffect.ts";
 import { IceBlockEffect } from "./models/game/classes/iceBlockEffect.ts";
@@ -15,7 +14,6 @@ import { SpellValue } from "./models/game/classes/spellValue.ts";
 import { SpellValueEffectivenessItem } from "./models/game/classes/spellValueEffectivenessItem.ts";
 import { SpellValueFixedUnit } from "./models/game/classes/spellValueFixedUnit.ts";
 import { SpellValuePercentUnit } from "./models/game/classes/spellValuePercentUnit.ts";
-import { StatChange } from "./models/game/classes/statChange.ts";
 import { StatEffect } from "./models/game/classes/statEffect.ts";
 import { StatusEffect } from "./models/game/classes/statusEffect.ts";
 import { SummonEffect } from "./models/game/classes/summonEffect.ts";
@@ -34,8 +32,6 @@ export default defineConfig({
         Weapon,
         WeaponType,
         Color,
-        Direction,
-        StatChange,
         SpellValue,
         DamageEffect,
         HealEffect,

@@ -2,8 +2,8 @@ import { defineEntity, p } from "@mikro-orm/core";
 import type { IStatEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SpellValue } from "./spellValue.ts";
-import { Stat } from "./stat.ts";
-import { StatChange } from "./statChange.ts";
+import { StatType } from "./stat.ts";
+import { StatChangeType } from "./statChange.ts";
 
 export const StatEffectSchema = defineEntity({
     name: "StatEffect",
@@ -12,10 +12,10 @@ export const StatEffectSchema = defineEntity({
     discriminatorValue: "STAT",
     properties: {
         kind: p.enum(["STAT"]),
-        statChange: () => p.manyToOne(StatChange),
+        statChange: p.type(StatChangeType),
         amount: () => p.embedded(SpellValue).object(),
         duration: p.integer().nullable(),
-        stat: () => p.manyToOne(Stat),
+        stat: p.type(StatType),
     },
 });
 

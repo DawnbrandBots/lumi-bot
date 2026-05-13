@@ -1,6 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/core";
 import type { IMovementEffect } from "../types.ts";
-import { Direction } from "./direction.ts";
+import { DirectionType } from "./direction.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SpellEffectTargetType } from "./spellEffectTarget.ts";
 
@@ -11,7 +11,7 @@ export const MovementEffectSchema = defineEntity({
     discriminatorValue: "MOVEMENT",
     properties: {
         kind: p.enum(["MOVEMENT"]),
-        direction: () => p.manyToOne(Direction),
+        direction: p.type(DirectionType),
         count: p.integer(),
         target: p.type(SpellEffectTargetType),
     },

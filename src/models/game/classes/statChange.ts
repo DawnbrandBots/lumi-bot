@@ -1,13 +1,30 @@
-import { defineEntity, p } from "@mikro-orm/core";
-import type { IStatChange } from "../types.ts";
+import { Type } from "@mikro-orm/core";
+import type { IStatChange, TStatChange } from "../types.ts";
 
-export const StatChangeSchema = defineEntity({
-    name: "StatChange",
-    properties: {
-        id: p.string().primary(),
-        verb: p.string(),
-    },
-});
+export class StatChange implements IStatChange {
+    readonly id: IStatChange["id"];
+    readonly verb: IStatChange["verb"];
 
-export class StatChange extends StatChangeSchema.class implements IStatChange {}
-StatChangeSchema.setClass(StatChange);
+    public constructor({ id, verb }: { readonly id: IStatChange["id"]; readonly verb: IStatChange["verb"] }) {
+        this.id = id;
+        this.verb = verb;
+    }
+}
+
+const STAT_CHANGES = {
+    INCREASE: new StatChange({ id: "INCREASE", verb: "increases" }),
+    DECREASE: new StatChange({ id: "DECREASE", verb: "decreases" }),
+} as const satisfies { [K in TStatChange]: IStatChange };
+
+export class StatChangeType extends Type<StatChange, string | null | undefined> {
+    public convertToDatabaseValue(value: StatChange | null | undefined): string | null | undefined {
+        return value?.id;
+    }
+
+    public convertToJSValue(value: string): StatChange {
+        if (value in STAT_CHANGES) {
+            return STAT_CHANGES[value as keyof typeof STAT_CHANGES];
+        }
+        throw new Error("Invalid stat change id");
+    }
+}

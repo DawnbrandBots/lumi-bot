@@ -260,7 +260,7 @@ export interface ISpell {
     readonly draggingMode: ISpellDraggingMode;
 }
 
-export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "COLOR_AFFINITY";
+export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "MOVEMENT" | "COLOR_AFFINITY";
 export type TDirection = "UP" | "DOWN";
 export type TStatChange = "INCREASE" | "DECREASE";
 
