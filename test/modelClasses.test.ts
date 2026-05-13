@@ -4,6 +4,7 @@ import { Disciple } from "../src/models/game/classes/disciple.ts";
 import { Spell } from "../src/models/game/classes/spell.ts";
 import { SPELL_DRAGGING_MODE } from "../src/models/game/classes/spellDraggingMode.ts";
 import { Weapon } from "../src/models/game/classes/weapon.ts";
+import { describeSpellEffects } from "../src/models/game/spellEffectDescriptions.ts";
 import { ESpellDraggingMode } from "../src/models/game/types.ts";
 import { initTestOrm } from "./orm.ts";
 
@@ -28,7 +29,7 @@ async function findDisciple(name: string): Promise<Disciple> {
 }
 
 async function findSpell(name: string): Promise<Spell> {
-    return em.findOneOrFail(Spell, { name });
+    return em.findOneOrFail(Spell, { name }, { populate: ["*"] });
 }
 
 async function findWeapon(name: string): Promise<Weapon> {
@@ -111,6 +112,57 @@ describe(Spell.name, () => {
         const spell = await findSpell(name);
 
         expect(spell.draggingMode.kind).toBe(ESpellDraggingMode.ANY);
+    });
+
+    describe(describeSpellEffects.name, () => {
+        test("keeps single-tile SELF effects targeted to user", async () => {
+            const spell = await findSpell("Self Mend");
+
+            expect(spell.shape.isAoe).toBe(false);
+            expect(describeSpellEffects(spell)).toBe("1. Restores 80 HP to user.");
+        });
+
+        test.each([
+            [
+                "Self Cross Shield",
+                "Grants status to targets in shape centered around user:\n1. decreases Received Weapon Damage by 30%.",
+            ],
+            ["Self Crossedge", "Grants status to targets in shape centered around user:\n1. increases Atk by 50%."],
+        ])("uses shape-aware target wording for %s", async (name, expected) => {
+            const spell = await findSpell(name);
+
+            expect(spell.shape.isAoe).toBe(true);
+            expect(describeSpellEffects(spell)).toBe(expected);
+        });
+
+        test("uses one status intro when all effects are statuses", async () => {
+            const spell = await findSpell("Trinity Shield Edge EX");
+
+            expect(describeSpellEffects(spell)).toBe(
+                [
+                    "Grants status to targets:",
+                    "1. decreases Received Weapon Damage by 20%.",
+                    "1. increases Atk by 30%.",
+                    "1. decreases Color Affinity by 20%.",
+                ].join("\n"),
+            );
+        });
+
+        test("keeps status intro on the status item when a spell has other effect kinds", async () => {
+            const spell = await findSpell("Thunder Self Edge EX");
+
+            expect(describeSpellEffects(spell)).toBe(
+                ["1. Deals 60 Blue damage to targets.", "1. Grants status to user: increases Atk by 30%."].join("\n"),
+            );
+        });
+
+        test.each([
+            ["Tetrafire", "1. Deals 50 Red damage to targets."],
+            ["Dark Crossfire + Tome", "Grants status to targets:\n1. Deals 40 Red damage every 6 seconds, 2 times."],
+        ])("preserves existing non-status effect wording for %s", async (name, expected) => {
+            const spell = await findSpell(name);
+            expect(describeSpellEffects(spell)).toBe(expected);
+        });
     });
 });
 

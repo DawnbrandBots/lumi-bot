@@ -14,8 +14,5 @@ export const IceBlockEffectSchema = defineEntity({
 });
 
 export class IceBlockEffect extends IceBlockEffectSchema.class implements IIceBlockEffect {
-    public get description() {
-        return `Summons ice blocks with ${this.hp} HP`;
-    }
 }
 IceBlockEffectSchema.setClass(IceBlockEffect);

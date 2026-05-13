@@ -9,5 +9,9 @@ export const SpellShapeSchema = defineEntity({
         tiles: p.string().length(25),
     },
 });
-export abstract class SpellShape extends SpellShapeSchema.class implements ISpellShape {}
+export class SpellShape extends SpellShapeSchema.class implements ISpellShape {
+    public get isAoe() {
+        return this.tiles.includes("O");
+    }
+}
 SpellShapeSchema.setClass(SpellShape);

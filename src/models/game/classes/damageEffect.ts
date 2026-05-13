@@ -17,14 +17,5 @@ export const DamageEffectSchema = defineEntity({
 });
 
 export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect {
-    public get description() {
-        const targetStr = this.target ? ` to ${this.target.asString}` : "";
-        let str = `Deals ${this.amount.unit.format({ base: this.amount.base })} ${this.color.name} damage${targetStr}`;
-        if (this.amount.effectiveness?.length) {
-            const effectivenessString = `(${this.amount.effectiveness.map(({ base, kind }) => `${base} against ${kind} units`).join(", ")})`;
-            str += " " + effectivenessString;
-        }
-        return str;
-    }
 }
 DamageEffectSchema.setClass(DamageEffect);

@@ -18,8 +18,5 @@ export const StatusEffectSchema = defineEntity({
 });
 
 export class StatusEffect extends StatusEffectSchema.class implements IStatusEffect {
-    public get description() {
-        return `Grants ${this.target.asString} status: ${this.effect.description}`;
-    }
 }
 StatusEffectSchema.setClass(StatusEffect);

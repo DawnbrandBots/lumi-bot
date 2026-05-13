@@ -18,8 +18,5 @@ export const MovementEffectSchema = defineEntity({
 });
 
 export class MovementEffect extends MovementEffectSchema.class implements IMovementEffect {
-    public get description() {
-        return `Moves ${this.target.asString} ${this.count} tile${this.count > 1 ? "s" : ""} ${this.direction.noun}`;
-    }
 }
 MovementEffectSchema.setClass(MovementEffect);
