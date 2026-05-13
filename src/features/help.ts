@@ -11,13 +11,15 @@ const commandsStr = allCommandInfo
     .join("\n");
 const description = `### Commands\n${commandsStr}`;
 
+const response = new NeutralFeatureResponse({
+    embed: {
+        title: BOT_NAME,
+        description,
+    },
+});
+
 function helpFeature(): IFeatureResponse {
-    return new NeutralFeatureResponse({
-        embed: {
-            title: BOT_NAME,
-            description,
-        },
-    });
+    return response;
 }
 
 export default helpFeature;
