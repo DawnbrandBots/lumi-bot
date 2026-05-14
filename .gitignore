@@ -43,7 +43,6 @@ node_modules/
 dist/
 lumi
 lumi-test
-.test-csv/
 
 # VSCode editor settings
 .vscode/settings.json
