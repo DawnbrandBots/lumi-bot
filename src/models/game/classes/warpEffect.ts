@@ -12,6 +12,5 @@ export const WarpEffectSchema = defineEntity({
     },
 });
 
-export class WarpEffect extends WarpEffectSchema.class implements IWarpEffect {
-}
+export class WarpEffect extends WarpEffectSchema.class implements IWarpEffect {}
 WarpEffectSchema.setClass(WarpEffect);

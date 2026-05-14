@@ -14,5 +14,5 @@ export const SpellValuePercentUnitSchema = defineEntity({
         stat: p.type(StatType),
     },
 });
-export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit { }
+export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {}
 SpellValuePercentUnitSchema.setClass(SpellValuePercentUnit);

@@ -19,6 +19,5 @@ export const SummonEffectSchema = defineEntity({
     },
 });
 
-export class SummonEffect extends SummonEffectSchema.class implements ISummonEffect {
-}
+export class SummonEffect extends SummonEffectSchema.class implements ISummonEffect {}
 SummonEffectSchema.setClass(SummonEffect);
