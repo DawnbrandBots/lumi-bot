@@ -1,5 +1,8 @@
 export const DISCIPLE_BASE_HP = 80;
 export const DISCIPLE_BASE_ATK = 36;
+/**
+ * Level that can be reached by any disciple as F2P a few games after reaching high rank on both sides.
+ */
 export const DISCIPLE_MINIMUM_RELEVANT_LEVEL = 8;
 export const DISCIPLE_MAXIXUM_LEVEL = 11;
 
