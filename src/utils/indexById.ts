@@ -1,3 +1,8 @@
+/**
+ * Returns an object which entries are (id, array item with id).
+ *
+ * @throws when two items have the same id.
+ */
 export function indexById<T extends { id: string | number | symbol }>(array: T[]): Record<T["id"], T>;
 export function indexById<T extends { id: { toString(): string } }>(array: T[]): Record<string, T> {
     const result: Record<string | number | symbol, T> = {};
