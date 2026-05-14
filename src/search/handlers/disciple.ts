@@ -8,8 +8,6 @@ import type { ISearchHandler } from "../types.ts";
 const discipleSearchHandler: ISearchHandler<Disciple> = {
     class: Disciple,
     response: (disciple: IDisciple) => {
-        // TODO: adding at least a thumbnail with the character's face would be nice
-
         const spellsStr = [...disciple.spells].map((spell) => `- ${spell.name}`).join("\n");
 
         const columnCountAsideFromHeaderAndLevel1 = DISCIPLE_MAXIXUM_LEVEL - DISCIPLE_MINIMUM_RELEVANT_LEVEL + 1;
