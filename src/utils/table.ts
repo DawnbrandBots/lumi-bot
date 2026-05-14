@@ -24,7 +24,7 @@ function rowToStr({
 }) {
     return (
         row[0]?.toString().padEnd(headerPadding, " ") +
-        "|" +
+        "| " +
         row
             .slice(1)
             .map((n) => `${n}`.padStart(cellPadding, " "))
