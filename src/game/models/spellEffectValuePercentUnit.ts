@@ -7,7 +7,6 @@ export const SpellEffectValuePercentUnitSchema = defineEntity({
     name: "SpellEffectValuePercentUnit",
     embeddable: true,
     extends: SpellEffectValueUnit,
-    // TODO: enforce correct enum value at compile-time?
     discriminatorValue: ESpellEffectValueUnitKind.PERCENT,
     properties: {
         kind: p.enum([ESpellEffectValueUnitKind.PERCENT]),
