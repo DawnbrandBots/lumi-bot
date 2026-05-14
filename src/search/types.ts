@@ -22,16 +22,30 @@ export interface ISearchableEntity {
 export interface ISearchItem {
     readonly id: TId;
     readonly kind: string;
+    /**
+     * All searchable strings that refer to the same item.
+     * Eg. "Dark Crossfire Plus Tome" and "DCFPT" both refer to the "Dark Crossfire + 📕" spell.
+     */
     readonly aliases: string[];
 }
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
 export type SearchFeatureReturnType = IFeatureResponse;
 
+/**
+ * Defines what ORM entity should be searched for and what response should be generated
+ * given
+ */
 // TODO: "response" argument type should be refined to take populate's type into account
 // (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
 export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
+    /**
+     * ORM entity class required to search for an entry.
+     */
     class: EntityName<EntityType>;
+    /**
+     * Given the ORM entity, returns the formatted response to be sent to the client.
+     */
     response: (entity: EntityType) => SearchHandlerResponseReturnType;
     /**
      * MikroORM populate paths for fetched entities.
@@ -45,12 +59,24 @@ export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHi
     // TODO: ideally, this file should be void of any mention to MikroORM, in case there's ever a switch to a different method to read the DB
 }
 
+/**
+ * Associates a {@link ISearchHandler} to each searchable entity.
+ */
 export type ISearchHandlers<Items extends ISearchableEntity> = {
     [Kind in Items["kind"]]: ISearchHandler<Items & { kind: Kind }, string>;
 };
 
+/**
+ * Handles user text searches.
+ */
 export interface ISearchEngine<Items extends ISearchItem> {
-    searchOne(input: string): Items | undefined;
+    /**
+     * May return a searchable item when provided with user input.
+     */
+    searchOne(userInput: string): Items | undefined;
 }
 
+/**
+ * All entities which can be retrieved by the search feature at the moment.
+ */
 export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell;
