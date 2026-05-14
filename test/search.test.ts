@@ -1,21 +1,22 @@
 import type { EntityManager } from "@mikro-orm/core";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import { ErrorFeatureResponse, SuccessFeatureResponse } from "../src/features/featureResponse.ts";
-import searchFeature, {
+import { SEARCH_MAX_INPUT_LENGTH } from "../src/bot/constants.ts";
+import { ErrorFeatureResponse, SuccessFeatureResponse } from "../src/bot/featureResponse.ts";
+import SEARCH_HANDLERS from "../src/loaders/searchHandlers.ts";
+import getSearchItems from "../src/loaders/searchItems.ts";
+import {
     ENTITY_KIND_FIELD_NAME,
     ID_FIELD_NAME,
     INPUT_TITLE,
     INPUT_TOO_LONG_DESCRIPTION,
     INVALID_INPUT_TITLE,
-    type ISearchItem,
     MISSING_DATABASE_RESULT_TITLE,
     SEARCH_ALIASES_FOOTER_PREFIX,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-} from "../src/features/search.ts";
-import { FuseSearchEngine, type ISearchEngine } from "../src/loaders/searchEngine.ts";
-import getSearchItems, { type TSearchableEntity } from "../src/loaders/searchItems.ts";
-import { SEARCH_MAX_INPUT_LENGTH } from "../src/models/discord/constants.ts";
-import SEARCH_HANDLERS from "../src/searchHandlers/all.ts";
+} from "../src/search/constants.ts";
+import { FuseSearchEngine } from "../src/search/engine.ts";
+import searchFeature from "../src/search/feature.ts";
+import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../src/search/types.ts";
 import { initTestOrm } from "./orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;

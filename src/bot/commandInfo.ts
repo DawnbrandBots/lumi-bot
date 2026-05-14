@@ -1,28 +1,5 @@
-import type { SharedSlashCommand } from "discord.js";
 import { ApplicationIntegrationType, InteractionContextType, SlashCommandBuilder } from "discord.js";
-
-/**
- * Holds info about a command. Info may then be displayed while using the command or in help commands' output.
- */
-export interface ICommandInfo {
-    /**
-     * Object with info about the command to be included in payload to register commands.
-     */
-    readonly registerCommandInfo: ReturnType<SharedSlashCommand["toJSON"]>;
-    readonly name: string;
-    /**
-     * Briefly explains what the command does.
-     */
-    readonly description: string;
-    /**
-     * Additional info about the command to be registered.
-     */
-    readonly customInfo: (this: ICommandInfo, baseInfo: SlashCommandBuilder) => SharedSlashCommand;
-    /**
-     * Describes how to format a message pinging the bot to use the feature.
-     */
-    readonly pingEquivalent?: string;
-}
+import type { ICommandInfo } from "./types.ts";
 
 export class CommandInfo implements ICommandInfo {
     public readonly name: ICommandInfo["name"];

@@ -1,4 +1,3 @@
-import type { BaseMessageOptions, Colors } from "discord.js";
 import { type APIEmbed } from "discord.js";
 import {
     DISCORD_BLACK_SAI_LAUGH_EMOJI_CALL,
@@ -6,19 +5,13 @@ import {
     DISCORD_MESSAGE_NEUTRAL_COLOR,
     DISCORD_MESSAGE_SUCCESS_COLOR,
     NOTABOT_DISCORD_MENTION,
-} from "../models/discord/constants.ts";
-
-export type TFeatureResponseContent = BaseMessageOptions["content"];
-export type TFeatureResponseColor = (typeof Colors)[keyof typeof Colors];
-export type TFeatureEmbed = Omit<APIEmbed, "color">;
-
-export type IFeatureResponse = BaseMessageOptions;
-export type IFeatureReponseCtorArg = {
-    embed: TFeatureEmbed;
-    color: TFeatureResponseColor;
-    content?: TFeatureResponseContent;
-};
-export type ISubFeatureReponseCtorArg = Omit<IFeatureReponseCtorArg, "color">;
+} from "./constants.ts";
+import type {
+    IFeatureReponseCtorArg,
+    IFeatureResponse,
+    ISubFeatureReponseCtorArg,
+    TFeatureResponseContent,
+} from "./types.ts";
 
 export default abstract class FeatureResponse implements IFeatureResponse {
     public readonly content?: TFeatureResponseContent;

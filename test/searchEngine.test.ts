@@ -1,8 +1,8 @@
 import type { EntityManager } from "@mikro-orm/core";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import type { ISearchItem } from "../src/features/search.ts";
-import { FuseSearchEngine, type ISearchEngine } from "../src/loaders/searchEngine.ts";
 import getSearchItems from "../src/loaders/searchItems.ts";
+import { FuseSearchEngine } from "../src/search/engine.ts";
+import type { ISearchEngine, ISearchItem } from "../src/search/types.ts";
 import { initTestOrm } from "./orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;

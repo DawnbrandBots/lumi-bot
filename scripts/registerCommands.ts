@@ -1,7 +1,7 @@
 import debug from "debug";
 import type { APIUser, RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js";
 import { REST, Routes } from "discord.js";
-import commands from "../src/commandInfo/all.ts";
+import commands from "../src/loaders/commandInfo.ts";
 
 const log = debug("commands");
 

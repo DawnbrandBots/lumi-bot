@@ -1,13 +1,13 @@
 import type { APIEmbed } from "discord.js";
-import type { ISearchHandler } from "../features/search.ts";
 import {
     DISCORD_BLACK_SQUARE_EMOJI_CALL,
     DISCORD_BLUE_SQUARE_EMOJI_CALL,
     DISCORD_RED_SQUARE_EMOJI_CALL,
-} from "../models/discord/constants.ts";
-import { Spell } from "../models/game/classes/spell.ts";
-import { describeSpellEffects } from "../models/game/spellEffectDescriptions.ts";
-import type { ISpell } from "../models/game/types.ts";
+} from "../../bot/constants.ts";
+import { Spell } from "../../game/models/spell.ts";
+import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
+import type { ISpell } from "../../game/types.ts";
+import type { ISearchHandler } from "../types.ts";
 
 const tileEmojis: Record<string, string> = {
     X: DISCORD_RED_SQUARE_EMOJI_CALL,
