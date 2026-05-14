@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IDamageEffect } from "../types.ts";
 import { Color } from "./color.ts";
 import { SpellEffect } from "./spellEffect.ts";
@@ -16,5 +16,5 @@ export const DamageEffectSchema = defineEntity({
     },
 });
 
-export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect {}
+export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect { }
 DamageEffectSchema.setClass(DamageEffect);

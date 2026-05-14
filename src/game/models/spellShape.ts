@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { ISpellShape } from "../types.ts";
 
 export const SpellShapeSchema = defineEntity({

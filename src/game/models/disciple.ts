@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from "../constants.ts";
 import type { IDisciple } from "../types.ts";
 import { MovementType } from "./movementType.ts";

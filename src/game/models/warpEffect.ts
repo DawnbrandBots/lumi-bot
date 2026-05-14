@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IWarpEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 
@@ -12,5 +12,5 @@ export const WarpEffectSchema = defineEntity({
     },
 });
 
-export class WarpEffect extends WarpEffectSchema.class implements IWarpEffect {}
+export class WarpEffect extends WarpEffectSchema.class implements IWarpEffect { }
 WarpEffectSchema.setClass(WarpEffect);

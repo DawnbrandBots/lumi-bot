@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { ITileEffect } from "../types.ts";
 import { RepeatEffect } from "./repeatEffect.ts";
 import { SpellEffect } from "./spellEffect.ts";
@@ -26,5 +26,5 @@ export const TileEffectSchema = defineEntity({
     },
 });
 
-export class TileEffect extends TileEffectSchema.class implements ITileEffect {}
+export class TileEffect extends TileEffectSchema.class implements ITileEffect { }
 TileEffectSchema.setClass(TileEffect);

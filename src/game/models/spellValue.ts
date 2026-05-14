@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { ISpellValue } from "../types.ts";
 import { SpellValueEffectivenessItem } from "./spellValueEffectivenessItem.ts";
 import { SpellValueFixedUnit } from "./spellValueFixedUnit.ts";
@@ -14,5 +14,5 @@ export const SpellValueSchema = defineEntity({
     },
 });
 
-export class SpellValue extends SpellValueSchema.class implements ISpellValue {}
+export class SpellValue extends SpellValueSchema.class implements ISpellValue { }
 SpellValueSchema.setClass(SpellValue);

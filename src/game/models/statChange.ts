@@ -1,4 +1,4 @@
-import { Type } from "@mikro-orm/core";
+import { Type } from "@mikro-orm/sqlite";
 import type { IStatChange, TStatChange } from "../types.ts";
 
 export class StatChange implements IStatChange {

@@ -1,4 +1,4 @@
-import { defineConfig } from "@mikro-orm/core";
+import { defineConfig } from "@mikro-orm/sqlite";
 import mikroOrmConfig from "../src/mikro-orm.config.ts";
 
 const TEST_DB_NAME = "lumi-test";

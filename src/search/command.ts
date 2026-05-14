@@ -1,4 +1,4 @@
-import type { EntityManager } from "@mikro-orm/core";
+import type { EntityManager } from "@mikro-orm/sqlite";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { Command } from "../bot/command.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";

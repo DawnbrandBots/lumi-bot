@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IStatusEffect } from "../types.ts";
 import { RepeatEffect } from "./repeatEffect.ts";
 import { SpellEffect } from "./spellEffect.ts";
@@ -17,5 +17,5 @@ export const StatusEffectSchema = defineEntity({
     },
 });
 
-export class StatusEffect extends StatusEffectSchema.class implements IStatusEffect {}
+export class StatusEffect extends StatusEffectSchema.class implements IStatusEffect { }
 StatusEffectSchema.setClass(StatusEffect);

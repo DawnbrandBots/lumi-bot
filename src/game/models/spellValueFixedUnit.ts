@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import { ESpellValueUnitKind, type ISpellValueFixedUnit } from "../types.ts";
 import { SpellValueUnit } from "./spellValueUnit.ts";
 
@@ -13,5 +13,5 @@ export const SpellValueFixedUnitSchema = defineEntity({
         kind: p.enum([ESpellValueUnitKind.FIXED]),
     },
 });
-export class SpellValueFixedUnit extends SpellValueFixedUnitSchema.class implements ISpellValueFixedUnit {}
+export class SpellValueFixedUnit extends SpellValueFixedUnitSchema.class implements ISpellValueFixedUnit { }
 SpellValueFixedUnitSchema.setClass(SpellValueFixedUnit);

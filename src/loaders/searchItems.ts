@@ -1,4 +1,4 @@
-import type { EntityManager } from "@mikro-orm/core";
+import type { SqlEntityManager } from "@mikro-orm/sqlite";
 import { Disciple } from "../game/models/disciple.ts";
 import { Spell } from "../game/models/spell.ts";
 import { Weapon } from "../game/models/weapon.ts";
@@ -34,7 +34,7 @@ function getToSearchItemMapper<Kind extends string>(
     };
 }
 
-export default async function getSearchItems(em: EntityManager) {
+export default async function getSearchItems(em: SqlEntityManager) {
     // No need to populate entities. We only care about the id, name and kind for the sake of the search.
     const weapons: Weapon[] = await em.findAll(Weapon);
     const disciples: Disciple[] = await em.findAll(Disciple);

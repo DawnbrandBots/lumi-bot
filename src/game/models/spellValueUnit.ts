@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import { ESpellValueUnitKind, type ISpellValueUnit } from "../types.ts";
 
 export const SpellValueUnitSchema = defineEntity({
@@ -11,5 +11,5 @@ export const SpellValueUnitSchema = defineEntity({
         kind: p.enum([ESpellValueUnitKind.FIXED, ESpellValueUnitKind.PERCENT]),
     },
 });
-export abstract class SpellValueUnit extends SpellValueUnitSchema.class implements ISpellValueUnit {}
+export abstract class SpellValueUnit extends SpellValueUnitSchema.class implements ISpellValueUnit { }
 SpellValueUnitSchema.setClass(SpellValueUnit);

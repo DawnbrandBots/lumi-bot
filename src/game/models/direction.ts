@@ -1,4 +1,4 @@
-import { Type } from "@mikro-orm/core";
+import { Type } from "@mikro-orm/sqlite";
 import type { IDirection, TDirection } from "../types.ts";
 
 export class Direction implements IDirection {

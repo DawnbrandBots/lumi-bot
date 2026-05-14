@@ -1,4 +1,4 @@
-import { Type } from "@mikro-orm/core";
+import { Type } from "@mikro-orm/sqlite";
 import type { ISpellRole } from "../types.ts";
 import { ESpellRole } from "../types.ts";
 

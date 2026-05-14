@@ -185,13 +185,13 @@
   resolved "https://registry.yarnpkg.com/@mikro-orm/cli/-/cli-7.0.13.tgz#55b993676af3b00032ec4f80271811e075179f78"
   integrity sha512-FT1AejcJqO6WBy/GhKC+TGqnOK4wxOcfvBHUY5zBZidM4kD4XXrafmp63vUnnLas4rUBCc4mHdRJH1ldpYKHJA==
   dependencies:
-    "@mikro-orm/core" "7.0.13"
+    "@mikro-orm/sqlite" "7.0.13"
     mikro-orm "7.0.13"
     yargs "17.7.2"
 
-"@mikro-orm/core@7.0.13", "@mikro-orm/core@^7.0.13":
+"@mikro-orm/sqlite@7.0.13", "@mikro-orm/sqlite@^7.0.13":
   version "7.0.13"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-7.0.13.tgz#bc0a2bdf1810986df4fc56bff55e0709c0531814"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/sqlite/-/core-7.0.13.tgz#bc0a2bdf1810986df4fc56bff55e0709c0531814"
   integrity sha512-TC1ize8Eo8fxnBdbIV3Af/oHkF8aD77PllieYqZv98geKGKRiXxGu99zC18KjdOjwf6FxdVp/DOvhGAQIhsPZw==
 
 "@mikro-orm/sql@7.0.13":
