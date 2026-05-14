@@ -1,5 +1,6 @@
-import { Type } from "@mikro-orm/sqlite";
-import { EDirection, type IDirection } from "../types.ts";
+import { Type } from "@mikro-orm/core";
+import type { IDirection } from "../types.ts";
+import { EDirection } from "../types.ts";
 
 export class Direction implements IDirection {
     readonly id: IDirection["id"];
