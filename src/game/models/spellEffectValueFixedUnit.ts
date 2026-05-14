@@ -6,10 +6,8 @@ export const SpellEffectValueFixedUnitSchema = defineEntity({
     name: "SpellEffectValueFixedUnit",
     embeddable: true,
     extends: SpellEffectValueUnit,
-    // TODO: enforce correct enum value at compile-time?
     discriminatorValue: ESpellEffectValueUnitKind.FIXED,
     properties: {
-        // TODO: huh?????
         kind: p.enum([ESpellEffectValueUnitKind.FIXED]),
     },
 });
