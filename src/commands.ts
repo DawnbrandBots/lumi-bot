@@ -13,7 +13,9 @@ const api = new REST().setToken(process.env.DISCORD_TOKEN!);
 async function registerSlashCommands(guild?: `${bigint}` | "user-install") {
     const botUser = (await api.get(Routes.user())) as APIUser;
     log(`${botUser.username}#${botUser.discriminator} (${botUser.id})`);
-    const info: RESTPostAPIChatInputApplicationCommandsJSONBody[] = commands.map((command) => command.info);
+    const info: RESTPostAPIChatInputApplicationCommandsJSONBody[] = commands.map(
+        (command) => command.registerCommandInfo,
+    );
     const created = await api.put(
         guild === undefined || guild === "user-install"
             ? Routes.applicationCommands(botUser.id)
