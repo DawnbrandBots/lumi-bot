@@ -1,4 +1,5 @@
 import type { SqlEntityManager } from "@mikro-orm/sqlite";
+import { SPELL_NAME_SUFFIXES } from "../game/constants.ts";
 import { Disciple } from "../game/models/disciple.ts";
 import { Spell } from "../game/models/spell.ts";
 import { Weapon } from "../game/models/weapon.ts";
@@ -13,11 +14,12 @@ export function* aliasWeaponName(value: string) {
     yield value.replace("+", "Plus");
 }
 
+const SPELL_NAME_PREFIX_SPLIT_REGEX = new RegExp(`\\s|(?=${SPELL_NAME_SUFFIXES.join("|")})`, "i");
+
 export function* aliasSpellName(value: string): Generator<string> {
     const norm = value.replace("+", "Plus");
     yield norm;
-    // TODO: constants for regex?
-    const normSplit = norm.split(/\s|(?=Fire|Thunder|Wind|Poison|Heal|Shield|Edge)/i);
+    const normSplit = norm.split(SPELL_NAME_PREFIX_SPLIT_REGEX);
     yield normSplit.map((s) => (s === "EX" ? s : s === "Plus" ? "P" : s[0]?.toUpperCase())).join("");
 }
 

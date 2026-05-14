@@ -14,3 +14,10 @@ export const WEAPON_TYPE_RANGE_ATK_MODIFIER = {
     1: 1,
     2: 2 / 3,
 } as const;
+
+/**
+ * Strings which can be appended to stems (eg. cross, tetra) without being separated by spaces.
+ *
+ * Eg. Elthunder, Tetrafire, Crossedge
+ */
+export const SPELL_NAME_SUFFIXES = ["Fire", "Thunder", "Wind", "Poison", "Heal", "Shield", "Edge"] as const;
