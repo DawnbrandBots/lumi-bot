@@ -1,6 +1,9 @@
 import type { SharedSlashCommand } from "discord.js";
 import { ApplicationIntegrationType, InteractionContextType, SlashCommandBuilder } from "discord.js";
 
+/**
+ * Holds info about a command. Info may then be displayed while using the command or in help commands' output.
+ */
 export interface ICommandInfo {
     /**
      * Object with info about the command to be included in payload to register commands.
