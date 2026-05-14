@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/node24/tsconfig.json",
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "scripts/**/*", "test/**/*"],
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
