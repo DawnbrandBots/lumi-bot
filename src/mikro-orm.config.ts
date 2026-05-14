@@ -9,11 +9,11 @@ import { MovementType } from "./game/models/movementType.ts";
 import { RepeatEffect } from "./game/models/repeatEffect.ts";
 import { Spell } from "./game/models/spell.ts";
 import { SpellEffect } from "./game/models/spellEffect.ts";
+import { SpellEffectValue } from "./game/models/spellEffectValue.ts";
+import { SpellEffectValueEffectivenessItem } from "./game/models/spellEffectValueEffectivenessItem.ts";
+import { SpellEffectValueFixedUnit } from "./game/models/spellEffectValueFixedUnit.ts";
+import { SpellEffectValuePercentUnit } from "./game/models/spellEffectValuePercentUnit.ts";
 import { SpellShape } from "./game/models/spellShape.ts";
-import { SpellValue } from "./game/models/spellValue.ts";
-import { SpellValueEffectivenessItem } from "./game/models/spellValueEffectivenessItem.ts";
-import { SpellValueFixedUnit } from "./game/models/spellValueFixedUnit.ts";
-import { SpellValuePercentUnit } from "./game/models/spellValuePercentUnit.ts";
 import { StatEffect } from "./game/models/statEffect.ts";
 import { StatusEffect } from "./game/models/statusEffect.ts";
 import { SummonEffect } from "./game/models/summonEffect.ts";
@@ -34,7 +34,7 @@ export default defineConfig({
         Weapon,
         WeaponType,
         Color,
-        SpellValue,
+        SpellEffectValue,
         DamageEffect,
         HealEffect,
         MovementEffect,
@@ -48,9 +48,9 @@ export default defineConfig({
         Disciple,
         MovementType,
         Spell,
-        SpellValueEffectivenessItem,
-        SpellValueFixedUnit,
-        SpellValuePercentUnit,
+        SpellEffectValueEffectivenessItem,
+        SpellEffectValueFixedUnit,
+        SpellEffectValuePercentUnit,
         SpellShape,
     ],
     dbName: "lumi",
