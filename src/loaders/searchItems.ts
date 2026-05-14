@@ -36,6 +36,9 @@ function getToSearchItemMapper<Kind extends string>(
     };
 }
 
+/**
+ * @returns Items to to provide to the search engine.
+ */
 export default async function getSearchItems(em: SqlEntityManager) {
     // No need to populate entities. We only care about the id, name and kind for the sake of the search.
     const weapons: Weapon[] = await em.findAll(Weapon);
