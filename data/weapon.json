@@ -80,6 +80,16 @@
     "uniqueSkill": "INTO_THE_FIRE"
   },
   {
+    "id": "HEIRESS_LANCE_PLUS",
+    "name": "Heiress Lance +",
+    "weaponType": "LANCE",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "PRIDEFUL_SOUL"
+  },
+  {
     "id": "BULL_AXE_PLUS",
     "name": "Bull Axe +",
     "weaponType": "AXE",
@@ -368,6 +378,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "INTO_THE_FIRE"
+  },
+  {
+    "id": "HEIRESS_LANCE",
+    "name": "Heiress Lance",
+    "weaponType": "LANCE",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "PRIDEFUL_SOUL"
   },
   {
     "id": "BULL_AXE",

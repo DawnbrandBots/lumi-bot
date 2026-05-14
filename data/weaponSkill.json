@@ -40,6 +40,11 @@
     "effect": "SIEGMUND"
   },
   {
+    "id": "PRIDEFUL_SOUL",
+    "name": "Prideful Soul",
+    "effect": "PRIDEFUL_SOUL"
+  },
+  {
     "id": "BULL_S_STRENGTH",
     "name": "Bull's Strength",
     "effect": "BULL_AXE"

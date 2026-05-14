@@ -68,6 +68,10 @@
     "description": "Deal 50% more weapon damage against monsters."
   },
   {
+    "id": "PRIDEFUL_SOUL",
+    "description": "Take 20% less weapon damage from monsters."
+  },
+  {
     "id": "RIDER_BANE_1",
     "description": "Deals 30% more weapon damage against Cavalry foes."
   },
