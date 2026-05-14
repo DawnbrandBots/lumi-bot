@@ -11,5 +11,5 @@ export const SpellValueUnitSchema = defineEntity({
         kind: p.enum([ESpellValueUnitKind.FIXED, ESpellValueUnitKind.PERCENT]),
     },
 });
-export abstract class SpellValueUnit extends SpellValueUnitSchema.class implements ISpellValueUnit { }
+export abstract class SpellValueUnit extends SpellValueUnitSchema.class implements ISpellValueUnit {}
 SpellValueUnitSchema.setClass(SpellValueUnit);

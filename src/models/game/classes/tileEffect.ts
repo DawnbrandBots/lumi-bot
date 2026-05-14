@@ -26,6 +26,5 @@ export const TileEffectSchema = defineEntity({
     },
 });
 
-export class TileEffect extends TileEffectSchema.class implements ITileEffect {
-}
+export class TileEffect extends TileEffectSchema.class implements ITileEffect {}
 TileEffectSchema.setClass(TileEffect);

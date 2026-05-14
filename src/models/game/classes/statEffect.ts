@@ -19,6 +19,5 @@ export const StatEffectSchema = defineEntity({
     },
 });
 
-export class StatEffect extends StatEffectSchema.class implements IStatEffect {
-}
+export class StatEffect extends StatEffectSchema.class implements IStatEffect {}
 StatEffectSchema.setClass(StatEffect);
