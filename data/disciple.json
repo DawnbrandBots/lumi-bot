@@ -201,5 +201,12 @@
     "movementType": "INFANTRY",
     "weaponType": "TOME",
     "prfWeapon": "TACTICS_TOME_PLUS"
+  },
+  {
+    "id": "HANYA",
+    "name": "Hanya",
+    "movementType": "CAVALRY",
+    "weaponType": "LANCE",
+    "prfWeapon": "HEIRESS_LANCE_PLUS"
   }
 ]
