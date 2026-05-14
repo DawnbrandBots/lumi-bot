@@ -2,206 +2,206 @@
   {
     "id": "ROYAL_SCION",
     "name": "Royal Scion",
-    "effect": "ROYAL_SWORD"
+    "effect": "WEAPON_DAMAGE_VS_AXE_30"
   },
   {
     "id": "CROW_S_VENGEANCE",
     "name": "Crow's Vengeance",
-    "effect": "CROW_SWORD"
+    "effect": "WEAPON_DAMAGE_WHEN_HP_LE_50_120"
   },
   {
     "id": "LUPINE_SURVIVAL_INSTINCT",
     "name": "Lupine Survival Instinct",
-    "effect": "IVORY_TOME"
+    "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_LE_50_40"
   },
   {
     "id": "UNBREAKABLE_WILL",
     "name": "Unbreakable Will",
-    "effect": "AREADBHAR"
+    "effect": "WEAPON_DAMAGE_BOOST_15"
   },
   {
     "id": "GUARDIAN_S_SOUL",
     "name": "Guardian's Soul",
-    "effect": "SHIELD_LANCE"
+    "effect": "WEAPON_DAMAGE_VS_SWORD_30"
   },
   {
     "id": "BLUE_LION_PRIDE",
     "name": "Blue Lion Pride",
-    "effect": "AREADBHAR"
+    "effect": "WEAPON_DAMAGE_BOOST_15"
   },
   {
     "id": "AERIAL_KNIGHT_S_PROWESS",
     "name": "Aerial Knight's Prowess",
-    "effect": "RAVENOUS_AXE"
+    "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"
   },
   {
     "id": "INTO_THE_FIRE",
     "name": "Into the Fire",
-    "effect": "SIEGMUND"
+    "effect": "WEAPON_DAMAGE_VS_MONSTER_50"
   },
   {
     "id": "PRIDEFUL_SOUL",
     "name": "Prideful Soul",
-    "effect": "PRIDEFUL_SOUL"
+    "effect": "WEAPON_DAMAGE_REDUCTION_FROM_MONSTER_20"
   },
   {
     "id": "BULL_S_STRENGTH",
     "name": "Bull's Strength",
-    "effect": "BULL_AXE"
+    "effect": "WEAPON_DAMAGE_VS_LANCE_30"
   },
   {
     "id": "BEAST_FRENZY",
     "name": "Beast Frenzy",
-    "effect": "RAVENOUS_AXE"
+    "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"
   },
   {
     "id": "HEGEMON_S_WILL",
     "name": "Hegemon's Will",
-    "effect": "AYMR"
+    "effect": "ON_WEAPON_KILL_MAGIC_COOLDOWN_REDUCTION_20_1T"
   },
   {
     "id": "DEMON_REPELLER",
     "name": "Demon Repeller",
-    "effect": "CROW_SWORD"
+    "effect": "WEAPON_DAMAGE_WHEN_HP_LE_50_120"
   },
   {
     "id": "SOLAR_SHIELD",
     "name": "Solar Shield",
-    "effect": "SOLAR_CLAWS"
+    "effect": "WEAPON_DAMAGE_REDUCTION_FROM_LANCE_30"
   },
   {
     "id": "LUNAR_STRIKE",
     "name": "Lunar Strike",
-    "effect": "BULL_AXE"
+    "effect": "WEAPON_DAMAGE_VS_LANCE_30"
   },
   {
     "id": "WHITE_WING_S_GRACE",
     "name": "White Wing's Grace",
-    "effect": "IVORY_TOME"
+    "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_LE_50_40"
   },
   {
     "id": "BAT_S_GLOOM",
     "name": "Bat's Gloom",
-    "effect": "ROYAL_SWORD"
+    "effect": "WEAPON_DAMAGE_VS_AXE_30"
   },
   {
     "id": "FOX_S_TRICKERY",
     "name": "Fox's Trickery",
-    "effect": "WILY_STAFF"
+    "effect": "MAX_HP_BOOST_5"
   },
   {
     "id": "DRAGON_S_ROAR",
     "name": "Dragon's Roar",
-    "effect": "SOUND_STONE"
+    "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15"
   },
   {
     "id": "PANTHER_S_PROTECTION",
     "name": "Panther's Protection",
-    "effect": "PANTHER_STAFF"
+    "effect": "WEAPON_DAMAGE_REDUCTION_FROM_SWORD_30"
   },
   {
     "id": "FOX_S_SUNBURST",
     "name": "Fox's Sunburst",
-    "effect": "WILY_STAFF"
+    "effect": "MAX_HP_BOOST_5"
   },
   {
     "id": "ANCESTRAL_WARD",
     "name": "Ancestral Ward",
-    "effect": "SOUND_STONE"
+    "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15"
   },
   {
     "id": "THIST_FOR_LIFE",
     "name": "Thist for Life",
-    "effect": "RAVENOUS_AXE"
+    "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"
   },
   {
     "id": "PLAIN_S_WIND",
     "name": "Plain's Wind",
-    "effect": "MULAGIR"
+    "effect": "WEAPON_DAMAGE_VS_STAFF_30"
   },
   {
     "id": "SKILLED_HUNTER",
     "name": "Skilled Hunter",
-    "effect": "SWIFT_BOW"
+    "effect": "WEAPON_DAMAGE_VS_CAVALRY_20"
   },
   {
     "id": "WILY_DEFENSE",
     "name": "Wily Defense",
-    "effect": "SHADED_BOW"
+    "effect": "ON_WEAPON_KILL_MAGIC_DAMAGE_REDUCTION_40_1T"
   },
   {
     "id": "SHINING_EYE",
     "name": "Shining Eye",
-    "effect": "RAVENOUS_AXE"
+    "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"
   },
   {
     "id": "SHINING_EAR",
     "name": "Shining Ear",
-    "effect": "SOUND_STONE"
+    "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15"
   },
   {
     "id": "DIVINE_ANCESTOR_S_FANG",
     "name": "Divine Ancestor's Fang",
-    "effect": "PANTHER_STAFF"
+    "effect": "WEAPON_DAMAGE_REDUCTION_FROM_SWORD_30"
   },
   {
     "id": "DRAGONSCALE",
     "name": "Dragonscale",
-    "effect": "SOLITARY_STONE"
+    "effect": "WEAPON_DAMAGE_VS_ARMORED_20"
   },
   {
     "id": "RIDER_BANE_1",
     "name": "Rider Bane 1",
-    "effect": "RIDER_BANE_1"
+    "effect": "WEAPON_DAMAGE_VS_CAVALRY_30"
   },
   {
     "id": "RIDER_BANE_2",
     "name": "Rider Bane 2",
-    "effect": "RIDER_BANE_2"
+    "effect": "WEAPON_DAMAGE_VS_CAVALRY_40"
   },
   {
     "id": "RIDER_BANE_3",
     "name": "Rider Bane 3",
-    "effect": "RIDER_BANE_3"
+    "effect": "WEAPON_DAMAGE_VS_CAVALRY_50"
   },
   {
     "id": "FLIER_BANE_1",
     "name": "Flier Bane 1",
-    "effect": "FLIER_BANE_1"
+    "effect": "WEAPON_DAMAGE_VS_FLYING_30"
   },
   {
     "id": "FLIER_BANE_2",
     "name": "Flier Bane 2",
-    "effect": "FLIER_BANE_2"
+    "effect": "WEAPON_DAMAGE_VS_FLYING_40"
   },
   {
     "id": "FLIER_BANE_3",
     "name": "Flier Bane 3",
-    "effect": "FLIER_BANE_3"
+    "effect": "WEAPON_DAMAGE_VS_FLYING_50"
   },
   {
     "id": "ARMOR_BANE_1",
     "name": "Armor Bane 1",
-    "effect": "ARMOR_BANE_1"
+    "effect": "WEAPON_DAMAGE_VS_ARMORED_30"
   },
   {
     "id": "ARMOR_BANE_2",
     "name": "Armor Bane 2",
-    "effect": "ARMOR_BANE_2"
+    "effect": "WEAPON_DAMAGE_VS_ARMORED_40"
   },
   {
     "id": "ARMOR_BANE_3",
     "name": "Armor Bane 3",
-    "effect": "ARMOR_BANE_3"
+    "effect": "WEAPON_DAMAGE_VS_ARMORED_50"
   },
   {
     "id": "SPIRITED_ATTACK",
     "name": "Spirited Attack",
-    "effect": "SPIRITED_ATTACK"
+    "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_20"
   },
   {
     "id": "BATTLE_FERVOR",
     "name": "Battle Fervor",
-    "effect": "BATTLE_FERVOR"
+    "effect": "ON_WEAPON_KILL_ATK_BOOST_50_3T"
   }
 ]
