@@ -35,7 +35,7 @@ try {
 
         // No need to bother with type checking here (?).
         // If there is a problem with column names or data types, SQLite will report it.
-        const entries = JSON.parse(str) as object[];
+        const entries = JSON.parse(str);
         await em.insertMany(entityName as never, entries, { convertCustomTypes: false });
     }
     await em.flush();

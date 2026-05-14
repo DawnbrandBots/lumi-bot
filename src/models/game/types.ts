@@ -256,7 +256,7 @@ export interface ISpell {
     /**
      * Kind of units that this spell can only be used by.
      */
-    readonly onlyFor?: object | null;
+    readonly onlyFor?: IMovementType | IWeaponType | null;
     readonly draggingMode: ISpellDraggingMode;
 }
 
