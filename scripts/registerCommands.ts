@@ -1,12 +1,9 @@
 import debug from "debug";
 import type { APIUser, RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js";
 import { REST, Routes } from "discord.js";
-import { helpCommandInfo } from "./commandInfo/help.js";
-import { searchCommandInfo } from "./commandInfo/search.js";
+import commands from "../src/commandInfo/all.ts";
 
 const log = debug("commands");
-
-const commands = [helpCommandInfo, searchCommandInfo];
 
 const api = new REST().setToken(process.env.DISCORD_TOKEN!);
 

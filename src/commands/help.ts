@@ -1,4 +1,4 @@
-import { helpCommandInfo } from "../commandInfo/help.js";
+import { helpCommandInfo } from "../commandInfo/help.ts";
 import helpFeature from "../features/help.ts";
 import type { ICommand } from "./base.ts";
 import { Command } from "./base.ts";
