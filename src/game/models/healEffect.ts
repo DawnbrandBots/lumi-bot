@@ -1,7 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IHealEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
-import { SpellValue } from "./spellValue.ts";
+import { SpellEffectValue } from "./spellEffectValue.ts";
 
 export const HealEffectSchema = defineEntity({
     name: "HealEffect",
@@ -10,7 +10,7 @@ export const HealEffectSchema = defineEntity({
     discriminatorValue: "HEAL",
     properties: {
         kind: p.enum(["HEAL"]),
-        amount: () => p.embedded(SpellValue).object(),
+        amount: () => p.embedded(SpellEffectValue).object(),
     },
 });
 

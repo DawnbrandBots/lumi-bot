@@ -1,10 +1,10 @@
 import {
     ESpellEffectTarget,
-    ESpellValueUnitKind,
+    ESpellEffectValueUnitKind,
     type ISpell,
     type ISpellEffect,
-    type ISpellValue,
-    type ISpellValuePercentUnit,
+    type ISpellEffectValue,
+    type ISpellEffectValuePercentUnit,
     type IStat,
     type TSpellEffect,
 } from "./types.ts";
@@ -13,12 +13,12 @@ type TSpellEffectDescriptionFunctions = {
     [K in TSpellEffect["kind"]]: (effect: Extract<TSpellEffect, { kind: K }>, spell: ISpell) => string;
 };
 
-function formatSpellValue(amount: ISpellValue, stat?: IStat): string {
-    if (amount.unit.kind === ESpellValueUnitKind.FIXED) {
+function formatSpellEffectValue(amount: ISpellEffectValue, stat?: IStat): string {
+    if (amount.unit.kind === ESpellEffectValueUnitKind.FIXED) {
         return amount.base.toString();
     }
 
-    const unit = amount.unit as ISpellValuePercentUnit;
+    const unit = amount.unit as ISpellEffectValuePercentUnit;
     if (stat?.id === unit.stat.id) {
         return `${amount.base}%`;
     }
@@ -26,7 +26,7 @@ function formatSpellValue(amount: ISpellValue, stat?: IStat): string {
     return `(${amount.base}% of ${unit.stat.name})`;
 }
 
-function formatEffectiveness(amount: ISpellValue, preposition: "against" | "for"): string {
+function formatEffectiveness(amount: ISpellEffectValue, preposition: "against" | "for"): string {
     if (!amount.effectiveness?.length) {
         return "";
     }
@@ -51,7 +51,7 @@ function describeTarget(effect: ISpellEffect, spell: ISpell): string | null {
 }
 
 function describeValueEffect(
-    effect: ISpellEffect & { amount: ISpellValue },
+    effect: ISpellEffect & { amount: ISpellEffectValue },
     spell: ISpell,
     {
         verb,
@@ -61,7 +61,7 @@ function describeValueEffect(
 ): string {
     const target = describeTarget(effect, spell);
     const targetStr = target ? ` to ${target}` : "";
-    const amountStr = formatSpellValue(effect.amount);
+    const amountStr = formatSpellEffectValue(effect.amount);
     const effectivenessStr = formatEffectiveness(effect.amount, effectivenessPreposition);
 
     return `${verb} ${amountStr} ${object}${targetStr}${effectivenessStr}`;
@@ -88,7 +88,7 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
         return `Moves ${describeTarget(effect, spell)} ${effect.count} tile${plural} ${effect.direction.noun}`;
     },
     STAT(effect) {
-        const valueStr = formatSpellValue(effect.amount, effect.stat);
+        const valueStr = formatSpellEffectValue(effect.amount, effect.stat);
         const effectivenessStr = formatEffectiveness(effect.amount, "for");
 
         return `${effect.statChange.verb} ${effect.stat.name} by ${valueStr}${effectivenessStr} (${effect.duration == null ? "permanent" : effect.duration + " turns"})`;

@@ -282,7 +282,7 @@ export enum EStatChange {
     DECREASE = "DECREASE",
 }
 
-export enum ESpellValueUnitKind {
+export enum ESpellEffectValueUnitKind {
     /**
      * Value is exactly the value described.
      */
@@ -293,27 +293,27 @@ export enum ESpellValueUnitKind {
     PERCENT = "PERCENT",
 }
 
-export interface ISpellValueUnit {
-    readonly kind: ESpellValueUnitKind;
+export interface ISpellEffectValueUnit {
+    readonly kind: ESpellEffectValueUnitKind;
 }
 
-export interface ISpellValueFixedUnit extends ISpellValueUnit {
-    readonly kind: ESpellValueUnitKind.FIXED;
+export interface ISpellEffectValueFixedUnit extends ISpellEffectValueUnit {
+    readonly kind: ESpellEffectValueUnitKind.FIXED;
 }
 
-export interface ISpellValuePercentUnit extends ISpellValueUnit {
-    readonly kind: ESpellValueUnitKind.PERCENT;
+export interface ISpellEffectValuePercentUnit extends ISpellEffectValueUnit {
+    readonly kind: ESpellEffectValueUnitKind.PERCENT;
     readonly stat: IStat;
 }
 
-export type TSpellValueUnit = ISpellValueFixedUnit | ISpellValuePercentUnit;
+export type TSpellEffectValueUnit = ISpellEffectValueFixedUnit | ISpellEffectValuePercentUnit;
 
 /**
  * Specifies a different value for spell effects when targets belong to a certain group.
  *
  * For example: Arrow spells' effect have 40 base damage against Flying units instead of the normal 25.
  */
-export interface ISpellValueEffectivenessItem {
+export interface ISpellEffectValueEffectivenessItem {
     readonly kind: string;
     readonly base: number;
 }
@@ -323,13 +323,13 @@ export interface ISpellValueEffectivenessItem {
  *
  * Eg. X damage, X HP restored, stat drops by X percent...
  */
-export interface ISpellValue {
+export interface ISpellEffectValue {
     /**
      * Value of spell effect for the spell's level 1.
      */
     readonly base: number;
-    readonly unit: ISpellValueUnit;
-    readonly effectiveness?: ISpellValueEffectivenessItem[] | null;
+    readonly unit: ISpellEffectValueUnit;
+    readonly effectiveness?: ISpellEffectValueEffectivenessItem[] | null;
 }
 
 /**
@@ -392,7 +392,7 @@ export interface ISpellEffect {
  */
 export interface IDamageEffect extends ISpellEffect {
     readonly kind: "DAMAGE";
-    readonly amount: ISpellValue;
+    readonly amount: ISpellEffectValue;
     readonly color: IColor;
 }
 
@@ -401,7 +401,7 @@ export interface IDamageEffect extends ISpellEffect {
  */
 export interface IHealEffect extends ISpellEffect {
     readonly kind: "HEAL";
-    readonly amount: ISpellValue;
+    readonly amount: ISpellEffectValue;
 }
 
 /**
@@ -420,7 +420,7 @@ export interface IMovementEffect extends ISpellEffect {
 export interface IStatEffect extends ISpellEffect {
     readonly kind: "STAT";
     readonly statChange: IStatChange;
-    readonly amount: ISpellValue;
+    readonly amount: ISpellEffectValue;
     readonly duration: number | null | undefined;
     readonly stat: IStat;
 }
