@@ -1,11 +1,12 @@
-import type { APIEmbed } from "discord.js";
-import type { ISearchHandler } from "../features/search.ts";
-import { Weapon } from "../models/game/classes/weapon.ts";
-import type { IWeapon } from "../models/game/types.ts";
-import { toAsciiTable } from "../utils/table.ts";
-
 // TODO: specifying "*" in the list will cause nested relationships to not be loaded, even when specifying these nested relationships.
 // eg: ["*", "uniqueSkill.effect"] won't populate effect
+
+import type { APIEmbed } from "discord.js";
+import { Weapon } from "../../game/models/weapon.ts";
+import type { IWeapon } from "../../game/types.ts";
+import { toAsciiTable } from "../../utils/table.ts";
+import type { ISearchHandler } from "../types.ts";
+
 // Is that even mentioned anywhere in the docs?
 const populate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.effect", "prfDisciple"] as const;
 const weaponSearchHandler: ISearchHandler<Weapon, (typeof populate)[number]> = {

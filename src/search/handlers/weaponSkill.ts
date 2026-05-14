@@ -1,7 +1,7 @@
 import type { APIEmbed } from "discord.js";
-import type { ISearchHandler } from "../features/search.ts";
-import { WeaponSkill } from "../models/game/classes/weaponSkill.ts";
-import type { IWeaponSkill } from "../models/game/types.ts";
+import { WeaponSkill } from "../../game/models/weaponSkill.ts";
+import type { IWeaponSkill } from "../../game/types.ts";
+import type { ISearchHandler } from "../types.ts";
 
 const weaponSkillSearchHandler: ISearchHandler<WeaponSkill> = {
     class: WeaponSkill,

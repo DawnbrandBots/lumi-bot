@@ -1,8 +1,5 @@
 import Fuse from "fuse.js";
-import type { ISearchItem } from "../features/search.ts";
-export interface ISearchEngine<Items extends ISearchItem> {
-    searchOne(input: string): Items | undefined;
-}
+import type { ISearchEngine, ISearchItem } from "./types.ts";
 
 export abstract class SearchEngine<Items extends ISearchItem> implements ISearchEngine<Items> {
     abstract searchOne(input: string): Items | undefined;

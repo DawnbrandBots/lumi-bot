@@ -1,9 +1,9 @@
 import type { EntityManager } from "@mikro-orm/core";
-import type { ISearchableEntity, ISearchItem } from "../features/search.ts";
-import { Disciple } from "../models/game/classes/disciple.ts";
-import { Spell } from "../models/game/classes/spell.ts";
-import { Weapon } from "../models/game/classes/weapon.ts";
-import { WeaponSkill } from "../models/game/classes/weaponSkill.ts";
+import { Disciple } from "../game/models/disciple.ts";
+import { Spell } from "../game/models/spell.ts";
+import { Weapon } from "../game/models/weapon.ts";
+import { WeaponSkill } from "../game/models/weaponSkill.ts";
+import type { ISearchableEntity, ISearchItem } from "../search/types.ts";
 
 export function* id(value: string) {
     yield value;
@@ -33,8 +33,6 @@ function getToSearchItemMapper<Kind extends string>(
         };
     };
 }
-
-export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell;
 
 export default async function getSearchItems(em: EntityManager) {
     // No need to populate entities. We only care about the id, name and kind for the sake of the search.

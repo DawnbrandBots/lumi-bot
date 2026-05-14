@@ -1,7 +1,7 @@
-import allCommandInfo from "../commandInfo/all.ts";
-import { BOT_NAME } from "../models/discord/constants.ts";
-import type { IFeatureResponse } from "./featureResponse.ts";
-import { NeutralFeatureResponse } from "./featureResponse.ts";
+import { BOT_NAME } from "../bot/constants.ts";
+import { NeutralFeatureResponse } from "../bot/featureResponse.ts";
+import type { IFeatureResponse } from "../bot/types.ts";
+import allCommandInfo from "../loaders/commandInfo.ts";
 
 const commandsStr = allCommandInfo
     .map(

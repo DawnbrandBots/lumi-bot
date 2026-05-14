@@ -1,11 +1,11 @@
 import type { EntityManager } from "@mikro-orm/core";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import { Disciple } from "../src/models/game/classes/disciple.ts";
-import { Spell } from "../src/models/game/classes/spell.ts";
-import { SPELL_DRAGGING_MODE } from "../src/models/game/classes/spellDraggingMode.ts";
-import { Weapon } from "../src/models/game/classes/weapon.ts";
-import { describeSpellEffects } from "../src/models/game/spellEffectDescriptions.ts";
-import { ESpellDraggingMode } from "../src/models/game/types.ts";
+import { Disciple } from "../src/game/models/disciple.ts";
+import { Spell } from "../src/game/models/spell.ts";
+import { SPELL_DRAGGING_MODE } from "../src/game/models/spellDraggingMode.ts";
+import { Weapon } from "../src/game/models/weapon.ts";
+import { describeSpellEffects } from "../src/game/spellEffectDescriptions.ts";
+import { ESpellDraggingMode } from "../src/game/types.ts";
 import { initTestOrm } from "./orm.ts";
 
 const LEVELS = Array.from({ length: 11 }, (_, index) => index + 1);

@@ -1,9 +1,9 @@
 import type { APIEmbed } from "discord.js";
-import type { ISearchHandler } from "../features/search.ts";
-import { Disciple } from "../models/game/classes/disciple.ts";
-import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../models/game/constants.ts";
-import type { IDisciple } from "../models/game/types.ts";
-import { toAsciiTable } from "../utils/table.ts";
+import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../game/constants.ts";
+import { Disciple } from "../../game/models/disciple.ts";
+import type { IDisciple } from "../../game/types.ts";
+import { toAsciiTable } from "../../utils/table.ts";
+import type { ISearchHandler } from "../types.ts";
 
 const discipleSearchHandler: ISearchHandler<Disciple> = {
     class: Disciple,

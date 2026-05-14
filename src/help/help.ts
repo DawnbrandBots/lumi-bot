@@ -1,7 +1,7 @@
-import { helpCommandInfo } from "../commandInfo/help.ts";
-import helpFeature from "../features/help.ts";
-import type { ICommand } from "./base.ts";
-import { Command } from "./base.ts";
+import { Command } from "../bot/command.ts";
+import type { ICommand } from "../bot/types.ts";
+import { helpCommandInfo } from "./commandInfo.ts";
+import helpFeature from "./feature.ts";
 
 export const helpCommand: ICommand = new Command({
     info: helpCommandInfo,

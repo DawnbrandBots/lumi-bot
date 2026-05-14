@@ -1,19 +1,17 @@
 import debug from "debug";
 import { ActivityType, Events } from "discord.js";
-
-import type { ICommand } from "./commands/base.ts";
-import { helpCommand } from "./commands/help.ts";
-import { getSearchCommand } from "./commands/search.ts";
-
-import helpFeature from "./features/help.ts";
-import searchFeature from "./features/search.ts";
+import type { ICommand } from "./bot/types.ts";
+import helpFeature from "./help/feature.ts";
+import { helpCommand } from "./help/help.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
-import { FuseSearchEngine } from "./loaders/searchEngine.ts";
-import type { TSearchableEntity } from "./loaders/searchItems.ts";
+import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
 import getSearchItems from "./loaders/searchItems.ts";
 import mikroOrmConfig from "./mikro-orm.config.ts";
-import SEARCH_HANDLERS from "./searchHandlers/all.ts";
+import { getSearchCommand } from "./search/command.ts";
+import { FuseSearchEngine } from "./search/engine.ts";
+import searchFeature from "./search/feature.ts";
+import type { TSearchableEntity } from "./search/types.ts";
 
 const log = debug("bot");
 
