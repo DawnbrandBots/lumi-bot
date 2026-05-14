@@ -3,6 +3,7 @@ import { WEAPON_TYPE_RANGE_ATK_MODIFIER } from "../constants.ts";
 import type { IWeaponType } from "../types.ts";
 import { Color } from "./color.ts";
 import { WeaponSkill } from "./weaponSkill.ts";
+import { WeaponTypeWeaponSkill } from "./weaponTypeWeaponSkill.ts";
 
 // Prevent Mikro ORM from naming the weapon skills join table with plural.
 const namingStrategy = new UnderscoreNamingStrategy();
@@ -19,7 +20,11 @@ export const WeaponTypeSchema = defineEntity({
         name: p.string(),
         color: () => p.manyToOne(Color),
         range: p.enum([1, 2]),
-        weaponSkills: () => p.manyToMany(WeaponSkill).pivotTable(weaponTypeWeaponSkillPivotTable),
+        weaponSkills: () =>
+            p
+                .manyToMany(WeaponSkill)
+                .pivotTable(weaponTypeWeaponSkillPivotTable)
+                .pivotEntity(() => WeaponTypeWeaponSkill),
     },
 });
 

@@ -15,7 +15,8 @@
     "lint:fix": "eslint --flag unstable_native_nodejs_ts_config --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:db": "./scripts/recreate_db.sh lumi-test ./test/mikro-orm.test.config.ts .test-csv",
+    "db:recreate": "node --experimental-transform-types --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts",
+    "test:db": "node --experimental-transform-types --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts ./test/mikro-orm.test.config.ts",
     "pretest": "yarn test:db",
     "test": "vitest"
   },
@@ -36,7 +37,6 @@
     "@tsconfig/node24": "^24.0.4",
     "@types/debug": "^4.1.13",
     "@types/node": "^24.12.2",
-    "csv-stringify": "^6.7.0",
     "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.5.0",
