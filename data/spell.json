@@ -1935,10 +1935,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "movementType",
-      "FLYING"
-    ]
+    "onlyFor": ["movementType", "FLYING"]
   },
   {
     "id": "EDGE_STRIKE",
@@ -2072,10 +2069,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "movementType",
-      "INFANTRY"
-    ]
+    "onlyFor": ["movementType", "INFANTRY"]
   },
   {
     "id": "HEAVY_CROSSWIND",
@@ -2313,10 +2307,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "movementType",
-      "FLYING"
-    ]
+    "onlyFor": ["movementType", "FLYING"]
   },
   {
     "id": "TETRATHUNDER_WALL",
@@ -2431,10 +2422,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "movementType",
-      "ARMORED"
-    ]
+    "onlyFor": ["movementType", "ARMORED"]
   },
   {
     "id": "AXE_KNIGHT",
@@ -2697,10 +2685,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "movementType",
-      "CAVALRY"
-    ]
+    "onlyFor": ["movementType", "CAVALRY"]
   },
   {
     "id": "DARK_RAPID_THUNDER",
@@ -2813,10 +2798,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "movementType",
-      "INFANTRY"
-    ]
+    "onlyFor": ["movementType", "INFANTRY"]
   },
   {
     "id": "DARK_STABBING_FIRE",
@@ -3072,10 +3054,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "movementType",
-      "INFANTRY"
-    ]
+    "onlyFor": ["movementType", "INFANTRY"]
   },
   {
     "id": "DUAL_INVIGORATE_EX",
@@ -3201,10 +3180,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "movementType",
-      "CAVALRY"
-    ]
+    "onlyFor": ["movementType", "CAVALRY"]
   },
   {
     "id": "TRINITY_SHIELD_EDGE_EX",
@@ -3295,10 +3271,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "weaponType",
-      "TOME"
-    ]
+    "onlyFor": ["weaponType", "TOME"]
   },
   {
     "id": "ENNEA_FIRE_PLUS_TOME",
@@ -3321,10 +3294,7 @@
         "target": "ANY"
       }
     ],
-    "onlyFor": [
-      "weaponType",
-      "TOME"
-    ]
+    "onlyFor": ["weaponType", "TOME"]
   },
   {
     "id": "FINAL_DARK_TETRAFIRE",
