@@ -15,8 +15,10 @@ const tileEmojis: Record<string, string> = {
     ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
 };
 
-const spellSearchHandler: ISearchHandler<Spell> = {
+const populate = ["*"] as const;
+const spellSearchHandler: ISearchHandler<Spell, (typeof populate)[number]> = {
     class: Spell,
+    populate,
     response: (spell: ISpell) => {
         const shapeStr = spell.shape.tiles
             .replaceAll(/(.{5})(?<!$)/g, "$1\n")
@@ -24,10 +26,21 @@ const spellSearchHandler: ISearchHandler<Spell> = {
 
         const effectsStr = describeSpellEffects(spell);
 
+        const onlyFor = spell.onlyFor && {
+            name: "Only for",
+            value: `${spell.onlyFor.name} units`,
+            inline: true,
+        };
+
         const fields: APIEmbed["fields"] = [
             {
                 name: "Disciple",
                 value: spell.disciple?.name || "*None*",
+                inline: true,
+            },
+            {
+                name: "Role",
+                value: spell.role.name,
                 inline: true,
             },
             {
@@ -41,15 +54,11 @@ const spellSearchHandler: ISearchHandler<Spell> = {
                 inline: true,
             },
             {
-                name: "Role",
-                value: spell.role.name,
-                inline: true,
-            },
-            {
                 name: "Dragging mode",
                 value: spell.draggingMode.asString,
                 inline: true,
             },
+            ...(onlyFor ? [onlyFor] : []),
             // Shape and effects are separated because they may
             // take a lot of vertical space compared to other fields.
             { name: "", value: "" },

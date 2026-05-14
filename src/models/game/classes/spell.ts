@@ -5,6 +5,7 @@ import { Disciple } from "./disciple.ts";
 import { HealEffect } from "./healEffect.ts";
 import { IceBlockEffect } from "./iceBlockEffect.ts";
 import { MovementEffect } from "./movementEffect.ts";
+import { MovementType } from "./movementType.ts";
 import { SPELL_DRAGGING_MODE } from "./spellDraggingMode.ts";
 import { SpellRoleType } from "./spellRole.ts";
 import { SpellShape } from "./spellShape.ts";
@@ -12,6 +13,7 @@ import { StatusEffect } from "./statusEffect.ts";
 import { SummonEffect } from "./summonEffect.ts";
 import { TileEffect } from "./tileEffect.ts";
 import { WarpEffect } from "./warpEffect.ts";
+import { WeaponType } from "./weaponType.ts";
 
 export const SpellSchema = defineEntity({
     name: "Spell",
@@ -36,9 +38,14 @@ export const SpellSchema = defineEntity({
                     StatusEffect,
                 ])
                 .array(),
-        // TODO: onlyFor will get a proper type in a later update. Right now it has the same issues as TileEffect when using polymorphic relationships
-        // as type for the "which" nested property, which can reference either MovementType or WeaponType
-        onlyFor: p.json<{ kind: string; which: string }>().nullable(),
+        onlyFor: () =>
+            p
+                .manyToOne([MovementType, WeaponType])
+                .discriminatorMap({
+                    movementType: MovementType.name,
+                    weaponType: WeaponType.name,
+                })
+                .nullable(),
     },
 });
 
