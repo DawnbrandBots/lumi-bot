@@ -1,6 +1,9 @@
 import type { CacheType, ChatInputCommandInteraction, InteractionResponse } from "discord.js";
 import type { ICommandInfo } from "../commandInfo/base.ts";
 
+/**
+ * Represents a Discord slash command.
+ */
 export interface ICommand {
     readonly info: ICommandInfo;
     /**
