@@ -3347,5 +3347,116 @@
         "target": "ANY"
       }
     ]
+  },
+  {
+    "id": "HOLY_THUNDER_EX",
+    "name": "Holy Thunder EX",
+    "disciple": "HANYA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "effectiveness": [
+            {
+              "kind": "MINION",
+              "base": 90
+            }
+          ],
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "ARROW_THUNDER",
+    "name": "Arrow Thunder",
+    "disciple": "HANYA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              },
+              "effectiveness": [
+                {
+                  "kind": "FLYING",
+                  "base": 40
+                }
+              ]
+            },
+            "color": "BLUE"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "STAFF_KNIGHT",
+    "name": "Staff Knight",
+    "disciple": "HANYA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "CAVALRY",
+        "weaponType": "STAFF",
+        "hp": {
+          "base": 40
+        },
+        "atk": {
+          "base": 40
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_SLASH_PLUS_LANCE",
+    "name": "Dark Slash + Lance",
+    "disciple": "HANYA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 170,
+          "scale": 5,
+          "unit": {
+            "kind": "PERCENT",
+            "stat": "ATK"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      }
+    ]
   }
 ]
