@@ -5,7 +5,7 @@ export interface ICommandInfo {
     /**
      * Object with info about the command to be included in payload to register commands.
      */
-    readonly info: ReturnType<SharedSlashCommand["toJSON"]>;
+    readonly registerCommandInfo: ReturnType<SharedSlashCommand["toJSON"]>;
     readonly name: string;
     /**
      * Briefly explains what the command does.
@@ -21,20 +21,20 @@ export interface ICommandInfo {
     readonly pingEquivalent?: string;
 }
 
-export class CommandInfo {
+export class CommandInfo implements ICommandInfo {
     public readonly name: ICommandInfo["name"];
     public readonly description: ICommandInfo["description"];
     public readonly customInfo: ICommandInfo["customInfo"];
     public readonly pingEquivalent: ICommandInfo["pingEquivalent"];
 
-    public constructor(arg: Omit<ICommandInfo, "info">) {
+    public constructor(arg: Omit<ICommandInfo, "registerCommandInfo">) {
         this.name = arg.name;
         this.description = arg.description;
         this.customInfo = arg.customInfo;
         this.pingEquivalent = arg.pingEquivalent;
     }
 
-    public get info(): ICommandInfo["info"] {
+    public get registerCommandInfo(): ICommandInfo["registerCommandInfo"] {
         return this.customInfo(this.baseInfo).toJSON();
     }
 
