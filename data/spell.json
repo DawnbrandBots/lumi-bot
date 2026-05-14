@@ -587,7 +587,7 @@
     "role": "SHADOW",
     "shape": "1_TILE",
     "uses": null,
-    "cooldown": 7,
+    "cooldown": 5,
     "effects": [
       {
         "kind": "DAMAGE",
