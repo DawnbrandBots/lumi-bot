@@ -1,4 +1,4 @@
-import type { EntityManager } from "@mikro-orm/core";
+import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { Disciple } from "../src/game/models/disciple.ts";
 import { Spell } from "../src/game/models/spell.ts";

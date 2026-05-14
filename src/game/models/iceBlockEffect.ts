@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IIceBlockEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 
@@ -13,5 +13,5 @@ export const IceBlockEffectSchema = defineEntity({
     },
 });
 
-export class IceBlockEffect extends IceBlockEffectSchema.class implements IIceBlockEffect {}
+export class IceBlockEffect extends IceBlockEffectSchema.class implements IIceBlockEffect { }
 IceBlockEffectSchema.setClass(IceBlockEffect);

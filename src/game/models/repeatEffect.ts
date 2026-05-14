@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IRepeatEffect } from "../types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { HealEffect } from "./healEffect.ts";
@@ -17,5 +17,5 @@ export const RepeatEffectSchema = defineEntity({
     },
 });
 
-export class RepeatEffect extends RepeatEffectSchema.class implements IRepeatEffect {}
+export class RepeatEffect extends RepeatEffectSchema.class implements IRepeatEffect { }
 RepeatEffectSchema.setClass(RepeatEffect);

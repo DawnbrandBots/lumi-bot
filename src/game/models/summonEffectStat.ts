@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 
 export const SummonEffectStatSchema = defineEntity({
     name: "SummonEffectStat",
@@ -8,5 +8,5 @@ export const SummonEffectStatSchema = defineEntity({
         scale: p.integer().nullable(),
     },
 });
-export class SummonEffectStat extends SummonEffectStatSchema.class {}
+export class SummonEffectStat extends SummonEffectStatSchema.class { }
 SummonEffectStatSchema.setClass(SummonEffectStat);

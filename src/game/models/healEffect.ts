@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IHealEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SpellValue } from "./spellValue.ts";
@@ -14,5 +14,5 @@ export const HealEffectSchema = defineEntity({
     },
 });
 
-export class HealEffect extends HealEffectSchema.class implements IHealEffect {}
+export class HealEffect extends HealEffectSchema.class implements IHealEffect { }
 HealEffectSchema.setClass(HealEffect);

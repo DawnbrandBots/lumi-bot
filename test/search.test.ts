@@ -1,4 +1,4 @@
-import type { EntityManager } from "@mikro-orm/core";
+import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../src/bot/constants.ts";
 import { ErrorFeatureResponse, SuccessFeatureResponse } from "../src/bot/featureResponse.ts";

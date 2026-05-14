@@ -1,4 +1,4 @@
-import type { EntityManager } from "@mikro-orm/core";
+import type { EntityManager } from "@mikro-orm/sqlite";
 import type { APIEmbed } from "discord.js";
 import { SEARCH_MAX_INPUT_LENGTH } from "../bot/constants.ts";
 import { ErrorFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";

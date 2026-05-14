@@ -1,4 +1,4 @@
-import { Type } from "@mikro-orm/core";
+import { Type } from "@mikro-orm/sqlite";
 import type { ISpellDraggingMode } from "../types.ts";
 import { ESpellDraggingMode } from "../types.ts";
 

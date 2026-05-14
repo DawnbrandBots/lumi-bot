@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { ISummonEffect } from "../types.ts";
 import { MovementType } from "./movementType.ts";
 import { SpellEffect } from "./spellEffect.ts";
@@ -19,5 +19,5 @@ export const SummonEffectSchema = defineEntity({
     },
 });
 
-export class SummonEffect extends SummonEffectSchema.class implements ISummonEffect {}
+export class SummonEffect extends SummonEffectSchema.class implements ISummonEffect { }
 SummonEffectSchema.setClass(SummonEffect);

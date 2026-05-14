@@ -1,4 +1,4 @@
-import { UnderscoreNamingStrategy, defineEntity, p } from "@mikro-orm/core";
+import { UnderscoreNamingStrategy, defineEntity, p } from "@mikro-orm/sqlite";
 import { WEAPON_TYPE_RANGE_ATK_MODIFIER } from "../constants.ts";
 import type { IWeaponType } from "../types.ts";
 import { Color } from "./color.ts";

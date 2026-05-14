@@ -1,4 +1,4 @@
-import { defineConfig } from "@mikro-orm/core";
+import { defineConfig } from "@mikro-orm/sqlite";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";

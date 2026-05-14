@@ -1,4 +1,4 @@
-import type { EntityName, Populate } from "@mikro-orm/core";
+import type { EntityName, Populate } from "@mikro-orm/sqlite";
 import type { APIEmbed } from "discord.js";
 import type { IFeatureResponse } from "../bot/types.ts";
 import type { Disciple } from "../game/models/disciple.ts";

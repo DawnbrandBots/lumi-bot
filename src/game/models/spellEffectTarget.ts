@@ -1,4 +1,4 @@
-import { Type } from "@mikro-orm/core";
+import { Type } from "@mikro-orm/sqlite";
 import type { ISpellEffectTarget } from "../types.ts";
 import { ESpellEffectTarget } from "../types.ts";
 

@@ -1,4 +1,4 @@
-import type { EntityManager } from "@mikro-orm/core";
+import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import getSearchItems from "../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../src/search/engine.ts";

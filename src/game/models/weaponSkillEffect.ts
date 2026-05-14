@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IWeaponSkillEffect } from "../types.ts";
 
 export const WeaponSkillEffectSchema = defineEntity({

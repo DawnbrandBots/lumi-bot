@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p } from "@mikro-orm/sqlite";
 import { ESpellValueUnitKind, type ISpellValuePercentUnit } from "../types.ts";
 import { SpellValueUnit } from "./spellValueUnit.ts";
 import { StatType } from "./stat.ts";
@@ -14,5 +14,5 @@ export const SpellValuePercentUnitSchema = defineEntity({
         stat: p.type(StatType),
     },
 });
-export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit {}
+export class SpellValuePercentUnit extends SpellValuePercentUnitSchema.class implements ISpellValuePercentUnit { }
 SpellValuePercentUnitSchema.setClass(SpellValuePercentUnit);
