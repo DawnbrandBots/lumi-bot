@@ -121,6 +121,9 @@ export interface IMovementType {
     readonly kind: "movement";
     readonly id: TId;
     readonly name: string;
+    /**
+     * Maximum number of walked tiles per turn.
+     */
     readonly distance: number;
     readonly canTraverseWaterTiles: boolean;
     readonly discipleBaseHpModifier: number;
@@ -260,17 +263,32 @@ export interface ISpell {
     readonly draggingMode: ISpellDraggingMode;
 }
 
-export type TStat = "HP" | "ATK" | "RECEIVED_WEAPON_DAMAGE" | "RECEIVED_SPELL_DAMAGE" | "MOVEMENT" | "COLOR_AFFINITY";
-export type TDirection = "UP" | "DOWN";
-export type TStatChange = "INCREASE" | "DECREASE";
+export enum EStat {
+    HP = "HP",
+    ATK = "ATK",
+    RECEIVED_WEAPON_DAMAGE = "RECEIVED_WEAPON_DAMAGE",
+    RECEIVED_SPELL_DAMAGE = "RECEIVED_SPELL_DAMAGE",
+    MOVEMENT = "MOVEMENT",
+    COLOR_AFFINITY = "COLOR_AFFINITY",
+}
+
+export enum EDirection {
+    UP = "UP",
+    DOWN = "DOWN",
+}
+
+export enum EStatChange {
+    INCREASE = "INCREASE",
+    DECREASE = "DECREASE",
+}
 
 export enum ESpellValueUnitKind {
     /**
-     * Base damage is exactly the value described.
+     * Value is exactly the value described.
      */
     FIXED = "FIXED",
     /**
-     * Base damage is a percentage of a stat of the user's.
+     * Value is a percentage of a stat of the spell user.
      */
     PERCENT = "PERCENT",
 }
@@ -300,28 +318,41 @@ export interface ISpellValueEffectivenessItem {
     readonly base: number;
 }
 
+/**
+ * Spell effects have values which may vary with level and targeted units.
+ *
+ * Eg. X damage, X HP restored, stat drops by X percent...
+ */
 export interface ISpellValue {
     /**
      * Value of spell effect for the spell's level 1.
      */
     readonly base: number;
     readonly unit: ISpellValueUnit;
-    // TODO: null on top of ?: is annoying
     readonly effectiveness?: ISpellValueEffectivenessItem[] | null;
 }
 
+/**
+ * Describes a unit's stat. Eg. Atk, HP, Movement...
+ */
 export interface IStat {
-    readonly id: TId;
+    readonly id: EStat;
     readonly name: string;
 }
 
+/**
+ * For movement spells. Eg. UP and DOWN.
+ */
 export interface IDirection {
-    readonly id: TId;
+    readonly id: EDirection;
     readonly noun: string;
 }
 
+/**
+ * For stat spell effects. Eg; INCREASE and DECREASE.
+ */
 export interface IStatChange {
-    readonly id: TId;
+    readonly id: EStatChange;
     readonly verb: string;
 }
 

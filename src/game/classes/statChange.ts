@@ -1,5 +1,5 @@
-import { Type } from "@mikro-orm/sqlite";
-import { EStatChange, type IStatChange } from "../types.ts";
+import { Type } from "@mikro-orm/core";
+import { EStatChange, IStatChange } from "../types.ts";
 
 export class StatChange implements IStatChange {
     readonly id: IStatChange["id"];
