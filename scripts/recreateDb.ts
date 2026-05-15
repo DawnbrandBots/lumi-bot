@@ -4,14 +4,17 @@
  * Takes the path to mikro-orm.config.ts as argument.
  */
 
-import { MikroORM } from "@mikro-orm/sqlite";
+import { MikroORM, type Options } from "@mikro-orm/sqlite";
 import fs from "fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import process from "process";
 
 const configPath = process.argv[2] ?? "./src/mikro-orm.config.ts";
-const config = (await import(pathToFileURL(path.resolve(configPath)).href)).default;
+const configModule = (await import(pathToFileURL(path.resolve(configPath)).href)) as {
+    default: Options;
+};
+const config = configModule.default;
 
 const orm = await MikroORM.init(config);
 const em = orm.em.fork();
@@ -41,7 +44,7 @@ try {
 
         // No need to bother with type checking here (?).
         // If there is a problem with column names or data types, SQLite will report it.
-        const entries = JSON.parse(str);
+        const entries = JSON.parse(str) as object[];
         await em.insertMany(entityName as never, entries, { convertCustomTypes: false });
     }
     await em.flush();
