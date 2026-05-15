@@ -15,5 +15,5 @@ export const SpellEffectValuePercentUnitSchema = defineEntity({
 });
 export class SpellEffectValuePercentUnit
     extends SpellEffectValuePercentUnitSchema.class
-    implements ISpellEffectValuePercentUnit { }
+    implements ISpellEffectValuePercentUnit {}
 SpellEffectValuePercentUnitSchema.setClass(SpellEffectValuePercentUnit);

@@ -16,5 +16,5 @@ export const DamageEffectSchema = defineEntity({
     },
 });
 
-export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect { }
+export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect {}
 DamageEffectSchema.setClass(DamageEffect);

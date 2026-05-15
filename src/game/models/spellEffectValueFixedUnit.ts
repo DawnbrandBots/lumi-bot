@@ -13,5 +13,5 @@ export const SpellEffectValueFixedUnitSchema = defineEntity({
 });
 export class SpellEffectValueFixedUnit
     extends SpellEffectValueFixedUnitSchema.class
-    implements ISpellEffectValueFixedUnit { }
+    implements ISpellEffectValueFixedUnit {}
 SpellEffectValueFixedUnitSchema.setClass(SpellEffectValueFixedUnit);

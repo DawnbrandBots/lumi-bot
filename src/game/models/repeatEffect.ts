@@ -17,5 +17,5 @@ export const RepeatEffectSchema = defineEntity({
     },
 });
 
-export class RepeatEffect extends RepeatEffectSchema.class implements IRepeatEffect { }
+export class RepeatEffect extends RepeatEffectSchema.class implements IRepeatEffect {}
 RepeatEffectSchema.setClass(RepeatEffect);
