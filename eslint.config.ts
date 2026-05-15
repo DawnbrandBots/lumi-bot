@@ -4,12 +4,21 @@ import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-export default defineConfig([
+const checkedFiles = ["eslint.config.ts", "{scripts,src,test}/**/*.{js,mjs,cjs,ts,mts,cts}"];
+
+export default defineConfig(
     {
-        files: ["{src,test}/**/*.{js,mjs,cjs,ts,mts,cts}"],
-        plugins: { js },
-        extends: ["js/recommended"],
-        languageOptions: { globals: globals.node },
+        ignores: ["**/*", "!eslint.config.ts", "!scripts", "!scripts/**/*", "!src", "!src/**/*", "!test", "!test/**/*"],
+    },
+    {
+        files: checkedFiles,
+        extends: [js.configs.recommended, tseslint.configs.recommendedTypeChecked],
+        languageOptions: {
+            globals: globals.node,
+            parserOptions: {
+                projectService: true,
+            },
+        },
         rules: {
             "@typescript-eslint/no-misused-promises": [
                 "error",
@@ -34,13 +43,5 @@ export default defineConfig([
      * "eslint.execArgv": ["--experimental-strip-types"],
      * ```
      */
-    tseslint.configs.recommendedTypeChecked,
-    {
-        languageOptions: {
-            parserOptions: {
-                projectService: true,
-            },
-        },
-    },
-    eslintConfigPrettier,
-]);
+    { ...eslintConfigPrettier, files: checkedFiles },
+);
