@@ -6,9 +6,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
-    "postclean": "tsc --build --clean",
+    "postclean": "tsc --build --clean tsconfig.json tsconfig.build.json",
     "start": "node --enable-source-maps --env-file-if-exists=.env dist",
     "lint": "eslint --flag unstable_native_nodejs_ts_config",
     "lint:fix": "eslint --flag unstable_native_nodejs_ts_config --fix",
