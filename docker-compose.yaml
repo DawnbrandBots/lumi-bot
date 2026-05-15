@@ -1,0 +1,10 @@
+services:
+  bot:
+    image: "ghcr.io/dawnbrandbots/lumi-bot:${DOCKER_TAG:-latest}"
+    environment:
+      DEBUG: "*"
+      DISCORD_TOKEN:
+    logging:
+      driver: "${DOCKER_LOG_DRIVER:-journald}"
+    build: .
+    restart: unless-stopped
