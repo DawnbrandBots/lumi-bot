@@ -1,14 +1,14 @@
 {
   "extends": "@tsconfig/node24/tsconfig.json",
-  "include": ["src/**/*"],
+  "include": ["eslint.config.ts", "scripts/**/*", "src/**/*", "test/**/*"],
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
+    "noEmit": true,
     "resolveJsonModule": true,
     "sourceMap": true,
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "allowImportingTsExtensions": true,
-    "rewriteRelativeImportExtensions": true
+    "rewriteRelativeImportExtensions": true,
+    "allowJs": true
   }
 }
