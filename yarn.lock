@@ -189,7 +189,7 @@
     mikro-orm "7.0.16"
     yargs "17.7.2"
 
-"@mikro-orm/core@7.0.16":
+"@mikro-orm/core@7.0.16", "@mikro-orm/core@^7.0.13":
   version "7.0.16"
   resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-7.0.16.tgz#8d5758ae80d38019c5bf1f992168e0ab8c867b6f"
   integrity sha512-XBa1FRqPKxwk+KHCBLuaEp7Yp1b1rrjdkn6UoedakSLZogty9oE5KAaL2i0kPxs3skKyNHwqFZzHmpn4ULDckw==
