@@ -34,8 +34,8 @@ function formatEffectiveness(amount: ISpellEffectValue, preposition: "against" |
     return ` (${amount.effectiveness.map(({ base, kind }) => `${base} ${preposition} ${kind} units`).join(", ")})`;
 }
 
-function formatStatusEffectIntro(targetStr: string): string {
-    return `Grants status to ${targetStr}:`;
+function formatStatusEffectIntro(targetStr: string, lowercase: boolean): string {
+    return `${lowercase ? "g" : "G"}rants status to ${targetStr}:`;
 }
 
 function describeTarget(effect: ISpellEffect, spell: ISpell): string | null {
@@ -126,19 +126,43 @@ function describeSpellEffect<K extends TSpellEffect["kind"]>(
  * @returns A string describing the spell's effects. Meant to be displayed in a response on Discord.
  */
 export function describeSpellEffects(spell: ISpell): string {
-    if (spell.effects.every((effect) => effect.kind === "STATUS")) {
+    let res = "";
+
+    if (spell.countdown) {
+        res += `After ${spell.countdown} seconds`;
+    }
+    const nonEmptyRes = !!res.length;
+
+    const firstSpellEffect = spell.effects[0];
+    // The description intro for status effects ("Grants status to <TARGETS>:") can be long.
+    // This if branch moves the intro of status effects at the beginning of the resulting string
+    // if all effects are of kind "STATUS" and have the same target kind, as to not repeat the
+    // intro on each line.
+    if (
+        spell.effects.every((effect) => effect.kind === "STATUS") &&
+        firstSpellEffect &&
+        spell.effects.every((effect) => effect.target.kind === firstSpellEffect.target?.kind)
+    ) {
         // TODO: target guaranteed to exist for IStatusEffect, but type should be updated to reflect that
-        const target = describeTarget(spell.effects[0]!, spell)!;
-        return [
-            formatStatusEffectIntro(target),
+        const target = describeTarget(firstSpellEffect, spell)!;
+        if (nonEmptyRes) {
+            res += ", ";
+        }
+        res += [
+            formatStatusEffectIntro(target, nonEmptyRes),
             ...spell.effects
                 .map((effect) => describeSpellEffect(effect.effect, spell))
                 .map((description) => `1. ${description}.`),
         ].join("\n");
     } else {
-        return spell.effects
+        if (nonEmptyRes) {
+            res += ":\n";
+        }
+        res += spell.effects
             .map((effect) => describeSpellEffect(effect, spell))
             .map((description) => `1. ${description}.`)
             .join("\n");
     }
+
+    return res;
 }

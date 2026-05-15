@@ -25,6 +25,7 @@ export const SpellSchema = defineEntity({
         shape: p.manyToOne(SpellShape),
         uses: p.integer().nullable(),
         cooldown: p.integer(),
+        countdown: p.integer().nullable(),
         effects: () =>
             p
                 .embedded([

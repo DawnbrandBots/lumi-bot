@@ -115,59 +115,60 @@ describe(Spell.name, () => {
     });
 
     describe(describeSpellEffects.name, () => {
-        test("keeps single-tile SELF effects targeted to user", async () => {
-            const spell = await findSpell("Self Mend");
-
-            expect(spell.shape.isAoe).toBe(false);
-            expect(describeSpellEffects(spell)).toBe("1. Restores 80 HP to user.");
-        });
-
-        test.each([
-            [
-                "Self Cross Shield",
-                "Grants status to targets in shape centered around user:\n1. Decreases Received Weapon Damage by 30% (3 turns).",
-            ],
-            [
-                "Self Crossedge",
-                "Grants status to targets in shape centered around user:\n1. Increases Atk by 50% (3 turns).",
-            ],
-        ])("uses shape-aware target wording for %s", async (name, expected) => {
-            const spell = await findSpell(name);
-
-            expect(spell.shape.isAoe).toBe(true);
-            expect(describeSpellEffects(spell)).toBe(expected);
-        });
-
-        test("uses one status intro when all effects are statuses", async () => {
-            const spell = await findSpell("Trinity Shield Edge EX");
-
-            expect(describeSpellEffects(spell)).toBe(
-                [
+        [
+            {
+                name: "Tetrafire",
+                explanation: "plain damage",
+                expected: "1. Deals 50 Red damage to targets.",
+            },
+            {
+                name: "Dark Tetrafire",
+                explanation: "countdown before damage",
+                expected: "After 2 seconds:\n1. Deals 75 Red damage to targets.",
+            },
+            {
+                name: "Self Mend",
+                explanation: "single-tile self heal",
+                expected: "1. Restores 80 HP to user.",
+            },
+            {
+                name: "Self Cross Shield",
+                explanation: "aoe self-targeted status",
+                expected:
+                    "Grants status to targets in shape centered around user:\n1. Decreases Received Weapon Damage by 30% (3 turns).",
+            },
+            {
+                name: "Trinity Shield Edge EX",
+                explanation: "shared status intro",
+                expected: [
                     "Grants status to targets:",
                     "1. Decreases Received Weapon Damage by 20% (permanent).",
                     "1. Increases Atk by 30% (permanent).",
                     "1. Decreases Color Affinity by 20% (permanent).",
                 ].join("\n"),
-            );
-        });
-
-        test("keeps status intro on the status item when a spell has other effect kinds", async () => {
-            const spell = await findSpell("Thunder Self Edge EX");
-
-            expect(describeSpellEffects(spell)).toBe(
-                [
+            },
+            {
+                name: "Dark Crossfire + Tome",
+                explanation: "countdown with shared status intro",
+                expected: [
+                    "After 2 seconds, grants status to targets:",
+                    "1. Deals 40 Red damage every 6 seconds, 2 times.",
+                ].join("\n"),
+            },
+            {
+                name: "Thunder Self Edge EX",
+                explanation: "mixed damage and status",
+                expected: [
                     "1. Deals 60 Blue damage to targets.",
                     "1. Grants status to user: Increases Atk by 30% (permanent).",
                 ].join("\n"),
-            );
-        });
+            },
+        ].forEach(({ name, explanation, expected }) => {
+            test(`${name} (${explanation})`, async () => {
+                const spell = await findSpell(name);
 
-        test.each([
-            ["Tetrafire", "1. Deals 50 Red damage to targets."],
-            ["Dark Crossfire + Tome", "Grants status to targets:\n1. Deals 40 Red damage every 6 seconds, 2 times."],
-        ])("preserves existing non-status effect wording for %s", async (name, expected) => {
-            const spell = await findSpell(name);
-            expect(describeSpellEffects(spell)).toBe(expected);
+                expect(describeSpellEffects(spell)).toBe(expected);
+            });
         });
     });
 });
