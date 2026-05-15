@@ -1592,8 +1592,8 @@
     ]
   },
   {
-    "id": "DARK_CROSS_FIRE",
-    "name": "Dark Cross Fire",
+    "id": "DARK_CROSSFIRE",
+    "name": "Dark Crossfire",
     "disciple": "JOACHIM",
     "role": "SHADOW",
     "shape": "3X3_CROSS",
