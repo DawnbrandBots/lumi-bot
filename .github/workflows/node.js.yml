@@ -22,5 +22,6 @@ jobs:
       - run: yarn
       - run: yarn build
       - run: yarn lint
+      - run: yarn test --verbose
         continue-on-error: true
       - run: yarn format:check
