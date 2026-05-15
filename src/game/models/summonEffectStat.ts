@@ -8,5 +8,5 @@ export const SummonEffectStatSchema = defineEntity({
         scale: p.integer().nullable(),
     },
 });
-export class SummonEffectStat extends SummonEffectStatSchema.class { }
+export class SummonEffectStat extends SummonEffectStatSchema.class {}
 SummonEffectStatSchema.setClass(SummonEffectStat);

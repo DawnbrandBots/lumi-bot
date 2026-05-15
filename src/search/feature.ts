@@ -76,8 +76,8 @@ async function searchFeature<
         // Showing aliases when there is only one is redundant.
         searchItem.aliases.length > 1
             ? {
-                text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem.aliases.join(", ")}`,
-            }
+                  text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem.aliases.join(", ")}`,
+              }
             : undefined;
 
     return new SuccessFeatureResponse({ embed: { ...handler.response(entity), footer } });

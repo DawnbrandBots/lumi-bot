@@ -14,5 +14,5 @@ export const HealEffectSchema = defineEntity({
     },
 });
 
-export class HealEffect extends HealEffectSchema.class implements IHealEffect { }
+export class HealEffect extends HealEffectSchema.class implements IHealEffect {}
 HealEffectSchema.setClass(HealEffect);

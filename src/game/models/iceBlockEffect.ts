@@ -13,5 +13,5 @@ export const IceBlockEffectSchema = defineEntity({
     },
 });
 
-export class IceBlockEffect extends IceBlockEffectSchema.class implements IIceBlockEffect { }
+export class IceBlockEffect extends IceBlockEffectSchema.class implements IIceBlockEffect {}
 IceBlockEffectSchema.setClass(IceBlockEffect);
