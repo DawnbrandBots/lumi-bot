@@ -60,8 +60,9 @@ describe(searchFeature.name, () => {
         const mockedSearchEngine: ISearchEngine<SearchItem> = {
             searchOne: vi.fn().mockReturnValue(missingSearchItem),
         };
+        const findOne = vi.fn().mockResolvedValue(null);
         const mockedEntityManager = {
-            findOne: vi.fn().mockResolvedValue(null),
+            findOne,
         } as unknown as EntityManager;
 
         const response = await searchFeature<TSearchableEntity>({
@@ -80,7 +81,7 @@ describe(searchFeature.name, () => {
                 { name: ID_FIELD_NAME, value: missingSearchItem.id, inline: true },
             ],
         });
-        expect(mockedEntityManager.findOne).toHaveBeenCalledWith(
+        expect(findOne).toHaveBeenCalledWith(
             SEARCH_HANDLERS.weapon.class,
             { id: missingSearchItem.id },
             { populate: SEARCH_HANDLERS.weapon.populate },
