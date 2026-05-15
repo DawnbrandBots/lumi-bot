@@ -37,81 +37,94 @@ async function findWeapon(name: string): Promise<Weapon> {
 }
 
 describe(Disciple.name, () => {
-    // All possible baseHp values per level
-    test.each([
-        ["Kurt", [80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160]],
-        ["Gotthold", [88, 96, 105, 114, 123, 132, 140, 149, 158, 167, 176]],
-    ])("getHp returns expected values from level 1 to 11 for %s", async (name, expected) => {
-        const disciple = await findDisciple(name);
+    describe("getHp returns expected values from level 1 to 11 for", () => {
+        // All possible baseHp values per level
+        test.each([
+            ["Kurt", [80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160]],
+            ["Gotthold", [88, 96, 105, 114, 123, 132, 140, 149, 158, 167, 176]],
+        ])("%s", async (name, expected) => {
+            const disciple = await findDisciple(name);
 
-        expect(LEVELS.map((level) => disciple.getHp({ level }))).toEqual(expected);
+            expect(LEVELS.map((level) => disciple.getHp({ level }))).toEqual(expected);
+        });
     });
 
-    // All possible baseAtk values per level
-    test.each([
-        ["Kurt", [42, 46, 50, 54, 58, 63, 67, 71, 75, 79, 84]],
-        ["Gotthold", [30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60]],
-        ["Carina", [36, 39, 43, 46, 50, 54, 57, 61, 64, 68, 72]],
-        ["Alberta", [24, 26, 28, 31, 33, 36, 38, 40, 43, 45, 48]],
-        ["Tamamo", [28, 30, 33, 36, 39, 42, 44, 47, 50, 53, 56]],
-        ["Corrin", [20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40]],
-    ])("getAtk returns expected values from level 1 to 11 for %s", async (name, expected) => {
-        const disciple = await findDisciple(name);
+    describe("getAtk returns expected values from level 1 to 11 for", () => {
+        // All possible baseAtk values per level
+        test.each([
+            ["Kurt", [42, 46, 50, 54, 58, 63, 67, 71, 75, 79, 84]],
+            ["Gotthold", [30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60]],
+            ["Carina", [36, 39, 43, 46, 50, 54, 57, 61, 64, 68, 72]],
+            ["Alberta", [24, 26, 28, 31, 33, 36, 38, 40, 43, 45, 48]],
+            ["Tamamo", [28, 30, 33, 36, 39, 42, 44, 47, 50, 53, 56]],
+            ["Corrin", [20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40]],
+        ])("%s", async (name, expected) => {
+            const disciple = await findDisciple(name);
 
-        expect(LEVELS.map((level) => disciple.getAtk({ level }))).toEqual(expected);
+            expect(LEVELS.map((level) => disciple.getAtk({ level }))).toEqual(expected);
+        });
     });
 
-    // All possible baseHp values
-    test.each([
-        ["Kurt", 80],
-        ["Gotthold", 88],
-    ])("baseHp returns expected value for %s", async (name, expected) => {
-        const disciple = await findDisciple(name);
+    describe("baseHp returns expected value for", () => {
+        // All possible baseHp values
+        test.each([
+            ["Kurt", 80],
+            ["Gotthold", 88],
+        ])("%s", async (name, expected) => {
+            const disciple = await findDisciple(name);
 
-        expect(disciple.baseHp).toBe(expected);
+            expect(disciple.baseHp).toBe(expected);
+        });
     });
 
-    // All possible baseAtk values
-    test.each([
-        ["Kurt", 42],
-        ["Gotthold", 30],
-        ["Carina", 36],
-        ["Alberta", 24],
-        ["Tamamo", 28],
-        ["Corrin", 20],
-    ])("baseAtk returns expected value for %s", async (name, expected) => {
-        const disciple = await findDisciple(name);
+    describe("baseAtk returns expected value for", () => {
+        // All possible baseAtk values
+        test.each([
+            ["Kurt", 42],
+            ["Gotthold", 30],
+            ["Carina", 36],
+            ["Alberta", 24],
+            ["Tamamo", 28],
+            ["Corrin", 20],
+        ])("%s", async (name, expected) => {
+            const disciple = await findDisciple(name);
 
-        expect(disciple.baseAtk).toBe(expected);
+            expect(disciple.baseAtk).toBe(expected);
+        });
     });
 });
 
 describe(Spell.name, () => {
-    test.each(["Self Mend", "Self Heal Push", "Self Crossedge"])("%s has SELF dragging mode", async (name) => {
-        const spell = await findSpell(name);
+    describe("draggingMode" satisfies keyof Spell, () => {
+        describe(ESpellDraggingMode.SELF, () => {
+            test.each(["Self Mend", "Self Heal Push", "Self Crossedge"])("%s", async (name) => {
+                const spell = await findSpell(name);
 
-        expect(spell.draggingMode.kind).toBe(SPELL_DRAGGING_MODE.SELF.kind);
-    });
+                expect(spell.draggingMode.kind).toBe(SPELL_DRAGGING_MODE.SELF.kind);
+            });
+        });
+        describe(ESpellDraggingMode.ANY, () => {
+            test.each([
+                // Some spells with ANY dragging mode, one for each effect type.
+                "Tetrafire",
+                "Mend",
+                "Shield Strike",
+                "Heal Warp EX",
+                "Edge Break",
+                "Tetrathunder Wall EX",
+                "Axe Fighter + Infantry",
+                "Tetraheal Zone",
 
-    test.each([
-        // Some spells with ANY dragging mode, one for each effect type.
-        "Tetrafire",
-        "Mend",
-        "Shield Strike",
-        "Heal Warp EX",
-        "Edge Break",
-        "Tetrathunder Wall EX",
-        "Axe Fighter + Infantry",
-        "Tetraheal Zone",
+                // Spells which have a SELF spell effect but don't have a SELF dragging mode.
+                "Aether EX",
+                "Thunder Self Edge EX",
+                "Wind Self Pull EX",
+            ])("%s", async (name) => {
+                const spell = await findSpell(name);
 
-        // Spells which have a SELF spell effect but don't have a SELF dragging mode.
-        "Aether EX",
-        "Thunder Self Edge EX",
-        "Wind Self Pull EX",
-    ])("%s has ANY dragging mode", async (name) => {
-        const spell = await findSpell(name);
-
-        expect(spell.draggingMode.kind).toBe(ESpellDraggingMode.ANY);
+                expect(spell.draggingMode.kind).toBe(ESpellDraggingMode.ANY);
+            });
+        });
     });
 
     describe(describeSpellEffects.name, () => {
