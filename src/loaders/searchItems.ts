@@ -40,11 +40,14 @@ function getToSearchItemMapper<Kind extends string>(
  * @returns Items to to provide to the search engine.
  */
 export default async function getSearchItems(em: SqlEntityManager) {
+    // Fork EM to not preserve (even partially) loaded entities in memory.
+    const localEm = em.fork();
+
     // No need to populate entities. We only care about the id, name and kind for the sake of the search.
-    const weapons: Weapon[] = await em.findAll(Weapon);
-    const disciples: Disciple[] = await em.findAll(Disciple);
-    const weaponSkills: WeaponSkill[] = await em.findAll(WeaponSkill);
-    const spells: Spell[] = await em.findAll(Spell);
+    const weapons: Weapon[] = await localEm.findAll(Weapon);
+    const disciples: Disciple[] = await localEm.findAll(Disciple);
+    const weaponSkills: WeaponSkill[] = await localEm.findAll(WeaponSkill);
+    const spells: Spell[] = await localEm.findAll(Spell);
 
     const weaponSearchItems = weapons.flatMap(getToSearchItemMapper(aliasWeaponName));
     const discipleSearchItems = disciples.flatMap(getToSearchItemMapper(id));
