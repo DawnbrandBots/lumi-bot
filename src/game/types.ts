@@ -241,14 +241,20 @@ export interface ISpell {
     readonly disciple?: IDisciple | null;
     readonly role: ISpellRole;
     /**
-     * Number times this spell can be used.
+     * Number of times this spell can be used.
      *
      * `null` means an infinite number of times.
      */
     // TODO: using Infinity might be a better fit?
     readonly uses: number | null | undefined;
     /**
-     * Number of seconds the player must wait to use another spell after using this one.
+     * Seconds between this spell is used and its effects are applied. Only concerns some Shadow spells.
+     *
+     * `null`ish means no countdown.
+     */
+    readonly countdown?: number | null;
+    /**
+     * Seconds the player must wait to use another spell after using this one.
      */
     readonly cooldown: number;
     /**

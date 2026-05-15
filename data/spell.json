@@ -182,6 +182,7 @@
     "shape": "3X3_CROSS",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -483,6 +484,7 @@
     "shape": "2X2_SQUARE",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -588,6 +590,7 @@
     "shape": "1_TILE",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -897,6 +900,7 @@
     "shape": "3X3_CROSS",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -984,6 +988,7 @@
     "shape": "2X2_SQUARE",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -1599,6 +1604,7 @@
     "shape": "3X3_CROSS",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -1856,6 +1862,7 @@
     "shape": "1_TILE",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -2109,6 +2116,7 @@
     "shape": "1_TILE",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -2225,6 +2233,7 @@
     "shape": "2X2_SQUARE",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -2695,6 +2704,7 @@
     "shape": "1_TILE",
     "uses": 1,
     "cooldown": 3,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -2808,6 +2818,7 @@
     "shape": "5_VERTICAL",
     "uses": null,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -3250,6 +3261,7 @@
     "shape": "3X3_CROSS",
     "uses": null,
     "cooldown": 4,
+    "countdown": 2,
     "effects": [
       {
         "kind": "STATUS",
@@ -3304,6 +3316,7 @@
     "shape": "2X2_SQUARE",
     "uses": 1,
     "cooldown": 5,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
@@ -3413,6 +3426,7 @@
     "shape": "1_TILE",
     "uses": null,
     "cooldown": 4,
+    "countdown": 2,
     "effects": [
       {
         "kind": "DAMAGE",
