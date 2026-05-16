@@ -1,6 +1,6 @@
 import debug from "debug";
 import type { Client } from "discord.js";
-import { ActivityType, Events } from "discord.js";
+import { ActivityType, Events, userMention } from "discord.js";
 import type { ICommand } from "./bot/types.ts";
 import helpFeature from "./help/feature.ts";
 import { helpCommand } from "./help/help.ts";
@@ -32,6 +32,7 @@ await unreadyBot.login();
 const bot = await new Promise<Client<true>>((resolve) => unreadyBot.once(Events.ClientReady, resolve));
 log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
 bot.user?.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
+const botMention = userMention(bot.user.id);
 
 bot.on(Events.MessageCreate, async (interaction) => {
     log(interaction);
@@ -43,13 +44,12 @@ bot.on(Events.MessageCreate, async (interaction) => {
     if (!mentionedUsers.has(bot.user.id)) {
         return;
     }
-    const startingBotMentionStr = `<@${bot.user.id}>`;
-    if (interaction.content === startingBotMentionStr) {
+    if (interaction.content === botMention) {
         const response = helpFeature();
         await interaction.reply(response);
         return;
     }
-    const startingBotMentionAndSpaceStr = startingBotMentionStr + " ";
+    const startingBotMentionAndSpaceStr = botMention + " ";
     if (!interaction.content.startsWith(startingBotMentionAndSpaceStr)) {
         return;
     }
