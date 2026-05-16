@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1_TILE",
+    "name": "Single tile",
+    "tiles": "............X............"
+  },
+  {
+    "id": "2X2_SQUARE",
+    "name": "Tetra",
+    "tiles": "......OO...OX............"
+  },
+  {
+    "id": "3X3_SQUARE",
+    "name": "Ennea",
+    "tiles": "......OOO..OXO..OOO......"
+  },
+  {
+    "id": "3X3_CROSS",
+    "name": "Cross",
+    "tiles": ".......O...OXO...O......."
+  },
+  {
+    "id": "5X5_CROSS",
+    "name": "Mega Cross",
+    "tiles": "..O....O..OOXOO..O....O.."
+  },
+  {
+    "id": "5_VERTICAL",
+    "name": "Stabbing",
+    "tiles": "..O....O....X....O....O.."
+  },
+  {
+    "id": "5_HORIZONTAL",
+    "name": "Slicing",
+    "tiles": "..........OOXOO.........."
+  },
+  {
+    "id": "3X3_X",
+    "name": "Ex",
+    "tiles": "......O.O...X...O.O......"
+  }
+]

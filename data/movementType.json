@@ -1,0 +1,34 @@
+[
+  {
+    "id": "INFANTRY",
+    "name": "Infantry",
+    "distance": 2,
+    "canTraverseWaterTiles": false,
+    "discipleBaseHpModifier": 1,
+    "discipleBaseAtkModifier": 1.1666666666666667
+  },
+  {
+    "id": "CAVALRY",
+    "name": "Cavalry",
+    "distance": 3,
+    "canTraverseWaterTiles": false,
+    "discipleBaseHpModifier": 1,
+    "discipleBaseAtkModifier": 1
+  },
+  {
+    "id": "FLYING",
+    "name": "Flying",
+    "distance": 2,
+    "canTraverseWaterTiles": true,
+    "discipleBaseHpModifier": 1,
+    "discipleBaseAtkModifier": 1
+  },
+  {
+    "id": "ARMORED",
+    "name": "Armored",
+    "distance": 2,
+    "canTraverseWaterTiles": false,
+    "discipleBaseHpModifier": 1.1,
+    "discipleBaseAtkModifier": 0.8333333333333334
+  }
+]

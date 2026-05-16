@@ -20,7 +20,8 @@ jobs:
           node-version-file: .node-version
           cache: yarn
       - run: yarn
-      - run: yarn build
+      - run: yarn typecheck
       - run: yarn lint
+      - run: yarn test
         continue-on-error: true
       - run: yarn format:check

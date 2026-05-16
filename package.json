@@ -6,26 +6,35 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
-    "postclean": "tsc --build --clean",
+    "postclean": "tsc --build --clean tsconfig.json tsconfig.build.json",
     "start": "node --enable-source-maps --env-file-if-exists=.env dist",
-    "register": "node --enable-source-maps --env-file-if-exists=.env dist/commands",
-    "lint": "eslint --flag unstable_native_nodejs_ts_config",
-    "lint:fix": "eslint --flag unstable_native_nodejs_ts_config --fix",
+    "lint": "eslint --flag unstable_native_nodejs_ts_config .",
+    "lint:fix": "eslint --flag unstable_native_nodejs_ts_config --fix .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "register": "node --experimental-transform-types --enable-source-maps --env-file-if-exists=.env scripts/registerCommands.ts",
+    "db:recreate": "node --experimental-transform-types --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts",
+    "test:db": "node --experimental-transform-types --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts ./test/mikro-orm.test.config.ts",
+    "pretest": "yarn test:db",
+    "test": "vitest"
   },
   "engines": {
     "node": ">=24",
     "yarn": "1.22.x"
   },
   "dependencies": {
+    "@mikro-orm/core": "^7.0.13",
+    "@mikro-orm/sqlite": "^7.0.13",
     "debug": "^4.4.3",
-    "discord.js": "~14.26.3"
+    "discord.js": "~14.26.3",
+    "fuse.js": "^7.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@mikro-orm/cli": "^7.0.13",
     "@tsconfig/node24": "^24.0.4",
     "@types/debug": "^4.1.13",
     "@types/node": "^24.12.2",
@@ -34,10 +43,17 @@
     "globals": "^17.5.0",
     "prettier": "3.8.3",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.58.2"
+    "typescript-eslint": "^8.58.2",
+    "vitest": "^4.1.5"
   },
   "optionalDependencies": {
     "bufferutil": "^4.1.0",
     "zlib-sync": "^0.1.10"
+  },
+  "mikro-orm": {
+    "preferTs": true,
+    "configPaths": [
+      "./src/mikro-orm.config.ts"
+    ]
   }
 }
