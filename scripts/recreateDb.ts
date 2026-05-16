@@ -5,10 +5,10 @@
  */
 
 import { MikroORM, type Options } from "@mikro-orm/sqlite";
-import fs from "fs";
+import fs from "node:fs";
 import path from "node:path";
+import process from "node:process";
 import { pathToFileURL } from "node:url";
-import process from "process";
 
 const configPath = process.argv[2] ?? "./src/mikro-orm.config.ts";
 const configModule = (await import(pathToFileURL(path.resolve(configPath)).href)) as {
