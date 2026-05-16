@@ -8,11 +8,11 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ## Discord permissions
 
-| Permission                                                                   | Purpose                                         | Recommendation |
-| ---------------------------------------------------------------------------- | ----------------------------------------------- | -------------- |
-| **Send messages**: Replying to commands and pings.                           | Replying to commands and pings.                 | Required       |
-| **Send messages in thread**: Same reason as _Send messages_, but in threads. | Same reason as _Send messages_, but in threads. | Optional       |
-| **Read message history**: Being able to detect pings to act upon them.       | Being able to detect pings to act upon them.    | Recommended    |
+| Permission                  | Purpose                                         | Recommendation |
+| --------------------------- | ----------------------------------------------- | -------------- |
+| **Send messages**           | Replying to commands and pings.                 | Required       |
+| **Send messages in thread** | Same reason as _Send messages_, but in threads. | Optional       |
+| **Read message history**    | Being able to detect pings to act upon them.    | Recommended    |
 
 ## Getting started
 
