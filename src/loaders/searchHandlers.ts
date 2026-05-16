@@ -1,13 +1,13 @@
-import discipleSearchHandler from "../search/handlers/disciple.ts";
-import spellSearchHandler from "../search/handlers/spell.ts";
-import weaponSearchHandler from "../search/handlers/weapon.ts";
-import weaponSkillSearchHandler from "../search/handlers/weaponSkill.ts";
+import { default as disciple } from "../search/handlers/disciple.ts";
+import { default as spell } from "../search/handlers/spell.ts";
+import { default as weapon } from "../search/handlers/weapon.ts";
+import { default as weaponSkill } from "../search/handlers/weaponSkill.ts";
 
 const SEARCH_HANDLERS = {
-    disciple: discipleSearchHandler,
-    weapon: weaponSearchHandler,
-    weaponSkill: weaponSkillSearchHandler,
-    spell: spellSearchHandler,
+    disciple,
+    weapon,
+    weaponSkill,
+    spell,
 } as const;
 
 export default SEARCH_HANDLERS;
