@@ -1,4 +1,4 @@
-import { Colors, userMention } from "discord.js";
+import { Colors, formatEmoji, userMention } from "discord.js";
 
 export const BOT_NAME = "Lumi";
 
@@ -15,8 +15,8 @@ export const DISCORD_BLUE_SQUARE_EMOJI_ID = "blue_square";
 export const DISCORD_BLUE_SQUARE_EMOJI_CALL = `:${DISCORD_BLUE_SQUARE_EMOJI_ID}:`;
 export const DISCORD_BLACK_SQUARE_EMOJI_ID = "black_large_square";
 export const DISCORD_BLACK_SQUARE_EMOJI_CALL = `:${DISCORD_BLACK_SQUARE_EMOJI_ID}:`;
-export const DISCORD_SAI_LAUGH_EMOJI_ID = "Sailaugh";
-export const DISCORD_SAI_LAUGH_EMOJI_CALL = `:${DISCORD_SAI_LAUGH_EMOJI_ID}:`;
+export const DISCORD_SAI_LAUGH_EMOJI_ID = "1474191899781758976";
+export const DISCORD_SAI_LAUGH_EMOJI_CALL = formatEmoji(DISCORD_SAI_LAUGH_EMOJI_ID);
 
 export const SEARCH_TERMS_OPTION_NAME = "terms";
 export const SEARCH_MAX_INPUT_LENGTH = 32;
