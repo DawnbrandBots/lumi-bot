@@ -16,7 +16,7 @@ const SPELL_EFFECT_ROLES = {
     EX: new SpellRole({ kind: ESpellRole.EX, name: "EX" }),
     LIGHT: new SpellRole({ kind: ESpellRole.LIGHT, name: "Light" }),
     SHADOW: new SpellRole({ kind: ESpellRole.SHADOW, name: "Shadow" }),
-} as const satisfies { [K in ESpellRole]: ISpellRole };
+} as const satisfies { [K in keyof typeof ESpellRole]: ISpellRole };
 
 export class SpellRoleType extends Type<SpellRole, string | null | undefined> {
     public convertToDatabaseValue(value: SpellRole | null | undefined): string | null | undefined {

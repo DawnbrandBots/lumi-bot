@@ -14,7 +14,7 @@ export class StatChange implements IStatChange {
 const STAT_CHANGES = {
     INCREASE: new StatChange({ id: EStatChange.INCREASE, verb: "Increases" }),
     DECREASE: new StatChange({ id: EStatChange.DECREASE, verb: "Decreases" }),
-} as const satisfies { [K in EStatChange]: IStatChange };
+} as const satisfies { [K in keyof typeof EStatChange]: IStatChange };
 
 export class StatChangeType extends Type<StatChange, string | null | undefined> {
     public convertToDatabaseValue(value: StatChange | null | undefined): string | null | undefined {

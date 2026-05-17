@@ -14,7 +14,7 @@ export class Direction implements IDirection {
 const DIRECTIONS = {
     UP: new Direction({ id: EDirection.UP, noun: "up" }),
     DOWN: new Direction({ id: EDirection.DOWN, noun: "down" }),
-} as const satisfies { [K in EDirection]: IDirection };
+} as const satisfies { [K in keyof typeof EDirection]: IDirection };
 
 export class DirectionType extends Type<Direction, string | null | undefined> {
     public convertToDatabaseValue(value: Direction | null | undefined): string | null | undefined {

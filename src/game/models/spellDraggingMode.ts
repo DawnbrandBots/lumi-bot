@@ -21,7 +21,7 @@ export class SpellDraggingMode implements ISpellDraggingMode {
 export const SPELL_DRAGGING_MODE = {
     ANY: new SpellDraggingMode({ kind: ESpellDraggingMode.ANY, asString: "Any tile" }),
     SELF: new SpellDraggingMode({ kind: ESpellDraggingMode.SELF, asString: "User tile only" }),
-} as const satisfies { [K in ESpellDraggingMode]: ISpellDraggingMode };
+} as const satisfies { [K in keyof typeof ESpellDraggingMode]: ISpellDraggingMode };
 
 export class SpellDraggingModeType extends Type<SpellDraggingMode, string | null | undefined> {
     public convertToDatabaseValue(value: SpellDraggingMode | null | undefined): string | null | undefined {

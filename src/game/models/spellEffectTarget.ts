@@ -22,7 +22,7 @@ const SPELL_EFFECT_TARGETS = {
     ANY: new SpellEffectTarget({ kind: ESpellEffectTarget.ANY, asString: "targets" }),
     SELF: new SpellEffectTarget({ kind: ESpellEffectTarget.SELF, asString: "user" }),
     DUAL: new SpellEffectTarget({ kind: ESpellEffectTarget.DUAL, asString: "user and targets" }),
-} as const satisfies { [K in ESpellEffectTarget]: ISpellEffectTarget };
+} as const satisfies { [K in keyof typeof ESpellEffectTarget]: ISpellEffectTarget };
 
 export class SpellEffectTargetType extends Type<SpellEffectTarget, string | null | undefined> {
     public convertToDatabaseValue(value: SpellEffectTarget | null | undefined): string | null | undefined {

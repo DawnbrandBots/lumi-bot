@@ -165,26 +165,26 @@ export interface IDisciple {
     getHp({ level }: { level: number }): number;
 }
 
-export enum ESpellRole {
+export const ESpellRole = {
     /**
      * Spell usable by one disciple only, no matter the side.
      */
-    EX = "EX",
+    EX: "EX",
     /**
      * Spell usable when fighting for the Light.
      */
-    LIGHT = "LIGHT",
+    LIGHT: "LIGHT",
     /**
      * Spell usable when fighting for the Shadow.
      */
-    SHADOW = "SHADOW",
-}
+    SHADOW: "SHADOW",
+} as const;
 
 /**
  * Role by which a spell can be used.
  */
 export interface ISpellRole {
-    readonly kind: ESpellRole;
+    readonly kind: keyof typeof ESpellRole;
     readonly name: string;
 }
 
@@ -207,22 +207,22 @@ export interface ISpellShape {
     readonly isAoe: boolean;
 }
 
-export enum ESpellDraggingMode {
+export const ESpellDraggingMode = {
     /**
      * Spell targets tile on which it was dragged.
      */
-    ANY = "ANY",
+    ANY: "ANY",
     /**
      * Spell targets user no matter which tile it was dragged on.
      */
-    SELF = "SELF",
-}
+    SELF: "SELF",
+} as const;
 
 /**
  * Determines which units are targeted by a spell depending on where it was dragged on the grid.
  */
 export interface ISpellDraggingMode {
-    readonly kind: ESpellDraggingMode;
+    readonly kind: keyof typeof ESpellDraggingMode;
     readonly asString: string;
 }
 
@@ -269,46 +269,46 @@ export interface ISpell {
     readonly draggingMode: ISpellDraggingMode;
 }
 
-export enum EStat {
-    HP = "HP",
-    ATK = "ATK",
-    RECEIVED_WEAPON_DAMAGE = "RECEIVED_WEAPON_DAMAGE",
-    RECEIVED_SPELL_DAMAGE = "RECEIVED_SPELL_DAMAGE",
-    MOVEMENT = "MOVEMENT",
-    COLOR_AFFINITY = "COLOR_AFFINITY",
-}
+export const EStat = {
+    HP: "HP",
+    ATK: "ATK",
+    RECEIVED_WEAPON_DAMAGE: "RECEIVED_WEAPON_DAMAGE",
+    RECEIVED_SPELL_DAMAGE: "RECEIVED_SPELL_DAMAGE",
+    MOVEMENT: "MOVEMENT",
+    COLOR_AFFINITY: "COLOR_AFFINITY",
+} as const;
 
-export enum EDirection {
-    UP = "UP",
-    DOWN = "DOWN",
-}
+export const EDirection = {
+    UP: "UP",
+    DOWN: "DOWN",
+} as const;
 
-export enum EStatChange {
-    INCREASE = "INCREASE",
-    DECREASE = "DECREASE",
-}
+export const EStatChange = {
+    INCREASE: "INCREASE",
+    DECREASE: "DECREASE",
+} as const;
 
-export enum ESpellEffectValueUnitKind {
+export const ESpellEffectValueUnitKind = {
     /**
      * Value is exactly the value described.
      */
-    FIXED = "FIXED",
+    FIXED: "FIXED",
     /**
      * Value is a percentage of a stat of the spell user.
      */
-    PERCENT = "PERCENT",
-}
+    PERCENT: "PERCENT",
+} as const;
 
 export interface ISpellEffectValueUnit {
-    readonly kind: ESpellEffectValueUnitKind;
+    readonly kind: keyof typeof ESpellEffectValueUnitKind;
 }
 
 export interface ISpellEffectValueFixedUnit extends ISpellEffectValueUnit {
-    readonly kind: ESpellEffectValueUnitKind.FIXED;
+    readonly kind: typeof ESpellEffectValueUnitKind.FIXED;
 }
 
 export interface ISpellEffectValuePercentUnit extends ISpellEffectValueUnit {
-    readonly kind: ESpellEffectValueUnitKind.PERCENT;
+    readonly kind: typeof ESpellEffectValueUnitKind.PERCENT;
     readonly stat: IStat;
 }
 
@@ -342,7 +342,7 @@ export interface ISpellEffectValue {
  * Describes a unit's stat. Eg. Atk, HP, Movement...
  */
 export interface IStat {
-    readonly id: EStat;
+    readonly id: keyof typeof EStat;
     readonly name: string;
 }
 
@@ -350,7 +350,7 @@ export interface IStat {
  * For movement spells. Eg. UP and DOWN.
  */
 export interface IDirection {
-    readonly id: EDirection;
+    readonly id: keyof typeof EDirection;
     readonly noun: string;
 }
 
@@ -358,30 +358,30 @@ export interface IDirection {
  * For stat spell effects. Eg; INCREASE and DECREASE.
  */
 export interface IStatChange {
-    readonly id: EStatChange;
+    readonly id: keyof typeof EStatChange;
     readonly verb: string;
 }
 
-export enum ESpellEffectTarget {
+export const ESpellEffectTarget = {
     /**
      * Effect targets tile the spell was dragged on.
      */
-    ANY = "ANY",
+    ANY: "ANY",
     /**
      * Effect targets spell user's tile.
      */
-    SELF = "SELF",
+    SELF: "SELF",
     /**
      * Effect targets targets and spell user's tiles.
      */
-    DUAL = "DUAL",
-}
+    DUAL: "DUAL",
+} as const;
 
 /**
  * Which tiles are targeted by a spell effect.
  */
 export interface ISpellEffectTarget {
-    readonly kind: ESpellEffectTarget;
+    readonly kind: keyof typeof ESpellEffectTarget;
     readonly asString: string;
 }
 
