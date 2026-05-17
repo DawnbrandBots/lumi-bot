@@ -6,17 +6,17 @@ import { Weapon } from "../game/models/weapon.ts";
 import { WeaponSkill } from "../game/models/weaponSkill.ts";
 import type { ISearchableEntity, ISearchItem } from "../search/types.ts";
 
-export function* id(value: string) {
+function* id(value: string) {
     yield value;
 }
 
-export function* aliasWeaponName(value: string) {
+function* aliasWeaponName(value: string) {
     yield value.replace("+", "Plus");
 }
 
 const SPELL_NAME_PREFIX_SPLIT_REGEX = new RegExp(`\\s|(?=${SPELL_NAME_SUFFIXES.join("|")})`, "i");
 
-export function* aliasSpellName(value: string): Generator<string> {
+function* aliasSpellName(value: string): Generator<string> {
     const norm = value.replace("+", "Plus");
     yield norm;
     const normSplit = norm.split(SPELL_NAME_PREFIX_SPLIT_REGEX);
