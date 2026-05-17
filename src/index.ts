@@ -1,5 +1,4 @@
 import debug from "debug";
-import type { Client } from "discord.js";
 import { ActivityType, Events, userMention } from "discord.js";
 import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
@@ -20,19 +19,17 @@ const orm = await getOrm(mikroOrmConfig);
 const em = orm.em.fork();
 const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
-const unreadyBot = getBot();
+const bot = getBot();
 
 const commands: Record<string, ICommand> = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
     help: helpCommand,
 };
 
-// Implicitly use DISCORD_TOKEN
-await unreadyBot.login();
-const bot = await new Promise<Client<true>>((resolve) => unreadyBot.once(Events.ClientReady, resolve));
-log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
-bot.user?.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
-const botMention = userMention(bot.user.id);
+bot.on(Events.ClientReady, (client) => {
+    log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
+    client.user.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
+});
 
 bot.on(Events.MessageCreate, async (interaction) => {
     log(interaction);
@@ -41,9 +38,10 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const mentionedUsers = interaction.mentions.parsedUsers;
-    if (!mentionedUsers.has(bot.user.id)) {
+    if (!mentionedUsers.has(interaction.client.user.id)) {
         return;
     }
+    const botMention = userMention(interaction.client.user.id);
     if (interaction.content === botMention) {
         const response = helpFeature();
         await interaction.reply(response);
@@ -68,3 +66,6 @@ bot.on(Events.InteractionCreate, async (interaction) => {
     const command = commands[interaction.commandName] || helpCommand;
     await command.run(interaction);
 });
+
+// Implicitly use DISCORD_TOKEN
+await bot.login();
