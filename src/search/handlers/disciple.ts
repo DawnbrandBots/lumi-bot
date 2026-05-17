@@ -2,6 +2,7 @@ import type { APIEmbed } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../game/constants.ts";
 import { Disciple } from "../../game/models/disciple.ts";
 import type { IDisciple } from "../../game/types.ts";
+import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
 import type { ISearchHandler } from "../types.ts";
 
@@ -10,29 +11,20 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
     response: (disciple: IDisciple) => {
         const spellsStr = [...disciple.spells].map((spell) => `- ${spell.name}`).join("\n");
 
-        const columnCountAsideFromHeaderAndLevel1 = DISCIPLE_MAXIXUM_LEVEL - DISCIPLE_MINIMUM_RELEVANT_LEVEL + 1;
+        const relevantLevels = Array.from(
+            range({ start: DISCIPLE_MINIMUM_RELEVANT_LEVEL, end: DISCIPLE_MAXIXUM_LEVEL + 1 }),
+        );
         const baseStatsTable = [
-            [
-                "Level",
-                1,
-                ...Array.from(
-                    { length: columnCountAsideFromHeaderAndLevel1 },
-                    (_, i) => i + DISCIPLE_MINIMUM_RELEVANT_LEVEL,
-                ),
-            ],
+            ["Level", 1, ...relevantLevels],
             [
                 "HP",
                 disciple.getHp({ level: 1 }),
-                ...Array.from({ length: columnCountAsideFromHeaderAndLevel1 }, (_, i) =>
-                    disciple.getHp({ level: i + DISCIPLE_MINIMUM_RELEVANT_LEVEL }),
-                ),
+                ...relevantLevels.map((i) => disciple.getHp({ level: i + DISCIPLE_MINIMUM_RELEVANT_LEVEL })),
             ],
             [
                 "Atk",
                 disciple.getAtk({ level: 1 }),
-                ...Array.from({ length: columnCountAsideFromHeaderAndLevel1 }, (_, i) =>
-                    disciple.getAtk({ level: i + DISCIPLE_MINIMUM_RELEVANT_LEVEL }),
-                ),
+                ...relevantLevels.map((i) => disciple.getAtk({ level: i + DISCIPLE_MINIMUM_RELEVANT_LEVEL })),
             ],
         ];
         const baseStatsTableAscii = toAsciiTable({ data: baseStatsTable, cellPadding: 3 });
