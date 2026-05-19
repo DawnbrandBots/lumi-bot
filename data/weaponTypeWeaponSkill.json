@@ -1,0 +1,50 @@
+[
+  {
+    "weaponType": "CLAWS",
+    "weaponSkill": "RIDER_BANE_1"
+  },
+  {
+    "weaponType": "CLAWS",
+    "weaponSkill": "RIDER_BANE_2"
+  },
+  {
+    "weaponType": "CLAWS",
+    "weaponSkill": "RIDER_BANE_3"
+  },
+  {
+    "weaponType": "TOME",
+    "weaponSkill": "ARMOR_BANE_1"
+  },
+  {
+    "weaponType": "TOME",
+    "weaponSkill": "ARMOR_BANE_2"
+  },
+  {
+    "weaponType": "TOME",
+    "weaponSkill": "ARMOR_BANE_3"
+  },
+  {
+    "weaponType": "STAFF",
+    "weaponSkill": "ARMOR_BANE_1"
+  },
+  {
+    "weaponType": "STAFF",
+    "weaponSkill": "ARMOR_BANE_2"
+  },
+  {
+    "weaponType": "STAFF",
+    "weaponSkill": "ARMOR_BANE_3"
+  },
+  {
+    "weaponType": "BOW",
+    "weaponSkill": "FLIER_BANE_1"
+  },
+  {
+    "weaponType": "BOW",
+    "weaponSkill": "FLIER_BANE_2"
+  },
+  {
+    "weaponType": "BOW",
+    "weaponSkill": "FLIER_BANE_3"
+  }
+]

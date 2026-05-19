@@ -1,29 +1,70 @@
 import debug from "debug";
-import { ActivityType, Client, Colors, EmbedBuilder, Events, GatewayIntentBits } from "discord.js";
+import { ActivityType, Events, userMention } from "discord.js";
+import type { ICommand } from "./bot/types.ts";
+import { helpCommand } from "./help/command.ts";
+import helpFeature from "./help/feature.ts";
+import getBot from "./loaders/bot.ts";
+import getOrm from "./loaders/orm.ts";
+import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
+import getSearchItems from "./loaders/searchItems.ts";
+import mikroOrmConfig from "./mikro-orm.config.ts";
+import { getSearchCommand } from "./search/command.ts";
+import { FuseSearchEngine } from "./search/engine.ts";
+import searchFeature from "./search/feature.ts";
+import type { TSearchableEntity } from "./search/types.ts";
 
 const log = debug("bot");
 
-const bot = new Client({ intents: [GatewayIntentBits.Guilds] });
+const orm = await getOrm(mikroOrmConfig);
+const em = orm.em.fork();
+const searchItems = await getSearchItems(em);
+const searchEngine = new FuseSearchEngine({ items: searchItems });
+const bot = getBot();
 
-bot.on(Events.ClientReady, () => {
+const commands: Record<string, ICommand> = {
+    search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
+    help: helpCommand,
+};
+
+bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
-    bot.user?.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
+    client.user.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
+});
+
+bot.on(Events.MessageCreate, async (interaction) => {
+    log(interaction);
+
+    if (interaction.author.bot) {
+        return;
+    }
+    const mentionedUsers = interaction.mentions.parsedUsers;
+    if (!mentionedUsers.has(interaction.client.user.id)) {
+        return;
+    }
+    const botMention = userMention(interaction.client.user.id);
+    if (interaction.content === botMention) {
+        const response = helpFeature();
+        await interaction.reply(response);
+        return;
+    }
+    const startingBotMentionAndSpaceStr = botMention + " ";
+    if (!interaction.content.startsWith(startingBotMentionAndSpaceStr)) {
+        return;
+    }
+    const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
+    const response = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
+    await interaction.reply(response);
 });
 
 bot.on(Events.InteractionCreate, async (interaction) => {
     log(interaction);
+
     if (!interaction.isChatInputCommand()) {
         return;
     }
-    await interaction.reply({
-        embeds: [
-            new EmbedBuilder()
-                .setColor(Colors.DarkGold)
-                .setTitle("Lumi")
-                .setDescription("Umbra serves the shadow")
-                .setFooter({ text: "Fire Emblem" }),
-        ],
-    });
+
+    const command = commands[interaction.commandName] || helpCommand;
+    await command.run(interaction);
 });
 
 // Implicitly use DISCORD_TOKEN
