@@ -25,5 +25,9 @@ export function getSearchCommand<Items extends ISearchableEntity>({
             const response = await searchFeature({ em, searchEngine, handlers, input });
             return interaction.reply(response);
         },
+        autocomplete: {
+            [SEARCH_TERMS_OPTION_NAME]: (input) =>
+                searchEngine.search(input, 5).map((item) => ({ name: item.name, value: item.name })),
+        },
     });
 }
