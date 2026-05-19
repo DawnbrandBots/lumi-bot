@@ -1,5 +1,6 @@
 import type {
     APIEmbed,
+    ApplicationCommandOptionChoiceData,
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
@@ -8,6 +9,7 @@ import type {
     SharedSlashCommand,
     SlashCommandBuilder,
 } from "discord.js";
+import type { MaybePromise } from "../utils/types.ts";
 
 /**
  * Holds info about a command. Info may then be displayed while using the command or in help commands' output.
@@ -32,6 +34,8 @@ export interface ICommandInfo {
     readonly pingEquivalent?: string;
 }
 
+export type TCommandAutocomplete = (input: string) => MaybePromise<ApplicationCommandOptionChoiceData[]>;
+
 /**
  * Represents a Discord slash command.
  */
@@ -41,6 +45,10 @@ export interface ICommand {
      * What the command does. Must reply to the interaction.
      */
     readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<InteractionResponse<boolean>>;
+    /**
+     * Provides autocomplete suggestions for the command's options.
+     */
+    readonly autocomplete?: Record<string, TCommandAutocomplete>;
 }
 
 export type TFeatureResponseContent = BaseMessageOptions["content"];
