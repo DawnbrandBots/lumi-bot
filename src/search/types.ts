@@ -22,6 +22,7 @@ export interface ISearchableEntity {
 export interface ISearchItem {
     readonly id: TId;
     readonly kind: string;
+    readonly name: string;
     /**
      * All searchable strings that refer to the same item.
      * Eg. "Dark Crossfire Plus Tome" and "DCFPT" both refer to the "Dark Crossfire + 📕" spell.
