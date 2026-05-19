@@ -55,9 +55,11 @@ describe(searchFeature.name, () => {
         const missingSearchItem: SearchItem = {
             id: "MISSING_ID",
             kind: "weapon",
+            name: "Missing Weapon",
             aliases: ["Missing Weapon"],
         };
         const mockedSearchEngine: ISearchEngine<SearchItem> = {
+            search: vi.fn(),
             searchOne: vi.fn().mockReturnValue(missingSearchItem),
         };
         const findOne = vi.fn().mockResolvedValue(null);
