@@ -68,12 +68,12 @@ bot.on(Events.InteractionCreate, async (interaction) => {
         if (!command) {
             return;
         }
-        const focusedOption = interaction.options.getFocused();
-        const autocomplete = command.autocomplete?.[focusedOption];
+        const focusedOption = interaction.options.getFocused(true);
+        const autocomplete = command.autocomplete?.[focusedOption.name];
         if (!autocomplete) {
             return;
         }
-        const items = await autocomplete(focusedOption);
+        const items = await autocomplete(focusedOption.value);
         await interaction.respond(items);
         return;
     }
