@@ -10,7 +10,8 @@ export const searchCommandInfo: ICommandInfo = new CommandInfo({
                 .setName(SEARCH_TERMS_OPTION_NAME)
                 .setDescription("Name to search for.")
                 .setRequired(true)
-                .setMaxLength(SEARCH_MAX_INPUT_LENGTH),
+                .setMaxLength(SEARCH_MAX_INPUT_LENGTH)
+                .setAutocomplete(true),
         );
     },
     name: "search",
