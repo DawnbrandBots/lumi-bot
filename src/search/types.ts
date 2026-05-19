@@ -74,6 +74,10 @@ export interface ISearchEngine<Items extends ISearchItem> {
      * May return a searchable item when provided with user input.
      */
     searchOne(userInput: string): Items | undefined;
+    /**
+     * Returns an array of searchable items matching the user input.
+     */
+    search(userInput: string, limit?: number): Items[];
 }
 
 /**
