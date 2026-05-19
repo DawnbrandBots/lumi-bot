@@ -4,6 +4,7 @@ import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import type { ISearchEngine, ISearchItem } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
+import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
@@ -21,29 +22,15 @@ afterAll(async () => {
 
 describe(FuseSearchEngine.name, () => {
     describe(FuseSearchEngine.prototype.searchOne.name, () => {
-        // Searching for something, even with upper/lowercase and/or typos, missing vowels, as long as characters are not
-        // too different between input and the thing's name, should return that thing still.
-        test.each(["Royal Sword", "Sword Royal", "royalsword", "ROYAL SWORD"])("%s returns Royal Sword", (input) => {
-            expect(searchEngine.searchOne(input)?.id).toBe("ROYAL_SWORD");
+        for (const { expectedId, expectedName, inputs } of SEARCH_RANKING_CASES) {
+            test.each(inputs)(`%s returns ${expectedName}`, (input) => {
+                expect(searchEngine.searchOne(input)?.id).toBe(expectedId);
+            });
+        }
+
+        test("returns undefined when there is no result", () => {
+            expect(searchEngine.searchOne(NO_SEARCH_RESULT_INPUT)).toBeUndefined();
         });
-
-        // "+" in names could not weight enough to appear first in results,
-        // so the implementation should handle them specially.
-        test.each(["Royal Sword +", "Sword + Royal", "royalsword+", "ROYAL SWORD +", "Royal +", "Royal Sword Plus"])(
-            "%s returns Royal Sword +",
-            (input) => {
-                expect(searchEngine.searchOne(input)?.id).toBe("ROYAL_SWORD_PLUS");
-            },
-        );
-
-        // Spell names can include + as well.
-        // Spells can also be searched by acronym.
-        test.each(["Thunder Shield Break + Cavalry", "TSB+", "TSB+C", "TSBPC", "tsbpc"])(
-            "%s returns Thunder Shield Break + Cavalry",
-            (input) => {
-                expect(searchEngine.searchOne(input)?.id).toBe("THUNDER_SHIELD_BREAK_PLUS_CAVALRY");
-            },
-        );
 
         // There used to be a bug where weapons with level < 6 would not be retrieved by the DB,
         // therefore ensure that simply retrieving one weapon per level works.
@@ -61,6 +48,16 @@ describe(FuseSearchEngine.name, () => {
     });
 
     describe(FuseSearchEngine.prototype.search.name, () => {
+        for (const { expectedId, expectedName, inputs } of SEARCH_RANKING_CASES) {
+            test.each(inputs)(`%s returns ${expectedName} as first result`, (input) => {
+                expect(searchEngine.search(input)[0]?.id).toBe(expectedId);
+            });
+        }
+
+        test("returns an empty array when there is no result", () => {
+            expect(searchEngine.search(NO_SEARCH_RESULT_INPUT)).toEqual([]);
+        });
+
         test('results for "Royal" include Royal Sword, Royal Sword + and Royal Scion', () => {
             const results = searchEngine.search("Royal");
             const resultIds = results.map((result) => result.id);

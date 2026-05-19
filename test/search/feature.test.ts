@@ -18,6 +18,7 @@ import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
+import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
@@ -37,7 +38,7 @@ afterAll(async () => {
 describe(searchFeature.name, () => {
     test("returns an error when search yields no result", async () => {
         const response = await searchFeature<TSearchableEntity>({
-            input: "qzxv qzxv qzxv",
+            input: NO_SEARCH_RESULT_INPUT,
             searchEngine,
             handlers: SEARCH_HANDLERS,
             em,
