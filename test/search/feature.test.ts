@@ -1,9 +1,9 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import { SEARCH_MAX_INPUT_LENGTH } from "../src/bot/constants.ts";
-import { ErrorFeatureResponse, SuccessFeatureResponse } from "../src/bot/featureResponse.ts";
-import SEARCH_HANDLERS from "../src/loaders/searchHandlers.ts";
-import getSearchItems from "../src/loaders/searchItems.ts";
+import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
+import { ErrorFeatureResponse, SuccessFeatureResponse } from "../../src/bot/featureResponse.ts";
+import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
+import getSearchItems from "../../src/loaders/searchItems.ts";
 import {
     ENTITY_KIND_FIELD_NAME,
     ID_FIELD_NAME,
@@ -13,11 +13,11 @@ import {
     MISSING_DATABASE_RESULT_TITLE,
     SEARCH_ALIASES_FOOTER_PREFIX,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-} from "../src/search/constants.ts";
-import { FuseSearchEngine } from "../src/search/engine.ts";
-import searchFeature from "../src/search/feature.ts";
-import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../src/search/types.ts";
-import { initTestOrm } from "./orm.ts";
+} from "../../src/search/constants.ts";
+import { FuseSearchEngine } from "../../src/search/engine.ts";
+import searchFeature from "../../src/search/feature.ts";
+import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
+import { initTestOrm } from "../orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
