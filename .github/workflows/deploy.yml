@@ -26,6 +26,8 @@ jobs:
           version: latest
           # ping doesn't seem to be working but does not impact connectivity
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.inputs.revision || github.sha }}
       - uses: docker/login-action@v4
         with:
           registry: ghcr.io
@@ -39,9 +41,14 @@ jobs:
         run: |
           docker compose pull
           docker compose up -d
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: yarn
+      - run: yarn
       - name: Deploy Slash Commands
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-        # TODO
         run: |
-          docker run -e DISCORD_TOKEN ghcr.io/dawnbrandbots/lumi-bot:${{ env.DOCKER_TAG }} true
+          yarn register
+          yarn register user-install
