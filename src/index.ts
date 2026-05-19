@@ -59,12 +59,24 @@ bot.on(Events.MessageCreate, async (interaction) => {
 bot.on(Events.InteractionCreate, async (interaction) => {
     log(interaction);
 
-    if (!interaction.isChatInputCommand()) {
+    if (interaction.isChatInputCommand()) {
+        const command = commands[interaction.commandName] || helpCommand;
+        await command.run(interaction);
+        return;
+    } else if (interaction.isAutocomplete()) {
+        const command = commands[interaction.commandName];
+        if (!command) {
+            return;
+        }
+        const focusedOption = interaction.options.getFocused();
+        const autcomplete = command.autocomplete?.[focusedOption];
+        if (!autcomplete) {
+            return;
+        }
+        const items = await autcomplete(focusedOption);
+        await interaction.respond(items);
         return;
     }
-
-    const command = commands[interaction.commandName] || helpCommand;
-    await command.run(interaction);
 });
 
 // Implicitly use DISCORD_TOKEN
