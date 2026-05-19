@@ -3,6 +3,7 @@ import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { Command } from "../bot/command.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
 import { searchCommandInfo } from "./commandInfo.ts";
+import { AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
 import searchFeature from "./feature.ts";
 import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "./types.ts";
 
@@ -27,7 +28,9 @@ export function getSearchCommand<Items extends ISearchableEntity>({
         },
         autocomplete: {
             [SEARCH_TERMS_OPTION_NAME]: (input) =>
-                searchEngine.search(input, 5).map((item) => ({ name: item.name, value: item.name })),
+                searchEngine
+                    .search(input, AUTOCOMPLETE_RESULTS_LIMIT)
+                    .map((item) => ({ name: item.name, value: item.name })),
         },
     });
 }

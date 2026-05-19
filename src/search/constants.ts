@@ -8,3 +8,4 @@ export const MISSING_DATABASE_RESULT_TITLE = "Result found in search engine but 
 export const ENTITY_KIND_FIELD_NAME = "Entity kind";
 export const ID_FIELD_NAME = "Id";
 export const SEARCH_ALIASES_FOOTER_PREFIX = "Search aliases:";
+export const AUTOCOMPLETE_RESULTS_LIMIT = 5;
