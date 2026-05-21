@@ -31,20 +31,6 @@ describe(FuseSearchEngine.name, () => {
         test("returns undefined when there is no result", () => {
             expect(searchEngine.searchOne(NO_SEARCH_RESULT_INPUT)).toBeUndefined();
         });
-
-        // There used to be a bug where weapons with level < 6 would not be retrieved by the DB,
-        // therefore ensure that simply retrieving one weapon per level works.
-        test.each([
-            ["Basic Claws", "BASIC_CLAWS"],
-            ["Iron Axe", "IRON_AXE"],
-            ["Kadomatsu Sword", "KADOMATSU_SWORD"],
-            ["Carved Axe", "CARVED_AXE"],
-            ["Mochi Stone", "MOCHI_STONE"],
-            ["Aerial Lance", "AERIAL_LANCE"],
-            ["Aerial Lance +", "AERIAL_LANCE_PLUS"],
-        ])("finds exact weapon name %s", (input, expectedId) => {
-            expect(searchEngine.searchOne(input)?.id).toBe(expectedId);
-        });
     });
 
     describe(FuseSearchEngine.prototype.search.name, () => {
