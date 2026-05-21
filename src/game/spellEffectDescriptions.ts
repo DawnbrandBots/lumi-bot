@@ -97,7 +97,7 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
         return `Grants status to ${describeTarget(effect, spell)}: ${describeSpellEffect(effect.effect, spell)}`;
     },
     REPEAT(effect, spell) {
-        return `${describeSpellEffect(effect.effect, spell)} every ${effect.interval} seconds, ${effect.times} times`;
+        return `${describeSpellEffect(effect.effect, spell)} every ${effect.interval} seconds (${effect.times} times)`;
     },
     WARP() {
         return "Moves user to target tile";
