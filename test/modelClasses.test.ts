@@ -134,40 +134,52 @@ describe(Spell.name, () => {
                 name: "Tetrafire",
                 explanation: "plain damage",
                 expected: "1. Deals 50 Red damage to targets.",
+                inlineExpected: "deals 50 Red damage to targets.",
             },
             {
                 name: "Dark Tetrafire",
                 explanation: "countdown before damage",
                 expected: "After 2 seconds:\n1. Deals 75 Red damage to targets.",
+                inlineExpected: "after 2 seconds, deals 75 Red damage to targets.",
             },
             {
                 name: "Self Mend",
                 explanation: "single-tile self heal",
                 expected: "1. Restores 80 HP to user.",
+                inlineExpected: "restores 80 HP to user.",
             },
             {
                 name: "Self Cross Shield",
                 explanation: "aoe self-targeted status",
                 expected:
-                    "Grants status to targets in shape centered around user:\n1. Decreases Received Weapon Damage by 30% (3 turns).",
+                    "1. Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns).",
+                inlineExpected:
+                    "grants status to targets in shape centered around user: decreases Received Weapon Damage by 30% (3 turns).",
             },
             {
                 name: "Trinity Shield Edge EX",
                 explanation: "shared status intro",
                 expected: [
-                    "Grants status to targets:",
+                    "Grants statuses to targets:",
                     "1. Decreases Received Weapon Damage by 20% (permanent).",
                     "1. Increases Atk by 30% (permanent).",
                     "1. Decreases Color Affinity by 20% (permanent).",
                 ].join("\n"),
+                inlineExpected: [
+                    "grants statuses to targets: decreases Received Weapon Damage by 20% (permanent)",
+                    "increases Atk by 30% (permanent)",
+                    "decreases Color Affinity by 20% (permanent).",
+                ].join(", "),
             },
             {
                 name: "Dark Crossfire + Tome",
                 explanation: "countdown with shared status intro",
                 expected: [
-                    "After 2 seconds, grants status to targets:",
-                    "1. Deals 40 Red damage every 6 seconds, 2 times.",
+                    "After 2 seconds:",
+                    "1. Grants status to targets: Deals 40 Red damage every 6 seconds (2 times).",
                 ].join("\n"),
+                inlineExpected:
+                    "after 2 seconds, grants status to targets: deals 40 Red damage every 6 seconds (2 times).",
             },
             {
                 name: "Thunder Self Edge EX",
@@ -176,12 +188,20 @@ describe(Spell.name, () => {
                     "1. Deals 60 Blue damage to targets.",
                     "1. Grants status to user: Increases Atk by 30% (permanent).",
                 ].join("\n"),
+                inlineExpected:
+                    "deals 60 Blue damage to targets, grants status to user: increases Atk by 30% (permanent).",
             },
-        ].forEach(({ name, explanation, expected }) => {
+        ].forEach(({ name, explanation, expected, inlineExpected }) => {
             test(`${name} (${explanation})`, async () => {
                 const spell = await findSpell(name);
 
                 expect(describeSpellEffects(spell)).toBe(expected);
+            });
+
+            test(`${name} (${explanation}, inline)`, async () => {
+                const spell = await findSpell(name);
+
+                expect(describeSpellEffects(spell, true)).toBe(inlineExpected);
             });
         });
     });
