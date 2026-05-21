@@ -10,8 +10,16 @@ import {
 } from "./types.ts";
 
 type TSpellEffectDescriptionFunctions = {
-    [K in TSpellEffect["kind"]]: (effect: Extract<TSpellEffect, { kind: K }>, spell: ISpell) => string;
+    [K in TSpellEffect["kind"]]: (
+        effect: Extract<TSpellEffect, { kind: K }>,
+        spell: ISpell,
+        inline?: boolean,
+    ) => string;
 };
+
+function lowercaseFirstLetter(description: string): string {
+    return description.charAt(0).toLowerCase() + description.slice(1);
+}
 
 function formatSpellEffectValue(amount: ISpellEffectValue, stat?: IStat): string {
     if (amount.unit.kind === ESpellEffectValueUnitKind.FIXED) {
@@ -93,11 +101,12 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
 
         return `${effect.statChange.verb} ${effect.stat.name} by ${valueStr}${effectivenessStr} (${effect.duration == null ? "permanent" : effect.duration + " turns"})`;
     },
-    STATUS(effect, spell) {
-        return `Grants status to ${describeTarget(effect, spell)}: ${describeSpellEffect(effect.effect, spell)}`;
+    STATUS(effect, spell, inline) {
+        const description = describeSpellEffect(effect.effect, spell, inline);
+        return `Grants status to ${describeTarget(effect, spell)}: ${description}`;
     },
-    REPEAT(effect, spell) {
-        return `${describeSpellEffect(effect.effect, spell)} every ${effect.interval} seconds (${effect.times} times)`;
+    REPEAT(effect, spell, inline) {
+        return `${describeSpellEffect(effect.effect, spell, inline)} every ${effect.interval} seconds (${effect.times} times)`;
     },
     WARP() {
         return "Moves user to target tile";
@@ -105,8 +114,8 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
     ICE_BLOCK(effect) {
         return `Summons ice blocks with ${effect.hp} HP`;
     },
-    TILE(effect, spell) {
-        return `Grants effect to target tiles: ${describeSpellEffect(effect.repeat, spell)}`;
+    TILE(effect, spell, inline) {
+        return `Grants effect to target tiles: "${describeSpellEffect(effect.repeat, spell, inline)}"`;
     },
     SUMMON(effect) {
         const minion = `${effect.weaponType.name} ${effect.movementType.name} minion`;
@@ -118,18 +127,34 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
 function describeSpellEffect<K extends TSpellEffect["kind"]>(
     effect: Extract<TSpellEffect, { kind: K }>,
     spell: ISpell,
+    inline = false,
 ): string {
-    return SPELL_EFFECT_DESCRIPTION_FORMATTERS[effect.kind](effect, spell);
+    const description = SPELL_EFFECT_DESCRIPTION_FORMATTERS[effect.kind](effect, spell, inline);
+    return inline ? lowercaseFirstLetter(description) : description;
 }
+
+const REGULAR_DESCRIPTION_SEPARATOR = "\n";
+const INLINE_DESCRIPTION_SEPARATOR = ", ";
 
 /**
  * @returns A string describing the spell's effects. Meant to be displayed in a response on Discord.
  */
-export function describeSpellEffects(spell: ISpell): string {
+export function describeSpellEffects(
+    spell: ISpell,
+    /**
+     * If false, returns the description on multiple lines, formatted in Discord Markdown.
+     *
+     * If true, returns the description in a single line, similar to the in-game format.
+     *
+     * @default false
+     */
+    inline = false,
+): string {
     let res = "";
 
     if (spell.countdown) {
-        res += `After ${spell.countdown} seconds`;
+        res += inline ? "after " : "After ";
+        res += `${spell.countdown} seconds`;
     }
     const nonEmptyRes = !!res.length;
 
@@ -147,22 +172,23 @@ export function describeSpellEffects(spell: ISpell): string {
         // TODO: target guaranteed to exist for IStatusEffect, but type should be updated to reflect that
         const target = describeTarget(firstSpellEffect, spell)!;
         if (nonEmptyRes) {
-            res += ", ";
+            res += INLINE_DESCRIPTION_SEPARATOR;
         }
-        res += [
-            formatStatusEffectIntro(target, nonEmptyRes),
-            ...spell.effects
-                .map((effect) => describeSpellEffect(effect.effect, spell))
-                .map((description) => `1. ${description}.`),
-        ].join("\n");
+        const statusEffectIntro = formatStatusEffectIntro(target, nonEmptyRes || inline);
+        const descriptions = spell.effects.map((effect) => describeSpellEffect(effect.effect, spell, inline));
+        res += inline
+            ? `${statusEffectIntro} ${descriptions.join(INLINE_DESCRIPTION_SEPARATOR)}.`
+            : [statusEffectIntro, ...descriptions.map((description) => `1. ${description}.`)].join(
+                REGULAR_DESCRIPTION_SEPARATOR,
+            );
     } else {
         if (nonEmptyRes) {
-            res += ":\n";
+            res += inline ? INLINE_DESCRIPTION_SEPARATOR : ":" + REGULAR_DESCRIPTION_SEPARATOR;
         }
-        res += spell.effects
-            .map((effect) => describeSpellEffect(effect, spell))
-            .map((description) => `1. ${description}.`)
-            .join("\n");
+        const descriptions = spell.effects.map((effect) => describeSpellEffect(effect, spell, inline));
+        res += inline
+            ? `${descriptions.join(INLINE_DESCRIPTION_SEPARATOR)}.`
+            : descriptions.map((description) => `1. ${description}.`).join(REGULAR_DESCRIPTION_SEPARATOR);
     }
 
     return res;
