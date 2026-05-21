@@ -16,16 +16,8 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
         );
         const baseStatsTable = [
             ["Level", 1, ...relevantLevels],
-            [
-                "HP",
-                disciple.getHp({ level: 1 }),
-                ...relevantLevels.map((i) => disciple.getHp({ level: i + DISCIPLE_MINIMUM_RELEVANT_LEVEL })),
-            ],
-            [
-                "Atk",
-                disciple.getAtk({ level: 1 }),
-                ...relevantLevels.map((i) => disciple.getAtk({ level: i + DISCIPLE_MINIMUM_RELEVANT_LEVEL })),
-            ],
+            ["HP", disciple.getHp({ level: 1 }), ...relevantLevels.map((level) => disciple.getHp({ level }))],
+            ["Atk", disciple.getAtk({ level: 1 }), ...relevantLevels.map((level) => disciple.getAtk({ level }))],
         ];
         const baseStatsTableAscii = toAsciiTable({ data: baseStatsTable, cellPadding: 3 });
         const baseStatsStr = `\`\`\`\n${baseStatsTableAscii}\n\`\`\``;
