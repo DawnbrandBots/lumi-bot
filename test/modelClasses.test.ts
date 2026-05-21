@@ -107,7 +107,7 @@ describe(Spell.name, () => {
         describe(ESpellDraggingMode.ANY, () => {
             test.each([
                 // Some spells with ANY dragging mode, one for each effect type.
-                "Tetrafire",
+                "Elfire",
                 "Mend",
                 "Shield Strike",
                 "Heal Warp EX",
@@ -131,16 +131,16 @@ describe(Spell.name, () => {
     describe(describeSpellEffects.name, () => {
         [
             {
-                name: "Tetrafire",
+                name: "Elfire",
                 explanation: "plain damage",
-                expected: "1. Deals 50 Red damage to targets.",
-                inlineExpected: "deals 50 Red damage to targets.",
+                expected: "1. Deals 60 Red damage to targets.",
+                inlineExpected: "deals 60 Red damage to targets (single tile).",
             },
             {
                 name: "Dark Tetrafire",
                 explanation: "countdown before damage",
                 expected: "After 2 seconds:\n1. Deals 75 Red damage to targets.",
-                inlineExpected: "after 2 seconds, deals 75 Red damage to targets.",
+                inlineExpected: "after 2 seconds, deals 75 Red damage to targets (2x2 square).",
             },
             {
                 name: "Self Mend",
@@ -154,7 +154,7 @@ describe(Spell.name, () => {
                 expected:
                     "1. Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns).",
                 inlineExpected:
-                    "grants status to targets in shape centered around user: decreases Received Weapon Damage by 30% (3 turns).",
+                    "grants status to targets in 3x3 cross centered around user: decreases Received Weapon Damage by 30% (3 turns).",
             },
             {
                 name: "Trinity Shield Edge EX",
@@ -166,7 +166,7 @@ describe(Spell.name, () => {
                     "1. Decreases Color Affinity by 20% (permanent).",
                 ].join("\n"),
                 inlineExpected: [
-                    "grants statuses to targets: decreases Received Weapon Damage by 20% (permanent)",
+                    "grants statuses to targets (3x3 cross): decreases Received Weapon Damage by 20% (permanent)",
                     "increases Atk by 30% (permanent)",
                     "decreases Color Affinity by 20% (permanent).",
                 ].join(", "),
@@ -179,7 +179,7 @@ describe(Spell.name, () => {
                     "1. Grants status to targets: Deals 40 Red damage every 6 seconds (2 times).",
                 ].join("\n"),
                 inlineExpected:
-                    "after 2 seconds, grants status to targets: deals 40 Red damage every 6 seconds (2 times).",
+                    "after 2 seconds, grants status to targets (3x3 cross): deals 40 Red damage every 6 seconds (2 times).",
             },
             {
                 name: "Thunder Self Edge EX",
@@ -189,7 +189,7 @@ describe(Spell.name, () => {
                     "1. Grants status to user: Increases Atk by 30% (permanent).",
                 ].join("\n"),
                 inlineExpected:
-                    "deals 60 Blue damage to targets, grants status to user: increases Atk by 30% (permanent).",
+                    "deals 60 Blue damage to targets (single tile), grants status to user: increases Atk by 30% (permanent).",
             },
         ].forEach(({ name, explanation, expected, inlineExpected }) => {
             test(`${name} (${explanation})`, async () => {

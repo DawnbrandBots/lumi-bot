@@ -10,11 +10,7 @@ import {
 } from "./types.ts";
 
 type TSpellEffectDescriptionFunctions = {
-    [K in TSpellEffect["kind"]]: (
-        effect: Extract<TSpellEffect, { kind: K }>,
-        spell: ISpell,
-        inline?: boolean,
-    ) => string;
+    [K in TSpellEffect["kind"]]: (effect: Extract<TSpellEffect, { kind: K }>, spell: ISpell, inline: boolean) => string;
 };
 
 function lowercaseFirstLetter(description: string): string {
@@ -46,13 +42,17 @@ function formatStatusEffectIntro(targetStr: string, lowercase: boolean): string 
     return `${lowercase ? "g" : "G"}rants statuses to ${targetStr}:`;
 }
 
-function describeTarget(effect: ISpellEffect, spell: ISpell): string | null {
+function describeTarget(effect: ISpellEffect, spell: ISpell, inline = false): string | null {
     if (!effect.target) {
         return null;
     }
 
     if (effect.target.kind === ESpellEffectTarget.SELF && spell.shape.isAoe) {
-        return "targets in shape centered around user";
+        return `targets in ${inline ? spell.shape.name : "shape"} centered around user`;
+    }
+
+    if (effect.target.kind === ESpellEffectTarget.ANY && inline) {
+        return `${effect.target.asString} (${spell.shape.name})`;
     }
 
     return effect.target.asString;
@@ -65,9 +65,10 @@ function describeValueEffect(
         verb,
         object,
         effectivenessPreposition,
-    }: { verb: string; object: string; effectivenessPreposition: "against" | "for" },
+        inline,
+    }: { verb: string; object: string; effectivenessPreposition: "against" | "for"; inline: boolean },
 ): string {
-    const target = describeTarget(effect, spell);
+    const target = describeTarget(effect, spell, inline);
     const targetStr = target ? ` to ${target}` : "";
     const amountStr = formatSpellEffectValue(effect.amount);
     const effectivenessStr = formatEffectiveness(effect.amount, effectivenessPreposition);
@@ -76,24 +77,26 @@ function describeValueEffect(
 }
 
 const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
-    DAMAGE(effect, spell) {
+    DAMAGE(effect, spell, inline) {
         return describeValueEffect(effect, spell, {
             verb: "Deals",
             object: `${effect.color.name} damage`,
             effectivenessPreposition: "against",
+            inline: inline,
         });
     },
-    HEAL(effect, spell) {
+    HEAL(effect, spell, inline) {
         return describeValueEffect(effect, spell, {
             verb: "Restores",
             object: "HP",
             effectivenessPreposition: "for",
+            inline: inline,
         });
     },
-    MOVEMENT(effect, spell) {
+    MOVEMENT(effect, spell, inline) {
         const plural = effect.count > 1 ? "s" : "";
 
-        return `Moves ${describeTarget(effect, spell)} ${effect.count} tile${plural} ${effect.direction.noun}`;
+        return `Moves ${describeTarget(effect, spell, inline)} ${effect.count} tile${plural} ${effect.direction.noun}`;
     },
     STAT(effect) {
         const valueStr = formatSpellEffectValue(effect.amount, effect.stat);
@@ -103,7 +106,7 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
     },
     STATUS(effect, spell, inline) {
         const description = describeSpellEffect(effect.effect, spell, inline);
-        return `Grants status to ${describeTarget(effect, spell)}: ${description}`;
+        return `Grants status to ${describeTarget(effect, spell, inline)}: ${description}`;
     },
     REPEAT(effect, spell, inline) {
         return `${describeSpellEffect(effect.effect, spell, inline)} every ${effect.interval} seconds (${effect.times} times)`;
@@ -170,7 +173,7 @@ export function describeSpellEffects(
         spell.effects.every((effect) => effect.target.kind === firstSpellEffect.target?.kind)
     ) {
         // TODO: target guaranteed to exist for IStatusEffect, but type should be updated to reflect that
-        const target = describeTarget(firstSpellEffect, spell)!;
+        const target = describeTarget(firstSpellEffect, spell, inline)!;
         if (nonEmptyRes) {
             res += INLINE_DESCRIPTION_SEPARATOR;
         }
