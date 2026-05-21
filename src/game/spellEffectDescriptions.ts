@@ -35,7 +35,7 @@ function formatEffectiveness(amount: ISpellEffectValue, preposition: "against" |
 }
 
 function formatStatusEffectIntro(targetStr: string, lowercase: boolean): string {
-    return `${lowercase ? "g" : "G"}rants status to ${targetStr}:`;
+    return `${lowercase ? "g" : "G"}rants statuses to ${targetStr}:`;
 }
 
 function describeTarget(effect: ISpellEffect, spell: ISpell): string | null {
@@ -133,12 +133,13 @@ export function describeSpellEffects(spell: ISpell): string {
     }
     const nonEmptyRes = !!res.length;
 
-    const firstSpellEffect = spell.effects[0];
+    const firstSpellEffect = spell.effects[0]; // to please TypeScript
     // The description intro for status effects ("Grants status to <TARGETS>:") can be long.
     // This if branch moves the intro of status effects at the beginning of the resulting string
     // if all effects are of kind "STATUS" and have the same target kind, as to not repeat the
     // intro on each line.
     if (
+        spell.effects.length > 1 &&
         spell.effects.every((effect) => effect.kind === "STATUS") &&
         firstSpellEffect &&
         spell.effects.every((effect) => effect.target.kind === firstSpellEffect.target?.kind)
