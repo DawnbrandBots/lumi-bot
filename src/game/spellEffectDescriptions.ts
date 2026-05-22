@@ -153,7 +153,7 @@ function formatInlineSpellProperties(spell: ISpell): string {
     }
 
     if (spell.onlyFor) {
-        properties.push(`Only usable by ${spell.onlyFor.name} units`);
+        properties.push(`Usable only by ${spell.onlyFor.name} units`);
     }
 
     return properties.length ? ` (${properties.join(", ")})` : "";
