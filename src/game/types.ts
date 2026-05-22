@@ -462,7 +462,7 @@ export interface IWarpEffect extends ISpellEffect {
  */
 export interface IIceBlockEffect extends ISpellEffect {
     readonly kind: "ICE_BLOCK";
-    readonly hp: number;
+    readonly hp: { base: number; scale?: number | null };
 }
 
 /**
