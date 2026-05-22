@@ -9,16 +9,21 @@ const weaponSkillSearchHandler: ISearchHandler<WeaponSkill> = {
         const weapons = Array.from(weaponSkill.uniqueSkillWeapons)
             .map((weapon) => weapon.name)
             .join(", ");
+
         const fields: APIEmbed["fields"] = [
             {
                 name: "Effect",
                 value: weaponSkill.description,
                 inline: true,
             },
-            {
-                name: "Weapons",
-                value: weapons,
-            },
+            ...(weapons.length > 0
+                ? [
+                    {
+                        name: "Weapons",
+                        value: weapons,
+                    },
+                ]
+                : []),
         ];
         return {
             title: weaponSkill.name,
