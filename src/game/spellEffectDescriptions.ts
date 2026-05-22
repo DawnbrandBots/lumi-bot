@@ -1,3 +1,4 @@
+import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "./constants.ts";
 import {
     ESpellEffectTarget,
     ESpellEffectValueUnitKind,
@@ -139,6 +140,25 @@ function describeSpellEffect<K extends TSpellEffect["kind"]>(
 const REGULAR_DESCRIPTION_SEPARATOR = "\n";
 const INLINE_DESCRIPTION_SEPARATOR = ", ";
 
+function formatInlineSpellProperties(spell: ISpell): string {
+    const properties: string[] = [];
+
+    // TODO: ?? because uses can also be undefined. This field should be number only, with Infinity as default value.
+    if ((spell.uses ?? SPELL_DEFAULT_USE_COUNT) !== SPELL_DEFAULT_USE_COUNT) {
+        properties.push(`Uses: ${spell.uses}`);
+    }
+
+    if (spell.cooldown !== SPELL_DEFAULT_COOLDOWN) {
+        properties.push(`Cooldown: ${spell.cooldown}`);
+    }
+
+    if (spell.onlyFor) {
+        properties.push(`Only usable by ${spell.onlyFor.name} units`);
+    }
+
+    return properties.length ? ` (${properties.join(", ")})` : "";
+}
+
 /**
  * @returns A string describing the spell's effects. Meant to be displayed in a response on Discord.
  */
@@ -194,5 +214,5 @@ export function describeSpellEffects(
             : descriptions.map((description) => `1. ${description}.`).join(REGULAR_DESCRIPTION_SEPARATOR);
     }
 
-    return res;
+    return inline ? res + formatInlineSpellProperties(spell) : res;
 }

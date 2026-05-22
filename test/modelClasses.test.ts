@@ -154,7 +154,7 @@ describe(Spell.name, () => {
                 expected:
                     "1. Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns).",
                 inlineExpected:
-                    "grants status to targets in 3x3 cross centered around user: decreases Received Weapon Damage by 30% (3 turns).",
+                    "grants status to targets in 3x3 cross centered around user: decreases Received Weapon Damage by 30% (3 turns). (Cooldown: 1)",
             },
             {
                 name: "Trinity Shield Edge EX",
@@ -168,7 +168,7 @@ describe(Spell.name, () => {
                 inlineExpected: [
                     "grants statuses to targets (3x3 cross): decreases Received Weapon Damage by 20% (permanent)",
                     "increases Atk by 30% (permanent)",
-                    "decreases Color Affinity by 20% (permanent).",
+                    "decreases Color Affinity by 20% (permanent). (Uses: 1, Cooldown: 1)",
                 ].join(", "),
             },
             {
@@ -179,7 +179,7 @@ describe(Spell.name, () => {
                     "1. Grants status to targets: Deals 40 Red damage every 6 seconds (2 times).",
                 ].join("\n"),
                 inlineExpected:
-                    "after 2 seconds, grants status to targets (3x3 cross): deals 40 Red damage every 6 seconds (2 times).",
+                    "after 2 seconds, grants status to targets (3x3 cross): deals 40 Red damage every 6 seconds (2 times). (Cooldown: 4, Only usable by Tome units)",
             },
             {
                 name: "Thunder Self Edge EX",
