@@ -119,7 +119,7 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
         return `Summons ice blocks with ${effect.hp.base} HP`;
     },
     TILE(effect, spell, inline) {
-        return `Grants effect to target tiles: "${describeSpellEffect(effect.repeat, spell, inline)}"`;
+        return `Grants effect to target tiles: ${describeSpellEffect(effect.repeat, spell, inline)}`;
     },
     SUMMON(effect) {
         const minion = `${effect.weaponType.name} ${effect.movementType.name} minion`;
