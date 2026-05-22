@@ -386,6 +386,14 @@ export interface ISpellEffectTarget {
 }
 
 /**
+ * For summon effects. Eg. HP and Atk of the summoned unit.
+ */
+// TODO: scale property added in later PR
+export interface ISummonEffectStatValue {
+    readonly base: number;
+}
+
+/**
  * Something that occurs on tiles a spell is dragged on, and affects units on these tiles.
  */
 export interface ISpellEffect {
@@ -462,7 +470,7 @@ export interface IWarpEffect extends ISpellEffect {
  */
 export interface IIceBlockEffect extends ISpellEffect {
     readonly kind: "ICE_BLOCK";
-    readonly hp: { base: number; scale?: number | null };
+    readonly hp: ISummonEffectStatValue;
 }
 
 /**
@@ -481,8 +489,8 @@ export interface ISummonEffect extends ISpellEffect {
     readonly movementType: IMovementType;
     readonly weaponType: IWeaponType;
     // TODO: a proper type will be needed to compute value at various levels
-    readonly hp: { base: number; scale?: number | null };
-    readonly atk: { base: number; scale?: number | null };
+    readonly hp: ISummonEffectStatValue;
+    readonly atk: ISummonEffectStatValue;
 }
 
 /**
