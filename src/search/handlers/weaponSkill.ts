@@ -19,7 +19,7 @@ const weaponSkillSearchHandler: ISearchHandler<WeaponSkill> = {
             ...(weapons.length > 0
                 ? [
                     {
-                        name: "Weapons",
+                        name: "Unique skill for weapon(s)",
                         value: weapons,
                     },
                 ]
