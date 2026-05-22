@@ -457,7 +457,7 @@
     "hp": 6,
     "atk": 30,
     "freeSkillSlots": 3,
-    "uniqueSkill": "LUNAR_STRIKE"
+    "uniqueSkill": "BATTLE_FERVOR"
   },
   {
     "id": "IVORY_TOME",
