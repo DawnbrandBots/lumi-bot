@@ -46,6 +46,10 @@ export interface IWeaponTypeWeaponSkill {
     readonly kind: "weaponTypeWeaponSkill";
     readonly weaponType: IWeaponType;
     readonly weaponSkill: IWeaponSkill;
+    /**
+     * Number in weapon type skill name (eg. 1 for "Armor Bane 1").
+     */
+    readonly rank: 1 | 2 | 3;
 }
 
 /**
@@ -73,6 +77,7 @@ export interface IWeaponSkill {
      * Weapons which possess this skill as a unique skill.
      */
     readonly uniqueSkillWeapons: Iterable<IWeapon>;
+    readonly weaponTypeWeaponSkills: Iterable<IWeaponTypeWeaponSkill>;
     readonly description: string;
 }
 
