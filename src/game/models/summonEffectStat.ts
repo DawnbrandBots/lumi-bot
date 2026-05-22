@@ -5,7 +5,6 @@ export const SummonEffectStatValueSchema = defineEntity({
     embeddable: true,
     properties: {
         base: p.integer(),
-        scale: p.integer().nullable(),
     },
 });
 export class SummonEffectStatValue extends SummonEffectStatValueSchema.class { }
