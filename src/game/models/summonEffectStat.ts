@@ -7,5 +7,5 @@ export const SummonEffectStatValueSchema = defineEntity({
         base: p.integer(),
     },
 });
-export class SummonEffectStatValue extends SummonEffectStatValueSchema.class { }
+export class SummonEffectStatValue extends SummonEffectStatValueSchema.class {}
 SummonEffectStatValueSchema.setClass(SummonEffectStatValue);
