@@ -72,7 +72,7 @@ export interface IWeaponSkill {
     /**
      * Weapons which possess this skill as a unique skill.
      */
-    readonly weapons: Iterable<IWeapon>;
+    readonly uniqueSkillWeapons: Iterable<IWeapon>;
     readonly description: string;
 }
 

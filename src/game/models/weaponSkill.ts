@@ -9,7 +9,7 @@ export const WeaponSkillSchema = defineEntity({
         id: p.string().primary(),
         name: p.string(),
         effect: () => p.manyToOne(WeaponSkillEffect),
-        weapons: () => p.oneToMany(Weapon).mappedBy("uniqueSkill"),
+        uniqueSkillWeapons: () => p.oneToMany(Weapon).mappedBy("uniqueSkill"),
     },
 });
 

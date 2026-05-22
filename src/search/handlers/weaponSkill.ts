@@ -6,7 +6,7 @@ import type { ISearchHandler } from "../types.ts";
 const weaponSkillSearchHandler: ISearchHandler<WeaponSkill> = {
     class: WeaponSkill,
     response: (weaponSkill: IWeaponSkill) => {
-        const weapons = Array.from(weaponSkill.weapons)
+        const weapons = Array.from(weaponSkill.uniqueSkillWeapons)
             .map((weapon) => weapon.name)
             .join(", ");
         const fields: APIEmbed["fields"] = [
