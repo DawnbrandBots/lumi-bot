@@ -488,7 +488,6 @@ export interface ISummonEffect extends ISpellEffect {
     readonly kind: "SUMMON";
     readonly movementType: IMovementType;
     readonly weaponType: IWeaponType;
-    // TODO: a proper type will be needed to compute value at various levels
     readonly hp: ISummonEffectStatValue;
     readonly atk: ISummonEffectStatValue;
 }
