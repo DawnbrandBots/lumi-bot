@@ -5,6 +5,7 @@ import type {
     CacheType,
     ChatInputCommandInteraction,
     Colors,
+    InteractionReplyOptions,
     InteractionResponse,
     SharedSlashCommand,
     SlashCommandBuilder,
@@ -54,11 +55,13 @@ export interface ICommand {
 export type TFeatureResponseContent = BaseMessageOptions["content"];
 export type TFeatureResponseColor = (typeof Colors)[keyof typeof Colors];
 export type TFeatureEmbed = Omit<APIEmbed, "color">;
+export type TFeatureResponseFlags = InteractionReplyOptions["flags"];
 
 export type IFeatureResponse = BaseMessageOptions;
-export type IFeatureReponseCtorArg = {
-    embed: TFeatureEmbed;
-    color: TFeatureResponseColor;
-    content?: TFeatureResponseContent;
+export type IFeatureResponseCtorArg = {
+    readonly embed: TFeatureEmbed;
+    readonly color: TFeatureResponseColor;
+    readonly content?: TFeatureResponseContent;
+    readonly flags?: TFeatureResponseFlags;
 };
-export type ISubFeatureReponseCtorArg = Omit<IFeatureReponseCtorArg, "color">;
+export type ISubFeatureResponseCtorArg = Omit<IFeatureResponseCtorArg, "color">;

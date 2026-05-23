@@ -3,7 +3,7 @@ import type { ICommand } from "./types.ts";
 export class Command implements ICommand {
     public readonly info: ICommand["info"];
     public readonly run: ICommand["run"];
-    public readonly autocomplete: ICommand["autocomplete"];
+    public readonly autocomplete?: ICommand["autocomplete"];
 
     public constructor(arg: ICommand) {
         this.info = arg.info;

@@ -1,0 +1,275 @@
+import { type APIEmbed, userMention } from "discord.js";
+import { describe, expect, test } from "vitest";
+import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } from "../../src/bot/featureResponse.ts";
+import type { IFeatureResponse } from "../../src/bot/types.ts";
+import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
+import { LfgFeature } from "../../src/lfg/feature.ts";
+import type { LfgUser } from "../../src/lfg/types.ts";
+
+const GUILD_ID = "guild-1";
+const OTHER_GUILD_ID = "guild-2";
+const OWNER: LfgUser = { id: "owner" };
+const PLAYER_1: LfgUser = { id: "player-1" };
+const PLAYER_2: LfgUser = { id: "player-2" };
+const PLAYER_3: LfgUser = { id: "player-3" };
+
+function description(response: IFeatureResponse): string {
+    return (response.embeds?.[0] as APIEmbed | undefined)?.description ?? "";
+}
+
+describe(LfgFeature.name, () => {
+    describe(LfgFeature.prototype.create.name, () => {
+        test("creates a room with the creator as owner", () => {
+            const feature = new LfgFeature();
+
+            const response = feature.create(GUILD_ID, OWNER, "AbC");
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(feature.getRooms(GUILD_ID)).toEqual([{ code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] }]);
+            expect(description(response)).toContain(`${userMention(OWNER.id)} (owner)`);
+        });
+
+        test("rejects duplicate room codes in the same guild", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.create(GUILD_ID, PLAYER_1, "room");
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Room already exists" });
+        });
+
+        test("allows the same exact room code in another guild", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.create(OTHER_GUILD_ID, OWNER, "room");
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(feature.getRooms(GUILD_ID)).toHaveLength(1);
+            expect(feature.getRooms(OTHER_GUILD_ID)).toHaveLength(1);
+        });
+
+        test("rejects invalid room code length", () => {
+            const feature = new LfgFeature();
+
+            const response = feature.create(GUILD_ID, OWNER, "x".repeat(LFG_MAX_ROOM_CODE_LENGTH + 1));
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Invalid room code" });
+        });
+
+        test("rejects users already in a room", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room-1");
+
+            const response = feature.create(GUILD_ID, OWNER, "room-2");
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Already in a room" });
+        });
+    });
+
+    describe(LfgFeature.prototype.join.name, () => {
+        test("joins an existing room", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.join(GUILD_ID, PLAYER_1, "room");
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(feature.getRooms(GUILD_ID)[0]?.playerIds).toEqual([OWNER.id, PLAYER_1.id]);
+        });
+
+        test("rejects missing rooms", () => {
+            const feature = new LfgFeature();
+
+            const response = feature.join(GUILD_ID, PLAYER_1, "missing");
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Room not found" });
+        });
+
+        test("rejects full rooms", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+            feature.join(GUILD_ID, PLAYER_1, "room");
+            feature.join(GUILD_ID, PLAYER_2, "room");
+
+            const response = feature.join(GUILD_ID, PLAYER_3, "room");
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Room is full" });
+        });
+
+        test("moves a player out of their previous room", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "one");
+            feature.create(GUILD_ID, PLAYER_1, "two");
+
+            const response = feature.join(GUILD_ID, PLAYER_1, "one");
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(description(response)).toContain("Left room `two`.");
+            expect(feature.getRooms(GUILD_ID)).toEqual([
+                { code: "one", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
+            ]);
+        });
+
+        test("returns neutral response when already in the target room", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.join(GUILD_ID, OWNER, "room");
+
+            expect(response).toBeInstanceOf(NeutralFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Already in room" });
+        });
+    });
+
+    describe(LfgFeature.prototype.transfer.name, () => {
+        test("transfers ownership to another room player", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+            feature.join(GUILD_ID, PLAYER_1, "room");
+
+            const response = feature.transfer(GUILD_ID, OWNER, PLAYER_1);
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(feature.getRooms(GUILD_ID)[0]?.ownerId).toBe(PLAYER_1.id);
+        });
+
+        test("rejects targets outside the room", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.transfer(GUILD_ID, OWNER, PLAYER_1);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Player not in room" });
+        });
+
+        test("rejects self-transfer", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.transfer(GUILD_ID, OWNER, OWNER);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Cannot transfer to yourself" });
+        });
+
+        test("rejects non-owners", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+            feature.join(GUILD_ID, PLAYER_1, "room");
+
+            const response = feature.transfer(GUILD_ID, PLAYER_1, OWNER);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Not room owner" });
+        });
+    });
+
+    describe(LfgFeature.prototype.kick.name, () => {
+        test("kicks another room player", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+            feature.join(GUILD_ID, PLAYER_1, "room");
+
+            const response = feature.kick(GUILD_ID, OWNER, PLAYER_1);
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(feature.getRooms(GUILD_ID)[0]?.playerIds).toEqual([OWNER.id]);
+        });
+
+        test("rejects targets outside the room", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.kick(GUILD_ID, OWNER, PLAYER_1);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Player not in room" });
+        });
+
+        test("rejects self-kick", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.kick(GUILD_ID, OWNER, OWNER);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Cannot kick yourself" });
+        });
+
+        test("rejects non-owners", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+            feature.join(GUILD_ID, PLAYER_1, "room");
+
+            const response = feature.kick(GUILD_ID, PLAYER_1, OWNER);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Not room owner" });
+        });
+    });
+
+    describe(LfgFeature.prototype.leave.name, () => {
+        test("deletes the room when the last player leaves", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+
+            const response = feature.leave(GUILD_ID, OWNER);
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(feature.getRooms(GUILD_ID)).toEqual([]);
+        });
+
+        test("transfers ownership to the earliest remaining player", () => {
+            const feature = new LfgFeature();
+            feature.create(GUILD_ID, OWNER, "room");
+            feature.join(GUILD_ID, PLAYER_1, "room");
+            feature.join(GUILD_ID, PLAYER_2, "room");
+
+            const response = feature.leave(GUILD_ID, OWNER);
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(feature.getRooms(GUILD_ID)[0]).toEqual({
+                code: "room",
+                ownerId: PLAYER_1.id,
+                playerIds: [PLAYER_1.id, PLAYER_2.id],
+            });
+        });
+
+        test("rejects users who are not in a room", () => {
+            const feature = new LfgFeature();
+
+            const response = feature.leave(GUILD_ID, OWNER);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Not in a room" });
+        });
+    });
+
+    test("list only displays rooms from the requested guild", () => {
+        const feature = new LfgFeature();
+        feature.create(GUILD_ID, OWNER, "one");
+        feature.create(OTHER_GUILD_ID, PLAYER_1, "two");
+
+        const response = feature.list(GUILD_ID);
+
+        expect(description(response)).toContain("`one`");
+        expect(description(response)).not.toContain("`two`");
+    });
+
+    test("help returns the LFG command summary", () => {
+        const feature = new LfgFeature();
+
+        const response = feature.help();
+
+        expect(description(response)).toContain("**Commands:**");
+        expect(description(response)).toContain("/lfg create");
+        expect(description(response)).toContain("/lfg help");
+    });
+});

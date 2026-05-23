@@ -3,6 +3,8 @@ import { ActivityType, Events, userMention } from "discord.js";
 import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
+import { LfgCommand } from "./lfg/command.ts";
+import { LfgFeature } from "./lfg/feature.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
@@ -21,9 +23,11 @@ const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
+const lfgFeature = new LfgFeature();
 const commands: Record<string, ICommand> = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
     help: helpCommand,
+    lfg: new LfgCommand({ lfgFeature }),
 };
 
 bot.on(Events.ClientReady, (client) => {
