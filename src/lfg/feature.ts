@@ -22,7 +22,7 @@ export class LfgFeature {
     public async list(guildId: string): Promise<IFeatureResponse> {
         return new NeutralFeatureResponse({
             embed: {
-                title: "LFG",
+                title: "LFG Rooms",
                 description: await this.formatList(guildId),
             },
             flags: [MessageFlags.Ephemeral],
@@ -31,18 +31,15 @@ export class LfgFeature {
 
     protected async formatList(guildId: string): Promise<string> {
         const rooms = await this.getRooms(guildId);
-        const roomLines =
-            rooms.length === 0
-                ? ["No active rooms."]
-                : rooms.map((room) => `- \`${room.code}\`: ${this.formatPlayers(room)}`);
-        return `**Rooms:**\n\n${roomLines.join("\n")}`;
+        if (rooms.length === 0) {
+            return "No active rooms. :(";
+        }
+        return rooms.map((room) => `- \`${room.code}\`: ${this.formatRoomPlayers(room)}`).join("\n");
     }
 
     public help(): IFeatureResponse {
         // TODO: this description must be generated from command info eventually
         const description = [
-            "**Commands:**",
-            "",
             "- `/lfg create`: Create a room.",
             "- `/lfg join`: Join a room.",
             "- `/lfg transfer`: Transfer room ownership.",
@@ -54,7 +51,7 @@ export class LfgFeature {
 
         return new NeutralFeatureResponse({
             embed: {
-                title: "LFG",
+                title: "LFG Commands",
                 description: description,
             },
             flags: [MessageFlags.Ephemeral],
@@ -327,10 +324,10 @@ export class LfgFeature {
     }
 
     protected formatRoom(room: Room): string {
-        return `\`${room.code}\`: ${this.formatPlayers(room)}`;
+        return `\`${room.code}\`: ${this.formatRoomPlayers(room)}`;
     }
 
-    protected formatPlayers(room: Room): string {
+    protected formatRoomPlayers(room: Room): string {
         return room.players
             .toArray()
             .toSorted((a, b) => (a.userId === room.ownerId ? -1 : b.userId === room.ownerId ? 1 : 0)) // owner first
