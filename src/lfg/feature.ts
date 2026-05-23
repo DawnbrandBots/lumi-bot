@@ -4,8 +4,8 @@ import { randomUUID } from "node:crypto";
 import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
 import type { IFeatureResponse } from "../bot/types.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "./constants.ts";
-import { LfgRoom } from "./models/room.ts";
-import { LfgRoomPlayer } from "./models/roomPlayer.ts";
+import { Room } from "./models/room.ts";
+import { RoomPlayer } from "./models/roomPlayer.ts";
 import type { LfgUser } from "./types.ts";
 
 type LfgFeatureCtorArg = {
@@ -92,13 +92,13 @@ export class LfgFeature {
             });
         }
 
-        const room = this.em.create(LfgRoom, {
+        const room = this.em.create(Room, {
             id: randomUUID(),
             guildId,
             code,
             ownerId: owner.id,
         });
-        const player = this.em.create(LfgRoomPlayer, {
+        const player = this.em.create(RoomPlayer, {
             id: randomUUID(),
             userId: owner.id,
             room,
@@ -155,7 +155,7 @@ export class LfgFeature {
                 this.em.remove(currentPlayer.room);
             }
         }
-        const player = this.em.create(LfgRoomPlayer, {
+        const player = this.em.create(RoomPlayer, {
             id: randomUUID(),
             userId: user.id,
             room,
@@ -284,7 +284,7 @@ export class LfgFeature {
         });
     }
 
-    protected async getOwnedRoom(guildId: string, owner: LfgUser): Promise<LfgRoom | ErrorFeatureResponse> {
+    protected async getOwnedRoom(guildId: string, owner: LfgUser): Promise<Room | ErrorFeatureResponse> {
         const player = await this.getRoomPlayerInGuild(guildId, owner.id);
         if (!player) {
             return new ErrorFeatureResponse({
@@ -305,20 +305,20 @@ export class LfgFeature {
         return player.room;
     }
 
-    protected async getRoomByGuildAndCode(guildId: string, code: string): Promise<LfgRoom | null> {
-        return this.em.findOne(LfgRoom, { guildId, code }, { populate: ["players"] });
+    protected async getRoomByGuildAndCode(guildId: string, code: string): Promise<Room | null> {
+        return this.em.findOne(Room, { guildId, code }, { populate: ["players"] });
     }
 
-    protected async getRoomPlayerInGuild(guildId: string, userId: string): Promise<LfgRoomPlayer | null> {
-        return this.em.findOne(LfgRoomPlayer, { userId, room: { guildId } }, { populate: ["room.players"] });
+    protected async getRoomPlayerInGuild(guildId: string, userId: string): Promise<RoomPlayer | null> {
+        return this.em.findOne(RoomPlayer, { userId, room: { guildId } }, { populate: ["room.players"] });
     }
 
-    protected async getRooms(guildId: string): Promise<LfgRoom[]> {
+    protected async getRooms(guildId: string): Promise<Room[]> {
         // TODO: good use case for query builder here?
-        return this.em.find(LfgRoom, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
+        return this.em.find(Room, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
     }
 
-    protected removePlayerFromRoom(room: LfgRoom, player: LfgRoomPlayer): void {
+    protected removePlayerFromRoom(room: Room, player: RoomPlayer): void {
         this.em.remove(player);
         room.players.remove(player);
         const remainingPlayers = room.players;
@@ -327,11 +327,11 @@ export class LfgFeature {
         }
     }
 
-    protected formatRoom(room: LfgRoom): string {
+    protected formatRoom(room: Room): string {
         return `\`${room.code}\`: ${this.formatPlayers(room)}`;
     }
 
-    protected formatPlayers(room: LfgRoom): string {
+    protected formatPlayers(room: Room): string {
         return room.players
             .toArray()
             .toSorted((a, b) => (a.userId === room.ownerId ? -1 : b.userId === room.ownerId ? 1 : 0)) // owner first
