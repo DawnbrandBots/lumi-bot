@@ -5,3 +5,7 @@ import { configsById } from "./mikro-orm.test.config.ts";
 export function initTestOrm(): Promise<MikroORM> {
     return getOrm(configsById.game);
 }
+
+export function initTestLfgOrm(): Promise<MikroORM> {
+    return getOrm(configsById.lfg);
+}
