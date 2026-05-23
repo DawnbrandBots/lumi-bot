@@ -320,10 +320,9 @@ export class LfgFeature {
 
     protected removePlayerFromRoom(room: Room, player: RoomPlayer): void {
         this.em.remove(player);
-        room.players.remove(player);
-        const remainingPlayers = room.players;
-        if (room.ownerId === player.userId && remainingPlayers[0]) {
-            room.ownerId = remainingPlayers[0].userId;
+        const anotherPlayerInTheRoom = room.players.find((p) => p.userId !== player.userId);
+        if (room.ownerId === player.userId && anotherPlayerInTheRoom) {
+            room.ownerId = anotherPlayerInTheRoom.userId;
         }
     }
 
