@@ -41,8 +41,7 @@ node_modules/
 .env.test
 
 dist/
-game.db3
-game-test.db3
+*.db3
 
 # VSCode editor settings
 .vscode/settings.json
