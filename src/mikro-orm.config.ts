@@ -25,8 +25,8 @@ import { WeaponSkillEffect } from "./game/models/weaponSkillEffect.ts";
 import { WeaponType } from "./game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
 
-export default defineConfig({
-    contextName: "default",
+const GAME_CONFIG = defineConfig({
+    contextName: "game",
     entities: [
         SpellEffect,
         WeaponSkill,
@@ -56,3 +56,12 @@ export default defineConfig({
     ],
     dbName: "game.db3",
 });
+
+// Still export array of configs as default for compatibility with MikroORM CLI.
+// Use --contextName option to specify config.
+// https://mikro-orm.io/docs/quick-start#configuration-file-structure
+export default [GAME_CONFIG] as const;
+
+export const configsById = {
+    game: GAME_CONFIG,
+} as const;

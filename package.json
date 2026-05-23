@@ -16,8 +16,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "register": "node --enable-source-maps --env-file-if-exists=.env scripts/registerCommands.ts",
-    "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts",
-    "test:db": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts ./test/mikro-orm.test.config.ts",
+    "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDbs.ts",
+    "test:db": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateTestDbs.ts",
     "pretest": "yarn test:db",
     "test": "vitest"
   },

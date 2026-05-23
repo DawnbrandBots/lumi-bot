@@ -1,5 +1,4 @@
-import { defineConfig } from "@mikro-orm/sqlite";
-import mikroOrmConfig from "../src/mikro-orm.config.ts";
+import { configsById as baseConfigsById } from "../src/mikro-orm.config.ts";
 
 const TEST_DB_NAME = "game-test.db3";
-export default defineConfig({ ...mikroOrmConfig, dbName: TEST_DB_NAME });
+export const configsById = { game: { ...baseConfigsById.game, dbName: TEST_DB_NAME } } as const;
