@@ -9,7 +9,7 @@ RUN yarn
 
 FROM dev AS build
 COPY . .
-RUN yarn build && yarn db:recreate && mv lumi dist
+RUN yarn build && yarn db:recreate && mv game.db3 dist
 
 FROM base
 ARG REVISION

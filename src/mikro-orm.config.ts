@@ -26,6 +26,7 @@ import { WeaponType } from "./game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
 
 export default defineConfig({
+    contextName: "default",
     entities: [
         SpellEffect,
         WeaponSkill,
@@ -53,5 +54,5 @@ export default defineConfig({
         SpellEffectValuePercentUnit,
         SpellShape,
     ],
-    dbName: "lumi",
+    dbName: "game.db3",
 });
