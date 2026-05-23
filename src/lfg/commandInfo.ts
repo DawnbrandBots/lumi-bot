@@ -72,5 +72,5 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
             );
     },
     name: LFG_COMMAND_NAME,
-    description: "Create and manage looking-for-group rooms.",
+    description: "Create and manage looking-for-game rooms.",
 });
