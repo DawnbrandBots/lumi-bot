@@ -23,7 +23,7 @@ const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
-const lfgFeature = new LfgFeature();
+const lfgFeature = new LfgFeature({ em });
 const commands: Record<string, ICommand> = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
     help: helpCommand,

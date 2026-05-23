@@ -31,7 +31,7 @@ export class LfgCommand implements ICommand {
         this.lfgFeature = lfgFeature;
     }
 
-    public run(interaction: ChatInputCommandInteraction<CacheType>) {
+    public async run(interaction: ChatInputCommandInteraction<CacheType>) {
         const guildId = interaction.guildId;
         if (!guildId) {
             return interaction.reply(
@@ -46,15 +46,15 @@ export class LfgCommand implements ICommand {
         }
 
         const subcommand = interaction.options.getSubcommand(false);
-        const response = this.runSubcommand(interaction, guildId, subcommand);
+        const response = await this.runSubcommand(interaction, guildId, subcommand);
         return interaction.reply(response);
     }
 
-    private runSubcommand(
+    private async runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
         subcommand: string | null,
-    ): IFeatureResponse {
+    ): Promise<IFeatureResponse> {
         switch (subcommand) {
             case LFG_CREATE_SUBCOMMAND_NAME:
                 return this.lfgFeature.create(

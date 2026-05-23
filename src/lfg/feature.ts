@@ -1,33 +1,36 @@
+import type { EntityManager } from "@mikro-orm/sqlite";
 import { MessageFlags, userMention } from "discord.js";
+import { randomUUID } from "node:crypto";
 import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
 import type { IFeatureResponse } from "../bot/types.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "./constants.ts";
-import type { LfgRoom, LfgUser } from "./types.ts";
+import { LfgRoom } from "./models/room.ts";
+import { LfgRoomPlayer } from "./models/roomPlayer.ts";
+import type { LfgUser } from "./types.ts";
 
-type MutableLfgRoom = {
-    -readonly [K in keyof LfgRoom]: LfgRoom[K] extends ReadonlyArray<infer U> ? U[] : LfgRoom[K];
-};
-
-type GuildLfgState = {
-    roomsByCode: Map<string, MutableLfgRoom>;
-    roomCodeByPlayerId: Map<string, string>;
+type LfgFeatureCtorArg = {
+    readonly em: EntityManager;
 };
 
 export class LfgFeature {
-    protected readonly statesByGuildId = new Map<string, GuildLfgState>();
+    private readonly em: EntityManager;
 
-    public list(guildId: string): IFeatureResponse {
+    public constructor({ em }: LfgFeatureCtorArg) {
+        this.em = em;
+    }
+
+    public async list(guildId: string): Promise<IFeatureResponse> {
         return new NeutralFeatureResponse({
             embed: {
                 title: "LFG",
-                description: this.formatList(guildId),
+                description: await this.formatList(guildId),
             },
             flags: [MessageFlags.Ephemeral],
         });
     }
 
-    protected formatList(guildId: string): string {
-        const rooms = this.getRooms(guildId);
+    protected async formatList(guildId: string): Promise<string> {
+        const rooms = await this.getRooms(guildId);
         const roomLines =
             rooms.length === 0
                 ? ["No active rooms."]
@@ -58,7 +61,7 @@ export class LfgFeature {
         });
     }
 
-    public create(guildId: string, owner: LfgUser, code: string): IFeatureResponse {
+    public async create(guildId: string, owner: LfgUser, code: string): Promise<IFeatureResponse> {
         if (code.length < LFG_MIN_ROOM_CODE_LENGTH || code.length > LFG_MAX_ROOM_CODE_LENGTH) {
             return new ErrorFeatureResponse({
                 embed: {
@@ -68,8 +71,8 @@ export class LfgFeature {
             });
         }
 
-        const state = this.getGuildState(guildId);
-        if (state.roomCodeByPlayerId.has(owner.id)) {
+        const currentPlayer = await this.getRoomPlayerInGuild(guildId, owner.id);
+        if (currentPlayer) {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Already in a room",
@@ -78,7 +81,8 @@ export class LfgFeature {
                 flags: [MessageFlags.Ephemeral],
             });
         }
-        if (state.roomsByCode.has(code)) {
+        const existingRoom = await this.getRoomByGuildAndCode(guildId, code);
+        if (existingRoom) {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Room already exists",
@@ -88,9 +92,20 @@ export class LfgFeature {
             });
         }
 
-        const room = { code, ownerId: owner.id, playerIds: [owner.id] };
-        state.roomsByCode.set(code, room);
-        state.roomCodeByPlayerId.set(owner.id, code);
+        const room = this.em.create(LfgRoom, {
+            id: randomUUID(),
+            guildId,
+            code,
+            ownerId: owner.id,
+        });
+        const player = this.em.create(LfgRoomPlayer, {
+            id: randomUUID(),
+            userId: owner.id,
+            room,
+        });
+        room.players.add(player);
+        this.em.persist([room, player]);
+        await this.em.flush();
 
         return new SuccessFeatureResponse({
             embed: {
@@ -100,9 +115,8 @@ export class LfgFeature {
         });
     }
 
-    public join(guildId: string, user: LfgUser, code: string): IFeatureResponse {
-        const state = this.getGuildState(guildId);
-        const room = state.roomsByCode.get(code);
+    public async join(guildId: string, user: LfgUser, code: string): Promise<IFeatureResponse> {
+        const room = await this.getRoomByGuildAndCode(guildId, code);
         if (!room) {
             return new ErrorFeatureResponse({
                 embed: {
@@ -113,9 +127,9 @@ export class LfgFeature {
             });
         }
 
-        const currentCode = state.roomCodeByPlayerId.get(user.id);
-        if (currentCode === code) {
-            return new NeutralFeatureResponse({
+        const currentPlayer = await this.getRoomPlayerInGuild(guildId, user.id);
+        if (currentPlayer?.room.id === room.id) {
+            return new ErrorFeatureResponse({
                 embed: {
                     title: "Already in room",
                     description: this.formatRoom(room),
@@ -123,7 +137,8 @@ export class LfgFeature {
                 flags: [MessageFlags.Ephemeral],
             });
         }
-        if (room.playerIds.length >= LFG_MAX_ROOM_PLAYERS) {
+
+        if (room.players.count() >= LFG_MAX_ROOM_PLAYERS) {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Room is full",
@@ -133,12 +148,21 @@ export class LfgFeature {
             });
         }
 
-        const leftRoomCode = currentCode;
-        if (currentCode) {
-            this.removePlayerFromCurrentRoom(state, user.id);
+        const leftRoomCode = currentPlayer?.room.code;
+        if (currentPlayer) {
+            this.removePlayerFromRoom(currentPlayer.room, currentPlayer);
+            if (currentPlayer.room.players.count() === 0) {
+                this.em.remove(currentPlayer.room);
+            }
         }
-        room.playerIds.push(user.id);
-        state.roomCodeByPlayerId.set(user.id, code);
+        const player = this.em.create(LfgRoomPlayer, {
+            id: randomUUID(),
+            userId: user.id,
+            room,
+        });
+        room.players.add(player);
+        this.em.persist(player);
+        await this.em.flush();
 
         return new SuccessFeatureResponse({
             embed: {
@@ -148,9 +172,9 @@ export class LfgFeature {
         });
     }
 
-    public transfer(guildId: string, owner: LfgUser, target: LfgUser): IFeatureResponse {
+    public async transfer(guildId: string, owner: LfgUser, target: LfgUser): Promise<IFeatureResponse> {
         // TODO: must replace instance of ErrorFeatureResponse with a discriminated union
-        const result = this.getOwnedRoom(guildId, owner);
+        const result = await this.getOwnedRoom(guildId, owner);
         if (result instanceof ErrorFeatureResponse) {
             return result;
         }
@@ -163,7 +187,9 @@ export class LfgFeature {
                 flags: [MessageFlags.Ephemeral],
             });
         }
-        if (!result.room.playerIds.includes(target.id)) {
+
+        const targetPlayer = await this.getRoomPlayerInGuild(guildId, target.id);
+        if (targetPlayer?.room.id !== result.id) {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Player not in room",
@@ -173,18 +199,19 @@ export class LfgFeature {
             });
         }
 
-        result.room.ownerId = target.id;
+        result.ownerId = target.id;
+        await this.em.flush();
         return new SuccessFeatureResponse({
             embed: {
                 title: "Ownership transferred",
-                description: this.formatRoom(result.room),
+                description: this.formatRoom(result),
             },
             flags: [MessageFlags.Ephemeral],
         });
     }
 
-    public kick(guildId: string, owner: LfgUser, target: LfgUser): IFeatureResponse {
-        const result = this.getOwnedRoom(guildId, owner);
+    public async kick(guildId: string, owner: LfgUser, target: LfgUser): Promise<IFeatureResponse> {
+        const result = await this.getOwnedRoom(guildId, owner);
         if (result instanceof ErrorFeatureResponse) {
             return result;
         }
@@ -197,7 +224,9 @@ export class LfgFeature {
                 flags: [MessageFlags.Ephemeral],
             });
         }
-        if (!result.room.playerIds.includes(target.id)) {
+
+        const targetPlayer = await this.getRoomPlayerInGuild(guildId, target.id);
+        if (targetPlayer?.room.id !== result.id) {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Player not in room",
@@ -207,19 +236,19 @@ export class LfgFeature {
             });
         }
 
-        this.removePlayerFromRoom(result.state, result.room, target.id);
+        this.removePlayerFromRoom(result, targetPlayer);
+        await this.em.flush();
         return new SuccessFeatureResponse({
             embed: {
                 title: "Player kicked",
-                description: this.formatRoom(result.room),
+                description: this.formatRoom(result),
             },
         });
     }
 
-    public leave(guildId: string, user: LfgUser): IFeatureResponse {
-        const state = this.getGuildState(guildId);
-        const room = this.getCurrentRoom(state, user.id);
-        if (!room) {
+    public async leave(guildId: string, user: LfgUser): Promise<IFeatureResponse> {
+        const player = await this.getRoomPlayerInGuild(guildId, user.id);
+        if (!player) {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Not in a room",
@@ -229,12 +258,14 @@ export class LfgFeature {
             });
         }
 
+        const room = player.room;
         const code = room.code;
-        this.removePlayerFromRoom(state, room, user.id);
+        this.removePlayerFromRoom(room, player);
 
         const title = "Room left";
-        if (room.playerIds.length === 0) {
-            state.roomsByCode.delete(code);
+        if (room.players.count() === 0) {
+            this.em.remove(room);
+            await this.em.flush();
             return new SuccessFeatureResponse({
                 embed: {
                     title,
@@ -243,6 +274,7 @@ export class LfgFeature {
             });
         }
 
+        await this.em.flush();
         return new SuccessFeatureResponse({
             embed: {
                 title,
@@ -252,17 +284,9 @@ export class LfgFeature {
         });
     }
 
-    public getRooms(guildId: string): readonly LfgRoom[] {
-        return Array.from(this.getGuildState(guildId).roomsByCode.values());
-    }
-
-    protected getOwnedRoom(
-        guildId: string,
-        owner: LfgUser,
-    ): { room: MutableLfgRoom; state: GuildLfgState } | ErrorFeatureResponse {
-        const state = this.getGuildState(guildId);
-        const room = this.getCurrentRoom(state, owner.id);
-        if (!room) {
+    protected async getOwnedRoom(guildId: string, owner: LfgUser): Promise<LfgRoom | ErrorFeatureResponse> {
+        const player = await this.getRoomPlayerInGuild(guildId, owner.id);
+        if (!player) {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Not in a room",
@@ -270,7 +294,7 @@ export class LfgFeature {
                 },
             });
         }
-        if (room.ownerId !== owner.id) {
+        if (player.room.ownerId !== owner.id) {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Not room owner",
@@ -278,50 +302,40 @@ export class LfgFeature {
                 },
             });
         }
-        return { room, state };
+        return player.room;
     }
 
-    protected getGuildState(guildId: string): GuildLfgState {
-        let state = this.statesByGuildId.get(guildId);
-        if (!state) {
-            state = { roomsByCode: new Map(), roomCodeByPlayerId: new Map() };
-            this.statesByGuildId.set(guildId, state);
-        }
-        return state;
+    protected async getRoomByGuildAndCode(guildId: string, code: string): Promise<LfgRoom | null> {
+        return this.em.findOne(LfgRoom, { guildId, code }, { populate: ["players"] });
     }
 
-    protected getCurrentRoom(state: GuildLfgState, userId: string): MutableLfgRoom | undefined {
-        const code = state.roomCodeByPlayerId.get(userId);
-        return code ? state.roomsByCode.get(code) : undefined;
+    protected async getRoomPlayerInGuild(guildId: string, userId: string): Promise<LfgRoomPlayer | null> {
+        return this.em.findOne(LfgRoomPlayer, { userId, room: { guildId } }, { populate: ["room.players"] });
     }
 
-    protected removePlayerFromCurrentRoom(state: GuildLfgState, userId: string): void {
-        const room = this.getCurrentRoom(state, userId);
-        if (!room) {
-            return;
-        }
-        this.removePlayerFromRoom(state, room, userId);
-        if (room.playerIds.length === 0) {
-            state.roomsByCode.delete(room.code);
+    protected async getRooms(guildId: string): Promise<LfgRoom[]> {
+        // TODO: good use case for query builder here?
+        return this.em.find(LfgRoom, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
+    }
+
+    protected removePlayerFromRoom(room: LfgRoom, player: LfgRoomPlayer): void {
+        this.em.remove(player);
+        room.players.remove(player);
+        const remainingPlayers = room.players;
+        if (room.ownerId === player.userId && remainingPlayers[0]) {
+            room.ownerId = remainingPlayers[0].userId;
         }
     }
 
-    protected removePlayerFromRoom(state: GuildLfgState, room: MutableLfgRoom, userId: string): void {
-        room.playerIds = room.playerIds.filter((playerId) => playerId !== userId);
-        state.roomCodeByPlayerId.delete(userId);
-        if (room.ownerId === userId && room.playerIds[0]) {
-            room.ownerId = room.playerIds[0];
-        }
-    }
-
-    protected formatRoom(room: MutableLfgRoom | LfgRoom): string {
+    protected formatRoom(room: LfgRoom): string {
         return `\`${room.code}\`: ${this.formatPlayers(room)}`;
     }
 
-    protected formatPlayers(room: MutableLfgRoom | LfgRoom): string {
-        return room.playerIds
-            .toSorted((a, b) => (a === room.ownerId ? -1 : b === room.ownerId ? 1 : 0)) // owner first
-            .map((playerId) => `${userMention(playerId)}${playerId === room.ownerId ? " (owner)" : ""}`)
+    protected formatPlayers(room: LfgRoom): string {
+        return room.players
+            .toArray()
+            .toSorted((a, b) => (a.userId === room.ownerId ? -1 : b.userId === room.ownerId ? 1 : 0)) // owner first
+            .map((player) => `${userMention(player.userId)}${player.userId === room.ownerId ? " (owner)" : ""}`)
             .join(", ");
     }
 }
