@@ -24,3 +24,6 @@ export const WEAPON_TYPE_RANGE_ATK_MODIFIER = {
  * Eg. Elthunder, Tetrafire, Crossedge
  */
 export const SPELL_NAME_SUFFIXES = ["Fire", "Thunder", "Wind", "Poison", "Heal", "Shield", "Edge"] as const;
+
+export const SPELL_DEFAULT_COOLDOWN = 5;
+export const SPELL_DEFAULT_USE_COUNT = null;

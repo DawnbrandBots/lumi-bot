@@ -107,7 +107,7 @@ describe(Spell.name, () => {
         describe(ESpellDraggingMode.ANY, () => {
             test.each([
                 // Some spells with ANY dragging mode, one for each effect type.
-                "Tetrafire",
+                "Elfire",
                 "Mend",
                 "Shield Strike",
                 "Heal Warp EX",
@@ -131,43 +131,55 @@ describe(Spell.name, () => {
     describe(describeSpellEffects.name, () => {
         [
             {
-                name: "Tetrafire",
+                name: "Elfire",
                 explanation: "plain damage",
-                expected: "1. Deals 50 Red damage to targets.",
+                expected: "1. Deals 60 Red damage to targets.",
+                inlineExpected: "deals 60 Red damage to targets (single tile).",
             },
             {
                 name: "Dark Tetrafire",
                 explanation: "countdown before damage",
                 expected: "After 2 seconds:\n1. Deals 75 Red damage to targets.",
+                inlineExpected: "after 2 seconds, deals 75 Red damage to targets (2x2 square).",
             },
             {
                 name: "Self Mend",
                 explanation: "single-tile self heal",
                 expected: "1. Restores 80 HP to user.",
+                inlineExpected: "restores 80 HP to user.",
             },
             {
                 name: "Self Cross Shield",
                 explanation: "aoe self-targeted status",
                 expected:
-                    "Grants status to targets in shape centered around user:\n1. Decreases Received Weapon Damage by 30% (3 turns).",
+                    "1. Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns).",
+                inlineExpected:
+                    "grants status to targets in 3x3 cross centered around user: decreases Received Weapon Damage by 30% (3 turns). (Cooldown: 1)",
             },
             {
                 name: "Trinity Shield Edge EX",
                 explanation: "shared status intro",
                 expected: [
-                    "Grants status to targets:",
+                    "Grants statuses to targets:",
                     "1. Decreases Received Weapon Damage by 20% (permanent).",
                     "1. Increases Atk by 30% (permanent).",
                     "1. Decreases Color Affinity by 20% (permanent).",
                 ].join("\n"),
+                inlineExpected: [
+                    "grants statuses to targets (3x3 cross): decreases Received Weapon Damage by 20% (permanent)",
+                    "increases Atk by 30% (permanent)",
+                    "decreases Color Affinity by 20% (permanent). (Uses: 1, Cooldown: 1)",
+                ].join(", "),
             },
             {
                 name: "Dark Crossfire + Tome",
                 explanation: "countdown with shared status intro",
                 expected: [
-                    "After 2 seconds, grants status to targets:",
-                    "1. Deals 40 Red damage every 6 seconds, 2 times.",
+                    "After 2 seconds:",
+                    "1. Grants status to targets: Deals 40 Red damage every 6 seconds (2 times).",
                 ].join("\n"),
+                inlineExpected:
+                    "after 2 seconds, grants status to targets (3x3 cross): deals 40 Red damage every 6 seconds (2 times). (Cooldown: 4, Usable only by Tome units)",
             },
             {
                 name: "Thunder Self Edge EX",
@@ -176,12 +188,60 @@ describe(Spell.name, () => {
                     "1. Deals 60 Blue damage to targets.",
                     "1. Grants status to user: Increases Atk by 30% (permanent).",
                 ].join("\n"),
+                inlineExpected:
+                    "deals 60 Blue damage to targets (single tile), grants status to user: increases Atk by 30% (permanent).",
             },
-        ].forEach(({ name, explanation, expected }) => {
+            {
+                name: "Dual Invigorate EX",
+                explanation: "dual spell",
+                expected: [
+                    "1. Grants status to user and targets: Increases HP by 10% (permanent).",
+                    "1. Restores 10 HP to user and targets.",
+                ].join("\n"),
+                inlineExpected:
+                    "grants status to user and targets: increases HP by 10% (permanent), restores 10 HP to user and targets. (Uses: 1, Cooldown: 1)",
+            },
+            {
+                name: "Axe Fighter + Infantry",
+                explanation: "summon",
+                expected: "1. Summons Axe Infantry minion with 75 HP and 60 Atk.",
+                inlineExpected:
+                    "summons Axe Infantry minion with 75 HP and 60 Atk. (Uses: 1, Cooldown: 1, Usable only by Infantry units)",
+            },
+            {
+                name: "Heal Warp EX",
+                explanation: "warp",
+                expected: ["1. Restores 50 HP to targets.", "1. Moves user to target tile."].join("\n"),
+                inlineExpected: "restores 50 HP to targets (single tile), moves user to target tile.",
+            },
+            {
+                name: "Tetrathunder Wall EX",
+                explanation: "ice blocks",
+                expected: [
+                    "1. Grants status to targets: Deals 40 Blue damage every 6 seconds (2 times).",
+                    "1. Summons ice blocks with 60 HP.",
+                ].join("\n"),
+                inlineExpected:
+                    "grants status to targets (2x2 square): deals 40 Blue damage every 6 seconds (2 times), summons ice blocks with 60 HP. (Uses: 1)",
+            },
+            {
+                name: "Dark Cross Poison Patch",
+                explanation: "tile",
+                expected: "1. Grants effect to target tiles: Deals 25 Colorless damage every 3 seconds (5 times).",
+                inlineExpected:
+                    "grants effect to target tiles: deals 25 Colorless damage every 3 seconds (5 times). (Uses: 1)",
+            },
+        ].forEach(({ name, explanation, expected, inlineExpected }) => {
             test(`${name} (${explanation})`, async () => {
                 const spell = await findSpell(name);
 
                 expect(describeSpellEffects(spell)).toBe(expected);
+            });
+
+            test(`${name} (${explanation}, inline)`, async () => {
+                const spell = await findSpell(name);
+
+                expect(describeSpellEffects(spell, true)).toBe(inlineExpected);
             });
         });
     });

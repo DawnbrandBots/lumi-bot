@@ -836,7 +836,9 @@
       },
       {
         "kind": "ICE_BLOCK",
-        "hp": 60,
+        "hp": {
+          "base": 60
+        },
         "target": "ANY"
       }
     ]
@@ -2340,7 +2342,9 @@
       },
       {
         "kind": "ICE_BLOCK",
-        "hp": 60,
+        "hp": {
+          "base": 60
+        },
         "target": "ANY"
       }
     ]

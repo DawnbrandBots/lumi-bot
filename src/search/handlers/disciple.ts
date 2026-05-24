@@ -1,6 +1,7 @@
 import type { APIEmbed } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../game/constants.ts";
 import { Disciple } from "../../game/models/disciple.ts";
+import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
 import type { IDisciple } from "../../game/types.ts";
 import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
@@ -20,7 +21,9 @@ export function getDiscipleBaseStatsTable(disciple: IDisciple): (string | number
 const discipleSearchHandler: ISearchHandler<Disciple> = {
     class: Disciple,
     response: (disciple: IDisciple) => {
-        const spellsStr = [...disciple.spells].map((spell) => `- ${spell.name}`).join("\n");
+        const spellsStr = [...disciple.spells]
+            .map((spell) => `- **${spell.name}**: ${describeSpellEffects(spell, true)}`)
+            .join("\n");
 
         const baseStatsTable = getDiscipleBaseStatsTable(disciple);
         const baseStatsTableAscii = toAsciiTable({ data: baseStatsTable, cellPadding: 3 });
