@@ -171,7 +171,7 @@
   },
   {
     "id": "TACTICS_TOME_PLUS",
-    "name": "TACTICS Tome +",
+    "name": "Tactics Tome +",
     "weaponType": "TOME",
     "level": 8,
     "hp": 6,
@@ -457,7 +457,7 @@
     "hp": 6,
     "atk": 30,
     "freeSkillSlots": 3,
-    "uniqueSkill": "LUNAR_STRIKE"
+    "uniqueSkill": "BATTLE_FERVOR"
   },
   {
     "id": "IVORY_TOME",
@@ -481,7 +481,7 @@
   },
   {
     "id": "TACTICS_TOME",
-    "name": "TACTICS Tome",
+    "name": "Tactics Tome",
     "weaponType": "TOME",
     "level": 7,
     "hp": 6,
