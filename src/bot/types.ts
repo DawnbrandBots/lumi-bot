@@ -1,6 +1,7 @@
 import type {
     APIEmbed,
     ApplicationCommandOptionChoiceData,
+    AutocompleteInteraction,
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
@@ -34,8 +35,6 @@ export interface ICommandInfo {
     readonly pingEquivalent?: string;
 }
 
-export type TCommandAutocomplete = (input: string) => MaybePromise<ApplicationCommandOptionChoiceData[]>;
-
 /**
  * Represents a Discord slash command.
  */
@@ -48,7 +47,9 @@ export interface ICommand {
     /**
      * Provides autocomplete suggestions for the command's options.
      */
-    readonly autocomplete?: Record<string, TCommandAutocomplete>;
+    readonly autocomplete?: (
+        interaction: AutocompleteInteraction<CacheType>,
+    ) => MaybePromise<ApplicationCommandOptionChoiceData[] | null>;
 }
 
 export type TFeatureResponseContent = BaseMessageOptions["content"];
