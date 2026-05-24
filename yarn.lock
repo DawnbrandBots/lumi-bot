@@ -194,12 +194,26 @@
   resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-7.0.16.tgz#8d5758ae80d38019c5bf1f992168e0ab8c867b6f"
   integrity sha512-XBa1FRqPKxwk+KHCBLuaEp7Yp1b1rrjdkn6UoedakSLZogty9oE5KAaL2i0kPxs3skKyNHwqFZzHmpn4ULDckw==
 
+"@mikro-orm/migrations@^7.0.13":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-7.1.1.tgz#e6525a85d2f3b795c8161763bf6e561c427d77f8"
+  integrity sha512-G5QzSbWGFDxf3mTuhImiCwmVvnW+f9cD6aUmOp7/neB4Qxz4EusDJkec827/lSgwhwPR7bwEs8/Kga2pYqR0uw==
+  dependencies:
+    "@mikro-orm/sql" "7.1.1"
+
 "@mikro-orm/sql@7.0.16":
   version "7.0.16"
   resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.0.16.tgz#dfc9cf9003c831c053d75bbf1d0fbb20bee58a12"
   integrity sha512-gSk4sqP/0iWkbGafAVOfgA0CVFu6YXkXDPi55MOGw3klpBd0/MxDBQiGvz5yCMZkktB4PWhsQTuzJcO0LLQtQw==
   dependencies:
     kysely "0.29.0"
+
+"@mikro-orm/sql@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.1.1.tgz#72a511050767932f9aee74668bf45901797f2483"
+  integrity sha512-ol7rkrhZGXu+/u0gIJDOW1nxinJtnvTtVxXHb539/rsFY+pKBPCbdqEEP0dFw2JjivdSqGyfd6MU0u6UUWnI7w==
+  dependencies:
+    kysely "0.29.2"
 
 "@mikro-orm/sqlite@^7.0.13":
   version "7.0.16"
@@ -1065,6 +1079,11 @@ kysely@0.29.0:
   version "0.29.0"
   resolved "https://registry.yarnpkg.com/kysely/-/kysely-0.29.0.tgz#d00ff0bfeb642418c32ae8552402d1f155848e1d"
   integrity sha512-LrQfPUeTW7MXbMvT62moEMnpMTuj9TO3lqjCeLKjM975PJ4Alrl/43f2tlDX7xOsNptKgH4LSNGwIbXwEkLg4g==
+
+kysely@0.29.2:
+  version "0.29.2"
+  resolved "https://registry.yarnpkg.com/kysely/-/kysely-0.29.2.tgz#4a07da18db3bba2911693c2b3bd4af415104a85f"
+  integrity sha512-s6WVJyEZrbm6jhBpiKHsGHyePMrVQKJ85wZCFCr9W4QHv6WTjWIrdvTmO9hDEA3bNK0xkrE2DqrHsXMLWuZpQg==
 
 levn@^0.4.1:
   version "0.4.1"
