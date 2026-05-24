@@ -48,7 +48,6 @@ describe("search autocomplete", () => {
     test(`returns at most ${AUTOCOMPLETE_RESULTS_LIMIT} choices mapped from item names`, async () => {
         const choices = await autocomplete("Sword");
 
-        expect(choices.length).toBeLessThanOrEqual(AUTOCOMPLETE_RESULTS_LIMIT);
         expect(choices).toHaveLength(AUTOCOMPLETE_RESULTS_LIMIT);
     });
 });
