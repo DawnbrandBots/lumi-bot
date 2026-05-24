@@ -81,13 +81,11 @@ bot.on(Events.InteractionCreate, async (interaction) => {
         if (!command) {
             return;
         }
-        const focusedOption = interaction.options.getFocused(true);
-        const autocomplete = command.autocomplete?.[focusedOption.name];
-        if (!autocomplete) {
+        const choices = await command.autocomplete?.(interaction);
+        if (!choices) {
             return;
         }
-        const items = await autocomplete(focusedOption.value);
-        await interaction.respond(items);
+        await interaction.respond(choices);
         return;
     }
 });

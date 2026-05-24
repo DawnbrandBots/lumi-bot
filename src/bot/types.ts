@@ -1,6 +1,7 @@
 import type {
     APIEmbed,
     ApplicationCommandOptionChoiceData,
+    AutocompleteInteraction,
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
@@ -49,7 +50,9 @@ export interface ICommand {
     /**
      * Provides autocomplete suggestions for the command's options.
      */
-    readonly autocomplete?: Record<string, TCommandAutocomplete>;
+    readonly autocomplete?: (
+        interaction: AutocompleteInteraction<CacheType>,
+    ) => MaybePromise<ApplicationCommandOptionChoiceData[] | null>;
 }
 
 export type TFeatureResponseContent = BaseMessageOptions["content"];
