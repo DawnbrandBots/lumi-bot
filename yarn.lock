@@ -180,33 +180,26 @@
   resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz#6912b00d2c631c0d15ce1a7ab57cd657f2a8f8ba"
   integrity sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==
 
-"@mikro-orm/cli@^7.0.13":
-  version "7.0.16"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/cli/-/cli-7.0.16.tgz#15caf254ee5a999f45d6bf50832229d17f1e6044"
-  integrity sha512-fI+42/suKxLve32H5kgWWktqZP7g711YDXDJppRf+3RcxFHkx8KPGbSnCPij5+LN/KVnAdM3q2PgvjtV6Yjv2A==
+"@mikro-orm/cli@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/cli/-/cli-7.1.1.tgz#713d50f7bd06dd4099001dbea28c41a8ba787530"
+  integrity sha512-8sZ5J33i1yjyvZPm9wkarLghs9TMqKh6n2lPCCI7mHSYKqGsIXpbf1aRHrd+UEu47H02cGcYc6YynaA/FkZ/Mg==
   dependencies:
-    "@mikro-orm/core" "7.0.16"
-    mikro-orm "7.0.16"
+    "@mikro-orm/core" "7.1.1"
+    mikro-orm "7.1.1"
     yargs "17.7.2"
 
-"@mikro-orm/core@7.0.16", "@mikro-orm/core@^7.0.13":
-  version "7.0.16"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-7.0.16.tgz#8d5758ae80d38019c5bf1f992168e0ab8c867b6f"
-  integrity sha512-XBa1FRqPKxwk+KHCBLuaEp7Yp1b1rrjdkn6UoedakSLZogty9oE5KAaL2i0kPxs3skKyNHwqFZzHmpn4ULDckw==
+"@mikro-orm/core@7.1.1", "@mikro-orm/core@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-7.1.1.tgz#3124278dc4c6c85c6eb51ef846fc675aaca5d368"
+  integrity sha512-exPiGlM83Gm+PZSn6nFz6bGiBEU9brkjJGfFPsaW6YPN5WM+Na8vmecsg2dVQPe0hj5b2p3Bnf+grm49V8sjZA==
 
-"@mikro-orm/migrations@^7.0.13":
+"@mikro-orm/migrations@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-7.1.1.tgz#e6525a85d2f3b795c8161763bf6e561c427d77f8"
   integrity sha512-G5QzSbWGFDxf3mTuhImiCwmVvnW+f9cD6aUmOp7/neB4Qxz4EusDJkec827/lSgwhwPR7bwEs8/Kga2pYqR0uw==
   dependencies:
     "@mikro-orm/sql" "7.1.1"
-
-"@mikro-orm/sql@7.0.16":
-  version "7.0.16"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.0.16.tgz#dfc9cf9003c831c053d75bbf1d0fbb20bee58a12"
-  integrity sha512-gSk4sqP/0iWkbGafAVOfgA0CVFu6YXkXDPi55MOGw3klpBd0/MxDBQiGvz5yCMZkktB4PWhsQTuzJcO0LLQtQw==
-  dependencies:
-    kysely "0.29.0"
 
 "@mikro-orm/sql@7.1.1":
   version "7.1.1"
@@ -215,14 +208,14 @@
   dependencies:
     kysely "0.29.2"
 
-"@mikro-orm/sqlite@^7.0.13":
-  version "7.0.16"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/sqlite/-/sqlite-7.0.16.tgz#b2b17ffbdf445b7e4ca8b8d9c2e7599b6d389794"
-  integrity sha512-Wip6+d+niTCtfrniQG3fFSGNnzxG1R6NYbZFzOEQmrspWyzf+dBHHoQkqzJMyPjhrsRd30i4xRMieoRarMaXNg==
+"@mikro-orm/sqlite@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/sqlite/-/sqlite-7.1.1.tgz#35aad25dac0a7933b732bc30689b5d98389241a3"
+  integrity sha512-3UKrj7tij8eEjaUMjbQp3h1Zqn1m/46WouAXvcw8fwbe7J8q7X8gadfiaQxnshCv3ESioStLGWEYm68qeXirLw==
   dependencies:
-    "@mikro-orm/sql" "7.0.16"
+    "@mikro-orm/sql" "7.1.1"
     better-sqlite3 "12.10.0"
-    kysely "0.29.0"
+    kysely "0.29.2"
 
 "@napi-rs/wasm-runtime@^1.1.4":
   version "1.1.4"
@@ -1075,11 +1068,6 @@ keyv@^4.5.4:
   dependencies:
     json-buffer "3.0.1"
 
-kysely@0.29.0:
-  version "0.29.0"
-  resolved "https://registry.yarnpkg.com/kysely/-/kysely-0.29.0.tgz#d00ff0bfeb642418c32ae8552402d1f155848e1d"
-  integrity sha512-LrQfPUeTW7MXbMvT62moEMnpMTuj9TO3lqjCeLKjM975PJ4Alrl/43f2tlDX7xOsNptKgH4LSNGwIbXwEkLg4g==
-
 kysely@0.29.2:
   version "0.29.2"
   resolved "https://registry.yarnpkg.com/kysely/-/kysely-0.29.2.tgz#4a07da18db3bba2911693c2b3bd4af415104a85f"
@@ -1196,10 +1184,10 @@ magic-string@^0.30.21:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.5"
 
-mikro-orm@7.0.16:
-  version "7.0.16"
-  resolved "https://registry.yarnpkg.com/mikro-orm/-/mikro-orm-7.0.16.tgz#59baec34ea3124c5bceb84eaa6a4eb82f3fc1e10"
-  integrity sha512-ooP53USDixLvc+UB+sC6dv38MgIxyB/K0VtEz53zVPo/2STlACVz1qYYPItTHhTQ9hga6b7Y43o0q5C537PaBw==
+mikro-orm@7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/mikro-orm/-/mikro-orm-7.1.1.tgz#69a201b3af9a669828fa28db89a2ab7556e71df4"
+  integrity sha512-hHhNT1qC8rwvcVHje9S8nb+IXVgNA1V/qN0jhnpD/8HRK/8vqqfDZf8FLYACzfdRS0cwgnOIN3E0cmNF+be2AA==
 
 mimic-response@^3.1.0:
   version "3.1.0"
