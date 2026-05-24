@@ -30,8 +30,9 @@ function getToSearchItemMapper<Kind extends string>(
         const aliases = [...aliaser(name)];
         return {
             id,
-            aliases,
+            name,
             kind,
+            aliases,
         };
     };
 }

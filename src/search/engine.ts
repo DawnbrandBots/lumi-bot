@@ -3,6 +3,7 @@ import type { ISearchEngine, ISearchItem } from "./types.ts";
 
 export abstract class SearchEngine<Items extends ISearchItem> implements ISearchEngine<Items> {
     abstract searchOne(input: string): Items | undefined;
+    abstract search(input: string, limit?: number): Items[];
 }
 
 export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<Items> {
@@ -20,8 +21,15 @@ export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<It
         });
     }
 
+    protected normalizeInput(input: string): string {
+        return input.replace("+", "Plus");
+    }
+
+    public search(input: string, limit?: number): Items[] {
+        return this.fuse.search(this.normalizeInput(input), { limit }).map((result) => result.item);
+    }
+
     public searchOne(input: string): Items | undefined {
-        // TODO: this replace might be better called elsewhere?
-        return this.fuse.search(input.replace("+", "Plus"), { limit: 1 })[0]?.item;
+        return this.search(input, 1)[0];
     }
 }

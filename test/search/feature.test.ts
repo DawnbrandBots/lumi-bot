@@ -1,9 +1,9 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import { SEARCH_MAX_INPUT_LENGTH } from "../src/bot/constants.ts";
-import { ErrorFeatureResponse, SuccessFeatureResponse } from "../src/bot/featureResponse.ts";
-import SEARCH_HANDLERS from "../src/loaders/searchHandlers.ts";
-import getSearchItems from "../src/loaders/searchItems.ts";
+import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
+import { ErrorFeatureResponse, SuccessFeatureResponse } from "../../src/bot/featureResponse.ts";
+import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
+import getSearchItems from "../../src/loaders/searchItems.ts";
 import {
     ENTITY_KIND_FIELD_NAME,
     ID_FIELD_NAME,
@@ -13,11 +13,12 @@ import {
     MISSING_DATABASE_RESULT_TITLE,
     SEARCH_ALIASES_FOOTER_PREFIX,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-} from "../src/search/constants.ts";
-import { FuseSearchEngine } from "../src/search/engine.ts";
-import searchFeature from "../src/search/feature.ts";
-import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../src/search/types.ts";
-import { initTestOrm } from "./orm.ts";
+} from "../../src/search/constants.ts";
+import { FuseSearchEngine } from "../../src/search/engine.ts";
+import searchFeature from "../../src/search/feature.ts";
+import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
+import { initTestOrm } from "../orm.ts";
+import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
@@ -37,7 +38,7 @@ afterAll(async () => {
 describe(searchFeature.name, () => {
     test("returns an error when search yields no result", async () => {
         const response = await searchFeature<TSearchableEntity>({
-            input: "qzxv qzxv qzxv",
+            input: NO_SEARCH_RESULT_INPUT,
             searchEngine,
             handlers: SEARCH_HANDLERS,
             em,
@@ -55,9 +56,11 @@ describe(searchFeature.name, () => {
         const missingSearchItem: SearchItem = {
             id: "MISSING_ID",
             kind: "weapon",
+            name: "Missing Weapon",
             aliases: ["Missing Weapon"],
         };
         const mockedSearchEngine: ISearchEngine<SearchItem> = {
+            search: vi.fn(),
             searchOne: vi.fn().mockReturnValue(missingSearchItem),
         };
         const findOne = vi.fn().mockResolvedValue(null);

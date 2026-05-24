@@ -22,6 +22,7 @@ export interface ISearchableEntity {
 export interface ISearchItem {
     readonly id: TId;
     readonly kind: string;
+    readonly name: string;
     /**
      * All searchable strings that refer to the same item.
      * Eg. "Dark Crossfire Plus Tome" and "DCFPT" both refer to the "Dark Crossfire + 📕" spell.
@@ -74,6 +75,10 @@ export interface ISearchEngine<Items extends ISearchItem> {
      * May return a searchable item when provided with user input.
      */
     searchOne(userInput: string): Items | undefined;
+    /**
+     * Returns an array of searchable items matching the user input.
+     */
+    search(userInput: string, limit?: number): Items[];
 }
 
 /**
