@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@mikro-orm/core": "^7.1.1",
+    "@mikro-orm/migrations": "^7.1.1",
     "@mikro-orm/sqlite": "^7.1.1",
     "debug": "^4.4.3",
     "discord.js": "~14.26.3",
@@ -36,7 +37,6 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@mikro-orm/cli": "^7.1.1",
-    "@mikro-orm/migrations": "^7.1.1",
     "@tsconfig/node24": "^24.0.4",
     "@types/debug": "^4.1.13",
     "@types/node": "^24.12.2",
