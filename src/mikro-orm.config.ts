@@ -1,3 +1,4 @@
+import { Migrator } from "@mikro-orm/migrations";
 import { defineConfig } from "@mikro-orm/sqlite";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
@@ -63,6 +64,10 @@ const LFG_CONFIG = defineConfig({
     contextName: "lfg",
     entities: [Room, RoomPlayer],
     dbName: "lfg.db3",
+    migrations: {
+        pathTs: "./src/migrations/lfg",
+    },
+    extensions: [Migrator],
 });
 
 // Still export array of configs as default for compatibility with MikroORM CLI.
