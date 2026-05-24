@@ -1,50 +1,62 @@
 [
   {
     "weaponType": "CLAWS",
-    "weaponSkill": "RIDER_BANE_1"
+    "weaponSkill": "RIDER_BANE_1",
+    "rank": 1
   },
   {
     "weaponType": "CLAWS",
-    "weaponSkill": "RIDER_BANE_2"
+    "weaponSkill": "RIDER_BANE_2",
+    "rank": 2
   },
   {
     "weaponType": "CLAWS",
-    "weaponSkill": "RIDER_BANE_3"
+    "weaponSkill": "RIDER_BANE_3",
+    "rank": 3
   },
   {
     "weaponType": "TOME",
-    "weaponSkill": "ARMOR_BANE_1"
+    "weaponSkill": "ARMOR_BANE_1",
+    "rank": 1
   },
   {
     "weaponType": "TOME",
-    "weaponSkill": "ARMOR_BANE_2"
+    "weaponSkill": "ARMOR_BANE_2",
+    "rank": 2
   },
   {
     "weaponType": "TOME",
-    "weaponSkill": "ARMOR_BANE_3"
+    "weaponSkill": "ARMOR_BANE_3",
+    "rank": 3
   },
   {
     "weaponType": "STAFF",
-    "weaponSkill": "ARMOR_BANE_1"
+    "weaponSkill": "ARMOR_BANE_1",
+    "rank": 1
   },
   {
     "weaponType": "STAFF",
-    "weaponSkill": "ARMOR_BANE_2"
+    "weaponSkill": "ARMOR_BANE_2",
+    "rank": 2
   },
   {
     "weaponType": "STAFF",
-    "weaponSkill": "ARMOR_BANE_3"
+    "weaponSkill": "ARMOR_BANE_3",
+    "rank": 3
   },
   {
     "weaponType": "BOW",
-    "weaponSkill": "FLIER_BANE_1"
+    "weaponSkill": "FLIER_BANE_1",
+    "rank": 1
   },
   {
     "weaponType": "BOW",
-    "weaponSkill": "FLIER_BANE_2"
+    "weaponSkill": "FLIER_BANE_2",
+    "rank": 2
   },
   {
     "weaponType": "BOW",
-    "weaponSkill": "FLIER_BANE_3"
+    "weaponSkill": "FLIER_BANE_3",
+    "rank": 3
   }
 ]
