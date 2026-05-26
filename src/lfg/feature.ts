@@ -2,24 +2,23 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { MessageFlags, userMention } from "discord.js";
 import { randomUUID } from "node:crypto";
 import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
-import type { IFeatureResponse } from "../bot/types.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "./constants.ts";
 import { Room } from "./models/room.ts";
 import { RoomPlayer } from "./models/roomPlayer.ts";
-import type { LfgUser } from "./types.ts";
+import type { ILfgFeature, LfgUser } from "./types.ts";
 
 type LfgFeatureCtorArg = {
     readonly em: EntityManager;
 };
 
-export class LfgFeature {
+export class LfgFeature implements ILfgFeature {
     private readonly em: EntityManager;
 
     public constructor({ em }: LfgFeatureCtorArg) {
         this.em = em;
     }
 
-    public async list(guildId: string): Promise<IFeatureResponse> {
+    public async list(guildId: string) {
         return new NeutralFeatureResponse({
             embed: {
                 title: "LFG Rooms",
@@ -29,7 +28,7 @@ export class LfgFeature {
         });
     }
 
-    protected async formatList(guildId: string): Promise<string> {
+    protected async formatList(guildId: string) {
         const rooms = await this.getRooms(guildId);
         if (rooms.length === 0) {
             return "No active rooms. :(";
@@ -37,7 +36,7 @@ export class LfgFeature {
         return rooms.map((room) => `- \`${room.code}\`: ${this.formatRoomPlayers(room)}`).join("\n");
     }
 
-    public help(): IFeatureResponse {
+    public help() {
         // TODO: this description must be generated from command info eventually
         const description = [
             "- `/lfg create`: Create a room.",
@@ -58,7 +57,7 @@ export class LfgFeature {
         });
     }
 
-    public async create(guildId: string, owner: LfgUser, code: string): Promise<IFeatureResponse> {
+    public async create(guildId: string, owner: LfgUser, code: string) {
         if (code.length < LFG_MIN_ROOM_CODE_LENGTH || code.length > LFG_MAX_ROOM_CODE_LENGTH) {
             return new ErrorFeatureResponse({
                 embed: {
@@ -112,7 +111,7 @@ export class LfgFeature {
         });
     }
 
-    public async join(guildId: string, user: LfgUser, code: string): Promise<IFeatureResponse> {
+    public async join(guildId: string, user: LfgUser, code: string) {
         const room = await this.getRoomByGuildAndCode(guildId, code);
         if (!room) {
             return new ErrorFeatureResponse({
@@ -169,7 +168,7 @@ export class LfgFeature {
         });
     }
 
-    public async transfer(guildId: string, owner: LfgUser, target: LfgUser): Promise<IFeatureResponse> {
+    public async transfer(guildId: string, owner: LfgUser, target: LfgUser) {
         // TODO: must replace instance of ErrorFeatureResponse with a discriminated union
         const result = await this.getOwnedRoom(guildId, owner);
         if (result instanceof ErrorFeatureResponse) {
@@ -207,7 +206,7 @@ export class LfgFeature {
         });
     }
 
-    public async kick(guildId: string, owner: LfgUser, target: LfgUser): Promise<IFeatureResponse> {
+    public async kick(guildId: string, owner: LfgUser, target: LfgUser) {
         const result = await this.getOwnedRoom(guildId, owner);
         if (result instanceof ErrorFeatureResponse) {
             return result;
@@ -243,7 +242,7 @@ export class LfgFeature {
         });
     }
 
-    public async leave(guildId: string, user: LfgUser): Promise<IFeatureResponse> {
+    public async leave(guildId: string, user: LfgUser) {
         const player = await this.getRoomPlayerInGuild(guildId, user.id);
         if (!player) {
             return new ErrorFeatureResponse({
