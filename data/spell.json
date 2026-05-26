@@ -12,7 +12,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 50,
-          "scale": null,
           "unit": {
             "kind": "FIXED"
           }
@@ -35,7 +34,6 @@
         "kind": "HEAL",
         "amount": {
           "base": 50,
-          "scale": null,
           "unit": {
             "kind": "FIXED"
           }
@@ -74,7 +72,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 70,
-          "scale": null,
           "unit": {
             "kind": "FIXED"
           }
@@ -98,11 +95,9 @@
         "movementType": "FLYING",
         "weaponType": "SWORD",
         "hp": {
-          "scale": null,
           "base": 80
         },
         "atk": {
-          "scale": null,
           "base": 50
         },
         "target": "ANY"
@@ -596,7 +591,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 170,
-          "scale": 5,
           "unit": {
             "kind": "PERCENT",
             "stat": "ATK"
@@ -2039,7 +2033,6 @@
           "statChange": "INCREASE",
           "amount": {
             "base": 0,
-            "scale": null,
             "effectiveness": [
               {
                 "kind": "INFANTRY",
@@ -2402,7 +2395,6 @@
           "kind": "STAT",
           "statChange": "INCREASE",
           "amount": {
-            "scale": null,
             "base": 20,
             "unit": {
               "kind": "PERCENT",
@@ -2739,7 +2731,6 @@
           "statChange": "DECREASE",
           "amount": {
             "base": 10,
-            "scale": null,
             "unit": {
               "kind": "PERCENT",
               "stat": "HP"
@@ -2765,7 +2756,7 @@
   {
     "id": "SELF_WARD",
     "name": "Self Ward",
-    "disciple": "YUNI",
+    "disciple": "UKA",
     "role": "LIGHT",
     "shape": "1_TILE",
     "uses": null,
@@ -3248,8 +3239,7 @@
             "unit": {
               "kind": "PERCENT",
               "stat": "COLOR_AFFINITY"
-            },
-            "scale": null
+            }
           },
           "stat": "COLOR_AFFINITY"
         },
@@ -3436,7 +3426,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 170,
-          "scale": 5,
           "unit": {
             "kind": "PERCENT",
             "stat": "ATK"
