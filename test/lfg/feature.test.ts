@@ -1,5 +1,5 @@
 import type { MikroORM } from "@mikro-orm/sqlite";
-import { type APIEmbed, userMention } from "discord.js";
+import { type APIEmbed, MessageFlags, userMention } from "discord.js";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import recreateLfgDb from "../../scripts/utils/recreateLfgDb.ts";
 import { ErrorFeatureResponse, SuccessFeatureResponse } from "../../src/bot/featureResponse.ts";
@@ -289,6 +289,40 @@ describe(LfgFeature.name, () => {
 
         test("rejects users who are not in a room", async () => {
             const response = await feature.leave(GUILD_ID, OWNER);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Not in a room" });
+        });
+    });
+
+    describe(LfgFeature.prototype.disband.name, () => {
+        test("deletes the room when called by the owner", async () => {
+            await feature.create(GUILD_ID, OWNER, "room");
+            await feature.join(GUILD_ID, PLAYER_1, "room");
+
+            const response = await feature.disband(GUILD_ID, OWNER);
+
+            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response.flags).toEqual([MessageFlags.Ephemeral]);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Room disbanded" });
+            expect(await getRooms(GUILD_ID)).toEqual([]);
+        });
+
+        test("rejects non-owners", async () => {
+            await feature.create(GUILD_ID, OWNER, "room");
+            await feature.join(GUILD_ID, PLAYER_1, "room");
+
+            const response = await feature.disband(GUILD_ID, PLAYER_1);
+
+            expect(response).toBeInstanceOf(ErrorFeatureResponse);
+            expect(response.embeds?.[0]).toMatchObject({ title: "Not room owner" });
+            expect(await getRooms(GUILD_ID)).toEqual([
+                { code: "room", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
+            ]);
+        });
+
+        test("rejects users who are not in a room", async () => {
+            const response = await feature.disband(GUILD_ID, OWNER);
 
             expect(response).toBeInstanceOf(ErrorFeatureResponse);
             expect(response.embeds?.[0]).toMatchObject({ title: "Not in a room" });

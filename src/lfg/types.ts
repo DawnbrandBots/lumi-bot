@@ -19,4 +19,5 @@ export interface ILfgFeature {
     transfer(guildId: string, owner: LfgUser, target: LfgUser): MaybePromise<IFeatureResponse>;
     kick(guildId: string, owner: LfgUser, target: LfgUser): MaybePromise<IFeatureResponse>;
     leave(guildId: string, user: LfgUser): MaybePromise<IFeatureResponse>;
+    disband(guildId: string, user: LfgUser): MaybePromise<IFeatureResponse>;
 }

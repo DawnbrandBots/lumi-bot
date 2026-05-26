@@ -44,6 +44,7 @@ export class LfgFeature implements ILfgFeature {
             "- `/lfg transfer`: Transfer room ownership.",
             "- `/lfg kick`: Kick a player from your room.",
             "- `/lfg leave`: Leave your current room.",
+            "- `/lfg disband`: Disband your current room.",
             "- `/lfg list`: Display active rooms.",
             "- `/lfg help`: Display this command list.",
         ].join("\n");
@@ -275,6 +276,25 @@ export class LfgFeature implements ILfgFeature {
             embed: {
                 title,
                 description: this.formatRoom(room),
+            },
+            flags: [MessageFlags.Ephemeral],
+        });
+    }
+
+    public async disband(guildId: string, user: LfgUser) {
+        const result = await this.getOwnedRoom(guildId, user);
+        if (result instanceof ErrorFeatureResponse) {
+            return result;
+        }
+
+        this.em.remove(result.players.toArray());
+        this.em.remove(result);
+        await this.em.flush();
+
+        return new SuccessFeatureResponse({
+            embed: {
+                title: "Room disbanded",
+                description: `Room \`${result.code}\` was deleted.`,
             },
             flags: [MessageFlags.Ephemeral],
         });
