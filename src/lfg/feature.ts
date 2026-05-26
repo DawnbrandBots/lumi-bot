@@ -287,7 +287,7 @@ export class LfgFeature implements ILfgFeature {
             return result;
         }
 
-        this.em.remove(result.players.toArray());
+        await this.em.nativeDelete(RoomPlayer, { room: result });
         this.em.remove(result);
         await this.em.flush();
 

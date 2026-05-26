@@ -1,5 +1,6 @@
 import { Migrator } from "@mikro-orm/migrations";
 import { defineConfig } from "@mikro-orm/sqlite";
+import { Config } from "./admin/models/config.ts";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
@@ -62,7 +63,7 @@ const GAME_CONFIG = defineConfig({
 
 const LFG_CONFIG = defineConfig({
     contextName: "lfg",
-    entities: [Room, RoomPlayer],
+    entities: [Config, Room, RoomPlayer],
     dbName: "lfg.db3",
     migrations: {
         pathTs: "./src/migrations/lfg",

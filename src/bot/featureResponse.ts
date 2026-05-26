@@ -36,13 +36,13 @@ export class ErrorFeatureResponse extends FeatureResponse implements IFeatureRes
     public readonly report: boolean;
 
     public constructor({
-        embed,
         report = false,
+        ...arg
     }: ISubFeatureResponseCtorArg & { report?: ErrorFeatureResponse["report"] }) {
         const content = report
             ? `-# Everyone point and laugh at ${NOTABOT_DISCORD_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`
             : undefined;
-        super({ embed, color: DISCORD_MESSAGE_ERROR_COLOR, content });
+        super({ ...arg, color: DISCORD_MESSAGE_ERROR_COLOR, content });
         this.report = report;
     }
 }

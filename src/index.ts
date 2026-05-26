@@ -1,5 +1,7 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
+import { AdminCommand } from "./admin/command.ts";
+import { AdminFeature } from "./admin/feature.ts";
 import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
@@ -27,11 +29,13 @@ const searchItems = await getSearchItems(gameEm);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
+const adminFeature = new AdminFeature({ em: lfgEm });
 const lfgFeature = new LfgFeature({ em: lfgEm });
 const commands: Record<string, ICommand> = {
+    admin: new AdminCommand({ adminFeature }),
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
     help: helpCommand,
-    lfg: new LfgCommand({ lfgFeature }),
+    lfg: new LfgCommand({ lfgFeature, adminFeature }),
 };
 
 bot.on(Events.ClientReady, (client) => {
