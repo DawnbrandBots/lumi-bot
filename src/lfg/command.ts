@@ -90,7 +90,6 @@ export class LfgCommand implements ICommand {
             case LFG_HELP_SUBCOMMAND_NAME:
                 return this.lfgFeature.help();
             default:
-                // TODO: can this ever happen?
                 return new ErrorFeatureResponse({
                     embed: {
                         title: "Invalid subcommand",
