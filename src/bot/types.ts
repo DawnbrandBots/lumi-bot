@@ -36,8 +36,6 @@ export interface ICommandInfo {
     readonly pingEquivalent?: string;
 }
 
-export type TCommandAutocomplete = (input: string) => MaybePromise<ApplicationCommandOptionChoiceData[]>;
-
 /**
  * Represents a Discord slash command.
  */
