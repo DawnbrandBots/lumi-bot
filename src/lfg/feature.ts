@@ -121,7 +121,6 @@ export class LfgFeature implements ILfgFeature {
             room,
         });
         room.players.add(player);
-        this.em.persist([room, player]);
         await this.em.flush();
 
         return new SuccessFeatureResponse({
@@ -178,7 +177,6 @@ export class LfgFeature implements ILfgFeature {
             room,
         });
         room.players.add(player);
-        this.em.persist(player);
         await this.em.flush();
 
         return new SuccessFeatureResponse({
