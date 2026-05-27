@@ -16,7 +16,7 @@ COPY src ./src
 COPY scripts ./scripts
 COPY data ./data
 RUN mkdir -p /app/run/static /app/run/state && chown -R node:node /app/run
-CMD ["sh", "-c", "chown -R node:node /app/run/static /app/run/state && runuser -u node -- sh -c 'yarn db:recreate && yarn db:migrate'"]
+CMD ["sh", "-c", ": \"${LUMI_STATIC_DB_DIR:?LUMI_STATIC_DB_DIR is required}\" \"${LUMI_STATE_DB_DIR:?LUMI_STATE_DB_DIR is required}\" && chown -R node:node \"$LUMI_STATIC_DB_DIR\" \"$LUMI_STATE_DB_DIR\" && runuser -u node -- sh -c 'yarn db:recreate && yarn db:migrate'"]
 
 FROM base AS bot
 ARG REVISION
