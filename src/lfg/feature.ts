@@ -2,7 +2,27 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { MessageFlags, userMention } from "discord.js";
 import { randomUUID } from "node:crypto";
 import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
-import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "./constants.ts";
+import {
+    LFG_CREATE_SUBCOMMAND_DESCRIPTION,
+    LFG_CREATE_SUBCOMMAND_NAME,
+    LFG_DISBAND_SUBCOMMAND_DESCRIPTION,
+    LFG_DISBAND_SUBCOMMAND_NAME,
+    LFG_HELP_SUBCOMMAND_DESCRIPTION,
+    LFG_HELP_SUBCOMMAND_NAME,
+    LFG_JOIN_SUBCOMMAND_DESCRIPTION,
+    LFG_JOIN_SUBCOMMAND_NAME,
+    LFG_KICK_SUBCOMMAND_DESCRIPTION,
+    LFG_KICK_SUBCOMMAND_NAME,
+    LFG_LEAVE_SUBCOMMAND_DESCRIPTION,
+    LFG_LEAVE_SUBCOMMAND_NAME,
+    LFG_LIST_SUBCOMMAND_DESCRIPTION,
+    LFG_LIST_SUBCOMMAND_NAME,
+    LFG_MAX_ROOM_CODE_LENGTH,
+    LFG_MAX_ROOM_PLAYERS,
+    LFG_MIN_ROOM_CODE_LENGTH,
+    LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
+    LFG_TRANSFER_SUBCOMMAND_NAME,
+} from "./constants.ts";
 import { Room } from "./models/room.ts";
 import { RoomPlayer } from "./models/roomPlayer.ts";
 import type { ILfgFeature, IUser } from "./types.ts";
@@ -39,14 +59,14 @@ export class LfgFeature implements ILfgFeature {
     public help() {
         // TODO: this description must be generated from command info eventually
         const description = [
-            "- `/lfg create`: Create a room.",
-            "- `/lfg join`: Join a room.",
-            "- `/lfg transfer`: Transfer room ownership.",
-            "- `/lfg kick`: Kick a player from your room.",
-            "- `/lfg leave`: Leave your current room.",
-            "- `/lfg disband`: Disband your current room.",
-            "- `/lfg list`: Display active rooms.",
-            "- `/lfg help`: Display this command list.",
+            `- \`/lfg ${LFG_CREATE_SUBCOMMAND_NAME}\`: ${LFG_CREATE_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/lfg ${LFG_JOIN_SUBCOMMAND_NAME}\`: ${LFG_JOIN_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/lfg ${LFG_TRANSFER_SUBCOMMAND_NAME}\`: ${LFG_TRANSFER_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/lfg ${LFG_KICK_SUBCOMMAND_NAME}\`: ${LFG_KICK_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/lfg ${LFG_LEAVE_SUBCOMMAND_NAME}\`: ${LFG_LEAVE_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/lfg ${LFG_DISBAND_SUBCOMMAND_NAME}\`: ${LFG_DISBAND_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/lfg ${LFG_LIST_SUBCOMMAND_NAME}\`: ${LFG_LIST_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/lfg ${LFG_HELP_SUBCOMMAND_NAME}\`: ${LFG_HELP_SUBCOMMAND_DESCRIPTION}`,
         ].join("\n");
 
         return new NeutralFeatureResponse({
