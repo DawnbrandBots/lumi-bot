@@ -5,6 +5,7 @@ import {
     LFG_CODE_OPTION_NAME,
     LFG_COMMAND_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
+    LFG_DISBAND_SUBCOMMAND_NAME,
     LFG_HELP_SUBCOMMAND_NAME,
     LFG_JOIN_SUBCOMMAND_NAME,
     LFG_KICK_SUBCOMMAND_NAME,
@@ -63,6 +64,9 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_LEAVE_SUBCOMMAND_NAME).setDescription("Leave your current room."),
+            )
+            .addSubcommand((subcommand) =>
+                subcommand.setName(LFG_DISBAND_SUBCOMMAND_NAME).setDescription("Disband your current room."),
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_LIST_SUBCOMMAND_NAME).setDescription("Display active rooms."),

@@ -5,6 +5,7 @@ import { lfgCommandInfo } from "./commandInfo.ts";
 import {
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
+    LFG_DISBAND_SUBCOMMAND_NAME,
     LFG_HELP_SUBCOMMAND_NAME,
     LFG_JOIN_SUBCOMMAND_NAME,
     LFG_KICK_SUBCOMMAND_NAME,
@@ -82,6 +83,8 @@ export class LfgCommand implements ICommand {
                 );
             case LFG_LEAVE_SUBCOMMAND_NAME:
                 return this.lfgFeature.leave(guildId, interaction.user);
+            case LFG_DISBAND_SUBCOMMAND_NAME:
+                return this.lfgFeature.disband(guildId, interaction.user);
             case LFG_LIST_SUBCOMMAND_NAME:
                 return this.lfgFeature.list(guildId);
             case LFG_HELP_SUBCOMMAND_NAME:

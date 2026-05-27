@@ -7,6 +7,7 @@ export const LFG_JOIN_SUBCOMMAND_NAME = "join";
 export const LFG_TRANSFER_SUBCOMMAND_NAME = "transfer";
 export const LFG_KICK_SUBCOMMAND_NAME = "kick";
 export const LFG_LEAVE_SUBCOMMAND_NAME = "leave";
+export const LFG_DISBAND_SUBCOMMAND_NAME = "disband";
 export const LFG_LIST_SUBCOMMAND_NAME = "list";
 export const LFG_HELP_SUBCOMMAND_NAME = "help";
 
