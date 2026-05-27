@@ -3,6 +3,7 @@ import { MessageFlags, userMention } from "discord.js";
 import { randomUUID } from "node:crypto";
 import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
 import {
+    LFG_COMMAND_NAME,
     LFG_CREATE_SUBCOMMAND_DESCRIPTION,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_DISBAND_SUBCOMMAND_DESCRIPTION,
@@ -57,16 +58,16 @@ export class LfgFeature implements ILfgFeature {
     }
 
     public help() {
-        // TODO: this description must be generated from command info eventually
+        // TODO: this description must be generated from command info eventually (https://github.com/DawnbrandBots/lumi-bot/issues/37)
         const description = [
-            `- \`/lfg ${LFG_CREATE_SUBCOMMAND_NAME}\`: ${LFG_CREATE_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/lfg ${LFG_JOIN_SUBCOMMAND_NAME}\`: ${LFG_JOIN_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/lfg ${LFG_TRANSFER_SUBCOMMAND_NAME}\`: ${LFG_TRANSFER_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/lfg ${LFG_KICK_SUBCOMMAND_NAME}\`: ${LFG_KICK_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/lfg ${LFG_LEAVE_SUBCOMMAND_NAME}\`: ${LFG_LEAVE_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/lfg ${LFG_DISBAND_SUBCOMMAND_NAME}\`: ${LFG_DISBAND_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/lfg ${LFG_LIST_SUBCOMMAND_NAME}\`: ${LFG_LIST_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/lfg ${LFG_HELP_SUBCOMMAND_NAME}\`: ${LFG_HELP_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_CREATE_SUBCOMMAND_NAME}\`: ${LFG_CREATE_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_JOIN_SUBCOMMAND_NAME}\`: ${LFG_JOIN_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_TRANSFER_SUBCOMMAND_NAME}\`: ${LFG_TRANSFER_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_KICK_SUBCOMMAND_NAME}\`: ${LFG_KICK_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}\`: ${LFG_LEAVE_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_DISBAND_SUBCOMMAND_NAME}\`: ${LFG_DISBAND_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_LIST_SUBCOMMAND_NAME}\`: ${LFG_LIST_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_HELP_SUBCOMMAND_NAME}\`: ${LFG_HELP_SUBCOMMAND_DESCRIPTION}`,
         ].join("\n");
 
         return new NeutralFeatureResponse({
@@ -234,7 +235,7 @@ export class LfgFeature implements ILfgFeature {
             return new ErrorFeatureResponse({
                 embed: {
                     title: "Cannot kick yourself",
-                    description: "Use `/lfg leave` to leave your room.",
+                    description: `Use \`/${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}\` to leave your room.`,
                 },
                 flags: [MessageFlags.Ephemeral],
             });
