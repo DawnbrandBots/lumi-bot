@@ -287,7 +287,7 @@ export class LfgFeature implements ILfgFeature {
             return result;
         }
 
-        this.em.remove(result.players.toArray());
+        this.em.remove(result.players);
         this.em.remove(result);
         await this.em.flush();
 
