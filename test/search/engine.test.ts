@@ -3,15 +3,15 @@ import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import type { ISearchEngine, ISearchItem } from "../../src/search/types.ts";
-import { initTestOrm } from "../orm.ts";
+import { initTestGameOrm } from "../orm.ts";
 import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES } from "./constants.ts";
 
-let orm: Awaited<ReturnType<typeof initTestOrm>>;
+let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
 let searchEngine: ISearchEngine<ISearchItem>;
 
 beforeAll(async () => {
-    orm = await initTestOrm();
+    orm = await initTestGameOrm();
     em = orm.em.fork();
     searchEngine = new FuseSearchEngine<ISearchItem>({ items: await getSearchItems(em) });
 });
