@@ -5,7 +5,7 @@ import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } 
 import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "./constants.ts";
 import { Room } from "./models/room.ts";
 import { RoomPlayer } from "./models/roomPlayer.ts";
-import type { ILfgFeature, LfgUser } from "./types.ts";
+import type { ILfgFeature, IUser } from "./types.ts";
 
 type LfgFeatureCtorArg = {
     readonly em: EntityManager;
@@ -58,7 +58,7 @@ export class LfgFeature implements ILfgFeature {
         });
     }
 
-    public async create(guildId: string, owner: LfgUser, code: string) {
+    public async create(guildId: string, owner: IUser, code: string) {
         if (code.length < LFG_MIN_ROOM_CODE_LENGTH || code.length > LFG_MAX_ROOM_CODE_LENGTH) {
             return new ErrorFeatureResponse({
                 embed: {
@@ -112,7 +112,7 @@ export class LfgFeature implements ILfgFeature {
         });
     }
 
-    public async join(guildId: string, user: LfgUser, code: string) {
+    public async join(guildId: string, user: IUser, code: string) {
         const room = await this.getRoomByGuildAndCode(guildId, code);
         if (!room) {
             return new ErrorFeatureResponse({
@@ -169,7 +169,7 @@ export class LfgFeature implements ILfgFeature {
         });
     }
 
-    public async transfer(guildId: string, owner: LfgUser, target: LfgUser) {
+    public async transfer(guildId: string, owner: IUser, target: IUser) {
         // TODO: must replace instance of ErrorFeatureResponse with a discriminated union
         const result = await this.getOwnedRoom(guildId, owner);
         if (result instanceof ErrorFeatureResponse) {
@@ -207,7 +207,7 @@ export class LfgFeature implements ILfgFeature {
         });
     }
 
-    public async kick(guildId: string, owner: LfgUser, target: LfgUser) {
+    public async kick(guildId: string, owner: IUser, target: IUser) {
         const result = await this.getOwnedRoom(guildId, owner);
         if (result instanceof ErrorFeatureResponse) {
             return result;
@@ -243,7 +243,7 @@ export class LfgFeature implements ILfgFeature {
         });
     }
 
-    public async leave(guildId: string, user: LfgUser) {
+    public async leave(guildId: string, user: IUser) {
         const player = await this.getRoomPlayerInGuild(guildId, user.id);
         if (!player) {
             return new ErrorFeatureResponse({
@@ -281,7 +281,7 @@ export class LfgFeature implements ILfgFeature {
         });
     }
 
-    public async disband(guildId: string, user: LfgUser) {
+    public async disband(guildId: string, user: IUser) {
         const result = await this.getOwnedRoom(guildId, user);
         if (result instanceof ErrorFeatureResponse) {
             return result;
@@ -300,7 +300,7 @@ export class LfgFeature implements ILfgFeature {
         });
     }
 
-    protected async getOwnedRoom(guildId: string, owner: LfgUser): Promise<Room | ErrorFeatureResponse> {
+    protected async getOwnedRoom(guildId: string, owner: IUser): Promise<Room | ErrorFeatureResponse> {
         const player = await this.getRoomPlayerInGuild(guildId, owner.id);
         if (!player) {
             return new ErrorFeatureResponse({

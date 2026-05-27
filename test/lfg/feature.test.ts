@@ -7,16 +7,16 @@ import type { IFeatureResponse } from "../../src/bot/types.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
 import { LfgFeature } from "../../src/lfg/feature.ts";
 import { Room } from "../../src/lfg/models/room.ts";
-import type { LfgUser } from "../../src/lfg/types.ts";
+import type { IUser } from "../../src/lfg/types.ts";
 import { configsById } from "../mikro-orm.test.config.ts";
 import { initTestLfgOrm } from "../orm.ts";
 
 const GUILD_ID = "guild-1";
 const OTHER_GUILD_ID = "guild-2";
-const OWNER: LfgUser = { id: "owner" };
-const PLAYER_1: LfgUser = { id: "player-1" };
-const PLAYER_2: LfgUser = { id: "player-2" };
-const PLAYER_3: LfgUser = { id: "player-3" };
+const OWNER: IUser = { id: "owner" };
+const PLAYER_1: IUser = { id: "player-1" };
+const PLAYER_2: IUser = { id: "player-2" };
+const PLAYER_3: IUser = { id: "player-3" };
 
 type TestRoom = {
     readonly code: string;
