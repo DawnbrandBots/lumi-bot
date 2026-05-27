@@ -6,6 +6,7 @@ import type {
     CacheType,
     ChatInputCommandInteraction,
     Colors,
+    InteractionContextType,
     InteractionReplyOptions,
     InteractionResponse,
     SharedSlashCommand,
@@ -26,6 +27,10 @@ export interface ICommandInfo {
      * Briefly explains what the command does.
      */
     readonly description: string;
+    /**
+     * Briefly explains what the command does.
+     */
+    readonly contexts: InteractionContextType[];
     /**
      * Additional info about the command to be registered.
      */
