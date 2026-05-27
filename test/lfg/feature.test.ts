@@ -1,7 +1,7 @@
 import type { MikroORM } from "@mikro-orm/sqlite";
 import { type APIEmbed, MessageFlags, userMention } from "discord.js";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import recreateLfgDb from "../../scripts/utils/recreateLfgDb.ts";
+import recreateDb from "../../scripts/utils/recreateDb.ts";
 import { ErrorFeatureResponse, SuccessFeatureResponse } from "../../src/bot/featureResponse.ts";
 import type { IFeatureResponse } from "../../src/bot/types.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
@@ -51,7 +51,7 @@ async function getRooms(guildId: string): Promise<TestRoom[]> {
 
 describe(LfgFeature.name, () => {
     beforeEach(async () => {
-        await recreateLfgDb(configsById.lfg);
+        await recreateDb(configsById.lfg);
         orm = await initTestLfgOrm();
         feature = new LfgFeature({ em: orm.em.fork() });
     });

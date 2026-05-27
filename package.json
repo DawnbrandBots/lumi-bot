@@ -16,10 +16,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "register": "node --enable-source-maps --env-file-if-exists=.env scripts/registerCommands.ts",
-    "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDbs.ts",
-    "db:recreate:test": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateTestDbs.ts",
+    "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateStaticDbs.ts",
     "db:migrate": "node --enable-source-maps --env-file-if-exists=.env scripts/migrateDbs.ts",
-    "pretest": "yarn db:recreate:test",
     "test": "vitest"
   },
   "engines": {
