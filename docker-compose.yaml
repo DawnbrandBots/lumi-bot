@@ -3,20 +3,15 @@ services:
     build:
       context: .
       target: db-init
-    environment:
-      LUMI_STATIC_DB_DIR: /app/run/static
-      LUMI_STATE_DB_DIR: /app/run/state
     volumes:
-      - db-static:/app/run/static
-      - ./run/state:/app/run/state
+      - db-static:${LUMI_STATIC_DB_DIR}
+      - ${LUMI_STATE_DB_HOST_DIR}:${LUMI_STATE_DB_DIR}
 
   bot:
     image: "ghcr.io/dawnbrandbots/lumi-bot:${DOCKER_TAG:-latest}"
     environment:
-      DEBUG: "*"
-      DISCORD_TOKEN:
-      LUMI_STATIC_DB_DIR: /app/run/static
-      LUMI_STATE_DB_DIR: /app/run/state
+      DEBUG: ${DEBUG}
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
     logging:
       driver: "${DOCKER_LOG_DRIVER:-journald}"
     build:
@@ -27,8 +22,8 @@ services:
         condition: service_completed_successfully
     restart: unless-stopped
     volumes:
-      - db-static:/app/run/static:ro
-      - ./run/state:/app/run/state
+      - db-static:${LUMI_STATIC_DB_DIR:-/app/run/static}:ro
+      - ${LUMI_STATE_DB_HOST_DIR}:${LUMI_STATE_DB_DIR}
 
 volumes:
   db-static:

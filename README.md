@@ -16,17 +16,21 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ## Getting started
 
+### Running locally with Node
+
 1. Install Node.js 24+ LTS with Yarn v1. [Fast Node Manager](https://github.com/Schniz/fnm) is a good option for managing multiple installations.
 1. `yarn`
-1. Create a `.env` file with the Discord token for your bot, e.g.
-    ```env
-    DEBUG=* # optional
-    DISCORD_TOKEN=HERE.PLS
-    ```
+1. Copy `.env.template` to `.env`, fill in secrets and change default values at your convenience.
 1. `yarn build`
 1. `yarn register user-install`
 1. `yarn db:recreate`
+1. `yarn db:migrate`
 1. `yarn start`
+
+### Running locally with Docker Compose
+
+1. Copy `.env.template` to `.env.docker`, fill in secrets and change default values at your convenience.
+2. `docker compose --env-file .env.docker up --build`
 
 ## Inner workings
 
