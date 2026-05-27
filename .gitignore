@@ -44,6 +44,9 @@ node_modules/
 dist/
 *.db3
 
+# Mikro ORM migration snapshot files
+*.snapshot*.json
+
 # VSCode editor settings
 .vscode/settings.json
 
