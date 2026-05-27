@@ -1,5 +1,6 @@
 import { Migrator } from "@mikro-orm/migrations";
 import { defineConfig } from "@mikro-orm/sqlite";
+import path from "node:path";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
@@ -27,6 +28,9 @@ import { WeaponType } from "./game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
 import { Room } from "./lfg/models/room.ts";
 import { RoomPlayer } from "./lfg/models/roomPlayer.ts";
+
+const STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR ?? path.join("run", "static");
+const STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR ?? path.join("run", "state");
 
 const GAME_CONFIG = defineConfig({
     contextName: "game",
@@ -57,13 +61,13 @@ const GAME_CONFIG = defineConfig({
         SpellEffectValuePercentUnit,
         SpellShape,
     ],
-    dbName: "game.db3",
+    dbName: path.join(STATIC_DB_DIR, "game.db3"),
 });
 
 const LFG_CONFIG = defineConfig({
     contextName: "lfg",
     entities: [Room, RoomPlayer],
-    dbName: "lfg.db3",
+    dbName: path.join(STATE_DB_DIR, "lfg.db3"),
     migrations: {
         pathTs: "./src/migrations/lfg",
     },
