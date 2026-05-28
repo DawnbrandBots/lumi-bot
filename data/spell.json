@@ -2186,7 +2186,7 @@
       },
       {
         "kind": "MOVEMENT",
-        "direction": "UP",
+        "direction": "DOWN",
         "count": 1,
         "target": "ANY"
       }
@@ -3500,7 +3500,7 @@
       },
       {
         "kind": "MOVEMENT",
-        "direction": "UP",
+        "direction": "DOWN",
         "count": 1,
         "target": "ANY"
       }
