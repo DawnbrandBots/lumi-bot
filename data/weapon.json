@@ -227,7 +227,7 @@
     "hp": 6,
     "atk": 35,
     "freeSkillSlots": 3,
-    "uniqueSkill": "THIST_FOR_LIFE"
+    "uniqueSkill": "THIRST_FOR_LIFE"
   },
   {
     "id": "MULAGIR_PLUS",
@@ -537,7 +537,7 @@
     "hp": 6,
     "atk": 30,
     "freeSkillSlots": 3,
-    "uniqueSkill": "THIST_FOR_LIFE"
+    "uniqueSkill": "THIRST_FOR_LIFE"
   },
   {
     "id": "MULAGIR",

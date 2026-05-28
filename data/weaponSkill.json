@@ -110,8 +110,8 @@
     "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15"
   },
   {
-    "id": "THIST_FOR_LIFE",
-    "name": "Thist for Life",
+    "id": "THIRST_FOR_LIFE",
+    "name": "Thirst for Life",
     "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"
   },
   {
