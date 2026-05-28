@@ -1,11 +1,7 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
-import {
-    ErrorFeatureResponse,
-    NegativeFeatureResponse,
-    PositiveFeatureResponse,
-} from "../../src/bot/featureResponse.ts";
+import { EFeatureResponseKind } from "../../src/bot/types.ts";
 import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import {
@@ -23,6 +19,7 @@ import searchFeature from "../../src/search/feature.ts";
 import mapSearchFeatureReturnToResponse from "../../src/search/mapper.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
+import expectTypeGuard from "../utils/expectTypeGuard.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
@@ -50,7 +47,7 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
         });
         const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expect(response).toBeInstanceOf(NegativeFeatureResponse);
+        expectTypeGuard(response.kind, EFeatureResponseKind.NEGATIVE);
         expect(response.embeds?.[0]).toMatchObject({
             title: INPUT_TITLE,
             description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
@@ -79,7 +76,7 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
         });
         const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expect(response).toBeInstanceOf(ErrorFeatureResponse);
+        expectTypeGuard(response, EFeatureResponseKind.ERROR);
         expect(response.content).toBeDefined();
         expect(response.embeds?.[0]).toMatchObject({
             title: MISSING_DATABASE_RESULT_TITLE,
@@ -99,7 +96,7 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
         });
         const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expect(response).toBeInstanceOf(NegativeFeatureResponse);
+        expectTypeGuard(response.kind, EFeatureResponseKind.NEGATIVE);
         expect(response.embeds?.[0]).toMatchObject({
             title: INVALID_INPUT_TITLE,
             description: INPUT_TOO_LONG_DESCRIPTION,
@@ -115,7 +112,7 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
         });
         const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expect(response).toBeInstanceOf(PositiveFeatureResponse);
+        expectTypeGuard(response, EFeatureResponseKind.POSITIVE);
     });
 
     describe("footer", () => {
@@ -132,8 +129,8 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
             });
             const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            expect(response).toBeInstanceOf(PositiveFeatureResponse);
-            expect((response as PositiveFeatureResponse).embeds?.[0]?.footer?.text).toBe(
+            expectTypeGuard(response, EFeatureResponseKind.POSITIVE);
+            expect(response.embeds?.[0]?.footer?.text).toBe(
                 `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
             );
         });
@@ -151,8 +148,8 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
             });
             const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            expect(response).toBeInstanceOf(PositiveFeatureResponse);
-            expect((response as PositiveFeatureResponse).embeds?.[0]?.footer).toBeUndefined();
+            expectTypeGuard(response, EFeatureResponseKind.POSITIVE);
+            expect(response.embeds?.[0]?.footer).toBeUndefined();
         });
     });
 });

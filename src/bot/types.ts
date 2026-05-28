@@ -65,6 +65,7 @@ export const enum EFeatureResponseKind {
 
 export type IFeatureResponse = BaseMessageOptions & {
     readonly kind: EFeatureResponseKind;
+    readonly embeds: APIEmbed[];
 };
 export type IFeatureReponseCtorArg = {
     embed: TFeatureEmbed;
