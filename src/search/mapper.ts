@@ -1,5 +1,5 @@
 import type { APIEmbed } from "discord.js";
-import { ErrorFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
+import { ErrorFeatureResponse, NegativeFeatureResponse, PositiveFeatureResponse } from "../bot/featureResponse.ts";
 import type { IFeatureResponse } from "../bot/types.ts";
 import {
     ENTITY_KIND_FIELD_NAME,
@@ -27,21 +27,21 @@ function mapSearchFeatureReturnToResponse<Items extends ISearchableEntity>(
                 // Showing aliases when there is only one is redundant.
                 searchItem.aliases.length > 1
                     ? {
-                        text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem.aliases.join(", ")}`,
-                    }
+                          text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem.aliases.join(", ")}`,
+                      }
                     : undefined;
 
-            return new SuccessFeatureResponse({ embed: { ...handler.response(entity), footer } });
+            return new PositiveFeatureResponse({ embed: { ...handler.response(entity), footer } });
         }
         case SearchFeatureReturnKind.INPUT_TOO_LONG:
-            return new ErrorFeatureResponse({
+            return new NegativeFeatureResponse({
                 embed: {
                     title: INVALID_INPUT_TITLE,
                     description: INPUT_TOO_LONG_DESCRIPTION,
                 },
             });
         case SearchFeatureReturnKind.NO_RESULT:
-            return new ErrorFeatureResponse({
+            return new NegativeFeatureResponse({
                 embed: {
                     title: INPUT_TITLE,
                     description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,

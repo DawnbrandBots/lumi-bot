@@ -56,7 +56,16 @@ export type TFeatureResponseContent = BaseMessageOptions["content"];
 export type TFeatureResponseColor = (typeof Colors)[keyof typeof Colors];
 export type TFeatureEmbed = Omit<APIEmbed, "color">;
 
-export type IFeatureResponse = BaseMessageOptions;
+export const enum EFeatureResponseKind {
+    POSITIVE = "POSITIVE",
+    NEGATIVE = "NEGATIVE",
+    NEUTRAL = "NEUTRAL",
+    ERROR = "ERROR",
+}
+
+export type IFeatureResponse = BaseMessageOptions & {
+    readonly kind: EFeatureResponseKind;
+};
 export type IFeatureReponseCtorArg = {
     embed: TFeatureEmbed;
     color: TFeatureResponseColor;
