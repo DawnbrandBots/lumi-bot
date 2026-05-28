@@ -60,6 +60,10 @@
     "description": "After defeating a foe with a weapon attack, grant \"reduce magic cooldown by 20%\" (1 turn) to unit."
   },
   {
+    "id": "ON_WEAPON_KILL_RECEIVED_WEAPON_DAMAGE_REDUCTION_90_1T",
+    "description": "After defeating a foe with a weapon attack, grant \"take 90% less weapon damage\" (1 turn) to unit."
+  },
+  {
     "id": "WEAPON_DAMAGE_VS_ARMORED_20",
     "description": "Deal 20% more weapon damage against Armored foes."
   },

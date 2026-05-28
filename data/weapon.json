@@ -260,6 +260,16 @@
     "uniqueSkill": "WILY_DEFENSE"
   },
   {
+    "id": "FAILNAUGHT_PLUS",
+    "name": "Failnaught +",
+    "weaponType": "BOW",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "STRATEGIC_GENIUS"
+  },
+  {
     "id": "SIGHT_STONE_PLUS",
     "name": "Sight Stone +",
     "weaponType": "STONE",
@@ -500,6 +510,16 @@
     "uniqueSkill": "FOX_S_TRICKERY"
   },
   {
+    "id": "RESOLUTE_TOME",
+    "name": "Resolute Tome",
+    "weaponType": "TOME",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
+  },
+  {
     "id": "PANTHER_STAFF",
     "name": "Panther Staff",
     "weaponType": "STAFF",
@@ -568,6 +588,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "WILY_DEFENSE"
+  },
+  {
+    "id": "FAILNAUGHT",
+    "name": "Failnaught",
+    "weaponType": "BOW",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "STRATEGIC_GENIUS"
   },
   {
     "id": "SIGHT_STONE",
@@ -711,6 +741,15 @@
     "atk": 20,
     "freeSkillSlots": 2,
     "uniqueSkill": "SPIRITED_ATTACK"
+  },
+  {
+    "id": "MOONLIT_LANCE",
+    "name": "Moonlit Lance",
+    "weaponType": "LANCE",
+    "level": 5,
+    "hp": 5,
+    "atk": 25,
+    "freeSkillSlots": 2
   },
   {
     "id": "SILVER_AXE",

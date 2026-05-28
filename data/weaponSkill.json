@@ -130,6 +130,11 @@
     "effect": "ON_WEAPON_KILL_MAGIC_DAMAGE_REDUCTION_40_1T"
   },
   {
+    "id": "STRATEGIC_GENIUS",
+    "name": "Strategic Genius",
+    "effect": "ON_WEAPON_KILL_RECEIVED_WEAPON_DAMAGE_REDUCTION_90_1T"
+  },
+  {
     "id": "SHINING_EYE",
     "name": "Shining Eye",
     "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"
