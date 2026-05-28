@@ -76,7 +76,7 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
         });
         const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expectTypeGuard(response, EFeatureResponseKind.ERROR);
+        expectTypeGuard(response.kind, EFeatureResponseKind.ERROR);
         expect(response.content).toBeDefined();
         expect(response.embeds?.[0]).toMatchObject({
             title: MISSING_DATABASE_RESULT_TITLE,
@@ -112,7 +112,7 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
         });
         const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expectTypeGuard(response, EFeatureResponseKind.POSITIVE);
+        expectTypeGuard(response.kind, EFeatureResponseKind.POSITIVE);
     });
 
     describe("footer", () => {
@@ -129,7 +129,7 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
             });
             const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            expectTypeGuard(response, EFeatureResponseKind.POSITIVE);
+            expectTypeGuard(response.kind, EFeatureResponseKind.POSITIVE);
             expect(response.embeds?.[0]?.footer?.text).toBe(
                 `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
             );
@@ -148,7 +148,7 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
             });
             const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            expectTypeGuard(response, EFeatureResponseKind.POSITIVE);
+            expectTypeGuard(response.kind, EFeatureResponseKind.POSITIVE);
             expect(response.embeds?.[0]?.footer).toBeUndefined();
         });
     });
