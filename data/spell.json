@@ -2186,8 +2186,8 @@
       },
       {
         "kind": "MOVEMENT",
-        "direction": "UP",
-        "count": 2,
+        "direction": "DOWN",
+        "count": 1,
         "target": "ANY"
       }
     ]
@@ -3435,5 +3435,137 @@
         "target": "ANY"
       }
     ]
+  },
+  {
+    "id": "CROSSWIND_GRAV_EX",
+    "name": "Crosswind Grav EX",
+    "disciple": "CLAUDE",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "LIMIT",
+          "amount": {
+            "base": 1,
+            "unit": {
+              "kind": "FIXED"
+            }
+          },
+          "stat": "MOVEMENT"
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "EDGE_BREAK_PULL",
+    "name": "Edge Break Pull",
+    "disciple": "CLAUDE",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 25,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 1,
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "FINAL_TETRAWIND",
+    "name": "Final Tetrawind",
+    "disciple": "CLAUDE",
+    "role": "LIGHT",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 45,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "GREEN"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_CROSSWIND_PLUS_BOW",
+    "name": "Dark Crosswind + Bow",
+    "disciple": "CLAUDE",
+    "role": "SHADOW",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 4,
+    "countdown": 2,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 40,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "GREEN"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["weaponType", "BOW"]
   }
 ]

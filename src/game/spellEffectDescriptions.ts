@@ -103,7 +103,7 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
         const valueStr = formatSpellEffectValue(effect.amount, effect.stat);
         const effectivenessStr = formatEffectiveness(effect.amount, "for");
 
-        return `${effect.statChange.verb} ${effect.stat.name} by ${valueStr}${effectivenessStr} (${effect.duration == null ? "permanent" : effect.duration + " turns"})`;
+        return `${effect.statChange.verb} ${effect.stat.name} ${effect.statChange.preposition} ${valueStr}${effectivenessStr} (${effect.duration == null ? "permanent" : effect.duration + " turns"})`;
     },
     STATUS(effect, spell, inline) {
         const description = describeSpellEffect(effect.effect, spell, inline);
