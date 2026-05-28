@@ -2187,7 +2187,7 @@
       {
         "kind": "MOVEMENT",
         "direction": "UP",
-        "count": 2,
+        "count": 1,
         "target": "ANY"
       }
     ]
