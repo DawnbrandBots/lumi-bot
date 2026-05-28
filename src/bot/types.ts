@@ -5,7 +5,6 @@ import type {
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
-    Colors,
     InteractionResponse,
     SharedSlashCommand,
     SlashCommandBuilder,
@@ -53,7 +52,7 @@ export interface ICommand {
 }
 
 export type TFeatureResponseContent = BaseMessageOptions["content"];
-export type TFeatureResponseColor = (typeof Colors)[keyof typeof Colors];
+export type TFeatureResponseColor = NonNullable<APIEmbed["color"]>;
 export type TFeatureEmbed = Omit<APIEmbed, "color">;
 
 export const enum EFeatureResponseKind {
@@ -63,13 +62,22 @@ export const enum EFeatureResponseKind {
     ERROR = "ERROR",
 }
 
-export type IFeatureResponse = BaseMessageOptions & {
+export type IFeatureResponse<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = MessageOptions & {
     readonly kind: EFeatureResponseKind;
     readonly embeds: APIEmbed[];
 };
-export type IFeatureReponseCtorArg = {
+export type IFeatureReponseCtorArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+    MessageOptions,
+    "embeds"
+> & {
+    kind: EFeatureResponseKind;
     embed: TFeatureEmbed;
     color: TFeatureResponseColor;
-    content?: TFeatureResponseContent;
 };
-export type ISubFeatureReponseCtorArg = Omit<IFeatureReponseCtorArg, "color">;
+
+export type ISubFeatureReponseCtorArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+    MessageOptions,
+    "embeds"
+> & {
+    embed: TFeatureEmbed;
+};

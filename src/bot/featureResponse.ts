@@ -1,4 +1,4 @@
-import { type APIEmbed } from "discord.js";
+import { type BaseMessageOptions } from "discord.js";
 import {
     DISCORD_MESSAGE_ERROR_COLOR,
     DISCORD_MESSAGE_NEGATIVE_COLOR,
@@ -7,57 +7,55 @@ import {
     DISCORD_SAI_LAUGH_EMOJI_CALL,
     NOTABOT_DISCORD_MENTION,
 } from "./constants.ts";
-import type {
-    IFeatureReponseCtorArg,
-    IFeatureResponse,
-    ISubFeatureReponseCtorArg,
-    TFeatureResponseContent,
-} from "./types.ts";
+import type { IFeatureReponseCtorArg, ISubFeatureReponseCtorArg } from "./types.ts";
 import { EFeatureResponseKind } from "./types.ts";
 
-export default abstract class FeatureResponse implements IFeatureResponse {
-    public readonly content?: TFeatureResponseContent;
-    public readonly embeds: APIEmbed[];
-    public abstract readonly kind: EFeatureResponseKind;
-
-    public constructor({ embed, color, content }: IFeatureReponseCtorArg) {
-        this.embeds = [{ ...embed, color }];
-        this.content = content;
-    }
+function featureResponse<MessageOptions extends BaseMessageOptions = BaseMessageOptions>({
+    kind,
+    color,
+    embed,
+    ...messageOptions
+}: IFeatureReponseCtorArg<MessageOptions>) {
+    return { kind, embeds: [{ color, ...embed }], ...messageOptions };
 }
 
-export class PositiveFeatureResponse extends FeatureResponse implements IFeatureResponse {
-    public readonly kind = EFeatureResponseKind.POSITIVE;
-
-    public constructor(arg: ISubFeatureReponseCtorArg) {
-        super({ ...arg, color: DISCORD_MESSAGE_POSITIVE_COLOR });
-    }
+export function positiveFeatureResponse<MessageOptions extends BaseMessageOptions = BaseMessageOptions>(
+    arg: ISubFeatureReponseCtorArg<MessageOptions>,
+) {
+    return featureResponse<MessageOptions>({
+        ...arg,
+        color: DISCORD_MESSAGE_POSITIVE_COLOR,
+        kind: EFeatureResponseKind.POSITIVE,
+    });
 }
 
-export class NegativeFeatureResponse extends FeatureResponse implements IFeatureResponse {
-    public readonly kind = EFeatureResponseKind.NEGATIVE;
-
-    public constructor(arg: ISubFeatureReponseCtorArg) {
-        super({ ...arg, color: DISCORD_MESSAGE_NEGATIVE_COLOR });
-    }
+export function negativeFeatureResponse<MessageOptions extends BaseMessageOptions = BaseMessageOptions>(
+    arg: ISubFeatureReponseCtorArg<MessageOptions>,
+) {
+    return featureResponse<MessageOptions>({
+        ...arg,
+        color: DISCORD_MESSAGE_NEGATIVE_COLOR,
+        kind: EFeatureResponseKind.NEGATIVE,
+    });
 }
 
-export class NeutralFeatureResponse extends FeatureResponse implements IFeatureResponse {
-    public readonly kind = EFeatureResponseKind.NEUTRAL;
-
-    public constructor(arg: ISubFeatureReponseCtorArg) {
-        super({ ...arg, color: DISCORD_MESSAGE_NEUTRAL_COLOR });
-    }
+export function neutralFeatureResponse<MessageOptions extends BaseMessageOptions = BaseMessageOptions>(
+    arg: ISubFeatureReponseCtorArg<MessageOptions>,
+) {
+    return featureResponse<MessageOptions>({
+        ...arg,
+        color: DISCORD_MESSAGE_NEUTRAL_COLOR,
+        kind: EFeatureResponseKind.NEUTRAL,
+    });
 }
 
-export class ErrorFeatureResponse extends FeatureResponse implements IFeatureResponse {
-    public readonly kind = EFeatureResponseKind.ERROR;
-
-    public constructor({ embed }: ISubFeatureReponseCtorArg) {
-        super({
-            embed,
-            color: DISCORD_MESSAGE_ERROR_COLOR,
-            content: `-# Everyone point and laugh at ${NOTABOT_DISCORD_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`,
-        });
-    }
+export function errorFeatureResponse<MessageOptions extends BaseMessageOptions = BaseMessageOptions>(
+    arg: ISubFeatureReponseCtorArg<MessageOptions>,
+) {
+    return featureResponse<MessageOptions>({
+        ...arg,
+        color: DISCORD_MESSAGE_ERROR_COLOR,
+        content: `-# Everyone point and laugh at ${NOTABOT_DISCORD_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`,
+        kind: EFeatureResponseKind.ERROR,
+    });
 }

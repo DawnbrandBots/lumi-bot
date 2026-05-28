@@ -1,10 +1,9 @@
 import { BOT_NAME } from "../bot/constants.ts";
-import { NeutralFeatureResponse } from "../bot/featureResponse.ts";
-import type { IFeatureResponse } from "../bot/types.ts";
+import { neutralFeatureResponse } from "../bot/featureResponse.ts";
 import type helpFeature from "./feature.ts";
 
-function mapHelpFeatureReturnToResponse(description: ReturnType<typeof helpFeature>): IFeatureResponse {
-    return new NeutralFeatureResponse({
+function mapHelpFeatureReturnToResponse(description: ReturnType<typeof helpFeature>) {
+    return neutralFeatureResponse({
         embed: {
             title: BOT_NAME,
             description,
