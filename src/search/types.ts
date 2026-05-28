@@ -1,6 +1,5 @@
 import type { EntityName, Populate } from "@mikro-orm/sqlite";
 import type { APIEmbed } from "discord.js";
-import type { IFeatureResponse } from "../bot/types.ts";
 import type { Disciple } from "../game/models/disciple.ts";
 import type { Spell } from "../game/models/spell.ts";
 import type { Weapon } from "../game/models/weapon.ts";
@@ -31,7 +30,13 @@ export interface ISearchItem {
 }
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
-export type SearchFeatureReturnType = IFeatureResponse;
+
+export const enum SearchFeatureReturnKind {
+    SUCCESS = "SUCCESS",
+    INPUT_TOO_LONG = "INPUT_TOO_LONG",
+    NO_RESULT = "NO_RESULT",
+    FOUND_BY_ENGINE_BUT_NOT_BY_DB = "FOUND_BY_ENGINE_BUT_NOT_BY_DB",
+}
 
 /**
  * Defines what ORM entity should be searched for and what response should be generated
