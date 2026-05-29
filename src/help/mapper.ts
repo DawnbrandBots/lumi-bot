@@ -1,9 +1,9 @@
 import { BOT_NAME } from "../bot/constants.ts";
-import { neutralFeatureResponse } from "../bot/featureResponse.ts";
+import { neutralMessage } from "../bot/message.ts";
 import type helpFeature from "./feature.ts";
 
-function mapHelpFeatureReturnToResponse(description: ReturnType<typeof helpFeature>) {
-    return neutralFeatureResponse({
+function mapHelpFeatureReturnToMessage(description: ReturnType<typeof helpFeature>) {
+    return neutralMessage({
         embed: {
             title: BOT_NAME,
             description,
@@ -11,4 +11,4 @@ function mapHelpFeatureReturnToResponse(description: ReturnType<typeof helpFeatu
     });
 }
 
-export default mapHelpFeatureReturnToResponse;
+export default mapHelpFeatureReturnToMessage;

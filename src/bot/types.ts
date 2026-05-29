@@ -51,7 +51,7 @@ export interface ICommand {
     ) => MaybePromise<ApplicationCommandOptionChoiceData[] | null>;
 }
 
-export const enum EFeatureResponseKind {
+export const enum EMessageKind {
     POSITIVE = "POSITIVE",
     NEGATIVE = "NEGATIVE",
     NEUTRAL = "NEUTRAL",
@@ -61,12 +61,12 @@ export const enum EFeatureResponseKind {
 /**
  * Pre-made formatters should already have a color which shouldn't be overidden by the caller.
  */
-export type IChildFeatureResponseArgCustomProps = {
+export type IChildMessageArgCustomProps = {
     embed: Omit<APIEmbed, "color">;
 };
 
-export type IBaseFeatureResponseArgCustomProps = {
-    kind: EFeatureResponseKind;
+export type IBaseMessageArgCustomProps = {
+    kind: EMessageKind;
     embed?: APIEmbed;
 };
 
@@ -84,16 +84,14 @@ export type TChildMessageOptionsWithoutUnusedProperties<
     MessageOptions extends BaseMessageOptions = BaseMessageOptions,
 > = Omit<MessageOptions, TChildMessageOptionsUnusedProperties>;
 
-export type IFeatureReponseArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
-    TMessageOptionsWithoutUnusedProperties<MessageOptions> &
-    IBaseFeatureResponseArgCustomProps &
-    IChildFeatureResponseArgCustomProps;
+export type IMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseMessageArgCustomProps & IChildMessageArgCustomProps;
 
-export type IChildFeatureReponseGetterArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
-    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseFeatureResponseArgCustomProps;
+export type IChildMessageGetterArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseMessageArgCustomProps;
 
-export type IChildFeatureReponseArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
     MessageOptions,
     TChildMessageOptionsUnusedProperties
 > &
-    IChildFeatureResponseArgCustomProps;
+    IChildMessageArgCustomProps;

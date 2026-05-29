@@ -1,7 +1,7 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
-import { EFeatureResponseKind } from "../../src/bot/types.ts";
+import { EMessageKind } from "../../src/bot/types.ts";
 import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import {
@@ -16,7 +16,7 @@ import {
 } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
-import mapSearchFeatureReturnToResponse from "../../src/search/mapper.ts";
+import mapSearchFeatureReturnToMessage from "../../src/search/mapper.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
 import expectTypeGuard from "../utils/expectTypeGuard.ts";
@@ -37,7 +37,7 @@ afterAll(async () => {
     await orm.close();
 });
 
-describe(mapSearchFeatureReturnToResponse.name, () => {
+describe(mapSearchFeatureReturnToMessage.name, () => {
     test("maps no result to an error response", async () => {
         const result = await searchFeature<TSearchableEntity>({
             input: NO_SEARCH_RESULT_INPUT,
@@ -45,9 +45,9 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const response = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expectTypeGuard(response.kind, EFeatureResponseKind.NEGATIVE);
+        expectTypeGuard(response.kind, EMessageKind.NEGATIVE);
         expect(response.embeds?.[0]).toMatchObject({
             title: INPUT_TITLE,
             description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
@@ -74,9 +74,9 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
             handlers: SEARCH_HANDLERS,
             em: mockedEntityManager,
         });
-        const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const response = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expectTypeGuard(response.kind, EFeatureResponseKind.ERROR);
+        expectTypeGuard(response.kind, EMessageKind.ERROR);
         expect(response.content).toBeDefined();
         expect(response.embeds?.[0]).toMatchObject({
             title: MISSING_DATABASE_RESULT_TITLE,
@@ -94,9 +94,9 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const response = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expectTypeGuard(response.kind, EFeatureResponseKind.NEGATIVE);
+        expectTypeGuard(response.kind, EMessageKind.NEGATIVE);
         expect(response.embeds?.[0]).toMatchObject({
             title: INVALID_INPUT_TITLE,
             description: INPUT_TOO_LONG_DESCRIPTION,
@@ -110,9 +110,9 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const response = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        expectTypeGuard(response.kind, EFeatureResponseKind.POSITIVE);
+        expectTypeGuard(response.kind, EMessageKind.POSITIVE);
     });
 
     describe("footer", () => {
@@ -127,9 +127,9 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
                 handlers: SEARCH_HANDLERS,
                 em,
             });
-            const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const response = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            expectTypeGuard(response.kind, EFeatureResponseKind.POSITIVE);
+            expectTypeGuard(response.kind, EMessageKind.POSITIVE);
             expect(response.embeds?.[0]?.footer?.text).toBe(
                 `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
             );
@@ -146,9 +146,9 @@ describe(mapSearchFeatureReturnToResponse.name, () => {
                 handlers: SEARCH_HANDLERS,
                 em,
             });
-            const response = mapSearchFeatureReturnToResponse<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const response = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            expectTypeGuard(response.kind, EFeatureResponseKind.POSITIVE);
+            expectTypeGuard(response.kind, EMessageKind.POSITIVE);
             expect(response.embeds?.[0]?.footer).toBeUndefined();
         });
     });

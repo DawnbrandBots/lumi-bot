@@ -1,5 +1,5 @@
 import type { APIEmbed } from "discord.js";
-import { errorFeatureResponse, negativeFeatureResponse, positiveFeatureResponse } from "../bot/featureResponse.ts";
+import { errorMessage, negativeMessage, positiveMessage } from "../bot/message.ts";
 import {
     ENTITY_KIND_FIELD_NAME,
     ID_FIELD_NAME,
@@ -14,7 +14,7 @@ import type searchFeature from "./feature.ts";
 import type { ISearchableEntity, ISearchHandlers } from "./types.ts";
 import { SearchFeatureReturnKind } from "./types.ts";
 
-function mapSearchFeatureReturnToResponse<Items extends ISearchableEntity>(
+function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
     result: Awaited<ReturnType<typeof searchFeature<Items>>>,
     handlers: ISearchHandlers<Items>,
 ) {
@@ -30,24 +30,24 @@ function mapSearchFeatureReturnToResponse<Items extends ISearchableEntity>(
                     }
                     : undefined;
 
-            return positiveFeatureResponse({ embed: { ...handler.response(entity), footer } });
+            return positiveMessage({ embed: { ...handler.response(entity), footer } });
         }
         case SearchFeatureReturnKind.INPUT_TOO_LONG:
-            return negativeFeatureResponse({
+            return negativeMessage({
                 embed: {
                     title: INVALID_INPUT_TITLE,
                     description: INPUT_TOO_LONG_DESCRIPTION,
                 },
             });
         case SearchFeatureReturnKind.NO_RESULT:
-            return negativeFeatureResponse({
+            return negativeMessage({
                 embed: {
                     title: INPUT_TITLE,
                     description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
                 },
             });
         case SearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB:
-            return errorFeatureResponse({
+            return errorMessage({
                 embed: {
                     title: MISSING_DATABASE_RESULT_TITLE,
                     fields: [
@@ -59,4 +59,4 @@ function mapSearchFeatureReturnToResponse<Items extends ISearchableEntity>(
     }
 }
 
-export default mapSearchFeatureReturnToResponse;
+export default mapSearchFeatureReturnToMessage;
