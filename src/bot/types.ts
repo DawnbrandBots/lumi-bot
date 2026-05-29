@@ -67,7 +67,7 @@ export type IChildMessageArgCustomProps = {
 
 export type IBaseMessageArgCustomProps = {
     kind: EMessageKind;
-    embed?: APIEmbed;
+    embed: APIEmbed;
 };
 
 export type TMessageOptionsUnusedProperties = "embeds";
@@ -85,7 +85,7 @@ export type TChildMessageOptionsWithoutUnusedProperties<
 > = Omit<MessageOptions, TChildMessageOptionsUnusedProperties>;
 
 export type IMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
-    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseMessageArgCustomProps & IChildMessageArgCustomProps;
+    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseMessageArgCustomProps;
 
 export type IChildMessageGetterArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
     TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseMessageArgCustomProps;
