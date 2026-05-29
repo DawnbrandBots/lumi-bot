@@ -73,22 +73,17 @@ export type IBaseMessageArgCustomProps = {
 export type TMessageOptionsUnusedProperties = "embeds";
 export type TChildMessageOptionsUnusedProperties = TMessageOptionsUnusedProperties | "content" | "components";
 
-/**
- * Removes `embeds` so `embed` can replace it.
- */
-// This isn't a definitive format for all messages sent by the bot. It may change later for all or only some messages sent when using certain features.
-export type TMessageOptionsWithoutUnusedProperties<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
-    Omit<MessageOptions, TMessageOptionsUnusedProperties>;
+export type IMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+    MessageOptions,
+    TMessageOptionsUnusedProperties
+> &
+    IBaseMessageArgCustomProps;
 
-export type TChildMessageOptionsWithoutUnusedProperties<
-    MessageOptions extends BaseMessageOptions = BaseMessageOptions,
-> = Omit<MessageOptions, TChildMessageOptionsUnusedProperties>;
-
-export type IMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
-    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseMessageArgCustomProps;
-
-export type IChildMessageGetterArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
-    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseMessageArgCustomProps;
+export type IChildMessageGetterArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+    MessageOptions,
+    TMessageOptionsUnusedProperties
+> &
+    IBaseMessageArgCustomProps;
 
 export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
     MessageOptions,
