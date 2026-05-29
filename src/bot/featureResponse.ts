@@ -22,10 +22,10 @@ function featureResponse<MessageOptions extends BaseMessageOptions = BaseMessage
 }
 
 const getFeatureResponseGetter =
-    <ConstMessageOptions extends BaseMessageOptions = BaseMessageOptions>(
-        cons: IChildFeatureReponseGetterArg<ConstMessageOptions>,
+    <MessageOptions extends BaseMessageOptions = BaseMessageOptions>(
+        cons: IChildFeatureReponseGetterArg<MessageOptions>,
     ) =>
-        <MessageOptions extends ConstMessageOptions = ConstMessageOptions>(arg: IChildFeatureReponseArg<MessageOptions>) =>
+        (arg: IChildFeatureReponseArg<MessageOptions>) =>
             featureResponse<MessageOptions>({
                 ...cons,
                 ...arg,

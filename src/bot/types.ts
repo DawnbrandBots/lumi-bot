@@ -74,11 +74,15 @@ export type TMessageOptionsUnusedProperties = "embeds";
 export type TChildMessageOptionsUnusedProperties = TMessageOptionsUnusedProperties | "content" | "components";
 
 /**
- * Removes `embeds` so `embed` can replace it. Removes other message options not meant to be used right now.
+ * Removes `embeds` so `embed` can replace it.
  */
 // This isn't a definitive format for all messages sent by the bot. It may change later for all or only some messages sent when using certain features.
 export type TMessageOptionsWithoutUnusedProperties<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
     Omit<MessageOptions, TMessageOptionsUnusedProperties>;
+
+export type TChildMessageOptionsWithoutUnusedProperties<
+    MessageOptions extends BaseMessageOptions = BaseMessageOptions,
+> = Omit<MessageOptions, TChildMessageOptionsUnusedProperties>;
 
 export type IFeatureReponseArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
     TMessageOptionsWithoutUnusedProperties<MessageOptions> &
@@ -88,5 +92,8 @@ export type IFeatureReponseArg<MessageOptions extends BaseMessageOptions = BaseM
 export type IChildFeatureReponseGetterArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
     TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseFeatureResponseArgCustomProps;
 
-export type IChildFeatureReponseArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
-    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IChildFeatureResponseArgCustomProps;
+export type IChildFeatureReponseArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+    MessageOptions,
+    TChildMessageOptionsUnusedProperties
+> &
+    IChildFeatureResponseArgCustomProps;
