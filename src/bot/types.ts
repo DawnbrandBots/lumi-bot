@@ -51,10 +51,6 @@ export interface ICommand {
     ) => MaybePromise<ApplicationCommandOptionChoiceData[] | null>;
 }
 
-export type TFeatureResponseContent = BaseMessageOptions["content"];
-export type TFeatureResponseColor = NonNullable<APIEmbed["color"]>;
-export type TFeatureEmbed = Omit<APIEmbed, "color">;
-
 export const enum EFeatureResponseKind {
     POSITIVE = "POSITIVE",
     NEGATIVE = "NEGATIVE",
@@ -62,22 +58,35 @@ export const enum EFeatureResponseKind {
     ERROR = "ERROR",
 }
 
-export type IFeatureResponse<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = MessageOptions & {
-    readonly kind: EFeatureResponseKind;
-    readonly embeds: APIEmbed[];
-};
-export type IFeatureReponseCtorArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
-    MessageOptions,
-    "embeds"
-> & {
-    kind: EFeatureResponseKind;
-    embed: TFeatureEmbed;
-    color: TFeatureResponseColor;
+/**
+ * Pre-made formatters should already have a color which shouldn't be overidden by the caller.
+ */
+export type IChildFeatureResponseArgCustomProps = {
+    embed: Omit<APIEmbed, "color">;
 };
 
-export type ISubFeatureReponseCtorArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
-    MessageOptions,
-    "embeds"
-> & {
-    embed: TFeatureEmbed;
+export type IBaseFeatureResponseArgCustomProps = {
+    kind: EFeatureResponseKind;
+    embed?: APIEmbed;
 };
+
+export type TMessageOptionsUnusedProperties = "embeds";
+export type TChildMessageOptionsUnusedProperties = TMessageOptionsUnusedProperties | "content" | "components";
+
+/**
+ * Removes `embeds` so `embed` can replace it. Removes other message options not meant to be used right now.
+ */
+// This isn't a definitive format for all messages sent by the bot. It may change later for all or only some messages sent when using certain features.
+export type TMessageOptionsWithoutUnusedProperties<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    Omit<MessageOptions, TMessageOptionsUnusedProperties>;
+
+export type IFeatureReponseArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    TMessageOptionsWithoutUnusedProperties<MessageOptions> &
+    IBaseFeatureResponseArgCustomProps &
+    IChildFeatureResponseArgCustomProps;
+
+export type IChildFeatureReponseGetterArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IBaseFeatureResponseArgCustomProps;
+
+export type IChildFeatureReponseArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    TMessageOptionsWithoutUnusedProperties<MessageOptions> & IChildFeatureResponseArgCustomProps;
