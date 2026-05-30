@@ -12,7 +12,7 @@ import {
     type TSearchableEntity,
 } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
-import expectTypeGuard from "../utils/expectTypeGuard.ts";
+import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
@@ -109,7 +109,7 @@ describe(searchFeature.name, () => {
             em,
         });
 
-        expectTypeGuard(result.kind, ESearchFeatureReturnKind.SUCCESS);
+        typedGuardExpectToBe(result.kind, ESearchFeatureReturnKind.SUCCESS);
         expect(result.unexpected).toBe(false);
         expect(result.value.searchItem).toEqual(searchItem);
         expect(result.value.entity.id).toBe(searchItem?.id);
