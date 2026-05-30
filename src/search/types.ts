@@ -29,8 +29,6 @@ export interface ISearchItem {
     readonly aliases: string[];
 }
 
-export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
-
 export const enum ESearchFeatureReturnKind {
     SUCCESS = "SUCCESS",
     INPUT_TOO_LONG = "INPUT_TOO_LONG",
@@ -52,7 +50,7 @@ export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHi
     /**
      * Given the ORM entity, returns the formatted response to be sent to the client.
      */
-    response: (entity: EntityType) => SearchHandlerResponseReturnType;
+    response: (entity: EntityType) => Required<Pick<APIEmbed, "title" | "fields">>;
     /**
      * MikroORM populate paths for fetched entities.
      * Search handlers might need deeply nested properties that need to be referred to explicitly
