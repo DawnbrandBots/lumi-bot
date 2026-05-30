@@ -151,7 +151,6 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
         case ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM:
             return createNegativeMessage<InteractionReplyOptions>({
                 embed: {
-                    title: LfgConstants.LFG_PLAYER_NOT_IN_ROOM_TITLE,
                     description: `${userMention(result.value.targetId)} ${LfgConstants.LFG_PLAYER_NOT_IN_ROOM_DESCRIPTION_SUFFIX}`,
                 },
                 flags: MessageFlags.Ephemeral,
@@ -173,10 +172,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
             });
         case ELfgFeatureReturnKind.NOT_IN_A_ROOM:
             return createNegativeMessage<InteractionReplyOptions>({
-                embed: {
-                    title: LfgConstants.LFG_NOT_IN_A_ROOM_TITLE,
-                    description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION,
-                },
+                embed: { description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION },
             });
         case ELfgFeatureReturnKind.INVALID_SUBCOMMAND:
             return createErrorMessage<InteractionReplyOptions>({

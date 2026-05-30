@@ -224,7 +224,6 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_PLAYER_NOT_IN_ROOM_TITLE,
                         description: `${userMention("target")} ${LfgConstants.LFG_PLAYER_NOT_IN_ROOM_DESCRIPTION_SUFFIX}`,
                     },
                 ],
@@ -265,7 +264,6 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_NOT_IN_A_ROOM_TITLE,
                         description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION,
                     },
                 ],
