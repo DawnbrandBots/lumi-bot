@@ -71,15 +71,8 @@ export type IBaseMessageArgCustomProps = {
 };
 
 export type TMessageOptionsUnusedProperties = "embeds";
-export type TChildMessageOptionsUnusedProperties = TMessageOptionsUnusedProperties | "content" | "components";
 
-export type IMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
-    MessageOptions,
-    TMessageOptionsUnusedProperties
-> &
-    IBaseMessageArgCustomProps;
-
-export type IChildMessageGetterArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+export type IBaseMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
     MessageOptions,
     TMessageOptionsUnusedProperties
 > &
@@ -87,6 +80,6 @@ export type IChildMessageGetterArg<MessageOptions extends BaseMessageOptions = B
 
 export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
     MessageOptions,
-    TChildMessageOptionsUnusedProperties
+    TMessageOptionsUnusedProperties
 > &
     IChildMessageArgCustomProps;

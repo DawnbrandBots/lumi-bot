@@ -7,7 +7,7 @@ import {
     DISCORD_SAI_LAUGH_EMOJI_CALL,
     NOTABOT_DISCORD_MENTION,
 } from "./constants.ts";
-import type { IChildMessageArg, IChildMessageGetterArg, IMessageArg } from "./types.ts";
+import type { IBaseMessageArg, IChildMessageArg } from "./types.ts";
 import { EMessageKind } from "./types.ts";
 
 /**
@@ -17,13 +17,13 @@ function message<MessageOptions extends BaseMessageOptions = BaseMessageOptions>
     kind,
     embed,
     ...messageOptions
-}: IMessageArg<MessageOptions>) {
+}: IBaseMessageArg<MessageOptions>) {
     return { kind, embeds: [embed], ...messageOptions };
 }
 
 const getMessageGetter =
-    <MessageOptions extends BaseMessageOptions = BaseMessageOptions>(cons: IChildMessageGetterArg<MessageOptions>) =>
-        (arg: IChildMessageArg<MessageOptions>) =>
+    <ConstMessageOptions extends BaseMessageOptions = BaseMessageOptions>(cons: IBaseMessageArg<ConstMessageOptions>) =>
+        <MessageOptions extends ConstMessageOptions = ConstMessageOptions>(arg: IChildMessageArg<MessageOptions>) =>
             message<MessageOptions>({
                 ...cons,
                 ...arg,
