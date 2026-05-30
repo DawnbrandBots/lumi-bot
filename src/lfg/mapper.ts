@@ -172,7 +172,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
                 flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.NOT_IN_A_ROOM:
-            return createNegativeMessage({
+            return createNegativeMessage<InteractionReplyOptions>({
                 embed: {
                     title: LfgConstants.LFG_NOT_IN_A_ROOM_TITLE,
                     description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION,
