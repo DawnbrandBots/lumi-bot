@@ -31,7 +31,7 @@ export interface ISearchItem {
 
 export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
 
-export const enum SearchFeatureReturnKind {
+export const enum ESearchFeatureReturnKind {
     SUCCESS = "SUCCESS",
     INPUT_TOO_LONG = "INPUT_TOO_LONG",
     NO_RESULT = "NO_RESULT",

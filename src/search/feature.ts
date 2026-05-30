@@ -1,7 +1,7 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { SEARCH_MAX_INPUT_LENGTH } from "../bot/constants.ts";
 import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "./types.ts";
-import { SearchFeatureReturnKind } from "./types.ts";
+import { ESearchFeatureReturnKind } from "./types.ts";
 
 async function searchFeature<
     Items extends ISearchableEntity & { kind: Kinds },
@@ -18,13 +18,13 @@ async function searchFeature<
     em: EntityManager;
 }) {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
-        return { kind: SearchFeatureReturnKind.INPUT_TOO_LONG, unexpected: false } as const;
+        return { kind: ESearchFeatureReturnKind.INPUT_TOO_LONG, unexpected: false } as const;
     }
 
     const searchItem = searchEngine.searchOne(input);
 
     if (!searchItem) {
-        return { kind: SearchFeatureReturnKind.NO_RESULT, unexpected: false } as const;
+        return { kind: ESearchFeatureReturnKind.NO_RESULT, unexpected: false } as const;
     }
 
     const handler = handlers[searchItem.kind];
@@ -35,14 +35,14 @@ async function searchFeature<
     });
     if (!entity) {
         return {
-            kind: SearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
+            kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
             unexpected: true,
             value: { kind: searchItem.kind, id: searchItem.id },
         } as const;
     }
 
     return {
-        kind: SearchFeatureReturnKind.SUCCESS,
+        kind: ESearchFeatureReturnKind.SUCCESS,
         unexpected: false,
         value: { entity, searchItem },
     } as const;

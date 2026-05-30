@@ -12,14 +12,14 @@ import {
 } from "./constants.ts";
 import type searchFeature from "./feature.ts";
 import type { ISearchableEntity, ISearchHandlers } from "./types.ts";
-import { SearchFeatureReturnKind } from "./types.ts";
+import { ESearchFeatureReturnKind } from "./types.ts";
 
 function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
     result: Awaited<ReturnType<typeof searchFeature<Items>>>,
     handlers: ISearchHandlers<Items>,
 ) {
     switch (result.kind) {
-        case SearchFeatureReturnKind.SUCCESS: {
+        case ESearchFeatureReturnKind.SUCCESS: {
             const { entity, searchItem } = result.value;
             const handler = handlers[searchItem.kind];
             const footer: APIEmbed["footer"] =
@@ -32,21 +32,21 @@ function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
 
             return positiveMessage({ embed: { ...handler.response(entity), footer } });
         }
-        case SearchFeatureReturnKind.INPUT_TOO_LONG:
+        case ESearchFeatureReturnKind.INPUT_TOO_LONG:
             return negativeMessage({
                 embed: {
                     title: INVALID_INPUT_TITLE,
                     description: INPUT_TOO_LONG_DESCRIPTION,
                 },
             });
-        case SearchFeatureReturnKind.NO_RESULT:
+        case ESearchFeatureReturnKind.NO_RESULT:
             return negativeMessage({
                 embed: {
                     title: INPUT_TITLE,
                     description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
                 },
             });
-        case SearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB:
+        case ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB:
             return errorMessage({
                 embed: {
                     title: MISSING_DATABASE_RESULT_TITLE,

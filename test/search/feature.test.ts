@@ -6,7 +6,7 @@ import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
 import {
-    SearchFeatureReturnKind,
+    ESearchFeatureReturnKind,
     type ISearchEngine,
     type ISearchItem,
     type TSearchableEntity,
@@ -40,7 +40,7 @@ describe(searchFeature.name, () => {
         });
 
         expect(result).toEqual({
-            kind: SearchFeatureReturnKind.NO_RESULT,
+            kind: ESearchFeatureReturnKind.NO_RESULT,
             unexpected: false,
         });
     });
@@ -69,7 +69,7 @@ describe(searchFeature.name, () => {
         });
 
         expect(result).toEqual({
-            kind: SearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
+            kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
             unexpected: true,
             value: {
                 kind: missingSearchItem.kind,
@@ -92,7 +92,7 @@ describe(searchFeature.name, () => {
         });
 
         expect(result).toEqual({
-            kind: SearchFeatureReturnKind.INPUT_TOO_LONG,
+            kind: ESearchFeatureReturnKind.INPUT_TOO_LONG,
             unexpected: false,
         });
     });
@@ -109,7 +109,7 @@ describe(searchFeature.name, () => {
             em,
         });
 
-        expectTypeGuard(result.kind, SearchFeatureReturnKind.SUCCESS);
+        expectTypeGuard(result.kind, ESearchFeatureReturnKind.SUCCESS);
         expect(result.unexpected).toBe(false);
         expect(result.value.searchItem).toEqual(searchItem);
         expect(result.value.entity.id).toBe(searchItem?.id);
