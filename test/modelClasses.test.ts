@@ -192,6 +192,16 @@ describe(Spell.name, () => {
                     "deals 60 Blue damage to targets (single tile), grants status to user: increases Atk by 30% (permanent).",
             },
             {
+                name: "Crosswind Grav EX",
+                explanation: "limits stat status effect",
+                expected: [
+                    "1. Deals 40 Green damage to targets.",
+                    "1. Grants status to targets: Limits Movement to 1 (permanent).",
+                ].join("\n"),
+                inlineExpected:
+                    "deals 40 Green damage to targets (3x3 cross), grants status to targets (3x3 cross): limits Movement to 1 (permanent).",
+            },
+            {
                 name: "Dual Invigorate EX",
                 explanation: "dual spell",
                 expected: [

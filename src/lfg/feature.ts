@@ -1,7 +1,5 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import { MessageFlags, userMention } from "discord.js";
 import { randomUUID } from "node:crypto";
-import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
 import {
     LFG_COMMAND_NAME,
     LFG_CREATE_SUBCOMMAND_DESCRIPTION,
@@ -26,7 +24,7 @@ import {
 } from "./constants.ts";
 import { Room } from "./models/room.ts";
 import { RoomPlayer } from "./models/roomPlayer.ts";
-import type { ILfgFeature, IUser } from "./types.ts";
+import { ELfgFeatureReturnKind, type ILfgFeature, type IRoom, type IUser } from "./types.ts";
 
 type LfgFeatureCtorArg = {
     readonly em: EntityManager;
@@ -40,21 +38,10 @@ export class LfgFeature implements ILfgFeature {
     }
 
     public async list(guildId: string) {
-        return new NeutralFeatureResponse({
-            embed: {
-                title: "LFG Rooms",
-                description: await this.formatList(guildId),
-            },
-            flags: [MessageFlags.Ephemeral],
-        });
-    }
-
-    protected async formatList(guildId: string) {
-        const rooms = await this.getRooms(guildId);
-        if (rooms.length === 0) {
-            return "No active rooms. :(";
-        }
-        return rooms.map((room) => `- \`${room.code}\`: ${this.formatRoomPlayers(room)}`).join("\n");
+        return {
+            kind: ELfgFeatureReturnKind.ROOMS_LISTED,
+            value: { rooms: (await this.getRooms(guildId)).map((room) => this.toRoom(room)) },
+        } as const;
     }
 
     public help() {
@@ -70,44 +57,21 @@ export class LfgFeature implements ILfgFeature {
             `- \`/${LFG_COMMAND_NAME} ${LFG_HELP_SUBCOMMAND_NAME}\`: ${LFG_HELP_SUBCOMMAND_DESCRIPTION}`,
         ].join("\n");
 
-        return new NeutralFeatureResponse({
-            embed: {
-                title: "LFG Commands",
-                description: description,
-            },
-            flags: [MessageFlags.Ephemeral],
-        });
+        return { kind: ELfgFeatureReturnKind.HELP, value: { description } } as const;
     }
 
     public async create(guildId: string, owner: IUser, code: string) {
         if (code.length < LFG_MIN_ROOM_CODE_LENGTH || code.length > LFG_MAX_ROOM_CODE_LENGTH) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Invalid room code",
-                    description: `Room codes must be between ${LFG_MIN_ROOM_CODE_LENGTH} and ${LFG_MAX_ROOM_CODE_LENGTH} characters.`,
-                },
-            });
+            return { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;
         }
 
         const currentPlayer = await this.getRoomPlayerInGuild(guildId, owner.id);
         if (currentPlayer) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Already in a room",
-                    description: "Leave your current room before creating a new one.",
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.ALREADY_IN_A_ROOM } as const;
         }
         const existingRoom = await this.getRoomByGuildAndCode(guildId, code);
         if (existingRoom) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Room already exists",
-                    description: `Room \`${code}\` already exists.`,
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS, value: { code } } as const;
         }
 
         const room = this.em.create(Room, {
@@ -124,45 +88,25 @@ export class LfgFeature implements ILfgFeature {
         room.players.add(player);
         await this.em.flush();
 
-        return new SuccessFeatureResponse({
-            embed: {
-                title: "Room created",
-                description: this.formatRoom(room),
-            },
-        });
+        return { kind: ELfgFeatureReturnKind.ROOM_CREATED, value: { room: this.toRoom(room) } } as const;
     }
 
     public async join(guildId: string, user: IUser, code: string) {
         const room = await this.getRoomByGuildAndCode(guildId, code);
         if (!room) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Room not found",
-                    description: `Room \`${code}\` does not exist.`,
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
         }
 
         const currentPlayer = await this.getRoomPlayerInGuild(guildId, user.id);
         if (currentPlayer?.room.id === room.id) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Already in room",
-                    description: this.formatRoom(room),
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return {
+                kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM,
+                value: { room: this.toRoom(room) },
+            } as const;
         }
 
         if (room.players.count() >= LFG_MAX_ROOM_PLAYERS) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Room is full",
-                    description: `Room \`${code}\` already has ${LFG_MAX_ROOM_PLAYERS} players.`,
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.ROOM_IS_FULL, value: { code } } as const;
         }
 
         const leftRoomCode = currentPlayer?.room.code;
@@ -180,129 +124,76 @@ export class LfgFeature implements ILfgFeature {
         room.players.add(player);
         await this.em.flush();
 
-        return new SuccessFeatureResponse({
-            embed: {
-                title: "Room joined",
-                description: `${leftRoomCode ? `Left room \`${leftRoomCode}\`.\n\n` : ""}${this.formatRoom(room)}`,
-            },
-        });
+        return {
+            kind: ELfgFeatureReturnKind.ROOM_JOINED,
+            value: { room: this.toRoom(room), leftRoomCode },
+        } as const;
     }
 
     public async transfer(guildId: string, owner: IUser, target: IUser) {
-        // TODO: must replace instance of ErrorFeatureResponse with a discriminated union
         const result = await this.getOwnedRoom(guildId, owner);
-        if (result instanceof ErrorFeatureResponse) {
+        if ("kind" in result) {
             return result;
         }
         if (owner.id === target.id) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Cannot transfer to yourself",
-                    description: "Choose another player in your room.",
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF } as const;
         }
 
         const targetPlayer = await this.getRoomPlayerInGuild(guildId, target.id);
         if (targetPlayer?.room.id !== result.id) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Player not in room",
-                    description: `${userMention(target.id)} is not in your room.`,
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM, value: { targetId: target.id } } as const;
         }
 
         result.ownerId = target.id;
         await this.em.flush();
-        return new SuccessFeatureResponse({
-            embed: {
-                title: "Ownership transferred",
-                description: this.formatRoom(result),
-            },
-            flags: [MessageFlags.Ephemeral],
-        });
+        return {
+            kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
+            value: { room: this.toRoom(result) },
+        } as const;
     }
 
     public async kick(guildId: string, owner: IUser, target: IUser) {
         const result = await this.getOwnedRoom(guildId, owner);
-        if (result instanceof ErrorFeatureResponse) {
+        if ("kind" in result) {
             return result;
         }
         if (owner.id === target.id) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Cannot kick yourself",
-                    description: `Use \`/${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}\` to leave your room.`,
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF } as const;
         }
 
         const targetPlayer = await this.getRoomPlayerInGuild(guildId, target.id);
         if (targetPlayer?.room.id !== result.id) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Player not in room",
-                    description: `${userMention(target.id)} is not in your room.`,
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM, value: { targetId: target.id } } as const;
         }
 
         this.removePlayerFromRoom(result, targetPlayer);
         await this.em.flush();
-        return new SuccessFeatureResponse({
-            embed: {
-                title: "Player kicked",
-                description: this.formatRoom(result),
-            },
-        });
+        return { kind: ELfgFeatureReturnKind.PLAYER_KICKED, value: { room: this.toRoom(result) } } as const;
     }
 
     public async leave(guildId: string, user: IUser) {
         const player = await this.getRoomPlayerInGuild(guildId, user.id);
         if (!player) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Not in a room",
-                    description: "Join or create a room first.",
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM } as const;
         }
 
         const room = player.room;
         const code = room.code;
         this.removePlayerFromRoom(room, player);
 
-        const title = "Room left";
         if (room.players.count() === 0) {
             this.em.remove(room);
             await this.em.flush();
-            return new SuccessFeatureResponse({
-                embed: {
-                    title,
-                    description: `Left room \`${code}\`. The room was deleted because it is empty.`,
-                },
-            });
+            return { kind: ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED, value: { code } } as const;
         }
 
         await this.em.flush();
-        return new SuccessFeatureResponse({
-            embed: {
-                title,
-                description: this.formatRoom(room),
-            },
-            flags: [MessageFlags.Ephemeral],
-        });
+        return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { room: this.toRoom(room) } } as const;
     }
 
     public async disband(guildId: string, user: IUser) {
         const result = await this.getOwnedRoom(guildId, user);
-        if (result instanceof ErrorFeatureResponse) {
+        if ("kind" in result) {
             return result;
         }
 
@@ -310,32 +201,16 @@ export class LfgFeature implements ILfgFeature {
         this.em.remove(result);
         await this.em.flush();
 
-        return new SuccessFeatureResponse({
-            embed: {
-                title: "Room disbanded",
-                description: `Room \`${result.code}\` was deleted.`,
-            },
-            flags: [MessageFlags.Ephemeral],
-        });
+        return { kind: ELfgFeatureReturnKind.ROOM_DISBANDED, value: { code: result.code } } as const;
     }
 
-    protected async getOwnedRoom(guildId: string, owner: IUser): Promise<Room | ErrorFeatureResponse> {
+    protected async getOwnedRoom(guildId: string, owner: IUser) {
         const player = await this.getRoomPlayerInGuild(guildId, owner.id);
         if (!player) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Not in a room",
-                    description: "Join or create a room first.",
-                },
-            });
+            return { kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM } as const;
         }
         if (player.room.ownerId !== owner.id) {
-            return new ErrorFeatureResponse({
-                embed: {
-                    title: "Not room owner",
-                    description: "Only the room owner can do that.",
-                },
-            });
+            return { kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER } as const;
         }
         return player.room;
     }
@@ -361,15 +236,11 @@ export class LfgFeature implements ILfgFeature {
         }
     }
 
-    protected formatRoom(room: Room): string {
-        return `\`${room.code}\`: ${this.formatRoomPlayers(room)}`;
-    }
-
-    protected formatRoomPlayers(room: Room): string {
-        return room.players
-            .toArray()
-            .toSorted((a, b) => (a.userId === room.ownerId ? -1 : b.userId === room.ownerId ? 1 : 0)) // owner first
-            .map((player) => `${userMention(player.userId)}${player.userId === room.ownerId ? " (owner)" : ""}`)
-            .join(", ");
+    protected toRoom(room: Room): IRoom {
+        return {
+            code: room.code,
+            ownerId: room.ownerId,
+            playerIds: room.players.toArray().map((player) => player.userId),
+        };
     }
 }

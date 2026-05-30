@@ -37,12 +37,12 @@ const LFG_DB_NAME = process.env.LUMI_LFG_DB_NAME;
 if (!STATIC_DB_DIR || !STATE_DB_DIR || !GAME_DB_NAME || !LFG_DB_NAME) {
     throw new Error(
         "One or more required environment variables are not set: " +
-            JSON.stringify({
-                STATIC_DB_DIR,
-                STATE_DB_DIR,
-                GAME_DB_NAME,
-                LFG_DB_NAME,
-            }),
+        JSON.stringify({
+            STATIC_DB_DIR,
+            STATE_DB_DIR,
+            GAME_DB_NAME,
+            LFG_DB_NAME,
+        }),
     );
 }
 

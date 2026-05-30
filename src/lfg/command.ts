@@ -1,6 +1,7 @@
+import type { InteractionReplyOptions } from "discord.js";
 import { MessageFlags, type CacheType, type ChatInputCommandInteraction } from "discord.js";
-import { ErrorFeatureResponse } from "../bot/featureResponse.ts";
-import type { ICommand, IFeatureResponse } from "../bot/types.ts";
+import { createErrorMessage } from "../bot/message.ts";
+import type { ICommand } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
     LFG_CODE_OPTION_NAME,
@@ -15,6 +16,8 @@ import {
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
 import type { LfgFeature } from "./feature.ts";
+import mapLfgFeatureReturnToMessage from "./mapper.ts";
+import { ELfgFeatureReturnKind } from "./types.ts";
 
 type LfgCommandCtorArg = {
     readonly lfgFeature: LfgFeature;
@@ -36,7 +39,7 @@ export class LfgCommand implements ICommand {
         const guildId = interaction.guildId;
         if (!guildId) {
             return interaction.reply(
-                new ErrorFeatureResponse({
+                createErrorMessage<InteractionReplyOptions>({
                     embed: {
                         title: "LFG unavailable",
                         description: "LFG is only available in servers.",
@@ -47,7 +50,7 @@ export class LfgCommand implements ICommand {
         }
 
         const subcommand = interaction.options.getSubcommand(false);
-        const response = await this.runSubcommand(interaction, guildId, subcommand);
+        const response = mapLfgFeatureReturnToMessage(await this.runSubcommand(interaction, guildId, subcommand));
         return interaction.reply(response);
     }
 
@@ -55,7 +58,7 @@ export class LfgCommand implements ICommand {
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
         subcommand: string | null,
-    ): Promise<IFeatureResponse> {
+    ) {
         switch (subcommand) {
             case LFG_CREATE_SUBCOMMAND_NAME:
                 return this.lfgFeature.create(
@@ -90,13 +93,7 @@ export class LfgCommand implements ICommand {
             case LFG_HELP_SUBCOMMAND_NAME:
                 return this.lfgFeature.help();
             default:
-                return new ErrorFeatureResponse({
-                    embed: {
-                        title: "Invalid subcommand",
-                        description: "Please specify a valid subcommand.",
-                    },
-                    flags: MessageFlags.Ephemeral,
-                });
+                return { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } as const;
         }
     }
 }

@@ -3,6 +3,7 @@ import { ActivityType, Events, userMention } from "discord.js";
 import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
+import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { LfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
 import getBot from "./loaders/bot.ts";
@@ -13,6 +14,7 @@ import { configsById } from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
+import mapSearchFeatureReturnToMessage from "./search/mapper.ts";
 import type { TSearchableEntity } from "./search/types.ts";
 
 const log = debug("bot");
@@ -51,8 +53,8 @@ bot.on(Events.MessageCreate, async (interaction) => {
     }
     const botMention = userMention(interaction.client.user.id);
     if (interaction.content === botMention) {
-        const response = helpFeature();
-        await interaction.reply(response);
+        const message = mapHelpFeatureReturnToMessage(helpFeature());
+        await interaction.reply(message);
         return;
     }
     const startingBotMentionAndSpaceStr = botMention + " ";
@@ -60,13 +62,14 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const response = await searchFeature<TSearchableEntity>({
+    const result = await searchFeature<TSearchableEntity>({
         em: gameEm,
         searchEngine,
         handlers: SEARCH_HANDLERS,
         input,
     });
-    await interaction.reply(response);
+    const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+    await interaction.reply(message);
 });
 
 bot.on(Events.InteractionCreate, async (interaction) => {
