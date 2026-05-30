@@ -7,17 +7,17 @@ import { Weapon } from "../src/game/models/weapon.ts";
 import { describeSpellEffects } from "../src/game/spellEffectDescriptions.ts";
 import { ESpellDraggingMode } from "../src/game/types.ts";
 import range from "../src/utils/range.ts";
-import { initTestOrm } from "./orm.ts";
+import { initTestGameOrm } from "./orm.ts";
 
 const LEVELS = Array.from(range({ start: 1, end: 12 }));
 const VARIANTS = ["HP", "NEUTRAL", "ATK"] as const;
 const STATS = ["hp", "atk"] as const;
 
-let orm: Awaited<ReturnType<typeof initTestOrm>>;
+let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
 
 beforeAll(async () => {
-    orm = await initTestOrm();
+    orm = await initTestGameOrm();
     em = orm.em.fork();
 });
 
@@ -190,6 +190,16 @@ describe(Spell.name, () => {
                 ].join("\n"),
                 inlineExpected:
                     "deals 60 Blue damage to targets (single tile), grants status to user: increases Atk by 30% (permanent).",
+            },
+            {
+                name: "Crosswind Grav EX",
+                explanation: "limits stat status effect",
+                expected: [
+                    "1. Deals 40 Green damage to targets.",
+                    "1. Grants status to targets: Limits Movement to 1 (permanent).",
+                ].join("\n"),
+                inlineExpected:
+                    "deals 40 Green damage to targets (3x3 cross), grants status to targets (3x3 cross): limits Movement to 1 (permanent).",
             },
             {
                 name: "Dual Invigorate EX",

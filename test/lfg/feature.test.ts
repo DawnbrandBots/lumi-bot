@@ -1,22 +1,19 @@
 import type { MikroORM } from "@mikro-orm/sqlite";
-import { type APIEmbed, MessageFlags, userMention } from "discord.js";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import recreateLfgDb from "../../scripts/utils/recreateLfgDb.ts";
-import { ErrorFeatureResponse, SuccessFeatureResponse } from "../../src/bot/featureResponse.ts";
-import type { IFeatureResponse } from "../../src/bot/types.ts";
+import recreateDb from "../../scripts/utils/recreateDb.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
 import { LfgFeature } from "../../src/lfg/feature.ts";
 import { Room } from "../../src/lfg/models/room.ts";
-import type { LfgUser } from "../../src/lfg/types.ts";
+import { ELfgFeatureReturnKind, type IUser } from "../../src/lfg/types.ts";
 import { configsById } from "../mikro-orm.test.config.ts";
 import { initTestLfgOrm } from "../orm.ts";
 
 const GUILD_ID = "guild-1";
 const OTHER_GUILD_ID = "guild-2";
-const OWNER: LfgUser = { id: "owner" };
-const PLAYER_1: LfgUser = { id: "player-1" };
-const PLAYER_2: LfgUser = { id: "player-2" };
-const PLAYER_3: LfgUser = { id: "player-3" };
+const OWNER: IUser = { id: "owner" };
+const PLAYER_1: IUser = { id: "player-1" };
+const PLAYER_2: IUser = { id: "player-2" };
+const PLAYER_3: IUser = { id: "player-3" };
 
 type TestRoom = {
     readonly code: string;
@@ -26,10 +23,6 @@ type TestRoom = {
 
 let orm: MikroORM;
 let feature: LfgFeature;
-
-function description(response: IFeatureResponse): string {
-    return (response.embeds?.[0] as APIEmbed | undefined)?.description ?? "";
-}
 
 function timestamp(value: Date | string): number {
     return value instanceof Date ? value.getTime() : new Date(value).getTime();
@@ -51,7 +44,7 @@ async function getRooms(guildId: string): Promise<TestRoom[]> {
 
 describe(LfgFeature.name, () => {
     beforeEach(async () => {
-        await recreateLfgDb(configsById.lfg);
+        await recreateDb(configsById.lfg);
         orm = await initTestLfgOrm();
         feature = new LfgFeature({ em: orm.em.fork() });
     });
@@ -64,9 +57,11 @@ describe(LfgFeature.name, () => {
         test("creates a room with the creator as owner", async () => {
             const response = await feature.create(GUILD_ID, OWNER, "AbC");
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_CREATED,
+                value: { room: { code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] } },
+            });
             expect(await getRooms(GUILD_ID)).toEqual([{ code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] }]);
-            expect(description(response)).toContain(`${userMention(OWNER.id)} (owner)`);
         });
 
         test("rejects duplicate room codes in the same guild", async () => {
@@ -74,8 +69,10 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.create(GUILD_ID, PLAYER_1, "room");
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Room already exists" });
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS,
+                value: { code: "room" },
+            });
         });
 
         test("allows the same exact room code in another guild", async () => {
@@ -83,7 +80,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.create(OTHER_GUILD_ID, OWNER, "room");
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response.kind).toBe(ELfgFeatureReturnKind.ROOM_CREATED);
             expect(await getRooms(GUILD_ID)).toHaveLength(1);
             expect(await getRooms(OTHER_GUILD_ID)).toHaveLength(1);
         });
@@ -91,8 +88,7 @@ describe(LfgFeature.name, () => {
         test("rejects invalid room code length", async () => {
             const response = await feature.create(GUILD_ID, OWNER, "x".repeat(LFG_MAX_ROOM_CODE_LENGTH + 1));
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Invalid room code" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE });
         });
 
         test("rejects users already in a room", async () => {
@@ -100,8 +96,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.create(GUILD_ID, OWNER, "room-2");
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Already in a room" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.ALREADY_IN_A_ROOM });
         });
     });
 
@@ -111,15 +106,23 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.join(GUILD_ID, PLAYER_1, "room");
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_JOINED,
+                value: {
+                    leftRoomCode: undefined,
+                    room: { code: "room", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
+                },
+            });
             expect((await getRooms(GUILD_ID))[0]?.playerIds).toEqual([OWNER.id, PLAYER_1.id]);
         });
 
         test("rejects missing rooms", async () => {
             const response = await feature.join(GUILD_ID, PLAYER_1, "missing");
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Room not found" });
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND,
+                value: { code: "missing" },
+            });
         });
 
         test("rejects full rooms", async () => {
@@ -129,8 +132,10 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.join(GUILD_ID, PLAYER_3, "room");
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Room is full" });
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_IS_FULL,
+                value: { code: "room" },
+            });
         });
 
         test("moves a player out of their previous room", async () => {
@@ -139,8 +144,13 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.join(GUILD_ID, PLAYER_1, "one");
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
-            expect(description(response)).toContain("Left room `two`.");
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_JOINED,
+                value: {
+                    leftRoomCode: "two",
+                    room: { code: "one", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
+                },
+            });
             expect(await getRooms(GUILD_ID)).toEqual([
                 { code: "one", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
             ]);
@@ -153,7 +163,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.join(GUILD_ID, OWNER, "two");
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response.kind).toBe(ELfgFeatureReturnKind.ROOM_JOINED);
             expect(await getRooms(GUILD_ID)).toEqual([
                 { code: "one", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id] },
                 { code: "two", ownerId: PLAYER_2.id, playerIds: [PLAYER_2.id, OWNER.id] },
@@ -166,7 +176,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.join(GUILD_ID, OWNER, "two");
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response.kind).toBe(ELfgFeatureReturnKind.ROOM_JOINED);
             expect(await getRooms(GUILD_ID)).toEqual([
                 { code: "two", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id, OWNER.id] },
             ]);
@@ -177,8 +187,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.join(GUILD_ID, OWNER, "room");
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Already in room" });
+            expect(response.kind).toBe(ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM);
         });
     });
 
@@ -189,7 +198,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.transfer(GUILD_ID, OWNER, PLAYER_1);
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response.kind).toBe(ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED);
             expect((await getRooms(GUILD_ID))[0]?.ownerId).toBe(PLAYER_1.id);
         });
 
@@ -198,8 +207,10 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.transfer(GUILD_ID, OWNER, PLAYER_1);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Player not in room" });
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
+                value: { targetId: PLAYER_1.id },
+            });
         });
 
         test("rejects self-transfer", async () => {
@@ -207,8 +218,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.transfer(GUILD_ID, OWNER, OWNER);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Cannot transfer to yourself" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF });
         });
 
         test("rejects non-owners", async () => {
@@ -217,8 +227,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.transfer(GUILD_ID, PLAYER_1, OWNER);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Not room owner" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER });
         });
     });
 
@@ -229,7 +238,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.kick(GUILD_ID, OWNER, PLAYER_1);
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response.kind).toBe(ELfgFeatureReturnKind.PLAYER_KICKED);
             expect((await getRooms(GUILD_ID))[0]?.playerIds).toEqual([OWNER.id]);
         });
 
@@ -238,8 +247,10 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.kick(GUILD_ID, OWNER, PLAYER_1);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Player not in room" });
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
+                value: { targetId: PLAYER_1.id },
+            });
         });
 
         test("rejects self-kick", async () => {
@@ -247,8 +258,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.kick(GUILD_ID, OWNER, OWNER);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Cannot kick yourself" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF });
         });
 
         test("rejects non-owners", async () => {
@@ -257,8 +267,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.kick(GUILD_ID, PLAYER_1, OWNER);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Not room owner" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER });
         });
     });
 
@@ -268,7 +277,10 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.leave(GUILD_ID, OWNER);
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED,
+                value: { code: "room" },
+            });
             expect(await getRooms(GUILD_ID)).toEqual([]);
         });
 
@@ -279,7 +291,10 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.leave(GUILD_ID, OWNER);
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                value: { room: { code: "room", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id, PLAYER_2.id] } },
+            });
             expect((await getRooms(GUILD_ID))[0]).toEqual({
                 code: "room",
                 ownerId: PLAYER_1.id,
@@ -290,8 +305,7 @@ describe(LfgFeature.name, () => {
         test("rejects users who are not in a room", async () => {
             const response = await feature.leave(GUILD_ID, OWNER);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Not in a room" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM });
         });
     });
 
@@ -302,9 +316,10 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.disband(GUILD_ID, OWNER);
 
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
-            expect(response.flags).toEqual([MessageFlags.Ephemeral]);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Room disbanded" });
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
+                value: { code: "room" },
+            });
             expect(await getRooms(GUILD_ID)).toEqual([]);
         });
 
@@ -314,8 +329,7 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.disband(GUILD_ID, PLAYER_1);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Not room owner" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER });
             expect(await getRooms(GUILD_ID)).toEqual([
                 { code: "room", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
             ]);
@@ -324,8 +338,7 @@ describe(LfgFeature.name, () => {
         test("rejects users who are not in a room", async () => {
             const response = await feature.disband(GUILD_ID, OWNER);
 
-            expect(response).toBeInstanceOf(ErrorFeatureResponse);
-            expect(response.embeds?.[0]).toMatchObject({ title: "Not in a room" });
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM });
         });
     });
 
@@ -335,14 +348,17 @@ describe(LfgFeature.name, () => {
 
         const response = await feature.list(GUILD_ID);
 
-        expect(description(response)).toContain("`one`");
-        expect(description(response)).not.toContain("`two`");
+        expect(response).toEqual({
+            kind: ELfgFeatureReturnKind.ROOMS_LISTED,
+            value: { rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }] },
+        });
     });
 
     test("help returns the LFG command summary", () => {
         const response = feature.help();
 
-        expect(description(response)).toContain("/lfg create");
-        expect(description(response)).toContain("/lfg help");
+        expect(response.kind).toBe(ELfgFeatureReturnKind.HELP);
+        expect(response.value.description).toContain("/lfg create");
+        expect(response.value.description).toContain("/lfg help");
     });
 });

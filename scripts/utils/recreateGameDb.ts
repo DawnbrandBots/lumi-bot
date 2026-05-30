@@ -1,21 +1,14 @@
 import { MikroORM, type Options } from "@mikro-orm/sqlite";
 import fs from "node:fs";
+import recreateDb from "./recreateDb.ts";
 
 /**
  * Creates an SQLite database with game data.
  */
 export default async function recreateGameDb(config: Options): Promise<void> {
     const orm = await MikroORM.init(config);
+    await recreateDb(config);
     const em = orm.em.fork();
-
-    if (!config.dbName) {
-        throw new Error("dbName required");
-    }
-
-    if (fs.existsSync(config.dbName)) {
-        fs.unlinkSync(config.dbName);
-    }
-    await orm.schema.create();
 
     try {
         const tables = [...orm.getMetadata().getAll().values()]

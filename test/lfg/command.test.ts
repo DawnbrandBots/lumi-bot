@@ -1,6 +1,7 @@
+import type { InteractionReplyOptions } from "discord.js";
 import { ChannelType, MessageFlags, type ChatInputCommandInteraction, type InteractionResponse } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { ErrorFeatureResponse, SuccessFeatureResponse } from "../../src/bot/featureResponse.ts";
+import { createErrorMessage, createPositiveMessage } from "../../src/bot/message.ts";
 import { LfgCommand } from "../../src/lfg/command.ts";
 import { LFG_CODE_OPTION_NAME, LFG_CREATE_SUBCOMMAND_NAME } from "../../src/lfg/constants.ts";
 import type { LfgFeature } from "../../src/lfg/feature.ts";
@@ -37,7 +38,7 @@ function getCommand({
     response,
     channel,
 }: {
-    readonly response: SuccessFeatureResponse | ErrorFeatureResponse;
+    readonly response: InteractionReplyOptions;
     readonly channel: string | null;
 }): LfgCommand {
     return new LfgCommand({
@@ -52,7 +53,7 @@ function getCommand({
 
 describe(LfgCommand.name, () => {
     test("replies ephemerally when no channel is configured", async () => {
-        const response = new SuccessFeatureResponse({ embed: { title: "ok" } });
+        const response = createPositiveMessage({ embed: { title: "ok" } });
         const command = getCommand({ response, channel: null });
         const { fetch, interaction, reply } = getInteractionFixture(OTHER_CHANNEL_ID);
 
@@ -63,7 +64,7 @@ describe(LfgCommand.name, () => {
     });
 
     test("replies ephemerally and sends a public copy outside configured channel", async () => {
-        const response = new SuccessFeatureResponse({ embed: { title: "ok" } });
+        const response = createPositiveMessage({ embed: { title: "ok" } });
         const command = getCommand({ response, channel: PUBLIC_CHANNEL_ID });
         const send = vi.fn().mockResolvedValue({});
         const { fetch, interaction, reply } = getInteractionFixture(OTHER_CHANNEL_ID, send);
@@ -77,7 +78,7 @@ describe(LfgCommand.name, () => {
     });
 
     test("replies publicly in the configured channel", async () => {
-        const response = new SuccessFeatureResponse({ embed: { title: "ok" } });
+        const response = createPositiveMessage({ embed: { title: "ok" } });
         const command = getCommand({ response, channel: PUBLIC_CHANNEL_ID });
         const { fetch, interaction, reply } = getInteractionFixture(PUBLIC_CHANNEL_ID);
 
@@ -89,7 +90,7 @@ describe(LfgCommand.name, () => {
     });
 
     test("does not mirror error responses", async () => {
-        const response = new ErrorFeatureResponse({ embed: { title: "error" } });
+        const response = createErrorMessage({ embed: { title: "error" } });
         const command = getCommand({ response, channel: PUBLIC_CHANNEL_ID });
         const { fetch, interaction, reply } = getInteractionFixture(OTHER_CHANNEL_ID);
 

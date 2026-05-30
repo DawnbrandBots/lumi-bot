@@ -1,34 +1,27 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
-import { ErrorFeatureResponse, SuccessFeatureResponse } from "../../src/bot/featureResponse.ts";
 import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
-import {
-    ENTITY_KIND_FIELD_NAME,
-    ID_FIELD_NAME,
-    INPUT_TITLE,
-    INPUT_TOO_LONG_DESCRIPTION,
-    INVALID_INPUT_TITLE,
-    MISSING_DATABASE_RESULT_TITLE,
-    SEARCH_ALIASES_FOOTER_PREFIX,
-    SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-} from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
-import { initTestOrm } from "../orm.ts";
+import {
+    ESearchFeatureReturnKind
+} from "../../src/search/types.ts";
+import { initTestGameOrm } from "../orm.ts";
+import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
-let orm: Awaited<ReturnType<typeof initTestOrm>>;
+let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
-let searchEngine: ISearchEngine<ISearchItem>;
 type SearchItem = ISearchItem & { kind: TSearchableEntity["kind"] };
+let searchEngine: ISearchEngine<SearchItem>;
 
 beforeAll(async () => {
-    orm = await initTestOrm();
+    orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<ISearchItem>({ items: await getSearchItems(em) });
+    searchEngine = new FuseSearchEngine<SearchItem>({ items: await getSearchItems(em) });
 });
 
 afterAll(async () => {
@@ -36,23 +29,21 @@ afterAll(async () => {
 });
 
 describe(searchFeature.name, () => {
-    test("returns an error when search yields no result", async () => {
-        const response = await searchFeature<TSearchableEntity>({
+    test("no result", async () => {
+        const result = await searchFeature<TSearchableEntity>({
             input: NO_SEARCH_RESULT_INPUT,
             searchEngine,
             handlers: SEARCH_HANDLERS,
             em,
         });
 
-        expect(response).toBeInstanceOf(ErrorFeatureResponse);
-        expect((response as ErrorFeatureResponse).report).toBe(false);
-        expect(response.embeds?.[0]).toMatchObject({
-            title: INPUT_TITLE,
-            description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
+        expect(result).toEqual({
+            kind: ESearchFeatureReturnKind.NO_RESULT,
+            unexpected: false,
         });
     });
 
-    test("returns an error when search finds a result missing from the database", async () => {
+    test("missing from database", async () => {
         const missingSearchItem: SearchItem = {
             id: "MISSING_ID",
             kind: "weapon",
@@ -68,21 +59,20 @@ describe(searchFeature.name, () => {
             findOne,
         } as unknown as EntityManager;
 
-        const response = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature<TSearchableEntity>({
             input: "Missing Weapon",
             searchEngine: mockedSearchEngine,
             handlers: SEARCH_HANDLERS,
             em: mockedEntityManager,
         });
 
-        expect(response).toBeInstanceOf(ErrorFeatureResponse);
-        expect((response as ErrorFeatureResponse).report).toBe(false);
-        expect(response.embeds?.[0]).toMatchObject({
-            title: MISSING_DATABASE_RESULT_TITLE,
-            fields: [
-                { name: ENTITY_KIND_FIELD_NAME, value: missingSearchItem.kind, inline: true },
-                { name: ID_FIELD_NAME, value: missingSearchItem.id, inline: true },
-            ],
+        expect(result).toEqual({
+            kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
+            unexpected: true,
+            value: {
+                kind: missingSearchItem.kind,
+                id: missingSearchItem.id,
+            },
         });
         expect(findOne).toHaveBeenCalledWith(
             SEARCH_HANDLERS.weapon.class,
@@ -91,55 +81,35 @@ describe(searchFeature.name, () => {
         );
     });
 
-    test("returns an error when input is too long", async () => {
-        const response = await searchFeature<TSearchableEntity>({
+    test("input too long", async () => {
+        const result = await searchFeature<TSearchableEntity>({
             input: "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
             searchEngine,
             handlers: SEARCH_HANDLERS,
             em,
         });
 
-        expect(response).toBeInstanceOf(ErrorFeatureResponse);
-        expect((response as ErrorFeatureResponse).report).toBe(false);
-        expect(response.embeds?.[0]).toMatchObject({
-            title: INVALID_INPUT_TITLE,
-            description: INPUT_TOO_LONG_DESCRIPTION,
+        expect(result).toEqual({
+            kind: ESearchFeatureReturnKind.INPUT_TOO_LONG,
+            unexpected: false,
         });
     });
 
-    describe("footer", () => {
-        test("multiple aliases => footer present", async () => {
-            const input = "TSBPC";
-            const searchItem = searchEngine.searchOne(input);
-            expect(searchItem?.aliases.length).toBeGreaterThan(1);
+    test("success", async () => {
+        const input = "Royal Sword";
+        const searchItem = searchEngine.searchOne(input);
+        expect(searchItem).toBeDefined();
 
-            const response = await searchFeature<TSearchableEntity>({
-                input,
-                searchEngine,
-                handlers: SEARCH_HANDLERS,
-                em,
-            });
-
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
-            expect((response as SuccessFeatureResponse).embeds?.[0]?.footer?.text).toBe(
-                `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
-            );
+        const result = await searchFeature<TSearchableEntity>({
+            input,
+            searchEngine,
+            handlers: SEARCH_HANDLERS,
+            em,
         });
 
-        test("single alias => footer absent", async () => {
-            const input = "Royal Sword";
-            const searchItem = searchEngine.searchOne(input);
-            expect(searchItem?.aliases).toHaveLength(1);
-
-            const response = await searchFeature<TSearchableEntity>({
-                input,
-                searchEngine,
-                handlers: SEARCH_HANDLERS,
-                em,
-            });
-
-            expect(response).toBeInstanceOf(SuccessFeatureResponse);
-            expect((response as SuccessFeatureResponse).embeds?.[0]?.footer).toBeUndefined();
-        });
+        typedGuardExpectToBe(result.kind, ESearchFeatureReturnKind.SUCCESS);
+        expect(result.unexpected).toBe(false);
+        expect(result.value.searchItem).toEqual(searchItem);
+        expect(result.value.entity.id).toBe(searchItem?.id);
     });
 });

@@ -1,3 +1,4 @@
+import type { InteractionReplyOptions } from "discord.js";
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
 import { AdminCommand } from "../../src/admin/command.ts";
@@ -9,7 +10,7 @@ import {
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
 } from "../../src/admin/constants.ts";
 import type { AdminFeature } from "../../src/admin/feature.ts";
-import { NeutralFeatureResponse } from "../../src/bot/featureResponse.ts";
+import { createNeutralMessage } from "../../src/bot/message.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
@@ -60,7 +61,10 @@ describe(AdminCommand.name, () => {
     });
 
     test("dispatches lfg channel", async () => {
-        const response = new NeutralFeatureResponse({ embed: { title: "ok" }, flags: [MessageFlags.Ephemeral] });
+        const response = createNeutralMessage<InteractionReplyOptions>({
+            embed: { title: "ok" },
+            flags: [MessageFlags.Ephemeral],
+        });
         const lfgChannel = vi.fn().mockResolvedValue(response);
         const adminFeature = {
             lfgChannel,
@@ -79,7 +83,10 @@ describe(AdminCommand.name, () => {
     });
 
     test("dispatches lfg show", async () => {
-        const response = new NeutralFeatureResponse({ embed: { title: "ok" }, flags: [MessageFlags.Ephemeral] });
+        const response = createNeutralMessage<InteractionReplyOptions>({
+            embed: { title: "ok" },
+            flags: [MessageFlags.Ephemeral],
+        });
         const lfgShow = vi.fn().mockResolvedValue(response);
         const adminFeature = {
             lfgChannel: vi.fn(),

@@ -1,7 +1,8 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
+import type { InteractionReplyOptions } from "discord.js";
 import { channelMention, MessageFlags } from "discord.js";
 import { randomUUID } from "node:crypto";
-import { ErrorFeatureResponse, NeutralFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
+import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../bot/message.ts";
 import {
     ADMIN_ACTION_CLEAR,
     ADMIN_ACTION_OPTION_NAME,
@@ -49,7 +50,7 @@ export class AdminFeature {
         const config = await this.getOrCreateConfig(guild);
 
         if (!action && !channel) {
-            return new NeutralFeatureResponse({
+            return createNeutralMessage<InteractionReplyOptions>({
                 embed: {
                     title: "LFG public channel",
                     description: [
@@ -71,7 +72,7 @@ export class AdminFeature {
         if (action === ADMIN_ACTION_SET && channel) {
             config.channel = channel;
             await this.em.flush();
-            return new SuccessFeatureResponse({
+            return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     title: "LFG public channel set",
                     description: `LFG messages will be posted in ${channelMention(channel)}.`,
@@ -83,7 +84,7 @@ export class AdminFeature {
         if (action === ADMIN_ACTION_CLEAR && !channel) {
             config.channel = null;
             await this.em.flush();
-            return new SuccessFeatureResponse({
+            return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     title: "LFG public channel cleared",
                     description: "LFG messages are now only visible by command users.",
@@ -92,7 +93,7 @@ export class AdminFeature {
             });
         }
 
-        return new ErrorFeatureResponse({
+        return createErrorMessage<InteractionReplyOptions>({
             embed: {
                 title: "Invalid options combination",
             },
@@ -102,7 +103,7 @@ export class AdminFeature {
 
     public async lfgShow(guild: string) {
         const config = await this.getOrCreateConfig(guild);
-        return new NeutralFeatureResponse({
+        return createNeutralMessage<InteractionReplyOptions>({
             embed: {
                 title: "LFG config",
                 fields: [{ name: "Channel", value: this.formatChannel(config.channel) }],

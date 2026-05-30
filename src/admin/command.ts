@@ -1,3 +1,4 @@
+import type { InteractionReplyOptions } from "discord.js";
 import {
     ChannelType,
     MessageFlags,
@@ -5,8 +6,8 @@ import {
     type CacheType,
     type ChatInputCommandInteraction,
 } from "discord.js";
-import { ErrorFeatureResponse } from "../bot/featureResponse.ts";
-import type { ICommand, IFeatureResponse } from "../bot/types.ts";
+import { createErrorMessage } from "../bot/message.ts";
+import type { ICommand } from "../bot/types.ts";
 import { adminCommandInfo } from "./commandInfo.ts";
 import {
     ADMIN_ACTION_CLEAR,
@@ -38,7 +39,7 @@ export class AdminCommand implements ICommand {
         const guildId = interaction.guildId;
         if (!guildId) {
             return interaction.reply(
-                new ErrorFeatureResponse({
+                createErrorMessage<InteractionReplyOptions>({
                     embed: {
                         title: "Admin unavailable",
                         description: "Admin commands are only available in servers.",
@@ -50,7 +51,7 @@ export class AdminCommand implements ICommand {
 
         if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
             return interaction.reply(
-                new ErrorFeatureResponse({
+                createErrorMessage<InteractionReplyOptions>({
                     embed: {
                         title: "Missing permission",
                         description: "You need the Manage Server permission to use admin commands.",
@@ -67,7 +68,7 @@ export class AdminCommand implements ICommand {
     private async runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
-    ): Promise<IFeatureResponse> {
+    ): Promise<InteractionReplyOptions> {
         const group = interaction.options.getSubcommandGroup(false);
         const subcommand = interaction.options.getSubcommand(false);
         if (group !== ADMIN_LFG_GROUP_NAME) {
@@ -89,7 +90,7 @@ export class AdminCommand implements ICommand {
         const channel = interaction.options.getChannel(ADMIN_CHANNEL_OPTION_NAME, false);
 
         if (channel && channel.type !== ChannelType.GuildText) {
-            return new ErrorFeatureResponse({
+            return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     title: "Invalid channel",
                     description: "Only guild text channels can be used as the LFG public channel.",
@@ -99,7 +100,7 @@ export class AdminCommand implements ICommand {
         }
 
         if (action && action !== ADMIN_ACTION_SET && action !== ADMIN_ACTION_CLEAR) {
-            return new ErrorFeatureResponse({
+            return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     title: "Invalid action",
                     description: `Action must be \`${ADMIN_ACTION_SET}\` or \`${ADMIN_ACTION_CLEAR}\`.`,
@@ -112,7 +113,7 @@ export class AdminCommand implements ICommand {
     }
 
     private invalidSubcommand() {
-        return new ErrorFeatureResponse({
+        return createErrorMessage<InteractionReplyOptions>({
             embed: {
                 title: "Invalid admin command",
                 description: "Please specify a valid admin command.",

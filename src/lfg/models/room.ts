@@ -13,5 +13,5 @@ export const RoomSchema = defineEntity({
     },
 });
 
-export class Room extends RoomSchema.class { }
+export class Room extends RoomSchema.class {}
 RoomSchema.setClass(Room);

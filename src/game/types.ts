@@ -291,6 +291,7 @@ export const EDirection = {
 export const EStatChange = {
     INCREASE: "INCREASE",
     DECREASE: "DECREASE",
+    LIMIT: "LIMIT",
 } as const;
 
 export const ESpellEffectValueUnitKind = {
@@ -365,6 +366,7 @@ export interface IDirection {
 export interface IStatChange {
     readonly id: keyof typeof EStatChange;
     readonly verb: string;
+    readonly preposition: string;
 }
 
 export const ESpellEffectTarget = {

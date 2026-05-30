@@ -16,7 +16,6 @@ export const adminCommandInfo: ICommandInfo = new CommandInfo({
     customInfo: function (baseInfo: SlashCommandBuilder) {
         return (
             baseInfo
-                .setContexts(InteractionContextType.Guild)
                 // TODO: ManageGuild or admin?
                 .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
                 .addSubcommandGroup((group) =>
@@ -53,4 +52,5 @@ export const adminCommandInfo: ICommandInfo = new CommandInfo({
     },
     name: ADMIN_COMMAND_NAME,
     description: "Configure Lumi for this server.",
+    contexts: [InteractionContextType.Guild],
 });

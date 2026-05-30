@@ -1,19 +1,21 @@
 import debug from "debug";
+import type { TextChannel } from "discord.js";
 import {
     ChannelType,
     MessageFlags,
-    type BaseMessageOptions,
     type CacheType,
     type ChatInputCommandInteraction,
     type InteractionReplyOptions,
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
-import { ErrorFeatureResponse, SuccessFeatureResponse } from "../bot/featureResponse.ts";
-import type { ICommand, IFeatureResponse } from "../bot/types.ts";
+import { createErrorMessage } from "../bot/message.ts";
+import type { ICommand } from "../bot/types.ts";
+import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
+    LFG_DISBAND_SUBCOMMAND_NAME,
     LFG_HELP_SUBCOMMAND_NAME,
     LFG_JOIN_SUBCOMMAND_NAME,
     LFG_KICK_SUBCOMMAND_NAME,
@@ -23,6 +25,8 @@ import {
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
 import type { LfgFeature } from "./feature.ts";
+import mapLfgFeatureReturnToMessage from "./mapper.ts";
+import { ELfgFeatureReturnKind } from "./types.ts";
 
 type LfgCommandCtorArg = {
     readonly lfgFeature: LfgFeature;
@@ -49,7 +53,7 @@ export class LfgCommand implements ICommand {
         const guildId = interaction.guildId;
         if (!guildId) {
             return interaction.reply(
-                new ErrorFeatureResponse({
+                createErrorMessage<InteractionReplyOptions>({
                     embed: {
                         title: "LFG unavailable",
                         description: "LFG is only available in servers.",
@@ -60,33 +64,26 @@ export class LfgCommand implements ICommand {
         }
 
         const subcommand = interaction.options.getSubcommand(false);
-        const response = await this.runSubcommand(interaction, guildId, subcommand);
-        return this.reply(interaction, guildId, response);
-    }
-
-    private async reply(
-        interaction: ChatInputCommandInteraction<CacheType>,
-        guildId: string,
-        response: IFeatureResponse,
-    ) {
+        const result = await this.runSubcommand(interaction, guildId, subcommand);
         const config = await this.adminFeature.getConfig(guildId);
-        if (!(response instanceof SuccessFeatureResponse) || !config?.channel) {
-            return interaction.reply(this.ephemeral(response));
+        const message = mapLfgFeatureReturnToMessage(result);
+
+        if (message.kind !== EMessageKind.POSITIVE || !config?.channel) {
+            return interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
+        }
+        if (message.kind === EMessageKind.POSITIVE && interaction.channelId === config?.channel) {
+            return interaction.reply(message);
         }
 
-        if (interaction.channelId === config.channel) {
-            return interaction.reply(this.publicResponse(response));
-        }
-
-        const reply = await interaction.reply(this.ephemeral(response));
-        await this.sendPublicCopy(interaction, config.channel, response);
+        const reply = await interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
+        await this.sendPublicCopy(interaction, config.channel, message);
         return reply;
     }
 
     private async sendPublicCopy(
         interaction: ChatInputCommandInteraction<CacheType>,
         channelId: string,
-        response: IFeatureResponse,
+        message: Parameters<TextChannel["send"]>[0],
     ): Promise<void> {
         try {
             const channel = await interaction.guild?.channels.fetch(channelId);
@@ -94,27 +91,17 @@ export class LfgCommand implements ICommand {
                 log(`Configured LFG channel ${channelId} is unavailable or not a guild text channel.`);
                 return;
             }
-            await channel.send(this.publicResponse(response));
+            await channel.send(message);
         } catch (error) {
             log("Failed to publish LFG response", error);
         }
-    }
-
-    private ephemeral(response: IFeatureResponse): InteractionReplyOptions {
-        return { ...response, flags: MessageFlags.Ephemeral };
-    }
-
-    private publicResponse(response: IFeatureResponse): BaseMessageOptions {
-        const publicResponse = { ...response } as IFeatureResponse & { flags?: unknown };
-        delete publicResponse.flags;
-        return publicResponse;
     }
 
     private async runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
         subcommand: string | null,
-    ): Promise<IFeatureResponse> {
+    ) {
         switch (subcommand) {
             case LFG_CREATE_SUBCOMMAND_NAME:
                 return this.lfgFeature.create(
@@ -142,19 +129,14 @@ export class LfgCommand implements ICommand {
                 );
             case LFG_LEAVE_SUBCOMMAND_NAME:
                 return this.lfgFeature.leave(guildId, interaction.user);
+            case LFG_DISBAND_SUBCOMMAND_NAME:
+                return this.lfgFeature.disband(guildId, interaction.user);
             case LFG_LIST_SUBCOMMAND_NAME:
                 return this.lfgFeature.list(guildId);
             case LFG_HELP_SUBCOMMAND_NAME:
                 return this.lfgFeature.help();
             default:
-                // TODO: can this ever happen?
-                return new ErrorFeatureResponse({
-                    embed: {
-                        title: "Invalid subcommand",
-                        description: "Please specify a valid subcommand.",
-                    },
-                    flags: MessageFlags.Ephemeral,
-                });
+                return { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } as const;
         }
     }
 }
