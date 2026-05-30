@@ -13,7 +13,7 @@ import { EMessageKind } from "./types.ts";
 /**
  * Formats a single message sent Discord. All content should reside within a single embed.
  */
-function message<MessageOptions extends BaseMessageOptions = BaseMessageOptions>({
+function createMessage<MessageOptions extends BaseMessageOptions = BaseMessageOptions>({
     kind,
     embed,
     ...messageOptions
@@ -21,10 +21,10 @@ function message<MessageOptions extends BaseMessageOptions = BaseMessageOptions>
     return { kind, embeds: [embed], ...messageOptions };
 }
 
-const getMessageGetter =
+const getMessageCreator =
     <ConstMessageOptions extends BaseMessageOptions = BaseMessageOptions>(cons: IBaseMessageArg<ConstMessageOptions>) =>
         <MessageOptions extends ConstMessageOptions = ConstMessageOptions>(arg: IChildMessageArg<MessageOptions>) =>
-            message<MessageOptions>({
+            createMessage<MessageOptions>({
                 ...cons,
                 ...arg,
                 embed: { ...cons.embed, ...arg.embed },
@@ -32,22 +32,22 @@ const getMessageGetter =
 
 // Positive, neutral and negative formatters are used when the feature runs without errors.
 
-export const positiveMessage = getMessageGetter({
+export const createPositiveMessage = getMessageCreator({
     embed: { color: DISCORD_MESSAGE_POSITIVE_COLOR },
     kind: EMessageKind.POSITIVE,
 });
 
-export const neutralMessage = getMessageGetter({
+export const createNeutralMessage = getMessageCreator({
     embed: { color: DISCORD_MESSAGE_NEUTRAL_COLOR },
     kind: EMessageKind.NEUTRAL,
 });
 
-export const negativeMessage = getMessageGetter({
+export const createNegativeMessage = getMessageCreator({
     embed: { color: DISCORD_MESSAGE_NEGATIVE_COLOR },
     kind: EMessageKind.NEGATIVE,
 });
 
-export const errorMessage = getMessageGetter({
+export const createErrorMessage = getMessageCreator({
     embed: { color: DISCORD_MESSAGE_ERROR_COLOR },
     kind: EMessageKind.ERROR,
     content: `-# Everyone point and laugh at ${NOTABOT_DISCORD_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`,

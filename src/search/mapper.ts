@@ -1,5 +1,5 @@
 import type { APIEmbed } from "discord.js";
-import { errorMessage, negativeMessage, positiveMessage } from "../bot/message.ts";
+import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../bot/message.ts";
 import {
     ENTITY_KIND_FIELD_NAME,
     ID_FIELD_NAME,
@@ -30,24 +30,24 @@ function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
                     }
                     : undefined;
 
-            return positiveMessage({ embed: { ...handler.response(entity), footer } });
+            return createPositiveMessage({ embed: { ...handler.response(entity), footer } });
         }
         case ESearchFeatureReturnKind.INPUT_TOO_LONG:
-            return negativeMessage({
+            return createNegativeMessage({
                 embed: {
                     title: INVALID_INPUT_TITLE,
                     description: INPUT_TOO_LONG_DESCRIPTION,
                 },
             });
         case ESearchFeatureReturnKind.NO_RESULT:
-            return negativeMessage({
+            return createNegativeMessage({
                 embed: {
                     title: INPUT_TITLE,
                     description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
                 },
             });
         case ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB:
-            return errorMessage({
+            return createErrorMessage({
                 embed: {
                     title: MISSING_DATABASE_RESULT_TITLE,
                     fields: [
