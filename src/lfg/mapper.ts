@@ -52,6 +52,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
         case ELfgFeatureReturnKind.ROOM_CREATED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: { title: LfgConstants.LFG_ROOM_CREATED_TITLE, description: formatRoom(result.value.room) },
+                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_JOINED:
             return createPositiveMessage<InteractionReplyOptions>({
@@ -59,6 +60,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
                     title: LfgConstants.LFG_ROOM_JOINED_TITLE,
                     description: `${result.value.leftRoomCode ? `${LfgConstants.LFG_LEFT_ROOM_DESCRIPTION_PREFIX} ${formatRoomCode(result.value.leftRoomCode)}.\n\n` : ""}${formatRoom(result.value.room)}`,
                 },
+                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED:
             return createPositiveMessage<InteractionReplyOptions>({
@@ -71,6 +73,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
         case ELfgFeatureReturnKind.PLAYER_KICKED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: { title: LfgConstants.LFG_PLAYER_KICKED_TITLE, description: formatRoom(result.value.room) },
+                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_LEFT:
             return createPositiveMessage<InteractionReplyOptions>({
@@ -99,6 +102,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
                     title: LfgConstants.LFG_INVALID_ROOM_CODE_TITLE,
                     description: `${LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION_PREFIX} ${LfgConstants.LFG_MIN_ROOM_CODE_LENGTH} ${LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION_SEPARATOR} ${LfgConstants.LFG_MAX_ROOM_CODE_LENGTH} ${LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION_SUFFIX}`,
                 },
+                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ALREADY_IN_A_ROOM:
             return createNegativeMessage<InteractionReplyOptions>({
@@ -161,6 +165,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
                     title: LfgConstants.LFG_NOT_ROOM_OWNER_TITLE,
                     description: LfgConstants.LFG_NOT_ROOM_OWNER_DESCRIPTION,
                 },
+                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF:
             return createNegativeMessage<InteractionReplyOptions>({
@@ -173,6 +178,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
         case ELfgFeatureReturnKind.NOT_IN_A_ROOM:
             return createNegativeMessage<InteractionReplyOptions>({
                 embed: { description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION },
+                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.INVALID_SUBCOMMAND:
             return createErrorMessage<InteractionReplyOptions>({
