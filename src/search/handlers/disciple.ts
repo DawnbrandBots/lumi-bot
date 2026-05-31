@@ -20,7 +20,7 @@ export function getDiscipleBaseStatsTable(disciple: IDisciple): (string | number
 
 const discipleSearchHandler: ISearchHandler<Disciple> = {
     class: Disciple,
-    response: (disciple: IDisciple) => {
+    message: (disciple: IDisciple) => {
         const spellsStr = [...disciple.spells]
             .map((spell) => `- **${spell.name}**: ${describeSpellEffects(spell, true)}`)
             .join("\n");
