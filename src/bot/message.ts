@@ -31,12 +31,12 @@ const getMessageCreator =
          */
         cons: IBaseMessageArg<ConstMessageOptions>,
     ) =>
-        <MessageOptions extends ConstMessageOptions = ConstMessageOptions>(arg: IChildMessageArg<MessageOptions>) =>
-            createMessage<MessageOptions>({
-                ...cons,
-                ...arg,
-                embed: { ...cons.embed, ...arg.embed },
-            });
+    <MessageOptions extends ConstMessageOptions = ConstMessageOptions>(arg: IChildMessageArg<MessageOptions>) =>
+        createMessage<MessageOptions>({
+            ...cons,
+            ...arg,
+            embed: { ...cons.embed, ...arg.embed },
+        });
 
 /**
  * Use to signify successful execution. (eg. search result found)
