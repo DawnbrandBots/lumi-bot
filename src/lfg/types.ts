@@ -28,21 +28,35 @@ export const enum ELfgFeatureReturnKind {
     PLAYER_KICKED = "PLAYER_KICKED",
     CANNOT_KICK_YOURSELF = "CANNOT_KICK_YOURSELF",
     ROOM_LEFT = "ROOM_LEFT",
-    ROOM_LEFT_AND_DELETED = "ROOM_LEFT_AND_DELETED",
     NOT_IN_A_ROOM = "NOT_IN_A_ROOM",
     ROOM_DISBANDED = "ROOM_DISBANDED",
     INVALID_SUBCOMMAND = "INVALID_SUBCOMMAND",
 }
 
+export const enum ELfgPlayerRemovalKind {
+    LEFT_ROOM_NORMALLY = "LEFT_ROOM_NORMALLY",
+    OWNERSHIP_TRANSFERRED = "OWNERSHIP_TRANSFERRED",
+    ROOM_DELETED = "ROOM_DELETED",
+}
+
+export type TLfgPlayerRemovalResult =
+    | {
+        readonly kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY | ELfgPlayerRemovalKind.ROOM_DELETED;
+    }
+    | {
+        readonly kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED;
+        readonly newOwnerId: string;
+    };
+
 type TLfgFeatureReturnWithoutValue = {
     readonly kind:
-        | ELfgFeatureReturnKind.INVALID_ROOM_CODE
-        | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
-        | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
-        | ELfgFeatureReturnKind.NOT_ROOM_OWNER
-        | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
-        | ELfgFeatureReturnKind.NOT_IN_A_ROOM
-        | ELfgFeatureReturnKind.INVALID_SUBCOMMAND;
+    | ELfgFeatureReturnKind.INVALID_ROOM_CODE
+    | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
+    | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
+    | ELfgFeatureReturnKind.NOT_ROOM_OWNER
+    | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
+    | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+    | ELfgFeatureReturnKind.INVALID_SUBCOMMAND;
 };
 
 type TLfgFeatureReturnWithDescription = {
@@ -60,9 +74,14 @@ type TLfgFeatureReturnWithRoom = {
     readonly value: { readonly room: IRoom };
 };
 
-type TLfgFeatureReturnWithUserAndRoom = {
-    readonly kind: ELfgFeatureReturnKind.ROOM_CREATED | ELfgFeatureReturnKind.ROOM_LEFT;
+type TLfgFeatureReturnRoomCreated = {
+    readonly kind: ELfgFeatureReturnKind.ROOM_CREATED;
     readonly value: { readonly userId: string; readonly room: IRoom };
+};
+
+type TLfgFeatureReturnRoomLeft = {
+    readonly kind: ELfgFeatureReturnKind.ROOM_LEFT;
+    readonly value: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
 };
 
 type TLfgFeatureReturnWithJoinedRoom = {
@@ -77,14 +96,14 @@ type TLfgFeatureReturnWithUserTargetAndRoom = {
 
 type TLfgFeatureReturnWithCode = {
     readonly kind:
-        | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
-        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
-        | ELfgFeatureReturnKind.ROOM_IS_FULL;
+    | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
+    | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    | ELfgFeatureReturnKind.ROOM_IS_FULL;
     readonly value: { readonly code: string };
 };
 
 type TLfgFeatureReturnWithUserAndCode = {
-    readonly kind: ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED | ELfgFeatureReturnKind.ROOM_DISBANDED;
+    readonly kind: ELfgFeatureReturnKind.ROOM_DISBANDED;
     readonly value: { readonly userId: string; readonly code: string };
 };
 
@@ -98,7 +117,8 @@ export type TLfgFeatureReturn =
     | TLfgFeatureReturnWithDescription
     | TLfgFeatureReturnWithRooms
     | TLfgFeatureReturnWithRoom
-    | TLfgFeatureReturnWithUserAndRoom
+    | TLfgFeatureReturnRoomCreated
+    | TLfgFeatureReturnRoomLeft
     | TLfgFeatureReturnWithJoinedRoom
     | TLfgFeatureReturnWithUserTargetAndRoom
     | TLfgFeatureReturnWithCode
@@ -136,11 +156,7 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
     >;
-    leave: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.ROOM_LEFT
-        | ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED
-        | ELfgFeatureReturnKind.NOT_IN_A_ROOM
-    >;
+    leave: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT | ELfgFeatureReturnKind.NOT_IN_A_ROOM>;
     disband: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_DISBANDED
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER

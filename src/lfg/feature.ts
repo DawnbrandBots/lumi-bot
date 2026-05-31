@@ -24,7 +24,8 @@ import {
 } from "./constants.ts";
 import { Room } from "./models/room.ts";
 import { RoomPlayer } from "./models/roomPlayer.ts";
-import { ELfgFeatureReturnKind, type ILfgFeature, type IRoom, type IUser } from "./types.ts";
+import type { TLfgPlayerRemovalResult } from "./types.ts";
+import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type ILfgFeature, type IRoom, type IUser } from "./types.ts";
 
 type LfgFeatureCtorArg = {
     readonly em: EntityManager;
@@ -115,9 +116,6 @@ export class LfgFeature implements ILfgFeature {
         const leftRoomCode = currentPlayer?.room.code;
         if (currentPlayer) {
             this.removePlayerFromRoom(currentPlayer.room, currentPlayer);
-            if (currentPlayer.room.players.count() === 0) {
-                this.em.remove(currentPlayer.room);
-            }
         }
         const player = this.em.create(RoomPlayer, {
             id: randomUUID(),
@@ -185,16 +183,9 @@ export class LfgFeature implements ILfgFeature {
 
         const room = player.room;
         const code = room.code;
-        this.removePlayerFromRoom(room, player);
-
-        if (room.players.count() === 0) {
-            this.em.remove(room);
-            await this.em.flush();
-            return { kind: ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED, value: { userId: user.id, code } } as const;
-        }
-
+        const leaveResult = this.removePlayerFromRoom(room, player);
         await this.em.flush();
-        return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { userId: user.id, room: this.toRoom(room) } } as const;
+        return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { ...leaveResult, userId: user.id, code } } as const;
     }
 
     public async disband(guildId: string, user: IUser) {
@@ -234,12 +225,18 @@ export class LfgFeature implements ILfgFeature {
         return this.em.find(Room, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
     }
 
-    protected removePlayerFromRoom(room: Room, player: RoomPlayer): void {
+    protected removePlayerFromRoom(room: Room, player: RoomPlayer): TLfgPlayerRemovalResult {
         this.em.remove(player);
         const anotherPlayerInTheRoom = room.players.find((p) => p.userId !== player.userId);
+        if (!anotherPlayerInTheRoom) {
+            this.em.remove(room);
+            return { kind: ELfgPlayerRemovalKind.ROOM_DELETED };
+        }
         if (room.ownerId === player.userId && anotherPlayerInTheRoom) {
             room.ownerId = anotherPlayerInTheRoom.userId;
+            return { kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED, newOwnerId: room.ownerId };
         }
+        return { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY };
     }
 
     protected toRoom(room: Room): IRoom {

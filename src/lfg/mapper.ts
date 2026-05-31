@@ -120,13 +120,6 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
         case ELfgFeatureReturnKind.ROOM_LEFT:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatRoomLeft(result.value.userId, result.value.room.code),
-                },
-                flags: MessageFlags.Ephemeral,
-            });
-        case ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED:
-            return createPositiveMessage<InteractionReplyOptions>({
-                embed: {
                     description: formatRoomLeft(result.value.userId, result.value.code),
                 },
                 flags: MessageFlags.Ephemeral,

@@ -3,7 +3,12 @@ import { describe, expect, test } from "vitest";
 import { EMessageKind } from "../../src/bot/types.ts";
 import * as LfgConstants from "../../src/lfg/constants.ts";
 import mapLfgFeatureReturnToMessage from "../../src/lfg/mapper.ts";
-import { ELfgFeatureReturnKind, type IRoom, type TLfgFeatureReturn } from "../../src/lfg/types.ts";
+import {
+    ELfgFeatureReturnKind,
+    ELfgPlayerRemovalKind,
+    type IRoom,
+    type TLfgFeatureReturn,
+} from "../../src/lfg/types.ts";
 
 const ROOM: IRoom = {
     code: "alpha",
@@ -107,7 +112,10 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "room left",
-            input: { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { userId: "player-1", room: ROOM } },
+            input: {
+                kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                value: { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY, userId: "player-1", code: ROOM.code },
+            },
             expected: {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
@@ -119,7 +127,10 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "room left and deleted",
-            input: { kind: ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED, value: { userId: "owner", code: ROOM.code } },
+            input: {
+                kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: "owner", code: ROOM.code },
+            },
             expected: {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
