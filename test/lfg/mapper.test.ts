@@ -135,7 +135,27 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} left \`${ROOM.code}\`.`,
+                        description: `${userMention("owner")} left \`${ROOM.code}\`. Room deleted.`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "room left and ownership transferred",
+            input: {
+                kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                value: {
+                    kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
+                    userId: "owner",
+                    code: ROOM.code,
+                    newOwnerId: "player-1",
+                },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("owner")} left \`${ROOM.code}\`. Ownership transferred to ${userMention("player-1")}`,
                     },
                 ],
             },

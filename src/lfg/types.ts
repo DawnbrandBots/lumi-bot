@@ -79,7 +79,7 @@ type TLfgFeatureReturnRoomCreated = {
     readonly value: { readonly userId: string; readonly room: IRoom };
 };
 
-type TLfgFeatureReturnRoomLeft = {
+export type TLfgFeatureReturnRoomLeft = {
     readonly kind: ELfgFeatureReturnKind.ROOM_LEFT;
     readonly value: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
 };

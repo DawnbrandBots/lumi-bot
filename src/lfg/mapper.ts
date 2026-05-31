@@ -1,4 +1,4 @@
-import { type InteractionReplyOptions, MessageFlags, userMention } from "discord.js";
+import { MessageFlags, userMention, type InteractionReplyOptions } from "discord.js";
 import {
     createErrorMessage,
     createNegativeMessage,
@@ -6,7 +6,13 @@ import {
     createPositiveMessage,
 } from "../bot/message.ts";
 import * as LfgConstants from "./constants.ts";
-import { ELfgFeatureReturnKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
+import {
+    ELfgFeatureReturnKind,
+    ELfgPlayerRemovalKind,
+    type IRoom,
+    type TLfgFeatureReturn,
+    type TLfgFeatureReturnRoomLeft,
+} from "./types.ts";
 
 function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
@@ -49,8 +55,16 @@ function formatPlayerKicked(userId: string, targetId: string, room: IRoom) {
     return `${userMention(userId)} kicked ${userMention(targetId)} from ${formatRoomCode(room.code)}.`;
 }
 
-function formatRoomLeft(userId: string, code: string) {
-    return `${userMention(userId)} left ${formatRoomCode(code)}.`;
+function formatRoomLeft(arg: TLfgFeatureReturnRoomLeft) {
+    const res = `${userMention(arg.value.userId)} left ${formatRoomCode(arg.value.code)}.`;
+    switch (arg.value.kind) {
+        case ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED:
+            return res + ` Ownership transferred to ${userMention(arg.value.newOwnerId)}`;
+        case ELfgPlayerRemovalKind.ROOM_DELETED:
+            return res + ` Room deleted.`;
+        case ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY:
+            return res;
+    }
 }
 
 function formatRoomDisbanded(userId: string, code: string) {
@@ -120,7 +134,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
         case ELfgFeatureReturnKind.ROOM_LEFT:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatRoomLeft(result.value.userId, result.value.code),
+                    description: formatRoomLeft(result),
                 },
                 flags: MessageFlags.Ephemeral,
             });
