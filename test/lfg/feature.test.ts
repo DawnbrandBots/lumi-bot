@@ -4,7 +4,7 @@ import recreateDb from "../../scripts/utils/recreateDb.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
 import { LfgFeature } from "../../src/lfg/feature.ts";
 import { Room } from "../../src/lfg/models/room.ts";
-import { ELfgFeatureReturnKind, type IUser } from "../../src/lfg/types.ts";
+import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IUser } from "../../src/lfg/types.ts";
 import { configsById } from "../mikro-orm.test.config.ts";
 import { initTestLfgOrm } from "../orm.ts";
 
@@ -59,7 +59,7 @@ describe(LfgFeature.name, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_CREATED,
-                value: { room: { code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] } },
+                value: { userId: OWNER.id, room: { code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] } },
             });
             expect(await getRooms(GUILD_ID)).toEqual([{ code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] }]);
         });
@@ -109,6 +109,7 @@ describe(LfgFeature.name, () => {
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_JOINED,
                 value: {
+                    userId: PLAYER_1.id,
                     leftRoomCode: undefined,
                     room: { code: "room", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
                 },
@@ -147,6 +148,7 @@ describe(LfgFeature.name, () => {
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_JOINED,
                 value: {
+                    userId: PLAYER_1.id,
                     leftRoomCode: "two",
                     room: { code: "one", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
                 },
@@ -278,8 +280,8 @@ describe(LfgFeature.name, () => {
             const response = await feature.leave(GUILD_ID, OWNER);
 
             expect(response).toEqual({
-                kind: ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED,
-                value: { code: "room" },
+                kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: OWNER.id, code: "room" },
             });
             expect(await getRooms(GUILD_ID)).toEqual([]);
         });
@@ -293,7 +295,12 @@ describe(LfgFeature.name, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_LEFT,
-                value: { room: { code: "room", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id, PLAYER_2.id] } },
+                value: {
+                    kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
+                    userId: OWNER.id,
+                    code: "room",
+                    newOwnerId: PLAYER_1.id,
+                },
             });
             expect((await getRooms(GUILD_ID))[0]).toEqual({
                 code: "room",
@@ -318,7 +325,7 @@ describe(LfgFeature.name, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
-                value: { code: "room" },
+                value: { userId: OWNER.id, code: "room" },
             });
             expect(await getRooms(GUILD_ID)).toEqual([]);
         });

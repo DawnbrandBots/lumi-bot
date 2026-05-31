@@ -3,7 +3,12 @@ import { describe, expect, test } from "vitest";
 import { EMessageKind } from "../../src/bot/types.ts";
 import * as LfgConstants from "../../src/lfg/constants.ts";
 import mapLfgFeatureReturnToMessage from "../../src/lfg/mapper.ts";
-import { ELfgFeatureReturnKind, type IRoom, type TLfgFeatureReturn } from "../../src/lfg/types.ts";
+import {
+    ELfgFeatureReturnKind,
+    ELfgPlayerRemovalKind,
+    type IRoom,
+    type TLfgFeatureReturn,
+} from "../../src/lfg/types.ts";
 
 const ROOM: IRoom = {
     code: "alpha",
@@ -12,7 +17,7 @@ const ROOM: IRoom = {
 };
 
 function roomDescription(room: IRoom) {
-    return `\`${room.code}\`: ${userMention(room.ownerId)}${LfgConstants.LFG_ROOM_OWNER_SUFFIX}, ${userMention("player-1")}, ${userMention("player-2")}`;
+    return `\`${room.code}\`: ${userMention(room.ownerId)} (${LfgConstants.LFG_ROOM_OWNER_LABEL}), ${userMention("player-1")}, ${userMention("player-2")}`;
 }
 
 // TODO: need to restore tests on flags!!!!
@@ -27,7 +32,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
             input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ title: LfgConstants.LFG_ROOMS_TITLE, description: `- ${roomDescription(ROOM)}` }],
+                embeds: [{ description: `- ${roomDescription(ROOM)}` }],
             },
         },
         {
@@ -35,9 +40,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
             input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [] } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [
-                    { title: LfgConstants.LFG_ROOMS_TITLE, description: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION },
-                ],
+                embeds: [{ description: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION }],
             },
         },
         {
@@ -45,76 +48,124 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
             input: { kind: ELfgFeatureReturnKind.HELP, value: { description: "help text" } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ title: LfgConstants.LFG_COMMANDS_TITLE, description: "help text" }],
+                embeds: [{ description: "help text" }],
             },
         },
         {
             name: "room created",
-            input: { kind: ELfgFeatureReturnKind.ROOM_CREATED, value: { room: ROOM } },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [{ title: LfgConstants.LFG_ROOM_CREATED_TITLE, description: roomDescription(ROOM) }],
-            },
-        },
-        {
-            name: "room joined with previous room context",
-            input: { kind: ELfgFeatureReturnKind.ROOM_JOINED, value: { room: ROOM, leftRoomCode: "beta" } },
+            input: { kind: ELfgFeatureReturnKind.ROOM_CREATED, value: { userId: "owner", room: ROOM } },
             expected: {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_ROOM_JOINED_TITLE,
-                        description: `${LfgConstants.LFG_LEFT_ROOM_DESCRIPTION_PREFIX} \`beta\`.\n\n${roomDescription(ROOM)}`,
+                        description: `${userMention("owner")} created room \`${ROOM.code}\`.`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "room joined with previous room context",
+            input: {
+                kind: ELfgFeatureReturnKind.ROOM_JOINED,
+                value: { userId: "player-1", room: ROOM, leftRoomCode: "beta" },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("player-1")} joined room \`${ROOM.code}\`.`,
                     },
                 ],
             },
         },
         {
             name: "ownership transferred",
-            input: { kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED, value: { room: ROOM } },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [{ title: LfgConstants.LFG_OWNERSHIP_TRANSFERRED_TITLE, description: roomDescription(ROOM) }],
+            input: {
+                kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
+                value: { userId: "owner", targetId: "player-1", room: ROOM },
             },
-        },
-        {
-            name: "player kicked",
-            input: { kind: ELfgFeatureReturnKind.PLAYER_KICKED, value: { room: ROOM } },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [{ title: LfgConstants.LFG_PLAYER_KICKED_TITLE, description: roomDescription(ROOM) }],
-            },
-        },
-        {
-            name: "room left",
-            input: { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { room: ROOM } },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [{ title: LfgConstants.LFG_ROOM_LEFT_TITLE, description: roomDescription(ROOM) }],
-            },
-        },
-        {
-            name: "room left and deleted",
-            input: { kind: ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED, value: { code: ROOM.code } },
             expected: {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_ROOM_LEFT_TITLE,
-                        description: `${LfgConstants.LFG_LEFT_ROOM_DESCRIPTION_PREFIX} \`${ROOM.code}\`. ${LfgConstants.LFG_ROOM_LEFT_AND_DELETED_DESCRIPTION}`,
+                        description: `${userMention("owner")} transferred \`${ROOM.code}\`'s ownership to ${userMention("player-1")}.`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "player kicked",
+            input: {
+                kind: ELfgFeatureReturnKind.PLAYER_KICKED,
+                value: { userId: "owner", targetId: "player-1", room: ROOM },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("owner")} kicked ${userMention("player-1")} from \`${ROOM.code}\`.`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "room left",
+            input: {
+                kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                value: { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY, userId: "player-1", code: ROOM.code },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("player-1")} left \`${ROOM.code}\`.`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "room left and deleted",
+            input: {
+                kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: "owner", code: ROOM.code },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("owner")} left \`${ROOM.code}\`. Room deleted.`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "room left and ownership transferred",
+            input: {
+                kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                value: {
+                    kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
+                    userId: "owner",
+                    code: ROOM.code,
+                    newOwnerId: "player-1",
+                },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("owner")} left \`${ROOM.code}\`. Ownership transferred to ${userMention("player-1")}`,
                     },
                 ],
             },
         },
         {
             name: "room disbanded",
-            input: { kind: ELfgFeatureReturnKind.ROOM_DISBANDED, value: { code: ROOM.code } },
+            input: { kind: ELfgFeatureReturnKind.ROOM_DISBANDED, value: { userId: "owner", code: ROOM.code } },
             expected: {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_ROOM_DISBANDED_TITLE,
-                        description: `${LfgConstants.LFG_ROOM_DESCRIPTION_PREFIX} \`${ROOM.code}\` ${LfgConstants.LFG_ROOM_DELETED_DESCRIPTION_SUFFIX}`,
+                        description: `${userMention("owner")} disbanded \`${ROOM.code}\`.`,
                     },
                 ],
             },
@@ -126,8 +177,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_INVALID_ROOM_CODE_TITLE,
-                        description: `${LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION_PREFIX} ${LfgConstants.LFG_MIN_ROOM_CODE_LENGTH} ${LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION_SEPARATOR} ${LfgConstants.LFG_MAX_ROOM_CODE_LENGTH} ${LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION_SUFFIX}`,
+                        description: LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION,
                     },
                 ],
             },
@@ -139,7 +189,6 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_ALREADY_IN_A_ROOM_TITLE,
                         description: LfgConstants.LFG_ALREADY_IN_A_ROOM_DESCRIPTION,
                     },
                 ],
@@ -152,8 +201,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_ROOM_ALREADY_EXISTS_TITLE,
-                        description: `${LfgConstants.LFG_ROOM_DESCRIPTION_PREFIX} \`${ROOM.code}\` ${LfgConstants.LFG_ROOM_ALREADY_EXISTS_DESCRIPTION_SUFFIX}`,
+                        description: `Room \`${ROOM.code}\` already exists.`,
                     },
                 ],
             },
@@ -165,8 +213,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_ROOM_NOT_FOUND_TITLE,
-                        description: `${LfgConstants.LFG_ROOM_DESCRIPTION_PREFIX} \`${ROOM.code}\` ${LfgConstants.LFG_ROOM_NOT_FOUND_DESCRIPTION_SUFFIX}`,
+                        description: `Room \`${ROOM.code}\` does not exist.`,
                     },
                 ],
             },
@@ -176,7 +223,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
             input: { kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM, value: { room: ROOM } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
-                embeds: [{ title: LfgConstants.LFG_ALREADY_IN_TARGET_ROOM_TITLE, description: roomDescription(ROOM) }],
+                embeds: [{ description: roomDescription(ROOM) }],
             },
         },
         {
@@ -186,8 +233,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_ROOM_IS_FULL_TITLE,
-                        description: `${LfgConstants.LFG_ROOM_DESCRIPTION_PREFIX} \`${ROOM.code}\` ${LfgConstants.LFG_ROOM_IS_FULL_DESCRIPTION_PREFIX} ${LfgConstants.LFG_MAX_ROOM_PLAYERS} ${LfgConstants.LFG_ROOM_IS_FULL_DESCRIPTION_SUFFIX}`,
+                        description: `Room \`${ROOM.code}\` already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
                     },
                 ],
             },
@@ -199,7 +245,6 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_CANNOT_TRANSFER_TO_YOURSELF_TITLE,
                         description: LfgConstants.LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION,
                     },
                 ],
@@ -212,7 +257,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        description: `${userMention("target")} ${LfgConstants.LFG_PLAYER_NOT_IN_ROOM_DESCRIPTION_SUFFIX}`,
+                        description: `${userMention("target")} is not in your room.`,
                     },
                 ],
             },
@@ -224,7 +269,6 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_NOT_ROOM_OWNER_TITLE,
                         description: LfgConstants.LFG_NOT_ROOM_OWNER_DESCRIPTION,
                     },
                 ],
@@ -237,8 +281,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_CANNOT_KICK_YOURSELF_TITLE,
-                        description: `${LfgConstants.LFG_CANNOT_KICK_YOURSELF_DESCRIPTION_PREFIX} \`/${LfgConstants.LFG_COMMAND_NAME} ${LfgConstants.LFG_LEAVE_SUBCOMMAND_NAME}\` ${LfgConstants.LFG_CANNOT_KICK_YOURSELF_DESCRIPTION_SUFFIX}`,
+                        description: LfgConstants.LFG_CANNOT_KICK_YOURSELF_DESCRIPTION,
                     },
                 ],
             },
@@ -262,7 +305,6 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.ERROR,
                 embeds: [
                     {
-                        title: LfgConstants.LFG_INVALID_SUBCOMMAND_TITLE,
                         description: LfgConstants.LFG_INVALID_SUBCOMMAND_DESCRIPTION,
                     },
                 ],
