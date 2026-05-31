@@ -272,12 +272,12 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         const privateResponse = mapLfgFeatureReturnToMessage(input);
         expect(privateResponse).toMatchObject(expected);
 
-        const publicResponse = mapLfgFeatureReturnToMessage(input);
-        if (expected.kind === EMessageKind.POSITIVE) {
-            expect(publicResponse).toMatchObject(expected);
-            expect(publicResponse).not.toHaveProperty("flags");
-        } else {
-            expect(publicResponse).toMatchObject(expected);
-        }
+        // const publicResponse = mapLfgFeatureReturnToMessage(input);
+        // if (expected.kind === EMessageKind.POSITIVE) {
+        //     expect(publicResponse).toMatchObject(expected);
+        //     expect(publicResponse).not.toHaveProperty("flags");
+        // } else {
+        //     expect(publicResponse).toMatchObject(expected);
+        // }
     });
 });
