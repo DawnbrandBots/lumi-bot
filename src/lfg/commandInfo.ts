@@ -1,4 +1,4 @@
-import { InteractionContextType, type SlashCommandBuilder } from "discord.js";
+import { ApplicationIntegrationType, InteractionContextType, type SlashCommandBuilder } from "discord.js";
 import { CommandInfo } from "../bot/commandInfo.ts";
 import type { ICommandInfo } from "../bot/types.ts";
 import {
@@ -86,4 +86,5 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
     name: LFG_COMMAND_NAME,
     description: "Create and manage looking-for-game rooms.",
     contexts: [InteractionContextType.Guild],
+    integrationTypes: [ApplicationIntegrationType.GuildInstall],
 });
