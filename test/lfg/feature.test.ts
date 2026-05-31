@@ -59,7 +59,7 @@ describe(LfgFeature.name, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_CREATED,
-                value: { room: { code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] } },
+                value: { userId: OWNER.id, room: { code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] } },
             });
             expect(await getRooms(GUILD_ID)).toEqual([{ code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] }]);
         });
@@ -109,6 +109,7 @@ describe(LfgFeature.name, () => {
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_JOINED,
                 value: {
+                    userId: PLAYER_1.id,
                     leftRoomCode: undefined,
                     room: { code: "room", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
                 },
@@ -147,6 +148,7 @@ describe(LfgFeature.name, () => {
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_JOINED,
                 value: {
+                    userId: PLAYER_1.id,
                     leftRoomCode: "two",
                     room: { code: "one", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
                 },
@@ -279,7 +281,7 @@ describe(LfgFeature.name, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_LEFT_AND_DELETED,
-                value: { code: "room" },
+                value: { userId: OWNER.id, code: "room" },
             });
             expect(await getRooms(GUILD_ID)).toEqual([]);
         });
@@ -293,7 +295,10 @@ describe(LfgFeature.name, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_LEFT,
-                value: { room: { code: "room", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id, PLAYER_2.id] } },
+                value: {
+                    userId: OWNER.id,
+                    room: { code: "room", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id, PLAYER_2.id] },
+                },
             });
             expect((await getRooms(GUILD_ID))[0]).toEqual({
                 code: "room",
@@ -318,7 +323,7 @@ describe(LfgFeature.name, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
-                value: { code: "room" },
+                value: { userId: OWNER.id, code: "room" },
             });
             expect(await getRooms(GUILD_ID)).toEqual([]);
         });
