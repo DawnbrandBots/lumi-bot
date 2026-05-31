@@ -1,4 +1,10 @@
-import { ChannelType, InteractionContextType, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
+import {
+    ApplicationIntegrationType,
+    ChannelType,
+    InteractionContextType,
+    PermissionFlagsBits,
+    type SlashCommandBuilder,
+} from "discord.js";
 import { CommandInfo } from "../bot/commandInfo.ts";
 import type { ICommandInfo } from "../bot/types.ts";
 import {
@@ -53,4 +59,5 @@ export const adminCommandInfo: ICommandInfo = new CommandInfo({
     name: ADMIN_COMMAND_NAME,
     description: "Configure Lumi for this server.",
     contexts: [InteractionContextType.Guild],
+    integrationTypes: [ApplicationIntegrationType.GuildInstall],
 });
