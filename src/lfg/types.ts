@@ -81,7 +81,9 @@ type TLfgFeatureReturnValueByKind = {
     | ELfgFeatureReturnKind.INVALID_SUBCOMMAND]: never;
 };
 
-export type TLfgFeatureReturnOfKind<Kind extends ELfgFeatureReturnKind> = Kind extends ELfgFeatureReturnKind
+export type TLfgFeatureReturnOfKind<Kind extends ELfgFeatureReturnKind> =
+    // https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
+    Kind extends ELfgFeatureReturnKind
     ? TLfgFeatureReturnValueByKind[Kind] extends never
     ? { readonly kind: Kind }
     : { readonly kind: Kind; readonly value: TLfgFeatureReturnValueByKind[Kind] }
