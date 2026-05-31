@@ -1,6 +1,7 @@
 import type {
     APIEmbed,
     ApplicationCommandOptionChoiceData,
+    ApplicationIntegrationType,
     AutocompleteInteraction,
     BaseMessageOptions,
     CacheType,
@@ -25,10 +26,8 @@ export interface ICommandInfo {
      * Briefly explains what the command does.
      */
     readonly description: string;
-    /**
-     * Briefly explains what the command does.
-     */
     readonly contexts: InteractionContextType[];
+    readonly integrationTypes: ApplicationIntegrationType[];
     /**
      * Additional info about the command to be registered.
      */
