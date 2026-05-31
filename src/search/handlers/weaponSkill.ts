@@ -16,7 +16,7 @@ export function getWeaponTypeSkillRankString(rank: IWeaponTypeWeaponSkill["rank"
 
 const weaponSkillSearchHandler: ISearchHandler<WeaponSkill> = {
     class: WeaponSkill,
-    response: (weaponSkill: IWeaponSkill) => {
+    message: (weaponSkill: IWeaponSkill) => {
         const weaponTypeSkillStr = Array.from(weaponSkill.weaponTypeWeaponSkills)
             .map((weaponTypeWeaponSkill) =>
                 getWeaponTypeSkillRankString(weaponTypeWeaponSkill.rank, weaponTypeWeaponSkill.weaponType.name),
@@ -35,19 +35,19 @@ const weaponSkillSearchHandler: ISearchHandler<WeaponSkill> = {
             },
             ...(weaponTypeSkillStr.length > 0
                 ? [
-                      {
-                          name: "Weapon Type Skill",
-                          value: weaponTypeSkillStr,
-                      },
-                  ]
+                    {
+                        name: "Weapon Type Skill",
+                        value: weaponTypeSkillStr,
+                    },
+                ]
                 : []),
             ...(uniqueSkillWeapons.length > 0
                 ? [
-                      {
-                          name: "Unique skill for weapon(s)",
-                          value: uniqueSkillWeapons,
-                      },
-                  ]
+                    {
+                        name: "Unique skill for weapon(s)",
+                        value: uniqueSkillWeapons,
+                    },
+                ]
                 : []),
         ];
         return {

@@ -160,7 +160,7 @@ function formatInlineSpellProperties(spell: ISpell): string {
 }
 
 /**
- * @returns A string describing the spell's effects. Meant to be displayed in a response on Discord.
+ * @returns A string describing the spell's effects. Meant to be displayed in a message on Discord.
  */
 export function describeSpellEffects(
     spell: ISpell,
@@ -202,8 +202,8 @@ export function describeSpellEffects(
         res += inline
             ? `${statusEffectIntro} ${descriptions.join(INLINE_DESCRIPTION_SEPARATOR)}.`
             : [statusEffectIntro, ...descriptions.map((description) => `1. ${description}.`)].join(
-                  REGULAR_DESCRIPTION_SEPARATOR,
-              );
+                REGULAR_DESCRIPTION_SEPARATOR,
+            );
     } else {
         if (nonEmptyRes) {
             res += inline ? INLINE_DESCRIPTION_SEPARATOR : ":" + REGULAR_DESCRIPTION_SEPARATOR;
