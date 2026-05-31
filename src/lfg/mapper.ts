@@ -6,13 +6,8 @@ import {
     createPositiveMessage,
 } from "../bot/message.ts";
 import * as LfgConstants from "./constants.ts";
-import {
-    ELfgFeatureReturnKind,
-    ELfgPlayerRemovalKind,
-    type IRoom,
-    type TLfgFeatureReturn,
-    type TLfgFeatureReturnRoomLeft,
-} from "./types.ts";
+import type { TLfgFeatureReturnOfKind } from "./types.ts";
+import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
 
 function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
@@ -55,7 +50,7 @@ function formatPlayerKicked(userId: string, targetId: string, room: IRoom) {
     return `${userMention(userId)} kicked ${userMention(targetId)} from ${formatRoomCode(room.code)}.`;
 }
 
-function formatRoomLeft(arg: TLfgFeatureReturnRoomLeft) {
+function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT>) {
     const res = `${userMention(arg.value.userId)} left ${formatRoomCode(arg.value.code)}.`;
     switch (arg.value.kind) {
         case ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED:

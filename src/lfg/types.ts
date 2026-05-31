@@ -48,84 +48,48 @@ export type TLfgPlayerRemovalResult =
         readonly newOwnerId: string;
     };
 
-type TLfgFeatureReturnWithoutValue = {
-    readonly kind:
+type TLfgFeatureReturnValueByKind = {
+    [ELfgFeatureReturnKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
+    [ELfgFeatureReturnKind.HELP]: { readonly description: string };
+    [ELfgFeatureReturnKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
+    [ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS]: { readonly code: string };
+    [ELfgFeatureReturnKind.ROOM_JOINED]: {
+        readonly userId: string;
+        readonly room: IRoom;
+        readonly leftRoomCode?: string;
+    };
+    [ELfgFeatureReturnKind.ROOM_NOT_FOUND]: { readonly code: string };
+    [ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM]: { readonly room: IRoom };
+    [ELfgFeatureReturnKind.ROOM_IS_FULL]: { readonly code: string };
+    [ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED]: {
+        readonly userId: string;
+        readonly targetId: string;
+        readonly room: IRoom;
+    };
+    [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: { readonly targetId: string };
+    [ELfgFeatureReturnKind.PLAYER_KICKED]: { readonly userId: string; readonly targetId: string; readonly room: IRoom };
+    [ELfgFeatureReturnKind.ROOM_LEFT]: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
+    [ELfgFeatureReturnKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
+} & {
+    [_ in
     | ELfgFeatureReturnKind.INVALID_ROOM_CODE
     | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
     | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
     | ELfgFeatureReturnKind.NOT_ROOM_OWNER
     | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
     | ELfgFeatureReturnKind.NOT_IN_A_ROOM
-    | ELfgFeatureReturnKind.INVALID_SUBCOMMAND;
+    | ELfgFeatureReturnKind.INVALID_SUBCOMMAND]: never;
 };
 
-type TLfgFeatureReturnWithDescription = {
-    readonly kind: ELfgFeatureReturnKind.HELP;
-    readonly value: { readonly description: string };
-};
+export type TLfgFeatureReturnOfKind<Kind extends ELfgFeatureReturnKind> = Kind extends ELfgFeatureReturnKind
+    ? TLfgFeatureReturnValueByKind[Kind] extends never
+    ? { readonly kind: Kind }
+    : { readonly kind: Kind; readonly value: TLfgFeatureReturnValueByKind[Kind] }
+    : never;
 
-type TLfgFeatureReturnWithRooms = {
-    readonly kind: ELfgFeatureReturnKind.ROOMS_LISTED;
-    readonly value: { readonly rooms: readonly IRoom[] };
-};
-
-type TLfgFeatureReturnWithRoom = {
-    readonly kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM;
-    readonly value: { readonly room: IRoom };
-};
-
-type TLfgFeatureReturnRoomCreated = {
-    readonly kind: ELfgFeatureReturnKind.ROOM_CREATED;
-    readonly value: { readonly userId: string; readonly room: IRoom };
-};
-
-export type TLfgFeatureReturnRoomLeft = {
-    readonly kind: ELfgFeatureReturnKind.ROOM_LEFT;
-    readonly value: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
-};
-
-type TLfgFeatureReturnWithJoinedRoom = {
-    readonly kind: ELfgFeatureReturnKind.ROOM_JOINED;
-    readonly value: { readonly userId: string; readonly room: IRoom; readonly leftRoomCode?: string };
-};
-
-type TLfgFeatureReturnWithUserTargetAndRoom = {
-    readonly kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED | ELfgFeatureReturnKind.PLAYER_KICKED;
-    readonly value: { readonly userId: string; readonly targetId: string; readonly room: IRoom };
-};
-
-type TLfgFeatureReturnWithCode = {
-    readonly kind:
-    | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
-    | ELfgFeatureReturnKind.ROOM_NOT_FOUND
-    | ELfgFeatureReturnKind.ROOM_IS_FULL;
-    readonly value: { readonly code: string };
-};
-
-type TLfgFeatureReturnWithUserAndCode = {
-    readonly kind: ELfgFeatureReturnKind.ROOM_DISBANDED;
-    readonly value: { readonly userId: string; readonly code: string };
-};
-
-type TLfgFeatureReturnWithTarget = {
-    readonly kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM;
-    readonly value: { readonly targetId: string };
-};
-
-export type TLfgFeatureReturn =
-    | TLfgFeatureReturnWithoutValue
-    | TLfgFeatureReturnWithDescription
-    | TLfgFeatureReturnWithRooms
-    | TLfgFeatureReturnWithRoom
-    | TLfgFeatureReturnRoomCreated
-    | TLfgFeatureReturnRoomLeft
-    | TLfgFeatureReturnWithJoinedRoom
-    | TLfgFeatureReturnWithUserTargetAndRoom
-    | TLfgFeatureReturnWithCode
-    | TLfgFeatureReturnWithUserAndCode
-    | TLfgFeatureReturnWithTarget;
-
-type TLfgFeatureReturnOfKind<Kind extends ELfgFeatureReturnKind> = TLfgFeatureReturn & { readonly kind: Kind };
+export type TLfgFeatureReturn = {
+    [Kind in ELfgFeatureReturnKind]: TLfgFeatureReturnOfKind<Kind>;
+}[ELfgFeatureReturnKind];
 
 export type TLfgFeatureReturnTypes = {
     list: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOMS_LISTED>;
