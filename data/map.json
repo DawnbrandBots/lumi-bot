@@ -1,0 +1,1098 @@
+[
+  {
+    "id": "LABYRINTH_SUN_1",
+    "room": "SUN",
+    "tiles": "...........www.......DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "TOME" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_2",
+    "room": "SUN",
+    "tiles": ".....ww......ww.....wDDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "BOW" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_3",
+    "room": "SUN",
+    "tiles": ".....o...o...........DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_4",
+    "room": "SUN",
+    "tiles": ".....o........o.......DDD",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "LARGE", "movementType": "INFANTRY", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_5",
+    "room": "SUN",
+    "tiles": "..........o...o......DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_6",
+    "room": "SUN",
+    "tiles": ".....o...o...........DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_7",
+    "room": "SUN",
+    "tiles": ".....o........o.......DDD",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_8",
+    "room": "SUN",
+    "tiles": "w...w.....w...w.....wDDDw",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 4, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 4, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_9",
+    "room": "SUN",
+    "tiles": ".....w........o.....DD..D",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 3, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_SUN_10",
+    "room": "SUN",
+    "tiles": "...........www.......DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_1",
+    "room": "MOON",
+    "tiles": "..S....w........w.w..D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "LARGE", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_2",
+    "room": "MOON",
+    "tiles": "..S...o.o......w...wD...D",
+    "minions": [
+      {
+        "location": { "row": 3, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 3, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_3",
+    "room": "MOON",
+    "tiles": ".S.....w..o.w.o.......DD.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 3, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_4",
+    "room": "MOON",
+    "tiles": "..S..o...o..w........D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_5",
+    "room": "MOON",
+    "tiles": "......S....w.w.......D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "LARGE", "movementType": "INFANTRY", "weaponType": "TOME" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_6",
+    "room": "MOON",
+    "tiles": "..S..o...o...........D.D.",
+    "minions": [
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 3, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_7",
+    "room": "MOON",
+    "tiles": "..S...o.o.......D.D......",
+    "minions": [
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 3, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_8",
+    "room": "MOON",
+    "tiles": ".S.....w..o.w.o.......DD.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 3, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_9",
+    "room": "MOON",
+    "tiles": "..S..o...o..w........D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "LABYRINTH_MOON_10",
+    "room": "MOON",
+    "tiles": "......S....w.w.......D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "BOW" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_SUN_1",
+    "room": "SUN",
+    "tiles": "w...w.......w.......wDDDw",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_SUN_2",
+    "room": "SUN",
+    "tiles": "......www.......w.w..DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 1, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_SUN_3",
+    "room": "SUN",
+    "tiles": "...........www.......DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "TOME" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_SUN_4",
+    "room": "SUN",
+    "tiles": ".....ww......ww.....wDDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "TOME" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_SUN_5",
+    "room": "SUN",
+    "tiles": "w...w..w..w...w.....wDDDw",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 4, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 4, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_MOON_1",
+    "room": "MOON",
+    "tiles": "..S...w.w.w...w......D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_MOON_2",
+    "room": "MOON",
+    "tiles": "w.S.w.....D...Dw...ww...w",
+    "minions": [
+      {
+        "location": { "row": 5, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 5, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_MOON_3",
+    "room": "MOON",
+    "tiles": ".Sw..w...ww...w......D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_MOON_4",
+    "room": "MOON",
+    "tiles": "..S..ww......ww......D.D.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 1, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "FOREST_MOON_5",
+    "room": "MOON",
+    "tiles": "..w...Sww.......o.....D.D",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 4 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "STAFF" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_1",
+    "room": "SUN",
+    "tiles": ".....o...o...........DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "CAVALRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 3, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_2",
+    "room": "SUN",
+    "tiles": "...o.o.............o.DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "CAVALRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_3",
+    "room": "SUN",
+    "tiles": "o...o.......w.......o.DDD",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "CAVALRY", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_4",
+    "room": "SUN",
+    "tiles": "..o.......w....D..w.DD...",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "LARGE", "movementType": "CAVALRY", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 4, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "BOW" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_5",
+    "room": "SUN",
+    "tiles": "......w.w.......o.o..DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "CAVALRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_6",
+    "room": "SUN",
+    "tiles": ".....o...o...........DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 3, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_7",
+    "room": "SUN",
+    "tiles": "...o.o.............o.DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_8",
+    "room": "SUN",
+    "tiles": "......w.w...........DwDwD",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_9",
+    "room": "SUN",
+    "tiles": "o...o.......w..w...wD.D.D",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 1, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "BOW" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_10",
+    "room": "SUN",
+    "tiles": "................o.o.D.D.D",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_11",
+    "room": "SUN",
+    "tiles": "o...o.......w.......o.DDD",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 3, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_12",
+    "room": "SUN",
+    "tiles": "..o.......w....D..w.DD...",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 1, "column": 5 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 4, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_13",
+    "room": "SUN",
+    "tiles": "......w.w.......o.o..DDD.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_14",
+    "room": "SUN",
+    "tiles": "......w.w...........DwDwD",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "TOME" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_SUN_15",
+    "room": "SUN",
+    "tiles": "o...o.......w..w...wD.D.D",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 1, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_1",
+    "room": "MOON",
+    "tiles": ".......S..o.w..D....D...w",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 4, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_2",
+    "room": "MOON",
+    "tiles": "..S...w.w......o...o.D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "CAVALRY", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "LANCE" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "CAVALRY", "weaponType": "TOME" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_3",
+    "room": "MOON",
+    "tiles": "..S........o.o......D...D",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "SMALL", "movementType": "CAVALRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "CAVALRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 3, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_4",
+    "room": "MOON",
+    "tiles": ".........S...o......oDD.o",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 1, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_5",
+    "room": "MOON",
+    "tiles": "......S........woo...DD..",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "CAVALRY", "weaponType": "AXE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_6",
+    "room": "MOON",
+    "tiles": "......S........woo...DD..",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_7",
+    "room": "MOON",
+    "tiles": ".........S...o......oDD.o",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "INFANTRY", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_8",
+    "room": "MOON",
+    "tiles": "..S........o.o......D...D",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 3, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_9",
+    "room": "MOON",
+    "tiles": "......w.S.......w.w..D.D.",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "TOME" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "ARMORED", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "INFANTRY", "weaponType": "TOME" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_10",
+    "room": "MOON",
+    "tiles": ".o.o....S...o..w...wD...D",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "LARGE", "movementType": "ARMORED", "weaponType": "TOME" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_11",
+    "room": "MOON",
+    "tiles": "..S...ww.......w..wwD..D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "AXE" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "SWORD" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_12",
+    "room": "MOON",
+    "tiles": ".......S..o.w..D....D...w",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 1 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 4, "column": 5 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "LANCE" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_13",
+    "room": "MOON",
+    "tiles": "..S...w.w......o...o.D.D.",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 1 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "STAFF" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 5 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "STAFF" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_14",
+    "room": "MOON",
+    "tiles": "Do.o....S...o..w...w....D",
+    "minions": [
+      {
+        "location": { "row": 2, "column": 2 },
+        "properties": { "size": "LARGE", "movementType": "FLYING", "weaponType": "STAFF" }
+      }
+    ]
+  },
+  {
+    "id": "ACADEMY_MOON_15",
+    "room": "MOON",
+    "tiles": "D.....w.S.......w.w.....D",
+    "minions": [
+      {
+        "location": { "row": 1, "column": 2 },
+        "properties": { "size": "MEDIUM", "movementType": "FLYING", "weaponType": "SWORD" }
+      },
+      {
+        "location": { "row": 2, "column": 3 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "BOW" }
+      },
+      {
+        "location": { "row": 3, "column": 4 },
+        "properties": { "size": "SMALL", "movementType": "FLYING", "weaponType": "BOW" }
+      }
+    ]
+  }
+]

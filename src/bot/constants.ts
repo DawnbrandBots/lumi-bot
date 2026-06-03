@@ -5,9 +5,10 @@ export const BOT_NAME = "Lumi";
 export const NOTABOT_DISCORD_ID = "1454944471358898209";
 export const NOTABOT_DISCORD_MENTION = userMention(NOTABOT_DISCORD_ID);
 
-export const DISCORD_MESSAGE_SUCCESS_COLOR = Colors.Green;
-export const DISCORD_MESSAGE_ERROR_COLOR = Colors.Red;
+export const DISCORD_MESSAGE_POSITIVE_COLOR = Colors.Green;
 export const DISCORD_MESSAGE_NEUTRAL_COLOR = Colors.DarkGold;
+export const DISCORD_MESSAGE_NEGATIVE_COLOR = Colors.Red;
+export const DISCORD_MESSAGE_ERROR_COLOR = Colors.DarkRed;
 
 export const DISCORD_RED_SQUARE_EMOJI_ID = "red_square";
 export const DISCORD_RED_SQUARE_EMOJI_CALL = `:${DISCORD_RED_SQUARE_EMOJI_ID}:`;

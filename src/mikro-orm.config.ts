@@ -2,6 +2,10 @@ import { defineConfig } from "@mikro-orm/sqlite";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
+import { GameMap } from "./game/models/gameMap.ts";
+import { GameMapMinion } from "./game/models/gameMapMinion.ts";
+import { GameMapMinionLocation } from "./game/models/gameMapMinionLocation.ts";
+import { GameMapMinionProperties } from "./game/models/gameMapMinionProperties.ts";
 import { HealEffect } from "./game/models/healEffect.ts";
 import { IceBlockEffect } from "./game/models/iceBlockEffect.ts";
 import { MovementEffect } from "./game/models/movementEffect.ts";
@@ -52,6 +56,10 @@ export default defineConfig({
         SpellEffectValueFixedUnit,
         SpellEffectValuePercentUnit,
         SpellShape,
+        GameMap,
+        GameMapMinion,
+        GameMapMinionProperties,
+        GameMapMinionLocation,
     ],
     dbName: "lumi",
 });

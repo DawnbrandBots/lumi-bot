@@ -8,7 +8,7 @@ const populate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.e
 const weaponSearchHandler: ISearchHandler<Weapon, (typeof populate)[number]> = {
     class: Weapon,
     populate: populate,
-    response: (weapon: IWeapon) => {
+    message: (weapon: IWeapon) => {
         const statsTable = [
             ["Variant", "Atk", "(-)", "HP"],
             [
