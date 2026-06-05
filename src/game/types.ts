@@ -149,6 +149,10 @@ export interface IDisciple {
      */
     readonly prfWeapon: IWeapon;
     /**
+     * Music that plays when this disciple is revealed to be the Shadow. null when no official source for the music.
+     */
+    readonly shadowMusic?: IMusic | null;
+    /**
      * Spells this disciple provides as their souls are collected.
      */
     readonly spells: Iterable<ISpell>;
