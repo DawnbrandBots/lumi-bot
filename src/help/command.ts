@@ -6,8 +6,5 @@ import mapHelpFeatureReturnToMessage from "./mapper.ts";
 
 export const helpCommand: ICommand = new Command({
     info: helpCommandInfo,
-    run: function (interaction) {
-        const message = mapHelpFeatureReturnToMessage(helpFeature());
-        return interaction.reply(message);
-    },
+    run: () => mapHelpFeatureReturnToMessage(helpFeature()),
 });

@@ -21,3 +21,5 @@ export const DISCORD_SAI_LAUGH_EMOJI_CALL = formatEmoji(DISCORD_SAI_LAUGH_EMOJI_
 
 export const SEARCH_TERMS_OPTION_NAME = "terms";
 export const SEARCH_MAX_INPUT_LENGTH = 32;
+
+export const FOLLOW_UP_ERROR_MESSAGE_CONTENT = `-# Everyone point and laugh at ${NOTABOT_DISCORD_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`;

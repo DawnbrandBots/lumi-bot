@@ -68,9 +68,11 @@ const weaponSearchHandler: ISearchHandler<Weapon, (typeof populate)[number]> = {
             },
         ];
         return {
-            embed: {
-                title: weapon.name,
-                fields: fields,
+            reply: {
+                embed: {
+                    title: weapon.name,
+                    fields: fields,
+                },
             },
         };
     },

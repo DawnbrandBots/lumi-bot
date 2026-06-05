@@ -5,7 +5,6 @@ import type {
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
-    InteractionResponse,
     SharedSlashCommand,
     SlashCommandBuilder,
 } from "discord.js";
@@ -42,7 +41,7 @@ export interface ICommand {
     /**
      * What the command does. Must reply to the interaction.
      */
-    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<InteractionResponse<boolean>>;
+    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<IInteractionHandlerReturnType>;
     /**
      * Provides autocomplete suggestions for the command's options.
      */
@@ -83,3 +82,8 @@ export type IBaseMessageArg<MessageOptions extends BaseMessageOptions = BaseMess
 
 export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
     ISingleEmbedMessageOptions<MessageOptions> & IChildMessageArgCustomProps;
+
+export interface IInteractionHandlerReturnType<MessageOptions extends BaseMessageOptions = BaseMessageOptions> {
+    reply: MessageOptions & { kind: EMessageKind };
+    followUps?: BaseMessageOptions[];
+}

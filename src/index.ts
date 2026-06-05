@@ -1,6 +1,9 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
-import type { ICommand } from "./bot/types.ts";
+import {
+    FOLLOW_UP_ERROR_MESSAGE_CONTENT
+} from "./bot/constants.ts";
+import { EMessageKind, type ICommand, type IInteractionHandlerReturnType } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
@@ -33,6 +36,21 @@ bot.on(Events.ClientReady, (client) => {
     client.user.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
 });
 
+function map(a: IInteractionHandlerReturnType): IInteractionHandlerReturnType {
+    if (a.reply.kind === EMessageKind.ERROR) {
+        return {
+            reply: a.reply,
+            followUps: [
+                ...(a.followUps ?? []),
+                {
+                    content: FOLLOW_UP_ERROR_MESSAGE_CONTENT,
+                },
+            ],
+        };
+    }
+    return a;
+}
+
 bot.on(Events.MessageCreate, async (interaction) => {
     log(interaction);
 
@@ -45,8 +63,14 @@ bot.on(Events.MessageCreate, async (interaction) => {
     }
     const botMention = userMention(interaction.client.user.id);
     if (interaction.content === botMention) {
-        const message = mapHelpFeatureReturnToMessage(helpFeature());
-        await interaction.reply(message);
+        const baseMessage = mapHelpFeatureReturnToMessage(helpFeature());
+        const messages = map(baseMessage);
+        await interaction.reply(messages.reply);
+        if (messages.followUps) {
+            for (const followUp of messages.followUps) {
+                await interaction.channel.send(followUp);
+            }
+        }
         return;
     }
     const startingBotMentionAndSpaceStr = botMention + " ";
@@ -55,8 +79,14 @@ bot.on(Events.MessageCreate, async (interaction) => {
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
     const result = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
-    const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
-    await interaction.reply(message);
+    const baseMessage = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+    const messages = map(baseMessage);
+    await interaction.reply(messages.reply);
+    if (messages.followUps) {
+        for (const followUp of messages.followUps) {
+            await interaction.reply(followUp);
+        }
+    }
 });
 
 bot.on(Events.InteractionCreate, async (interaction) => {
@@ -64,7 +94,15 @@ bot.on(Events.InteractionCreate, async (interaction) => {
 
     if (interaction.isChatInputCommand()) {
         const command = commands[interaction.commandName] || helpCommand;
-        await command.run(interaction);
+        const baseMessages = await command.run(interaction);
+        const messages = map(baseMessages);
+        await interaction.reply(messages.reply);
+        if (messages.followUps) {
+            for (const followUp of messages.followUps) {
+                // TODO: using channel.send might be more appropriate? no need to ping the user again
+                await interaction.followUp(followUp);
+            }
+        }
         return;
     } else if (interaction.isAutocomplete()) {
         const command = commands[interaction.commandName];

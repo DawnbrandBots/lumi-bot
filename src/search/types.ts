@@ -1,5 +1,5 @@
 import type { EntityName, Populate } from "@mikro-orm/sqlite";
-import type { ISingleEmbedMessageOptions } from "../bot/types.ts";
+import type { IInteractionHandlerReturnType, ISingleEmbedMessageOptions } from "../bot/types.ts";
 import type { Disciple } from "../game/models/disciple.ts";
 import type { Spell } from "../game/models/spell.ts";
 import type { Weapon } from "../game/models/weapon.ts";
@@ -49,7 +49,10 @@ export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHi
     /**
      * Given the ORM entity, returns the formatted message to be sent to the client.
      */
-    message: (entity: EntityType) => ISingleEmbedMessageOptions;
+    // TODO: clean this type...
+    message: (entity: EntityType) => Omit<IInteractionHandlerReturnType, "reply"> & {
+        reply: Omit<IInteractionHandlerReturnType["reply"] & ISingleEmbedMessageOptions, "kind">;
+    };
     /**
      * MikroORM populate paths for fetched entities.
      * Search handlers might need deeply nested properties that need to be referred to explicitly

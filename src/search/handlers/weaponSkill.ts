@@ -51,9 +51,11 @@ const weaponSkillSearchHandler: ISearchHandler<WeaponSkill> = {
                 : []),
         ];
         return {
-            embed: {
-                title: weaponSkill.name,
-                fields,
+            reply: {
+                embed: {
+                    title: weaponSkill.name,
+                    fields,
+                },
             },
         };
     },
