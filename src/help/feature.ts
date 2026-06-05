@@ -1,4 +1,5 @@
 import allCommandInfo from "../loaders/commandInfo.ts";
+import { HELP_SHADOWS_RESPONSE_DESCRIPTION } from "./constants.ts";
 
 const commandsStr = allCommandInfo
     .map(
@@ -8,8 +9,14 @@ const commandsStr = allCommandInfo
     .join("\n");
 const description = `### Commands\n${commandsStr}`;
 
-function helpFeature() {
-    return description;
+class HelpFeature {
+    public get bot() {
+        return description;
+    }
+
+    public get shadows() {
+        return HELP_SHADOWS_RESPONSE_DESCRIPTION;
+    }
 }
 
-export default helpFeature;
+export default HelpFeature;
