@@ -41,7 +41,6 @@ describe(searchFeature.name, () => {
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.NO_RESULT,
-            unexpected: false,
         });
     });
 
@@ -70,7 +69,7 @@ describe(searchFeature.name, () => {
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
-            unexpected: true,
+
             value: {
                 kind: missingSearchItem.kind,
                 id: missingSearchItem.id,
@@ -93,7 +92,6 @@ describe(searchFeature.name, () => {
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.INPUT_TOO_LONG,
-            unexpected: false,
         });
     });
 
@@ -110,7 +108,6 @@ describe(searchFeature.name, () => {
         });
 
         typedGuardExpectToBe(result.kind, ESearchFeatureReturnKind.SUCCESS);
-        expect(result.unexpected).toBe(false);
         expect(result.value.searchItem).toEqual(searchItem);
         expect(result.value.entity.id).toBe(searchItem?.id);
     });

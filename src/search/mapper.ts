@@ -30,7 +30,8 @@ function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
                       }
                     : undefined;
 
-            return createPositiveMessage({ embed: { ...handler.message(entity), footer } });
+            const baseMessage = handler.message(entity);
+            return createPositiveMessage({ ...baseMessage, embed: { ...baseMessage.embed, footer } });
         }
         case ESearchFeatureReturnKind.INPUT_TOO_LONG:
             return createNegativeMessage({

@@ -75,8 +75,10 @@ const spellSearchHandler: ISearchHandler<Spell, (typeof populate)[number]> = {
         ];
 
         return {
-            title: spell.name,
-            fields,
+            embed: {
+                title: spell.name,
+                fields,
+            },
         };
     },
 } as const;

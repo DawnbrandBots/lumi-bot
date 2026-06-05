@@ -29,6 +29,7 @@ export default defineConfig(
                 },
             ],
             "@typescript-eslint/consistent-type-imports": "error",
+            "@typescript-eslint/switch-exhaustiveness-check": "error",
         },
     },
     /**
