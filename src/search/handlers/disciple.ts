@@ -56,8 +56,10 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
         ];
 
         return {
-            title: disciple.name,
-            fields,
+            embed: {
+                title: disciple.name,
+                fields,
+            },
         };
     },
 } as const;
