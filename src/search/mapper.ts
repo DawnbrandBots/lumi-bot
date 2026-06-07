@@ -11,12 +11,16 @@ import {
     SEARCH_ALIASES_FOOTER_PREFIX,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "./constants.ts";
-import type searchFeature from "./feature.ts";
+import type createSearchFeature from "./feature.ts";
 import type { ISearchableEntity, ISearchHandlers } from "./types.ts";
 import { ESearchFeatureReturnKind } from "./types.ts";
 
+type TSearchFeatureReturn<Items extends ISearchableEntity> = Awaited<
+    ReturnType<ReturnType<typeof createSearchFeature<Items>>>
+>;
+
 function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
-    result: Awaited<ReturnType<typeof searchFeature<Items>>>,
+    result: TSearchFeatureReturn<Items>,
     handlers: ISearchHandlers<Items>,
 ): IInteractionHandlerReturnType {
     switch (result.kind) {

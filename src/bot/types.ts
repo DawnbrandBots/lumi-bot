@@ -9,6 +9,7 @@ import type {
     SlashCommandBuilder,
 } from "discord.js";
 import type { MaybePromise } from "../utils/types.ts";
+import type { TBotRequest } from "./featureRequest.ts";
 
 /**
  * Holds info about a command. Info may then be displayed while using the command or in help commands' output.
@@ -39,9 +40,9 @@ export interface ICommandInfo {
 export interface ICommand {
     readonly info: ICommandInfo;
     /**
-     * What the command does. Must reply to the interaction.
+     * Maps Discord command input to an app-level request.
      */
-    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<IInteractionHandlerReturnType>;
+    readonly request: (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<TBotRequest>;
     /**
      * Provides autocomplete suggestions for the command's options.
      */

@@ -35,3 +35,5 @@ Game data is stored as JSON files under `/data/`. `yarn db:recreate` creates an 
 Searchable game data is loaded into a [fuse.js](https://www.fusejs.io/) instance at startup, which is then used as source for the `/search` feature.
 
 The server interacts with Discord using [discord.js](https://discord.js.org/).
+
+The event handling pipeline is documented in [docs/event-pipeline.md](docs/event-pipeline.md).

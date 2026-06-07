@@ -4,7 +4,7 @@ import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
 import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
-import searchFeature from "../../src/search/feature.ts";
+import createSearchFeature from "../../src/search/feature.ts";
 import {
     ESearchFeatureReturnKind,
     type ISearchEngine,
@@ -19,25 +19,22 @@ let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
 type SearchItem = ISearchItem & { kind: TSearchableEntity["kind"] };
 let searchEngine: ISearchEngine<SearchItem>;
+let searchFeature: ReturnType<typeof createSearchFeature<TSearchableEntity>>;
 
 beforeAll(async () => {
     orm = await initTestOrm();
     em = orm.em.fork();
     searchEngine = new FuseSearchEngine<SearchItem>({ items: await getSearchItems(em) });
+    searchFeature = createSearchFeature<TSearchableEntity>({ searchEngine, handlers: SEARCH_HANDLERS, em });
 });
 
 afterAll(async () => {
     await orm.close();
 });
 
-describe(searchFeature.name, () => {
+describe(createSearchFeature.name, () => {
     test("no result", async () => {
-        const result = await searchFeature<TSearchableEntity>({
-            input: NO_SEARCH_RESULT_INPUT,
-            searchEngine,
-            handlers: SEARCH_HANDLERS,
-            em,
-        });
+        const result = await searchFeature(NO_SEARCH_RESULT_INPUT);
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.NO_RESULT,
@@ -60,12 +57,12 @@ describe(searchFeature.name, () => {
             findOne,
         } as unknown as EntityManager;
 
-        const result = await searchFeature<TSearchableEntity>({
-            input: "Missing Weapon",
+        const searchFeature = createSearchFeature<TSearchableEntity>({
             searchEngine: mockedSearchEngine,
             handlers: SEARCH_HANDLERS,
             em: mockedEntityManager,
         });
+        const result = await searchFeature("Missing Weapon");
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
@@ -83,12 +80,7 @@ describe(searchFeature.name, () => {
     });
 
     test("input too long", async () => {
-        const result = await searchFeature<TSearchableEntity>({
-            input: "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
-            searchEngine,
-            handlers: SEARCH_HANDLERS,
-            em,
-        });
+        const result = await searchFeature("x".repeat(SEARCH_MAX_INPUT_LENGTH + 1));
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.INPUT_TOO_LONG,
@@ -100,12 +92,7 @@ describe(searchFeature.name, () => {
         const searchItem = searchEngine.searchOne(input);
         expect(searchItem).toBeDefined();
 
-        const result = await searchFeature<TSearchableEntity>({
-            input,
-            searchEngine,
-            handlers: SEARCH_HANDLERS,
-            em,
-        });
+        const result = await searchFeature(input);
 
         typedGuardExpectToBe(result.kind, ESearchFeatureReturnKind.SUCCESS);
         expect(result.value.searchItem).toEqual(searchItem);
