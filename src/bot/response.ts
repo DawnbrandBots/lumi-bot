@@ -1,4 +1,5 @@
-import type { BaseMessageOptions, ChatInputCommandInteraction, Message } from "discord.js";
+import type { BaseMessageOptions } from "discord.js";
+import type { MaybePromise } from "../utils/types.ts";
 import { FOLLOW_UP_ERROR_MESSAGE_CONTENT } from "./constants.ts";
 import { EMessageKind, type IInteractionHandlerReturnType } from "./types.ts";
 
@@ -17,26 +18,15 @@ export function addDefaultFollowUps(response: IInteractionHandlerReturnType): II
     };
 }
 
-function getFollowUps(response: IInteractionHandlerReturnType): BaseMessageOptions[] {
-    return response.followUps ?? [];
+export interface ISendResponseArg {
+    response: IInteractionHandlerReturnType;
+    reply: (reply: IInteractionHandlerReturnType["reply"]) => MaybePromise<unknown>;
+    followUp: (followUp: BaseMessageOptions) => MaybePromise<unknown>;
 }
 
-export async function sendMessageResponse(message: Message, response: IInteractionHandlerReturnType) {
-    await message.reply(response.reply);
-    if (!message.channel.isSendable()) {
-        return;
-    }
-    for (const followUp of getFollowUps(response)) {
-        await message.channel.send(followUp);
-    }
-}
-
-export async function sendInteractionResponse(
-    interaction: ChatInputCommandInteraction,
-    response: IInteractionHandlerReturnType,
-) {
-    await interaction.reply(response.reply);
-    for (const followUp of getFollowUps(response)) {
-        await interaction.followUp(followUp);
+export async function sendResponse({ response, reply, followUp }: ISendResponseArg) {
+    await reply(response.reply);
+    for (const followUpResponse of response.followUps ?? []) {
+        await followUp(followUpResponse);
     }
 }

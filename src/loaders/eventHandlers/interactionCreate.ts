@@ -1,7 +1,7 @@
 import debug from "debug";
 import type { Interaction } from "discord.js";
 import type { TBotRequest } from "../../bot/request.ts";
-import { addDefaultFollowUps, sendInteractionResponse } from "../../bot/response.ts";
+import { addDefaultFollowUps, sendResponse } from "../../bot/response.ts";
 import type { ICommand, IInteractionHandlerReturnType } from "../../bot/types.ts";
 
 const log = debug("bot");
@@ -22,7 +22,11 @@ export default function getInteractionCreateEventHandler({
             const command = commands[interaction.commandName] || fallbackCommand;
             const request = await command.request(interaction);
             const baseResponse = await handleBotRequest(request);
-            await sendInteractionResponse(interaction, addDefaultFollowUps(baseResponse));
+            await sendResponse({
+                response: addDefaultFollowUps(baseResponse),
+                reply: (reply) => interaction.reply(reply),
+                followUp: (followUp) => interaction.followUp(followUp),
+            });
             return;
         }
 
