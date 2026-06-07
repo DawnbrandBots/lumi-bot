@@ -1,5 +1,5 @@
 import { Events } from "discord.js";
-import { createBotFeatureRequestHandler } from "./bot/featureRequest.ts";
+import { createBotRequestHandler } from "./bot/request.ts";
 import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import getBot from "./loaders/bot.ts";
@@ -26,19 +26,19 @@ const commands: Record<string, ICommand> = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine }),
     help: helpCommand,
 };
-const handleBotFeatureRequest = createBotFeatureRequestHandler<TSearchableEntity>({
+const handleBotRequest = createBotRequestHandler<TSearchableEntity>({
     searchFeature,
     handlers: SEARCH_HANDLERS,
 });
 
 bot.on(Events.ClientReady, getClientReadyEventHandler());
-bot.on(Events.MessageCreate, getMessageCreateEventHandler({ handleBotFeatureRequest }));
+bot.on(Events.MessageCreate, getMessageCreateEventHandler({ handleBotRequest }));
 bot.on(
     Events.InteractionCreate,
     getInteractionCreateEventHandler({
         commands,
         fallbackCommand: helpCommand,
-        handleBotFeatureRequest,
+        handleBotRequest,
     }),
 );
 

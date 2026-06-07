@@ -1,6 +1,6 @@
 import { Command } from "../bot/command.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
-import { EBotFeatureRequestKind, getRequiredSearchInput } from "../bot/featureRequest.ts";
+import { EBotRequestKind, getRequiredSearchInput } from "../bot/request.ts";
 import { searchCommandInfo } from "./commandInfo.ts";
 import { AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
 import type { ISearchableEntity, ISearchEngine, ISearchItem } from "./types.ts";
@@ -14,7 +14,7 @@ export function getSearchCommand<Items extends ISearchableEntity>({
         info: searchCommandInfo,
         request: function (interaction) {
             const input = getRequiredSearchInput(interaction.options.getString(SEARCH_TERMS_OPTION_NAME, true));
-            return { kind: EBotFeatureRequestKind.SEARCH, input };
+            return { kind: EBotRequestKind.SEARCH, input };
         },
         autocomplete: (interaction) => {
             const focusedOption = interaction.options.getFocused(true);

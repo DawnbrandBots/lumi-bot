@@ -6,36 +6,36 @@ import type { ISearchableEntity, ISearchHandlers } from "../search/types.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "./constants.ts";
 import type { IInteractionHandlerReturnType } from "./types.ts";
 
-export const enum EBotFeatureRequestKind {
+export const enum EBotRequestKind {
     HELP = "HELP",
     SEARCH = "SEARCH",
 }
 
-export interface IHelpFeatureRequest {
-    kind: EBotFeatureRequestKind.HELP;
+export interface IHelpBotRequest {
+    kind: EBotRequestKind.HELP;
 }
 
-export interface ISearchFeatureRequest {
-    kind: EBotFeatureRequestKind.SEARCH;
+export interface ISearchBotRequest {
+    kind: EBotRequestKind.SEARCH;
     input: string;
 }
 
-export type TBotRequest = IHelpFeatureRequest | ISearchFeatureRequest;
+export type TBotRequest = IHelpBotRequest | ISearchBotRequest;
 
-export interface IBotFeatureRequestHandlerConfig<Items extends ISearchableEntity> {
+export interface IbotRequestHandlerConfig<Items extends ISearchableEntity> {
     searchFeature: ReturnType<typeof createSearchFeature<Items>>;
     handlers: ISearchHandlers<Items>;
 }
 
-export function createBotFeatureRequestHandler<Items extends ISearchableEntity>({
+export function createBotRequestHandler<Items extends ISearchableEntity>({
     searchFeature,
     handlers,
-}: IBotFeatureRequestHandlerConfig<Items>) {
-    return async function handleBotFeatureRequest(request: TBotRequest): Promise<IInteractionHandlerReturnType> {
+}: IbotRequestHandlerConfig<Items>) {
+    return async function handleBotRequest(request: TBotRequest): Promise<IInteractionHandlerReturnType> {
         switch (request.kind) {
-            case EBotFeatureRequestKind.HELP:
+            case EBotRequestKind.HELP:
                 return mapHelpFeatureReturnToMessage(helpFeature());
-            case EBotFeatureRequestKind.SEARCH: {
+            case EBotRequestKind.SEARCH: {
                 const result = await searchFeature(request.input);
                 return mapSearchFeatureReturnToMessage<Items>(result, handlers);
             }

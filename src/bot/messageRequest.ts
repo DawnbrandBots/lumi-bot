@@ -1,7 +1,7 @@
 import { userMention, type Message } from "discord.js";
-import { EBotFeatureRequestKind, type TBotRequest } from "./featureRequest.ts";
+import { EBotRequestKind, type TBotRequest } from "./request.ts";
 
-export function mapMentionMessageToFeatureRequest(message: Message): TBotRequest | null {
+export function mapMentionMessageToBotRequest(message: Message): TBotRequest | null {
     if (message.author.bot) {
         return null;
     }
@@ -11,12 +11,12 @@ export function mapMentionMessageToFeatureRequest(message: Message): TBotRequest
 
     const botMention = userMention(message.client.user.id);
     if (message.content === botMention) {
-        return { kind: EBotFeatureRequestKind.HELP };
+        return { kind: EBotRequestKind.HELP };
     }
 
     const mentionPrefix = `${botMention} `;
     if (!message.content.startsWith(mentionPrefix)) {
         return null;
     }
-    return { kind: EBotFeatureRequestKind.SEARCH, input: message.content.slice(mentionPrefix.length) };
+    return { kind: EBotRequestKind.SEARCH, input: message.content.slice(mentionPrefix.length) };
 }

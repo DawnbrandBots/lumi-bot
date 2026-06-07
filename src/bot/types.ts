@@ -9,7 +9,7 @@ import type {
     SlashCommandBuilder,
 } from "discord.js";
 import type { MaybePromise } from "../utils/types.ts";
-import type { TBotRequest } from "./featureRequest.ts";
+import type { TBotRequest } from "./request.ts";
 
 /**
  * Holds info about a command. Info may then be displayed while using the command or in help commands' output.
