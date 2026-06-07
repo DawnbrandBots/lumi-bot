@@ -36,20 +36,21 @@ export interface IBotRequestHandlerConfig<Items extends ISearchableEntity> {
     handlers: ISearchHandlers<Items>;
 }
 
-export function createHelpBotRequestHandler(): TBotRequestHandler<IHelpBotRequest> {
-    return function handleHelpBotRequest() {
-        return mapHelpFeatureReturnToMessage(helpFeature());
-    };
-}
+export const botRequestHandlerGetters = {
+    [EBotRequestKind.HELP]: (): TBotRequestHandler<IHelpBotRequest> => () =>
+        mapHelpFeatureReturnToMessage(helpFeature()),
+    [EBotRequestKind.SEARCH]: <Items extends ISearchableEntity>({
+        searchFeature,
+        handlers,
+    }: IBotRequestHandlerConfig<Items>): TBotRequestHandler<ISearchBotRequest> =>
+        async function handleSearchBotRequest(request) {
+            const result = await searchFeature(request.input);
+            return mapSearchFeatureReturnToMessage<Items>(result, handlers);
+        },
+};
 
-export function createSearchBotRequestHandler<Items extends ISearchableEntity>({
-    searchFeature,
-    handlers,
-}: IBotRequestHandlerConfig<Items>): TBotRequestHandler<ISearchBotRequest> {
-    return async function handleSearchBotRequest(request) {
-        const result = await searchFeature(request.input);
-        return mapSearchFeatureReturnToMessage<Items>(result, handlers);
-    };
+export function getBotRequestHandlerGetter<Kind extends EBotRequestKind>(kind: Kind) {
+    return botRequestHandlerGetters[kind];
 }
 
 export function createBotRequestHandler(handlers: TBotRequestHandlers) {

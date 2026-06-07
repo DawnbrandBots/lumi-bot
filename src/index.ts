@@ -1,6 +1,9 @@
 import { Events } from "discord.js";
 import type { TBotRequest, TBotRequestHandler } from "./bot/request.ts";
-import { createHelpBotRequestHandler, createSearchBotRequestHandler, EBotRequestKind } from "./bot/request.ts";
+import {
+    EBotRequestKind,
+    getBotRequestHandlerGetter
+} from "./bot/request.ts";
 import type { ICommand, IInteractionHandlerReturnType } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import getBot from "./loaders/bot.ts";
@@ -28,8 +31,8 @@ const commands: Record<string, ICommand> = {
     help: helpCommand,
 };
 const botRequestHandlers: { [K in EBotRequestKind]: TBotRequestHandler<TBotRequest & { kind: K }> } = {
-    [EBotRequestKind.HELP]: createHelpBotRequestHandler(),
-    [EBotRequestKind.SEARCH]: createSearchBotRequestHandler({
+    [EBotRequestKind.HELP]: getBotRequestHandlerGetter(EBotRequestKind.HELP)(),
+    [EBotRequestKind.SEARCH]: getBotRequestHandlerGetter(EBotRequestKind.SEARCH)({
         searchFeature,
         handlers: SEARCH_HANDLERS,
     }),
