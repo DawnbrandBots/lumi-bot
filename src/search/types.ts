@@ -1,5 +1,4 @@
 import type { EntityName, Populate } from "@mikro-orm/sqlite";
-import type { APIEmbed } from "discord.js";
 import type { Disciple } from "../game/models/disciple.ts";
 import type { Spell } from "../game/models/spell.ts";
 import type { Weapon } from "../game/models/weapon.ts";
@@ -37,22 +36,16 @@ export const enum ESearchFeatureReturnKind {
 }
 
 /**
- * Defines what ORM entity should be searched for and what message should be generated given the entity.
+ * Defines what ORM entity should be searched for.
  */
-// TODO: "message" argument type should be refined to take populate's type into account
-// (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
-export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
+export interface ISearchConfig<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
     /**
      * ORM entity class required to search for an entry.
      */
     class: EntityName<EntityType>;
     /**
-     * Given the ORM entity, returns the formatted message to be sent to the client.
-     */
-    message: (entity: EntityType) => Required<Pick<APIEmbed, "title" | "fields">>;
-    /**
      * MikroORM populate paths for fetched entities.
-     * Search handlers might need deeply nested properties that need to be referred to explicitly
+     * Search mappers might need deeply nested properties that need to be referred to explicitly
      * because just using ["*"] won't populate them.
      *
      * Example: Weapon's search handler displaying the unique skill's effect description.
@@ -63,10 +56,10 @@ export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHi
 }
 
 /**
- * Associates a {@link ISearchHandler} to each searchable entity.
+ * Associates a {@link ISearchConfig} to each searchable entity.
  */
-export type ISearchHandlers<Items extends ISearchableEntity> = {
-    [Kind in Items["kind"]]: ISearchHandler<Items & { kind: Kind }, string>;
+export type ISearchConfigs<Items extends ISearchableEntity> = {
+    [Kind in Items["kind"]]: ISearchConfig<Items & { kind: Kind }, string>;
 };
 
 /**

@@ -1,7 +1,7 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
-import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
+import SEARCH_CONFIGS from "../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
@@ -35,7 +35,7 @@ describe(searchFeature.name, () => {
         const result = await searchFeature<TSearchableEntity>({
             input: NO_SEARCH_RESULT_INPUT,
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
 
@@ -63,7 +63,7 @@ describe(searchFeature.name, () => {
         const result = await searchFeature<TSearchableEntity>({
             input: "Missing Weapon",
             searchEngine: mockedSearchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em: mockedEntityManager,
         });
 
@@ -76,9 +76,9 @@ describe(searchFeature.name, () => {
             },
         });
         expect(findOne).toHaveBeenCalledWith(
-            SEARCH_HANDLERS.weapon.class,
+            SEARCH_CONFIGS.weapon.class,
             { id: missingSearchItem.id },
-            { populate: SEARCH_HANDLERS.weapon.populate },
+            { populate: SEARCH_CONFIGS.weapon.populate },
         );
     });
 
@@ -86,7 +86,7 @@ describe(searchFeature.name, () => {
         const result = await searchFeature<TSearchableEntity>({
             input: "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
 
@@ -103,7 +103,7 @@ describe(searchFeature.name, () => {
         const result = await searchFeature<TSearchableEntity>({
             input,
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
 

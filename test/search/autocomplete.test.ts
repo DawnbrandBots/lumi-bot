@@ -2,7 +2,7 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import type { AutocompleteInteraction, CacheType } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { SEARCH_TERMS_OPTION_NAME } from "../../src/bot/constants.ts";
-import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
+import SEARCH_CONFIGS from "../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { getSearchCommand } from "../../src/search/command.ts";
 import { AUTOCOMPLETE_RESULTS_LIMIT } from "../../src/search/constants.ts";
@@ -29,7 +29,7 @@ beforeAll(async () => {
     orm = await initTestOrm();
     em = orm.em.fork();
     searchEngine = new FuseSearchEngine<SearchItem>({ items: await getSearchItems(em) });
-    searchCommand = getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS });
+    searchCommand = getSearchCommand<TSearchableEntity>({ searchEngine, em, configs: SEARCH_CONFIGS });
 });
 
 afterAll(async () => {

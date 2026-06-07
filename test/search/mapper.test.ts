@@ -2,7 +2,7 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
 import { EMessageKind } from "../../src/bot/types.ts";
-import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
+import SEARCH_CONFIGS from "../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import {
     ENTITY_KIND_FIELD_NAME,
@@ -42,10 +42,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
         const result = await searchFeature<TSearchableEntity>({
             input: NO_SEARCH_RESULT_INPUT,
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result);
 
         typedGuardExpectToBe(message.kind, EMessageKind.NEGATIVE);
         expect(message.embeds?.[0]).toMatchObject({
@@ -71,10 +71,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
         const result = await searchFeature<TSearchableEntity>({
             input: "Missing Weapon",
             searchEngine: mockedSearchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em: mockedEntityManager,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result);
 
         typedGuardExpectToBe(message.kind, EMessageKind.ERROR);
         expect(message.content).toBeDefined();
@@ -91,10 +91,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
         const result = await searchFeature<TSearchableEntity>({
             input: "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result);
 
         typedGuardExpectToBe(message.kind, EMessageKind.NEGATIVE);
         expect(message.embeds?.[0]).toMatchObject({
@@ -107,10 +107,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
         const result = await searchFeature<TSearchableEntity>({
             input: "Royal Sword",
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result);
 
         typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
     });
@@ -124,10 +124,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             const result = await searchFeature<TSearchableEntity>({
                 input,
                 searchEngine,
-                handlers: SEARCH_HANDLERS,
+                configs: SEARCH_CONFIGS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result);
 
             typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
             expect(message.embeds?.[0]?.footer?.text).toBe(
@@ -143,10 +143,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             const result = await searchFeature<TSearchableEntity>({
                 input,
                 searchEngine,
-                handlers: SEARCH_HANDLERS,
+                configs: SEARCH_CONFIGS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result);
 
             typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
             expect(message.embeds?.[0]?.footer).toBeUndefined();

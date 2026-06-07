@@ -11,17 +11,17 @@ import {
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "./constants.ts";
 import type searchFeature from "./feature.ts";
-import type { ISearchableEntity, ISearchHandlers } from "./types.ts";
+import SEARCH_MAPPERS, { type ISearchMapper } from "./mappers/index.ts";
+import type { TSearchableEntity } from "./types.ts";
 import { ESearchFeatureReturnKind } from "./types.ts";
 
-function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
+function mapSearchFeatureReturnToMessage<Items extends TSearchableEntity>(
     result: Awaited<ReturnType<typeof searchFeature<Items>>>,
-    handlers: ISearchHandlers<Items>,
 ) {
     switch (result.kind) {
         case ESearchFeatureReturnKind.SUCCESS: {
             const { entity, searchItem } = result.value;
-            const handler = handlers[searchItem.kind];
+            const mapper = SEARCH_MAPPERS[searchItem.kind] as unknown as ISearchMapper<typeof entity>;
             const footer: APIEmbed["footer"] =
                 // Showing aliases when there is only one is redundant.
                 searchItem.aliases.length > 1
@@ -30,7 +30,7 @@ function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
                       }
                     : undefined;
 
-            return createPositiveMessage({ embed: { ...handler.message(entity), footer } });
+            return createPositiveMessage({ embed: { ...mapper(entity), footer } });
         }
         case ESearchFeatureReturnKind.INPUT_TOO_LONG:
             return createNegativeMessage({

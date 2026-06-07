@@ -6,7 +6,7 @@ import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
-import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
+import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
 import getSearchItems from "./loaders/searchItems.ts";
 import mikroOrmConfig from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command.ts";
@@ -24,7 +24,7 @@ const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const commands: Record<string, ICommand> = {
-    search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
+    search: getSearchCommand<TSearchableEntity>({ searchEngine, em, configs: SEARCH_CONFIGS }),
     help: helpCommand,
 };
 
@@ -54,8 +54,8 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const result = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
-    const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+    const result = await searchFeature<TSearchableEntity>({ em, searchEngine, configs: SEARCH_CONFIGS, input });
+    const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result);
     await interaction.reply(message);
 });
 

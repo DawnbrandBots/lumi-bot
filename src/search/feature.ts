@@ -1,6 +1,6 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { SEARCH_MAX_INPUT_LENGTH } from "../bot/constants.ts";
-import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "./types.ts";
+import type { ISearchableEntity, ISearchConfigs, ISearchEngine, ISearchItem } from "./types.ts";
 import { ESearchFeatureReturnKind } from "./types.ts";
 
 async function searchFeature<
@@ -9,12 +9,12 @@ async function searchFeature<
 >({
     input,
     searchEngine,
-    handlers,
+    configs,
     em,
 }: {
     input: string;
     searchEngine: ISearchEngine<ISearchItem & { kind: Kinds }>;
-    handlers: ISearchHandlers<Items>;
+    configs: ISearchConfigs<Items>;
     em: EntityManager;
 }) {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
@@ -27,11 +27,11 @@ async function searchFeature<
         return { kind: ESearchFeatureReturnKind.NO_RESULT } as const;
     }
 
-    const handler = handlers[searchItem.kind];
+    const config = configs[searchItem.kind];
 
     // TODO: figure out the correct types here and remove as never
-    const entity = await em.findOne(handler.class, { id: searchItem.id } as never, {
-        populate: (handler.populate ?? ["*"]) as never,
+    const entity = await em.findOne(config.class, { id: searchItem.id } as never, {
+        populate: (config.populate ?? ["*"]) as never,
     });
     if (!entity) {
         return {
