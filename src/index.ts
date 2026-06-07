@@ -1,6 +1,7 @@
 import { Events } from "discord.js";
-import { createBotRequestHandler } from "./bot/request.ts";
-import type { ICommand } from "./bot/types.ts";
+import type { TBotRequest, TBotRequestHandler } from "./bot/request.ts";
+import { createHelpBotRequestHandler, createSearchBotRequestHandler, EBotRequestKind } from "./bot/request.ts";
+import type { ICommand, IInteractionHandlerReturnType } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import getBot from "./loaders/bot.ts";
 import getClientReadyEventHandler from "./loaders/eventHandlers/clientReady.ts";
@@ -26,10 +27,19 @@ const commands: Record<string, ICommand> = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine }),
     help: helpCommand,
 };
-const handleBotRequest = createBotRequestHandler<TSearchableEntity>({
-    searchFeature,
-    handlers: SEARCH_HANDLERS,
-});
+const botRequestHandlers: { [K in EBotRequestKind]: TBotRequestHandler<TBotRequest & { kind: K }> } = {
+    [EBotRequestKind.HELP]: createHelpBotRequestHandler(),
+    [EBotRequestKind.SEARCH]: createSearchBotRequestHandler({
+        searchFeature,
+        handlers: SEARCH_HANDLERS,
+    }),
+};
+async function handleBotRequest<K extends EBotRequestKind>(
+    request: TBotRequest & { kind: K },
+): Promise<IInteractionHandlerReturnType> {
+    const handler = botRequestHandlers[request.kind];
+    return handler(request);
+}
 
 bot.on(Events.ClientReady, getClientReadyEventHandler());
 bot.on(Events.MessageCreate, getMessageCreateEventHandler({ handleBotRequest }));
