@@ -7,11 +7,10 @@ import { AdminFeature } from "../../src/admin/feature.ts";
 import { GuildConfig } from "../../src/admin/models/config.ts";
 import { EMessageKind } from "../../src/bot/types.ts";
 import getOrm from "../../src/loaders/orm.ts";
-import { configsById as baseConfigsById } from "../mikro-orm.test.config.ts";
+import { configsById } from "../mikro-orm.test.config.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
-const lfgConfig = { ...baseConfigsById.lfg, dbName: "lfg-admin-test.db3" };
 
 let orm: MikroORM;
 let feature: AdminFeature;
@@ -27,8 +26,8 @@ async function getConfig(): Promise<GuildConfig | null> {
 
 describe(AdminFeature.name, () => {
     beforeEach(async () => {
-        await recreateDb(lfgConfig);
-        orm = await getOrm(lfgConfig);
+        await recreateDb(configsById.lumi);
+        orm = await getOrm(configsById.lumi);
         feature = new AdminFeature({ em: orm.em.fork() });
     });
 
