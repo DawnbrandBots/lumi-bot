@@ -5,11 +5,7 @@ import SEARCH_CONFIGS from "../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
-import {
-    ESearchFeatureReturnKind,
-    type ISearchEngine,
-    type TSearchItem,
-} from "../../src/search/types.ts";
+import { ESearchFeatureReturnKind, type ISearchEngine, type TSearchItem } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
 import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
