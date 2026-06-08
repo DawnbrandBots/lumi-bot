@@ -1,4 +1,4 @@
-import { BOT_NAME } from "../bot/constants.ts";
+import { DISCORD_BOT_NAME } from "../bot/constants.ts";
 import { NeutralFeatureResponse } from "../bot/featureResponse.ts";
 import type { IFeatureResponse } from "../bot/types.ts";
 import allCommandInfo from "../loaders/commandInfo.ts";
@@ -13,7 +13,7 @@ const description = `### Commands\n${commandsStr}`;
 
 const response = new NeutralFeatureResponse({
     embed: {
-        title: BOT_NAME,
+        title: DISCORD_BOT_NAME,
         description,
     },
 });

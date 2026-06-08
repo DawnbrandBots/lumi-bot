@@ -1,6 +1,6 @@
 import { Colors, formatEmoji, userMention } from "discord.js";
 
-export const BOT_NAME = "Lumi";
+export const DISCORD_BOT_NAME = "Lumi";
 
 export const NOTABOT_DISCORD_ID = "1454944471358898209";
 export const NOTABOT_DISCORD_MENTION = userMention(NOTABOT_DISCORD_ID);
