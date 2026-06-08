@@ -19,7 +19,7 @@ const populate = ["*"] as const;
 const spellSearchHandler: ISearchHandler<Spell, (typeof populate)[number]> = {
     class: Spell,
     populate,
-    response: (spell: ISpell) => {
+    message: (spell: ISpell) => {
         const shapeStr = spell.shape.tiles
             .replaceAll(/(.{5})(?<!$)/g, "$1\n")
             .replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
