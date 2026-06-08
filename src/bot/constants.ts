@@ -2,8 +2,8 @@ import { Colors, formatEmoji, userMention } from "discord.js";
 
 export const DISCORD_BOT_NAME = "Lumi";
 
-export const NOTABOT_DISCORD_ID = "1454944471358898209";
-export const NOTABOT_DISCORD_MENTION = userMention(NOTABOT_DISCORD_ID);
+export const DISCORD_NOTABOT_ID = "1454944471358898209";
+export const DISCORD_NOTABOT_MENTION = userMention(DISCORD_NOTABOT_ID);
 export const DISCORD_BOT_ACTIVITY = `Use /help to see what I can do!`;
 
 export const DISCORD_MESSAGE_SUCCESS_COLOR = Colors.Green;

@@ -3,8 +3,8 @@ import {
     DISCORD_MESSAGE_ERROR_COLOR,
     DISCORD_MESSAGE_NEUTRAL_COLOR,
     DISCORD_MESSAGE_SUCCESS_COLOR,
+    DISCORD_NOTABOT_MENTION,
     DISCORD_SAI_LAUGH_EMOJI_CALL,
-    NOTABOT_DISCORD_MENTION,
 } from "./constants.ts";
 import type {
     IFeatureReponseCtorArg,
@@ -37,7 +37,7 @@ export class ErrorFeatureResponse extends FeatureResponse implements IFeatureRes
         report = false,
     }: ISubFeatureReponseCtorArg & { report?: ErrorFeatureResponse["report"] }) {
         const content = report
-            ? `-# Everyone point and laugh at ${NOTABOT_DISCORD_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`
+            ? `-# Everyone point and laugh at ${DISCORD_NOTABOT_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`
             : undefined;
         super({ embed, color: DISCORD_MESSAGE_ERROR_COLOR, content });
         this.report = report;
