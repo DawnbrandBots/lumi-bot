@@ -56,9 +56,10 @@ Use \`/help\` to see what I can do!
 
 ${DISCORD_BOT_ABOUT_ME_DEVELOPMENT}`;
 
-export const DISCORD_MESSAGE_SUCCESS_COLOR = Colors.Green;
-export const DISCORD_MESSAGE_ERROR_COLOR = Colors.Red;
+export const DISCORD_MESSAGE_POSITIVE_COLOR = Colors.Green;
 export const DISCORD_MESSAGE_NEUTRAL_COLOR = Colors.DarkGold;
+export const DISCORD_MESSAGE_NEGATIVE_COLOR = Colors.Red;
+export const DISCORD_MESSAGE_ERROR_COLOR = Colors.DarkRed;
 
 export const DISCORD_RED_SQUARE_EMOJI_ID = "red_square";
 export const DISCORD_RED_SQUARE_EMOJI_CALL = `:${DISCORD_RED_SQUARE_EMOJI_ID}:`;

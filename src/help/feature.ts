@@ -1,6 +1,4 @@
 import { DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT, DISCORD_BOT_INTRODUCTION } from "../bot/constants.ts";
-import { NeutralFeatureResponse } from "../bot/featureResponse.ts";
-import type { IFeatureResponse } from "../bot/types.ts";
 import allCommandInfo from "../loaders/commandInfo.ts";
 
 const commandsStr = allCommandInfo
@@ -18,14 +16,8 @@ ${DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT}
 
 ${commandsStr}`;
 
-const response = new NeutralFeatureResponse({
-    embed: {
-        description,
-    },
-});
-
-function helpFeature(): IFeatureResponse {
-    return response;
+function helpFeature() {
+    return description;
 }
 
 export default helpFeature;

@@ -1,6 +1,5 @@
 import type { EntityName, Populate } from "@mikro-orm/sqlite";
 import type { APIEmbed } from "discord.js";
-import type { IFeatureResponse } from "../bot/types.ts";
 import type { Disciple } from "../game/models/disciple.ts";
 import type { Spell } from "../game/models/spell.ts";
 import type { Weapon } from "../game/models/weapon.ts";
@@ -30,14 +29,17 @@ export interface ISearchItem {
     readonly aliases: string[];
 }
 
-export type SearchHandlerResponseReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
-export type SearchFeatureReturnType = IFeatureResponse;
+export const enum ESearchFeatureReturnKind {
+    SUCCESS = "SUCCESS",
+    INPUT_TOO_LONG = "INPUT_TOO_LONG",
+    NO_RESULT = "NO_RESULT",
+    FOUND_BY_ENGINE_BUT_NOT_BY_DB = "FOUND_BY_ENGINE_BUT_NOT_BY_DB",
+}
 
 /**
- * Defines what ORM entity should be searched for and what response should be generated
- * given
+ * Defines what ORM entity should be searched for and what message should be generated given the entity.
  */
-// TODO: "response" argument type should be refined to take populate's type into account
+// TODO: "message" argument type should be refined to take populate's type into account
 // (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
 export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
     /**
@@ -45,9 +47,9 @@ export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHi
      */
     class: EntityName<EntityType>;
     /**
-     * Given the ORM entity, returns the formatted response to be sent to the client.
+     * Given the ORM entity, returns the formatted message to be sent to the client.
      */
-    response: (entity: EntityType) => SearchHandlerResponseReturnType;
+    message: (entity: EntityType) => Required<Pick<APIEmbed, "title" | "fields">>;
     /**
      * MikroORM populate paths for fetched entities.
      * Search handlers might need deeply nested properties that need to be referred to explicitly
