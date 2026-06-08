@@ -13,5 +13,5 @@ export const LfgRoomSchema = defineEntity({
     },
 });
 
-export class LfgRoom extends LfgRoomSchema.class { }
+export class LfgRoom extends LfgRoomSchema.class {}
 LfgRoomSchema.setClass(LfgRoom);

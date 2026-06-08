@@ -11,5 +11,5 @@ export const LfgRoomPlayerSchema = defineEntity({
     },
 });
 
-export class LfgRoomPlayer extends LfgRoomPlayerSchema.class { }
+export class LfgRoomPlayer extends LfgRoomPlayerSchema.class {}
 LfgRoomPlayerSchema.setClass(LfgRoomPlayer);
