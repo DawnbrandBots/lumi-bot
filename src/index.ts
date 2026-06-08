@@ -5,7 +5,7 @@ import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
-import { LfgCommand } from "./lfg/command.ts";
+import { getLfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
@@ -34,7 +34,7 @@ const lfgFeature = new LfgFeature({ em: lumiEm });
 const commands: Record<string, ICommand> = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
     help: helpCommand,
-    lfg: new LfgCommand({ lfgFeature }),
+    lfg: getLfgCommand({ lfgFeature }),
 };
 
 bot.on(Events.ClientReady, (client) => {
