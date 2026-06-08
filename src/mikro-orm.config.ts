@@ -32,7 +32,7 @@ import { RoomPlayer } from "./lfg/models/roomPlayer.ts";
 const STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;
 const STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
 const GAME_DB_NAME = process.env.LUMI_GAME_DB_NAME;
-const LFG_DB_NAME = process.env.LUMI_LFG_DB_NAME;
+const LFG_DB_NAME = process.env.LUMI_DB_NAME;
 
 if (!STATIC_DB_DIR || !STATE_DB_DIR || !GAME_DB_NAME || !LFG_DB_NAME) {
     throw new Error(
