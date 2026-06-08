@@ -1,4 +1,8 @@
-import { DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT, DISCORD_BOT_INTRODUCTION } from "../bot/constants.ts";
+import {
+    DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT,
+    DISCORD_BOT_INTRODUCTION,
+    DISCORD_BOT_NAME,
+} from "../bot/constants.ts";
 import allCommandInfo from "../loaders/commandInfo.ts";
 
 const commandsStr = allCommandInfo
@@ -8,7 +12,7 @@ const commandsStr = allCommandInfo
     )
     .join("\n");
 
-const description = `### Lumi
+const description = `### ${DISCORD_BOT_NAME}
 ${DISCORD_BOT_INTRODUCTION}
 
 ${DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT}
