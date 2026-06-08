@@ -23,14 +23,14 @@ const log = debug("bot");
 const gameOrm = await getOrm(configsById.game);
 const gameEm = gameOrm.em.fork();
 
-const lfgOrm = await getOrm(configsById.lfg);
-const lfgEm = lfgOrm.em.fork();
+const lumiOrm = await getOrm(configsById.lumi);
+const lumiEm = lumiOrm.em.fork();
 
 const searchItems = await getSearchItems(gameEm);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
-const lfgFeature = new LfgFeature({ em: lfgEm });
+const lfgFeature = new LfgFeature({ em: lumiEm });
 const commands: Record<string, ICommand> = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
     help: helpCommand,

@@ -6,7 +6,7 @@ import { LfgFeature } from "../../src/lfg/feature.ts";
 import { Room } from "../../src/lfg/models/room.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IUser } from "../../src/lfg/types.ts";
 import { configsById } from "../mikro-orm.test.config.ts";
-import { initTestLfgOrm } from "../orm.ts";
+import { initTestLumiOrm } from "../orm.ts";
 
 const GUILD_ID = "guild-1";
 const OTHER_GUILD_ID = "guild-2";
@@ -44,8 +44,8 @@ async function getRooms(guildId: string): Promise<TestRoom[]> {
 
 describe(LfgFeature.name, () => {
     beforeEach(async () => {
-        await recreateDb(configsById.lfg);
-        orm = await initTestLfgOrm();
+        await recreateDb(configsById.lumi);
+        orm = await initTestLumiOrm();
         feature = new LfgFeature({ em: orm.em.fork() });
     });
 

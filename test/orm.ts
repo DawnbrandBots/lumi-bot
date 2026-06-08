@@ -6,6 +6,6 @@ export function initTestGameOrm(): Promise<MikroORM> {
     return getOrm(configsById.game);
 }
 
-export function initTestLfgOrm(): Promise<MikroORM> {
-    return getOrm(configsById.lfg);
+export function initTestLumiOrm(): Promise<MikroORM> {
+    return getOrm(configsById.lumi);
 }
