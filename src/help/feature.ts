@@ -6,7 +6,7 @@ import allCommandInfo from "../loaders/commandInfo.ts";
 const commandsStr = allCommandInfo
     .map(
         (info) =>
-            `- **${info.name}**: ${info.description}${info.pingEquivalent ? `\n  -# Also try \`${info.pingEquivalent}.` : ""}`,
+            `- \`/${info.name}\`: ${info.description}${info.pingEquivalent ? ` (also try \`${info.pingEquivalent}\`)` : ""}`,
     )
     .join("\n");
 
