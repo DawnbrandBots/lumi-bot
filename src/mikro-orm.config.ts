@@ -26,8 +26,8 @@ import { WeaponSkill } from "./game/models/weaponSkill.ts";
 import { WeaponSkillEffect } from "./game/models/weaponSkillEffect.ts";
 import { WeaponType } from "./game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
-import { Room } from "./lfg/models/room.ts";
-import { RoomPlayer } from "./lfg/models/roomPlayer.ts";
+import { LfgRoom } from "./lfg/models/room.ts";
+import { LfgRoomPlayer } from "./lfg/models/roomPlayer.ts";
 
 const STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;
 const STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
@@ -80,7 +80,7 @@ const GAME_CONFIG = defineConfig({
 
 const LUMI_CONFIG = defineConfig({
     contextName: "lumi",
-    entities: [Room, RoomPlayer],
+    entities: [LfgRoom, LfgRoomPlayer],
     dbName: path.join(STATE_DB_DIR, `${LUMI_DB_NAME}.db3`),
     migrations: {
         pathTs: "./src/migrations/lumi",

@@ -1,15 +1,15 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { Room } from "./room.ts";
+import { LfgRoom } from "./room.ts";
 
-export const RoomPlayerSchema = defineEntity({
-    name: "RoomPlayer",
+export const LfgRoomPlayerSchema = defineEntity({
+    name: "LfgRoomPlayer",
     properties: {
         id: p.string().primary(),
         userId: p.string(),
-        room: () => p.manyToOne(Room).inversedBy("players"),
+        room: () => p.manyToOne(LfgRoom).inversedBy("players"),
         joinedAt: p.date().onCreate(() => new Date().toISOString()),
     },
 });
 
-export class RoomPlayer extends RoomPlayerSchema.class {}
-RoomPlayerSchema.setClass(RoomPlayer);
+export class LfgRoomPlayer extends LfgRoomPlayerSchema.class { }
+LfgRoomPlayerSchema.setClass(LfgRoomPlayer);
