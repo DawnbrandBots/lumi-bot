@@ -52,3 +52,8 @@ jobs:
         run: |
           yarn register
           yarn register user-install
+      - name: Update bot profile
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        run: |
+          yarn bot:profile:update

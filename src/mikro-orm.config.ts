@@ -27,22 +27,22 @@ import { WeaponSkill } from "./game/models/weaponSkill.ts";
 import { WeaponSkillEffect } from "./game/models/weaponSkillEffect.ts";
 import { WeaponType } from "./game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
-import { Room } from "./lfg/models/room.ts";
-import { RoomPlayer } from "./lfg/models/roomPlayer.ts";
+import { LfgRoom } from "./lfg/models/room.ts";
+import { LfgRoomPlayer } from "./lfg/models/roomPlayer.ts";
 
 const STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;
 const STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
 const GAME_DB_NAME = process.env.LUMI_GAME_DB_NAME;
-const LFG_DB_NAME = process.env.LUMI_LFG_DB_NAME;
+const LUMI_DB_NAME = process.env.LUMI_DB_NAME;
 
-if (!STATIC_DB_DIR || !STATE_DB_DIR || !GAME_DB_NAME || !LFG_DB_NAME) {
+if (!STATIC_DB_DIR || !STATE_DB_DIR || !GAME_DB_NAME || !LUMI_DB_NAME) {
     throw new Error(
         "One or more required environment variables are not set: " +
         JSON.stringify({
             STATIC_DB_DIR,
             STATE_DB_DIR,
             GAME_DB_NAME,
-            LFG_DB_NAME,
+            LUMI_DB_NAME,
         }),
     );
 }
@@ -79,12 +79,12 @@ const GAME_CONFIG = defineConfig({
     dbName: path.join(STATIC_DB_DIR, `${GAME_DB_NAME}.db3`),
 });
 
-const LFG_CONFIG = defineConfig({
-    contextName: "lfg",
-    entities: [Config, Room, RoomPlayer],
-    dbName: path.join(STATE_DB_DIR, `${LFG_DB_NAME}.db3`),
+const LUMI_CONFIG = defineConfig({
+    contextName: "lumi",
+    entities: [Config, LfgRoom, LfgRoomPlayer],
+    dbName: path.join(STATE_DB_DIR, `${LUMI_DB_NAME}.db3`),
     migrations: {
-        pathTs: "./src/migrations/lfg",
+        pathTs: "./src/migrations/lumi",
     },
     extensions: [Migrator],
 });
@@ -92,9 +92,9 @@ const LFG_CONFIG = defineConfig({
 // Still export array of configs as default for compatibility with MikroORM CLI.
 // Use --contextName option to specify config.
 // https://mikro-orm.io/docs/quick-start#configuration-file-structure
-export default [GAME_CONFIG, LFG_CONFIG] as const;
+export default [GAME_CONFIG, LUMI_CONFIG] as const;
 
 export const configsById = {
     game: GAME_CONFIG,
-    lfg: LFG_CONFIG,
+    lumi: LUMI_CONFIG,
 } as const;

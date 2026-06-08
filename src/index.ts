@@ -2,11 +2,12 @@ import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
 import { AdminCommand } from "./admin/command.ts";
 import { AdminFeature } from "./admin/feature.ts";
+import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
 import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
-import { LfgCommand } from "./lfg/command.ts";
+import { getLfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
@@ -24,25 +25,25 @@ const log = debug("bot");
 const gameOrm = await getOrm(configsById.game);
 const gameEm = gameOrm.em.fork();
 
-const lfgOrm = await getOrm(configsById.lfg);
-const lfgEm = lfgOrm.em.fork();
+const lumiOrm = await getOrm(configsById.lumi);
+const lumiEm = lumiOrm.em.fork();
 
 const searchItems = await getSearchItems(gameEm);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
-const adminFeature = new AdminFeature({ em: lfgEm });
-const lfgFeature = new LfgFeature({ em: lfgEm });
+const adminFeature = new AdminFeature({ em: lumiEm });
+const lfgFeature = new LfgFeature({ em: lumiEm });
 const commands: Record<string, ICommand> = {
     admin: new AdminCommand({ adminFeature }),
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
     help: helpCommand,
-    lfg: new LfgCommand({ lfgFeature, adminFeature }),
+    lfg: getLfgCommand({ lfgFeature, adminFeature }),
 };
 
 bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
-    client.user.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
+    client.user.setActivity(DISCORD_BOT_ACTIVITY, { type: ActivityType.Custom });
 });
 
 bot.on(Events.MessageCreate, async (interaction) => {

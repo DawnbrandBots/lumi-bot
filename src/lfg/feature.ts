@@ -22,8 +22,8 @@ import {
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
-import { Room } from "./models/room.ts";
-import { RoomPlayer } from "./models/roomPlayer.ts";
+import { LfgRoom } from "./models/room.ts";
+import { LfgRoomPlayer } from "./models/roomPlayer.ts";
 import type { TLfgPlayerRemovalResult } from "./types.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type ILfgFeature, type IRoom, type IUser } from "./types.ts";
 
@@ -75,13 +75,13 @@ export class LfgFeature implements ILfgFeature {
             return { kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS, value: { code } } as const;
         }
 
-        const room = this.em.create(Room, {
+        const room = this.em.create(LfgRoom, {
             id: randomUUID(),
             guildId,
             code,
             ownerId: owner.id,
         });
-        const player = this.em.create(RoomPlayer, {
+        const player = this.em.create(LfgRoomPlayer, {
             id: randomUUID(),
             userId: owner.id,
             room,
@@ -117,7 +117,7 @@ export class LfgFeature implements ILfgFeature {
         if (currentPlayer) {
             this.removePlayerFromRoom(currentPlayer.room, currentPlayer);
         }
-        const player = this.em.create(RoomPlayer, {
+        const player = this.em.create(LfgRoomPlayer, {
             id: randomUUID(),
             userId: user.id,
             room,
@@ -212,20 +212,20 @@ export class LfgFeature implements ILfgFeature {
         return player.room;
     }
 
-    protected async getRoomByGuildAndCode(guildId: string, code: string): Promise<Room | null> {
-        return this.em.findOne(Room, { guildId, code }, { populate: ["players"] });
+    protected async getRoomByGuildAndCode(guildId: string, code: string): Promise<LfgRoom | null> {
+        return this.em.findOne(LfgRoom, { guildId, code }, { populate: ["players"] });
     }
 
-    protected async getRoomPlayerInGuild(guildId: string, userId: string): Promise<RoomPlayer | null> {
-        return this.em.findOne(RoomPlayer, { userId, room: { guildId } }, { populate: ["room.players"] });
+    protected async getRoomPlayerInGuild(guildId: string, userId: string): Promise<LfgRoomPlayer | null> {
+        return this.em.findOne(LfgRoomPlayer, { userId, room: { guildId } }, { populate: ["room.players"] });
     }
 
-    protected async getRooms(guildId: string): Promise<Room[]> {
+    protected async getRooms(guildId: string): Promise<LfgRoom[]> {
         // TODO: good use case for query builder here?
-        return this.em.find(Room, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
+        return this.em.find(LfgRoom, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
     }
 
-    protected removePlayerFromRoom(room: Room, player: RoomPlayer): TLfgPlayerRemovalResult {
+    protected removePlayerFromRoom(room: LfgRoom, player: LfgRoomPlayer): TLfgPlayerRemovalResult {
         this.em.remove(player);
         const anotherPlayerInTheRoom = room.players.find((p) => p.userId !== player.userId);
         if (!anotherPlayerInTheRoom) {
@@ -239,7 +239,7 @@ export class LfgFeature implements ILfgFeature {
         return { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY };
     }
 
-    protected toRoom(room: Room): IRoom {
+    protected toRoom(room: LfgRoom): IRoom {
         return {
             code: room.code,
             ownerId: room.ownerId,

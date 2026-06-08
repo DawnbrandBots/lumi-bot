@@ -3,10 +3,10 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import recreateDb from "../../scripts/utils/recreateDb.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
 import { LfgFeature } from "../../src/lfg/feature.ts";
-import { Room } from "../../src/lfg/models/room.ts";
+import { LfgRoom } from "../../src/lfg/models/room.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IUser } from "../../src/lfg/types.ts";
 import { configsById } from "../mikro-orm.test.config.ts";
-import { initTestLfgOrm } from "../orm.ts";
+import { initTestLumiOrm } from "../orm.ts";
 
 const GUILD_ID = "guild-1";
 const OTHER_GUILD_ID = "guild-2";
@@ -30,7 +30,7 @@ function timestamp(value: Date | string): number {
 
 async function getRooms(guildId: string): Promise<TestRoom[]> {
     const em = orm.em.fork();
-    const rooms = await em.find(Room, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
+    const rooms = await em.find(LfgRoom, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
 
     return rooms.map((room) => ({
         code: room.code,
@@ -44,8 +44,8 @@ async function getRooms(guildId: string): Promise<TestRoom[]> {
 
 describe(LfgFeature.name, () => {
     beforeEach(async () => {
-        await recreateDb(configsById.lfg);
-        orm = await initTestLfgOrm();
+        await recreateDb(configsById.lumi);
+        orm = await initTestLumiOrm();
         feature = new LfgFeature({ em: orm.em.fork() });
     });
 

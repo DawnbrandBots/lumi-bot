@@ -8,8 +8,8 @@ import {
     type InteractionReplyOptions,
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
+import { Command } from "../bot/command.ts";
 import { createErrorMessage } from "../bot/message.ts";
-import type { ICommand } from "../bot/types.ts";
 import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
@@ -28,59 +28,59 @@ import type { LfgFeature } from "./feature.ts";
 import mapLfgFeatureReturnToMessage from "./mapper.ts";
 import { ELfgFeatureReturnKind } from "./types.ts";
 
-type LfgCommandCtorArg = {
-    readonly lfgFeature: LfgFeature;
-    readonly adminFeature: Pick<AdminFeature, "getConfig">;
-};
-
 const log = debug("bot:lfg");
 
-// TODO: technically not incorrect to not extend Command as long as ICommand is implemented, but then some may wonder why Command even exists?
-export class LfgCommand implements ICommand {
-    private readonly lfgFeature: LfgFeature;
-    private readonly adminFeature: Pick<AdminFeature, "getConfig">;
-
-    public get info() {
-        return lfgCommandInfo;
+export function getLfgCommand({
+    lfgFeature,
+    adminFeature,
+}: {
+    readonly lfgFeature: LfgFeature;
+    readonly adminFeature: Pick<AdminFeature, "getConfig">;
+}) {
+    async function runSubcommand(
+        interaction: ChatInputCommandInteraction<CacheType>,
+        guildId: string,
+        subcommand: string | null,
+    ) {
+        switch (subcommand) {
+            case LFG_CREATE_SUBCOMMAND_NAME:
+                return lfgFeature.create(
+                    guildId,
+                    interaction.user,
+                    interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                );
+            case LFG_JOIN_SUBCOMMAND_NAME:
+                return lfgFeature.join(
+                    guildId,
+                    interaction.user,
+                    interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                );
+            case LFG_TRANSFER_SUBCOMMAND_NAME:
+                return lfgFeature.transfer(
+                    guildId,
+                    interaction.user,
+                    interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
+                );
+            case LFG_KICK_SUBCOMMAND_NAME:
+                return lfgFeature.kick(
+                    guildId,
+                    interaction.user,
+                    interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
+                );
+            case LFG_LEAVE_SUBCOMMAND_NAME:
+                return lfgFeature.leave(guildId, interaction.user);
+            case LFG_DISBAND_SUBCOMMAND_NAME:
+                return lfgFeature.disband(guildId, interaction.user);
+            case LFG_LIST_SUBCOMMAND_NAME:
+                return lfgFeature.list(guildId);
+            case LFG_HELP_SUBCOMMAND_NAME:
+                return lfgFeature.help();
+            default:
+                return { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } as const;
+        }
     }
 
-    public constructor({ lfgFeature, adminFeature }: LfgCommandCtorArg) {
-        this.lfgFeature = lfgFeature;
-        this.adminFeature = adminFeature;
-    }
-
-    public async run(interaction: ChatInputCommandInteraction<CacheType>) {
-        const guildId = interaction.guildId;
-        if (!guildId) {
-            return interaction.reply(
-                createErrorMessage<InteractionReplyOptions>({
-                    embed: {
-                        title: "LFG unavailable",
-                        description: "LFG is only available in servers.",
-                    },
-                    flags: MessageFlags.Ephemeral,
-                }),
-            );
-        }
-
-        const subcommand = interaction.options.getSubcommand(false);
-        const result = await this.runSubcommand(interaction, guildId, subcommand);
-        const config = await this.adminFeature.getConfig(guildId);
-        const message = mapLfgFeatureReturnToMessage(result);
-
-        if (message.kind !== EMessageKind.POSITIVE || !config?.channel) {
-            return interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
-        }
-        if (message.kind === EMessageKind.POSITIVE && interaction.channelId === config?.channel) {
-            return interaction.reply(message);
-        }
-
-        const reply = await interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
-        await this.sendPublicCopy(interaction, config.channel, message);
-        return reply;
-    }
-
-    private async sendPublicCopy(
+    async function sendPublicCopy(
         interaction: ChatInputCommandInteraction<CacheType>,
         channelId: string,
         message: Parameters<TextChannel["send"]>[0],
@@ -97,46 +97,37 @@ export class LfgCommand implements ICommand {
         }
     }
 
-    private async runSubcommand(
-        interaction: ChatInputCommandInteraction<CacheType>,
-        guildId: string,
-        subcommand: string | null,
-    ) {
-        switch (subcommand) {
-            case LFG_CREATE_SUBCOMMAND_NAME:
-                return this.lfgFeature.create(
-                    guildId,
-                    interaction.user,
-                    interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+    return new Command({
+        info: lfgCommandInfo,
+        run: async function (interaction) {
+            const guildId = interaction.guildId;
+            if (!guildId) {
+                return interaction.reply(
+                    createErrorMessage<InteractionReplyOptions>({
+                        embed: {
+                            title: "LFG unavailable",
+                            description: "LFG is only available in servers.",
+                        },
+                        flags: MessageFlags.Ephemeral,
+                    }),
                 );
-            case LFG_JOIN_SUBCOMMAND_NAME:
-                return this.lfgFeature.join(
-                    guildId,
-                    interaction.user,
-                    interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                );
-            case LFG_TRANSFER_SUBCOMMAND_NAME:
-                return this.lfgFeature.transfer(
-                    guildId,
-                    interaction.user,
-                    interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
-                );
-            case LFG_KICK_SUBCOMMAND_NAME:
-                return this.lfgFeature.kick(
-                    guildId,
-                    interaction.user,
-                    interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
-                );
-            case LFG_LEAVE_SUBCOMMAND_NAME:
-                return this.lfgFeature.leave(guildId, interaction.user);
-            case LFG_DISBAND_SUBCOMMAND_NAME:
-                return this.lfgFeature.disband(guildId, interaction.user);
-            case LFG_LIST_SUBCOMMAND_NAME:
-                return this.lfgFeature.list(guildId);
-            case LFG_HELP_SUBCOMMAND_NAME:
-                return this.lfgFeature.help();
-            default:
-                return { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } as const;
-        }
-    }
+            }
+
+            const subcommand = interaction.options.getSubcommand(false);
+            const result = await runSubcommand(interaction, guildId, subcommand);
+            const config = await adminFeature.getConfig(guildId);
+            const message = mapLfgFeatureReturnToMessage(result);
+
+            if (message.kind !== EMessageKind.POSITIVE || !config?.channel) {
+                return interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
+            }
+            if (message.kind === EMessageKind.POSITIVE && interaction.channelId === config?.channel) {
+                return interaction.reply(message);
+            }
+
+            const reply = await interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
+            await sendPublicCopy(interaction, config.channel, message);
+            return reply;
+        },
+    });
 }

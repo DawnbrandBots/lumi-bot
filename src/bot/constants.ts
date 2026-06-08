@@ -1,9 +1,60 @@
-import { Colors, formatEmoji, userMention } from "discord.js";
+import { Colors, formatEmoji, hyperlink, userMention } from "discord.js";
 
-export const BOT_NAME = "Lumi";
+export const DISCORD_BOT_NAME = "Lumi";
 
-export const NOTABOT_DISCORD_ID = "1454944471358898209";
-export const NOTABOT_DISCORD_MENTION = userMention(NOTABOT_DISCORD_ID);
+export const DISCORD_NOTABOT_ID = "1454944471358898209";
+export const DISCORD_NOTABOT_MENTION = userMention(DISCORD_NOTABOT_ID);
+export const DISCORD_KEVIN_LU_ID = "1266919844549234812";
+
+export const DISCORD_BOT_INTRODUCTION = `I am Lumi! I provide commands to look up Fire Emblem Shadows data and organize Friend Battles (soon 🙃).`;
+export const DISCORD_BOT_REPOSITORY_LINK = `https://github.com/DawnbrandBots/lumi-bot`;
+export const DISCORD_BOT_LICENCE_LINK = `https://github.com/DawnbrandBots/lumi-bot/blob/master/COPYING`;
+export const DISCORD_BOT_AUTHORS = [
+    {
+        name: "NotABot_FES",
+        githubUrl: "https://github.com/NotABot-FES",
+        discordId: DISCORD_NOTABOT_ID,
+    },
+    {
+        name: "Kevin Lu",
+        githubUrl: "https://github.com/kevinlul",
+        discordId: DISCORD_KEVIN_LU_ID,
+    },
+] as const;
+
+export const DISCORD_BOT_ABOUT_ME_DEVELOPMENT = (() => {
+    const authors = DISCORD_BOT_AUTHORS.map((author) => `- ${author.name}: ${author.githubUrl}`).join("\n");
+    return [
+        `Developed on ${DISCORD_BOT_REPOSITORY_LINK}.`,
+        `Licence: ${DISCORD_BOT_LICENCE_LINK}`,
+        ``,
+        `**Authors**`,
+        `${authors}`,
+    ].join("\n");
+})();
+
+export const DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT = (() => {
+    const repository = hyperlink("GitHub", DISCORD_BOT_REPOSITORY_LINK);
+
+    const mappedAuthors = DISCORD_BOT_AUTHORS.map(
+        (author) => `${userMention(author.discordId)} (${hyperlink("GitHub", author.githubUrl)})`,
+    );
+    const authors =
+        mappedAuthors.length > 1
+            ? `${mappedAuthors.slice(0, -1).join(", ")} and ${mappedAuthors.at(-1)!}`
+            : mappedAuthors[0];
+
+    const licence = `(${hyperlink("licence", DISCORD_BOT_LICENCE_LINK)})`;
+
+    return `Developed on ${repository} by ${authors}. ${licence}`;
+})();
+
+export const DISCORD_BOT_ACTIVITY = `Use /help to see what I can do!`;
+export const DISCORD_BOT_ABOUT_ME = `${DISCORD_BOT_INTRODUCTION}
+
+Use \`/help\` to see what I can do!
+
+${DISCORD_BOT_ABOUT_ME_DEVELOPMENT}`;
 
 export const DISCORD_MESSAGE_POSITIVE_COLOR = Colors.Green;
 export const DISCORD_MESSAGE_NEUTRAL_COLOR = Colors.DarkGold;
