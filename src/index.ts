@@ -1,5 +1,6 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
+import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
 import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
@@ -30,7 +31,7 @@ const commands: Record<string, ICommand> = {
 
 bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
-    client.user.setActivity("Umbra serves the shadow", { type: ActivityType.Custom });
+    client.user.setActivity(DISCORD_BOT_ACTIVITY, { type: ActivityType.Custom });
 });
 
 bot.on(Events.MessageCreate, async (interaction) => {
