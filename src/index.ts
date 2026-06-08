@@ -1,6 +1,6 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
-import { DISCORD_BOT_ABOUT_ME, DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
+import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
 import type { ICommand } from "./bot/types.ts";
 import { helpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
@@ -29,10 +29,9 @@ const commands: Record<string, ICommand> = {
     help: helpCommand,
 };
 
-bot.on(Events.ClientReady, async (client) => {
+bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
     client.user.setActivity(DISCORD_BOT_ACTIVITY, { type: ActivityType.Custom });
-    await client.application.edit({ description: DISCORD_BOT_ABOUT_ME });
 });
 
 bot.on(Events.MessageCreate, async (interaction) => {
