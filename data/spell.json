@@ -2878,7 +2878,7 @@
               "stat": "ATK"
             }
           },
-          "stat": "RECEIVED_WEAPON_DAMAGE"
+          "stat": "ATK"
         },
         "target": "ANY"
       }
