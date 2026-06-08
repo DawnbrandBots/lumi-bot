@@ -22,6 +22,17 @@ export const DISCORD_BOT_AUTHORS = [
     },
 ] as const;
 
+export const DISCORD_BOT_ABOUT_ME_DEVELOPMENT = (() => {
+    const authors = DISCORD_BOT_AUTHORS.map((author) => `- ${author.name}: ${author.githubUrl}`).join("\n");
+    return [
+        `Developed on ${DISCORD_BOT_REPOSITORY_LINK}.`,
+        `Licence: ${DISCORD_BOT_LICENCE_LINK}`,
+        ``,
+        `**Authors**`,
+        `${authors}`,
+    ].join("\n");
+})();
+
 export const DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT = (() => {
     const repository = hyperlink("GitHub", DISCORD_BOT_REPOSITORY_LINK);
 
@@ -39,6 +50,11 @@ export const DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT = (() => {
 })();
 
 export const DISCORD_BOT_ACTIVITY = `Use /help to see what I can do!`;
+export const DISCORD_BOT_ABOUT_ME = `${DISCORD_BOT_INTRODUCTION}
+
+Use \`/help\` to see what I can do!
+
+${DISCORD_BOT_ABOUT_ME_DEVELOPMENT}`;
 
 export const DISCORD_MESSAGE_SUCCESS_COLOR = Colors.Green;
 export const DISCORD_MESSAGE_ERROR_COLOR = Colors.Red;
