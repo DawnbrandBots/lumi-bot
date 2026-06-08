@@ -5,16 +5,16 @@ import { searchCommandInfo } from "./commandInfo.ts";
 import { AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
 import searchFeature from "./feature.ts";
 import mapSearchFeatureReturnToMessage from "./mapper.ts";
-import type { ISearchConfigs, ISearchEngine, ISearchItem, TSearchableEntity } from "./types.ts";
+import type { ISearchConfigs, ISearchEngine, TSearchItem } from "./types.ts";
 
-export function getSearchCommand<Items extends TSearchableEntity>({
+export function getSearchCommand({
     searchEngine,
     em,
     configs,
 }: {
-    searchEngine: ISearchEngine<ISearchItem & { kind: Items["kind"] }>;
+    searchEngine: ISearchEngine<TSearchItem>;
     em: EntityManager;
-    configs: ISearchConfigs<Items>;
+    configs: ISearchConfigs;
 }) {
     return new Command({
         info: searchCommandInfo,
@@ -24,7 +24,7 @@ export function getSearchCommand<Items extends TSearchableEntity>({
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`);
             }
             const result = await searchFeature({ em, searchEngine, configs, input });
-            const message = mapSearchFeatureReturnToMessage<Items>(result);
+            const message = mapSearchFeatureReturnToMessage(result);
             return interaction.reply(message);
         },
         autocomplete: (interaction) => {

@@ -8,8 +8,7 @@ import searchFeature from "../../src/search/feature.ts";
 import {
     ESearchFeatureReturnKind,
     type ISearchEngine,
-    type ISearchItem,
-    type TSearchableEntity,
+    type TSearchItem,
 } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
 import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
@@ -17,7 +16,7 @@ import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
-type SearchItem = ISearchItem & { kind: TSearchableEntity["kind"] };
+type SearchItem = TSearchItem;
 let searchEngine: ISearchEngine<SearchItem>;
 
 beforeAll(async () => {
@@ -32,7 +31,7 @@ afterAll(async () => {
 
 describe(searchFeature.name, () => {
     test("no result", async () => {
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: NO_SEARCH_RESULT_INPUT,
             searchEngine,
             configs: SEARCH_CONFIGS,
@@ -60,7 +59,7 @@ describe(searchFeature.name, () => {
             findOne,
         } as unknown as EntityManager;
 
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: "Missing Weapon",
             searchEngine: mockedSearchEngine,
             configs: SEARCH_CONFIGS,
@@ -83,7 +82,7 @@ describe(searchFeature.name, () => {
     });
 
     test("input too long", async () => {
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
             searchEngine,
             configs: SEARCH_CONFIGS,
@@ -100,7 +99,7 @@ describe(searchFeature.name, () => {
         const searchItem = searchEngine.searchOne(input);
         expect(searchItem).toBeDefined();
 
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input,
             searchEngine,
             configs: SEARCH_CONFIGS,

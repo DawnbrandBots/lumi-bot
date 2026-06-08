@@ -11,27 +11,27 @@ import {
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "./constants.ts";
 import type searchFeature from "./feature.ts";
-import SEARCH_MAPPERS, { type ISearchMapper } from "./mappers/index.ts";
-import type { TSearchableEntity } from "./types.ts";
-import { ESearchFeatureReturnKind } from "./types.ts";
+import SEARCH_MAPPERS from "./mappers/index.ts";
+import { ESearchFeatureReturnKind, type TSearchFeatureSuccessValue, type TSearchKind } from "./types.ts";
 
-function mapSearchFeatureReturnToMessage<Items extends TSearchableEntity>(
-    result: Awaited<ReturnType<typeof searchFeature<Items>>>,
+function mapSearchFeatureSuccessValueToMessage<Kind extends TSearchKind>(
+    value: TSearchFeatureSuccessValue<Kind>,
 ) {
-    switch (result.kind) {
-        case ESearchFeatureReturnKind.SUCCESS: {
-            const { entity, searchItem } = result.value;
-            const mapper = SEARCH_MAPPERS[searchItem.kind] as unknown as ISearchMapper<typeof entity>;
-            const footer: APIEmbed["footer"] =
-                // Showing aliases when there is only one is redundant.
-                searchItem.aliases.length > 1
-                    ? {
-                          text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem.aliases.join(", ")}`,
-                      }
-                    : undefined;
+    const footer: APIEmbed["footer"] =
+        // Showing aliases when there is only one is redundant.
+        value.searchItem.aliases.length > 1
+            ? {
+                  text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${value.searchItem.aliases.join(", ")}`,
+              }
+            : undefined;
 
-            return createPositiveMessage({ embed: { ...mapper(entity), footer } });
-        }
+    return createPositiveMessage({ embed: { ...SEARCH_MAPPERS[value.kind](value.entity), footer } });
+}
+
+function mapSearchFeatureReturnToMessage(result: Awaited<ReturnType<typeof searchFeature>>) {
+    switch (result.kind) {
+        case ESearchFeatureReturnKind.SUCCESS:
+            return mapSearchFeatureSuccessValueToMessage(result.value);
         case ESearchFeatureReturnKind.INPUT_TOO_LONG:
             return createNegativeMessage({
                 embed: {

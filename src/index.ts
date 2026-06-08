@@ -13,7 +13,6 @@ import { getSearchCommand } from "./search/command.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
 import mapSearchFeatureReturnToMessage from "./search/mapper.ts";
-import type { TSearchableEntity } from "./search/types.ts";
 
 const log = debug("bot");
 
@@ -24,7 +23,7 @@ const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const commands: Record<string, ICommand> = {
-    search: getSearchCommand<TSearchableEntity>({ searchEngine, em, configs: SEARCH_CONFIGS }),
+    search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
     help: helpCommand,
 };
 
@@ -54,8 +53,8 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const result = await searchFeature<TSearchableEntity>({ em, searchEngine, configs: SEARCH_CONFIGS, input });
-    const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result);
+    const result = await searchFeature({ em, searchEngine, configs: SEARCH_CONFIGS, input });
+    const message = mapSearchFeatureReturnToMessage(result);
     await interaction.reply(message);
 });
 
