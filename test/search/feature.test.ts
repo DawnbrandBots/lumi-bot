@@ -5,9 +5,11 @@ import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
-import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
 import {
-    ESearchFeatureReturnKind
+    ESearchFeatureReturnKind,
+    type ISearchEngine,
+    type ISearchItem,
+    type TSearchableEntity,
 } from "../../src/search/types.ts";
 import { initTestGameOrm } from "../orm.ts";
 import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
@@ -39,7 +41,6 @@ describe(searchFeature.name, () => {
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.NO_RESULT,
-            unexpected: false,
         });
     });
 
@@ -68,7 +69,6 @@ describe(searchFeature.name, () => {
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
-            unexpected: true,
             value: {
                 kind: missingSearchItem.kind,
                 id: missingSearchItem.id,
@@ -91,7 +91,6 @@ describe(searchFeature.name, () => {
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.INPUT_TOO_LONG,
-            unexpected: false,
         });
     });
 
@@ -108,7 +107,6 @@ describe(searchFeature.name, () => {
         });
 
         typedGuardExpectToBe(result.kind, ESearchFeatureReturnKind.SUCCESS);
-        expect(result.unexpected).toBe(false);
         expect(result.value.searchItem).toEqual(searchItem);
         expect(result.value.entity.id).toBe(searchItem?.id);
     });

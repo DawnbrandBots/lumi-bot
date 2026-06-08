@@ -18,13 +18,13 @@ async function searchFeature<
     em: EntityManager;
 }) {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
-        return { kind: ESearchFeatureReturnKind.INPUT_TOO_LONG, unexpected: false } as const;
+        return { kind: ESearchFeatureReturnKind.INPUT_TOO_LONG } as const;
     }
 
     const searchItem = searchEngine.searchOne(input);
 
     if (!searchItem) {
-        return { kind: ESearchFeatureReturnKind.NO_RESULT, unexpected: false } as const;
+        return { kind: ESearchFeatureReturnKind.NO_RESULT } as const;
     }
 
     const handler = handlers[searchItem.kind];
@@ -36,14 +36,12 @@ async function searchFeature<
     if (!entity) {
         return {
             kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
-            unexpected: true,
             value: { kind: searchItem.kind, id: searchItem.id },
         } as const;
     }
 
     return {
         kind: ESearchFeatureReturnKind.SUCCESS,
-        unexpected: false,
         value: { entity, searchItem },
     } as const;
 }
