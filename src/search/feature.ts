@@ -23,6 +23,7 @@ async function searchItemInDb<Kind extends TSearchKind>({
         kind: ESearchFeatureReturnKind.SUCCESS | ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB;
     }
 > {
+    // TODO: figure out the correct types here
     const config = configs[searchItem.kind];
     const query = { id: searchItem.id } as FilterQuery<TSearchEntity<Kind>>;
     const entity = await em.findOne(config.class, query, {
