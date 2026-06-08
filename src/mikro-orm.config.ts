@@ -1,7 +1,7 @@
 import { Migrator } from "@mikro-orm/migrations";
 import { defineConfig } from "@mikro-orm/sqlite";
 import path from "node:path";
-import { Config } from "./admin/models/config.ts";
+import { GuildConfig } from "./admin/models/config.ts";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
@@ -81,7 +81,7 @@ const GAME_CONFIG = defineConfig({
 
 const LUMI_CONFIG = defineConfig({
     contextName: "lumi",
-    entities: [Config, LfgRoom, LfgRoomPlayer],
+    entities: [GuildConfig, LfgRoom, LfgRoomPlayer],
     dbName: path.join(STATE_DB_DIR, `${LUMI_DB_NAME}.db3`),
     migrations: {
         pathTs: "./src/migrations/lumi",

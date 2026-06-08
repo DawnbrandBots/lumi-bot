@@ -11,7 +11,7 @@ import {
     ADMIN_LFG_CHANNEL_NO_VALUE,
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
 } from "./constants.ts";
-import { Config } from "./models/config.ts";
+import { GuildConfig } from "./models/config.ts";
 
 type AdminFeatureCtorArg = {
     readonly em: EntityManager;
@@ -26,17 +26,17 @@ export class AdminFeature {
         this.em = em;
     }
 
-    public getConfig(guild: string): Promise<Config | null> {
-        return this.em.findOne(Config, { guild });
+    public getConfig(guild: string): Promise<GuildConfig | null> {
+        return this.em.findOne(GuildConfig, { guild });
     }
 
-    public async getOrCreateConfig(guild: string): Promise<Config> {
-        const config = await this.em.findOne(Config, { guild });
+    public async getOrCreateConfig(guild: string): Promise<GuildConfig> {
+        const config = await this.em.findOne(GuildConfig, { guild });
         if (config) {
             return config;
         }
 
-        const newConfig = this.em.create(Config, {
+        const newConfig = this.em.create(GuildConfig, {
             id: randomUUID(),
             guild,
             channel: null,

@@ -4,7 +4,7 @@ import { type APIEmbed, channelMention } from "discord.js";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import recreateDb from "../../scripts/utils/recreateDb.ts";
 import { AdminFeature } from "../../src/admin/feature.ts";
-import { Config } from "../../src/admin/models/config.ts";
+import { GuildConfig } from "../../src/admin/models/config.ts";
 import { EMessageKind } from "../../src/bot/types.ts";
 import getOrm from "../../src/loaders/orm.ts";
 import { configsById as baseConfigsById } from "../mikro-orm.test.config.ts";
@@ -21,8 +21,8 @@ function description(response: BaseMessageOptions): string {
     return (response.embeds?.[0] as APIEmbed | undefined)?.description ?? "";
 }
 
-async function getConfig(): Promise<Config | null> {
-    return orm.em.fork().findOne(Config, { guild: GUILD_ID });
+async function getConfig(): Promise<GuildConfig | null> {
+    return orm.em.fork().findOne(GuildConfig, { guild: GUILD_ID });
 }
 
 describe(AdminFeature.name, () => {

@@ -1,7 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 
-export const ConfigSchema = defineEntity({
-    name: "Config",
+export const GuildConfigSchema = defineEntity({
+    name: "GuildConfig",
     properties: {
         id: p.string().primary(),
         guild: p.string().unique(),
@@ -9,5 +9,5 @@ export const ConfigSchema = defineEntity({
     },
 });
 
-export class Config extends ConfigSchema.class { }
-ConfigSchema.setClass(Config);
+export class GuildConfig extends GuildConfigSchema.class { }
+GuildConfigSchema.setClass(GuildConfig);
