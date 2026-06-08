@@ -11,18 +11,31 @@ import {
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "./constants.ts";
 import type searchFeature from "./feature.ts";
-import SEARCH_MAPPERS from "./mappers/index.ts";
+import mapDiscipleToMessage from "./mappers/disciple.ts";
+import mapSpellToMessage from "./mappers/spell.ts";
+import mapWeaponToMessage from "./mappers/weapon.ts";
+import mapWeaponSkillToMessage from "./mappers/weaponSkill.ts";
+import type { TSearchEntity } from "./types.ts";
 import { ESearchFeatureReturnKind, type TSearchFeatureSuccessValue, type TSearchKind } from "./types.ts";
 
-function mapSearchFeatureSuccessValueToMessage<Kind extends TSearchKind>(
-    value: TSearchFeatureSuccessValue<Kind>,
-) {
+export type TSearchMapperReturnType = Required<Pick<APIEmbed, "title" | "fields">>;
+export type ISearchMapper<Kind extends TSearchKind> = (entity: TSearchEntity<Kind>) => TSearchMapperReturnType;
+export type ISearchMappers = { [Kind in TSearchKind]: ISearchMapper<Kind> };
+
+const SEARCH_MAPPERS: ISearchMappers = {
+    disciple: mapDiscipleToMessage,
+    weapon: mapWeaponToMessage,
+    weaponSkill: mapWeaponSkillToMessage,
+    spell: mapSpellToMessage,
+};
+
+function mapSearchFeatureSuccessValueToMessage<Kind extends TSearchKind>(value: TSearchFeatureSuccessValue<Kind>) {
     const footer: APIEmbed["footer"] =
         // Showing aliases when there is only one is redundant.
         value.searchItem.aliases.length > 1
             ? {
-                  text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${value.searchItem.aliases.join(", ")}`,
-              }
+                text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${value.searchItem.aliases.join(", ")}`,
+            }
             : undefined;
 
     return createPositiveMessage({ embed: { ...SEARCH_MAPPERS[value.kind](value.entity), footer } });
