@@ -160,7 +160,7 @@ function formatInlineSpellProperties(spell: ISpell): string {
 }
 
 /**
- * @returns A string describing the spell's effects. Meant to be displayed in a response on Discord.
+ * @returns A string describing the spell's effects. Meant to be displayed in a message on Discord.
  */
 export function describeSpellEffects(
     spell: ISpell,

@@ -5,7 +5,6 @@ import type {
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
-    Colors,
     InteractionResponse,
     SharedSlashCommand,
     SlashCommandBuilder,
@@ -52,14 +51,35 @@ export interface ICommand {
     ) => MaybePromise<ApplicationCommandOptionChoiceData[] | null>;
 }
 
-export type TFeatureResponseContent = BaseMessageOptions["content"];
-export type TFeatureResponseColor = (typeof Colors)[keyof typeof Colors];
-export type TFeatureEmbed = Omit<APIEmbed, "color">;
+export const enum EMessageKind {
+    POSITIVE = "POSITIVE",
+    NEGATIVE = "NEGATIVE",
+    NEUTRAL = "NEUTRAL",
+    ERROR = "ERROR",
+}
 
-export type IFeatureResponse = BaseMessageOptions;
-export type IFeatureReponseCtorArg = {
-    embed: TFeatureEmbed;
-    color: TFeatureResponseColor;
-    content?: TFeatureResponseContent;
+/**
+ * Pre-made formatters should already have a color which shouldn't be overidden by the caller.
+ */
+export type IChildMessageArgCustomProps = {
+    embed: Omit<APIEmbed, "color">;
 };
-export type ISubFeatureReponseCtorArg = Omit<IFeatureReponseCtorArg, "color">;
+
+export type IBaseMessageArgCustomProps = {
+    kind: EMessageKind;
+    embed: APIEmbed;
+};
+
+export type TMessageOptionsUnusedProperties = "embeds";
+
+export type IBaseMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+    MessageOptions,
+    TMessageOptionsUnusedProperties
+> &
+    IBaseMessageArgCustomProps;
+
+export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+    MessageOptions,
+    TMessageOptionsUnusedProperties
+> &
+    IChildMessageArgCustomProps;

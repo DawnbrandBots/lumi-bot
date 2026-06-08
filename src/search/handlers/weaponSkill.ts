@@ -16,7 +16,7 @@ export function getWeaponTypeSkillRankString(rank: IWeaponTypeWeaponSkill["rank"
 
 const weaponSkillSearchHandler: ISearchHandler<WeaponSkill> = {
     class: WeaponSkill,
-    response: (weaponSkill: IWeaponSkill) => {
+    message: (weaponSkill: IWeaponSkill) => {
         const weaponTypeSkillStr = Array.from(weaponSkill.weaponTypeWeaponSkills)
             .map((weaponTypeWeaponSkill) =>
                 getWeaponTypeSkillRankString(weaponTypeWeaponSkill.rank, weaponTypeWeaponSkill.weaponType.name),
