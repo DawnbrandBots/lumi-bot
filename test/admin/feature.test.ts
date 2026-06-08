@@ -40,7 +40,7 @@ describe(AdminFeature.name, () => {
         const response = await feature.lfgShow(GUILD_ID);
 
         expect(response.kind).toBe(EMessageKind.NEUTRAL);
-        expect((await getConfig())?.channel).toBeNull();
+        expect((await getConfig())?.lfgChannel).toBeNull();
         expect(response.embeds?.[0]).toMatchObject({
             fields: [{ name: "Channel", value: "No channel set" }],
         });
@@ -60,7 +60,7 @@ describe(AdminFeature.name, () => {
         const response = await feature.lfgChannel(GUILD_ID, "set", CHANNEL_ID);
 
         expect(response.kind).toBe(EMessageKind.POSITIVE);
-        expect((await getConfig())?.channel).toBe(CHANNEL_ID);
+        expect((await getConfig())?.lfgChannel).toBe(CHANNEL_ID);
     });
 
     test("clears channel", async () => {
@@ -69,7 +69,7 @@ describe(AdminFeature.name, () => {
         const response = await feature.lfgChannel(GUILD_ID, "clear", null);
 
         expect(response.kind).toBe(EMessageKind.POSITIVE);
-        expect((await getConfig())?.channel).toBeNull();
+        expect((await getConfig())?.lfgChannel).toBeNull();
     });
 
     test("channel command without options explains the setting and shows current value", async () => {

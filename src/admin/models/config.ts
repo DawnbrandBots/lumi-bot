@@ -5,7 +5,7 @@ export const GuildConfigSchema = defineEntity({
     properties: {
         id: p.string().primary(),
         guild: p.string().unique(),
-        channel: p.string().nullable().default(null),
+        lfgChannel: p.string().nullable().default(null),
     },
 });
 

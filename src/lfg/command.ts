@@ -118,15 +118,15 @@ export function getLfgCommand({
             const config = await adminFeature.getConfig(guildId);
             const message = mapLfgFeatureReturnToMessage(result);
 
-            if (message.kind !== EMessageKind.POSITIVE || !config?.channel) {
+            if (message.kind !== EMessageKind.POSITIVE || !config?.lfgChannel) {
                 return interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
             }
-            if (message.kind === EMessageKind.POSITIVE && interaction.channelId === config?.channel) {
+            if (message.kind === EMessageKind.POSITIVE && interaction.channelId === config?.lfgChannel) {
                 return interaction.reply(message);
             }
 
             const reply = await interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
-            await sendPublicCopy(interaction, config.channel, message);
+            await sendPublicCopy(interaction, config.lfgChannel, message);
             return reply;
         },
     });

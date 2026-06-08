@@ -62,7 +62,7 @@ export class AdminFeature {
                         `- \`/admin lfg ${ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME} ${ADMIN_ACTION_OPTION_NAME}:${ADMIN_ACTION_SET} ${ADMIN_CHANNEL_OPTION_NAME}:#channel\`: Set the public channel.`,
                         `- \`/admin lfg ${ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME} ${ADMIN_ACTION_OPTION_NAME}:${ADMIN_ACTION_CLEAR}\`: Clear the public channel.`,
                         "",
-                        `**Current value:** ${this.formatChannel(config.channel)}`,
+                        `**Current value:** ${this.formatChannel(config.lfgChannel)}`,
                     ].join("\n"),
                 },
                 flags: [MessageFlags.Ephemeral],
@@ -70,7 +70,7 @@ export class AdminFeature {
         }
 
         if (action === ADMIN_ACTION_SET && channel) {
-            config.channel = channel;
+            config.lfgChannel = channel;
             await this.em.flush();
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
@@ -82,7 +82,7 @@ export class AdminFeature {
         }
 
         if (action === ADMIN_ACTION_CLEAR && !channel) {
-            config.channel = null;
+            config.lfgChannel = null;
             await this.em.flush();
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
@@ -106,7 +106,7 @@ export class AdminFeature {
         return createNeutralMessage<InteractionReplyOptions>({
             embed: {
                 title: "LFG config",
-                fields: [{ name: "Channel", value: this.formatChannel(config.channel) }],
+                fields: [{ name: "Channel", value: this.formatChannel(config.lfgChannel) }],
             },
             flags: [MessageFlags.Ephemeral],
         });
