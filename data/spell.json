@@ -3567,5 +3567,152 @@
       }
     ],
     "onlyFor": ["weaponType", "BOW"]
+  },
+  {
+    "id": "FIRE_SELF_SHIELD_EX",
+    "name": "Fire Self Shield EX",
+    "disciple": "EUGENE",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 25,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "SELF"
+      }
+    ]
+  },
+  {
+    "id": "ARROW_FIRE",
+    "name": "Arrow Fire",
+    "disciple": "EUGENE",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              },
+              "effectiveness": [
+                {
+                  "kind": "FLYING",
+                  "base": 40
+                }
+              ]
+            },
+            "color": "RED"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "WARD_PLUS_ARMORED",
+    "name": "Ward + Armored",
+    "disciple": "EUGENE",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "duration": 1,
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_SPELL_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_SPELL_DAMAGE"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "ARMORED"]
+  },
+  {
+    "id": "DARK_OFFENSE_PLUS_ARMORED",
+    "name": "Dark Offense + Armored",
+    "disciple": "EUGENE",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 100,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 100,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "ARMORED"]
   }
 ]
