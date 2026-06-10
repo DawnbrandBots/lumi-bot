@@ -1,6 +1,5 @@
 export const LINKS_COMMAND_NAME = "links";
 
-export const LINKS_RESPONSE_TITLE = "Fire Emblem Shadows Support";
 export const LINKS_RESPONSE_DESCRIPTION = [
     "### [Official Website](https://shadows.nintendo.com/en-US/)",
     "- [News](https://shadows.nintendo.com/en-US/topics/)",
