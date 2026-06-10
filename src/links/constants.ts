@@ -1,8 +1,7 @@
-export const HELP_BOT_SUBCOMMAND_NAME = "bot";
-export const HELP_SHADOWS_SUBCOMMAND_NAME = "shadows";
+export const LINKS_COMMAND_NAME = "links";
 
-export const HELP_SHADOWS_SUPPORT_RESPONSE_TITLE = "Fire Emblem Shadows Support";
-export const HELP_SHADOWS_RESPONSE_DESCRIPTION = [
+export const LINKS_RESPONSE_TITLE = "Fire Emblem Shadows Support";
+export const LINKS_RESPONSE_DESCRIPTION = [
     "### [Official Website](https://shadows.nintendo.com/en-US/)",
     "- [News](https://shadows.nintendo.com/en-US/topics/)",
     "- [Play guide](https://playguide.shadows.nintendo.com/hc/en-us)",
