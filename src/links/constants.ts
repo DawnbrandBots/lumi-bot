@@ -14,7 +14,7 @@ export const LINKS_RESPONSE_DESCRIPTION = [
     `- ${hyperlink(`Inquiries`, `https://faq.shadows.nintendo.com/hc/requests/new?ticket_form_id=47169222846745`)}`,
     `- ${hyperlink(`Reporting errors in text`, `https://faq.shadows.nintendo.com/hc/en-us/requests/new?ticket_form_id=47168506399001`)}`,
     `- ${hyperlink(`Requesting a save data investigation`, `https://faq.shadows.nintendo.com/hc/requests/new?ticket_form_id=47602687764761`)}`,
-    `### Socials}`,
+    `### Socials`,
     `- x.com: ${hyperlink(`EN`, `https://x.com/FE_Shadows_EN`)}, ${hyperlink(`JP`, `https://x.com/FE_Shadows_JP`)}`,
     `- Facebook: ${hyperlink(`EN`, `https://www.facebook.com/FEShadows`)}`,
 ].join(`\n`);
