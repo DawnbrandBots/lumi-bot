@@ -20,6 +20,11 @@
     "effect": "WEAPON_DAMAGE_BOOST_15"
   },
   {
+    "id": "RECKLESS_LOYALTY",
+    "name": "Reckless Loyalty",
+    "effect": "WEAPON_DAMAGE_VS_MONSTER_50"
+  },
+  {
     "id": "GUARDIAN_S_SOUL",
     "name": "Guardian's Soul",
     "effect": "WEAPON_DAMAGE_VS_SWORD_30"
