@@ -4,11 +4,12 @@ import { AdminCommand } from "./admin/command.ts";
 import { AdminFeature } from "./admin/feature.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
 import type { ICommand } from "./bot/types.ts";
-import { helpCommand } from "./help/command.ts";
+import { getHelpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
+import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
@@ -19,6 +20,7 @@ import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
 import mapSearchFeatureReturnToMessage from "./search/mapper.ts";
 import type { TSearchableEntity } from "./search/types.ts";
+import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
 const log = debug("bot");
 
@@ -34,12 +36,13 @@ const bot = getBot();
 
 const adminFeature = new AdminFeature({ em: lumiEm });
 const lfgFeature = new LfgFeature({ em: lumiEm });
-const commands: Record<string, ICommand> = {
+const commands = {
     admin: new AdminCommand({ adminFeature }),
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
-    help: helpCommand,
-    lfg: getLfgCommand({ lfgFeature, adminFeature }),
-};
+    help: getHelpCommand(),
+    links: getLinksCommand(),
+    lfg: getLfgCommand({ adminFeature, lfgFeature }),
+} as const;
 
 bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
@@ -81,14 +84,16 @@ bot.on(Events.InteractionCreate, async (interaction) => {
     log(interaction);
 
     if (interaction.isChatInputCommand()) {
-        const command = commands[interaction.commandName] || helpCommand;
+        const command = isKeyOfExactObject(commands, interaction.commandName)
+            ? commands[interaction.commandName]
+            : commands.help;
         await command.run(interaction);
         return;
     } else if (interaction.isAutocomplete()) {
-        const command = commands[interaction.commandName];
-        if (!command) {
+        if (!isKeyOfExactObject(commands, interaction.commandName)) {
             return;
         }
+        const command: ICommand = commands[interaction.commandName];
         const choices = await command.autocomplete?.(interaction);
         if (!choices) {
             return;

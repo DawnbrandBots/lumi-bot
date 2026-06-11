@@ -40,6 +40,16 @@
     "uniqueSkill": "UNBREAKABLE_WILL"
   },
   {
+    "id": "EMINENCE_SWORD_PLUS",
+    "name": "Eminence Sword +",
+    "weaponType": "SWORD",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "RECKLESS_LOYALTY"
+  },
+  {
     "id": "SHIELD_LANCE_PLUS",
     "name": "Shield Lance +",
     "weaponType": "LANCE",
@@ -348,6 +358,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "UNBREAKABLE_WILL"
+  },
+  {
+    "id": "EMINENCE_SWORD",
+    "name": "Eminence Sword",
+    "weaponType": "SWORD",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "RECKLESS_LOYALTY"
   },
   {
     "id": "SHIELD_LANCE",
