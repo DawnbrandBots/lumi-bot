@@ -2,6 +2,7 @@ import { Migrator } from "@mikro-orm/migrations";
 import { defineConfig } from "@mikro-orm/sqlite";
 import path from "node:path";
 import { GuildConfig } from "./admin/models/config.ts";
+import { BazaarSaleEntry } from "./bazaar/models/saleEntry.ts";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
@@ -38,12 +39,12 @@ const LUMI_DB_NAME = process.env.LUMI_DB_NAME;
 if (!STATIC_DB_DIR || !STATE_DB_DIR || !GAME_DB_NAME || !LUMI_DB_NAME) {
     throw new Error(
         "One or more required environment variables are not set: " +
-        JSON.stringify({
-            STATIC_DB_DIR,
-            STATE_DB_DIR,
-            GAME_DB_NAME,
-            LUMI_DB_NAME,
-        }),
+            JSON.stringify({
+                STATIC_DB_DIR,
+                STATE_DB_DIR,
+                GAME_DB_NAME,
+                LUMI_DB_NAME,
+            }),
     );
 }
 
@@ -81,7 +82,7 @@ const GAME_CONFIG = defineConfig({
 
 const LUMI_CONFIG = defineConfig({
     contextName: "lumi",
-    entities: [GuildConfig, LfgRoom, LfgRoomPlayer],
+    entities: [GuildConfig, BazaarSaleEntry, LfgRoom, LfgRoomPlayer],
     dbName: path.join(STATE_DB_DIR, `${LUMI_DB_NAME}.db3`),
     migrations: {
         pathTs: "./src/migrations/lumi",

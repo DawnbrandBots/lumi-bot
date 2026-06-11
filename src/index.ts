@@ -2,6 +2,8 @@ import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
 import { AdminCommand } from "./admin/command.ts";
 import { AdminFeature } from "./admin/feature.ts";
+import { getBazaarCommand } from "./bazaar/command.ts";
+import { BazaarFeature } from "./bazaar/feature.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
 import type { ICommand } from "./bot/types.ts";
 import { getHelpCommand } from "./help/command.ts";
@@ -10,6 +12,7 @@ import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
 import { getLinksCommand } from "./links/command.ts";
+import getBazaarSearchItems from "./loaders/bazaarSearchItems.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
@@ -32,16 +35,20 @@ const lumiEm = lumiOrm.em.fork();
 
 const searchItems = await getSearchItems(gameEm);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
+const bazaarSearchItems = await getBazaarSearchItems(gameEm);
+const bazaarWeaponSearchEngine = new FuseSearchEngine({ items: bazaarSearchItems });
 const bot = getBot();
 
 const adminFeature = new AdminFeature({ em: lumiEm });
 const lfgFeature = new LfgFeature({ em: lumiEm });
+const bazaarFeature = new BazaarFeature({ em: lumiEm, gameEm });
 const commands = {
     admin: new AdminCommand({ adminFeature }),
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
     lfg: getLfgCommand({ adminFeature, lfgFeature }),
+    bazaar: getBazaarCommand({ bazaarFeature, gameEm, weaponSearchEngine: bazaarWeaponSearchEngine }),
 } as const;
 
 bot.on(Events.ClientReady, (client) => {

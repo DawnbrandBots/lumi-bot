@@ -9,6 +9,8 @@ export default defineConfig(({ mode }) => {
     return {
         test: {
             env,
+            // TODO: "fileParallelism: false" could be a sign that some refactoring is needed at the data access level
+            fileParallelism: false,
             globalSetup: ["./test/globalSetup.ts"],
         },
     };
