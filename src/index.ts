@@ -1,10 +1,10 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
-import type { ICommand } from "./bot/types.ts";
-import { helpCommand } from "./help/command.ts";
+import { getHelpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
+import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
@@ -15,6 +15,7 @@ import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
 import mapSearchFeatureReturnToMessage from "./search/mapper.ts";
 import type { TSearchableEntity } from "./search/types.ts";
+import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
 const log = debug("bot");
 
@@ -24,10 +25,11 @@ const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
-const commands: Record<string, ICommand> = {
+const commands = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
-    help: helpCommand,
-};
+    help: getHelpCommand(),
+    links: getLinksCommand(),
+} as const;
 
 bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
@@ -64,14 +66,16 @@ bot.on(Events.InteractionCreate, async (interaction) => {
     log(interaction);
 
     if (interaction.isChatInputCommand()) {
-        const command = commands[interaction.commandName] || helpCommand;
+        const command = isKeyOfExactObject(commands, interaction.commandName)
+            ? commands[interaction.commandName]
+            : commands.help;
         await command.run(interaction);
         return;
     } else if (interaction.isAutocomplete()) {
-        const command = commands[interaction.commandName];
-        if (!command) {
+        if (!isKeyOfExactObject(commands, interaction.commandName)) {
             return;
         }
+        const command = commands[interaction.commandName];
         const choices = await command.autocomplete?.(interaction);
         if (!choices) {
             return;
