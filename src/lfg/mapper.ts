@@ -17,10 +17,10 @@ import {
 
 function formatList(queuedPlayers: readonly IQueuedPlayer[], rooms: readonly IRoom[]) {
     return [
-        heading(LfgConstants.LFG_QUEUE_LIST_TITLE, HeadingLevel.Three),
-        formatQueueList(queuedPlayers),
         heading(LfgConstants.LFG_ROOM_LIST_TITLE, HeadingLevel.Three),
         formatRoomList(rooms),
+        heading(LfgConstants.LFG_QUEUE_LIST_TITLE, HeadingLevel.Three),
+        formatQueueList(queuedPlayers),
     ].join("\n");
 }
 
