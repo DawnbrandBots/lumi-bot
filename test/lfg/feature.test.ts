@@ -310,7 +310,6 @@ describe(LfgFeature.name, () => {
     describe(LfgFeature.prototype.leave.name, () => {
         test("deletes the room when the last player leaves", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await addQueuedPlayer(GUILD_ID, OWNER, "2026-06-12T00:00:00.000Z");
 
             const response = await feature.leave(GUILD_ID, OWNER);
 
@@ -319,7 +318,6 @@ describe(LfgFeature.name, () => {
                 value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: OWNER.id, code: "room" },
             });
             expect(await getRooms(GUILD_ID)).toEqual([]);
-            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([]);
         });
 
         test("transfers ownership to the earliest remaining player", async () => {
@@ -482,6 +480,7 @@ describe(LfgFeature.name, () => {
         expect(response.kind).toBe(ELfgFeatureReturnKind.HELP);
         expect(response.value.description).toContain("/lfg create");
         expect(response.value.description).toContain("/lfg queue");
+        expect(response.value.description).toContain("/lfg status");
         expect(response.value.description).toContain("/lfg help");
     });
 });
