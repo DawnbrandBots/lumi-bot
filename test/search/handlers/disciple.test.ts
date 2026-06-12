@@ -2,13 +2,13 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { Disciple } from "../../../src/game/models/disciple.ts";
 import { getDiscipleBaseStatsTable } from "../../../src/search/handlers/disciple.ts";
-import { initTestGameOrm } from "../../orm.ts";
+import { initTestOrm } from "../../orm.ts";
 
-let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
+let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
 
 beforeAll(async () => {
-    orm = await initTestGameOrm();
+    orm = await initTestOrm();
     em = orm.em.fork();
 });
 
