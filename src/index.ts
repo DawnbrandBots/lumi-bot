@@ -9,7 +9,7 @@ import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
 import getSearchItems from "./loaders/searchItems.ts";
-import mikroOrmConfig from "./mikro-orm.config.ts";
+import { configsById } from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
@@ -19,14 +19,15 @@ import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
 const log = debug("bot");
 
-const orm = await getOrm(mikroOrmConfig);
-const em = orm.em.fork();
-const searchItems = await getSearchItems(em);
+const gameOrm = await getOrm(configsById.game);
+const gameEm = gameOrm.em.fork();
+
+const searchItems = await getSearchItems(gameEm);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const commands = {
-    search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
+    search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
 } as const;
@@ -57,7 +58,12 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const result = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
+    const result = await searchFeature<TSearchableEntity>({
+        em: gameEm,
+        searchEngine,
+        handlers: SEARCH_HANDLERS,
+        input,
+    });
     const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
     await interaction.reply(message);
 });

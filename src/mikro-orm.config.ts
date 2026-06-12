@@ -1,4 +1,5 @@
 import { defineConfig } from "@mikro-orm/sqlite";
+import path from "node:path";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
@@ -25,7 +26,25 @@ import { WeaponSkillEffect } from "./game/models/weaponSkillEffect.ts";
 import { WeaponType } from "./game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
 
-export default defineConfig({
+const STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;
+const STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
+const GAME_DB_NAME = process.env.LUMI_GAME_DB_NAME;
+const LUMI_DB_NAME = process.env.LUMI_DB_NAME;
+
+if (!STATIC_DB_DIR || !STATE_DB_DIR || !GAME_DB_NAME || !LUMI_DB_NAME) {
+    throw new Error(
+        "One or more required environment variables are not set: " +
+        JSON.stringify({
+            STATIC_DB_DIR,
+            STATE_DB_DIR,
+            GAME_DB_NAME,
+            LUMI_DB_NAME,
+        }),
+    );
+}
+
+const GAME_CONFIG = defineConfig({
+    contextName: "game",
     entities: [
         SpellEffect,
         WeaponSkill,
@@ -53,5 +72,14 @@ export default defineConfig({
         SpellEffectValuePercentUnit,
         SpellShape,
     ],
-    dbName: "lumi",
+    dbName: path.join(STATIC_DB_DIR, `${GAME_DB_NAME}.db3`),
 });
+
+// Still export array of configs as default for compatibility with MikroORM CLI.
+// Use --contextName option to specify config.
+// https://mikro-orm.io/docs/quick-start#configuration-file-structure
+export default [GAME_CONFIG] as const;
+
+export const configsById = {
+    game: GAME_CONFIG,
+} as const;
