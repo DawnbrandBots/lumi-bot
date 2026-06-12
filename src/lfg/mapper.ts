@@ -1,4 +1,4 @@
-import { userMention, type InteractionReplyOptions } from "discord.js";
+import { heading, HeadingLevel, userMention, type InteractionReplyOptions } from "discord.js";
 import {
     createErrorMessage,
     createNegativeMessage,
@@ -6,10 +6,32 @@ import {
     createPositiveMessage,
 } from "../bot/message.ts";
 import * as LfgConstants from "./constants.ts";
-import type { TLfgFeatureReturnOfKind } from "./types.ts";
-import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
+import type { TLfgFeatureReturnOfKind, TLfgPlayerRemovalResult } from "./types.ts";
+import {
+    ELfgFeatureReturnKind,
+    ELfgPlayerRemovalKind,
+    type IQueuedPlayer,
+    type IRoom,
+    type TLfgFeatureReturn,
+} from "./types.ts";
 
-function formatList(rooms: readonly IRoom[]) {
+function formatList(queuedPlayers: readonly IQueuedPlayer[], rooms: readonly IRoom[]) {
+    return [
+        heading(LfgConstants.LFG_QUEUE_LIST_TITLE, HeadingLevel.Three),
+        formatQueueList(queuedPlayers),
+        heading(LfgConstants.LFG_ROOM_LIST_TITLE, HeadingLevel.Three),
+        formatRoomList(rooms),
+    ].join("\n");
+}
+
+function formatQueueList(players: readonly IQueuedPlayer[]) {
+    if (players.length === 0) {
+        return LfgConstants.LFG_EMPTY_QUEUE_LIST_DESCRIPTION;
+    }
+    return players.map((player) => `- ${userMention(player.userId)}`).join("\n");
+}
+
+function formatRoomList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
         return LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION;
     }
@@ -50,16 +72,36 @@ function formatPlayerKicked(userId: string, targetId: string, room: IRoom) {
     return `${userMention(userId)} kicked ${userMention(targetId)} from ${formatRoomCode(room.code)}.`;
 }
 
-function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT>) {
-    const res = `${userMention(arg.value.userId)} left ${formatRoomCode(arg.value.code)}.`;
-    switch (arg.value.kind) {
+function formatPlayerRemovalConsequence(result: TLfgPlayerRemovalResult) {
+    switch (result.kind) {
         case ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED:
-            return res + ` Ownership transferred to ${userMention(arg.value.newOwnerId)}`;
+            return ` Ownership transferred to ${userMention(result.newOwnerId)}`;
         case ELfgPlayerRemovalKind.ROOM_DELETED:
-            return res + ` Room deleted.`;
+            return ` Room deleted.`;
         case ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY:
-            return res;
+            return "";
     }
+}
+
+function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT>) {
+    return (
+        `${userMention(arg.value.userId)} left ${formatRoomCode(arg.value.code)}.` +
+        formatPlayerRemovalConsequence(arg.value)
+    );
+}
+
+function formatQueueJoined(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.QUEUE_JOINED>) {
+    const res = `${userMention(arg.value.userId)} joined the queue.`;
+    if (!arg.value.leftRoom) {
+        return res;
+    }
+    return (
+        res + ` Left ${formatRoomCode(arg.value.leftRoom.code)}.` + formatPlayerRemovalConsequence(arg.value.leftRoom)
+    );
+}
+
+function formatQueueLeft(userId: string) {
+    return `${userMention(userId)} left the queue.`;
 }
 
 function formatRoomDisbanded(userId: string, code: string) {
@@ -86,7 +128,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
     switch (result.kind) {
         case ELfgFeatureReturnKind.ROOMS_LISTED:
             return createNeutralMessage<InteractionReplyOptions>({
-                embed: { description: formatList(result.value.rooms) },
+                embed: { description: formatList(result.value.queuedPlayers, result.value.rooms) },
             });
         case ELfgFeatureReturnKind.HELP:
             return createNeutralMessage<InteractionReplyOptions>({
@@ -124,6 +166,18 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     description: formatRoomLeft(result),
+                },
+            });
+        case ELfgFeatureReturnKind.QUEUE_JOINED:
+            return createPositiveMessage<InteractionReplyOptions>({
+                embed: {
+                    description: formatQueueJoined(result),
+                },
+            });
+        case ELfgFeatureReturnKind.QUEUE_LEFT:
+            return createPositiveMessage<InteractionReplyOptions>({
+                embed: {
+                    description: formatQueueLeft(result.value.userId),
                 },
             });
         case ELfgFeatureReturnKind.ROOM_DISBANDED:
@@ -195,6 +249,10 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
         case ELfgFeatureReturnKind.NOT_IN_A_ROOM:
             return createNegativeMessage({
                 embed: { description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION },
+            });
+        case ELfgFeatureReturnKind.ALREADY_IN_QUEUE:
+            return createNegativeMessage({
+                embed: { description: LfgConstants.LFG_ALREADY_IN_QUEUE_DESCRIPTION },
             });
         case ELfgFeatureReturnKind.INVALID_SUBCOMMAND:
             return createErrorMessage({

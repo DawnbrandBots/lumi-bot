@@ -10,6 +10,10 @@ export interface IRoom {
     readonly playerIds: readonly string[];
 }
 
+export interface IQueuedPlayer {
+    readonly userId: string;
+}
+
 export const enum ELfgFeatureReturnKind {
     ROOMS_LISTED = "ROOMS_LISTED",
     HELP = "HELP",
@@ -29,6 +33,9 @@ export const enum ELfgFeatureReturnKind {
     CANNOT_KICK_YOURSELF = "CANNOT_KICK_YOURSELF",
     ROOM_LEFT = "ROOM_LEFT",
     NOT_IN_A_ROOM = "NOT_IN_A_ROOM",
+    QUEUE_JOINED = "QUEUE_JOINED",
+    ALREADY_IN_QUEUE = "ALREADY_IN_QUEUE",
+    QUEUE_LEFT = "QUEUE_LEFT",
     ROOM_DISBANDED = "ROOM_DISBANDED",
     INVALID_SUBCOMMAND = "INVALID_SUBCOMMAND",
 }
@@ -49,7 +56,10 @@ export type TLfgPlayerRemovalResult =
       };
 
 type TLfgFeatureReturnValueByKind = {
-    [ELfgFeatureReturnKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
+    [ELfgFeatureReturnKind.ROOMS_LISTED]: {
+        readonly queuedPlayers: readonly IQueuedPlayer[];
+        readonly rooms: readonly IRoom[];
+    };
     [ELfgFeatureReturnKind.HELP]: { readonly description: string };
     [ELfgFeatureReturnKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
     [ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS]: { readonly code: string };
@@ -69,6 +79,11 @@ type TLfgFeatureReturnValueByKind = {
     [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: { readonly targetId: string };
     [ELfgFeatureReturnKind.PLAYER_KICKED]: { readonly userId: string; readonly targetId: string; readonly room: IRoom };
     [ELfgFeatureReturnKind.ROOM_LEFT]: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
+    [ELfgFeatureReturnKind.QUEUE_JOINED]: {
+        readonly userId: string;
+        readonly leftRoom?: { readonly code: string } & TLfgPlayerRemovalResult;
+    };
+    [ELfgFeatureReturnKind.QUEUE_LEFT]: { readonly userId: string };
     [ELfgFeatureReturnKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
 } & {
     [_ in
@@ -78,6 +93,7 @@ type TLfgFeatureReturnValueByKind = {
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
         | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+        | ELfgFeatureReturnKind.ALREADY_IN_QUEUE
         | ELfgFeatureReturnKind.INVALID_SUBCOMMAND]: never;
 };
 
@@ -122,7 +138,10 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
     >;
-    leave: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT | ELfgFeatureReturnKind.NOT_IN_A_ROOM>;
+    leave: TLfgFeatureReturnOfKind<
+        ELfgFeatureReturnKind.ROOM_LEFT | ELfgFeatureReturnKind.QUEUE_LEFT | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+    >;
+    queue: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.QUEUE_JOINED | ELfgFeatureReturnKind.ALREADY_IN_QUEUE>;
     disband: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_DISBANDED
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
@@ -138,5 +157,6 @@ export interface ILfgFeature {
     transfer(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
     kick(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
     leave(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["leave"]>;
+    queue(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["queue"]>;
     disband(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
 }

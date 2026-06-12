@@ -21,6 +21,8 @@ import {
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MIN_ROOM_CODE_LENGTH,
     LFG_PLAYER_OPTION_NAME,
+    LFG_QUEUE_SUBCOMMAND_DESCRIPTION,
+    LFG_QUEUE_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
@@ -72,6 +74,9 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_LEAVE_SUBCOMMAND_NAME).setDescription(LFG_LEAVE_SUBCOMMAND_DESCRIPTION),
+            )
+            .addSubcommand((subcommand) =>
+                subcommand.setName(LFG_QUEUE_SUBCOMMAND_NAME).setDescription(LFG_QUEUE_SUBCOMMAND_DESCRIPTION),
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_DISBAND_SUBCOMMAND_NAME).setDescription(LFG_DISBAND_SUBCOMMAND_DESCRIPTION),

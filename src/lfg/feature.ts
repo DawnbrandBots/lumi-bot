@@ -19,13 +19,23 @@ import {
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MAX_ROOM_PLAYERS,
     LFG_MIN_ROOM_CODE_LENGTH,
+    LFG_QUEUE_SUBCOMMAND_DESCRIPTION,
+    LFG_QUEUE_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
+import { LfgQueuePlayer } from "./models/queuePlayer.ts";
 import { LfgRoom } from "./models/room.ts";
 import { LfgRoomPlayer } from "./models/roomPlayer.ts";
 import type { TLfgPlayerRemovalResult } from "./types.ts";
-import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type ILfgFeature, type IRoom, type IUser } from "./types.ts";
+import {
+    ELfgFeatureReturnKind,
+    ELfgPlayerRemovalKind,
+    type ILfgFeature,
+    type IQueuedPlayer,
+    type IRoom,
+    type IUser,
+} from "./types.ts";
 
 type LfgFeatureCtorArg = {
     readonly em: EntityManager;
@@ -41,7 +51,10 @@ export class LfgFeature implements ILfgFeature {
     public async list(guildId: string) {
         return {
             kind: ELfgFeatureReturnKind.ROOMS_LISTED,
-            value: { rooms: (await this.getRooms(guildId)).map((room) => this.toRoom(room)) },
+            value: {
+                queuedPlayers: (await this.getQueuedPlayers(guildId)).map((player) => this.toQueuedPlayer(player)),
+                rooms: (await this.getRooms(guildId)).map((room) => this.toRoom(room)),
+            },
         } as const;
     }
 
@@ -53,6 +66,7 @@ export class LfgFeature implements ILfgFeature {
             `- \`/${LFG_COMMAND_NAME} ${LFG_TRANSFER_SUBCOMMAND_NAME}\`: ${LFG_TRANSFER_SUBCOMMAND_DESCRIPTION}`,
             `- \`/${LFG_COMMAND_NAME} ${LFG_KICK_SUBCOMMAND_NAME}\`: ${LFG_KICK_SUBCOMMAND_DESCRIPTION}`,
             `- \`/${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}\`: ${LFG_LEAVE_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_QUEUE_SUBCOMMAND_NAME}\`: ${LFG_QUEUE_SUBCOMMAND_DESCRIPTION}`,
             `- \`/${LFG_COMMAND_NAME} ${LFG_DISBAND_SUBCOMMAND_NAME}\`: ${LFG_DISBAND_SUBCOMMAND_DESCRIPTION}`,
             `- \`/${LFG_COMMAND_NAME} ${LFG_LIST_SUBCOMMAND_NAME}\`: ${LFG_LIST_SUBCOMMAND_DESCRIPTION}`,
             `- \`/${LFG_COMMAND_NAME} ${LFG_HELP_SUBCOMMAND_NAME}\`: ${LFG_HELP_SUBCOMMAND_DESCRIPTION}`,
@@ -86,6 +100,7 @@ export class LfgFeature implements ILfgFeature {
             userId: owner.id,
             room,
         });
+        await this.removeQueuedPlayer(guildId, owner.id);
         room.players.add(player);
         await this.em.flush();
 
@@ -122,6 +137,7 @@ export class LfgFeature implements ILfgFeature {
             userId: user.id,
             room,
         });
+        await this.removeQueuedPlayer(guildId, user.id);
         room.players.add(player);
         await this.em.flush();
 
@@ -176,6 +192,13 @@ export class LfgFeature implements ILfgFeature {
     }
 
     public async leave(guildId: string, user: IUser) {
+        const queuedPlayer = await this.getQueuedPlayerInGuild(guildId, user.id);
+        if (queuedPlayer) {
+            this.em.remove(queuedPlayer);
+            await this.em.flush();
+            return { kind: ELfgFeatureReturnKind.QUEUE_LEFT, value: { userId: user.id } } as const;
+        }
+
         const player = await this.getRoomPlayerInGuild(guildId, user.id);
         if (!player) {
             return { kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM } as const;
@@ -184,8 +207,36 @@ export class LfgFeature implements ILfgFeature {
         const room = player.room;
         const code = room.code;
         const leaveResult = this.removePlayerFromRoom(room, player);
+        await this.removeQueuedPlayer(guildId, user.id);
         await this.em.flush();
         return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { ...leaveResult, userId: user.id, code } } as const;
+    }
+
+    public async queue(guildId: string, user: IUser) {
+        const queuedPlayer = await this.getQueuedPlayerInGuild(guildId, user.id);
+        if (queuedPlayer) {
+            return { kind: ELfgFeatureReturnKind.ALREADY_IN_QUEUE } as const;
+        }
+
+        const roomPlayer = await this.getRoomPlayerInGuild(guildId, user.id);
+        let leftRoom: ({ readonly code: string } & TLfgPlayerRemovalResult) | undefined;
+        // TODO: can this be handled more cleanly?
+        if (roomPlayer) {
+            const code = roomPlayer.room.code;
+            leftRoom = { ...this.removePlayerFromRoom(roomPlayer.room, roomPlayer), code };
+        }
+
+        this.em.create(LfgQueuePlayer, {
+            id: randomUUID(),
+            userId: user.id,
+            guildId,
+        });
+        await this.em.flush();
+
+        return {
+            kind: ELfgFeatureReturnKind.QUEUE_JOINED,
+            value: leftRoom ? { userId: user.id, leftRoom } : { userId: user.id },
+        } as const;
     }
 
     public async disband(guildId: string, user: IUser) {
@@ -220,9 +271,24 @@ export class LfgFeature implements ILfgFeature {
         return this.em.findOne(LfgRoomPlayer, { userId, room: { guildId } }, { populate: ["room.players"] });
     }
 
+    protected async getQueuedPlayerInGuild(guildId: string, userId: string): Promise<LfgQueuePlayer | null> {
+        return this.em.findOne(LfgQueuePlayer, { guildId, userId });
+    }
+
+    protected async removeQueuedPlayer(guildId: string, userId: string): Promise<void> {
+        const queuedPlayer = await this.getQueuedPlayerInGuild(guildId, userId);
+        if (queuedPlayer) {
+            this.em.remove(queuedPlayer);
+        }
+    }
+
     protected async getRooms(guildId: string): Promise<LfgRoom[]> {
         // TODO: good use case for query builder here?
         return this.em.find(LfgRoom, { guildId }, { orderBy: { createdAt: "asc" }, populate: ["players"] });
+    }
+
+    protected async getQueuedPlayers(guildId: string): Promise<LfgQueuePlayer[]> {
+        return this.em.find(LfgQueuePlayer, { guildId }, { orderBy: { joinedAt: "asc" } });
     }
 
     protected removePlayerFromRoom(room: LfgRoom, player: LfgRoomPlayer): TLfgPlayerRemovalResult {
@@ -245,5 +311,9 @@ export class LfgFeature implements ILfgFeature {
             ownerId: room.ownerId,
             playerIds: room.players.toArray().map((player) => player.userId),
         };
+    }
+
+    protected toQueuedPlayer(player: LfgQueuePlayer): IQueuedPlayer {
+        return { userId: player.userId };
     }
 }

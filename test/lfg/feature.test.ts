@@ -1,8 +1,10 @@
 import type { MikroORM } from "@mikro-orm/sqlite";
+import { randomUUID } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import recreateDb from "../../scripts/utils/recreateDb.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
 import { LfgFeature } from "../../src/lfg/feature.ts";
+import { LfgQueuePlayer } from "../../src/lfg/models/queuePlayer.ts";
 import { LfgRoom } from "../../src/lfg/models/room.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IUser } from "../../src/lfg/types.ts";
 import { configsById } from "../mikro-orm.test.config.ts";
@@ -42,6 +44,23 @@ async function getRooms(guildId: string): Promise<TestRoom[]> {
     }));
 }
 
+async function getQueuedPlayerIds(guildId: string): Promise<string[]> {
+    const em = orm.em.fork();
+    const queuedPlayers = await em.find(LfgQueuePlayer, { guildId }, { orderBy: { joinedAt: "asc" } });
+    return queuedPlayers.map((player) => player.userId);
+}
+
+async function addQueuedPlayer(guildId: string, user: IUser, joinedAt: string): Promise<void> {
+    const em = orm.em.fork();
+    em.create(LfgQueuePlayer, {
+        id: randomUUID(),
+        guildId,
+        userId: user.id,
+        joinedAt,
+    });
+    await em.flush();
+}
+
 describe(LfgFeature.name, () => {
     beforeEach(async () => {
         await recreateDb(configsById.lumi);
@@ -55,6 +74,8 @@ describe(LfgFeature.name, () => {
 
     describe(LfgFeature.prototype.create.name, () => {
         test("creates a room with the creator as owner", async () => {
+            await feature.queue(GUILD_ID, OWNER);
+
             const response = await feature.create(GUILD_ID, OWNER, "AbC");
 
             expect(response).toEqual({
@@ -62,10 +83,12 @@ describe(LfgFeature.name, () => {
                 value: { userId: OWNER.id, room: { code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] } },
             });
             expect(await getRooms(GUILD_ID)).toEqual([{ code: "AbC", ownerId: OWNER.id, playerIds: [OWNER.id] }]);
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([]);
         });
 
         test("rejects duplicate room codes in the same guild", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
+            await feature.queue(GUILD_ID, PLAYER_1);
 
             const response = await feature.create(GUILD_ID, PLAYER_1, "room");
 
@@ -73,6 +96,7 @@ describe(LfgFeature.name, () => {
                 kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS,
                 value: { code: "room" },
             });
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([PLAYER_1.id]);
         });
 
         test("allows the same exact room code in another guild", async () => {
@@ -86,9 +110,12 @@ describe(LfgFeature.name, () => {
         });
 
         test("rejects invalid room code length", async () => {
+            await feature.queue(GUILD_ID, OWNER);
+
             const response = await feature.create(GUILD_ID, OWNER, "x".repeat(LFG_MAX_ROOM_CODE_LENGTH + 1));
 
             expect(response).toEqual({ kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE });
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([OWNER.id]);
         });
 
         test("rejects users already in a room", async () => {
@@ -103,6 +130,7 @@ describe(LfgFeature.name, () => {
     describe(LfgFeature.prototype.join.name, () => {
         test("joins an existing room", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
+            await feature.queue(GUILD_ID, PLAYER_1);
 
             const response = await feature.join(GUILD_ID, PLAYER_1, "room");
 
@@ -115,21 +143,26 @@ describe(LfgFeature.name, () => {
                 },
             });
             expect((await getRooms(GUILD_ID))[0]?.playerIds).toEqual([OWNER.id, PLAYER_1.id]);
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([]);
         });
 
         test("rejects missing rooms", async () => {
+            await feature.queue(GUILD_ID, PLAYER_1);
+
             const response = await feature.join(GUILD_ID, PLAYER_1, "missing");
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND,
                 value: { code: "missing" },
             });
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([PLAYER_1.id]);
         });
 
         test("rejects full rooms", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.join(GUILD_ID, PLAYER_1, "room");
             await feature.join(GUILD_ID, PLAYER_2, "room");
+            await feature.queue(GUILD_ID, PLAYER_3);
 
             const response = await feature.join(GUILD_ID, PLAYER_3, "room");
 
@@ -137,6 +170,7 @@ describe(LfgFeature.name, () => {
                 kind: ELfgFeatureReturnKind.ROOM_IS_FULL,
                 value: { code: "room" },
             });
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([PLAYER_3.id]);
         });
 
         test("moves a player out of their previous room", async () => {
@@ -276,6 +310,7 @@ describe(LfgFeature.name, () => {
     describe(LfgFeature.prototype.leave.name, () => {
         test("deletes the room when the last player leaves", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
+            await addQueuedPlayer(GUILD_ID, OWNER, "2026-06-12T00:00:00.000Z");
 
             const response = await feature.leave(GUILD_ID, OWNER);
 
@@ -284,6 +319,7 @@ describe(LfgFeature.name, () => {
                 value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: OWNER.id, code: "room" },
             });
             expect(await getRooms(GUILD_ID)).toEqual([]);
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([]);
         });
 
         test("transfers ownership to the earliest remaining player", async () => {
@@ -313,6 +349,79 @@ describe(LfgFeature.name, () => {
             const response = await feature.leave(GUILD_ID, OWNER);
 
             expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM });
+        });
+
+        test("removes a queued user who is not in a room", async () => {
+            await feature.queue(GUILD_ID, OWNER);
+
+            const response = await feature.leave(GUILD_ID, OWNER);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.QUEUE_LEFT,
+                value: { userId: OWNER.id },
+            });
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([]);
+        });
+    });
+
+    describe(LfgFeature.prototype.queue.name, () => {
+        test("adds a player to the queue", async () => {
+            const response = await feature.queue(GUILD_ID, OWNER);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.QUEUE_JOINED,
+                value: { userId: OWNER.id },
+            });
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([OWNER.id]);
+        });
+
+        test("rejects users already in queue without updating queue order", async () => {
+            await addQueuedPlayer(GUILD_ID, OWNER, "2026-06-12T00:00:00.000Z");
+            await addQueuedPlayer(GUILD_ID, PLAYER_1, "2026-06-12T00:00:01.000Z");
+
+            const response = await feature.queue(GUILD_ID, OWNER);
+
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.ALREADY_IN_QUEUE });
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([OWNER.id, PLAYER_1.id]);
+        });
+
+        test("deletes the current room when the queued player was the last player", async () => {
+            await feature.create(GUILD_ID, OWNER, "room");
+
+            const response = await feature.queue(GUILD_ID, OWNER);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.QUEUE_JOINED,
+                value: {
+                    userId: OWNER.id,
+                    leftRoom: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, code: "room" },
+                },
+            });
+            expect(await getRooms(GUILD_ID)).toEqual([]);
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([OWNER.id]);
+        });
+
+        test("transfers ownership when a room owner queues", async () => {
+            await feature.create(GUILD_ID, OWNER, "room");
+            await feature.join(GUILD_ID, PLAYER_1, "room");
+
+            const response = await feature.queue(GUILD_ID, OWNER);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.QUEUE_JOINED,
+                value: {
+                    userId: OWNER.id,
+                    leftRoom: {
+                        kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
+                        code: "room",
+                        newOwnerId: PLAYER_1.id,
+                    },
+                },
+            });
+            expect(await getRooms(GUILD_ID)).toEqual([
+                { code: "room", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id] },
+            ]);
+            expect(await getQueuedPlayerIds(GUILD_ID)).toEqual([OWNER.id]);
         });
     });
 
@@ -352,12 +461,18 @@ describe(LfgFeature.name, () => {
     test("list only displays rooms from the requested guild", async () => {
         await feature.create(GUILD_ID, OWNER, "one");
         await feature.create(OTHER_GUILD_ID, PLAYER_1, "two");
+        await addQueuedPlayer(GUILD_ID, PLAYER_2, "2026-06-12T00:00:01.000Z");
+        await addQueuedPlayer(GUILD_ID, PLAYER_3, "2026-06-12T00:00:00.000Z");
+        await addQueuedPlayer(OTHER_GUILD_ID, PLAYER_2, "2026-06-12T00:00:00.000Z");
 
         const response = await feature.list(GUILD_ID);
 
         expect(response).toEqual({
             kind: ELfgFeatureReturnKind.ROOMS_LISTED,
-            value: { rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }] },
+            value: {
+                queuedPlayers: [{ userId: PLAYER_3.id }, { userId: PLAYER_2.id }],
+                rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }],
+            },
         });
     });
 
@@ -366,6 +481,7 @@ describe(LfgFeature.name, () => {
 
         expect(response.kind).toBe(ELfgFeatureReturnKind.HELP);
         expect(response.value.description).toContain("/lfg create");
+        expect(response.value.description).toContain("/lfg queue");
         expect(response.value.description).toContain("/lfg help");
     });
 });

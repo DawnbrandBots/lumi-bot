@@ -6,6 +6,7 @@ import mapLfgFeatureReturnToMessage from "../../src/lfg/mapper.ts";
 import {
     ELfgFeatureReturnKind,
     ELfgPlayerRemovalKind,
+    type IQueuedPlayer,
     type IRoom,
     type TLfgFeatureReturn,
 } from "../../src/lfg/types.ts";
@@ -15,6 +16,7 @@ const ROOM: IRoom = {
     ownerId: "owner",
     playerIds: ["player-1", "owner", "player-2"],
 };
+const QUEUED_PLAYERS: readonly IQueuedPlayer[] = [{ userId: "queued-1" }, { userId: "queued-2" }];
 
 function roomDescription(room: IRoom) {
     return `\`${room.code}\`: ${userMention(room.ownerId)} (${LfgConstants.LFG_ROOM_OWNER_LABEL}), ${userMention("player-1")}, ${userMention("player-2")}`;
@@ -28,19 +30,38 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         readonly expected: Pick<ReturnType<typeof mapLfgFeatureReturnToMessage>, "kind" | "embeds">;
     }>([
         {
-            name: "non-empty room list",
-            input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+            name: "non-empty queue and room list",
+            input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { queuedPlayers: QUEUED_PLAYERS, rooms: [ROOM] } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: `- ${roomDescription(ROOM)}` }],
+                embeds: [
+                    {
+                        description: [
+                            `### ${LfgConstants.LFG_QUEUE_LIST_TITLE}`,
+                            `- ${userMention("queued-1")}`,
+                            `- ${userMention("queued-2")}`,
+                            `### ${LfgConstants.LFG_ROOM_LIST_TITLE}`,
+                            `- ${roomDescription(ROOM)}`,
+                        ].join("\n"),
+                    },
+                ],
             },
         },
         {
-            name: "empty room list",
-            input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [] } },
+            name: "empty queue and room list",
+            input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { queuedPlayers: [], rooms: [] } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION }],
+                embeds: [
+                    {
+                        description: [
+                            `### ${LfgConstants.LFG_QUEUE_LIST_TITLE}`,
+                            LfgConstants.LFG_EMPTY_QUEUE_LIST_DESCRIPTION,
+                            `### ${LfgConstants.LFG_ROOM_LIST_TITLE}`,
+                            LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION,
+                        ].join("\n"),
+                    },
+                ],
             },
         },
         {
@@ -154,6 +175,70 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 embeds: [
                     {
                         description: `${userMention("owner")} left \`${ROOM.code}\`. Ownership transferred to ${userMention("player-1")}`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "queue joined",
+            input: { kind: ELfgFeatureReturnKind.QUEUE_JOINED, value: { userId: "queued-1" } },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("queued-1")} joined the queue.`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "queue joined and room deleted",
+            input: {
+                kind: ELfgFeatureReturnKind.QUEUE_JOINED,
+                value: {
+                    userId: "queued-1",
+                    leftRoom: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, code: ROOM.code },
+                },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("queued-1")} joined the queue. Left \`${ROOM.code}\`. Room deleted.`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "queue joined and ownership transferred",
+            input: {
+                kind: ELfgFeatureReturnKind.QUEUE_JOINED,
+                value: {
+                    userId: "queued-1",
+                    leftRoom: {
+                        kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
+                        code: ROOM.code,
+                        newOwnerId: "player-1",
+                    },
+                },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("queued-1")} joined the queue. Left \`${ROOM.code}\`. Ownership transferred to ${userMention("player-1")}`,
+                    },
+                ],
+            },
+        },
+        {
+            name: "queue left",
+            input: { kind: ELfgFeatureReturnKind.QUEUE_LEFT, value: { userId: "queued-1" } },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("queued-1")} left the queue.`,
                     },
                 ],
             },
@@ -294,6 +379,18 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 embeds: [
                     {
                         description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION,
+                    },
+                ],
+            },
+        },
+        {
+            name: "already in queue",
+            input: { kind: ELfgFeatureReturnKind.ALREADY_IN_QUEUE },
+            expected: {
+                kind: EMessageKind.NEGATIVE,
+                embeds: [
+                    {
+                        description: LfgConstants.LFG_ALREADY_IN_QUEUE_DESCRIPTION,
                     },
                 ],
             },
