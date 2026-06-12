@@ -20,9 +20,9 @@ import {
     LFG_JOIN_SUBCOMMAND_NAME,
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
-    LFG_LIST_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
     LFG_QUEUE_SUBCOMMAND_NAME,
+    LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
 import type { LfgFeature } from "./feature.ts";
@@ -74,7 +74,7 @@ export function getLfgCommand({
                 return lfgFeature.queue(guildId, interaction.user);
             case LFG_DISBAND_SUBCOMMAND_NAME:
                 return lfgFeature.disband(guildId, interaction.user);
-            case LFG_LIST_SUBCOMMAND_NAME:
+            case LFG_STATUS_SUBCOMMAND_NAME:
                 return lfgFeature.list(guildId);
             case LFG_HELP_SUBCOMMAND_NAME:
                 return lfgFeature.help();
