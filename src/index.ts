@@ -19,15 +19,15 @@ import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
 const log = debug("bot");
 
-const gameOrm = await getOrm(configsById.game);
-const gameEm = gameOrm.em.fork();
+const orm = await getOrm(configsById.game);
+const em = orm.em.fork();
 
-const searchItems = await getSearchItems(gameEm);
+const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const commands = {
-    search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
+    search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
 } as const;
@@ -59,7 +59,7 @@ bot.on(Events.MessageCreate, async (interaction) => {
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
     const result = await searchFeature<TSearchableEntity>({
-        em: gameEm,
+        em,
         searchEngine,
         handlers: SEARCH_HANDLERS,
         input,
