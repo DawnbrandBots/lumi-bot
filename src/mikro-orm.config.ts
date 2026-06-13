@@ -36,12 +36,12 @@ const LUMI_GAME_DB_NAME = process.env.LUMI_GAME_DB_NAME;
 if (!LUMI_STATE_DB_DIR || !LUMI_STATIC_DB_DIR || !LUMI_STATE_DB_NAME || !LUMI_GAME_DB_NAME) {
     throw new Error(
         "One or more required environment variables are not set: " +
-        JSON.stringify({
-            LUMI_STATE_DB_DIR,
-            LUMI_STATIC_DB_DIR,
-            LUMI_STATE_DB_NAME,
-            LUMI_GAME_DB_NAME,
-        }),
+            JSON.stringify({
+                LUMI_STATE_DB_DIR,
+                LUMI_STATIC_DB_DIR,
+                LUMI_STATE_DB_NAME,
+                LUMI_GAME_DB_NAME,
+            }),
     );
 }
 
