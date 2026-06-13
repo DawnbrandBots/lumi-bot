@@ -1,4 +1,5 @@
 import { UnderscoreNamingStrategy, defineEntity, p } from "@mikro-orm/sqlite";
+import { GAME_DB_SCHEMA } from "../../db/constants.ts";
 import { WEAPON_TYPE_RANGE_ATK_MODIFIER } from "../constants.ts";
 import type { IWeaponType } from "../types.ts";
 import { Color } from "./color.ts";
@@ -15,6 +16,7 @@ const weaponTypeWeaponSkillPivotTable = namingStrategy.joinTableName(
 
 export const WeaponTypeSchema = defineEntity({
     name: "WeaponType",
+    schema: GAME_DB_SCHEMA,
     properties: {
         id: p.string().primary(),
         name: p.string(),

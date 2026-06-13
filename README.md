@@ -24,8 +24,7 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
    yarn
    yarn build
    yarn register user-install
-   yarn db:recreate
-   yarn db:migrate
+   yarn db:update
    yarn start
    ```
 
@@ -41,7 +40,7 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ## Inner workings
 
-Game data is stored as JSON files under `/data/`. `yarn db:recreate` creates an sqlite3 database using these JSON files as source. The server reads the data at runtime using [MikroORM](https://mikro-orm.io/).
+Game data is stored as JSON files under `/data/`. `yarn db:update` creates or updates the state sqlite3 database under `run/state`, applies runtime migrations, and refreshes the attached game-data sqlite3 database under `run/static` from those JSON files. `yarn db:recreate` is a destructive local reset that deletes both databases before running the same update flow. The server reads both databases at runtime through one [MikroORM](https://mikro-orm.io/) connection.
 
 Searchable game data is loaded into a [fuse.js](https://www.fusejs.io/) instance at startup, which is then used as source for the `/search` feature.
 

@@ -1,8 +1,10 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
+import { GAME_DB_SCHEMA } from "../../db/constants.ts";
 import type { IMovementType } from "../types.ts";
 
 export const MovementTypeSchema = defineEntity({
     name: "MovementType",
+    schema: GAME_DB_SCHEMA,
     properties: {
         id: p.string().primary(),
         name: p.string(),
