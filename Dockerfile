@@ -17,7 +17,7 @@ COPY scripts ./scripts
 COPY data ./data
 # TODO: the following might better fit in docker compose?
 RUN mkdir -p /app/run/static /app/run/state && chown -R node:node /app/run
-CMD ["sh", "-c", ": \"${LUMI_STATE_DB_DIR:?LUMI_STATE_DB_DIR is required}\" \"${LUMI_STATIC_DB_DIR:?LUMI_STATIC_DB_DIR is required}\" && mkdir -p \"$LUMI_STATE_DB_DIR\" \"$LUMI_STATIC_DB_DIR\" && chown -R node:node \"$LUMI_STATE_DB_DIR\" \"$LUMI_STATIC_DB_DIR\" && runuser -u node -- yarn db:update"]
+CMD ["sh", "-c", ": \"${LUMI_STATE_DB_DIR:?LUMI_STATE_DB_DIR is required}\" \"${LUMI_STATIC_DB_DIR:?LUMI_STATIC_DB_DIR is required}\" && mkdir -p \"$LUMI_STATE_DB_DIR\" \"$LUMI_STATIC_DB_DIR\" && chown -R node:node \"$LUMI_STATE_DB_DIR\" \"$LUMI_STATIC_DB_DIR\" && runuser -u node -- sh -c 'yarn db:recreate && yarn db:migrate'"]
 
 FROM base AS bot
 ARG REVISION

@@ -1,6 +1,7 @@
 import type { Options } from "@mikro-orm/sqlite";
 import fs from "node:fs";
-import updateDb from "./updateDb.ts";
+import migrateDb from "./migrateDb.ts";
+import recreateStaticDbs from "./recreateStaticDbs.ts";
 
 function getDbNames(configs: Options[]): string[] {
     return [
@@ -28,5 +29,6 @@ export default async function recreateDb({
         }
     }
 
-    await updateDb({ appConfig, migrationConfig, staticGameDataConfig });
+    await recreateStaticDbs(staticGameDataConfig);
+    await migrateDb(migrationConfig);
 }
