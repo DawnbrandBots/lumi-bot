@@ -1,5 +1,4 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { GAME_DB_SCHEMA } from "../../db/constants.ts";
 import { ESpellEffectTarget, type ISpell } from "../types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { Disciple } from "./disciple.ts";
@@ -18,7 +17,6 @@ import { WeaponType } from "./weaponType.ts";
 
 export const SpellSchema = defineEntity({
     name: "Spell",
-    schema: GAME_DB_SCHEMA,
     properties: {
         id: p.string().primary(),
         name: p.string(),

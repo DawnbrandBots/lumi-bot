@@ -1,10 +1,8 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { GAME_DB_SCHEMA } from "../../db/constants.ts";
 import type { ISpellShape } from "../types.ts";
 
 export const SpellShapeSchema = defineEntity({
     name: "SpellShape",
-    schema: GAME_DB_SCHEMA,
     properties: {
         id: p.string().primary(),
         name: p.string(),

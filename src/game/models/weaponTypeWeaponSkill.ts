@@ -1,12 +1,10 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { GAME_DB_SCHEMA } from "../../db/constants.ts";
 import type { IWeaponTypeWeaponSkill } from "../types.ts";
 import { WeaponSkill } from "./weaponSkill.ts";
 import { WeaponType } from "./weaponType.ts";
 
 export const WeaponTypeWeaponSkillSchema = defineEntity({
     name: "WeaponTypeWeaponSkill",
-    schema: GAME_DB_SCHEMA,
     properties: {
         weaponType: () => p.manyToOne(WeaponType).primary(),
         weaponSkill: () => p.manyToOne(WeaponSkill).primary(),

@@ -36,12 +36,12 @@ const LUMI_GAME_DB_NAME = process.env.LUMI_GAME_DB_NAME;
 if (!LUMI_STATE_DB_DIR || !LUMI_STATIC_DB_DIR || !LUMI_STATE_DB_NAME || !LUMI_GAME_DB_NAME) {
     throw new Error(
         "One or more required environment variables are not set: " +
-            JSON.stringify({
-                LUMI_STATE_DB_DIR,
-                LUMI_STATIC_DB_DIR,
-                LUMI_STATE_DB_NAME,
-                LUMI_GAME_DB_NAME,
-            }),
+        JSON.stringify({
+            LUMI_STATE_DB_DIR,
+            LUMI_STATIC_DB_DIR,
+            LUMI_STATE_DB_NAME,
+            LUMI_GAME_DB_NAME,
+        }),
     );
 }
 
@@ -80,32 +80,36 @@ export const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.
 
 const GAME_DB_ATTACHMENT = [{ name: GAME_DB_SCHEMA, path: GAME_DB_NAME }];
 
-const mikroOrmConfig = defineConfig({
+export const appMikroOrmConfig = defineConfig({
     entities: [...GAME_DATA_ENTITIES, ...RUNTIME_ENTITIES],
     dbName: STATE_DB_NAME,
     attachDatabases: GAME_DB_ATTACHMENT,
+    discovery: {
+        onMetadata(meta) {
+            meta.schema = GAME_DATA_ENTITIES.includes(meta.class) ? GAME_DB_SCHEMA : "main";
+        },
+    },
+    metadataCache: { enabled: false },
 });
 
-// This config must use the state db instead of the game db
-// because game data models have `schema: GAME_DB_SCHEMA`.
-// Mikro-ORM refers to tables from attached databases in queries by prepending their model's schema name (eg. "game".<TABLE_NAME>).
-// If the config used the static db as main db, there would be no "game" db attached
-// and errors would occur as queries would attempt to access tables named like "game".<TABLE_NAME>.
 export const staticGameDataMikroOrmConfig = defineConfig({
     contextName: "static-game-data",
     entities: GAME_DATA_ENTITIES,
-    dbName: STATE_DB_NAME,
-    attachDatabases: GAME_DB_ATTACHMENT,
+    dbName: GAME_DB_NAME,
+    metadataCache: { enabled: false },
 });
 
 export const migrationMikroOrmConfig = defineConfig({
     contextName: "migration",
     entities: RUNTIME_ENTITIES,
     dbName: STATE_DB_NAME,
+    discovery: {
+        warnWhenNoEntities: false,
+    },
     migrations: {
         pathTs: "./src/migrations",
     },
     extensions: [Migrator],
 });
 
-export default mikroOrmConfig;
+export default [appMikroOrmConfig, staticGameDataMikroOrmConfig, migrationMikroOrmConfig];

@@ -1,5 +1,4 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { GAME_DB_SCHEMA } from "../../db/constants.ts";
 import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from "../constants.ts";
 import type { IDisciple } from "../types.ts";
 import { MovementType } from "./movementType.ts";
@@ -9,7 +8,6 @@ import { WeaponType } from "./weaponType.ts";
 
 export const DiscipleSchema = defineEntity({
     name: "Disciple",
-    schema: GAME_DB_SCHEMA,
     properties: {
         id: p.string().primary(),
         name: p.string(),

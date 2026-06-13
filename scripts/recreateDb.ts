@@ -1,8 +1,8 @@
-import mikroOrmConfig, { migrationMikroOrmConfig, staticGameDataMikroOrmConfig } from "../src/mikro-orm.config.ts";
+import { appMikroOrmConfig, migrationMikroOrmConfig, staticGameDataMikroOrmConfig } from "../src/mikro-orm.config.ts";
 import recreateDb from "./utils/recreateDb.ts";
 
 await recreateDb({
-    appConfig: mikroOrmConfig,
+    appConfig: appMikroOrmConfig,
     migrationConfig: migrationMikroOrmConfig,
     staticGameDataConfig: staticGameDataMikroOrmConfig,
 });
