@@ -4,8 +4,6 @@ A free and open-source Discord bot for Fire Emblem Shadows.
 
 ## Features
 
-### Data lookup
-
 Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search` command or `@Lumi <SEARCH TERMS>`.
 
 ## Discord permissions
