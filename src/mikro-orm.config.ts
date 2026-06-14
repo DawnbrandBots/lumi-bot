@@ -132,7 +132,7 @@ export const migrationMikroOrmConfig = defineConfig({
         warnWhenNoEntities: false,
     },
     migrations: {
-        pathTs: "./src/migrations",
+        pathTs: path.join(LUMI_STATE_DB_DIR, LUMI_STATE_DB_NAME),
     },
     extensions: [Migrator],
 });
