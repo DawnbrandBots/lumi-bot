@@ -1,7 +1,7 @@
 import type { MikroORM } from "@mikro-orm/sqlite";
 import getOrm from "../src/loaders/orm.ts";
-import mikroOrmConfig from "./mikro-orm.test.config.ts";
+import { appMikroOrmConfig } from "./mikro-orm.test.config.ts";
 
 export function initTestOrm(): Promise<MikroORM> {
-    return getOrm(mikroOrmConfig);
+    return getOrm(appMikroOrmConfig);
 }
