@@ -1,21 +1,12 @@
-import { MikroORM, type Options } from "@mikro-orm/sqlite";
+import { type Options } from "@mikro-orm/sqlite";
 import fs from "node:fs";
-import path from "node:path";
+import recreateDb from "./recreateDb.ts";
 
 /**
  * Refreshes static game-data tables from JSON without touching runtime tables.
  */
 export default async function recreateStaticGameDataDb(config: Options): Promise<void> {
-    if (config.dbName) {
-        fs.mkdirSync(path.dirname(config.dbName), { recursive: true });
-    }
-
-    if (config.dbName && fs.existsSync(config.dbName)) {
-        fs.unlinkSync(config.dbName);
-    }
-
-    const orm = await MikroORM.init(config);
-    await orm.schema.create();
+    const orm = await recreateDb(config);
 
     const em = orm.em.fork();
     const metadata = [...orm.getMetadata().getAll().values()].filter(
