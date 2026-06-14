@@ -1,7 +1,6 @@
 import { Migrator } from "@mikro-orm/migrations";
 import { defineConfig } from "@mikro-orm/sqlite";
 import path from "node:path";
-import { GAME_DB_SCHEMA } from "./db/constants.ts";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
@@ -80,10 +79,12 @@ export const GAME_DATA_ENTITIES = [
  * Empty in this PR only but left to demonstrate how it should be used later on.
  * Remove comment in PR adding entities to the main database.
  */
-export const RUNTIME_ENTITIES = [];
+const RUNTIME_ENTITIES: never[] = [];
 
-export const STATE_DB_NAME = path.join(LUMI_STATE_DB_DIR, `${LUMI_STATE_DB_NAME}.db3`);
-export const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.db3`);
+const STATE_DB_NAME = path.join(LUMI_STATE_DB_DIR, `${LUMI_STATE_DB_NAME}.db3`);
+const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.db3`);
+
+const GAME_DB_SCHEMA = "game";
 
 /**
  * Main ORM config used at runtime. Default CLI config.
