@@ -45,6 +45,9 @@ if (!LUMI_STATE_DB_DIR || !LUMI_STATIC_DB_DIR || !LUMI_STATE_DB_NAME || !LUMI_GA
     );
 }
 
+/**
+ * Game data entities. Not managed by migrations. Rather, their dedicated DB is recreated during deployment.
+ */
 export const GAME_DATA_ENTITIES = [
     SpellEffect,
     WeaponSkill,
@@ -73,18 +76,32 @@ export const GAME_DATA_ENTITIES = [
     SpellShape,
 ];
 
+/**
+ * Empty in this PR only but left to demonstrate how it should be used later on.
+ * Remove comment in PR adding entities to the main database.
+ */
 export const RUNTIME_ENTITIES = [];
 
 export const STATE_DB_NAME = path.join(LUMI_STATE_DB_DIR, `${LUMI_STATE_DB_NAME}.db3`);
 export const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.db3`);
 
-const GAME_DB_ATTACHMENT = [{ name: GAME_DB_SCHEMA, path: GAME_DB_NAME }];
-
+/**
+ * Main ORM config used at runtime. Default CLI config.
+ */
 export const appMikroOrmConfig = defineConfig({
     entities: [...GAME_DATA_ENTITIES, ...RUNTIME_ENTITIES],
     dbName: STATE_DB_NAME,
-    attachDatabases: GAME_DB_ATTACHMENT,
+    // SQLite's way of adding another db to the same connection.
+    // A single Mikro-ORM instance using this db config can manipulate entities from both dbs.
+    // https://mikro-orm.io/docs/multiple-schemas#sqlite-attach-database
+    attachDatabases: [{ name: GAME_DB_SCHEMA, path: GAME_DB_NAME }],
     discovery: {
+        // Mikro ORM requires defining the`schema` property for entities in attached databases.
+        // The official documentation recommends setting the schema on the entity definition directly:
+        // https://mikro-orm.io/docs/multiple-schemas#entity-definition
+        // However, this prevents using the game database as main database in a separate config,
+        // as Mikro-ORM will still look for game entities in a "game" schema, rather than at the database's root level.
+        // This hook assigns a schema to entities based on whether they belong to GAME_DATA_ENTITIES.
         onMetadata(meta) {
             meta.schema = GAME_DATA_ENTITIES.includes(meta.class) ? GAME_DB_SCHEMA : "main";
         },
@@ -92,6 +109,9 @@ export const appMikroOrmConfig = defineConfig({
     metadataCache: { enabled: false },
 });
 
+/**
+ * ORM config used to manipulate only the static game data db.
+ */
 export const staticGameDataMikroOrmConfig = defineConfig({
     contextName: "static-game-data",
     entities: GAME_DATA_ENTITIES,
@@ -99,11 +119,15 @@ export const staticGameDataMikroOrmConfig = defineConfig({
     metadataCache: { enabled: false },
 });
 
+/**
+ * ORM config used for migrating non-game data entities.
+ */
 export const migrationMikroOrmConfig = defineConfig({
     contextName: "migration",
     entities: RUNTIME_ENTITIES,
     dbName: STATE_DB_NAME,
     discovery: {
+        // Remove in PR adding entities to the main database.
         warnWhenNoEntities: false,
     },
     migrations: {
@@ -112,4 +136,6 @@ export const migrationMikroOrmConfig = defineConfig({
     extensions: [Migrator],
 });
 
+// Exporting an array of configs as default allows referring to non-default config using `--contextName`.
+// https://mikro-orm.io/blog/mikro-orm-6-4-released#support-for-multiple-orm-configurations
 export default [appMikroOrmConfig, staticGameDataMikroOrmConfig, migrationMikroOrmConfig];
