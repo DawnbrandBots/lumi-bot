@@ -101,7 +101,7 @@ export const appMikroOrmConfig = defineConfig({
         // The official documentation recommends setting the schema on the entity definition directly:
         // https://mikro-orm.io/docs/multiple-schemas#entity-definition
         // However, this prevents using the game database as main database in a separate config,
-        // as Mikro-ORM will still look for game entities in a "game" schema, rather than at the database's root level.
+        // as Mikro-ORM will write queries referring to game entities under the "game" schema, rather than at the database's root level.
         // This hook assigns a schema to entities based on whether they belong to GAME_DATA_ENTITIES.
         onMetadata(meta) {
             meta.schema = GAME_DATA_ENTITIES.includes(meta.class) ? GAME_DB_SCHEMA : "main";
