@@ -1,19 +1,34 @@
 import type { Options } from "@mikro-orm/sqlite";
-import { MikroORM } from "@mikro-orm/sqlite";
 import fs from "node:fs";
-import path from "node:path";
+import migrateDb from "./migrateDb.ts";
+import recreateStaticDbs from "./recreateStaticDbs.ts";
 
-export default async function recreateDb(config: Options) {
-    if (!config.dbName) {
+function getDbNames(configs: Options[]): string[] {
+    return [
+        ...configs.flatMap((config) => config.dbName ?? []),
+        ...configs.flatMap((config) => (config.attachDatabases ?? []).map((attachedDatabase) => attachedDatabase.path)),
+    ];
+}
+
+export default async function recreateDb({
+    appConfig,
+    migrationConfig,
+    staticGameDataConfig,
+}: {
+    readonly appConfig: Options;
+    readonly migrationConfig: Options;
+    readonly staticGameDataConfig: Options;
+}): Promise<void> {
+    if (!appConfig.dbName) {
         throw new Error("dbName required");
     }
 
-    if (fs.existsSync(config.dbName)) {
-        fs.unlinkSync(config.dbName);
-    } else {
-        fs.mkdirSync(path.dirname(config.dbName), { recursive: true });
+    for (const dbName of new Set(getDbNames([appConfig, migrationConfig, staticGameDataConfig]))) {
+        if (fs.existsSync(dbName)) {
+            fs.unlinkSync(dbName);
+        }
     }
 
-    const orm = await MikroORM.init(config);
-    await orm.schema.create();
+    await recreateStaticDbs(staticGameDataConfig);
+    await migrateDb(migrationConfig);
 }

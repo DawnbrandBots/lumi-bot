@@ -1,5 +1,14 @@
-import recreateStaticDbs from "../scripts/utils/recreateStaticDbs.ts";
+/**
+ * @file Referred to by vite.config.ts.
+ */
+
+import recreateDb from "../scripts/utils/recreateDb.ts";
+import { appMikroOrmConfig, migrationMikroOrmConfig, staticGameDataMikroOrmConfig } from "../src/mikro-orm.config.ts";
 
 export default async function () {
-    await recreateStaticDbs();
+    await recreateDb({
+        appConfig: appMikroOrmConfig,
+        migrationConfig: migrationMikroOrmConfig,
+        staticGameDataConfig: staticGameDataMikroOrmConfig,
+    });
 }
