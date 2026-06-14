@@ -9,6 +9,9 @@ export default async function recreateStaticGameDataDb(config: Options): Promise
     const orm = await recreateDb(config);
 
     const em = orm.em.fork();
+    // Get only metadata of Mikro-ORM entities that represent tables.
+    // eg. embeddables are entities that do not have tables:
+    // https://mikro-orm.io/docs/embeddables
     const metadata = [...orm.getMetadata().getAll().values()].filter(
         (entityMetadata) => entityMetadata.tableName && !entityMetadata.embeddable,
     );
