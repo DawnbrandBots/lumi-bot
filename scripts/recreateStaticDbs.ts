@@ -1,4 +1,4 @@
 import { staticGameDataMikroOrmConfig } from "../src/mikro-orm.config.ts";
-import recreateStaticDbs from "./utils/recreateStaticDbs.ts";
+import recreateStaticGameDataDb from "./utils/recreateStaticDbs.ts";
 
-await recreateStaticDbs(staticGameDataMikroOrmConfig);
+await recreateStaticGameDataDb(staticGameDataMikroOrmConfig);

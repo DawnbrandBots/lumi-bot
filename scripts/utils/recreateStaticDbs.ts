@@ -5,16 +5,16 @@ import path from "node:path";
 /**
  * Refreshes static game-data tables from JSON without touching runtime tables.
  */
-export default async function recreateStaticDbs(staticGameDataConfig: Options): Promise<void> {
-    if (staticGameDataConfig.dbName) {
-        fs.mkdirSync(path.dirname(staticGameDataConfig.dbName), { recursive: true });
+export default async function recreateStaticGameDataDb(config: Options): Promise<void> {
+    if (config.dbName) {
+        fs.mkdirSync(path.dirname(config.dbName), { recursive: true });
     }
 
-    if (staticGameDataConfig.dbName && fs.existsSync(staticGameDataConfig.dbName)) {
-        fs.unlinkSync(staticGameDataConfig.dbName);
+    if (config.dbName && fs.existsSync(config.dbName)) {
+        fs.unlinkSync(config.dbName);
     }
 
-    const orm = await MikroORM.init(staticGameDataConfig);
+    const orm = await MikroORM.init(config);
     await orm.schema.create();
 
     const em = orm.em.fork();
