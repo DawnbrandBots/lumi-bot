@@ -97,7 +97,7 @@ export const appMikroOrmConfig = defineConfig({
     // https://mikro-orm.io/docs/multiple-schemas#sqlite-attach-database
     attachDatabases: [{ name: GAME_DB_SCHEMA, path: GAME_DB_NAME }],
     discovery: {
-        // Mikro ORM requires defining the`schema` property for entities in attached databases.
+        // Mikro ORM requires defining the `schema` property for entities in attached databases.
         // The official documentation recommends setting the schema on the entity definition directly:
         // https://mikro-orm.io/docs/multiple-schemas#entity-definition
         // However, this prevents using the game database as main database in a separate config,
