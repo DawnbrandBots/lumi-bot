@@ -10,6 +10,7 @@ on:
     paths:
       - Dockerfile
       - .github/workflows/docker.yml
+    types: [ready_for_review, review_requested]
 
 jobs:
   lint-dockerfile:
