@@ -8,9 +8,6 @@ export default async function migrateDb(config: Options) {
         fs.mkdirSync(path.dirname(config.dbName), { recursive: true });
     }
     const orm = await MikroORM.init(config);
-    try {
-        await orm.migrator.up();
-    } finally {
-        await orm.close(true);
-    }
+    await orm.migrator.up();
+    await orm.close(true);
 }
