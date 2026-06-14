@@ -1,23 +1,17 @@
-import { MikroORM, type Options } from "@mikro-orm/sqlite";
+import { type Options } from "@mikro-orm/sqlite";
 import fs from "node:fs";
-import path from "node:path";
+import recreateDb from "./recreateDb.ts";
 
 /**
- * Refreshes static game-data tables from JSON without touching runtime tables.
+ * Creates an SQLite database with game data.
  */
-export default async function recreateStaticDbs(staticGameDataConfig: Options): Promise<void> {
-    if (staticGameDataConfig.dbName) {
-        fs.mkdirSync(path.dirname(staticGameDataConfig.dbName), { recursive: true });
-    }
-
-    if (staticGameDataConfig.dbName && fs.existsSync(staticGameDataConfig.dbName)) {
-        fs.unlinkSync(staticGameDataConfig.dbName);
-    }
-
-    const orm = await MikroORM.init(staticGameDataConfig);
-    await orm.schema.create();
+export default async function recreateStaticGameDataDb(config: Options): Promise<void> {
+    const orm = await recreateDb(config);
 
     const em = orm.em.fork();
+    // Get only metadata of Mikro-ORM entities that represent tables.
+    // eg. embeddables are entities that do not have tables:
+    // https://mikro-orm.io/docs/embeddables
     const metadata = [...orm.getMetadata().getAll().values()].filter(
         (entityMetadata) => entityMetadata.tableName && !entityMetadata.embeddable,
     );

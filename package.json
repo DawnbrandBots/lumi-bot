@@ -17,9 +17,8 @@
     "format:check": "prettier --check .",
     "register": "node --enable-source-maps --env-file-if-exists=.env scripts/registerCommands.ts",
     "bot:profile:update": "node --enable-source-maps --env-file-if-exists=.env scripts/updateBotProfile.ts",
-    "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateStaticDbs.ts",
-    "db:migrate": "node --enable-source-maps --env-file-if-exists=.env scripts/migrateDbs.ts",
-    "test:db": "node --enable-source-maps --env-file-if-exists=.env.test scripts/recreateDb.ts",
+    "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateStaticGameDataDb.ts",
+    "db:migrate": "node --enable-source-maps --env-file-if-exists=.env scripts/migrateLumiDb.ts",
     "test": "vitest"
   },
   "engines": {
