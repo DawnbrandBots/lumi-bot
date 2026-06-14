@@ -26,6 +26,8 @@ import { WeaponSkill } from "./game/models/weaponSkill.ts";
 import { WeaponSkillEffect } from "./game/models/weaponSkillEffect.ts";
 import { WeaponType } from "./game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
+import { LfgRoom } from "./lfg/models/room.ts";
+import { LfgRoomPlayer } from "./lfg/models/roomPlayer.ts";
 
 const LUMI_STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
 const LUMI_STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;
@@ -76,10 +78,9 @@ export const GAME_DATA_ENTITIES = [
 ];
 
 /**
- * Empty in this PR only but left to demonstrate how it should be used later on.
- * Remove comment in PR adding entities to the main database.
+ * Main db entities.
  */
-const RUNTIME_ENTITIES: never[] = [];
+const RUNTIME_ENTITIES = [LfgRoom, LfgRoomPlayer];
 
 const STATE_DB_NAME = path.join(LUMI_STATE_DB_DIR, `${LUMI_STATE_DB_NAME}.db3`);
 const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.db3`);
@@ -127,10 +128,6 @@ export const migrationMikroOrmConfig = defineConfig({
     contextName: "migration",
     entities: RUNTIME_ENTITIES,
     dbName: STATE_DB_NAME,
-    discovery: {
-        // Remove in PR adding entities to the main database.
-        warnWhenNoEntities: false,
-    },
     migrations: {
         pathTs: "./src/migrations",
     },
