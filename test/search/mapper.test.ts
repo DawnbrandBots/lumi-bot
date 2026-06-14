@@ -18,17 +18,17 @@ import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
 import mapSearchFeatureReturnToMessage from "../../src/search/mapper.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
-import { initTestOrm } from "../orm.ts";
+import { initTestGameOrm } from "../orm.ts";
 import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
-let orm: Awaited<ReturnType<typeof initTestOrm>>;
+let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
 type SearchItem = ISearchItem & { kind: TSearchableEntity["kind"] };
 let searchEngine: ISearchEngine<SearchItem>;
 
 beforeAll(async () => {
-    orm = await initTestOrm();
+    orm = await initTestGameOrm();
     em = orm.em.fork();
     searchEngine = new FuseSearchEngine<SearchItem>({ items: await getSearchItems(em) });
 });
