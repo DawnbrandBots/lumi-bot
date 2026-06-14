@@ -3,7 +3,7 @@ import fs from "node:fs";
 import recreateDb from "./recreateDb.ts";
 
 /**
- * Refreshes static game-data tables from JSON without touching runtime tables.
+ * Creates an SQLite database with game data.
  */
 export default async function recreateStaticGameDataDb(config: Options): Promise<void> {
     const orm = await recreateDb(config);
