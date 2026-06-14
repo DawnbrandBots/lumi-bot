@@ -1,4 +1,3 @@
-import type { InteractionReplyOptions } from "discord.js";
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
 import { AdminCommand } from "../../src/admin/command.ts";
@@ -10,7 +9,7 @@ import {
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
 } from "../../src/admin/constants.ts";
 import type { AdminFeature } from "../../src/admin/feature.ts";
-import { createNeutralMessage } from "../../src/bot/message.ts";
+import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
@@ -46,7 +45,7 @@ function getInteractionFixture({
 
 describe(AdminCommand.name, () => {
     test("rejects users without ManageGuild", async () => {
-        const adminFeature = { lfgChannel: vi.fn(), lfgShow: vi.fn() } as unknown as AdminFeature;
+        const adminFeature = { lfgChannel: vi.fn(), getGuildConfig: vi.fn() } as unknown as AdminFeature;
         const command = new AdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({ canManageGuild: false });
 
@@ -61,14 +60,13 @@ describe(AdminCommand.name, () => {
     });
 
     test("dispatches lfg channel", async () => {
-        const response = createNeutralMessage<InteractionReplyOptions>({
-            embed: { title: "ok" },
-            flags: [MessageFlags.Ephemeral],
+        const lfgChannel = vi.fn().mockResolvedValue({
+            kind: EAdminFeatureReturnKind.LFG_CHANNEL_SET,
+            value: { channel: CHANNEL_ID },
         });
-        const lfgChannel = vi.fn().mockResolvedValue(response);
         const adminFeature = {
             lfgChannel,
-            lfgShow: vi.fn(),
+            getGuildConfig: vi.fn(),
         } as unknown as AdminFeature;
         const command = new AdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({
@@ -79,25 +77,34 @@ describe(AdminCommand.name, () => {
         await command.run(interaction);
 
         expect(lfgChannel).toHaveBeenCalledWith(GUILD_ID, "set", CHANNEL_ID);
-        expect(reply).toHaveBeenCalledWith(response);
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ title: "LFG public channel set" })],
+            }),
+        );
     });
 
     test("dispatches lfg show", async () => {
-        const response = createNeutralMessage<InteractionReplyOptions>({
-            embed: { title: "ok" },
-            flags: [MessageFlags.Ephemeral],
+        const getGuildConfig = vi.fn().mockResolvedValue({
+            kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+            value: null,
         });
-        const lfgShow = vi.fn().mockResolvedValue(response);
         const adminFeature = {
             lfgChannel: vi.fn(),
-            lfgShow,
+            getGuildConfig,
         } as unknown as AdminFeature;
         const command = new AdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({ subcommand: ADMIN_LFG_SHOW_SUBCOMMAND_NAME });
 
         await command.run(interaction);
 
-        expect(lfgShow).toHaveBeenCalledWith(GUILD_ID);
-        expect(reply).toHaveBeenCalledWith(response);
+        expect(getGuildConfig).toHaveBeenCalledWith(GUILD_ID);
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ title: "LFG config" })],
+            }),
+        );
     });
 });

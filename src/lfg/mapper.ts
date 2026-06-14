@@ -1,4 +1,6 @@
-import { userMention, type InteractionReplyOptions } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
+import { MessageFlags, userMention, type InteractionReplyOptions } from "discord.js";
+import type { GuildConfig } from "../admin/models/config.ts";
 import {
     createErrorMessage,
     createNegativeMessage,
@@ -82,7 +84,7 @@ function formatPlayerNotInRoom(targetId: string) {
     return `${userMention(targetId)} is not in your room.`;
 }
 
-function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
+export function mapLfgFeatureReturnToMessageBase(result: TLfgFeatureReturn) {
     switch (result.kind) {
         case ELfgFeatureReturnKind.ROOMS_LISTED:
             return createNeutralMessage<InteractionReplyOptions>({
@@ -205,4 +207,16 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
     }
 }
 
-export default mapLfgFeatureReturnToMessage;
+export function mapLfgMessageBaseToReply(
+    messageBase: ReturnType<typeof mapLfgFeatureReturnToMessageBase>,
+    interaction: ChatInputCommandInteraction,
+    guildConfig: GuildConfig | null,
+) {
+    // if (messageBase.kind !== EMessageKind.POSITIVE || !guildConfig?.lfgChannel) {
+    //     return { ...messageBase, flags: [MessageFlags.Ephemeral] as const };
+    // }
+    if (interaction.channelId === guildConfig?.lfgChannel) {
+        return messageBase;
+    }
+    return { ...messageBase, flags: [MessageFlags.Ephemeral] } as const;
+}

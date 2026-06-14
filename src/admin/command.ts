@@ -18,7 +18,8 @@ import {
     ADMIN_LFG_GROUP_NAME,
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
 } from "./constants.ts";
-import type { AdminFeature, AdminLfgChannelAction } from "./feature.ts";
+import type { AdminFeature } from "./feature.ts";
+import mapAdminFeatureReturnToMessage from "./mapper.ts";
 
 type AdminCommandCtorArg = {
     readonly adminFeature: AdminFeature;
@@ -79,13 +80,13 @@ export class AdminCommand implements ICommand {
             case ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME:
                 return this.runLfgChannel(interaction, guildId);
             case ADMIN_LFG_SHOW_SUBCOMMAND_NAME:
-                return this.adminFeature.lfgShow(guildId);
+                return mapAdminFeatureReturnToMessage(await this.adminFeature.getGuildConfig(guildId));
             default:
                 return this.invalidSubcommand();
         }
     }
 
-    private runLfgChannel(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
+    private async runLfgChannel(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
         const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
         const channel = interaction.options.getChannel(ADMIN_CHANNEL_OPTION_NAME, false);
 
@@ -107,7 +108,8 @@ export class AdminCommand implements ICommand {
             });
         }
 
-        return this.adminFeature.lfgChannel(guildId, action as AdminLfgChannelAction | null, channel?.id ?? null);
+        const result = await this.adminFeature.lfgChannel(guildId, action, channel?.id ?? null);
+        return mapAdminFeatureReturnToMessage(result);
     }
 
     private invalidSubcommand() {

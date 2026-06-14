@@ -25,7 +25,7 @@ import {
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
 import type { LfgFeature } from "./feature.ts";
-import mapLfgFeatureReturnToMessage from "./mapper.ts";
+import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "./mapper.ts";
 import { ELfgFeatureReturnKind } from "./types.ts";
 
 const log = debug("bot:lfg");
@@ -35,7 +35,7 @@ export function getLfgCommand({
     adminFeature,
 }: {
     readonly lfgFeature: LfgFeature;
-    readonly adminFeature: Pick<AdminFeature, "getConfig">;
+    readonly adminFeature: Pick<AdminFeature, "getGuildConfig">;
 }) {
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
@@ -115,18 +115,20 @@ export function getLfgCommand({
 
             const subcommand = interaction.options.getSubcommand(false);
             const result = await runSubcommand(interaction, guildId, subcommand);
-            const config = await adminFeature.getConfig(guildId);
-            const message = mapLfgFeatureReturnToMessage(result);
+            const configResult = await adminFeature.getGuildConfig(guildId);
 
-            if (message.kind !== EMessageKind.POSITIVE || !config?.lfgChannel) {
-                return interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
-            }
-            if (message.kind === EMessageKind.POSITIVE && interaction.channelId === config?.lfgChannel) {
-                return interaction.reply(message);
+            const messageBase = mapLfgFeatureReturnToMessageBase(result);
+            const message = mapLfgMessageBaseToReply(messageBase, interaction, configResult.value);
+
+            const reply = await interaction.reply(message);
+            if (
+                messageBase.kind === EMessageKind.POSITIVE &&
+                configResult.value?.lfgChannel &&
+                interaction.channelId !== configResult.value.lfgChannel
+            ) {
+                await sendPublicCopy(interaction, configResult.value.lfgChannel, messageBase);
             }
 
-            const reply = await interaction.reply({ ...message, flags: MessageFlags.Ephemeral });
-            await sendPublicCopy(interaction, config.lfgChannel, message);
             return reply;
         },
     });
