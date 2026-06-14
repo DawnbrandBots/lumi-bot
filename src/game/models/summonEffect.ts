@@ -2,7 +2,7 @@ import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { ISummonEffect } from "../types.ts";
 import { MovementType } from "./movementType.ts";
 import { SpellEffect } from "./spellEffect.ts";
-import { SummonEffectStat } from "./summonEffectStat.ts";
+import { SummonEffectStatValue } from "./summonEffectStat.ts";
 import { WeaponType } from "./weaponType.ts";
 
 export const SummonEffectSchema = defineEntity({
@@ -14,8 +14,8 @@ export const SummonEffectSchema = defineEntity({
         kind: p.enum(["SUMMON"]),
         movementType: () => p.manyToOne(MovementType),
         weaponType: () => p.manyToOne(WeaponType),
-        hp: () => p.embedded(SummonEffectStat).object(),
-        atk: () => p.embedded(SummonEffectStat).object(),
+        hp: () => p.embedded(SummonEffectStatValue).object(),
+        atk: () => p.embedded(SummonEffectStatValue).object(),
     },
 });
 

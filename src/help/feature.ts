@@ -1,25 +1,27 @@
-import { BOT_NAME } from "../bot/constants.ts";
-import { NeutralFeatureResponse } from "../bot/featureResponse.ts";
-import type { IFeatureResponse } from "../bot/types.ts";
+import {
+    DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT,
+    DISCORD_BOT_INTRODUCTION,
+    DISCORD_BOT_NAME,
+} from "../bot/constants.ts";
 import allCommandInfo from "../loaders/commandInfo.ts";
 
 const commandsStr = allCommandInfo
     .map(
         (info) =>
-            `- **${info.name}**: ${info.description}${info.pingEquivalent ? `\n  -# Also try \`${info.pingEquivalent}.` : ""}\``,
+            `- \`/${info.name}\`: ${info.description}${info.pingEquivalent ? ` (also try \`${info.pingEquivalent}\`)` : ""}`,
     )
     .join("\n");
-const description = `### Commands\n${commandsStr}`;
 
-const response = new NeutralFeatureResponse({
-    embed: {
-        title: BOT_NAME,
-        description,
-    },
-});
+const description = `### ${DISCORD_BOT_NAME}
+${DISCORD_BOT_INTRODUCTION}
 
-function helpFeature(): IFeatureResponse {
-    return response;
+${DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT}
+### Commands
+
+${commandsStr}`;
+
+function helpFeature() {
+    return description;
 }
 
 export default helpFeature;

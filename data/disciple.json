@@ -208,5 +208,19 @@
     "movementType": "CAVALRY",
     "weaponType": "LANCE",
     "prfWeapon": "HEIRESS_LANCE_PLUS"
+  },
+  {
+    "id": "CLAUDE",
+    "name": "Claude",
+    "movementType": "CAVALRY",
+    "weaponType": "BOW",
+    "prfWeapon": "FAILNAUGHT_PLUS"
+  },
+  {
+    "id": "EUGENE",
+    "name": "Eugene",
+    "movementType": "ARMORED",
+    "weaponType": "SWORD",
+    "prfWeapon": "EMINENCE_SWORD_PLUS"
   }
 ]

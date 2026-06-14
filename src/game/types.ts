@@ -46,6 +46,10 @@ export interface IWeaponTypeWeaponSkill {
     readonly kind: "weaponTypeWeaponSkill";
     readonly weaponType: IWeaponType;
     readonly weaponSkill: IWeaponSkill;
+    /**
+     * Number in weapon type skill name (eg. 1 for "Armor Bane 1").
+     */
+    readonly rank: 1 | 2 | 3;
 }
 
 /**
@@ -72,7 +76,8 @@ export interface IWeaponSkill {
     /**
      * Weapons which possess this skill as a unique skill.
      */
-    readonly weapons: Iterable<IWeapon>;
+    readonly uniqueSkillWeapons: Iterable<IWeapon>;
+    readonly weaponTypeWeaponSkills: Iterable<IWeaponTypeWeaponSkill>;
     readonly description: string;
 }
 
@@ -286,6 +291,7 @@ export const EDirection = {
 export const EStatChange = {
     INCREASE: "INCREASE",
     DECREASE: "DECREASE",
+    LIMIT: "LIMIT",
 } as const;
 
 export const ESpellEffectValueUnitKind = {
@@ -360,6 +366,7 @@ export interface IDirection {
 export interface IStatChange {
     readonly id: keyof typeof EStatChange;
     readonly verb: string;
+    readonly preposition: string;
 }
 
 export const ESpellEffectTarget = {
@@ -383,6 +390,14 @@ export const ESpellEffectTarget = {
 export interface ISpellEffectTarget {
     readonly kind: keyof typeof ESpellEffectTarget;
     readonly asString: string;
+}
+
+/**
+ * For summon effects. Eg. HP and Atk of the summoned unit.
+ */
+// TODO: scale property added in later PR
+export interface ISummonEffectStatValue {
+    readonly base: number;
 }
 
 /**
@@ -462,7 +477,7 @@ export interface IWarpEffect extends ISpellEffect {
  */
 export interface IIceBlockEffect extends ISpellEffect {
     readonly kind: "ICE_BLOCK";
-    readonly hp: number;
+    readonly hp: ISummonEffectStatValue;
 }
 
 /**
@@ -480,9 +495,8 @@ export interface ISummonEffect extends ISpellEffect {
     readonly kind: "SUMMON";
     readonly movementType: IMovementType;
     readonly weaponType: IWeaponType;
-    // TODO: a proper type will be needed to compute value at various levels
-    readonly hp: { base: number; scale?: number | null };
-    readonly atk: { base: number; scale?: number | null };
+    readonly hp: ISummonEffectStatValue;
+    readonly atk: ISummonEffectStatValue;
 }
 
 /**

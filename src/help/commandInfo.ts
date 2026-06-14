@@ -1,5 +1,5 @@
 import { CommandInfo } from "../bot/commandInfo.ts";
-import { BOT_NAME } from "../bot/constants.ts";
+import { DISCORD_BOT_NAME } from "../bot/constants.ts";
 import type { ICommandInfo } from "../bot/types.ts";
 
 export const helpCommandInfo: ICommandInfo = new CommandInfo({
@@ -7,6 +7,6 @@ export const helpCommandInfo: ICommandInfo = new CommandInfo({
         return baseInfo;
     },
     name: "help",
-    description: `Displays help for ${BOT_NAME} bot.`,
-    pingEquivalent: `@${BOT_NAME}`,
+    description: `Displays help for ${DISCORD_BOT_NAME} bot.`,
+    pingEquivalent: `@${DISCORD_BOT_NAME}`,
 });

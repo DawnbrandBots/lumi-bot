@@ -8,6 +8,7 @@ export const WeaponTypeWeaponSkillSchema = defineEntity({
     properties: {
         weaponType: () => p.manyToOne(WeaponType).primary(),
         weaponSkill: () => p.manyToOne(WeaponSkill).primary(),
+        rank: p.enum([1, 2, 3]),
     },
 });
 

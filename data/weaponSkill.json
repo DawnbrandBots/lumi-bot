@@ -20,6 +20,11 @@
     "effect": "WEAPON_DAMAGE_BOOST_15"
   },
   {
+    "id": "RECKLESS_LOYALTY",
+    "name": "Reckless Loyalty",
+    "effect": "WEAPON_DAMAGE_VS_MONSTER_50"
+  },
+  {
     "id": "GUARDIAN_S_SOUL",
     "name": "Guardian's Soul",
     "effect": "WEAPON_DAMAGE_VS_SWORD_30"
@@ -110,8 +115,8 @@
     "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15"
   },
   {
-    "id": "THIST_FOR_LIFE",
-    "name": "Thist for Life",
+    "id": "THIRST_FOR_LIFE",
+    "name": "Thirst for Life",
     "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"
   },
   {
@@ -128,6 +133,11 @@
     "id": "WILY_DEFENSE",
     "name": "Wily Defense",
     "effect": "ON_WEAPON_KILL_MAGIC_DAMAGE_REDUCTION_40_1T"
+  },
+  {
+    "id": "STRATEGIC_GENIUS",
+    "name": "Strategic Genius",
+    "effect": "ON_WEAPON_KILL_RECEIVED_WEAPON_DAMAGE_REDUCTION_90_1T"
   },
   {
     "id": "SHINING_EYE",

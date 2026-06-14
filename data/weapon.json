@@ -40,6 +40,16 @@
     "uniqueSkill": "UNBREAKABLE_WILL"
   },
   {
+    "id": "EMINENCE_SWORD_PLUS",
+    "name": "Eminence Sword +",
+    "weaponType": "SWORD",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "RECKLESS_LOYALTY"
+  },
+  {
     "id": "SHIELD_LANCE_PLUS",
     "name": "Shield Lance +",
     "weaponType": "LANCE",
@@ -171,7 +181,7 @@
   },
   {
     "id": "TACTICS_TOME_PLUS",
-    "name": "TACTICS Tome +",
+    "name": "Tactics Tome +",
     "weaponType": "TOME",
     "level": 8,
     "hp": 6,
@@ -227,7 +237,7 @@
     "hp": 6,
     "atk": 35,
     "freeSkillSlots": 3,
-    "uniqueSkill": "THIST_FOR_LIFE"
+    "uniqueSkill": "THIRST_FOR_LIFE"
   },
   {
     "id": "MULAGIR_PLUS",
@@ -258,6 +268,16 @@
     "atk": 35,
     "freeSkillSlots": 3,
     "uniqueSkill": "WILY_DEFENSE"
+  },
+  {
+    "id": "FAILNAUGHT_PLUS",
+    "name": "Failnaught +",
+    "weaponType": "BOW",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "STRATEGIC_GENIUS"
   },
   {
     "id": "SIGHT_STONE_PLUS",
@@ -338,6 +358,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "UNBREAKABLE_WILL"
+  },
+  {
+    "id": "EMINENCE_SWORD",
+    "name": "Eminence Sword",
+    "weaponType": "SWORD",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "RECKLESS_LOYALTY"
   },
   {
     "id": "SHIELD_LANCE",
@@ -457,7 +487,7 @@
     "hp": 6,
     "atk": 30,
     "freeSkillSlots": 3,
-    "uniqueSkill": "LUNAR_STRIKE"
+    "uniqueSkill": "BATTLE_FERVOR"
   },
   {
     "id": "IVORY_TOME",
@@ -481,7 +511,7 @@
   },
   {
     "id": "TACTICS_TOME",
-    "name": "TACTICS Tome",
+    "name": "Tactics Tome",
     "weaponType": "TOME",
     "level": 7,
     "hp": 6,
@@ -498,6 +528,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "FOX_S_TRICKERY"
+  },
+  {
+    "id": "RESOLUTE_TOME",
+    "name": "Resolute Tome",
+    "weaponType": "TOME",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
   },
   {
     "id": "PANTHER_STAFF",
@@ -537,7 +577,7 @@
     "hp": 6,
     "atk": 30,
     "freeSkillSlots": 3,
-    "uniqueSkill": "THIST_FOR_LIFE"
+    "uniqueSkill": "THIRST_FOR_LIFE"
   },
   {
     "id": "MULAGIR",
@@ -568,6 +608,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "WILY_DEFENSE"
+  },
+  {
+    "id": "FAILNAUGHT",
+    "name": "Failnaught",
+    "weaponType": "BOW",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "STRATEGIC_GENIUS"
   },
   {
     "id": "SIGHT_STONE",
@@ -711,6 +761,15 @@
     "atk": 20,
     "freeSkillSlots": 2,
     "uniqueSkill": "SPIRITED_ATTACK"
+  },
+  {
+    "id": "MOONLIT_LANCE",
+    "name": "Moonlit Lance",
+    "weaponType": "LANCE",
+    "level": 5,
+    "hp": 5,
+    "atk": 25,
+    "freeSkillSlots": 2
   },
   {
     "id": "SILVER_AXE",
