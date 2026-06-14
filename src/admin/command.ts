@@ -92,17 +92,15 @@ export class AdminCommand implements ICommand {
         if (channel && channel.type !== ChannelType.GuildText) {
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
-                    title: "Invalid channel",
                     description: "Only guild text channels can be used as the LFG public channel.",
                 },
                 flags: MessageFlags.Ephemeral,
             });
         }
 
-        if (action && action !== ADMIN_ACTION_SET && action !== ADMIN_ACTION_CLEAR) {
+        if (action !== ADMIN_ACTION_SET && action !== ADMIN_ACTION_CLEAR) {
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
-                    title: "Invalid action",
                     description: `Action must be \`${ADMIN_ACTION_SET}\` or \`${ADMIN_ACTION_CLEAR}\`.`,
                 },
                 flags: MessageFlags.Ephemeral,
