@@ -176,16 +176,25 @@ export class LfgFeature implements ILfgFeature {
     }
 
     public async leave(guildId: string, user: IUser) {
-        const player = await this.getRoomPlayerInGuild(guildId, user.id);
-        if (!player) {
+        const result = await this.removePlayer(guildId, user.id);
+        if (!result) {
             return { kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM } as const;
+        }
+
+        return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: result } as const;
+    }
+
+    public async removePlayer(guildId: string, userId: string) {
+        const player = await this.getRoomPlayerInGuild(guildId, userId);
+        if (!player) {
+            return null;
         }
 
         const room = player.room;
         const code = room.code;
         const leaveResult = this.removePlayerFromRoom(room, player);
         await this.em.flush();
-        return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { ...leaveResult, userId: user.id, code } } as const;
+        return { ...leaveResult, userId, code } as const;
     }
 
     public async disband(guildId: string, user: IUser) {

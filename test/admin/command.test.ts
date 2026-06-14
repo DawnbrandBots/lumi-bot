@@ -67,6 +67,7 @@ describe(AdminCommand.name, () => {
         });
         const lfgChannel = vi.fn().mockResolvedValue(response);
         const adminFeature = {
+            getConfig: vi.fn().mockResolvedValue(null),
             lfgChannel,
             lfgShow: vi.fn(),
         } as unknown as AdminFeature;

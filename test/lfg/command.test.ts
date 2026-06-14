@@ -1,10 +1,9 @@
-import type { InteractionReplyOptions } from "discord.js";
 import { ChannelType, MessageFlags, type ChatInputCommandInteraction, type InteractionResponse } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { createErrorMessage, createPositiveMessage } from "../../src/bot/message.ts";
-import { LfgCommand } from "../../src/lfg/command.ts";
+import { getLfgCommand } from "../../src/lfg/command.ts";
 import { LFG_CODE_OPTION_NAME, LFG_CREATE_SUBCOMMAND_NAME } from "../../src/lfg/constants.ts";
 import type { LfgFeature } from "../../src/lfg/feature.ts";
+import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../src/lfg/types.ts";
 
 const GUILD_ID = "guild-1";
 const USER_ID = "user-1";
@@ -34,26 +33,23 @@ function getInteractionFixture(channelId: string, send = vi.fn().mockResolvedVal
     return { fetch, interaction, reply, send };
 }
 
-function getCommand({
-    response,
-    channel,
-}: {
-    readonly response: InteractionReplyOptions;
-    readonly channel: string | null;
-}): LfgCommand {
-    return new LfgCommand({
+function getCommand({ response, channel }: { readonly response: TLfgFeatureReturn; readonly channel: string | null }) {
+    return getLfgCommand({
         lfgFeature: {
             create: vi.fn().mockResolvedValue(response),
         } as unknown as LfgFeature,
         adminFeature: {
-            getConfig: vi.fn().mockResolvedValue(channel ? { channel } : null),
+            getConfig: vi.fn().mockResolvedValue(channel ? { lfgChannel: channel } : null),
         },
     });
 }
 
-describe(LfgCommand.name, () => {
+describe(getLfgCommand.name, () => {
     test("replies ephemerally when no channel is configured", async () => {
-        const response = createPositiveMessage({ embed: { title: "ok" } });
+        const response = {
+            kind: ELfgFeatureReturnKind.ROOM_CREATED,
+            value: { userId: USER_ID, room: { code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] } },
+        } as const;
         const command = getCommand({ response, channel: null });
         const { fetch, interaction, reply } = getInteractionFixture(OTHER_CHANNEL_ID);
 
@@ -64,7 +60,10 @@ describe(LfgCommand.name, () => {
     });
 
     test("replies ephemerally and sends a public copy outside configured channel", async () => {
-        const response = createPositiveMessage({ embed: { title: "ok" } });
+        const response = {
+            kind: ELfgFeatureReturnKind.ROOM_CREATED,
+            value: { userId: USER_ID, room: { code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] } },
+        } as const;
         const command = getCommand({ response, channel: PUBLIC_CHANNEL_ID });
         const send = vi.fn().mockResolvedValue({});
         const { fetch, interaction, reply } = getInteractionFixture(OTHER_CHANNEL_ID, send);
@@ -78,7 +77,10 @@ describe(LfgCommand.name, () => {
     });
 
     test("replies publicly in the configured channel", async () => {
-        const response = createPositiveMessage({ embed: { title: "ok" } });
+        const response = {
+            kind: ELfgFeatureReturnKind.ROOM_CREATED,
+            value: { userId: USER_ID, room: { code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] } },
+        } as const;
         const command = getCommand({ response, channel: PUBLIC_CHANNEL_ID });
         const { fetch, interaction, reply } = getInteractionFixture(PUBLIC_CHANNEL_ID);
 
@@ -90,7 +92,7 @@ describe(LfgCommand.name, () => {
     });
 
     test("does not mirror error responses", async () => {
-        const response = createErrorMessage({ embed: { title: "error" } });
+        const response = { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;
         const command = getCommand({ response, channel: PUBLIC_CHANNEL_ID });
         const { fetch, interaction, reply } = getInteractionFixture(OTHER_CHANNEL_ID);
 

@@ -83,20 +83,20 @@ describe(AdminFeature.name, () => {
         const response = await feature.lfgChannel(GUILD_ID, "set", null);
 
         expect(response.kind).toBe(EMessageKind.ERROR);
-        expect(response.embeds?.[0]).toMatchObject({ title: "Missing channel" });
+        expect(response.embeds?.[0]).toMatchObject({ title: "Invalid options combination" });
     });
 
     test("rejects clear with channel", async () => {
         const response = await feature.lfgChannel(GUILD_ID, "clear", CHANNEL_ID);
 
         expect(response.kind).toBe(EMessageKind.ERROR);
-        expect(response.embeds?.[0]).toMatchObject({ title: "Invalid options" });
+        expect(response.embeds?.[0]).toMatchObject({ title: "Invalid options combination" });
     });
 
     test("rejects channel without set action", async () => {
         const response = await feature.lfgChannel(GUILD_ID, null, CHANNEL_ID);
 
         expect(response.kind).toBe(EMessageKind.ERROR);
-        expect(response.embeds?.[0]).toMatchObject({ title: "Invalid options" });
+        expect(response.embeds?.[0]).toMatchObject({ title: "Invalid options combination" });
     });
 });
