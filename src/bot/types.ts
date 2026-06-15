@@ -6,7 +6,7 @@ import type {
     CacheType,
     ChatInputCommandInteraction,
     SharedSlashCommand,
-    SlashCommandBuilder
+    SlashCommandBuilder,
 } from "discord.js";
 import type { MaybePromise } from "../utils/types.ts";
 

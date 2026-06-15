@@ -12,11 +12,11 @@ const musicSearchHandler: ISearchHandler<Music> = {
         const shadowMusicFor =
             shadowMusicForArray && shadowMusicForArray.length
                 ? {
-                    name: "Shadow music for",
-                    value: Array.from(music.shadowMusicFor)
-                        .map((disciple) => disciple.name)
-                        .join(", "),
-                }
+                      name: "Shadow music for",
+                      value: Array.from(music.shadowMusicFor)
+                          .map((disciple) => disciple.name)
+                          .join(", "),
+                  }
                 : null;
 
         const fields = [...(shadowMusicFor ? [shadowMusicFor] : [])];
