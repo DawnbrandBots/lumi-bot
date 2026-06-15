@@ -40,6 +40,7 @@ export interface ICommand {
     readonly info: ICommandInfo;
     /**
      * What the command does. Must reply to the interaction.
+     * May do additional Discord-related operations like sending additional messages.
      */
     readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<void>;
     /**
