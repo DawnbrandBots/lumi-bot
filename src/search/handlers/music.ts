@@ -24,6 +24,9 @@ const musicSearchHandler: ISearchHandler<Music> = {
             reply: {
                 embed: {
                     title: music.name,
+                    description: shadowMusicFor
+                        ? subtext("This song does not have an official source media :(")
+                        : undefined,
                     fields,
                 },
             },
