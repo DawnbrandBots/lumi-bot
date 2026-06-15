@@ -13,7 +13,7 @@ import mikroOrmConfig from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
-import mapSearchFeatureReturnToMessage from "./search/mapper.ts";
+import mapSearchFeatureReturnToMessages from "./search/mapper.ts";
 import type { TSearchableEntity } from "./search/types.ts";
 import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
@@ -58,8 +58,8 @@ bot.on(Events.MessageCreate, async (interaction) => {
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
     const result = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
-    const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
-    await interaction.reply(message);
+    const { reply } = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+    await interaction.reply(reply);
 });
 
 bot.on(Events.InteractionCreate, async (interaction) => {

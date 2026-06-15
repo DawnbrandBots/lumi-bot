@@ -5,9 +5,8 @@ import type {
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
-    InteractionResponse,
     SharedSlashCommand,
-    SlashCommandBuilder,
+    SlashCommandBuilder
 } from "discord.js";
 import type { MaybePromise } from "../utils/types.ts";
 
@@ -42,7 +41,7 @@ export interface ICommand {
     /**
      * What the command does. Must reply to the interaction.
      */
-    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<InteractionResponse<boolean>>;
+    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<void>;
     /**
      * Provides autocomplete suggestions for the command's options.
      */

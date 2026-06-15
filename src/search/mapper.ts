@@ -14,7 +14,7 @@ import type searchFeature from "./feature.ts";
 import type { ISearchableEntity, ISearchHandlers } from "./types.ts";
 import { ESearchFeatureReturnKind } from "./types.ts";
 
-function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
+function mapSearchFeatureReturnToMessages<Items extends ISearchableEntity>(
     result: Awaited<ReturnType<typeof searchFeature<Items>>>,
     handlers: ISearchHandlers<Items>,
 ) {
@@ -30,34 +30,40 @@ function mapSearchFeatureReturnToMessage<Items extends ISearchableEntity>(
                     }
                     : undefined;
 
-            const baseMessage = handler.message(entity);
-            return createPositiveMessage({ ...baseMessage, embed: { ...baseMessage.embed, footer } });
+            const { reply, followUps } = handler.message(entity);
+            return { reply: createPositiveMessage({ ...reply, embed: { ...reply.embed, footer } }), followUps };
         }
         case ESearchFeatureReturnKind.INPUT_TOO_LONG:
-            return createNegativeMessage({
-                embed: {
-                    title: INVALID_INPUT_TITLE,
-                    description: INPUT_TOO_LONG_DESCRIPTION,
-                },
-            });
+            return {
+                reply: createNegativeMessage({
+                    embed: {
+                        title: INVALID_INPUT_TITLE,
+                        description: INPUT_TOO_LONG_DESCRIPTION,
+                    },
+                }),
+            };
         case ESearchFeatureReturnKind.NO_RESULT:
-            return createNegativeMessage({
-                embed: {
-                    title: INPUT_TITLE,
-                    description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-                },
-            });
+            return {
+                reply: createNegativeMessage({
+                    embed: {
+                        title: INPUT_TITLE,
+                        description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
+                    },
+                }),
+            };
         case ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB:
-            return createErrorMessage({
-                embed: {
-                    title: MISSING_DATABASE_RESULT_TITLE,
-                    fields: [
-                        { name: ENTITY_KIND_FIELD_NAME, value: result.value.kind, inline: true },
-                        { name: ID_FIELD_NAME, value: result.value.id, inline: true },
-                    ],
-                },
-            });
+            return {
+                reply: createErrorMessage({
+                    embed: {
+                        title: MISSING_DATABASE_RESULT_TITLE,
+                        fields: [
+                            { name: ENTITY_KIND_FIELD_NAME, value: result.value.kind, inline: true },
+                            { name: ID_FIELD_NAME, value: result.value.id, inline: true },
+                        ],
+                    },
+                }),
+            };
     }
 }
 
-export default mapSearchFeatureReturnToMessage;
+export default mapSearchFeatureReturnToMessages;

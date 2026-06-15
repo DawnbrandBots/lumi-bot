@@ -5,8 +5,10 @@ import type { ISearchHandler } from "../types.ts";
 const musicSearchHandler: ISearchHandler<Music> = {
     class: Music,
     message: (music: IMusic) => ({
-        embed: {
-            title: music.name,
+        reply: {
+            embed: {
+                title: music.name,
+            },
         },
     }),
 } as const;
