@@ -153,6 +153,10 @@ export interface IDisciple {
      */
     readonly shadowMusic: IMusic;
     /**
+     * Music that plays when this disciple the Shadow and the battle is over.
+     */
+    readonly shadowResultsScreenMusic: IMusic;
+    /**
      * Spells this disciple provides as their souls are collected.
      */
     readonly spells: Iterable<ISpell>;

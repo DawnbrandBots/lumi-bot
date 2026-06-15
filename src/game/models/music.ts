@@ -9,6 +9,7 @@ export const MusicSchema = defineEntity({
         name: p.string(),
         url: p.string().nullable(),
         shadowMusicFor: () => p.oneToMany(Disciple).mappedBy("shadowMusic").nullable(),
+        shadowResultsScreenMusicFor: () => p.oneToMany(Disciple).mappedBy("shadowResultsScreenMusic").nullable(),
     },
 });
 
