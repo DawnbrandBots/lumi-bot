@@ -1,4 +1,5 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
+import { subtext } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT, SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
 import { EMessageKind } from "../../src/bot/types.ts";
@@ -12,6 +13,7 @@ import {
     INVALID_INPUT_TITLE,
     MISSING_DATABASE_RESULT_TITLE,
     SEARCH_ALIASES_FOOTER_PREFIX,
+    SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
@@ -134,6 +136,74 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             reply: {
                 kind: EMessageKind.POSITIVE,
             },
+        });
+    });
+
+    // TODO: need to add tests for all search result kinds in a separate PR
+
+    describe("music search result", () => {
+        test("official source medial url exists", async () => {
+            const MUSIC_SEARCH_INPUT = "Betrayal – The Exiled Prince";
+
+            const result = await searchFeature<TSearchableEntity>({
+                input: MUSIC_SEARCH_INPUT,
+                searchEngine,
+                handlers: SEARCH_HANDLERS,
+                em,
+            });
+            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+
+            expect(message).toMatchObject({
+                reply: {
+                    kind: EMessageKind.POSITIVE,
+                    embeds: [
+                        {
+                            title: MUSIC_SEARCH_INPUT,
+                            description: undefined,
+                            fields: [
+                                {
+                                    name: "Shadow music for",
+                                    value: "Kurt, Gotthold, Carina, Alberta, Zasha, Rose",
+                                },
+                            ],
+                        },
+                    ],
+                },
+                followUps: [
+                    {
+                        content: subtext("https://www.youtube.com/watch?v=I4g29E9Oero&t=684s"),
+                    },
+                ],
+            });
+        });
+        test("official source medial url doesn't exist", async () => {
+            const MUSIC_SEARCH_INPUT = "Betrayal – Engage";
+
+            const result = await searchFeature<TSearchableEntity>({
+                input: MUSIC_SEARCH_INPUT,
+                searchEngine,
+                handlers: SEARCH_HANDLERS,
+                em,
+            });
+            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+
+            expect(message).toMatchObject({
+                reply: {
+                    kind: EMessageKind.POSITIVE,
+                    embeds: [
+                        {
+                            title: MUSIC_SEARCH_INPUT,
+                            description: SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA,
+                            fields: [
+                                {
+                                    name: "Shadow music for",
+                                    value: "Yunaka",
+                                },
+                            ],
+                        },
+                    ],
+                },
+            });
         });
     });
 
