@@ -1,4 +1,5 @@
-import type { Collection, EntityManager } from "@mikro-orm/sqlite";
+import type { EntityManager } from "@mikro-orm/sqlite";
+import { Collection } from "@mikro-orm/sqlite";
 import { subtext } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT, SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
@@ -186,9 +187,11 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                     entity: {
                         id: "MISSING_URL_SONG",
                         name: "Missing Url Song",
-                        shadowMusicFor: [
-                            { id: "MYSTERIOUS_DISCIPLE", name: "Mysterious Disciple" },
-                        ] as unknown as Collection<Disciple, object>,
+                        shadowMusicFor: new Collection<Disciple, object>(
+                            {},
+                            [{ id: "MYSTERIOUS_DISCIPLE", name: "Mysterious Disciple" } as Disciple],
+                            true,
+                        ),
                         url: undefined,
                         kind: "music" as const,
                     },
