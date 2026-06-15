@@ -69,6 +69,10 @@
     "name": "Betrayal – Phosphorescence"
   },
   {
+    "id": "BETRAYAL_BOOK_3",
+    "name": "Betrayal - Book 3"
+  },
+  {
     "id": "BETRAYAL_THE_BLAZING_BLADE",
     "url": "https://www.youtube.com/watch?v=I4g29E9Oero&t=1675s",
     "name": "Betrayal – The Blazing Blade"
@@ -93,6 +97,10 @@
     "id": "BETRAYAL_THREE_HOUSES",
     "url": "https://www.youtube.com/watch?v=I4g29E9Oero&t=2955s",
     "name": "Betrayal – Three Houses"
+  },
+  {
+    "id": "BETRAYAL_ENGAGE",
+    "name": "Betrayal - Engage"
   },
   {
     "id": "BETRAYAL_AWAKENING",
