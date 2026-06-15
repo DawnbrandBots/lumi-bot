@@ -9,11 +9,11 @@ function formatShadowMusicFor(shadowMusicFor: Iterable<IDisciple> | null | undef
 
     return shadowMusicForArray && shadowMusicForArray.length
         ? {
-            name,
-            value: Array.from(shadowMusicFor)
-                .map((disciple) => disciple.name)
-                .join(", "),
-        }
+              name,
+              value: Array.from(shadowMusicFor)
+                  .map((disciple) => disciple.name)
+                  .join(", "),
+          }
         : null;
 }
 
