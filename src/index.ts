@@ -58,8 +58,13 @@ bot.on(Events.MessageCreate, async (interaction) => {
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
     const result = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
-    const { reply } = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+    const { reply, followUps } = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
     await interaction.reply(reply);
+    if (followUps) {
+        for (const followUp of followUps) {
+            await interaction.reply(followUp);
+        }
+    }
 });
 
 bot.on(Events.InteractionCreate, async (interaction) => {

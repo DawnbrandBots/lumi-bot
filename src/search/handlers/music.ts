@@ -1,3 +1,4 @@
+import { subtext } from "discord.js";
 import { Music } from "../../game/models/music.ts";
 import type { IMusic } from "../../game/types.ts";
 import type { ISearchHandler } from "../types.ts";
@@ -10,6 +11,7 @@ const musicSearchHandler: ISearchHandler<Music> = {
                 title: music.name,
             },
         },
+        followUps: music.url ? [{ content: subtext(music.url) }] : [],
     }),
 } as const;
 
