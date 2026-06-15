@@ -522,5 +522,5 @@ export interface IMusic {
     readonly kind: "music";
     readonly id: TId;
     readonly name: string;
-    readonly url: string;
+    readonly url?: string | null;
 }

@@ -6,7 +6,7 @@ export const MusicSchema = defineEntity({
     properties: {
         id: p.string().primary(),
         name: p.string(),
-        url: p.string(),
+        url: p.string().nullable(),
     },
 });
 
