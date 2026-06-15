@@ -242,5 +242,12 @@
     "weaponType": "BOW",
     "prfWeapon": "FAILNAUGHT_PLUS",
     "shadowMusic": "BETRAYAL_THREE_HOUSES"
+  },
+  {
+    "id": "EUGENE",
+    "name": "Eugene",
+    "movementType": "ARMORED",
+    "weaponType": "SWORD",
+    "prfWeapon": "EMINENCE_SWORD_PLUS"
   }
 ]

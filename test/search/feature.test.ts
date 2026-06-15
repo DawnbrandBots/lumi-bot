@@ -69,7 +69,6 @@ describe(searchFeature.name, () => {
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
-
             value: {
                 kind: missingSearchItem.kind,
                 id: missingSearchItem.id,

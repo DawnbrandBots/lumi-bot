@@ -1,6 +1,7 @@
 name: Build Docker image
 
 on:
+  workflow_dispatch:
   push:
     branches: ["master"] # Publish as Docker "latest"
     tags: ["*"]
@@ -10,6 +11,7 @@ on:
     paths:
       - Dockerfile
       - .github/workflows/docker.yml
+    types: [ready_for_review, review_requested]
 
 jobs:
   lint-dockerfile:
@@ -17,7 +19,7 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@v6
-      - uses: hadolint/hadolint-action@v3.1.0
+      - uses: hadolint/hadolint-action@v3.3.0
   build:
     runs-on: ubuntu-latest
     if: >-
