@@ -16,7 +16,7 @@ export const DiscipleSchema = defineEntity({
         weaponType: () => p.manyToOne(WeaponType),
         prfWeapon: () => p.oneToOne(Weapon).inversedBy("prfDisciple").owner(),
         spells: () => p.oneToMany(Spell).mappedBy("disciple"),
-        shadowMusic: () => p.manyToOne(Music).nullable(),
+        shadowMusic: () => p.manyToOne(Music),
     },
 });
 
