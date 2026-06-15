@@ -8,4 +8,5 @@ export const helpCommandInfo: ICommandInfo = new CommandInfo({
     },
     name: "help",
     description: `Displays help for ${DISCORD_BOT_NAME} bot.`,
+    pingEquivalent: `@${DISCORD_BOT_NAME}`,
 });
