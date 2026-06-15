@@ -192,6 +192,7 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                             [{ id: "MYSTERIOUS_DISCIPLE", name: "Mysterious Disciple" } as Disciple],
                             true,
                         ),
+                        shadowResultsScreenMusicFor: undefined,
                         url: undefined,
                         kind: "music" as const,
                     },
