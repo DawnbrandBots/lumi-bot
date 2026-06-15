@@ -1,7 +1,7 @@
 import { subtext } from "discord.js";
 import { Music } from "../../game/models/music.ts";
 import type { IMusic } from "../../game/types.ts";
-import { SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA } from "../constants.ts";
+import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../constants.ts";
 import type { ISearchHandler } from "../types.ts";
 
 const musicSearchHandler: ISearchHandler<Music> = {
@@ -25,7 +25,7 @@ const musicSearchHandler: ISearchHandler<Music> = {
             reply: {
                 embed: {
                     title: music.name,
-                    description: music.url ? undefined : SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA,
+                    description: music.url ? undefined : SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA,
                     fields,
                 },
             },

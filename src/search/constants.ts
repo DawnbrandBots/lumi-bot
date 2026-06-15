@@ -12,6 +12,4 @@ export const SEARCH_ENTITY_KIND_FIELD_NAME = "Entity kind";
 export const SEARCH_ID_FIELD_NAME = "Id";
 export const SEARCH_ALIASES_FOOTER_PREFIX = "Search aliases:";
 
-export const SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA = subtext(
-    "This song does not have an official source media :(",
-);
+export const SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA = subtext("No known source media for this song :(");

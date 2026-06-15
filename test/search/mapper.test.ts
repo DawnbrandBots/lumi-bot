@@ -13,7 +13,7 @@ import {
     SEARCH_INPUT_TOO_LONG_DESCRIPTION,
     SEARCH_INVALID_INPUT_TITLE,
     SEARCH_MISSING_DATABASE_RESULT_TITLE,
-    SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA,
+    SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
@@ -193,7 +193,7 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                     embeds: [
                         {
                             title: MUSIC_SEARCH_INPUT,
-                            description: SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA,
+                            description: SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA,
                             fields: [
                                 {
                                     name: "Shadow music for",
