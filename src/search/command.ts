@@ -24,8 +24,13 @@ export function getSearchCommand<Items extends ISearchableEntity>({
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`);
             }
             const result = await searchFeature({ em, searchEngine, handlers, input });
-            const { reply } = mapSearchFeatureReturnToMessages<Items>(result, handlers);
-            return interaction.reply(reply);
+            const { reply, followUps } = mapSearchFeatureReturnToMessages<Items>(result, handlers);
+            await interaction.reply(reply);
+            if (followUps) {
+                for (const followUp of followUps) {
+                    await interaction.followUp(followUp);
+                }
+            }
         },
         autocomplete: (interaction) => {
             const focusedOption = interaction.options.getFocused(true);
