@@ -25,7 +25,7 @@ const musicSearchHandler: ISearchHandler<Music> = {
             reply: {
                 embed: {
                     title: music.name,
-                    description: shadowMusicFor ? SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA : undefined,
+                    description: music.url ? undefined : SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA,
                     fields,
                 },
             },
