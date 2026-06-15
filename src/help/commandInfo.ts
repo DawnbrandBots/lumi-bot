@@ -7,7 +7,9 @@ export const helpCommandInfo: ICommandInfo = new CommandInfo({
     customInfo: function (baseInfo) {
         return baseInfo
             .addSubcommand((subcommand) =>
-                subcommand.setName(HELP_BOT_SUBCOMMAND_NAME).setDescription(`Displays help for ${BOT_NAME} bot.`),
+                subcommand
+                    .setName(HELP_BOT_SUBCOMMAND_NAME)
+                    .setDescription(`Displays help for ${DISCORD_BOT_NAME} bot.`),
             )
             .addSubcommand((subcommand) =>
                 subcommand
