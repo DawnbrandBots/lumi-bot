@@ -1,6 +1,7 @@
 import { subtext } from "discord.js";
 import { Music } from "../../game/models/music.ts";
 import type { IMusic } from "../../game/types.ts";
+import { SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA } from "../constants.ts";
 import type { ISearchHandler } from "../types.ts";
 
 const musicSearchHandler: ISearchHandler<Music> = {
@@ -24,9 +25,7 @@ const musicSearchHandler: ISearchHandler<Music> = {
             reply: {
                 embed: {
                     title: music.name,
-                    description: shadowMusicFor
-                        ? subtext("This song does not have an official source media :(")
-                        : undefined,
+                    description: shadowMusicFor ? SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA : undefined,
                     fields,
                 },
             },

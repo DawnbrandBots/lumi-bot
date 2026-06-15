@@ -1,4 +1,4 @@
-import type { APIEmbed } from "discord.js";
+import { hyperlink, type APIEmbed } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../game/constants.ts";
 import { Disciple } from "../../game/models/disciple.ts";
 import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
@@ -29,6 +29,11 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
         const baseStatsTableAscii = toAsciiTable({ data: baseStatsTable, cellPadding: 3 });
         const baseStatsStr = `\`\`\`\n${baseStatsTableAscii}\n\`\`\``;
 
+        const shadowMusic = disciple.shadowMusic;
+        const shadowMusicStr = shadowMusic.url
+            ? hyperlink(shadowMusic.name, shadowMusic.url)
+            : [shadowMusic.name, "SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA"].join("\n");
+
         const fields: NonNullable<APIEmbed["fields"]> = [
             {
                 name: "Weapon Type",
@@ -43,6 +48,11 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
             {
                 name: "PRF Weapon",
                 value: disciple.prfWeapon.name,
+                inline: true,
+            },
+            {
+                name: "Shadow music",
+                value: shadowMusicStr,
                 inline: true,
             },
             {

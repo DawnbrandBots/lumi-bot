@@ -1,3 +1,4 @@
+import { subtext } from "discord.js";
 import { SEARCH_MAX_INPUT_LENGTH } from "../bot/constants.ts";
 
 export const INVALID_INPUT_TITLE = "Invalid input";
@@ -9,3 +10,7 @@ export const ENTITY_KIND_FIELD_NAME = "Entity kind";
 export const ID_FIELD_NAME = "Id";
 export const SEARCH_ALIASES_FOOTER_PREFIX = "Search aliases:";
 export const AUTOCOMPLETE_RESULTS_LIMIT = 5;
+
+export const SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA = subtext(
+    "This song does not have an official source media :(",
+);
