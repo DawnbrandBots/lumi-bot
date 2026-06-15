@@ -22,7 +22,7 @@ export function getDiscipleBaseStatsTable(disciple: IDisciple): (string | number
 function formatShadowMusicStrValue(music: IMusic) {
     return music.url
         ? hyperlink(music.name, music.url)
-        : [music.name, SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA].join("\n");
+        : `${music.name}\n  ${SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA}`;
 }
 
 const discipleSearchHandler: ISearchHandler<Disciple> = {
