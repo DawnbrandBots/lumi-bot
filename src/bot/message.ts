@@ -1,11 +1,10 @@
 import { type BaseMessageOptions } from "discord.js";
 import {
+    DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT,
     DISCORD_MESSAGE_ERROR_COLOR,
     DISCORD_MESSAGE_NEGATIVE_COLOR,
     DISCORD_MESSAGE_NEUTRAL_COLOR,
-    DISCORD_MESSAGE_POSITIVE_COLOR,
-    DISCORD_NOTABOT_MENTION,
-    DISCORD_SAI_LAUGH_EMOJI_CALL,
+    DISCORD_MESSAGE_POSITIVE_COLOR
 } from "./constants.ts";
 import type { IBaseMessageArg, IChildMessageArg } from "./types.ts";
 import { EMessageKind } from "./types.ts";
@@ -31,12 +30,12 @@ const getMessageCreator =
          */
         cons: IBaseMessageArg<ConstMessageOptions>,
     ) =>
-    <MessageOptions extends ConstMessageOptions = ConstMessageOptions>(arg: IChildMessageArg<MessageOptions>) =>
-        createMessage<MessageOptions>({
-            ...cons,
-            ...arg,
-            embed: { ...cons.embed, ...arg.embed },
-        });
+        <MessageOptions extends ConstMessageOptions = ConstMessageOptions>(arg: IChildMessageArg<MessageOptions>) =>
+            createMessage<MessageOptions>({
+                ...cons,
+                ...arg,
+                embed: { ...cons.embed, ...arg.embed },
+            });
 
 /**
  * Use to signify successful execution. (eg. search result found)
@@ -68,5 +67,5 @@ export const createNegativeMessage = getMessageCreator({
 export const createErrorMessage = getMessageCreator({
     embed: { color: DISCORD_MESSAGE_ERROR_COLOR },
     kind: EMessageKind.ERROR,
-    content: `-# Everyone point and laugh at ${DISCORD_NOTABOT_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`,
+    content: DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT,
 });
