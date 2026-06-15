@@ -1,25 +1,35 @@
 import { subtext } from "discord.js";
 import { Music } from "../../game/models/music.ts";
-import type { IMusic } from "../../game/types.ts";
+import type { IDisciple, IMusic } from "../../game/types.ts";
 import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../constants.ts";
 import type { ISearchHandler } from "../types.ts";
+
+function formatShadowMusicFor(shadowMusicFor: Iterable<IDisciple> | null | undefined, name: string) {
+    const shadowMusicForArray = shadowMusicFor && Array.from(shadowMusicFor);
+
+    return shadowMusicForArray && shadowMusicForArray.length
+        ? {
+            name,
+            value: Array.from(shadowMusicFor)
+                .map((disciple) => disciple.name)
+                .join(", "),
+        }
+        : null;
+}
 
 const musicSearchHandler: ISearchHandler<Music> = {
     class: Music,
     message: (music: IMusic) => {
-        const shadowMusicForArray = music.shadowMusicFor && Array.from(music.shadowMusicFor);
+        const shadowMusicFor = formatShadowMusicFor(music.shadowMusicFor, "Shadow music for");
+        const shadowResultsScreenMusicFor = formatShadowMusicFor(
+            music.shadowResultsScreenMusicFor,
+            "Shadow results screen music for",
+        );
 
-        const shadowMusicFor =
-            shadowMusicForArray && shadowMusicForArray.length
-                ? {
-                      name: "Shadow music for",
-                      value: Array.from(music.shadowMusicFor)
-                          .map((disciple) => disciple.name)
-                          .join(", "),
-                  }
-                : null;
-
-        const fields = [...(shadowMusicFor ? [shadowMusicFor] : [])];
+        const fields = [
+            ...(shadowMusicFor ? [shadowMusicFor] : []),
+            ...(shadowResultsScreenMusicFor ? [shadowResultsScreenMusicFor] : []),
+        ];
 
         return {
             reply: {

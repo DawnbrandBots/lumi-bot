@@ -528,4 +528,5 @@ export interface IMusic {
     readonly name: string;
     readonly url?: string | null;
     readonly shadowMusicFor?: Iterable<IDisciple> | null;
+    readonly shadowResultsScreenMusicFor?: Iterable<IDisciple> | null;
 }
