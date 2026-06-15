@@ -4,13 +4,11 @@ import type { ISearchHandler } from "../types.ts";
 
 const musicSearchHandler: ISearchHandler<Music> = {
     class: Music,
-    message: (music: IMusic) => {
-        console.log({ music });
-        return {
+    message: (music: IMusic) => ({
+        embed: {
             title: music.name,
-            url: music.url,
-        };
-    },
+        },
+    }),
 } as const;
 
 export default musicSearchHandler;
