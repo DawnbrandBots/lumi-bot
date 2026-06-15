@@ -6,13 +6,13 @@ import { EMessageKind } from "../../src/bot/types.ts";
 import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import {
-    ENTITY_KIND_FIELD_NAME,
-    ID_FIELD_NAME,
-    INPUT_TITLE,
-    INPUT_TOO_LONG_DESCRIPTION,
-    INVALID_INPUT_TITLE,
-    MISSING_DATABASE_RESULT_TITLE,
     SEARCH_ALIASES_FOOTER_PREFIX,
+    SEARCH_ENTITY_KIND_FIELD_NAME,
+    SEARCH_ID_FIELD_NAME,
+    SEARCH_INPUT_TITLE,
+    SEARCH_INPUT_TOO_LONG_DESCRIPTION,
+    SEARCH_INVALID_INPUT_TITLE,
+    SEARCH_MISSING_DATABASE_RESULT_TITLE,
     SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "../../src/search/constants.ts";
@@ -53,7 +53,7 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: INPUT_TITLE,
+                        title: SEARCH_INPUT_TITLE,
                         description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
                     },
                 ],
@@ -90,10 +90,10 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                 content: DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT,
                 embeds: [
                     {
-                        title: MISSING_DATABASE_RESULT_TITLE,
+                        title: SEARCH_MISSING_DATABASE_RESULT_TITLE,
                         fields: [
-                            { name: ENTITY_KIND_FIELD_NAME, value: missingSearchItem.kind, inline: true },
-                            { name: ID_FIELD_NAME, value: missingSearchItem.id, inline: true },
+                            { name: SEARCH_ENTITY_KIND_FIELD_NAME, value: missingSearchItem.kind, inline: true },
+                            { name: SEARCH_ID_FIELD_NAME, value: missingSearchItem.id, inline: true },
                         ],
                     },
                 ],
@@ -115,8 +115,8 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        title: INVALID_INPUT_TITLE,
-                        description: INPUT_TOO_LONG_DESCRIPTION,
+                        title: SEARCH_INVALID_INPUT_TITLE,
+                        description: SEARCH_INPUT_TOO_LONG_DESCRIPTION,
                     },
                 ],
             },

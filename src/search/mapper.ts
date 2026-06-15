@@ -1,13 +1,13 @@
 import type { APIEmbed } from "discord.js";
 import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../bot/message.ts";
 import {
-    ENTITY_KIND_FIELD_NAME,
-    ID_FIELD_NAME,
-    INPUT_TITLE,
-    INPUT_TOO_LONG_DESCRIPTION,
-    INVALID_INPUT_TITLE,
-    MISSING_DATABASE_RESULT_TITLE,
     SEARCH_ALIASES_FOOTER_PREFIX,
+    SEARCH_ENTITY_KIND_FIELD_NAME,
+    SEARCH_ID_FIELD_NAME,
+    SEARCH_INPUT_TITLE,
+    SEARCH_INPUT_TOO_LONG_DESCRIPTION,
+    SEARCH_INVALID_INPUT_TITLE,
+    SEARCH_MISSING_DATABASE_RESULT_TITLE,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "./constants.ts";
 import type searchFeature from "./feature.ts";
@@ -37,8 +37,8 @@ function mapSearchFeatureReturnToMessages<Items extends ISearchableEntity>(
             return {
                 reply: createNegativeMessage({
                     embed: {
-                        title: INVALID_INPUT_TITLE,
-                        description: INPUT_TOO_LONG_DESCRIPTION,
+                        title: SEARCH_INVALID_INPUT_TITLE,
+                        description: SEARCH_INPUT_TOO_LONG_DESCRIPTION,
                     },
                 }),
             };
@@ -46,7 +46,7 @@ function mapSearchFeatureReturnToMessages<Items extends ISearchableEntity>(
             return {
                 reply: createNegativeMessage({
                     embed: {
-                        title: INPUT_TITLE,
+                        title: SEARCH_INPUT_TITLE,
                         description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
                     },
                 }),
@@ -55,10 +55,10 @@ function mapSearchFeatureReturnToMessages<Items extends ISearchableEntity>(
             return {
                 reply: createErrorMessage({
                     embed: {
-                        title: MISSING_DATABASE_RESULT_TITLE,
+                        title: SEARCH_MISSING_DATABASE_RESULT_TITLE,
                         fields: [
-                            { name: ENTITY_KIND_FIELD_NAME, value: result.value.kind, inline: true },
-                            { name: ID_FIELD_NAME, value: result.value.id, inline: true },
+                            { name: SEARCH_ENTITY_KIND_FIELD_NAME, value: result.value.kind, inline: true },
+                            { name: SEARCH_ID_FIELD_NAME, value: result.value.id, inline: true },
                         ],
                     },
                 }),

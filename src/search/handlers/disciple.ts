@@ -5,6 +5,7 @@ import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
 import type { IDisciple } from "../../game/types.ts";
 import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
+import { SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA } from "../constants.ts";
 import type { ISearchHandler } from "../types.ts";
 
 export function getDiscipleBaseStatsTable(disciple: IDisciple): (string | number)[][] {
@@ -32,7 +33,7 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
         const shadowMusic = disciple.shadowMusic;
         const shadowMusicStr = shadowMusic.url
             ? hyperlink(shadowMusic.name, shadowMusic.url)
-            : [shadowMusic.name, "SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA"].join("\n");
+            : [shadowMusic.name, SEARCH_MUSIC_HANDLE_NO_OFFICIAL_SOURCE_MEDIA].join("\n");
 
         const fields: NonNullable<APIEmbed["fields"]> = [
             {
