@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IMusic } from "../types.ts";
+import { Disciple } from "./disciple.ts";
 
 export const MusicSchema = defineEntity({
     name: "Music",
@@ -7,6 +8,7 @@ export const MusicSchema = defineEntity({
         id: p.string().primary(),
         name: p.string(),
         url: p.string().nullable(),
+        shadowMusicFor: () => p.oneToMany(Disciple).mappedBy("shadowMusic").nullable(),
     },
 });
 

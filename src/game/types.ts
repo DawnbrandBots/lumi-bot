@@ -523,4 +523,5 @@ export interface IMusic {
     readonly id: TId;
     readonly name: string;
     readonly url?: string | null;
+    readonly shadowMusicFor?: Iterable<IDisciple> | null;
 }

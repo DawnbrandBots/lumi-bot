@@ -5,14 +5,31 @@ import type { ISearchHandler } from "../types.ts";
 
 const musicSearchHandler: ISearchHandler<Music> = {
     class: Music,
-    message: (music: IMusic) => ({
-        reply: {
-            embed: {
-                title: music.name,
+    message: (music: IMusic) => {
+        const shadowMusicForArray = music.shadowMusicFor && Array.from(music.shadowMusicFor);
+
+        const shadowMusicFor =
+            shadowMusicForArray && shadowMusicForArray.length
+                ? {
+                    name: "Shadow music for",
+                    value: Array.from(music.shadowMusicFor)
+                        .map((disciple) => disciple.name)
+                        .join(", "),
+                }
+                : null;
+
+        const fields = [...(shadowMusicFor ? [shadowMusicFor] : [])];
+
+        return {
+            reply: {
+                embed: {
+                    title: music.name,
+                    fields,
+                },
             },
-        },
-        followUps: music.url ? [{ content: subtext(music.url) }] : [],
-    }),
+            followUps: music.url ? [{ content: subtext(music.url) }] : [],
+        };
+    },
 } as const;
 
 export default musicSearchHandler;
