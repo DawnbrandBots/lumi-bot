@@ -204,21 +204,24 @@
     "name": "Yunaka",
     "movementType": "INFANTRY",
     "weaponType": "BOW",
-    "prfWeapon": "SHADED_BOW_PLUS"
+    "prfWeapon": "SHADED_BOW_PLUS",
+    "shadowMusic": "BETRAYAL_ENGAGE"
   },
   {
     "id": "RUSTY",
     "name": "Rusty",
     "movementType": "INFANTRY",
     "weaponType": "AXE",
-    "prfWeapon": "SOLO_MERC_AXE_PLUS"
+    "prfWeapon": "SOLO_MERC_AXE_PLUS",
+    "shadowMusic": "BETRAYAL_BOOK_3"
   },
   {
     "id": "ANANKE",
     "name": "Ananke",
     "movementType": "CAVALRY",
     "weaponType": "STAFF",
-    "prfWeapon": "FOREST_EDGE_STAFF_PLUS"
+    "prfWeapon": "FOREST_EDGE_STAFF_PLUS",
+    "shadowMusic": "BETRAYAL_BOOK_3"
   },
   {
     "id": "ROBIN",
@@ -233,7 +236,8 @@
     "name": "Hanya",
     "movementType": "CAVALRY",
     "weaponType": "LANCE",
-    "prfWeapon": "HEIRESS_LANCE_PLUS"
+    "prfWeapon": "HEIRESS_LANCE_PLUS",
+    "shadowMusic": "BETRAYAL_BOOK_3"
   },
   {
     "id": "CLAUDE",
@@ -248,6 +252,7 @@
     "name": "Eugene",
     "movementType": "ARMORED",
     "weaponType": "SWORD",
-    "prfWeapon": "EMINENCE_SWORD_PLUS"
+    "prfWeapon": "EMINENCE_SWORD_PLUS",
+    "shadowMusic": "BETRAYAL_BOOK_3"
   }
 ]
