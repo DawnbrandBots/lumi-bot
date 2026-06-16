@@ -3,15 +3,17 @@ import type { TextChannel } from "discord.js";
 import {
     ChannelType,
     MessageFlags,
+    channelMention,
     roleMention,
     time,
+    userMention,
     type CacheType,
     type ChatInputCommandInteraction,
     type InteractionReplyOptions,
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
-import { createErrorMessage, createNegativeMessage } from "../bot/message.ts";
+import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../bot/message.ts";
 import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
@@ -23,6 +25,7 @@ import {
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
     LFG_LIST_SUBCOMMAND_NAME,
+    LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_NO_ROLE_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
@@ -88,6 +91,28 @@ export function getLfgCommand({
 
     async function runPing(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
         const configResult = await adminFeature.getGuildConfig(guildId);
+        const channelId = configResult.value?.lfgChannel;
+        if (!channelId) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_NO_CHANNEL_TO_PING_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const channel = await interaction.guild?.channels.fetch(channelId);
+        // TODO: this case is good to handle, do add a separate error message however
+        // TODO: prevent setting a non text-channel for LFG?
+        if (!channel || channel.type !== ChannelType.GuildText) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_NO_CHANNEL_TO_PING_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
         const roleId = configResult.value?.lfgRole;
         if (!roleId) {
             return interaction.reply(
@@ -124,10 +149,24 @@ export function getLfgCommand({
             );
         }
 
-        const reply = await interaction.reply({
-            content: roleMention(roleId),
-            allowedMentions: { roles: [roleId] },
-        });
+        const pingMessage = {
+            content: `${roleMention(roleId)} people, ${userMention(interaction.user.id)} is looking for a party!`,
+            allowedMentions: { roles: [roleId], users: [interaction.user.id] },
+        };
+
+        let reply;
+        if (interaction.channelId === channelId) {
+            reply = await interaction.reply(pingMessage);
+        } else {
+            await channel.send(pingMessage);
+            reply = await interaction.reply(
+                createPositiveMessage<InteractionReplyOptions>({
+                    embed: { description: `Ping triggered in ${channelMention(channelId)}.` },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
         await adminFeature.setLfgRoleLastPingedAt(guildId, now);
         return reply;
     }

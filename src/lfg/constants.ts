@@ -38,6 +38,7 @@ export const LFG_CANNOT_KICK_YOURSELF_DESCRIPTION = `Use ${LFG_ROOM_CODE_MARKER}
 export const LFG_NOT_IN_A_ROOM_DESCRIPTION = "Join or create a room first.";
 export const LFG_INVALID_SUBCOMMAND_DESCRIPTION = "Please specify a valid subcommand.";
 export const LFG_NO_ROLE_TO_PING_DESCRIPTION = "No role was set to be pinged.";
+export const LFG_NO_CHANNEL_TO_PING_DESCRIPTION = "LFG channel does not exist.";
 export const LFG_ROLE_TO_PING_DELETED_DESCRIPTION = "Role to ping appears to no longer exist.";
 export const LFG_ROLE_PINGED_DESCRIPTION = "LFG role pinged.";
 
