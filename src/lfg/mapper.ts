@@ -7,6 +7,7 @@ import {
     createNeutralMessage,
     createPositiveMessage,
 } from "../bot/message.ts";
+import { EMessageKind } from "../bot/types.ts";
 import * as LfgConstants from "./constants.ts";
 import type { TLfgFeatureReturnOfKind } from "./types.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
@@ -212,10 +213,7 @@ export function mapLfgMessageBaseToReply(
     interaction: ChatInputCommandInteraction,
     guildConfig: GuildConfig | null,
 ) {
-    // if (messageBase.kind !== EMessageKind.POSITIVE || !guildConfig?.lfgChannel) {
-    //     return { ...messageBase, flags: [MessageFlags.Ephemeral] as const };
-    // }
-    if (interaction.channelId === guildConfig?.lfgChannel) {
+    if (messageBase.kind === EMessageKind.POSITIVE && interaction.channelId === guildConfig?.lfgChannel) {
         return messageBase;
     }
     return { ...messageBase, flags: [MessageFlags.Ephemeral] } as const;
