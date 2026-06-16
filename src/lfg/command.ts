@@ -4,6 +4,7 @@ import {
     ChannelType,
     MessageFlags,
     roleMention,
+    time,
     type CacheType,
     type ChatInputCommandInteraction,
     type InteractionReplyOptions,
@@ -114,9 +115,9 @@ export function getLfgCommand({
                 createNegativeMessage<InteractionReplyOptions>({
                     embed: {
                         // TODO: consider date library or Intl.Temporal (but requires node 26)
-                        description: `LFG role can be pinged again at ${new Date(
-                            new Date(lastPingedAt).getTime() + LFG_ROLE_PING_COOLDOWN_MS,
-                        ).toLocaleString()}.`,
+                        description: `LFG role can be pinged again on ${time(
+                            new Date(new Date(lastPingedAt).getTime() + LFG_ROLE_PING_COOLDOWN_MS),
+                        )}.`,
                     },
                     flags: [MessageFlags.Ephemeral],
                 }),
