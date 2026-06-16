@@ -16,9 +16,12 @@ import {
     ADMIN_CHANNEL_OPTION_NAME,
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     ADMIN_LFG_GROUP_NAME,
+    ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
+    ADMIN_ROLE_OPTION_NAME,
 } from "./constants.ts";
-import type { AdminFeature, AdminLfgChannelAction } from "./feature.ts";
+import type { AdminFeature } from "./feature.ts";
+import mapAdminFeatureReturnToMessage from "./mapper.ts";
 
 type AdminCommandCtorArg = {
     readonly adminFeature: AdminFeature;
@@ -78,38 +81,56 @@ export class AdminCommand implements ICommand {
         switch (subcommand) {
             case ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME:
                 return this.runLfgChannel(interaction, guildId);
+            case ADMIN_LFG_ROLE_SUBCOMMAND_NAME:
+                return this.runLfgRole(interaction, guildId);
             case ADMIN_LFG_SHOW_SUBCOMMAND_NAME:
-                return this.adminFeature.lfgShow(guildId);
+                return mapAdminFeatureReturnToMessage(await this.adminFeature.getGuildConfig(guildId));
             default:
                 return this.invalidSubcommand();
         }
     }
 
-    private runLfgChannel(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
+    private async runLfgChannel(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
         const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
         const channel = interaction.options.getChannel(ADMIN_CHANNEL_OPTION_NAME, false);
 
         if (channel && channel.type !== ChannelType.GuildText) {
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
-                    title: "Invalid channel",
                     description: "Only guild text channels can be used as the LFG public channel.",
                 },
                 flags: MessageFlags.Ephemeral,
             });
         }
 
-        if (action && action !== ADMIN_ACTION_SET && action !== ADMIN_ACTION_CLEAR) {
+        if (action !== null && action !== ADMIN_ACTION_SET && action !== ADMIN_ACTION_CLEAR) {
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
-                    title: "Invalid action",
                     description: `Action must be \`${ADMIN_ACTION_SET}\` or \`${ADMIN_ACTION_CLEAR}\`.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
         }
 
-        return this.adminFeature.lfgChannel(guildId, action as AdminLfgChannelAction | null, channel?.id ?? null);
+        const result = await this.adminFeature.lfgChannel(guildId, action, channel?.id ?? null);
+        return mapAdminFeatureReturnToMessage(result);
+    }
+
+    private async runLfgRole(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
+        const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
+        const role = interaction.options.getRole(ADMIN_ROLE_OPTION_NAME, false);
+
+        if (action !== null && action !== ADMIN_ACTION_SET && action !== ADMIN_ACTION_CLEAR) {
+            return createErrorMessage<InteractionReplyOptions>({
+                embed: {
+                    description: `Action must be \`${ADMIN_ACTION_SET}\` or \`${ADMIN_ACTION_CLEAR}\`.`,
+                },
+                flags: MessageFlags.Ephemeral,
+            });
+        }
+
+        const result = await this.adminFeature.lfgRole(guildId, action, role?.id ?? null);
+        return mapAdminFeatureReturnToMessage(result);
     }
 
     private invalidSubcommand() {

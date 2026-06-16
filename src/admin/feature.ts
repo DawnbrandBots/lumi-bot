@@ -1,23 +1,16 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { InteractionReplyOptions } from "discord.js";
-import { channelMention, MessageFlags } from "discord.js";
 import { randomUUID } from "node:crypto";
-import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../bot/message.ts";
-import {
-    ADMIN_ACTION_CLEAR,
-    ADMIN_ACTION_OPTION_NAME,
-    ADMIN_ACTION_SET,
-    ADMIN_CHANNEL_OPTION_NAME,
-    ADMIN_LFG_CHANNEL_NO_VALUE,
-    ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
-} from "./constants.ts";
+import { ADMIN_ACTION_CLEAR, ADMIN_ACTION_SET } from "./constants.ts";
 import { GuildConfig } from "./models/config.ts";
+import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "./types.ts";
 
 type AdminFeatureCtorArg = {
     readonly em: EntityManager;
 };
 
-export type AdminLfgChannelAction = typeof ADMIN_ACTION_SET | typeof ADMIN_ACTION_CLEAR;
+export type AdminActionOptions = typeof ADMIN_ACTION_SET | typeof ADMIN_ACTION_CLEAR;
+export type AdminLfgChannelAction = AdminActionOptions;
+export type AdminLfgRoleAction = AdminActionOptions;
 
 export class AdminFeature {
     private readonly em: EntityManager;
@@ -26,12 +19,8 @@ export class AdminFeature {
         this.em = em;
     }
 
-    public getConfig(guild: string): Promise<GuildConfig | null> {
-        return this.em.findOne(GuildConfig, { guild });
-    }
-
     public async getOrCreateConfig(guild: string): Promise<GuildConfig> {
-        const config = await this.em.findOne(GuildConfig, { guild });
+        const config = await this._getGuildConfig(guild);
         if (config) {
             return config;
         }
@@ -39,80 +28,103 @@ export class AdminFeature {
         const newConfig = this.em.create(GuildConfig, {
             id: randomUUID(),
             guild,
-            channel: null,
+            lfgChannel: null,
+            lfgRole: null,
+            lfgRoleLastPingedAt: null,
         });
         this.em.persist(newConfig);
         await this.em.flush();
         return newConfig;
     }
 
-    public async lfgChannel(guild: string, action: AdminLfgChannelAction | null, channel: string | null) {
+    public async lfgRole(
+        guild: string,
+        action: AdminLfgRoleAction | null,
+        role: string | null,
+    ): Promise<TAdminFeatureReturnTypes["lfgRole"]> {
+        const config = await this.getOrCreateConfig(guild);
+
+        if (!action && !role) {
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
+                value: { role: config.lfgRole },
+            };
+        }
+
+        if (action === ADMIN_ACTION_SET && role) {
+            config.lfgRole = role;
+            await this.em.flush();
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_SET,
+                value: { role },
+            };
+        }
+
+        if (action === ADMIN_ACTION_CLEAR && !role) {
+            config.lfgRole = null;
+            await this.em.flush();
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_CLEARED };
+        }
+
+        if (action === ADMIN_ACTION_SET && !role) {
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE };
+        }
+
+        return { kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS };
+    }
+
+    public async setLfgRoleLastPingedAt(guild: string, date: Date): Promise<void> {
+        const config = await this.getOrCreateConfig(guild);
+        config.lfgRoleLastPingedAt = date.toISOString();
+        await this.em.flush();
+    }
+
+    public async lfgChannel(
+        guild: string,
+        action: AdminLfgChannelAction | null,
+        channel: string | null,
+    ): Promise<TAdminFeatureReturnTypes["lfgChannel"]> {
+        // TODO: only create config on set action?
         const config = await this.getOrCreateConfig(guild);
 
         if (!action && !channel) {
-            return createNeutralMessage<InteractionReplyOptions>({
-                embed: {
-                    title: "LFG public channel",
-                    description: [
-                        "Sets the channel where LFG messages are sent.",
-                        "By default, LFG messages are only visible to the command user.",
-                        "",
-                        "**Valid combinations:**",
-                        `- \`/admin lfg ${ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME}\`: Show this help and current value.`,
-                        `- \`/admin lfg ${ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME} ${ADMIN_ACTION_OPTION_NAME}:${ADMIN_ACTION_SET} ${ADMIN_CHANNEL_OPTION_NAME}:#channel\`: Set the public channel.`,
-                        `- \`/admin lfg ${ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME} ${ADMIN_ACTION_OPTION_NAME}:${ADMIN_ACTION_CLEAR}\`: Clear the public channel.`,
-                        "",
-                        `**Current value:** ${this.formatChannel(config.lfgChannel)}`,
-                    ].join("\n"),
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return {
+                kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
+                value: { channel: config.lfgChannel },
+            };
         }
 
         if (action === ADMIN_ACTION_SET && channel) {
             config.lfgChannel = channel;
             await this.em.flush();
-            return createPositiveMessage<InteractionReplyOptions>({
-                embed: {
-                    title: "LFG public channel set",
-                    description: `LFG messages will be posted in ${channelMention(channel)}.`,
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return {
+                kind: EAdminFeatureReturnKind.LFG_CHANNEL_SET,
+                value: { channel },
+            };
         }
 
         if (action === ADMIN_ACTION_CLEAR && !channel) {
             config.lfgChannel = null;
             await this.em.flush();
-            return createPositiveMessage<InteractionReplyOptions>({
-                embed: {
-                    title: "LFG public channel cleared",
-                    description: "LFG messages are now only visible by command users.",
-                },
-                flags: [MessageFlags.Ephemeral],
-            });
+            return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED };
         }
 
-        return createErrorMessage<InteractionReplyOptions>({
-            embed: {
-                title: "Invalid options combination",
-            },
-            flags: [MessageFlags.Ephemeral],
-        });
+        if (action === ADMIN_ACTION_SET && !channel) {
+            return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL };
+        }
+
+        return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS };
     }
 
-    public async lfgShow(guild: string) {
-        const config = await this.getOrCreateConfig(guild);
-        return createNeutralMessage<InteractionReplyOptions>({
-            embed: {
-                title: "LFG config",
-                fields: [{ name: "Channel", value: this.formatChannel(config.lfgChannel) }],
-            },
-            flags: [MessageFlags.Ephemeral],
-        });
+    protected _getGuildConfig(guild: string): Promise<GuildConfig | null> {
+        return this.em.findOne(GuildConfig, { guild });
     }
 
-    private formatChannel(channel: string | null | undefined): string {
-        return channel ? channelMention(channel) : ADMIN_LFG_CHANNEL_NO_VALUE;
+    public async getGuildConfig(guild: string): Promise<TAdminFeatureReturnTypes["getGuildConfig"]> {
+        const config = await this._getGuildConfig(guild);
+        return {
+            kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+            value: config,
+        };
     }
 }
