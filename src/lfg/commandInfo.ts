@@ -20,6 +20,8 @@ import {
     LFG_LIST_SUBCOMMAND_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MIN_ROOM_CODE_LENGTH,
+    LFG_PING_SUBCOMMAND_DESCRIPTION,
+    LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
@@ -81,6 +83,9 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_HELP_SUBCOMMAND_NAME).setDescription(LFG_HELP_SUBCOMMAND_DESCRIPTION),
+            )
+            .addSubcommand((subcommand) =>
+                subcommand.setName(LFG_PING_SUBCOMMAND_NAME).setDescription(LFG_PING_SUBCOMMAND_DESCRIPTION),
             );
     },
     name: LFG_COMMAND_NAME,

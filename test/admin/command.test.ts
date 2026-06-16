@@ -6,13 +6,16 @@ import {
     ADMIN_CHANNEL_OPTION_NAME,
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     ADMIN_LFG_GROUP_NAME,
+    ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
+    ADMIN_ROLE_OPTION_NAME,
 } from "../../src/admin/constants.ts";
 import type { AdminFeature } from "../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
+const ROLE_ID = "role-1";
 const REPLY = {};
 
 function getInteractionFixture({
@@ -20,11 +23,13 @@ function getInteractionFixture({
     subcommand = ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     action = null,
     channel = null,
+    role = null,
 }: {
     readonly canManageGuild?: boolean;
     readonly subcommand?: string;
     readonly action?: string | null;
     readonly channel?: { id: string; type: ChannelType } | null;
+    readonly role?: { id: string } | null;
 } = {}) {
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
@@ -37,6 +42,7 @@ function getInteractionFixture({
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === ADMIN_ACTION_OPTION_NAME ? action : null)),
             getChannel: vi.fn((name: string) => (name === ADMIN_CHANNEL_OPTION_NAME ? channel : null)),
+            getRole: vi.fn((name: string) => (name === ADMIN_ROLE_OPTION_NAME ? role : null)),
         },
         reply,
     } as unknown as ChatInputCommandInteraction;
@@ -45,7 +51,11 @@ function getInteractionFixture({
 
 describe(AdminCommand.name, () => {
     test("rejects users without ManageGuild", async () => {
-        const adminFeature = { lfgChannel: vi.fn(), getGuildConfig: vi.fn() } as unknown as AdminFeature;
+        const adminFeature = {
+            lfgChannel: vi.fn(),
+            lfgRole: vi.fn(),
+            getGuildConfig: vi.fn(),
+        } as unknown as AdminFeature;
         const command = new AdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({ canManageGuild: false });
 
@@ -66,6 +76,7 @@ describe(AdminCommand.name, () => {
         });
         const adminFeature = {
             lfgChannel,
+            lfgRole: vi.fn(),
             getGuildConfig: vi.fn(),
         } as unknown as AdminFeature;
         const command = new AdminCommand({ adminFeature });
@@ -85,6 +96,34 @@ describe(AdminCommand.name, () => {
         );
     });
 
+    test("dispatches lfg role", async () => {
+        const lfgRole = vi.fn().mockResolvedValue({
+            kind: EAdminFeatureReturnKind.LFG_ROLE_SET,
+            value: { role: ROLE_ID },
+        });
+        const adminFeature = {
+            lfgChannel: vi.fn(),
+            lfgRole,
+            getGuildConfig: vi.fn(),
+        } as unknown as AdminFeature;
+        const command = new AdminCommand({ adminFeature });
+        const { interaction, reply } = getInteractionFixture({
+            subcommand: ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
+            action: "set",
+            role: { id: ROLE_ID },
+        });
+
+        await command.run(interaction);
+
+        expect(lfgRole).toHaveBeenCalledWith(GUILD_ID, "set", ROLE_ID);
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ title: "LFG ping role set" })],
+            }),
+        );
+    });
+
     test("dispatches lfg show", async () => {
         const getGuildConfig = vi.fn().mockResolvedValue({
             kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
@@ -92,6 +131,7 @@ describe(AdminCommand.name, () => {
         });
         const adminFeature = {
             lfgChannel: vi.fn(),
+            lfgRole: vi.fn(),
             getGuildConfig,
         } as unknown as AdminFeature;
         const command = new AdminCommand({ adminFeature });

@@ -8,7 +8,9 @@ type AdminFeatureCtorArg = {
     readonly em: EntityManager;
 };
 
-export type AdminLfgChannelAction = typeof ADMIN_ACTION_SET | typeof ADMIN_ACTION_CLEAR;
+export type AdminActionOptions = typeof ADMIN_ACTION_SET | typeof ADMIN_ACTION_CLEAR;
+export type AdminLfgChannelAction = AdminActionOptions;
+export type AdminLfgRoleAction = AdminActionOptions;
 
 export class AdminFeature {
     private readonly em: EntityManager;
@@ -27,10 +29,54 @@ export class AdminFeature {
             id: randomUUID(),
             guild,
             lfgChannel: null,
+            lfgRole: null,
+            lfgRoleLastPingedAt: null,
         });
         this.em.persist(newConfig);
         await this.em.flush();
         return newConfig;
+    }
+
+    public async lfgRole(
+        guild: string,
+        action: AdminLfgRoleAction | null,
+        role: string | null,
+    ): Promise<TAdminFeatureReturnTypes["lfgRole"]> {
+        const config = await this.getOrCreateConfig(guild);
+
+        if (!action && !role) {
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
+                value: { role: config.lfgRole },
+            };
+        }
+
+        if (action === ADMIN_ACTION_SET && role) {
+            config.lfgRole = role;
+            await this.em.flush();
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_SET,
+                value: { role },
+            };
+        }
+
+        if (action === ADMIN_ACTION_CLEAR && !role) {
+            config.lfgRole = null;
+            await this.em.flush();
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_CLEARED };
+        }
+
+        if (action === ADMIN_ACTION_SET && !role) {
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE };
+        }
+
+        return { kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS };
+    }
+
+    public async setLfgRoleLastPingedAt(guild: string, date: Date): Promise<void> {
+        const config = await this.getOrCreateConfig(guild);
+        config.lfgRoleLastPingedAt = date.toISOString();
+        await this.em.flush();
     }
 
     public async lfgChannel(

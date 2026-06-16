@@ -367,5 +367,6 @@ describe(LfgFeature.name, () => {
         expect(response.kind).toBe(ELfgFeatureReturnKind.HELP);
         expect(response.value.description).toContain("/lfg create");
         expect(response.value.description).toContain("/lfg help");
+        expect(response.value.description).toContain("/lfg ping");
     });
 });

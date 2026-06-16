@@ -6,8 +6,10 @@ export const GuildConfigSchema = defineEntity({
         id: p.string().primary(),
         guild: p.string().unique(),
         lfgChannel: p.string().nullable().default(null),
+        lfgRole: p.string().nullable().default(null),
+        lfgRoleLastPingedAt: p.date().nullable().default(null),
     },
 });
 
-export class GuildConfig extends GuildConfigSchema.class { }
+export class GuildConfig extends GuildConfigSchema.class {}
 GuildConfigSchema.setClass(GuildConfig);

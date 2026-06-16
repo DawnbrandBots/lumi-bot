@@ -3,13 +3,14 @@ import type { TextChannel } from "discord.js";
 import {
     ChannelType,
     MessageFlags,
+    roleMention,
     type CacheType,
     type ChatInputCommandInteraction,
     type InteractionReplyOptions,
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
-import { createErrorMessage } from "../bot/message.ts";
+import { createErrorMessage, createNegativeMessage } from "../bot/message.ts";
 import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
@@ -21,7 +22,11 @@ import {
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
     LFG_LIST_SUBCOMMAND_NAME,
+    LFG_NO_ROLE_TO_PING_DESCRIPTION,
+    LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
+    LFG_ROLE_PING_COOLDOWN_MS,
+    LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
 import type { LfgFeature } from "./feature.ts";
@@ -35,7 +40,7 @@ export function getLfgCommand({
     adminFeature,
 }: {
     readonly lfgFeature: LfgFeature;
-    readonly adminFeature: Pick<AdminFeature, "getGuildConfig">;
+    readonly adminFeature: Pick<AdminFeature, "getGuildConfig" | "setLfgRoleLastPingedAt">;
 }) {
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
@@ -80,6 +85,52 @@ export function getLfgCommand({
         }
     }
 
+    async function runPing(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
+        const configResult = await adminFeature.getGuildConfig(guildId);
+        const roleId = configResult.value?.lfgRole;
+        if (!roleId) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_NO_ROLE_TO_PING_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const role = await interaction.guild?.roles.fetch(roleId);
+        if (!role) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_ROLE_TO_PING_DELETED_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const now = new Date();
+        const lastPingedAt = configResult.value?.lfgRoleLastPingedAt;
+        if (lastPingedAt && now.getTime() - new Date(lastPingedAt).getTime() < LFG_ROLE_PING_COOLDOWN_MS) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: {
+                        // TODO: consider date library or Intl.Temporal (but requires node 26)
+                        description: `LFG role can be pinged again at ${new Date(
+                            new Date(lastPingedAt).getTime() + LFG_ROLE_PING_COOLDOWN_MS,
+                        ).toLocaleString()}.`,
+                    },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const reply = await interaction.reply({
+            content: roleMention(roleId),
+            allowedMentions: { roles: [roleId] },
+        });
+        await adminFeature.setLfgRoleLastPingedAt(guildId, now);
+        return reply;
+    }
+
     async function sendPublicCopy(
         interaction: ChatInputCommandInteraction<CacheType>,
         channelId: string,
@@ -114,6 +165,13 @@ export function getLfgCommand({
             }
 
             const subcommand = interaction.options.getSubcommand(false);
+            // TODO: ping does indeed not need to call lfgFeature, since
+            // it just answers to Discord directly
+            // Still, if feels weird having this check here, apart from the others.
+            if (subcommand === LFG_PING_SUBCOMMAND_NAME) {
+                return runPing(interaction, guildId);
+            }
+
             const result = await runSubcommand(interaction, guildId, subcommand);
             const configResult = await adminFeature.getGuildConfig(guildId);
 
