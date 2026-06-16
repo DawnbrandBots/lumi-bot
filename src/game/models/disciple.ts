@@ -1,4 +1,4 @@
-import { defineEntity, p } from "@mikro-orm/sqlite";
+import { defineEntity, p, raw } from "@mikro-orm/sqlite";
 import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from "../constants.ts";
 import type { IDisciple } from "../types.ts";
 import { MovementType } from "./movementType.ts";
@@ -20,7 +20,7 @@ export const DiscipleSchema = defineEntity({
         shadowResultsScreenMusic: () =>
             p
                 .manyToOne(Music)
-                .formula("shadow_music_id || '_RESULTS_SCREEN'")
+                .formula((columns) => raw("?? || ?", [columns.shadowMusic, "_RESULTS_SCREEN"]))
                 .inversedBy("shadowResultsScreenMusicFor"),
     },
 });
