@@ -94,7 +94,7 @@ export type TLfgFeatureReturn = {
 }[ELfgFeatureReturnKind];
 
 export type TLfgFeatureReturnTypes = {
-    list: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOMS_LISTED>;
+    status: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOMS_LISTED>;
     help: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.HELP>;
     create: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_CREATED
@@ -131,7 +131,7 @@ export type TLfgFeatureReturnTypes = {
 };
 
 export interface ILfgFeature {
-    list(guildId: string): MaybePromise<TLfgFeatureReturnTypes["list"]>;
+    status(guildId: string): MaybePromise<TLfgFeatureReturnTypes["status"]>;
     help(): MaybePromise<TLfgFeatureReturnTypes["help"]>;
     create(guildId: string, owner: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["create"]>;
     join(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["join"]>;

@@ -14,11 +14,11 @@ import {
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_DESCRIPTION,
     LFG_LEAVE_SUBCOMMAND_NAME,
-    LFG_LIST_SUBCOMMAND_DESCRIPTION,
-    LFG_LIST_SUBCOMMAND_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MAX_ROOM_PLAYERS,
     LFG_MIN_ROOM_CODE_LENGTH,
+    LFG_STATUS_SUBCOMMAND_DESCRIPTION,
+    LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
@@ -38,7 +38,7 @@ export class LfgFeature implements ILfgFeature {
         this.em = em;
     }
 
-    public async list(guildId: string) {
+    public async status(guildId: string) {
         return {
             kind: ELfgFeatureReturnKind.ROOMS_LISTED,
             value: { rooms: (await this.getRooms(guildId)).map((room) => this.toRoom(room)) },
@@ -54,7 +54,7 @@ export class LfgFeature implements ILfgFeature {
             `- \`/${LFG_COMMAND_NAME} ${LFG_KICK_SUBCOMMAND_NAME}\`: ${LFG_KICK_SUBCOMMAND_DESCRIPTION}`,
             `- \`/${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}\`: ${LFG_LEAVE_SUBCOMMAND_DESCRIPTION}`,
             `- \`/${LFG_COMMAND_NAME} ${LFG_DISBAND_SUBCOMMAND_NAME}\`: ${LFG_DISBAND_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_LIST_SUBCOMMAND_NAME}\`: ${LFG_LIST_SUBCOMMAND_DESCRIPTION}`,
+            `- \`/${LFG_COMMAND_NAME} ${LFG_STATUS_SUBCOMMAND_NAME}\`: ${LFG_STATUS_SUBCOMMAND_DESCRIPTION}`,
             `- \`/${LFG_COMMAND_NAME} ${LFG_HELP_SUBCOMMAND_NAME}\`: ${LFG_HELP_SUBCOMMAND_DESCRIPTION}`,
         ].join("\n");
 

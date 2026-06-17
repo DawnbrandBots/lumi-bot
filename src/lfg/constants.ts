@@ -8,7 +8,7 @@ export const LFG_TRANSFER_SUBCOMMAND_NAME = "transfer";
 export const LFG_KICK_SUBCOMMAND_NAME = "kick";
 export const LFG_LEAVE_SUBCOMMAND_NAME = "leave";
 export const LFG_DISBAND_SUBCOMMAND_NAME = "disband";
-export const LFG_LIST_SUBCOMMAND_NAME = "list";
+export const LFG_STATUS_SUBCOMMAND_NAME = "status";
 export const LFG_HELP_SUBCOMMAND_NAME = "help";
 
 export const LFG_CREATE_SUBCOMMAND_DESCRIPTION = "Create a room.";
@@ -17,7 +17,7 @@ export const LFG_TRANSFER_SUBCOMMAND_DESCRIPTION = "Transfer room ownership.";
 export const LFG_KICK_SUBCOMMAND_DESCRIPTION = "Kick a player from your room.";
 export const LFG_LEAVE_SUBCOMMAND_DESCRIPTION = "Leave your current room.";
 export const LFG_DISBAND_SUBCOMMAND_DESCRIPTION = "Disband your current room.";
-export const LFG_LIST_SUBCOMMAND_DESCRIPTION = "Display active rooms.";
+export const LFG_STATUS_SUBCOMMAND_DESCRIPTION = "Display active rooms.";
 export const LFG_HELP_SUBCOMMAND_DESCRIPTION = "Display LFG commands.";
 
 export const LFG_MIN_ROOM_CODE_LENGTH = 1;

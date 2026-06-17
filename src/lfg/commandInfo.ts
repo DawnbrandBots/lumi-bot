@@ -16,11 +16,11 @@ import {
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_DESCRIPTION,
     LFG_LEAVE_SUBCOMMAND_NAME,
-    LFG_LIST_SUBCOMMAND_DESCRIPTION,
-    LFG_LIST_SUBCOMMAND_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MIN_ROOM_CODE_LENGTH,
     LFG_PLAYER_OPTION_NAME,
+    LFG_STATUS_SUBCOMMAND_DESCRIPTION,
+    LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
@@ -77,7 +77,7 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
                 subcommand.setName(LFG_DISBAND_SUBCOMMAND_NAME).setDescription(LFG_DISBAND_SUBCOMMAND_DESCRIPTION),
             )
             .addSubcommand((subcommand) =>
-                subcommand.setName(LFG_LIST_SUBCOMMAND_NAME).setDescription(LFG_LIST_SUBCOMMAND_DESCRIPTION),
+                subcommand.setName(LFG_STATUS_SUBCOMMAND_NAME).setDescription(LFG_STATUS_SUBCOMMAND_DESCRIPTION),
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_HELP_SUBCOMMAND_NAME).setDescription(LFG_HELP_SUBCOMMAND_DESCRIPTION),
