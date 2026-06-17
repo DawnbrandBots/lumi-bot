@@ -91,7 +91,7 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
             });
         case ELfgFeatureReturnKind.HELP:
             return createNeutralMessage<InteractionReplyOptions>({
-                embed: { description: result.value.description },
+                embed: { description: result.value },
                 flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_CREATED:

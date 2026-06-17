@@ -46,7 +46,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "help",
-            input: { kind: ELfgFeatureReturnKind.HELP, value: { description: "help text" } },
+            input: { kind: ELfgFeatureReturnKind.HELP, value: "help text" },
             expected: {
                 kind: EMessageKind.NEUTRAL,
                 embeds: [{ description: "help text" }],

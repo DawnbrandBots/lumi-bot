@@ -1,35 +1,57 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
+import { bold, unorderedList } from "discord.js";
 import { randomUUID } from "node:crypto";
 import {
     LFG_COMMAND_NAME,
-    LFG_CREATE_SUBCOMMAND_DESCRIPTION,
     LFG_CREATE_SUBCOMMAND_NAME,
-    LFG_DISBAND_SUBCOMMAND_DESCRIPTION,
     LFG_DISBAND_SUBCOMMAND_NAME,
-    LFG_HELP_SUBCOMMAND_DESCRIPTION,
-    LFG_HELP_SUBCOMMAND_NAME,
-    LFG_JOIN_SUBCOMMAND_DESCRIPTION,
     LFG_JOIN_SUBCOMMAND_NAME,
-    LFG_KICK_SUBCOMMAND_DESCRIPTION,
     LFG_KICK_SUBCOMMAND_NAME,
-    LFG_LEAVE_SUBCOMMAND_DESCRIPTION,
     LFG_LEAVE_SUBCOMMAND_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MAX_ROOM_PLAYERS,
     LFG_MIN_ROOM_CODE_LENGTH,
-    LFG_STATUS_SUBCOMMAND_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
-    LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
 import { LfgRoom } from "./models/room.ts";
 import { LfgRoomPlayer } from "./models/roomPlayer.ts";
 import type { TLfgPlayerRemovalResult } from "./types.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type ILfgFeature, type IRoom, type IUser } from "./types.ts";
+import formatCommand from "./utils/formatCommand.ts";
 
 type LfgFeatureCtorArg = {
     readonly em: EntityManager;
 };
+
+const HELP_STR = `${formatCommand([LFG_COMMAND_NAME])} groups subcommands for managing ${bold("parties")} for Friend Battles.
+
+Parties:
+${unorderedList([
+    `are groups of up to ${LFG_MAX_ROOM_PLAYERS} players,`,
+    `have a code which should be used in Friend Battles,`,
+    `have an ${bold("owner")} with additional privileges within the group.`,
+])}
+
+Want to play? First check ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])} for vacant spots in existing parties. Ask active players whether you can join them!
+
+Use ${formatCommand([LFG_COMMAND_NAME, LFG_JOIN_SUBCOMMAND_NAME])} to join a party, or ${formatCommand([LFG_COMMAND_NAME, LFG_CREATE_SUBCOMMAND_NAME])} to create one as the owner.
+
+When you are done playing, use ${formatCommand([LFG_COMMAND_NAME, LFG_LEAVE_SUBCOMMAND_NAME])} so other players can see that you are not playing anymore.
+
+In general, please encourage each other to ensure that ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])}'s output is always up-to-date.
+
+A party owner may also use the following commands:
+${unorderedList([
+    `${formatCommand([LFG_COMMAND_NAME, LFG_DISBAND_SUBCOMMAND_NAME])}: Delete their party.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_KICK_SUBCOMMAND_NAME])}: Kick a player from their party.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_TRANSFER_SUBCOMMAND_NAME])}: Transfer ownership to another player in their party.`,
+])}
+
+Ownership is automatically transferred when the owner leaves the party.
+Parties are deleted when all players leave.
+
+Have fun!!`;
 
 export class LfgFeature implements ILfgFeature {
     private readonly em: EntityManager;
@@ -46,19 +68,7 @@ export class LfgFeature implements ILfgFeature {
     }
 
     public help() {
-        // TODO: this description must be generated from command info eventually (https://github.com/DawnbrandBots/lumi-bot/issues/37)
-        const description = [
-            `- \`/${LFG_COMMAND_NAME} ${LFG_CREATE_SUBCOMMAND_NAME}\`: ${LFG_CREATE_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_JOIN_SUBCOMMAND_NAME}\`: ${LFG_JOIN_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_TRANSFER_SUBCOMMAND_NAME}\`: ${LFG_TRANSFER_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_KICK_SUBCOMMAND_NAME}\`: ${LFG_KICK_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}\`: ${LFG_LEAVE_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_DISBAND_SUBCOMMAND_NAME}\`: ${LFG_DISBAND_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_STATUS_SUBCOMMAND_NAME}\`: ${LFG_STATUS_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_HELP_SUBCOMMAND_NAME}\`: ${LFG_HELP_SUBCOMMAND_DESCRIPTION}`,
-        ].join("\n");
-
-        return { kind: ELfgFeatureReturnKind.HELP, value: { description } } as const;
+        return { kind: ELfgFeatureReturnKind.HELP, value: HELP_STR } as const;
     }
 
     public async create(guildId: string, owner: IUser, code: string) {
