@@ -9,7 +9,7 @@ import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
 import { spellEffectsValues } from "../../game/spellEffectValues.ts";
 import type { ISpell } from "../../game/types.ts";
 import range from "../../utils/range.ts";
-import { toAsciiTable } from "../../utils/table.ts";
+import { separator, toAsciiTable } from "../../utils/table.ts";
 import type { ISearchHandler } from "../types.ts";
 
 const tileEmojis: Record<string, string> = {
@@ -18,27 +18,98 @@ const tileEmojis: Record<string, string> = {
     ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
 };
 
-const SPELL_VALUE_LEVELS = Array.from(range({ start: 1, end: 13 }));
+// const SPELL_VALUE_LEVELS = Array.from(range({ start: 1, end: 13 }));
+
+const SPELL_VALUE_LEVELS_ROW_1 = Array.from(range({ start: 1, end: 7 }));
+const SPELL_VALUE_LEVELS_ROW_2 = Array.from(range({ start: 7, end: 13 }));
 
 function formatSpellValues(spell: ISpell): string | null {
-    const columns = spellEffectsValues(spell).flatMap((values, index) => {
-        return values.map((value, valueIndex) => ({
-            header: valueIndex === 0 ? index + 1 : "",
-            value,
-        }));
+    // const rows = spellEffectsValues(spell).flatMap((values, index) => {
+    //     return values.map((value, valueIndex) => [
+    //         valueIndex === 0 ? index + 1 : "",
+    //         value.scale,
+    //         ...SPELL_VALUE_LEVELS.map((level) => value.toLevel(level)),
+    //     ]);
+    // });
+
+    // if (!rows.length) {
+    //     return null;
+    // }
+
+    // return codeBlock(
+    //     toAsciiTable({
+    //         data: [["", "Scl", ...SPELL_VALUE_LEVELS], ...rows],
+    //         cellPadding: 3,
+    //     }),
+    // );
+
+    //////////
+
+    // const rows1 = spellEffectsValues(spell).flatMap((values, index) => {
+    //     return values.map((value, valueIndex) => [
+    //         valueIndex === 0 ? index + 1 : "",
+    //         value.scale,
+    //         ...SPELL_VALUE_LEVELS_ROW_1.map((level) => value.toLevel(level)),
+    //     ]);
+    // });
+
+    // const rows2 = spellEffectsValues(spell).flatMap((values, index) => {
+    //     return values.map((value, valueIndex) => [
+    //         valueIndex === 0 ? index + 1 : "",
+    //         value.scale,
+    //         ...SPELL_VALUE_LEVELS_ROW_2.map((level) => value.toLevel(level)),
+    //     ]);
+    // });
+
+    // if (!rows1.length || !rows2.length) {
+    //     return null;
+    // }
+
+    // return [
+    //     codeBlock(
+    //         toAsciiTable({
+    //             data: [["", "Scl", ...SPELL_VALUE_LEVELS_ROW_1], ...rows1],
+    //             cellPadding: 3,
+    //         }),
+    //     ),
+    //     codeBlock(
+    //         toAsciiTable({
+    //             data: [["", "Scl", ...SPELL_VALUE_LEVELS_ROW_2], ...rows2],
+    //             cellPadding: 3,
+    //         }),
+    //     ),
+    // ].join("\n");
+
+    //////////
+
+    const rows1 = spellEffectsValues(spell).flatMap((values, index) => {
+        return values.map((value, valueIndex) => [
+            valueIndex === 0 ? index + 1 : "",
+            ...SPELL_VALUE_LEVELS_ROW_1.map((level) => value.toLevel(level)),
+        ]);
     });
 
-    if (!columns.length) {
+    const rows2 = spellEffectsValues(spell).flatMap((values, index) => {
+        return values.map((value, valueIndex) => [
+            valueIndex === 0 ? index + 1 : "",
+            ...SPELL_VALUE_LEVELS_ROW_2.map((level) => value.toLevel(level)),
+        ]);
+    });
+
+    if (!rows1.length || !rows2.length) {
         return null;
     }
 
     return codeBlock(
         toAsciiTable({
-            data: [
-                ["Level", ...columns.map(({ header }) => header)],
-                ["Scale", ...columns.map(({ value }) => value.scale)],
-                ...SPELL_VALUE_LEVELS.map((level) => [level, ...columns.map(({ value }) => value.toLevel(level))]),
-            ],
+            data: [["", ...SPELL_VALUE_LEVELS_ROW_1], ...rows1],
+            cellPadding: 3,
+        }) +
+        "\n" +
+        separator({ data: [["", ...SPELL_VALUE_LEVELS_ROW_1], ...rows1], cellPadding: 3, cross: "╪", line: "=" }) +
+        "\n" +
+        toAsciiTable({
+            data: [["", ...SPELL_VALUE_LEVELS_ROW_2], ...rows2],
             cellPadding: 3,
         }),
     );

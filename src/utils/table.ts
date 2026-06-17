@@ -1,3 +1,42 @@
+export function separator(arg: {
+    readonly data: (string | number)[][];
+    /**
+     * Maximum size of cells not on the first column.
+     */
+    readonly cellPadding: number;
+    /**
+     * Maximum size of cells on the first column.
+     */
+    readonly rowHeaderPadding?: number;
+    /**
+     * Number of rows part of table's header.
+     */
+    readonly headerRowsCount?: number;
+    readonly cross?: string;
+    readonly line?: string;
+}) {
+    const headerRowsCount = arg.headerRowsCount ?? 1;
+    if (headerRowsCount > arg.data.length) {
+        throw new Error("Number of header rows greater than number of rows");
+    }
+    const rowHeaderPadding =
+        arg.rowHeaderPadding ??
+        arg.data.reduce((acc, row) => Math.max(acc, row[0]?.toString().length ?? 0), -Infinity) + 1;
+    function formatRow(row: (string | number)[]) {
+        return rowToStr({ row, rowHeaderPadding, cellPadding: arg.cellPadding });
+    }
+    const headerRows = arg.data.slice(0, headerRowsCount).map(formatRow);
+    const rowSeparatorSecondHalfLength =
+        headerRows.reduce((acc, row) => Math.max(acc, row.length), headerRows[0]!.length - rowHeaderPadding - 1) -
+        rowHeaderPadding -
+        1;
+    return (
+        (arg.line ?? "─").repeat(rowHeaderPadding) +
+        (arg.cross ?? "┼") +
+        (arg.line ?? "─").repeat(rowSeparatorSecondHalfLength)
+    );
+}
+
 /**
  * Returns an ASCII table representation of the given table, using the first row and column as headers.
  *
@@ -38,7 +77,7 @@ export function toAsciiTable(arg: {
     return [...headerRows, rowSeparator, ...arg.data.slice(headerRowsCount).map(formatRow)].join("\n");
 }
 
-function rowToStr({
+export function rowToStr({
     row,
     rowHeaderPadding,
     cellPadding,
