@@ -67,7 +67,11 @@ ${unorderedList([
 Ownership is automatically transferred when the owner leaves the room.
 Rooms are deleted when all players leave.
 
-All responses from ${formatCommand([LFG_COMMAND_NAME])} subcommands are visible only to the user.
-Server admins may designate an "LFG" channel to which will be sent a copy of all responses returned by ${formatCommand([LFG_COMMAND_NAME])} subcommands following successful execution.
+${formatCommand([LFG_COMMAND_NAME])} subcommands may be used in any channel without fear of spamming as all responses are visible to the user only.
+
+${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])} also displays the server's config for the LFG feature as set by admins:
+${unorderedList([
+    `${bold("LFG channel")}: channel to which will be sent a public copy of all responses returned by ${formatCommand([LFG_COMMAND_NAME])} subcommands following successful execution.`,
+])}
 
 Have fun!!`;
