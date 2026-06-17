@@ -141,6 +141,11 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
                 kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS,
             }),
         );
+        const everyoneRole = assertMessage(
+            mapAdminFeatureReturnToMessage({
+                kind: EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE,
+            }),
+        );
 
         expect(missingChannel.kind).toBe(EMessageKind.ERROR);
         expect(missingChannel.embeds?.[0]).toMatchObject({ title: "Missing channel" });
@@ -150,5 +155,10 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
         expect(missingRole.embeds?.[0]).toMatchObject({ title: "Missing role" });
         expect(invalidRoleOptions.kind).toBe(EMessageKind.ERROR);
         expect(invalidRoleOptions.embeds?.[0]).toMatchObject({ title: "Invalid options" });
+        expect(everyoneRole.kind).toBe(EMessageKind.ERROR);
+        expect(everyoneRole.embeds?.[0]).toMatchObject({
+            title: "Invalid role",
+            description: "`@everyone` cannot be configured as an LFG pingable role.",
+        });
     });
 });

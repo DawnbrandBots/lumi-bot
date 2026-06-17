@@ -15,6 +15,7 @@ export const enum EAdminFeatureReturnKind {
     LFG_ROLE_ALREADY_EXISTS = "LFG_ROLE_ALREADY_EXISTS",
     LFG_ROLE_NOT_FOUND = "LFG_ROLE_NOT_FOUND",
     LFG_ROLE_LIMIT_REACHED = "LFG_ROLE_LIMIT_REACHED",
+    LFG_ROLE_CANNOT_BE_EVERYONE = "LFG_ROLE_CANNOT_BE_EVERYONE",
     LFG_GET_CONFIG = "LFG_GET_CONFIG",
     LFG_GET_ROLE_CONFIG = "LFG_GET_ROLE_CONFIG",
 }
@@ -37,7 +38,8 @@ type TAdminFeatureReturnValueByKind = {
         | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS
         | EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE
         | EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS
-        | EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED]: never;
+        | EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED
+        | EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE]: never;
 };
 
 // TODO: implement a utility type to reuse the following logic which can also be found in lfg/types
@@ -68,6 +70,7 @@ export type TAdminFeatureReturnTypes = {
         | EAdminFeatureReturnKind.LFG_ROLE_ALREADY_EXISTS
         | EAdminFeatureReturnKind.LFG_ROLE_NOT_FOUND
         | EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED
+        | EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE
     >;
     getGuildConfig: TAdminFeatureReturnOfKind<EAdminFeatureReturnKind.LFG_GET_CONFIG>;
     getLfgRoleConfig: TAdminFeatureReturnOfKind<EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG>;
