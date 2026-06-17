@@ -152,7 +152,7 @@ export function getLfgCommand({
                 createNegativeMessage<InteractionReplyOptions>({
                     embed: {
                         // TODO: consider date library or Intl.Temporal (but requires node 26)
-                        description: `${role.name} can be pinged again on ${time(
+                        description: `${roleMention(role.id)} can be pinged again on ${time(
                             new Date(new Date(lastPingedAt).getTime() + LFG_ROLE_PING_COOLDOWN_MS),
                         )}.`,
                     },
