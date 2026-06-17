@@ -26,10 +26,11 @@ import {
     LFG_LEAVE_SUBCOMMAND_NAME,
     LFG_LIST_SUBCOMMAND_NAME,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
-    LFG_NO_ROLE_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
     LFG_ROLE_PING_COOLDOWN_MS,
+    LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
+    LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
@@ -44,7 +45,7 @@ export function getLfgCommand({
     adminFeature,
 }: {
     readonly lfgFeature: LfgFeature;
-    readonly adminFeature: Pick<AdminFeature, "getGuildConfig" | "setLfgRoleLastPingedAt">;
+    readonly adminFeature: Pick<AdminFeature, "getGuildConfig" | "getLfgRoleConfig" | "setLfgRoleLastPingedAt">;
 }) {
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
@@ -113,11 +114,12 @@ export function getLfgCommand({
             );
         }
 
-        const roleId = configResult.value?.lfgRole;
-        if (!roleId) {
+        const roleId = interaction.options.getRole(LFG_ROLE_OPTION_NAME, true).id;
+        const roleConfigResult = await adminFeature.getLfgRoleConfig(guildId, roleId);
+        if (!roleConfigResult.value) {
             return interaction.reply(
                 createNegativeMessage<InteractionReplyOptions>({
-                    embed: { description: LFG_NO_ROLE_TO_PING_DESCRIPTION },
+                    embed: { description: LFG_ROLE_NOT_CONFIGURED_DESCRIPTION },
                     flags: [MessageFlags.Ephemeral],
                 }),
             );
@@ -134,7 +136,7 @@ export function getLfgCommand({
         }
 
         const now = new Date();
-        const lastPingedAt = configResult.value?.lfgRoleLastPingedAt;
+        const lastPingedAt = roleConfigResult.value.lastPingedAt;
         if (lastPingedAt && now.getTime() - new Date(lastPingedAt).getTime() < LFG_ROLE_PING_COOLDOWN_MS) {
             return interaction.reply(
                 createNegativeMessage<InteractionReplyOptions>({
@@ -167,7 +169,7 @@ export function getLfgCommand({
             );
         }
 
-        await adminFeature.setLfgRoleLastPingedAt(guildId, now);
+        await adminFeature.setLfgRoleLastPingedAt(guildId, roleId, now);
         return reply;
     }
 

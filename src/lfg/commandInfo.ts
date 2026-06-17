@@ -23,6 +23,7 @@ import {
     LFG_PING_SUBCOMMAND_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
+    LFG_ROLE_OPTION_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
@@ -85,7 +86,12 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
                 subcommand.setName(LFG_HELP_SUBCOMMAND_NAME).setDescription(LFG_HELP_SUBCOMMAND_DESCRIPTION),
             )
             .addSubcommand((subcommand) =>
-                subcommand.setName(LFG_PING_SUBCOMMAND_NAME).setDescription(LFG_PING_SUBCOMMAND_DESCRIPTION),
+                subcommand
+                    .setName(LFG_PING_SUBCOMMAND_NAME)
+                    .setDescription(LFG_PING_SUBCOMMAND_DESCRIPTION)
+                    .addRoleOption((option) =>
+                        option.setName(LFG_ROLE_OPTION_NAME).setDescription("LFG role to ping.").setRequired(true),
+                    ),
             );
     },
     name: LFG_COMMAND_NAME,

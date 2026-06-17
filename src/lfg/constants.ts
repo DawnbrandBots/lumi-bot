@@ -1,6 +1,7 @@
 export const LFG_COMMAND_NAME = "lfg";
 export const LFG_CODE_OPTION_NAME = "code";
 export const LFG_PLAYER_OPTION_NAME = "player";
+export const LFG_ROLE_OPTION_NAME = "role";
 
 export const LFG_CREATE_SUBCOMMAND_NAME = "create";
 export const LFG_JOIN_SUBCOMMAND_NAME = "join";
@@ -39,6 +40,7 @@ export const LFG_NOT_IN_A_ROOM_DESCRIPTION = "Join or create a room first.";
 export const LFG_INVALID_SUBCOMMAND_DESCRIPTION = "Please specify a valid subcommand.";
 export const LFG_NO_ROLE_TO_PING_DESCRIPTION = "No role was set to be pinged.";
 export const LFG_NO_CHANNEL_TO_PING_DESCRIPTION = "LFG channel does not exist.";
+export const LFG_ROLE_NOT_CONFIGURED_DESCRIPTION = "This role is not configured for LFG pings.";
 export const LFG_ROLE_TO_PING_DELETED_DESCRIPTION = "Role to ping appears to no longer exist.";
 export const LFG_ROLE_PINGED_DESCRIPTION = "LFG role pinged.";
 

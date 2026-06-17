@@ -16,8 +16,9 @@ import {
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
-    LFG_NO_ROLE_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
+    LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
+    LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
 } from "../../src/lfg/constants.ts";
 import type { LfgFeature } from "../../src/lfg/feature.ts";
@@ -76,6 +77,7 @@ function getInteractionFixture({
         options: {
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
+            getRole: vi.fn((name: string) => (name === LFG_ROLE_OPTION_NAME ? { id: ROLE_ID } : null)),
         },
         reply,
     } as unknown as ChatInputCommandInteraction;
@@ -102,13 +104,14 @@ function getCommand({
         adminFeature: {
             getGuildConfig: vi.fn().mockResolvedValue({
                 kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
-                value:
-                    channel || lfgRole || lfgRoleLastPingedAt
-                        ? { guild: GUILD_ID, lfgChannel: channel, lfgRole, lfgRoleLastPingedAt }
-                        : null,
+                value: channel ? { guild: GUILD_ID, lfgChannel: channel } : null,
+            }),
+            getLfgRoleConfig: vi.fn().mockResolvedValue({
+                kind: EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG,
+                value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
             }),
             setLfgRoleLastPingedAt,
-        } as unknown as Pick<AdminFeature, "getGuildConfig" | "setLfgRoleLastPingedAt">,
+        } as unknown as Pick<AdminFeature, "getGuildConfig" | "getLfgRoleConfig" | "setLfgRoleLastPingedAt">,
     });
 }
 
@@ -212,7 +215,7 @@ describe(getLfgCommand.name, () => {
         expect(roleFetch).not.toHaveBeenCalled();
     });
 
-    test("lfg ping replies ephemerally when no role is configured", async () => {
+    test("lfg ping replies ephemerally when the requested role is not configured", async () => {
         const command = getCommand({ result: POSITIVE_RESULT, channel: PUBLIC_CHANNEL_ID });
         const { channelFetch, interaction, reply, roleFetch } = getInteractionFixture({
             channelId: OTHER_CHANNEL_ID,
@@ -225,7 +228,7 @@ describe(getLfgCommand.name, () => {
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
-                embeds: [expect.objectContaining({ description: LFG_NO_ROLE_TO_PING_DESCRIPTION })],
+                embeds: [expect.objectContaining({ description: LFG_ROLE_NOT_CONFIGURED_DESCRIPTION })],
             }),
         );
         expect(roleFetch).not.toHaveBeenCalled();
@@ -300,12 +303,14 @@ describe(getLfgCommand.name, () => {
 
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         const publicMessage = send.mock.calls[0]?.[0] as ReplyArg | undefined;
-        expect(publicMessage?.content).toBe(`${roleMention(ROLE_ID)} ${userMention(USER_ID)} is looking for game.`);
+        expect(publicMessage?.content).toBe(
+            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a party!`,
+        );
         expect(publicMessage?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.flags).toEqual([MessageFlags.Ephemeral]);
-        expect(response?.embeds?.[0]?.description).toBe(`LFG role pinged in ${channelMention(PUBLIC_CHANNEL_ID)}.`);
-        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, expect.any(Date));
+        expect(response?.embeds?.[0]?.description).toBe(`Ping triggered in ${channelMention(PUBLIC_CHANNEL_ID)}.`);
+        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
     });
 
     test("lfg ping replies publicly in the LFG channel and records the timestamp", async () => {
@@ -327,9 +332,11 @@ describe(getLfgCommand.name, () => {
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         expect(send).not.toHaveBeenCalled();
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
-        expect(response?.content).toBe(`${roleMention(ROLE_ID)} ${userMention(USER_ID)} is looking for game.`);
+        expect(response?.content).toBe(
+            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a party!`,
+        );
         expect(response?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         expect(response).not.toHaveProperty("flags");
-        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, expect.any(Date));
+        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
     });
 });
