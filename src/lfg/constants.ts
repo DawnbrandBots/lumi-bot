@@ -39,31 +39,31 @@ export const LFG_CANNOT_KICK_YOURSELF_DESCRIPTION = `Use ${LFG_ROOM_CODE_MARKER}
 export const LFG_NOT_IN_A_ROOM_DESCRIPTION = "Join or create a room first.";
 export const LFG_INVALID_SUBCOMMAND_DESCRIPTION = "Please specify a valid subcommand.";
 
-export const LFG_HELP_DESCRIPTION = `${formatCommand([LFG_COMMAND_NAME])} groups subcommands for managing ${bold("parties")} for Friend Battles.
+export const LFG_HELP_DESCRIPTION = `${formatCommand([LFG_COMMAND_NAME])} groups subcommands for managing ${bold("rooms")} for Friend Battles.
 
-Parties:
+Rooms:
 ${unorderedList([
     `are groups of up to ${LFG_MAX_ROOM_PLAYERS} players,`,
     `have a code which should be used in Friend Battles,`,
     `have an ${bold("owner")} with additional privileges within the group.`,
 ])}
 
-Want to play? First check ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])} for vacant spots in existing parties. Ask active players whether you can join them!
+Want to play? First check ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])} for vacant spots in existing rooms. Ask active players whether you can join them!
 
-Use ${formatCommand([LFG_COMMAND_NAME, LFG_JOIN_SUBCOMMAND_NAME])} to join a party, or ${formatCommand([LFG_COMMAND_NAME, LFG_CREATE_SUBCOMMAND_NAME])} to create one as the owner.
+Use ${formatCommand([LFG_COMMAND_NAME, LFG_JOIN_SUBCOMMAND_NAME])} to join a room, or ${formatCommand([LFG_COMMAND_NAME, LFG_CREATE_SUBCOMMAND_NAME])} to create one as the owner.
 
 When you are done playing, use ${formatCommand([LFG_COMMAND_NAME, LFG_LEAVE_SUBCOMMAND_NAME])} so other players can see that you are not playing anymore.
 
 In general, please encourage each other to ensure that ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])}'s output is always up-to-date.
 
-A party owner may also use the following commands:
+A room owner may also use the following commands:
 ${unorderedList([
-    `${formatCommand([LFG_COMMAND_NAME, LFG_DISBAND_SUBCOMMAND_NAME])}: Delete their party.`,
-    `${formatCommand([LFG_COMMAND_NAME, LFG_KICK_SUBCOMMAND_NAME])}: Kick a player from their party.`,
-    `${formatCommand([LFG_COMMAND_NAME, LFG_TRANSFER_SUBCOMMAND_NAME])}: Transfer ownership to another player in their party.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_DISBAND_SUBCOMMAND_NAME])}: Delete their room.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_KICK_SUBCOMMAND_NAME])}: Kick a player from their room.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_TRANSFER_SUBCOMMAND_NAME])}: Transfer ownership to another player in their room.`,
 ])}
 
-Ownership is automatically transferred when the owner leaves the party.
-Parties are deleted when all players leave.
+Ownership is automatically transferred when the owner leaves the room.
+Rooms are deleted when all players leave.
 
 Have fun!!`;
