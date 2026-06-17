@@ -31,7 +31,7 @@ export const LFG_MAX_ROOM_CODE_LENGTH = 8;
 export const LFG_MAX_ROOM_PLAYERS = 3;
 
 export const LFG_EMPTY_ROOM_LIST_DESCRIPTION = "No active rooms. :(";
-export const LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION = "Not configured";
+export const LFG_NOT_CONFIGURED_DESCRIPTION = "Not configured";
 export const LFG_ROOM_OWNER_LABEL = "owner";
 export const LFG_ROOM_CODE_MARKER = "`";
 
