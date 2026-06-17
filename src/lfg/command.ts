@@ -9,7 +9,7 @@ import {
     userMention,
     type CacheType,
     type ChatInputCommandInteraction,
-    type InteractionReplyOptions
+    type InteractionReplyOptions,
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
@@ -25,7 +25,6 @@ import {
     LFG_JOIN_SUBCOMMAND_NAME,
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
-    LFG_LIST_SUBCOMMAND_NAME,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
@@ -33,7 +32,8 @@ import {
     LFG_ROLE_OPTION_NAME,
     LFG_ROLE_PING_COOLDOWN_MS,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
-    LFG_TRANSFER_SUBCOMMAND_NAME,
+    LFG_STATUS_SUBCOMMAND_NAME,
+    LFG_TRANSFER_SUBCOMMAND_NAME
 } from "./constants.ts";
 import type { LfgFeature } from "./feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "./mapper.ts";
@@ -82,10 +82,10 @@ export function getLfgCommand({
                 return lfgFeature.leave(guildId, interaction.user);
             case LFG_DISBAND_SUBCOMMAND_NAME:
                 return lfgFeature.disband(guildId, interaction.user);
-            case LFG_LIST_SUBCOMMAND_NAME:
-                return lfgFeature.list(guildId);
+            case LFG_STATUS_SUBCOMMAND_NAME:
+                return lfgFeature.status(guildId);
             case LFG_HELP_SUBCOMMAND_NAME:
-                return lfgFeature.help();
+                return { kind: ELfgFeatureReturnKind.HELP } as const;
             default:
                 return { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } as const;
         }
@@ -227,7 +227,7 @@ export function getLfgCommand({
             const result = await runSubcommand(interaction, guildId, subcommand);
             const configResult = await adminFeature.getGuildConfig(guildId);
 
-            const messageBase = mapLfgFeatureReturnToMessageBase(result);
+            const messageBase = mapLfgFeatureReturnToMessageBase(result, configResult.value);
             const message = mapLfgMessageBaseToReply(messageBase, interaction, configResult.value);
 
             const reply = await interaction.reply(message);

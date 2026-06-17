@@ -3,19 +3,18 @@ import {
     MessageFlags,
     channelMention,
     roleMention,
+    userMention,
     type ChatInputCommandInteraction,
     type InteractionResponse,
-    userMention,
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { AdminFeature } from "../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
 import type { Command } from "../../src/bot/command.ts";
 import { getLfgCommand } from "../../src/lfg/command.ts";
 import {
+    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
-    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
@@ -115,7 +114,7 @@ function getCommand({
                 value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
             }),
             setLfgRoleLastPingedAt,
-        } as unknown as Pick<AdminFeature, "getGuildConfig" | "getLfgRoleConfig" | "setLfgRoleLastPingedAt">,
+        },
     });
 }
 

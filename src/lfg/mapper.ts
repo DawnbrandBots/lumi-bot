@@ -1,5 +1,12 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import { MessageFlags, userMention, type InteractionReplyOptions } from "discord.js";
+import {
+    channelMention,
+    heading,
+    MessageFlags,
+    unorderedList,
+    userMention,
+    type InteractionReplyOptions,
+} from "discord.js";
 import type { GuildConfig } from "../admin/models/config.ts";
 import {
     createErrorMessage,
@@ -16,7 +23,19 @@ function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
         return LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION;
     }
-    return rooms.map((room) => `- ${formatRoom(room)}`).join("\n");
+    return unorderedList(rooms.map(formatRoom));
+}
+
+function formatStatus(rooms: readonly IRoom[], guildConfig: GuildConfig | null) {
+    const lfgChannel = guildConfig?.lfgChannel
+        ? channelMention(guildConfig.lfgChannel)
+        : LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION;
+    return [
+        heading("Rooms", 3),
+        formatList(rooms),
+        heading("Server config", 3),
+        unorderedList([`LFG channel: ${lfgChannel}`]),
+    ].join("\n");
 }
 
 function formatRoom(room: IRoom) {
@@ -85,15 +104,15 @@ function formatPlayerNotInRoom(targetId: string) {
     return `${userMention(targetId)} is not in your room.`;
 }
 
-export function mapLfgFeatureReturnToMessageBase(result: TLfgFeatureReturn) {
+export function mapLfgFeatureReturnToMessageBase(result: TLfgFeatureReturn, guildConfig: GuildConfig | null = null) {
     switch (result.kind) {
         case ELfgFeatureReturnKind.ROOMS_LISTED:
             return createNeutralMessage<InteractionReplyOptions>({
-                embed: { description: formatList(result.value.rooms) },
+                embed: { description: formatStatus(result.value.rooms, guildConfig) },
             });
         case ELfgFeatureReturnKind.HELP:
             return createNeutralMessage<InteractionReplyOptions>({
-                embed: { description: result.value.description },
+                embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },
             });
         case ELfgFeatureReturnKind.ROOM_CREATED:
             return createPositiveMessage<InteractionReplyOptions>({
