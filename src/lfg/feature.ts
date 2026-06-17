@@ -1,26 +1,9 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { randomUUID } from "node:crypto";
 import {
-    LFG_COMMAND_NAME,
-    LFG_CREATE_SUBCOMMAND_DESCRIPTION,
-    LFG_CREATE_SUBCOMMAND_NAME,
-    LFG_DISBAND_SUBCOMMAND_DESCRIPTION,
-    LFG_DISBAND_SUBCOMMAND_NAME,
-    LFG_HELP_SUBCOMMAND_DESCRIPTION,
-    LFG_HELP_SUBCOMMAND_NAME,
-    LFG_JOIN_SUBCOMMAND_DESCRIPTION,
-    LFG_JOIN_SUBCOMMAND_NAME,
-    LFG_KICK_SUBCOMMAND_DESCRIPTION,
-    LFG_KICK_SUBCOMMAND_NAME,
-    LFG_LEAVE_SUBCOMMAND_DESCRIPTION,
-    LFG_LEAVE_SUBCOMMAND_NAME,
-    LFG_LIST_SUBCOMMAND_DESCRIPTION,
-    LFG_LIST_SUBCOMMAND_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MAX_ROOM_PLAYERS,
-    LFG_MIN_ROOM_CODE_LENGTH,
-    LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
-    LFG_TRANSFER_SUBCOMMAND_NAME,
+    LFG_MIN_ROOM_CODE_LENGTH
 } from "./constants.ts";
 import { LfgRoom } from "./models/room.ts";
 import { LfgRoomPlayer } from "./models/roomPlayer.ts";
@@ -38,7 +21,7 @@ export class LfgFeature implements ILfgFeature {
         this.em = em;
     }
 
-    public async list(guildId: string) {
+    public async status(guildId: string) {
         return {
             kind: ELfgFeatureReturnKind.ROOMS_LISTED,
             value: { rooms: (await this.getRooms(guildId)).map((room) => this.toRoom(room)) },
@@ -46,19 +29,7 @@ export class LfgFeature implements ILfgFeature {
     }
 
     public help() {
-        // TODO: this description must be generated from command info eventually (https://github.com/DawnbrandBots/lumi-bot/issues/37)
-        const description = [
-            `- \`/${LFG_COMMAND_NAME} ${LFG_CREATE_SUBCOMMAND_NAME}\`: ${LFG_CREATE_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_JOIN_SUBCOMMAND_NAME}\`: ${LFG_JOIN_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_TRANSFER_SUBCOMMAND_NAME}\`: ${LFG_TRANSFER_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_KICK_SUBCOMMAND_NAME}\`: ${LFG_KICK_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}\`: ${LFG_LEAVE_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_DISBAND_SUBCOMMAND_NAME}\`: ${LFG_DISBAND_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_LIST_SUBCOMMAND_NAME}\`: ${LFG_LIST_SUBCOMMAND_DESCRIPTION}`,
-            `- \`/${LFG_COMMAND_NAME} ${LFG_HELP_SUBCOMMAND_NAME}\`: ${LFG_HELP_SUBCOMMAND_DESCRIPTION}`,
-        ].join("\n");
-
-        return { kind: ELfgFeatureReturnKind.HELP, value: { description } } as const;
+        return { kind: ELfgFeatureReturnKind.HELP } as const;
     }
 
     public async create(guildId: string, owner: IUser, code: string) {

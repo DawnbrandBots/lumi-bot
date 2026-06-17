@@ -93,7 +93,7 @@ export function mapLfgFeatureReturnToMessageBase(result: TLfgFeatureReturn) {
             });
         case ELfgFeatureReturnKind.HELP:
             return createNeutralMessage<InteractionReplyOptions>({
-                embed: { description: result.value.description },
+                embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },
             });
         case ELfgFeatureReturnKind.ROOM_CREATED:
             return createPositiveMessage<InteractionReplyOptions>({

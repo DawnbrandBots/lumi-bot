@@ -349,11 +349,11 @@ describe(LfgFeature.name, () => {
         });
     });
 
-    test("list only displays rooms from the requested guild", async () => {
+    test("status only displays rooms from the requested guild", async () => {
         await feature.create(GUILD_ID, OWNER, "one");
         await feature.create(OTHER_GUILD_ID, PLAYER_1, "two");
 
-        const response = await feature.list(GUILD_ID);
+        const response = await feature.status(GUILD_ID);
 
         expect(response).toEqual({
             kind: ELfgFeatureReturnKind.ROOMS_LISTED,
@@ -365,7 +365,7 @@ describe(LfgFeature.name, () => {
         const response = feature.help();
 
         expect(response.kind).toBe(ELfgFeatureReturnKind.HELP);
-        expect(response.value.description).toContain("/lfg create");
-        expect(response.value.description).toContain("/lfg help");
+        expect(response.value).toContain("/lfg create");
+        expect(response.value).toContain("/lfg help");
     });
 });
