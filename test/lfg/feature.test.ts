@@ -361,11 +361,9 @@ describe(LfgFeature.name, () => {
         });
     });
 
-    test("help returns the LFG command summary", () => {
+    test("help returns the help result kind", () => {
         const response = feature.help();
 
-        expect(response.kind).toBe(ELfgFeatureReturnKind.HELP);
-        expect(response.value).toContain("/lfg create");
-        expect(response.value).toContain("/lfg help");
+        expect(response).toEqual({ kind: ELfgFeatureReturnKind.HELP });
     });
 });

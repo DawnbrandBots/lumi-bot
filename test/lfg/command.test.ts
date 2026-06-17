@@ -1,6 +1,5 @@
 import { ChannelType, MessageFlags, type ChatInputCommandInteraction, type InteractionResponse } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { AdminFeature } from "../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
 import type { Command } from "../../src/bot/command.ts";
 import { getLfgCommand } from "../../src/lfg/command.ts";
@@ -59,7 +58,7 @@ function getCommand({
                 kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
                 value: channel ? { guild: GUILD_ID, lfgChannel: channel } : null,
             }),
-        } as unknown as Pick<AdminFeature, "getGuildConfig">,
+        },
     });
 }
 
