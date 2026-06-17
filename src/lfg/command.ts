@@ -9,7 +9,7 @@ import {
     userMention,
     type CacheType,
     type ChatInputCommandInteraction,
-    type InteractionReplyOptions,
+    type InteractionReplyOptions
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
@@ -17,6 +17,7 @@ import { createErrorMessage, createNegativeMessage, createPositiveMessage } from
 import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
+    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_DISBAND_SUBCOMMAND_NAME,
@@ -25,13 +26,12 @@ import {
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
     LFG_LIST_SUBCOMMAND_NAME,
-    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
-    LFG_ROLE_PING_COOLDOWN_MS,
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
     LFG_ROLE_OPTION_NAME,
+    LFG_ROLE_PING_COOLDOWN_MS,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
