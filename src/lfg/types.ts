@@ -50,7 +50,6 @@ export type TLfgPlayerRemovalResult =
 
 type TLfgFeatureReturnValueByKind = {
     [ELfgFeatureReturnKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
-    [ELfgFeatureReturnKind.HELP]: string;
     [ELfgFeatureReturnKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
     [ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS]: { readonly code: string };
     [ELfgFeatureReturnKind.ROOM_JOINED]: {
@@ -72,6 +71,7 @@ type TLfgFeatureReturnValueByKind = {
     [ELfgFeatureReturnKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
 } & {
     [_ in
+    | ELfgFeatureReturnKind.HELP
     | ELfgFeatureReturnKind.INVALID_ROOM_CODE
     | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
     | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF

@@ -57,8 +57,7 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
             case LFG_STATUS_SUBCOMMAND_NAME:
                 return lfgFeature.status(guildId);
             case LFG_HELP_SUBCOMMAND_NAME:
-                // TODO: help message formatted for Discord should not come from the application layer
-                return lfgFeature.help();
+                return { kind: ELfgFeatureReturnKind.HELP } as const;
             default:
                 return { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } as const;
         }
