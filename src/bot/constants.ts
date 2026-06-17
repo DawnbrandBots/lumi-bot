@@ -1,60 +1,6 @@
-import { Colors, formatEmoji, hyperlink, userMention } from "discord.js";
+import { Colors, formatEmoji, hyperlink, unorderedList, userMention } from "discord.js";
 
-export const DISCORD_BOT_NAME = "Lumi";
-
-export const DISCORD_NOTABOT_ID = "1454944471358898209";
-export const DISCORD_NOTABOT_MENTION = userMention(DISCORD_NOTABOT_ID);
-export const DISCORD_KEVIN_LU_ID = "1266919844549234812";
-
-export const DISCORD_BOT_INTRODUCTION = `I am Lumi! I provide commands to look up Fire Emblem Shadows data and organize Friend Battles (soon 🙃).`;
-export const DISCORD_BOT_REPOSITORY_LINK = `https://github.com/DawnbrandBots/lumi-bot`;
-export const DISCORD_BOT_LICENCE_LINK = `https://github.com/DawnbrandBots/lumi-bot/blob/master/COPYING`;
-export const DISCORD_BOT_AUTHORS = [
-    {
-        name: "NotABot_FES",
-        githubUrl: "https://github.com/NotABot-FES",
-        discordId: DISCORD_NOTABOT_ID,
-    },
-    {
-        name: "Kevin Lu",
-        githubUrl: "https://github.com/kevinlul",
-        discordId: DISCORD_KEVIN_LU_ID,
-    },
-] as const;
-
-export const DISCORD_BOT_ABOUT_ME_DEVELOPMENT = (() => {
-    const authors = DISCORD_BOT_AUTHORS.map((author) => `- ${author.name}: ${author.githubUrl}`).join("\n");
-    return [
-        `Developed on ${DISCORD_BOT_REPOSITORY_LINK}.`,
-        `Licence: ${DISCORD_BOT_LICENCE_LINK}`,
-        ``,
-        `**Authors**`,
-        `${authors}`,
-    ].join("\n");
-})();
-
-export const DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT = (() => {
-    const repository = hyperlink("GitHub", DISCORD_BOT_REPOSITORY_LINK);
-
-    const mappedAuthors = DISCORD_BOT_AUTHORS.map(
-        (author) => `${userMention(author.discordId)} (${hyperlink("GitHub", author.githubUrl)})`,
-    );
-    const authors =
-        mappedAuthors.length > 1
-            ? `${mappedAuthors.slice(0, -1).join(", ")} and ${mappedAuthors.at(-1)!}`
-            : mappedAuthors[0];
-
-    const licence = `(${hyperlink("licence", DISCORD_BOT_LICENCE_LINK)})`;
-
-    return `Developed on ${repository} by ${authors}. ${licence}`;
-})();
-
-export const DISCORD_BOT_ACTIVITY = `Use /help to see what I can do!`;
-export const DISCORD_BOT_ABOUT_ME = `${DISCORD_BOT_INTRODUCTION}
-
-Use \`/help\` to see what I can do!
-
-${DISCORD_BOT_ABOUT_ME_DEVELOPMENT}`;
+export const DISCORD_BOT_NAME = "Umbra";
 
 export const DISCORD_MESSAGE_POSITIVE_COLOR = Colors.Green;
 export const DISCORD_MESSAGE_NEUTRAL_COLOR = Colors.DarkGold;
@@ -69,6 +15,76 @@ export const DISCORD_BLACK_SQUARE_EMOJI_ID = "black_large_square";
 export const DISCORD_BLACK_SQUARE_EMOJI_CALL = `:${DISCORD_BLACK_SQUARE_EMOJI_ID}:`;
 export const DISCORD_SAI_LAUGH_EMOJI_ID = "1474191899781758976";
 export const DISCORD_SAI_LAUGH_EMOJI_CALL = formatEmoji(DISCORD_SAI_LAUGH_EMOJI_ID);
+export const DISCORD_IMP_EMOJI_CALL = "👿";
+export const DISCORD_SMILING_IMP_EMOJI_CALL = "😈";
+export const DISCORD_SHOWER_EMOJI_CALL = "🚿";
+export const DISCORD_ROBOT_EMOJI_CALL = "🤖";
+export const DISCORD_KURTSUS_EMOJI_ID = "1420950945436799008";
+export const DISCORD_KURTSUS_EMOJI_CALL = formatEmoji(DISCORD_KURTSUS_EMOJI_ID);
 
 export const SEARCH_TERMS_OPTION_NAME = "terms";
 export const SEARCH_MAX_INPUT_LENGTH = 32;
+
+export const DISCORD_NOTABOT_ID = "1454944471358898209";
+export const DISCORD_NOTABOT_MENTION = userMention(DISCORD_NOTABOT_ID);
+export const DISCORD_KEVIN_LU_ID = "1266919844549234812";
+
+export const DISCORD_BOT_INTRODUCTION = `I am Umbra. I am like Lumi, just... more unstable. ${DISCORD_SMILING_IMP_EMOJI_CALL}`;
+export const DISCORD_BOT_REPOSITORY_LINK = `https://github.com/DawnbrandBots/lumi-bot`;
+export const DISCORD_BOT_LICENCE_LINK = `https://github.com/DawnbrandBots/lumi-bot/blob/master/COPYING`;
+export const DISCORD_BOT_AUTHORS = [
+    {
+        name: `NotABot_FES`,
+        githubUrl: "https://github.com/NotABot-FES",
+        discordId: DISCORD_NOTABOT_ID,
+    },
+    {
+        name: "Kevin Lu",
+        githubUrl: "https://github.com/kevinlul",
+        discordId: DISCORD_KEVIN_LU_ID,
+    },
+] as const;
+
+export function formatWashedness(washed: boolean) {
+    return washed ? ` (${DISCORD_ROBOT_EMOJI_CALL}${DISCORD_SHOWER_EMOJI_CALL})` : ``;
+}
+
+export const DISCORD_BOT_ABOUT_ME_DEVELOPMENT = (() => {
+    const authors = unorderedList(
+        DISCORD_BOT_AUTHORS.map(
+            (author) =>
+                `${author.name}${formatWashedness(author.discordId === DISCORD_NOTABOT_ID)}: ${author.githubUrl}`,
+        ),
+    );
+    return [
+        `Developed on ${DISCORD_BOT_REPOSITORY_LINK}.`,
+        `Licence: ${DISCORD_BOT_LICENCE_LINK}`,
+        ``,
+        `**Authors**`,
+        `${authors}`,
+    ].join("\n");
+})();
+
+export const DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT = (() => {
+    const repository = hyperlink("GitHub", DISCORD_BOT_REPOSITORY_LINK);
+
+    const mappedAuthors = DISCORD_BOT_AUTHORS.map(
+        (author) =>
+            `${userMention(author.discordId)}${formatWashedness(author.discordId === DISCORD_NOTABOT_ID)} (${hyperlink("GitHub", author.githubUrl)})`,
+    );
+    const authors =
+        mappedAuthors.length > 1
+            ? `${mappedAuthors.slice(0, -1).join(", ")} and ${mappedAuthors.at(-1)!}`
+            : mappedAuthors[0];
+
+    const licence = `(${hyperlink("licence", DISCORD_BOT_LICENCE_LINK)})`;
+
+    return `Developed on ${repository} by ${authors}. ${licence}`;
+})();
+
+export const DISCORD_BOT_ACTIVITY = `Use /help... or don't. ${DISCORD_IMP_EMOJI_CALL}`;
+export const DISCORD_BOT_ABOUT_ME = `${DISCORD_BOT_INTRODUCTION}
+
+Use \`/help\` to see what I can do... or don't. I don't care either way. ${DISCORD_KURTSUS_EMOJI_CALL}
+
+${DISCORD_BOT_ABOUT_ME_DEVELOPMENT}`;
