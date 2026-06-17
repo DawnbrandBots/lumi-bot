@@ -24,7 +24,7 @@ export const LFG_LEAVE_SUBCOMMAND_DESCRIPTION = "Leave your current room.";
 export const LFG_DISBAND_SUBCOMMAND_DESCRIPTION = "Disband your current room.";
 export const LFG_STATUS_SUBCOMMAND_DESCRIPTION = "Display active rooms.";
 export const LFG_HELP_SUBCOMMAND_DESCRIPTION = "Display LFG commands.";
-export const LFG_PING_SUBCOMMAND_DESCRIPTION = "Ping the configured LFG role.";
+export const LFG_PING_SUBCOMMAND_DESCRIPTION = "Ping one LFG role.";
 
 export const LFG_MIN_ROOM_CODE_LENGTH = 1;
 export const LFG_MAX_ROOM_CODE_LENGTH = 8;
