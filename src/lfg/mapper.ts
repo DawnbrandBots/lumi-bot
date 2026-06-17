@@ -3,6 +3,7 @@ import {
     channelMention,
     heading,
     MessageFlags,
+    roleMention,
     unorderedList,
     userMention,
     type InteractionReplyOptions,
@@ -29,12 +30,18 @@ function formatList(rooms: readonly IRoom[]) {
 function formatStatus(rooms: readonly IRoom[], guildConfig: GuildConfig | null) {
     const lfgChannel = guildConfig?.lfgChannel
         ? channelMention(guildConfig.lfgChannel)
-        : LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION;
+        : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    const lfgRoles =
+        guildConfig?.lfgRoles && guildConfig.lfgRoles.length
+            ? Array.from(guildConfig.lfgRoles)
+                .map((lfgRole) => roleMention(lfgRole.role))
+                .join(", ")
+            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
     return [
         heading("Rooms", 3),
         formatList(rooms),
         heading("Server config", 3),
-        unorderedList([`LFG channel: ${lfgChannel}`]),
+        unorderedList([`LFG channel: ${lfgChannel}`, `LFG roles: ${lfgRoles}`]),
     ].join("\n");
 }
 

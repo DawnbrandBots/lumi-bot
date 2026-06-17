@@ -54,7 +54,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                     {
                         description: statusDescription({
                             roomsDescription: `- ${roomDescription(ROOM)}`,
-                            lfgChannel: LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION,
+                            lfgChannel: LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
                         }),
                     },
                 ],
@@ -69,7 +69,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                     {
                         description: statusDescription({
                             roomsDescription: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION,
-                            lfgChannel: LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION,
+                            lfgChannel: LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
                         }),
                     },
                 ],
