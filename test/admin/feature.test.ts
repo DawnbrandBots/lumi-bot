@@ -118,6 +118,13 @@ describe(AdminFeature.name, () => {
         expect((await getStoredRoles()).map((role) => role.role)).toEqual([ROLE_ID]);
     });
 
+    test("rejects adding everyone role", async () => {
+        const result = await feature.lfgRole(GUILD_ID, "add", GUILD_ID);
+
+        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE });
+        expect(await getStoredRoles()).toEqual([]);
+    });
+
     test("removes role", async () => {
         await feature.lfgRole(GUILD_ID, "add", ROLE_ID);
 

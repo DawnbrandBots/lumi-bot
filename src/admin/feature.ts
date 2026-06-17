@@ -58,6 +58,9 @@ export class AdminFeature {
         }
 
         if (action === ADMIN_ACTION_ADD && role) {
+            if (role === guild) {
+                return { kind: EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE };
+            }
             if (roles.some((lfgRole) => lfgRole.role === role)) {
                 return { kind: EAdminFeatureReturnKind.LFG_ROLE_ALREADY_EXISTS, value: { role } };
             }

@@ -15,6 +15,7 @@ import { getLfgCommand } from "../../src/lfg/command.ts";
 import {
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
+    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
@@ -53,15 +54,17 @@ function getInteractionFixture({
     subcommand = LFG_CREATE_SUBCOMMAND_NAME,
     roleExists = true,
     channelExists = true,
+    roleId = ROLE_ID,
 }: {
     readonly channelId: string;
     readonly send?: ReturnType<typeof vi.fn>;
     readonly subcommand?: string;
     readonly roleExists?: boolean;
     readonly channelExists?: boolean;
+    readonly roleId?: string;
 }) {
     const channelFetch = vi.fn().mockResolvedValue(channelExists ? { type: ChannelType.GuildText, send } : null);
-    const roleFetch = vi.fn().mockResolvedValue(roleExists ? { id: ROLE_ID, name: ROLE_NAME } : null);
+    const roleFetch = vi.fn().mockResolvedValue(roleExists ? { id: roleId, name: ROLE_NAME } : null);
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
         guildId: GUILD_ID,
@@ -78,7 +81,7 @@ function getInteractionFixture({
         options: {
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
-            getRole: vi.fn((name: string) => (name === LFG_ROLE_OPTION_NAME ? { id: ROLE_ID } : null)),
+            getRole: vi.fn((name: string) => (name === LFG_ROLE_OPTION_NAME ? { id: roleId } : null)),
         },
         reply,
     } as unknown as ChatInputCommandInteraction;
@@ -233,6 +236,33 @@ describe(getLfgCommand.name, () => {
             }),
         );
         expect(roleFetch).not.toHaveBeenCalled();
+    });
+
+    test("lfg ping replies ephemerally when the requested role is everyone", async () => {
+        const setLfgRoleLastPingedAt = vi.fn();
+        const command = getCommand({
+            result: POSITIVE_RESULT,
+            channel: PUBLIC_CHANNEL_ID,
+            lfgRole: GUILD_ID,
+            setLfgRoleLastPingedAt,
+        });
+        const { channelFetch, interaction, reply, roleFetch } = getInteractionFixture({
+            channelId: OTHER_CHANNEL_ID,
+            subcommand: LFG_PING_SUBCOMMAND_NAME,
+            roleId: GUILD_ID,
+        });
+
+        await command.run(interaction);
+
+        expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ description: LFG_CANNOT_PING_EVERYONE_DESCRIPTION })],
+            }),
+        );
+        expect(roleFetch).not.toHaveBeenCalled();
+        expect(setLfgRoleLastPingedAt).not.toHaveBeenCalled();
     });
 
     test("lfg ping replies ephemerally when the configured role no longer exists", async () => {

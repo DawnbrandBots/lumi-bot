@@ -25,6 +25,7 @@ import {
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
     LFG_LIST_SUBCOMMAND_NAME,
+    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
@@ -115,6 +116,15 @@ export function getLfgCommand({
         }
 
         const roleId = interaction.options.getRole(LFG_ROLE_OPTION_NAME, true).id;
+        if (roleId === guildId) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_CANNOT_PING_EVERYONE_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
         const roleConfigResult = await adminFeature.getLfgRoleConfig(guildId, roleId);
         if (!roleConfigResult.value) {
             return interaction.reply(

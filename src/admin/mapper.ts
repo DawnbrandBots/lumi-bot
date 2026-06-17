@@ -156,6 +156,14 @@ function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
                 },
                 flags: [MessageFlags.Ephemeral],
             });
+        case EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE:
+            return createErrorMessage<InteractionReplyOptions>({
+                embed: {
+                    title: "Invalid role",
+                    description: "`@everyone` cannot be configured as an LFG pingable role.",
+                },
+                flags: [MessageFlags.Ephemeral],
+            });
         case EAdminFeatureReturnKind.LFG_GET_CONFIG:
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: {
