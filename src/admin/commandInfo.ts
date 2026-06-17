@@ -9,7 +9,9 @@ import { CommandInfo } from "../bot/commandInfo.ts";
 import type { ICommandInfo } from "../bot/types.ts";
 import {
     ADMIN_ACTION_CLEAR,
+    ADMIN_ACTION_ADD,
     ADMIN_ACTION_OPTION_NAME,
+    ADMIN_ACTION_REMOVE,
     ADMIN_ACTION_SET,
     ADMIN_CHANNEL_OPTION_NAME,
     ADMIN_COMMAND_NAME,
@@ -62,14 +64,15 @@ export const adminCommandInfo: ICommandInfo = new CommandInfo({
                                         .setDescription("Config action.")
                                         .setRequired(false)
                                         .addChoices(
-                                            { name: ADMIN_ACTION_SET, value: ADMIN_ACTION_SET },
-                                            { name: ADMIN_ACTION_CLEAR, value: ADMIN_ACTION_CLEAR },
+                                            { name: ADMIN_ACTION_ADD, value: ADMIN_ACTION_ADD },
+                                            { name: ADMIN_ACTION_REMOVE, value: ADMIN_ACTION_REMOVE },
                                         ),
                                 )
                                 .addRoleOption((option) =>
                                     option
                                         .setName(ADMIN_ROLE_OPTION_NAME)
                                         .setDescription("Guild role.")
+                                        // Role is required by add/remove, but optional so no options can show help.
                                         .setRequired(false),
                                 ),
                         )

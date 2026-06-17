@@ -10,8 +10,10 @@ import { createErrorMessage } from "../bot/message.ts";
 import type { ICommand } from "../bot/types.ts";
 import { adminCommandInfo } from "./commandInfo.ts";
 import {
+    ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
     ADMIN_ACTION_OPTION_NAME,
+    ADMIN_ACTION_REMOVE,
     ADMIN_ACTION_SET,
     ADMIN_CHANNEL_OPTION_NAME,
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
@@ -120,10 +122,10 @@ export class AdminCommand implements ICommand {
         const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
         const role = interaction.options.getRole(ADMIN_ROLE_OPTION_NAME, false);
 
-        if (action !== null && action !== ADMIN_ACTION_SET && action !== ADMIN_ACTION_CLEAR) {
+        if (action !== null && action !== ADMIN_ACTION_ADD && action !== ADMIN_ACTION_REMOVE) {
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
-                    description: `Action must be \`${ADMIN_ACTION_SET}\` or \`${ADMIN_ACTION_CLEAR}\`.`,
+                    description: `Action must be \`${ADMIN_ACTION_ADD}\` or \`${ADMIN_ACTION_REMOVE}\`.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });

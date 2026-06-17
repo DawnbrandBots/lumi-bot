@@ -98,7 +98,7 @@ describe(AdminCommand.name, () => {
 
     test("dispatches lfg role", async () => {
         const lfgRole = vi.fn().mockResolvedValue({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_SET,
+            kind: EAdminFeatureReturnKind.LFG_ROLE_ADDED,
             value: { role: ROLE_ID },
         });
         const adminFeature = {
@@ -109,17 +109,17 @@ describe(AdminCommand.name, () => {
         const command = new AdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({
             subcommand: ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
-            action: "set",
+            action: "add",
             role: { id: ROLE_ID },
         });
 
         await command.run(interaction);
 
-        expect(lfgRole).toHaveBeenCalledWith(GUILD_ID, "set", ROLE_ID);
+        expect(lfgRole).toHaveBeenCalledWith(GUILD_ID, "add", ROLE_ID);
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
-                embeds: [expect.objectContaining({ title: "LFG ping role set" })],
+                embeds: [expect.objectContaining({ title: "LFG ping role added" })],
             }),
         );
     });
