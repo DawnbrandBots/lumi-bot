@@ -1,4 +1,4 @@
-import { MessageFlags, userMention, type ChatInputCommandInteraction } from "discord.js";
+import { channelMention, MessageFlags, unorderedList, userMention, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test } from "vitest";
 import type { GuildConfig } from "../../src/admin/models/config.ts";
 import { EMessageKind } from "../../src/bot/types.ts";
@@ -23,6 +23,18 @@ function roomDescription(room: IRoom) {
     return `\`${room.code}\`: ${userMention(room.ownerId)} (${LfgConstants.LFG_ROOM_OWNER_LABEL}), ${userMention("player-1")}, ${userMention("player-2")}`;
 }
 
+function statusDescription({
+    roomsDescription,
+    lfgChannel,
+}: {
+    readonly roomsDescription: string;
+    readonly lfgChannel: string;
+}) {
+    return ["### Rooms", roomsDescription, "### Server config", unorderedList([`LFG channel: ${lfgChannel}`])].join(
+        "\n\n",
+    );
+}
+
 function getInteraction(channelId: string) {
     return { channelId } as ChatInputCommandInteraction;
 }
@@ -38,7 +50,14 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
             input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: `- ${roomDescription(ROOM)}` }],
+                embeds: [
+                    {
+                        description: statusDescription({
+                            roomsDescription: `- ${roomDescription(ROOM)}`,
+                            lfgChannel: LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION,
+                        }),
+                    },
+                ],
             },
         },
         {
@@ -46,15 +65,22 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
             input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [] } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION }],
+                embeds: [
+                    {
+                        description: statusDescription({
+                            roomsDescription: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION,
+                            lfgChannel: LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION,
+                        }),
+                    },
+                ],
             },
         },
         {
             name: "help",
-            input: { kind: ELfgFeatureReturnKind.HELP, value: { description: "help text" } },
+            input: { kind: ELfgFeatureReturnKind.HELP },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: "help text" }],
+                embeds: [{ description: LfgConstants.LFG_HELP_DESCRIPTION }],
             },
         },
         {
@@ -319,6 +345,25 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
     ])("maps $name", ({ input, expected }) => {
         const messageBase = mapLfgFeatureReturnToMessageBase(input);
         expect(messageBase).toMatchObject(expected);
+    });
+
+    test("maps status with configured LFG channel", () => {
+        const messageBase = mapLfgFeatureReturnToMessageBase(
+            { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+            GUILD_CONFIG,
+        );
+
+        expect(messageBase).toMatchObject({
+            kind: EMessageKind.NEUTRAL,
+            embeds: [
+                {
+                    description: statusDescription({
+                        roomsDescription: `- ${roomDescription(ROOM)}`,
+                        lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
+                    }),
+                },
+            ],
+        });
     });
 });
 

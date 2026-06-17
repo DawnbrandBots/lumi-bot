@@ -3,19 +3,18 @@ import {
     MessageFlags,
     channelMention,
     roleMention,
+    userMention,
     type ChatInputCommandInteraction,
     type InteractionResponse,
-    userMention,
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { AdminFeature } from "../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
 import type { Command } from "../../src/bot/command.ts";
 import { getLfgCommand } from "../../src/lfg/command.ts";
 import {
+    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
-    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
@@ -115,7 +114,7 @@ function getCommand({
                 value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
             }),
             setLfgRoleLastPingedAt,
-        } as unknown as Pick<AdminFeature, "getGuildConfig" | "getLfgRoleConfig" | "setLfgRoleLastPingedAt">,
+        },
     });
 }
 
@@ -336,7 +335,7 @@ describe(getLfgCommand.name, () => {
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         const publicMessage = send.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(publicMessage?.content).toBe(
-            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a party!`,
+            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a room!`,
         );
         expect(publicMessage?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
@@ -365,7 +364,7 @@ describe(getLfgCommand.name, () => {
         expect(send).not.toHaveBeenCalled();
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.content).toBe(
-            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a party!`,
+            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a room!`,
         );
         expect(response?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         expect(response).not.toHaveProperty("flags");
