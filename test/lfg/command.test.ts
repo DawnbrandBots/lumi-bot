@@ -30,6 +30,7 @@ const ROOM_CODE = "room";
 const PUBLIC_CHANNEL_ID = "public-channel";
 const OTHER_CHANNEL_ID = "other-channel";
 const ROLE_ID = "role-1";
+const ROLE_NAME = "Raid";
 const REPLY = {} as InteractionResponse<boolean>;
 const POSITIVE_RESULT = {
     kind: ELfgFeatureReturnKind.ROOM_CREATED,
@@ -60,7 +61,7 @@ function getInteractionFixture({
     readonly channelExists?: boolean;
 }) {
     const channelFetch = vi.fn().mockResolvedValue(channelExists ? { type: ChannelType.GuildText, send } : null);
-    const roleFetch = vi.fn().mockResolvedValue(roleExists ? { id: ROLE_ID } : null);
+    const roleFetch = vi.fn().mockResolvedValue(roleExists ? { id: ROLE_ID, name: ROLE_NAME } : null);
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
         guildId: GUILD_ID,
@@ -279,6 +280,7 @@ describe(getLfgCommand.name, () => {
 
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.flags).toEqual([MessageFlags.Ephemeral]);
+        expect(response?.embeds?.[0]?.description).toContain(ROLE_NAME);
         expect(response?.embeds?.[0]?.description).toContain("again on");
         expect(setLfgRoleLastPingedAt).not.toHaveBeenCalled();
     });

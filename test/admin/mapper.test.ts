@@ -90,7 +90,7 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
         expect(message.kind).toBe(EMessageKind.NEUTRAL);
         expect(message.flags).toEqual([MessageFlags.Ephemeral]);
         expect(description(message)).toContain("Valid combinations");
-        expect(description(message)).toContain("No role set");
+        expect(description(message)).toContain("No pingable role set");
     });
 
     test("maps LFG role added", () => {
@@ -104,7 +104,7 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
         expect(message.kind).toBe(EMessageKind.POSITIVE);
         expect(message.embeds?.[0]).toMatchObject({
             title: "LFG ping role added",
-            description: `${roleMention(ROLE_ID)} can now be pinged by LFG.`,
+            description: `${roleMention(ROLE_ID)} can now be pinged by \`lfg ping\`.`,
         });
     });
 
