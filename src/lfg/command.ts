@@ -173,7 +173,7 @@ export function getLfgCommand({
             await channel.send(pingMessage);
             reply = await interaction.reply(
                 createPositiveMessage<InteractionReplyOptions>({
-                    embed: { description: `Ping triggered in ${channelMention(channelId)}.` },
+                    embed: { description: `${roleMention(roleId)} pinged in ${channelMention(channelId)}.` },
                     flags: [MessageFlags.Ephemeral],
                 }),
             );
