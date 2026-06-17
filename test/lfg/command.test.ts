@@ -335,7 +335,7 @@ describe(getLfgCommand.name, () => {
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         const publicMessage = send.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(publicMessage?.content).toBe(
-            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a party!`,
+            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a room!`,
         );
         expect(publicMessage?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
@@ -364,7 +364,7 @@ describe(getLfgCommand.name, () => {
         expect(send).not.toHaveBeenCalled();
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.content).toBe(
-            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a party!`,
+            `${roleMention(ROLE_ID)} people, ${userMention(USER_ID)} is looking for a room!`,
         );
         expect(response?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         expect(response).not.toHaveProperty("flags");

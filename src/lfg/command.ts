@@ -33,7 +33,7 @@ import {
     LFG_ROLE_PING_COOLDOWN_MS,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
-    LFG_TRANSFER_SUBCOMMAND_NAME
+    LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
 import type { LfgFeature } from "./feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "./mapper.ts";
@@ -162,7 +162,7 @@ export function getLfgCommand({
         }
 
         const pingMessage = {
-            content: `${roleMention(roleId)} people, ${userMention(interaction.user.id)} is looking for a party!`,
+            content: `${roleMention(roleId)} people, ${userMention(interaction.user.id)} is looking for a room!`,
             allowedMentions: { roles: [roleId], users: [interaction.user.id] },
         };
 
