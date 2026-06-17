@@ -6,10 +6,11 @@ import {
     type SlashCommandBuilder,
 } from "discord.js";
 import { CommandInfo } from "../bot/commandInfo.ts";
+import { DISCORD_BOT_NAME } from "../bot/constants.ts";
 import type { ICommandInfo } from "../bot/types.ts";
 import {
-    ADMIN_ACTION_CLEAR,
     ADMIN_ACTION_ADD,
+    ADMIN_ACTION_CLEAR,
     ADMIN_ACTION_OPTION_NAME,
     ADMIN_ACTION_REMOVE,
     ADMIN_ACTION_SET,
@@ -83,7 +84,7 @@ export const adminCommandInfo: ICommandInfo = new CommandInfo({
         );
     },
     name: ADMIN_COMMAND_NAME,
-    description: "Configure Lumi for this server.",
+    description: `Configure ${DISCORD_BOT_NAME} for this server.`,
     contexts: [InteractionContextType.Guild],
     integrationTypes: [ApplicationIntegrationType.GuildInstall],
 });
