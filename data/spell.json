@@ -2513,7 +2513,7 @@
     "disciple": "YUNI",
     "role": "LIGHT",
     "shape": "2X2_SQUARE",
-    "uses": null,
+    "uses": 1,
     "cooldown": 5,
     "effects": [
       {
