@@ -1,5 +1,8 @@
 import type { MaybePromise } from "../utils/types.ts";
 
+// TODO: these types are not implemented by corredsponding classes in their original PR.
+// Also, properly document them.
+
 export interface IUser {
     readonly id: string;
 }
