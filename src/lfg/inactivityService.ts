@@ -295,6 +295,7 @@ export class LfgInactivityService {
                 continue;
             }
 
+            // TODO: a new LfgFeature should not be created
             const feature = new LfgFeature({ em });
             const result = await feature.removePlayer(guildId, player.userId);
             if (!result) {
