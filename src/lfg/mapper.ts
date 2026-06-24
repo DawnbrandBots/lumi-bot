@@ -1,10 +1,21 @@
-import { userMention, type InteractionReplyOptions } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
+import {
+    channelMention,
+    heading,
+    MessageFlags,
+    roleMention,
+    unorderedList,
+    userMention,
+    type InteractionReplyOptions,
+} from "discord.js";
+import type { GuildConfig } from "../admin/models/config.ts";
 import {
     createErrorMessage,
     createNegativeMessage,
     createNeutralMessage,
     createPositiveMessage,
 } from "../bot/message.ts";
+import { EMessageKind } from "../bot/types.ts";
 import * as LfgConstants from "./constants.ts";
 import type { TLfgFeatureReturnOfKind } from "./types.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
@@ -13,7 +24,25 @@ function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
         return LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION;
     }
-    return rooms.map((room) => `- ${formatRoom(room)}`).join("\n");
+    return unorderedList(rooms.map(formatRoom));
+}
+
+function formatStatus(rooms: readonly IRoom[], guildConfig: GuildConfig | null) {
+    const lfgChannel = guildConfig?.lfgChannel
+        ? channelMention(guildConfig.lfgChannel)
+        : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    const lfgRoles =
+        guildConfig?.lfgRoles && guildConfig.lfgRoles.length
+            ? Array.from(guildConfig.lfgRoles)
+                .map((lfgRole) => roleMention(lfgRole.role))
+                .join(", ")
+            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    return [
+        heading("Rooms", 3),
+        formatList(rooms),
+        heading("Server config", 3),
+        unorderedList([`LFG channel: ${lfgChannel}`, `LFG roles: ${lfgRoles}`]),
+    ].join("\n");
 }
 
 function formatRoom(room: IRoom) {
@@ -82,15 +111,15 @@ function formatPlayerNotInRoom(targetId: string) {
     return `${userMention(targetId)} is not in your room.`;
 }
 
-function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
+export function mapLfgFeatureReturnToMessageBase(result: TLfgFeatureReturn, guildConfig: GuildConfig | null = null) {
     switch (result.kind) {
         case ELfgFeatureReturnKind.ROOMS_LISTED:
             return createNeutralMessage<InteractionReplyOptions>({
-                embed: { description: formatList(result.value.rooms) },
+                embed: { description: formatStatus(result.value.rooms, guildConfig) },
             });
         case ELfgFeatureReturnKind.HELP:
             return createNeutralMessage<InteractionReplyOptions>({
-                embed: { description: result.value.description },
+                embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },
             });
         case ELfgFeatureReturnKind.ROOM_CREATED:
             return createPositiveMessage<InteractionReplyOptions>({
@@ -205,4 +234,13 @@ function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
     }
 }
 
-export default mapLfgFeatureReturnToMessage;
+export function mapLfgMessageBaseToReply(
+    messageBase: ReturnType<typeof mapLfgFeatureReturnToMessageBase>,
+    interaction: ChatInputCommandInteraction,
+    guildConfig: GuildConfig | null,
+) {
+    if (messageBase.kind === EMessageKind.POSITIVE && interaction.channelId === guildConfig?.lfgChannel) {
+        return messageBase;
+    }
+    return { ...messageBase, flags: [MessageFlags.Ephemeral] } as const;
+}

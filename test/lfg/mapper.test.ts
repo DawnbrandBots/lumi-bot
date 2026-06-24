@@ -1,8 +1,9 @@
-import { userMention } from "discord.js";
+import { channelMention, MessageFlags, unorderedList, userMention, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test } from "vitest";
+import type { GuildConfig } from "../../src/admin/models/config.ts";
 import { EMessageKind } from "../../src/bot/types.ts";
 import * as LfgConstants from "../../src/lfg/constants.ts";
-import mapLfgFeatureReturnToMessage from "../../src/lfg/mapper.ts";
+import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../src/lfg/mapper.ts";
 import {
     ELfgFeatureReturnKind,
     ELfgPlayerRemovalKind,
@@ -15,24 +16,48 @@ const ROOM: IRoom = {
     ownerId: "owner",
     playerIds: ["player-1", "owner", "player-2"],
 };
+const PUBLIC_CHANNEL_ID = "public-channel";
+const GUILD_CONFIG = { guild: "guild-1", lfgChannel: PUBLIC_CHANNEL_ID } as GuildConfig;
 
 function roomDescription(room: IRoom) {
     return `\`${room.code}\`: ${userMention(room.ownerId)} (${LfgConstants.LFG_ROOM_OWNER_LABEL}), ${userMention("player-1")}, ${userMention("player-2")}`;
 }
 
-// TODO: need to restore tests on flags!!!!
-describe(mapLfgFeatureReturnToMessage.name, () => {
+function statusDescription({
+    roomsDescription,
+    lfgChannel,
+}: {
+    readonly roomsDescription: string;
+    readonly lfgChannel: string;
+}) {
+    return ["### Rooms", roomsDescription, "### Server config", unorderedList([`LFG channel: ${lfgChannel}`])].join(
+        "\n\n",
+    );
+}
+
+function getInteraction(channelId: string) {
+    return { channelId } as ChatInputCommandInteraction;
+}
+
+describe(mapLfgFeatureReturnToMessageBase.name, () => {
     test.each<{
         readonly name: string;
         readonly input: TLfgFeatureReturn;
-        readonly expected: Pick<ReturnType<typeof mapLfgFeatureReturnToMessage>, "kind" | "embeds">;
+        readonly expected: Pick<ReturnType<typeof mapLfgFeatureReturnToMessageBase>, "kind" | "embeds">;
     }>([
         {
             name: "non-empty room list",
             input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: `- ${roomDescription(ROOM)}` }],
+                embeds: [
+                    {
+                        description: statusDescription({
+                            roomsDescription: `- ${roomDescription(ROOM)}`,
+                            lfgChannel: LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
+                        }),
+                    },
+                ],
             },
         },
         {
@@ -40,15 +65,22 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
             input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [] } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION }],
+                embeds: [
+                    {
+                        description: statusDescription({
+                            roomsDescription: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION,
+                            lfgChannel: LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
+                        }),
+                    },
+                ],
             },
         },
         {
             name: "help",
-            input: { kind: ELfgFeatureReturnKind.HELP, value: { description: "help text" } },
+            input: { kind: ELfgFeatureReturnKind.HELP },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: "help text" }],
+                embeds: [{ description: LfgConstants.LFG_HELP_DESCRIPTION }],
             },
         },
         {
@@ -311,15 +343,70 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
             },
         },
     ])("maps $name", ({ input, expected }) => {
-        const privateResponse = mapLfgFeatureReturnToMessage(input);
-        expect(privateResponse).toMatchObject(expected);
+        const messageBase = mapLfgFeatureReturnToMessageBase(input);
+        expect(messageBase).toMatchObject(expected);
+    });
 
-        // const publicResponse = mapLfgFeatureReturnToMessage(input);
-        // if (expected.kind === EMessageKind.POSITIVE) {
-        //     expect(publicResponse).toMatchObject(expected);
-        //     expect(publicResponse).not.toHaveProperty("flags");
-        // } else {
-        //     expect(publicResponse).toMatchObject(expected);
-        // }
+    test("maps status with configured LFG channel", () => {
+        const messageBase = mapLfgFeatureReturnToMessageBase(
+            { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+            GUILD_CONFIG,
+        );
+
+        expect(messageBase).toMatchObject({
+            kind: EMessageKind.NEUTRAL,
+            embeds: [
+                {
+                    description: statusDescription({
+                        roomsDescription: `- ${roomDescription(ROOM)}`,
+                        lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
+                    }),
+                },
+            ],
+        });
+    });
+});
+
+describe(mapLfgMessageBaseToReply.name, () => {
+    test("keeps positive messages public in the configured channel", () => {
+        const messageBase = mapLfgFeatureReturnToMessageBase({
+            kind: ELfgFeatureReturnKind.ROOM_CREATED,
+            value: { userId: "owner", room: ROOM },
+        });
+
+        const reply = mapLfgMessageBaseToReply(messageBase, getInteraction(PUBLIC_CHANNEL_ID), GUILD_CONFIG);
+
+        expect(reply).toEqual(messageBase);
+        expect(reply).not.toHaveProperty("flags");
+    });
+
+    test("makes positive messages ephemeral outside the configured channel", () => {
+        const messageBase = mapLfgFeatureReturnToMessageBase({
+            kind: ELfgFeatureReturnKind.ROOM_CREATED,
+            value: { userId: "owner", room: ROOM },
+        });
+
+        const reply = mapLfgMessageBaseToReply(messageBase, getInteraction("other-channel"), GUILD_CONFIG);
+
+        expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
+    });
+
+    test("makes positive messages ephemeral when no channel is configured", () => {
+        const messageBase = mapLfgFeatureReturnToMessageBase({
+            kind: ELfgFeatureReturnKind.ROOM_CREATED,
+            value: { userId: "owner", room: ROOM },
+        });
+
+        const reply = mapLfgMessageBaseToReply(messageBase, getInteraction("other-channel"), null);
+
+        expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
+    });
+
+    test("makes non-positive messages ephemeral in the configured channel", () => {
+        const messageBase = mapLfgFeatureReturnToMessageBase({ kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE });
+
+        const reply = mapLfgMessageBaseToReply(messageBase, getInteraction(PUBLIC_CHANNEL_ID), GUILD_CONFIG);
+
+        expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
     });
 });
