@@ -66,8 +66,13 @@ type TLfgFeatureReturnValueByKind = {
         readonly targetId: string;
         readonly room: IRoom;
     };
-    [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: { readonly targetId: string };
-    [ELfgFeatureReturnKind.PLAYER_KICKED]: { readonly userId: string; readonly targetId: string; readonly room: IRoom };
+    [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: { readonly targetId: string; readonly code: string };
+    [ELfgFeatureReturnKind.PLAYER_KICKED]: {
+        readonly userId: string;
+        readonly targetId: string;
+        readonly room: IRoom;
+        readonly removalResult: TLfgPlayerRemovalResult;
+    };
     [ELfgFeatureReturnKind.ROOM_LEFT]: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
     [ELfgFeatureReturnKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
 } & {
@@ -118,6 +123,11 @@ export type TLfgFeatureReturnTypes = {
     >;
     kick: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.PLAYER_KICKED
+        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
+        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    >;
+    kickFromOwnedRoom: TLfgFeatureReturnOfKind<
+        | ELfgFeatureReturnKind.PLAYER_KICKED
         | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
         | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
@@ -137,7 +147,12 @@ export interface ILfgFeature {
     create(guildId: string, owner: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["create"]>;
     move(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["move"]>;
     transfer(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
-    kick(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
+    kick(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
+    kickFromOwnedRoom(
+        guildId: string,
+        owner: IUser,
+        target: IUser,
+    ): MaybePromise<TLfgFeatureReturnTypes["kickFromOwnedRoom"]>;
     leave(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["leave"]>;
     disband(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
 }

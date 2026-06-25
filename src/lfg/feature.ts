@@ -1,10 +1,6 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { randomUUID } from "node:crypto";
-import {
-    LFG_MAX_ROOM_CODE_LENGTH,
-    LFG_MAX_ROOM_PLAYERS,
-    LFG_MIN_ROOM_CODE_LENGTH
-} from "./constants.ts";
+import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "./constants.ts";
 import { LfgRoom } from "./models/room.ts";
 import { LfgRoomPlayer } from "./models/roomPlayer.ts";
 import type { TLfgPlayerRemovalResult } from "./types.ts";
@@ -85,9 +81,7 @@ export class LfgFeature implements ILfgFeature {
         }
 
         const leftRoomCode = currentPlayer?.room.code;
-        const removalResult = currentPlayer
-            ? this.removePlayerFromRoom(currentPlayer.room, currentPlayer)
-            : undefined;
+        const removalResult = currentPlayer ? this.removePlayerFromRoom(currentPlayer.room, currentPlayer) : undefined;
         const player = this.em.create(LfgRoomPlayer, {
             id: randomUUID(),
             userId: user.id,
@@ -113,7 +107,10 @@ export class LfgFeature implements ILfgFeature {
 
         const targetPlayer = await this.getRoomPlayerInGuild(guildId, target.id);
         if (targetPlayer?.room.id !== result.id) {
-            return { kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM, value: { targetId: target.id } } as const;
+            return {
+                kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
+                value: { targetId: target.id, code: result.code },
+            } as const;
         }
 
         result.ownerId = target.id;
@@ -124,7 +121,15 @@ export class LfgFeature implements ILfgFeature {
         } as const;
     }
 
-    public async kick(guildId: string, owner: IUser, target: IUser) {
+    public async kick(guildId: string, code: string, target: IUser) {
+        const room = await this.getRoomByGuildAndCode(guildId, code);
+        if (!room) {
+            return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
+        }
+        return this.kickFromRoom(guildId, room, target);
+    }
+
+    public async kickFromOwnedRoom(guildId: string, owner: IUser, target: IUser) {
         const result = await this.getOwnedRoom(guildId, owner);
         if ("kind" in result) {
             return result;
@@ -132,17 +137,25 @@ export class LfgFeature implements ILfgFeature {
         if (owner.id === target.id) {
             return { kind: ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF } as const;
         }
+        return this.kickFromRoom(guildId, result, target);
+    }
 
+    protected async kickFromRoom(guildId: string, room: LfgRoom, target: IUser) {
         const targetPlayer = await this.getRoomPlayerInGuild(guildId, target.id);
-        if (targetPlayer?.room.id !== result.id) {
-            return { kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM, value: { targetId: target.id } } as const;
+        if (targetPlayer?.room.id !== room.id) {
+            return {
+                kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
+                value: { targetId: target.id, code: room.code },
+            } as const;
         }
 
-        this.removePlayerFromRoom(result, targetPlayer);
+        const ownerId = room.ownerId;
+        const removalResult = this.removePlayerFromRoom(room, targetPlayer);
+        const roomSnapshot = this.toRoom(room, target.id);
         await this.em.flush();
         return {
             kind: ELfgFeatureReturnKind.PLAYER_KICKED,
-            value: { userId: owner.id, targetId: target.id, room: this.toRoom(result) },
+            value: { userId: ownerId, targetId: target.id, room: roomSnapshot, removalResult },
         } as const;
     }
 
@@ -180,6 +193,7 @@ export class LfgFeature implements ILfgFeature {
         if (player.room.ownerId !== owner.id) {
             return { kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER } as const;
         }
+        // TODO: this return value should have the same shape as the others
         return player.room;
     }
 
@@ -210,11 +224,14 @@ export class LfgFeature implements ILfgFeature {
         return { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY };
     }
 
-    protected toRoom(room: LfgRoom): IRoom {
+    protected toRoom(room: LfgRoom, excludedPlayerId?: string): IRoom {
         return {
             code: room.code,
             ownerId: room.ownerId,
-            playerIds: room.players.toArray().map((player) => player.userId),
+            playerIds: room.players
+                .toArray()
+                .filter((player) => player.userId !== excludedPlayerId)
+                .map((player) => player.userId),
         };
     }
 }

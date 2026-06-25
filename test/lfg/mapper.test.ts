@@ -129,7 +129,12 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
             name: "player kicked",
             input: {
                 kind: ELfgFeatureReturnKind.PLAYER_KICKED,
-                value: { userId: "owner", targetId: "player-1", room: ROOM },
+                value: {
+                    userId: "owner",
+                    targetId: "player-1",
+                    room: ROOM,
+                    removalResult: { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY },
+                },
             },
             expected: {
                 kind: EMessageKind.POSITIVE,
@@ -284,7 +289,10 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
         },
         {
             name: "player not in room",
-            input: { kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM, value: { targetId: "target" } },
+            input: {
+                kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
+                value: { targetId: "target", code: ROOM.code },
+            },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [

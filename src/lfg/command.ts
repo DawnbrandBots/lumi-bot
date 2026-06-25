@@ -73,7 +73,7 @@ export function getLfgCommand({
                     interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
                 );
             case LFG_KICK_SUBCOMMAND_NAME:
-                return lfgFeature.kick(
+                return lfgFeature.kickFromOwnedRoom(
                     guildId,
                     interaction.user,
                     interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
