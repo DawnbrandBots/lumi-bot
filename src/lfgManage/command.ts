@@ -41,6 +41,8 @@ export function getLfgManageCommand({
                 return lfgFeature.move(guildId, interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true), code);
             case "kick":
                 return lfgFeature.kick(guildId, code, interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true));
+            case "transfer":
+                return lfgFeature.transfer(guildId, code, interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true));
             case "disband":
                 return lfgFeature.disband(guildId, code);
             default:

@@ -68,6 +68,7 @@ function getCommand({
         create: vi.fn().mockResolvedValue(result),
         move: vi.fn().mockResolvedValue(result),
         kick: vi.fn().mockResolvedValue(result),
+        transfer: vi.fn().mockResolvedValue(result),
         disband: vi.fn().mockResolvedValue(result),
     };
     const adminFeature = {
@@ -88,6 +89,12 @@ function getCommand({
 }
 
 describe(getLfgManageCommand.name, () => {
+    test("registers the transfer subcommand", () => {
+        const { command } = getCommand({ result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } });
+
+        expect(command.info.registerCommandInfo.options?.some((option) => option.name === "transfer")).toBe(true);
+    });
+
     test("rejects users without Manage Server", async () => {
         const { adminFeature, command, lfgFeature } = getCommand({
             result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
@@ -141,6 +148,19 @@ describe(getLfgManageCommand.name, () => {
                     targetId: PLAYER_ID,
                     room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [] },
                     removalResult: { kind: ELfgPlayerRemovalKind.ROOM_DELETED },
+                },
+            } satisfies TLfgFeatureReturn,
+            expectedArgs: [GUILD_ID, ROOM_CODE, { id: PLAYER_ID }],
+        },
+        {
+            subcommand: "transfer",
+            method: "transfer",
+            result: {
+                kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
+                value: {
+                    userId: PLAYER_ID,
+                    targetId: PLAYER_ID,
+                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
             } satisfies TLfgFeatureReturn,
             expectedArgs: [GUILD_ID, ROOM_CODE, { id: PLAYER_ID }],

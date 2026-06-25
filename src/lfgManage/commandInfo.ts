@@ -60,6 +60,16 @@ export const lfgManageCommandInfo: ICommandInfo = new CommandInfo({
                 ),
             )
             .addSubcommand((subcommand) =>
+                addRoomCodeOption(
+                    subcommand
+                        .setName("transfer")
+                        .setDescription("Transfer room ownership.")
+                        .addUserOption((option) =>
+                            option.setName(LFG_PLAYER_OPTION_NAME).setDescription("New room owner.").setRequired(true),
+                        ),
+                ),
+            )
+            .addSubcommand((subcommand) =>
                 addRoomCodeOption(subcommand.setName("disband").setDescription("Disband a room.")),
             );
     },
