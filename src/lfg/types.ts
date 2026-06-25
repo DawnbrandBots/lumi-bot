@@ -56,6 +56,7 @@ type TLfgFeatureReturnValueByKind = {
         readonly userId: string;
         readonly room: IRoom;
         readonly leftRoomCode?: string;
+        readonly removalResult?: TLfgPlayerRemovalResult;
     };
     [ELfgFeatureReturnKind.ROOM_NOT_FOUND]: { readonly code: string };
     [ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM]: { readonly room: IRoom };

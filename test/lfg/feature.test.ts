@@ -111,6 +111,7 @@ describe(LfgFeature.name, () => {
                 value: {
                     userId: PLAYER_1.id,
                     leftRoomCode: undefined,
+                    removalResult: undefined,
                     room: { code: "room", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
                 },
             });
@@ -150,6 +151,7 @@ describe(LfgFeature.name, () => {
                 value: {
                     userId: PLAYER_1.id,
                     leftRoomCode: "two",
+                    removalResult: { kind: ELfgPlayerRemovalKind.ROOM_DELETED },
                     room: { code: "one", ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
                 },
             });
@@ -165,7 +167,15 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.move(GUILD_ID, OWNER, "two");
 
-            expect(response.kind).toBe(ELfgFeatureReturnKind.ROOM_JOINED);
+            expect(response).toMatchObject({
+                kind: ELfgFeatureReturnKind.ROOM_JOINED,
+                value: {
+                    removalResult: {
+                        kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
+                        newOwnerId: PLAYER_1.id,
+                    },
+                },
+            });
             expect(await getRooms(GUILD_ID)).toEqual([
                 { code: "one", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id] },
                 { code: "two", ownerId: PLAYER_2.id, playerIds: [PLAYER_2.id, OWNER.id] },
@@ -178,7 +188,12 @@ describe(LfgFeature.name, () => {
 
             const response = await feature.move(GUILD_ID, OWNER, "two");
 
-            expect(response.kind).toBe(ELfgFeatureReturnKind.ROOM_JOINED);
+            expect(response).toMatchObject({
+                kind: ELfgFeatureReturnKind.ROOM_JOINED,
+                value: {
+                    removalResult: { kind: ELfgPlayerRemovalKind.ROOM_DELETED },
+                },
+            });
             expect(await getRooms(GUILD_ID)).toEqual([
                 { code: "two", ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id, OWNER.id] },
             ]);

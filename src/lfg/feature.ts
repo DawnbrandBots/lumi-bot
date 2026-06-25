@@ -85,9 +85,9 @@ export class LfgFeature implements ILfgFeature {
         }
 
         const leftRoomCode = currentPlayer?.room.code;
-        if (currentPlayer) {
-            this.removePlayerFromRoom(currentPlayer.room, currentPlayer);
-        }
+        const removalResult = currentPlayer
+            ? this.removePlayerFromRoom(currentPlayer.room, currentPlayer)
+            : undefined;
         const player = this.em.create(LfgRoomPlayer, {
             id: randomUUID(),
             userId: user.id,
@@ -98,7 +98,7 @@ export class LfgFeature implements ILfgFeature {
 
         return {
             kind: ELfgFeatureReturnKind.ROOM_JOINED,
-            value: { userId: user.id, room: this.toRoom(room), leftRoomCode },
+            value: { userId: user.id, room: this.toRoom(room), leftRoomCode, removalResult },
         } as const;
     }
 
