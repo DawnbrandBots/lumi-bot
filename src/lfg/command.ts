@@ -61,7 +61,7 @@ export function getLfgCommand({
                     interaction.options.getString(LFG_CODE_OPTION_NAME, true),
                 );
             case LFG_JOIN_SUBCOMMAND_NAME:
-                return lfgFeature.join(
+                return lfgFeature.move(
                     guildId,
                     interaction.user,
                     interaction.options.getString(LFG_CODE_OPTION_NAME, true),

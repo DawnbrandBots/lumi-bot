@@ -100,11 +100,11 @@ describe(LfgFeature.name, () => {
         });
     });
 
-    describe(LfgFeature.prototype.join.name, () => {
+    describe(LfgFeature.prototype.move.name, () => {
         test("joins an existing room", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
 
-            const response = await feature.join(GUILD_ID, PLAYER_1, "room");
+            const response = await feature.move(GUILD_ID, PLAYER_1, "room");
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_JOINED,
@@ -118,7 +118,7 @@ describe(LfgFeature.name, () => {
         });
 
         test("rejects missing rooms", async () => {
-            const response = await feature.join(GUILD_ID, PLAYER_1, "missing");
+            const response = await feature.move(GUILD_ID, PLAYER_1, "missing");
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND,
@@ -128,10 +128,10 @@ describe(LfgFeature.name, () => {
 
         test("rejects full rooms", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await feature.join(GUILD_ID, PLAYER_1, "room");
-            await feature.join(GUILD_ID, PLAYER_2, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
+            await feature.move(GUILD_ID, PLAYER_2, "room");
 
-            const response = await feature.join(GUILD_ID, PLAYER_3, "room");
+            const response = await feature.move(GUILD_ID, PLAYER_3, "room");
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_IS_FULL,
@@ -143,7 +143,7 @@ describe(LfgFeature.name, () => {
             await feature.create(GUILD_ID, OWNER, "one");
             await feature.create(GUILD_ID, PLAYER_1, "two");
 
-            const response = await feature.join(GUILD_ID, PLAYER_1, "one");
+            const response = await feature.move(GUILD_ID, PLAYER_1, "one");
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_JOINED,
@@ -160,10 +160,10 @@ describe(LfgFeature.name, () => {
 
         test("transfers ownership when the owner changes room", async () => {
             await feature.create(GUILD_ID, OWNER, "one");
-            await feature.join(GUILD_ID, PLAYER_1, "one");
+            await feature.move(GUILD_ID, PLAYER_1, "one");
             await feature.create(GUILD_ID, PLAYER_2, "two");
 
-            const response = await feature.join(GUILD_ID, OWNER, "two");
+            const response = await feature.move(GUILD_ID, OWNER, "two");
 
             expect(response.kind).toBe(ELfgFeatureReturnKind.ROOM_JOINED);
             expect(await getRooms(GUILD_ID)).toEqual([
@@ -176,7 +176,7 @@ describe(LfgFeature.name, () => {
             await feature.create(GUILD_ID, OWNER, "one");
             await feature.create(GUILD_ID, PLAYER_1, "two");
 
-            const response = await feature.join(GUILD_ID, OWNER, "two");
+            const response = await feature.move(GUILD_ID, OWNER, "two");
 
             expect(response.kind).toBe(ELfgFeatureReturnKind.ROOM_JOINED);
             expect(await getRooms(GUILD_ID)).toEqual([
@@ -187,7 +187,7 @@ describe(LfgFeature.name, () => {
         test("returns error response when already in the target room", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
 
-            const response = await feature.join(GUILD_ID, OWNER, "room");
+            const response = await feature.move(GUILD_ID, OWNER, "room");
 
             expect(response.kind).toBe(ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM);
         });
@@ -196,7 +196,7 @@ describe(LfgFeature.name, () => {
     describe(LfgFeature.prototype.transfer.name, () => {
         test("transfers ownership to another room player", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await feature.join(GUILD_ID, PLAYER_1, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
 
             const response = await feature.transfer(GUILD_ID, OWNER, PLAYER_1);
 
@@ -225,7 +225,7 @@ describe(LfgFeature.name, () => {
 
         test("rejects non-owners", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await feature.join(GUILD_ID, PLAYER_1, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
 
             const response = await feature.transfer(GUILD_ID, PLAYER_1, OWNER);
 
@@ -236,7 +236,7 @@ describe(LfgFeature.name, () => {
     describe(LfgFeature.prototype.kick.name, () => {
         test("kicks another room player", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await feature.join(GUILD_ID, PLAYER_1, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
 
             const response = await feature.kick(GUILD_ID, OWNER, PLAYER_1);
 
@@ -265,7 +265,7 @@ describe(LfgFeature.name, () => {
 
         test("rejects non-owners", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await feature.join(GUILD_ID, PLAYER_1, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
 
             const response = await feature.kick(GUILD_ID, PLAYER_1, OWNER);
 
@@ -288,8 +288,8 @@ describe(LfgFeature.name, () => {
 
         test("transfers ownership to the earliest remaining player", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await feature.join(GUILD_ID, PLAYER_1, "room");
-            await feature.join(GUILD_ID, PLAYER_2, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
+            await feature.move(GUILD_ID, PLAYER_2, "room");
 
             const response = await feature.leave(GUILD_ID, OWNER);
 
@@ -319,7 +319,7 @@ describe(LfgFeature.name, () => {
     describe(LfgFeature.prototype.disband.name, () => {
         test("deletes the room when called by the owner", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await feature.join(GUILD_ID, PLAYER_1, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
 
             const response = await feature.disband(GUILD_ID, OWNER);
 
@@ -332,7 +332,7 @@ describe(LfgFeature.name, () => {
 
         test("rejects non-owners", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
-            await feature.join(GUILD_ID, PLAYER_1, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
 
             const response = await feature.disband(GUILD_ID, PLAYER_1);
 

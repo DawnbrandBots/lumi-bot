@@ -102,7 +102,7 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
         | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
     >;
-    join: TLfgFeatureReturnOfKind<
+    move: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_JOINED
         | ELfgFeatureReturnKind.ROOM_NOT_FOUND
         | ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM
@@ -134,7 +134,7 @@ export interface ILfgFeature {
     status(guildId: string): MaybePromise<TLfgFeatureReturnTypes["status"]>;
     help(): MaybePromise<TLfgFeatureReturnTypes["help"]>;
     create(guildId: string, owner: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["create"]>;
-    join(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["join"]>;
+    move(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["move"]>;
     transfer(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
     kick(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
     leave(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["leave"]>;

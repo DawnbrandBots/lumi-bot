@@ -66,7 +66,7 @@ export class LfgFeature implements ILfgFeature {
         } as const;
     }
 
-    public async join(guildId: string, user: IUser, code: string) {
+    public async move(guildId: string, user: IUser, code: string) {
         const room = await this.getRoomByGuildAndCode(guildId, code);
         if (!room) {
             return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
