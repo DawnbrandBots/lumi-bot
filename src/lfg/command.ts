@@ -81,7 +81,7 @@ export function getLfgCommand({
             case LFG_LEAVE_SUBCOMMAND_NAME:
                 return lfgFeature.leave(guildId, interaction.user);
             case LFG_DISBAND_SUBCOMMAND_NAME:
-                return lfgFeature.disband(guildId, interaction.user);
+                return lfgFeature.disbandOwnedRoom(guildId, interaction.user);
             case LFG_STATUS_SUBCOMMAND_NAME:
                 return lfgFeature.status(guildId);
             case LFG_HELP_SUBCOMMAND_NAME:

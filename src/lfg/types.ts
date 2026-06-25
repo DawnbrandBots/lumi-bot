@@ -134,7 +134,8 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
     >;
     leave: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT | ELfgFeatureReturnKind.NOT_IN_A_ROOM>;
-    disband: TLfgFeatureReturnOfKind<
+    disband: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_DISBANDED | ELfgFeatureReturnKind.ROOM_NOT_FOUND>;
+    disbandOwnedRoom: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_DISBANDED
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
@@ -154,5 +155,6 @@ export interface ILfgFeature {
         target: IUser,
     ): MaybePromise<TLfgFeatureReturnTypes["kickFromOwnedRoom"]>;
     leave(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["leave"]>;
-    disband(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
+    disband(guildId: string, code: string): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
+    disbandOwnedRoom(guildId: string, owner: IUser): MaybePromise<TLfgFeatureReturnTypes["disbandOwnedRoom"]>;
 }

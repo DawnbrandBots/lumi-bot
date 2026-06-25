@@ -418,12 +418,12 @@ describe(LfgFeature.name, () => {
         });
     });
 
-    describe(LfgFeature.prototype.disband.name, () => {
+    describe(LfgFeature.prototype.disbandOwnedRoom.name, () => {
         test("deletes the room when called by the owner", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
 
-            const response = await feature.disband(GUILD_ID, OWNER);
+            const response = await feature.disbandOwnedRoom(GUILD_ID, OWNER);
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
@@ -436,7 +436,7 @@ describe(LfgFeature.name, () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
 
-            const response = await feature.disband(GUILD_ID, PLAYER_1);
+            const response = await feature.disbandOwnedRoom(GUILD_ID, PLAYER_1);
 
             expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER });
             expect(await getRooms(GUILD_ID)).toEqual([
@@ -445,9 +445,33 @@ describe(LfgFeature.name, () => {
         });
 
         test("rejects users who are not in a room", async () => {
-            const response = await feature.disband(GUILD_ID, OWNER);
+            const response = await feature.disbandOwnedRoom(GUILD_ID, OWNER);
 
             expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM });
+        });
+    });
+
+    describe(LfgFeature.prototype.disband.name, () => {
+        test("deletes the room identified by code", async () => {
+            await feature.create(GUILD_ID, OWNER, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
+
+            const response = await feature.disband(GUILD_ID, "room");
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
+                value: { userId: OWNER.id, code: "room" },
+            });
+            expect(await getRooms(GUILD_ID)).toEqual([]);
+        });
+
+        test("rejects missing rooms", async () => {
+            const response = await feature.disband(GUILD_ID, "missing");
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND,
+                value: { code: "missing" },
+            });
         });
     });
 

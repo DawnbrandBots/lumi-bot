@@ -172,17 +172,31 @@ export class LfgFeature implements ILfgFeature {
         return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { ...leaveResult, userId: user.id, code } } as const;
     }
 
-    public async disband(guildId: string, user: IUser) {
-        const result = await this.getOwnedRoom(guildId, user);
+    public async disband(guildId: string, code: string) {
+        const room = await this.getRoomByGuildAndCode(guildId, code);
+        if (!room) {
+            return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
+        }
+        return this.disbandRoom(room);
+    }
+
+    public async disbandOwnedRoom(guildId: string, owner: IUser) {
+        const result = await this.getOwnedRoom(guildId, owner);
         if ("kind" in result) {
             return result;
         }
+        return this.disbandRoom(result);
+    }
 
-        this.em.remove(result.players);
-        this.em.remove(result);
+    protected async disbandRoom(room: LfgRoom) {
+        this.em.remove(room.players);
+        this.em.remove(room);
         await this.em.flush();
 
-        return { kind: ELfgFeatureReturnKind.ROOM_DISBANDED, value: { userId: user.id, code: result.code } } as const;
+        return {
+            kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
+            value: { userId: room.ownerId, code: room.code },
+        } as const;
     }
 
     protected async getOwnedRoom(guildId: string, owner: IUser) {
