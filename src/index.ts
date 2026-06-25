@@ -9,6 +9,7 @@ import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
+import { getLfgManageCommand } from "./lfgManage/command.ts";
 import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
@@ -42,6 +43,7 @@ const commands = {
     help: getHelpCommand(),
     links: getLinksCommand(),
     lfg: getLfgCommand({ adminFeature, lfgFeature }),
+    "lfg-manage": getLfgManageCommand({ adminFeature, lfgFeature }),
 } as const;
 
 bot.on(Events.ClientReady, (client) => {
