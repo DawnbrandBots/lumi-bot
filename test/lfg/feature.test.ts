@@ -208,12 +208,12 @@ describe(LfgFeature.name, () => {
         });
     });
 
-    describe(LfgFeature.prototype.transfer.name, () => {
+    describe(LfgFeature.prototype.transferOwnedRoom.name, () => {
         test("transfers ownership to another room player", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
 
-            const response = await feature.transfer(GUILD_ID, OWNER, PLAYER_1);
+            const response = await feature.transferOwnedRoom(GUILD_ID, OWNER, PLAYER_1);
 
             expect(response.kind).toBe(ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED);
             expect((await getRooms(GUILD_ID))[0]?.ownerId).toBe(PLAYER_1.id);
@@ -222,7 +222,7 @@ describe(LfgFeature.name, () => {
         test("rejects targets outside the room", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
 
-            const response = await feature.transfer(GUILD_ID, OWNER, PLAYER_1);
+            const response = await feature.transferOwnedRoom(GUILD_ID, OWNER, PLAYER_1);
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
@@ -233,18 +233,70 @@ describe(LfgFeature.name, () => {
         test("rejects self-transfer", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
 
-            const response = await feature.transfer(GUILD_ID, OWNER, OWNER);
+            const response = await feature.transferOwnedRoom(GUILD_ID, OWNER, OWNER);
 
-            expect(response).toEqual({ kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF });
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF,
+                value: { userId: OWNER.id, code: "room" },
+            });
         });
 
         test("rejects non-owners", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
 
-            const response = await feature.transfer(GUILD_ID, PLAYER_1, OWNER);
+            const response = await feature.transferOwnedRoom(GUILD_ID, PLAYER_1, OWNER);
 
             expect(response).toEqual({ kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER });
+        });
+    });
+
+    describe(LfgFeature.prototype.transfer.name, () => {
+        test("transfers ownership in the room identified by code", async () => {
+            await feature.create(GUILD_ID, OWNER, "room");
+            await feature.move(GUILD_ID, PLAYER_1, "room");
+
+            const response = await feature.transfer(GUILD_ID, "room", PLAYER_1);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
+                value: {
+                    userId: OWNER.id,
+                    targetId: PLAYER_1.id,
+                    room: { code: "room", ownerId: PLAYER_1.id, playerIds: [OWNER.id, PLAYER_1.id] },
+                },
+            });
+        });
+
+        test("rejects missing rooms", async () => {
+            const response = await feature.transfer(GUILD_ID, "missing", PLAYER_1);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND,
+                value: { code: "missing" },
+            });
+        });
+
+        test("rejects targets outside the room", async () => {
+            await feature.create(GUILD_ID, OWNER, "room");
+
+            const response = await feature.transfer(GUILD_ID, "room", PLAYER_1);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
+                value: { targetId: PLAYER_1.id, code: "room" },
+            });
+        });
+
+        test("rejects transferring ownership to the current owner", async () => {
+            await feature.create(GUILD_ID, OWNER, "room");
+
+            const response = await feature.transfer(GUILD_ID, "room", OWNER);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF,
+                value: { userId: OWNER.id, code: "room" },
+            });
         });
     });
 

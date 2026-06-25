@@ -61,6 +61,7 @@ type TLfgFeatureReturnValueByKind = {
     [ELfgFeatureReturnKind.ROOM_NOT_FOUND]: { readonly code: string };
     [ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM]: { readonly room: IRoom };
     [ELfgFeatureReturnKind.ROOM_IS_FULL]: { readonly code: string };
+    [ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF]: { readonly userId: string; readonly code: string };
     [ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED]: {
         readonly userId: string;
         readonly targetId: string;
@@ -80,7 +81,6 @@ type TLfgFeatureReturnValueByKind = {
     | ELfgFeatureReturnKind.HELP
     | ELfgFeatureReturnKind.INVALID_ROOM_CODE
     | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
-    | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
     | ELfgFeatureReturnKind.NOT_ROOM_OWNER
     | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
     | ELfgFeatureReturnKind.NOT_IN_A_ROOM
@@ -118,6 +118,12 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
         | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
         | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
+        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    >;
+    transferOwnedRoom: TLfgFeatureReturnOfKind<
+        | ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
+        | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
+        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
     >;
@@ -147,7 +153,12 @@ export interface ILfgFeature {
     help(): MaybePromise<TLfgFeatureReturnTypes["help"]>;
     create(guildId: string, owner: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["create"]>;
     move(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["move"]>;
-    transfer(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
+    transfer(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
+    transferOwnedRoom(
+        guildId: string,
+        owner: IUser,
+        target: IUser,
+    ): MaybePromise<TLfgFeatureReturnTypes["transferOwnedRoom"]>;
     kick(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
     kickFromOwnedRoom(
         guildId: string,

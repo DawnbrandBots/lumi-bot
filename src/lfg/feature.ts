@@ -96,28 +96,44 @@ export class LfgFeature implements ILfgFeature {
         } as const;
     }
 
-    public async transfer(guildId: string, owner: IUser, target: IUser) {
+    public async transfer(guildId: string, code: string, target: IUser) {
+        const room = await this.getRoomByGuildAndCode(guildId, code);
+        if (!room) {
+            return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
+        }
+        return this.transferRoom(guildId, room, target);
+    }
+
+    public async transferOwnedRoom(guildId: string, owner: IUser, target: IUser) {
         const result = await this.getOwnedRoom(guildId, owner);
         if ("kind" in result) {
             return result;
         }
-        if (owner.id === target.id) {
-            return { kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF } as const;
-        }
+        return this.transferRoom(guildId, result, target);
+    }
 
-        const targetPlayer = await this.getRoomPlayerInGuild(guildId, target.id);
-        if (targetPlayer?.room.id !== result.id) {
+    protected async transferRoom(guildId: string, room: LfgRoom, target: IUser) {
+        const previousOwnerId = room.ownerId;
+        if (previousOwnerId === target.id) {
             return {
-                kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
-                value: { targetId: target.id, code: result.code },
+                kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF,
+                value: { userId: previousOwnerId, code: room.code },
             } as const;
         }
 
-        result.ownerId = target.id;
+        const targetPlayer = await this.getRoomPlayerInGuild(guildId, target.id);
+        if (targetPlayer?.room.id !== room.id) {
+            return {
+                kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
+                value: { targetId: target.id, code: room.code },
+            } as const;
+        }
+
+        room.ownerId = target.id;
         await this.em.flush();
         return {
             kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
-            value: { userId: owner.id, targetId: target.id, room: this.toRoom(result) },
+            value: { userId: previousOwnerId, targetId: target.id, room: this.toRoom(room) },
         } as const;
     }
 
