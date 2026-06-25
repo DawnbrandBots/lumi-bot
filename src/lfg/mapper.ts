@@ -97,8 +97,9 @@ function formatRoomJoined(
     return `${userMention(userId)} joined room ${formatRoomCode(room.code)}.`;
 }
 
-function formatOwnershipTransferred(userId: string, targetId: string, room: IRoom) {
-    return `${userMention(userId)} transferred ${formatRoomCode(room.code)}'s ownership to ${userMention(targetId)}.`;
+function formatOwnershipTransferred(callerId: string, userId: string, targetId: string, room: IRoom) {
+    const transfererId = callerId === userId ? userId : callerId;
+    return `${userMention(transfererId)} transferred ${formatRoomCode(room.code)}'s ownership to ${userMention(targetId)}.`;
 }
 
 function formatPlayerKicked(
@@ -161,6 +162,13 @@ function formatAlreadyInTargetRoom(callerId: string, userId: string, room: IRoom
     return `${userMention(userId)} is already in room ${formatRoomCode(room.code)}.`;
 }
 
+function formatCannotTransferToCurrentOwner(callerId: string, userId: string, code: string) {
+    if (callerId === userId) {
+        return LfgConstants.LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION;
+    }
+    return `${userMention(userId)} already owns room ${formatRoomCode(code)}.`;
+}
+
 function formatPlayerNotInRoom(callerId: string, ownerId: string, targetId: string, code: string) {
     if (callerId !== ownerId) {
         return `${userMention(targetId)} is not in room ${formatRoomCode(code)}.`;
@@ -204,6 +212,7 @@ export function mapLfgFeatureReturnToMessageBase(
             return createPositiveMessage({
                 embed: {
                     description: formatOwnershipTransferred(
+                        callerId,
                         result.value.userId,
                         result.value.targetId,
                         result.value.room,
@@ -273,7 +282,7 @@ export function mapLfgFeatureReturnToMessageBase(
         case ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF:
             return createNegativeMessage({
                 embed: {
-                    description: LfgConstants.LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION,
+                    description: formatCannotTransferToCurrentOwner(callerId, result.value.userId, result.value.code),
                 },
             });
         case ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM:

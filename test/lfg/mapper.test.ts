@@ -288,7 +288,10 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
         },
         {
             name: "cannot transfer to yourself",
-            input: { kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF },
+            input: {
+                kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF,
+                value: { userId: "owner", code: ROOM.code },
+            },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -381,6 +384,14 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
             expected: `${userMention("admin")} moved ${userMention("player-1")} to room \`${ROOM.code}\`.`,
         },
         {
+            name: "ownership transfer",
+            input: {
+                kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
+                value: { userId: "owner", targetId: "player-1", room: ROOM },
+            } as const,
+            expected: `${userMention("admin")} transferred \`${ROOM.code}\`'s ownership to ${userMention("player-1")}.`,
+        },
+        {
             name: "player kick",
             input: {
                 kind: ELfgFeatureReturnKind.PLAYER_KICKED,
@@ -416,6 +427,14 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 value: { userId: "owner", room: ROOM },
             } as const,
             expected: `${userMention("owner")} is already in room \`${ROOM.code}\`.`,
+        },
+        {
+            name: "current owner selected for transfer",
+            input: {
+                kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF,
+                value: { userId: "owner", code: ROOM.code },
+            } as const,
+            expected: `${userMention("owner")} already owns room \`${ROOM.code}\`.`,
         },
         {
             name: "player not in target room",
