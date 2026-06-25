@@ -51,6 +51,7 @@ export type TLfgPlayerRemovalResult =
 type TLfgFeatureReturnValueByKind = {
     [ELfgFeatureReturnKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
     [ELfgFeatureReturnKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
+    [ELfgFeatureReturnKind.ALREADY_IN_A_ROOM]: { readonly userId: string };
     [ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS]: { readonly code: string };
     [ELfgFeatureReturnKind.ROOM_JOINED]: {
         readonly userId: string;
@@ -59,7 +60,7 @@ type TLfgFeatureReturnValueByKind = {
         readonly removalResult?: TLfgPlayerRemovalResult;
     };
     [ELfgFeatureReturnKind.ROOM_NOT_FOUND]: { readonly code: string };
-    [ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM]: { readonly room: IRoom };
+    [ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM]: { readonly userId: string; readonly room: IRoom };
     [ELfgFeatureReturnKind.ROOM_IS_FULL]: { readonly code: string };
     [ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF]: { readonly userId: string; readonly code: string };
     [ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED]: {
@@ -67,7 +68,11 @@ type TLfgFeatureReturnValueByKind = {
         readonly targetId: string;
         readonly room: IRoom;
     };
-    [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: { readonly targetId: string; readonly code: string };
+    [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: {
+        readonly ownerId: string;
+        readonly targetId: string;
+        readonly code: string;
+    };
     [ELfgFeatureReturnKind.PLAYER_KICKED]: {
         readonly userId: string;
         readonly targetId: string;
@@ -80,7 +85,6 @@ type TLfgFeatureReturnValueByKind = {
     [_ in
     | ELfgFeatureReturnKind.HELP
     | ELfgFeatureReturnKind.INVALID_ROOM_CODE
-    | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
     | ELfgFeatureReturnKind.NOT_ROOM_OWNER
     | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
     | ELfgFeatureReturnKind.NOT_IN_A_ROOM
