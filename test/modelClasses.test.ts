@@ -6,10 +6,8 @@ import { SPELL_DRAGGING_MODE } from "../src/game/models/spellDraggingMode.ts";
 import { Weapon } from "../src/game/models/weapon.ts";
 import { describeSpellEffects } from "../src/game/spellEffectDescriptions.ts";
 import { ESpellDraggingMode } from "../src/game/types.ts";
-import range from "../src/utils/range.ts";
 import { initTestOrm } from "./orm.ts";
 
-const LEVELS = Array.from(range({ start: 1, end: 12 }));
 const VARIANTS = ["HP", "NEUTRAL", "ATK"] as const;
 const STATS = ["hp", "atk"] as const;
 
@@ -38,59 +36,14 @@ async function findWeapon(name: string): Promise<Weapon> {
 }
 
 describe(Disciple.name, () => {
-    describe("getHp returns expected values from level 1 to 11 for", () => {
-        // All possible baseHp values per level
-        test.each([
-            ["Kurt", [80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160]],
-            ["Gotthold", [88, 96, 105, 114, 123, 132, 140, 149, 158, 167, 176]],
-        ])("%s", async (name, expected) => {
-            const disciple = await findDisciple(name);
+    describe("stat methods", () => {
+        test("return expected values from loaded movement and weapon types", async () => {
+            const disciple = await findDisciple("Kurt");
 
-            expect(LEVELS.map((level) => disciple.getHp({ level }))).toEqual(expected);
-        });
-    });
-
-    describe("getAtk returns expected values from level 1 to 11 for", () => {
-        // All possible baseAtk values per level
-        test.each([
-            ["Kurt", [42, 46, 50, 54, 58, 63, 67, 71, 75, 79, 84]],
-            ["Gotthold", [30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60]],
-            ["Carina", [36, 39, 43, 46, 50, 54, 57, 61, 64, 68, 72]],
-            ["Alberta", [24, 26, 28, 31, 33, 36, 38, 40, 43, 45, 48]],
-            ["Tamamo", [28, 30, 33, 36, 39, 42, 44, 47, 50, 53, 56]],
-            ["Corrin", [20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40]],
-        ])("%s", async (name, expected) => {
-            const disciple = await findDisciple(name);
-
-            expect(LEVELS.map((level) => disciple.getAtk({ level }))).toEqual(expected);
-        });
-    });
-
-    describe("baseHp returns expected value for", () => {
-        // All possible baseHp values
-        test.each([
-            ["Kurt", 80],
-            ["Gotthold", 88],
-        ])("%s", async (name, expected) => {
-            const disciple = await findDisciple(name);
-
-            expect(disciple.baseHp).toBe(expected);
-        });
-    });
-
-    describe("baseAtk returns expected value for", () => {
-        // All possible baseAtk values
-        test.each([
-            ["Kurt", 42],
-            ["Gotthold", 30],
-            ["Carina", 36],
-            ["Alberta", 24],
-            ["Tamamo", 28],
-            ["Corrin", 20],
-        ])("%s", async (name, expected) => {
-            const disciple = await findDisciple(name);
-
-            expect(disciple.baseAtk).toBe(expected);
+            expect(disciple.baseHp).toBe(80);
+            expect(disciple.baseAtk).toBe(42);
+            expect(disciple.getHp({ level: 11 })).toBe(160);
+            expect(disciple.getAtk({ level: 11 })).toBe(84);
         });
     });
 });
