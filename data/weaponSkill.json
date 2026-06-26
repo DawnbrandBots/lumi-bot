@@ -160,6 +160,11 @@
     "effect": "WEAPON_DAMAGE_VS_ARMORED_20"
   },
   {
+    "id": "NIGHTMARE_S_END",
+    "name": "Nightmare's End",
+    "effect": "WEAPON_DAMAGE_VS_STONE_40"
+  },
+  {
     "id": "RIDER_BANE_1",
     "name": "Rider Bane 1",
     "effect": "WEAPON_DAMAGE_VS_CAVALRY_30"
