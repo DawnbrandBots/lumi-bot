@@ -241,6 +241,18 @@ describe(Spell.name, () => {
                 inlineExpected:
                     "grants effect to target tiles: deals 25 Colorless damage every 3 seconds (5 times). (Uses: 1)",
             },
+            {
+                name: "Slow Self Shield EX",
+                explanation: "cooldown increasing spell effect",
+                expected: [
+                    "1. Grants status to targets: Increases Cooldown by 10% (3 turns).",
+                    "1. Grants status to user: Decreases Received Weapon Damage by 25% (permanent).",
+                ].join("\n"),
+                inlineExpected: [
+                    "grants status to targets (single tile): increases Cooldown by 10% (3 turns)",
+                    "grants status to user: decreases Received Weapon Damage by 25% (permanent). (Uses: 1, Cooldown: 1)",
+                ].join(", "),
+            },
         ].forEach(({ name, explanation, expected, inlineExpected }) => {
             test(`${name} (${explanation})`, async () => {
                 const spell = await findSpell(name);
