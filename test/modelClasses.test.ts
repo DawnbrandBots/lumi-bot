@@ -239,7 +239,7 @@ describe(Spell.name, () => {
                 explanation: "tile",
                 expected: "1. Grants effect to target tiles: Deals 25 Colorless damage every 3 seconds (5 times).",
                 inlineExpected:
-                    "grants effect to target tiles: deals 25 Colorless damage every 3 seconds (5 times). (Uses: 1)",
+                    "grants effect to target tiles (3x3 cross): deals 25 Colorless damage every 3 seconds (5 times). (Uses: 1)",
             },
             {
                 name: "Slow Self Shield EX",
