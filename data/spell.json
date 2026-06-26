@@ -3743,6 +3743,7 @@
           "duration": 3,
           "amount": {
             "base": 10,
+            "scalesWithLevel": false,
             "unit": {
               "kind": "PERCENT",
               "stat": "COOLDOWN"
