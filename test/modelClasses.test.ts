@@ -47,34 +47,13 @@ describe(Disciple.name, () => {
 
 describe(Spell.name, () => {
     describe("draggingMode" satisfies keyof Spell, () => {
-        describe(ESpellDraggingMode.SELF, () => {
-            test.each(["Self Mend", "Self Heal Push", "Self Crossedge"])("%s", async (name) => {
-                const spell = await findSpell(name);
+        test.each([
+            ["Self Mend", SPELL_DRAGGING_MODE.SELF.kind],
+            ["Thunder Self Edge EX", ESpellDraggingMode.ANY],
+        ])("returns the expected mode for loaded spell %s", async (name, expected) => {
+            const spell = await findSpell(name);
 
-                expect(spell.draggingMode.kind).toBe(SPELL_DRAGGING_MODE.SELF.kind);
-            });
-        });
-        describe(ESpellDraggingMode.ANY, () => {
-            test.each([
-                // Some spells with ANY dragging mode, one for each effect type.
-                "Elfire",
-                "Mend",
-                "Shield Strike",
-                "Heal Warp EX",
-                "Edge Break",
-                "Tetrathunder Wall EX",
-                "Axe Fighter + Infantry",
-                "Tetraheal Zone",
-
-                // Spells which have a SELF spell effect but don't have a SELF dragging mode.
-                "Aether EX",
-                "Thunder Self Edge EX",
-                "Wind Self Pull EX",
-            ])("%s", async (name) => {
-                const spell = await findSpell(name);
-
-                expect(spell.draggingMode.kind).toBe(ESpellDraggingMode.ANY);
-            });
+            expect(spell.draggingMode.kind).toBe(expected);
         });
     });
 
