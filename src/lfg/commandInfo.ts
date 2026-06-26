@@ -95,7 +95,7 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
             );
     },
     name: LFG_COMMAND_NAME,
-    description: "Create and manage looking-for-game rooms.",
+    description: "Create and join looking-for-game rooms for playing with other server members.",
     contexts: [InteractionContextType.Guild],
     integrationTypes: [ApplicationIntegrationType.GuildInstall],
 });
