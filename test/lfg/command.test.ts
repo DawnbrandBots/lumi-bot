@@ -1,7 +1,7 @@
 import {
+    channelMention,
     ChannelType,
     MessageFlags,
-    channelMention,
     roleMention,
     userMention,
     type ChatInputCommandInteraction,

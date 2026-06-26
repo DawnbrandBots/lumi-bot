@@ -44,9 +44,11 @@ const log = debug("bot:lfg");
 export function getLfgCommand({
     lfgFeature,
     adminFeature,
+    onActivityCommand,
 }: {
     readonly lfgFeature: LfgFeature;
     readonly adminFeature: Pick<AdminFeature, "getGuildConfig" | "getLfgRoleConfig" | "setLfgRoleLastPingedAt">;
+    readonly onActivityCommand?: (guildId: string, userId: string) => Promise<void>;
 }) {
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
@@ -61,19 +63,19 @@ export function getLfgCommand({
                     interaction.options.getString(LFG_CODE_OPTION_NAME, true),
                 );
             case LFG_JOIN_SUBCOMMAND_NAME:
-                return lfgFeature.join(
+                return lfgFeature.move(
                     guildId,
                     interaction.user,
                     interaction.options.getString(LFG_CODE_OPTION_NAME, true),
                 );
             case LFG_TRANSFER_SUBCOMMAND_NAME:
-                return lfgFeature.transfer(
+                return lfgFeature.transferOwnedRoom(
                     guildId,
                     interaction.user,
                     interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
                 );
             case LFG_KICK_SUBCOMMAND_NAME:
-                return lfgFeature.kick(
+                return lfgFeature.kickFromOwnedRoom(
                     guildId,
                     interaction.user,
                     interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
@@ -81,7 +83,7 @@ export function getLfgCommand({
             case LFG_LEAVE_SUBCOMMAND_NAME:
                 return lfgFeature.leave(guildId, interaction.user);
             case LFG_DISBAND_SUBCOMMAND_NAME:
-                return lfgFeature.disband(guildId, interaction.user);
+                return lfgFeature.disbandOwnedRoom(guildId, interaction.user);
             case LFG_STATUS_SUBCOMMAND_NAME:
                 return lfgFeature.status(guildId);
             case LFG_HELP_SUBCOMMAND_NAME:
@@ -225,9 +227,15 @@ export function getLfgCommand({
             }
 
             const result = await runSubcommand(interaction, guildId, subcommand);
+            // TODO: I wonder whether responsibilities should be inverted:
+            // this function would only "emit" an event representing successful command execution,
+            // and it's up to the event handler to decide what counts as activity
+            if (subcommand === LFG_TRANSFER_SUBCOMMAND_NAME || subcommand === LFG_KICK_SUBCOMMAND_NAME) {
+                await onActivityCommand?.(guildId, interaction.user.id);
+            }
             const configResult = await adminFeature.getGuildConfig(guildId);
 
-            const messageBase = mapLfgFeatureReturnToMessageBase(result, configResult.value);
+            const messageBase = mapLfgFeatureReturnToMessageBase(result, interaction.user.id, configResult.value);
             const message = mapLfgMessageBaseToReply(messageBase, interaction, configResult.value);
 
             const reply = await interaction.reply(message);

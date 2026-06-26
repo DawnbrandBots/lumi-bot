@@ -75,6 +75,7 @@ describe(AdminCommand.name, () => {
             value: { channel: CHANNEL_ID },
         });
         const adminFeature = {
+            getConfig: vi.fn().mockResolvedValue(null),
             lfgChannel,
             lfgRole: vi.fn(),
             getGuildConfig: vi.fn(),

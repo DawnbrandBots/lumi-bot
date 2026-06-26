@@ -8,6 +8,8 @@ export const LfgRoomPlayerSchema = defineEntity({
         userId: p.string(),
         room: () => p.manyToOne(LfgRoom).inversedBy("players"),
         joinedAt: p.date().onCreate(() => new Date().toISOString()),
+        lastActivityAt: p.date().onCreate(() => new Date().toISOString()),
+        inactivityWarnedAt: p.date().nullable().default(null),
     },
 });
 

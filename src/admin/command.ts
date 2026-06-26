@@ -7,7 +7,7 @@ import {
     type ChatInputCommandInteraction,
 } from "discord.js";
 import { createErrorMessage } from "../bot/message.ts";
-import type { ICommand } from "../bot/types.ts";
+import { type ICommand } from "../bot/types.ts";
 import { adminCommandInfo } from "./commandInfo.ts";
 import {
     ADMIN_ACTION_ADD,
@@ -24,20 +24,30 @@ import {
 } from "./constants.ts";
 import type { AdminFeature } from "./feature.ts";
 import mapAdminFeatureReturnToMessage from "./mapper.ts";
+import { EAdminFeatureReturnKind } from "./types.ts";
 
 type AdminCommandCtorArg = {
     readonly adminFeature: AdminFeature;
+    // TODO: object instead?
+    readonly onLfgChannelChange?: (
+        interaction: ChatInputCommandInteraction<CacheType>,
+        guildId: string,
+        previousChannelId: string | null,
+        nextChannelId: string | null,
+    ) => Promise<void>;
 };
 
 export class AdminCommand implements ICommand {
     private readonly adminFeature: AdminFeature;
+    private readonly onLfgChannelChange: AdminCommandCtorArg["onLfgChannelChange"];
 
     public get info() {
         return adminCommandInfo;
     }
 
-    public constructor({ adminFeature }: AdminCommandCtorArg) {
+    public constructor({ adminFeature, onLfgChannelChange }: AdminCommandCtorArg) {
         this.adminFeature = adminFeature;
+        this.onLfgChannelChange = onLfgChannelChange;
     }
 
     public async run(interaction: ChatInputCommandInteraction<CacheType>) {
@@ -114,6 +124,19 @@ export class AdminCommand implements ICommand {
             });
         }
 
+        const configResult = await this.adminFeature.getGuildConfig(guildId);
+        const previousChannelId = configResult.value?.lfgChannel ?? null;
+        const response = await this.adminFeature.lfgChannel(guildId, action, channel?.id ?? null);
+        // TODO: we KNOW that the same config object is reused because we know about Mikro-ORM,
+        // but it this code were ORM-agnostic, we might want to reuse getConfig?
+        const nextChannelId = configResult.value?.lfgChannel ?? null;
+        // TODO: there should be a single boolean evaluation. Maybe add a "success" property??
+        if (
+            response.kind === EAdminFeatureReturnKind.LFG_CHANNEL_SET ||
+            response.kind === EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
+        ) {
+            await this.onLfgChannelChange?.(interaction, guildId, previousChannelId, nextChannelId);
+        }
         const result = await this.adminFeature.lfgChannel(guildId, action, channel?.id ?? null);
         return mapAdminFeatureReturnToMessage(result);
     }
