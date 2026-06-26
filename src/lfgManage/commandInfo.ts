@@ -74,7 +74,7 @@ export const lfgManageCommandInfo: ICommandInfo = new CommandInfo({
             );
     },
     name: "lfg-manage",
-    description: "Manage looking-for-game rooms.",
+    description: "Manage looking-for-game rooms for all server members.",
     contexts: [InteractionContextType.Guild],
     integrationTypes: [ApplicationIntegrationType.GuildInstall],
 });
