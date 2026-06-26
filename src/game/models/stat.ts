@@ -18,6 +18,7 @@ const STATS = {
     RECEIVED_SPELL_DAMAGE: new Stat({ id: EStat.RECEIVED_SPELL_DAMAGE, name: "Received Spell Damage" }),
     MOVEMENT: new Stat({ id: EStat.MOVEMENT, name: "Movement" }),
     COLOR_AFFINITY: new Stat({ id: EStat.COLOR_AFFINITY, name: "Color Affinity" }),
+    COOLDOWN: new Stat({ id: EStat.COOLDOWN, name: "Cooldown" }),
 } as const satisfies { [K in keyof typeof EStat]: IStat };
 
 export class StatType extends Type<Stat, string | null | undefined> {

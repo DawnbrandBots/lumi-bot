@@ -281,6 +281,7 @@ export const EStat = {
     RECEIVED_SPELL_DAMAGE: "RECEIVED_SPELL_DAMAGE",
     MOVEMENT: "MOVEMENT",
     COLOR_AFFINITY: "COLOR_AFFINITY",
+    COOLDOWN: "COOLDOWN",
 } as const;
 
 export const EDirection = {
