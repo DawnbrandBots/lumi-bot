@@ -3,16 +3,21 @@ import type { TextChannel } from "discord.js";
 import {
     ChannelType,
     MessageFlags,
+    channelMention,
+    roleMention,
+    time,
+    userMention,
     type CacheType,
     type ChatInputCommandInteraction,
     type InteractionReplyOptions,
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
-import { createErrorMessage } from "../bot/message.ts";
+import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../bot/message.ts";
 import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
+    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_DISBAND_SUBCOMMAND_NAME,
@@ -20,7 +25,13 @@ import {
     LFG_JOIN_SUBCOMMAND_NAME,
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
+    LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
+    LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
+    LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
+    LFG_ROLE_OPTION_NAME,
+    LFG_ROLE_PING_COOLDOWN_MS,
+    LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
@@ -33,9 +44,11 @@ const log = debug("bot:lfg");
 export function getLfgCommand({
     lfgFeature,
     adminFeature,
+    onActivityCommand,
 }: {
     readonly lfgFeature: LfgFeature;
-    readonly adminFeature: Pick<AdminFeature, "getGuildConfig">;
+    readonly adminFeature: Pick<AdminFeature, "getGuildConfig" | "getLfgRoleConfig" | "setLfgRoleLastPingedAt">;
+    readonly onActivityCommand?: (guildId: string, userId: string) => Promise<void>;
 }) {
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
@@ -50,19 +63,19 @@ export function getLfgCommand({
                     interaction.options.getString(LFG_CODE_OPTION_NAME, true),
                 );
             case LFG_JOIN_SUBCOMMAND_NAME:
-                return lfgFeature.join(
+                return lfgFeature.move(
                     guildId,
                     interaction.user,
                     interaction.options.getString(LFG_CODE_OPTION_NAME, true),
                 );
             case LFG_TRANSFER_SUBCOMMAND_NAME:
-                return lfgFeature.transfer(
+                return lfgFeature.transferOwnedRoom(
                     guildId,
                     interaction.user,
                     interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
                 );
             case LFG_KICK_SUBCOMMAND_NAME:
-                return lfgFeature.kick(
+                return lfgFeature.kickFromOwnedRoom(
                     guildId,
                     interaction.user,
                     interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
@@ -70,7 +83,7 @@ export function getLfgCommand({
             case LFG_LEAVE_SUBCOMMAND_NAME:
                 return lfgFeature.leave(guildId, interaction.user);
             case LFG_DISBAND_SUBCOMMAND_NAME:
-                return lfgFeature.disband(guildId, interaction.user);
+                return lfgFeature.disbandOwnedRoom(guildId, interaction.user);
             case LFG_STATUS_SUBCOMMAND_NAME:
                 return lfgFeature.status(guildId);
             case LFG_HELP_SUBCOMMAND_NAME:
@@ -78,6 +91,98 @@ export function getLfgCommand({
             default:
                 return { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } as const;
         }
+    }
+
+    async function runPing(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
+        const configResult = await adminFeature.getGuildConfig(guildId);
+        const channelId = configResult.value?.lfgChannel;
+        if (!channelId) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_NO_CHANNEL_TO_PING_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const channel = await interaction.guild?.channels.fetch(channelId);
+        // TODO: this case is good to handle, do add a separate error message however
+        // TODO: prevent setting a non text-channel for LFG?
+        if (!channel || channel.type !== ChannelType.GuildText) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_NO_CHANNEL_TO_PING_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const roleId = interaction.options.getRole(LFG_ROLE_OPTION_NAME, true).id;
+        if (roleId === guildId) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_CANNOT_PING_EVERYONE_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const roleConfigResult = await adminFeature.getLfgRoleConfig(guildId, roleId);
+        if (!roleConfigResult.value) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_ROLE_NOT_CONFIGURED_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const role = await interaction.guild?.roles.fetch(roleId);
+        if (!role) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: { description: LFG_ROLE_TO_PING_DELETED_DESCRIPTION },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const now = new Date();
+        const lastPingedAt = roleConfigResult.value.lastPingedAt;
+        if (lastPingedAt && now.getTime() - new Date(lastPingedAt).getTime() < LFG_ROLE_PING_COOLDOWN_MS) {
+            return interaction.reply(
+                createNegativeMessage<InteractionReplyOptions>({
+                    embed: {
+                        // TODO: consider date library or Intl.Temporal (but requires node 26)
+                        description: `${roleMention(role.id)} can be pinged again on ${time(
+                            new Date(new Date(lastPingedAt).getTime() + LFG_ROLE_PING_COOLDOWN_MS),
+                        )}.`,
+                    },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        const pingMessage = {
+            content: `${roleMention(roleId)} people, ${userMention(interaction.user.id)} is looking for a room!`,
+            allowedMentions: { roles: [roleId], users: [interaction.user.id] },
+        };
+
+        let reply;
+        if (interaction.channelId === channelId) {
+            reply = await interaction.reply(pingMessage);
+        } else {
+            await channel.send(pingMessage);
+            reply = await interaction.reply(
+                createPositiveMessage<InteractionReplyOptions>({
+                    embed: { description: `${roleMention(roleId)} pinged in ${channelMention(channelId)}.` },
+                    flags: [MessageFlags.Ephemeral],
+                }),
+            );
+        }
+
+        await adminFeature.setLfgRoleLastPingedAt(guildId, roleId, now);
+        return reply;
     }
 
     async function sendPublicCopy(
@@ -114,10 +219,23 @@ export function getLfgCommand({
             }
 
             const subcommand = interaction.options.getSubcommand(false);
+            // TODO: ping does indeed not need to call lfgFeature, since
+            // it just answers to Discord directly
+            // Still, if feels weird having this check here, apart from the others.
+            if (subcommand === LFG_PING_SUBCOMMAND_NAME) {
+                return runPing(interaction, guildId);
+            }
+
             const result = await runSubcommand(interaction, guildId, subcommand);
+            // TODO: I wonder whether responsibilities should be inverted:
+            // this function would only "emit" an event representing successful command execution,
+            // and it's up to the event handler to decide what counts as activity
+            if (subcommand === LFG_TRANSFER_SUBCOMMAND_NAME || subcommand === LFG_KICK_SUBCOMMAND_NAME) {
+                await onActivityCommand?.(guildId, interaction.user.id);
+            }
             const configResult = await adminFeature.getGuildConfig(guildId);
 
-            const messageBase = mapLfgFeatureReturnToMessageBase(result, configResult.value);
+            const messageBase = mapLfgFeatureReturnToMessageBase(result, interaction.user.id, configResult.value);
             const message = mapLfgMessageBaseToReply(messageBase, interaction, configResult.value);
 
             const reply = await interaction.reply(message);

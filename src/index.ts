@@ -1,5 +1,12 @@
 import debug from "debug";
-import { ActivityType, Events, userMention } from "discord.js";
+import {
+    ActivityType,
+    ChannelType,
+    Events,
+    PermissionFlagsBits,
+    userMention,
+    type BaseMessageOptions,
+} from "discord.js";
 import { AdminCommand } from "./admin/command.ts";
 import { AdminFeature } from "./admin/feature.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
@@ -9,6 +16,8 @@ import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
+import { LfgInactivityService } from "./lfg/inactivityService.ts";
+import { getLfgManageCommand } from "./lfgManage/command.ts";
 import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
@@ -34,15 +43,68 @@ const searchItems = await getSearchItems(gameEm);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
+// TODO: I wonder whether some changes like canSendDiscordMessage and sendDiscordMessage really belong here
+// Read back the commit's diff later and determine what must be moved
+
 const adminFeature = new AdminFeature({ em: lumiEm });
 const lfgFeature = new LfgFeature({ em: lumiEm });
+const lfgInactivityService = new LfgInactivityService({
+    orm: lumiOrm,
+    canSendMessage: canSendDiscordMessage,
+    sendMessage: sendDiscordMessage,
+});
 const commands = {
-    admin: new AdminCommand({ adminFeature }),
+    admin: new AdminCommand({
+        adminFeature,
+        onLfgChannelChange: async (_interaction, guildId, previousChannelId, nextChannelId) => {
+            await lfgInactivityService.handleLfgChannelChange(guildId, previousChannelId, nextChannelId);
+        },
+    }),
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
-    lfg: getLfgCommand({ adminFeature, lfgFeature }),
+    lfg: getLfgCommand({
+        adminFeature,
+        lfgFeature,
+        onActivityCommand: (guildId, userId) => lfgInactivityService.recordCommandActivity(guildId, userId),
+    }),
+    "lfg-manage": getLfgManageCommand({ adminFeature, lfgFeature }),
 } as const;
+
+async function canSendDiscordMessage(channelId: string): Promise<boolean> {
+    try {
+        const channel = await bot.channels.fetch(channelId);
+        if (!channel || channel.type !== ChannelType.GuildText || !bot.user) {
+            return false;
+        }
+        return (
+            channel
+                .permissionsFor(bot.user)
+                ?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]) ?? false
+        );
+    } catch (error) {
+        log(`Failed to fetch Discord channel ${channelId}`, error);
+        return false;
+    }
+}
+
+// TODO: again, such function should not be provided to an element from the application layer
+async function sendDiscordMessage(channelId: string, message: string | BaseMessageOptions): Promise<boolean> {
+    try {
+        const channel = await bot.channels.fetch(channelId);
+        if (!channel || channel.type !== ChannelType.GuildText) {
+            log(`Discord channel ${channelId} is unavailable or not a guild text channel.`);
+            return false;
+        }
+        await channel.send(message);
+        return true;
+    } catch (error) {
+        log(`Failed to send message to Discord channel ${channelId}`, error);
+        return false;
+    }
+}
+
+await lfgInactivityService.start();
 
 bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
@@ -54,6 +116,13 @@ bot.on(Events.MessageCreate, async (interaction) => {
 
     if (interaction.author.bot) {
         return;
+    }
+    if (interaction.guildId) {
+        await lfgInactivityService.recordMessageActivity(
+            interaction.guildId,
+            interaction.channelId,
+            interaction.author.id,
+        );
     }
     const mentionedUsers = interaction.mentions.parsedUsers;
     if (!mentionedUsers.has(interaction.client.user.id)) {
