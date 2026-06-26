@@ -1,6 +1,16 @@
 import { describe, expect, test } from "vitest";
-import { getSpellDraggingModeKind } from "../../src/game/spellRules.ts";
+import { getSpellDraggingModeKind, isSpellShapeAoe } from "../../src/game/spellRules.ts";
 import { ESpellDraggingMode, ESpellEffectTarget } from "../../src/game/types.ts";
+
+describe(isSpellShapeAoe.name, () => {
+    test.each([
+        ["............X............", false],
+        ["...........OX............", true],
+        ["..........OOXOO..........", true],
+    ])("tiles %s => %s", (tiles, expected) => {
+        expect(isSpellShapeAoe({ tiles })).toBe(expected);
+    });
+});
 
 describe(getSpellDraggingModeKind.name, () => {
     test.each([
