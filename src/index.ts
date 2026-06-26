@@ -17,6 +17,7 @@ import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
 import { LfgInactivityService } from "./lfg/inactivityService.ts";
+import { getLfgManageCommand } from "./lfgManage/command.ts";
 import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
@@ -67,6 +68,7 @@ const commands = {
         lfgFeature,
         onActivityCommand: (guildId, userId) => lfgInactivityService.recordCommandActivity(guildId, userId),
     }),
+    "lfg-manage": getLfgManageCommand({ adminFeature, lfgFeature }),
 } as const;
 
 async function canSendDiscordMessage(channelId: string): Promise<boolean> {
