@@ -307,7 +307,8 @@
           "amount": {
             "base": 60,
             "unit": {
-              "kind": "FIXED"
+              "kind": "PERCENT",
+              "stat": "ATK"
             }
           },
           "stat": "ATK"
