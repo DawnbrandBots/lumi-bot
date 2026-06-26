@@ -401,11 +401,24 @@ export interface ISummonEffectStatValue {
     readonly base: number;
 }
 
+export const ESpellEffectKind = {
+    DAMAGE: "DAMAGE",
+    HEAL: "HEAL",
+    MOVEMENT: "MOVEMENT",
+    STAT: "STAT",
+    STATUS: "STATUS",
+    REPEAT: "REPEAT",
+    WARP: "WARP",
+    ICE_BLOCK: "ICE_BLOCK",
+    TILE: "TILE",
+    SUMMON: "SUMMON",
+} as const;
+
 /**
  * Something that occurs on tiles a spell is dragged on, and affects units on these tiles.
  */
 export interface ISpellEffect {
-    readonly kind: string;
+    readonly kind: (typeof ESpellEffectKind)[keyof typeof ESpellEffectKind];
     readonly target?: ISpellEffectTarget | null;
 }
 
@@ -413,7 +426,7 @@ export interface ISpellEffect {
  * Effect that deals damage to units.
  */
 export interface IDamageEffect extends ISpellEffect {
-    readonly kind: "DAMAGE";
+    readonly kind: typeof ESpellEffectKind.DAMAGE;
     readonly amount: ISpellEffectValue;
     readonly color: IColor;
 }
@@ -422,7 +435,7 @@ export interface IDamageEffect extends ISpellEffect {
  * Effect that restores HP to units.
  */
 export interface IHealEffect extends ISpellEffect {
-    readonly kind: "HEAL";
+    readonly kind: typeof ESpellEffectKind.HEAL;
     readonly amount: ISpellEffectValue;
 }
 
@@ -430,7 +443,7 @@ export interface IHealEffect extends ISpellEffect {
  * Effect that moves units.
  */
 export interface IMovementEffect extends ISpellEffect {
-    readonly kind: "MOVEMENT";
+    readonly kind: typeof ESpellEffectKind.MOVEMENT;
     readonly direction: IDirection;
     readonly count: number;
     readonly target: ISpellEffectTarget;
@@ -440,7 +453,7 @@ export interface IMovementEffect extends ISpellEffect {
  * Effect that influences the receiver's stats.
  */
 export interface IStatEffect extends ISpellEffect {
-    readonly kind: "STAT";
+    readonly kind: typeof ESpellEffectKind.STAT;
     readonly statChange: IStatChange;
     readonly amount: ISpellEffectValue;
     readonly duration: number | null | undefined;
@@ -451,7 +464,7 @@ export interface IStatEffect extends ISpellEffect {
  * Effect that grants a status effect.
  */
 export interface IStatusEffect extends ISpellEffect {
-    readonly kind: "STATUS";
+    readonly kind: typeof ESpellEffectKind.STATUS;
     readonly effect: IStatEffect | IRepeatEffect;
     readonly target: ISpellEffectTarget;
 }
@@ -460,7 +473,7 @@ export interface IStatusEffect extends ISpellEffect {
  * Effect that repeats another effect a certain number of times.
  */
 export interface IRepeatEffect extends ISpellEffect {
-    readonly kind: "REPEAT";
+    readonly kind: typeof ESpellEffectKind.REPEAT;
     readonly effect: IDamageEffect | IHealEffect;
     readonly times: number;
     readonly interval: number;
@@ -470,14 +483,14 @@ export interface IRepeatEffect extends ISpellEffect {
  * Effect moves user to target tile.
  */
 export interface IWarpEffect extends ISpellEffect {
-    readonly kind: "WARP";
+    readonly kind: typeof ESpellEffectKind.WARP;
 }
 
 /**
  * Effect that summons Ice Blocks on tiles.
  */
 export interface IIceBlockEffect extends ISpellEffect {
-    readonly kind: "ICE_BLOCK";
+    readonly kind: typeof ESpellEffectKind.ICE_BLOCK;
     readonly hp: ISummonEffectStatValue;
 }
 
@@ -485,7 +498,7 @@ export interface IIceBlockEffect extends ISpellEffect {
  * Effect that grants effects to tiles.
  */
 export interface ITileEffect extends ISpellEffect {
-    readonly kind: "TILE";
+    readonly kind: typeof ESpellEffectKind.TILE;
     readonly repeat: IRepeatEffect;
 }
 
@@ -493,7 +506,7 @@ export interface ITileEffect extends ISpellEffect {
  * Effect that summons units on your side.
  */
 export interface ISummonEffect extends ISpellEffect {
-    readonly kind: "SUMMON";
+    readonly kind: typeof ESpellEffectKind.SUMMON;
     readonly movementType: IMovementType;
     readonly weaponType: IWeaponType;
     readonly hp: ISummonEffectStatValue;

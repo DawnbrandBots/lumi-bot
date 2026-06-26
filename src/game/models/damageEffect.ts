@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IDamageEffect } from "../types.ts";
+import { ESpellEffectKind, type IDamageEffect } from "../types.ts";
 import { Color } from "./color.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SpellEffectValue } from "./spellEffectValue.ts";
@@ -7,14 +7,14 @@ import { SpellEffectValue } from "./spellEffectValue.ts";
 export const DamageEffectSchema = defineEntity({
     name: "DamageEffect",
     embeddable: true,
-    discriminatorValue: "DAMAGE",
+    discriminatorValue: ESpellEffectKind.DAMAGE,
     extends: SpellEffect,
     properties: {
-        kind: p.enum(["DAMAGE"]),
+        kind: p.enum([ESpellEffectKind.DAMAGE]),
         amount: () => p.embedded(SpellEffectValue).object(),
         color: () => p.manyToOne(Color),
     },
 });
 
-export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect {}
+export class DamageEffect extends DamageEffectSchema.class implements IDamageEffect { }
 DamageEffectSchema.setClass(DamageEffect);
