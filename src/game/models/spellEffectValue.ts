@@ -9,10 +9,11 @@ export const SpellEffectValueSchema = defineEntity({
     embeddable: true,
     properties: {
         base: p.integer(),
+        scalesWithLevel: p.boolean().default(true),
         unit: () => p.embedded([SpellEffectValueFixedUnit, SpellEffectValuePercentUnit]).object(),
         effectiveness: () => p.embedded(SpellEffectValueEffectivenessItem).array().nullable(),
     },
 });
 
-export class SpellEffectValue extends SpellEffectValueSchema.class implements ISpellEffectValue {}
+export class SpellEffectValue extends SpellEffectValueSchema.class implements ISpellEffectValue { }
 SpellEffectValueSchema.setClass(SpellEffectValue);
