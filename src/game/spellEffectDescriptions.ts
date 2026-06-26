@@ -1,5 +1,6 @@
 import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "./constants.ts";
 import {
+    ESpellEffectKind,
     ESpellEffectTarget,
     ESpellEffectValueUnitKind,
     type ISpell,
@@ -52,7 +53,7 @@ function describeTarget(effect: ISpellEffect, spell: ISpell, inline = false): st
         return `targets in ${inline ? spell.shape.name : "shape"} centered around user`;
     }
 
-    if (effect.kind === "TILE") {
+    if (effect.kind === ESpellEffectKind.TILE) {
         return `target tiles${inline ? ` (${spell.shape.name})` : ""}`;
     }
 
