@@ -1,6 +1,19 @@
 import { describe, expect, test } from "vitest";
-import { getWeaponTypeSkill, getWeaponVariantStat } from "../../src/game/weaponRules.ts";
+import {
+    getWeaponTypeDiscipleBaseAtkModifier,
+    getWeaponTypeSkill,
+    getWeaponVariantStat,
+} from "../../src/game/weaponRules.ts";
 import type { IWeaponSkill } from "../../src/game/types.ts";
+
+describe(getWeaponTypeDiscipleBaseAtkModifier.name, () => {
+    test.each([
+        [1, 1],
+        [2, 2 / 3],
+    ] as const)("range %i => %f", (range, expected) => {
+        expect(getWeaponTypeDiscipleBaseAtkModifier({ range })).toBe(expected);
+    });
+});
 
 describe(getWeaponVariantStat.name, () => {
     test.each(["hp", "atk"] as const)("returns 0 for a level 1 weapon's %s", (stat) => {

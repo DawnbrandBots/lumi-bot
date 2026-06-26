@@ -41,11 +41,18 @@ describe(Disciple.name, () => {
             expect(disciple.baseAtk).toBe(42);
             expect(disciple.getHp({ level: 11 })).toBe(160);
             expect(disciple.getAtk({ level: 11 })).toBe(84);
+            expect(disciple.weaponType.discipleBaseAtkModifier).toBe(1);
         });
     });
 });
 
 describe(Spell.name, () => {
+    test("loaded shape delegates its area check", async () => {
+        const spell = await findSpell("Dark Tetrafire");
+
+        expect(spell.shape.isAoe).toBe(true);
+    });
+
     describe("draggingMode" satisfies keyof Spell, () => {
         test.each([
             ["Self Mend", SPELL_DRAGGING_MODE.SELF.kind],

@@ -1,5 +1,15 @@
 import type { DeepPick } from "../utils/types.ts";
-import { ESpellDraggingMode, ESpellEffectTarget, type ISpell, type ISpellDraggingMode } from "./types.ts";
+import {
+    ESpellDraggingMode,
+    ESpellEffectTarget,
+    type ISpell,
+    type ISpellDraggingMode,
+    type ISpellShape,
+} from "./types.ts";
+
+export function isSpellShapeAoe(shapeData: DeepPick<ISpellShape, { tiles: true }>): boolean {
+    return shapeData.tiles.includes("O");
+}
 
 export function getSpellDraggingModeKind(
     spellData: DeepPick<ISpell, { effects: { target: { kind: true } } }>,

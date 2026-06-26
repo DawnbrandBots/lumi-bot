@@ -1,6 +1,10 @@
 import type { DeepPick } from "../utils/types.ts";
-import { WEAPON_VARIANTS_BONUSES } from "./constants.ts";
-import type { IWeapon, IWeaponSkill } from "./types.ts";
+import { WEAPON_TYPE_RANGE_ATK_MODIFIER, WEAPON_VARIANTS_BONUSES } from "./constants.ts";
+import type { IWeapon, IWeaponSkill, IWeaponType } from "./types.ts";
+
+export function getWeaponTypeDiscipleBaseAtkModifier(weaponTypeData: DeepPick<IWeaponType, { range: true }>): number {
+    return WEAPON_TYPE_RANGE_ATK_MODIFIER[weaponTypeData.range];
+}
 
 export function getWeaponVariantStat(
     arg: { weaponData: DeepPick<IWeapon, { level: true; hp: true; atk: true }> } & Parameters<
