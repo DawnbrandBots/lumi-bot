@@ -52,6 +52,10 @@ function describeTarget(effect: ISpellEffect, spell: ISpell, inline = false): st
         return `targets in ${inline ? spell.shape.name : "shape"} centered around user`;
     }
 
+    if (effect.kind === "TILE") {
+        return `target tiles${inline ? ` (${spell.shape.name})` : ""}`;
+    }
+
     if (effect.target.kind === ESpellEffectTarget.ANY && inline) {
         return `${effect.target.asString} (${spell.shape.name})`;
     }
@@ -119,7 +123,7 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
         return `Summons ice blocks with ${effect.hp.base} HP`;
     },
     TILE(effect, spell, inline) {
-        return `Grants effect to target tiles: ${describeSpellEffect(effect.repeat, spell, inline)}`;
+        return `Grants effect to ${describeTarget(effect, spell, inline)}: ${describeSpellEffect(effect.repeat, spell, inline)}`;
     },
     SUMMON(effect) {
         const minion = `${effect.weaponType.name} ${effect.movementType.name} minion`;
