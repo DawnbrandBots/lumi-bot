@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectTarget, type ISpell } from "../types.ts";
+import { getSpellDraggingModeKind } from "../spellRules.ts";
+import type { ISpell, ISpellDraggingMode } from "../types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { Disciple } from "./disciple.ts";
 import { HealEffect } from "./healEffect.ts";
@@ -55,14 +56,8 @@ export class Spell extends SpellSchema.class implements ISpell {
         return "spell" as const;
     }
 
-    get draggingMode() {
-        // TODO: target being nullable is due to some spell effects being wrongly typed:
-        // damage and healing effects can be nested, in which case they don't have a target,
-        // but they always have a target at the root as effects at the rool level of Spell.effects
-        // This needs to be fixed eventually!!
-        return this.effects.every((effect) => effect.target!.kind === ESpellEffectTarget.SELF)
-            ? SPELL_DRAGGING_MODE.SELF
-            : SPELL_DRAGGING_MODE.ANY;
+    get draggingMode(): ISpellDraggingMode {
+        return SPELL_DRAGGING_MODE[getSpellDraggingModeKind(this)];
     }
 }
 SpellSchema.setClass(Spell);
