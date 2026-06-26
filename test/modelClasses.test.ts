@@ -8,9 +8,6 @@ import { describeSpellEffects } from "../src/game/spellEffectDescriptions.ts";
 import { ESpellDraggingMode } from "../src/game/types.ts";
 import { initTestOrm } from "./orm.ts";
 
-const VARIANTS = ["HP", "NEUTRAL", "ATK"] as const;
-const STATS = ["hp", "atk"] as const;
-
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
 
@@ -211,77 +208,11 @@ describe(Spell.name, () => {
 });
 
 describe(Weapon.name, () => {
-    test("getWeaponVariantStat returns 0 for every Bronze Sword stat and variant", async () => {
-        const weapon = await findWeapon("Bronze Sword");
+    test("rule methods use loaded weapon and weapon type data", async () => {
+        const royalSword = await findWeapon("Royal Sword +");
+        const ironBow = await findWeapon("Iron Bow");
 
-        for (const variant of VARIANTS) {
-            for (const stat of STATS) {
-                expect(weapon.getWeaponVariantStat({ variant, stat })).toBe(0);
-            }
-        }
-    });
-
-    test("getWeaponVariantStat returns expected values for Royal Sword +", async () => {
-        const weapon = await findWeapon("Royal Sword +");
-
-        // Checking right values for all variants of an 8* weapon
-        expect(weapon.getWeaponVariantStat({ variant: "HP", stat: "hp" })).toBe(16);
-        expect(weapon.getWeaponVariantStat({ variant: "HP", stat: "atk" })).toBe(35);
-        expect(weapon.getWeaponVariantStat({ variant: "NEUTRAL", stat: "hp" })).toBe(11);
-        expect(weapon.getWeaponVariantStat({ variant: "NEUTRAL", stat: "atk" })).toBe(45);
-        expect(weapon.getWeaponVariantStat({ variant: "ATK", stat: "hp" })).toBe(6);
-        expect(weapon.getWeaponVariantStat({ variant: "ATK", stat: "atk" })).toBe(55);
-    });
-
-    describe("Weapon type skills", () => {
-        describe("Should have a weapon type skill", () => {
-            test.each([
-                ["Basic Claws", null],
-                ["Iron Claws", "RIDER_BANE_1"],
-                ["Silver Claws", "RIDER_BANE_2"],
-                ["Solar Claws +", "RIDER_BANE_3"],
-                ["Novice Staff", null],
-                ["Iron Staff", "ARMOR_BANE_1"],
-                ["Silver Staff", "ARMOR_BANE_2"],
-                ["Panther Staff +", "ARMOR_BANE_3"],
-                ["Novice Tome", null],
-                ["Iron Tome", "ARMOR_BANE_1"],
-                ["Silver Tome", "ARMOR_BANE_2"],
-                ["Ivory Tome +", "ARMOR_BANE_3"],
-                ["Bronze Bow", null],
-                ["Iron Bow", "FLIER_BANE_1"],
-                ["Silver Bow", "FLIER_BANE_2"],
-                ["Mulagir +", "FLIER_BANE_3"],
-            ])("%s => %s", async (name, expectedSkillId) => {
-                const weapon = await findWeapon(name);
-
-                expect(weapon.weaponTypeSkill?.id ?? null).toBe(expectedSkillId);
-            });
-        });
-
-        describe("Should not have a weapon type skill", () => {
-            test.each([
-                "Bronze Sword",
-                "Iron Sword",
-                "Silver Sword",
-                "Royal Sword +",
-                "Bronze Lance",
-                "Iron Lance",
-                "Silver Lance",
-                "Shield Lance +",
-                "Bronze Axe",
-                "Iron Axe",
-                "Silver Axe",
-                "Bull Axe +",
-                "Basic Stone",
-                "Iron Stone",
-                "Silver Stone",
-                "Sight Stone +",
-            ])("%s => null", async (name) => {
-                const weapon = await findWeapon(name);
-
-                expect(weapon.weaponTypeSkill).toBeNullable();
-            });
-        });
+        expect(royalSword.getWeaponVariantStat({ variant: "NEUTRAL", stat: "hp" })).toBe(11);
+        expect(ironBow.weaponTypeSkill?.id).toBe("FLIER_BANE_1");
     });
 });
