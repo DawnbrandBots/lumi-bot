@@ -3,10 +3,9 @@ import type { TextChannel } from "discord.js";
 import {
     ChannelType,
     MessageFlags,
-    PermissionFlagsBits,
     type CacheType,
     type ChatInputCommandInteraction,
-    type InteractionReplyOptions,
+    type InteractionReplyOptions
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
@@ -84,17 +83,11 @@ export function getLfgManageCommand({
                 );
             }
 
-            if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
-                return interaction.reply(
-                    createErrorMessage<InteractionReplyOptions>({
-                        embed: {
-                            title: "Missing permission",
-                            description: "You need the Manage Server permission to manage LFG rooms.",
-                        },
-                        flags: MessageFlags.Ephemeral,
-                    }),
-                );
-            }
+            // TODO: there used to be a check on the ManageGuild permission here
+            // This isn't necessary anymore since admins may grant access to the command to other users
+            // HOWEVER, should there still be a custom check here on whether the user DOES have permission to use the command?
+            // This is especially relevant if other ways to call the application layers are added later.
+            // We don't want anyone to be able use these command.
 
             const result = await runSubcommand(interaction, guildId, interaction.options.getSubcommand(false));
             const configResult = await adminFeature.getGuildConfig(guildId);
