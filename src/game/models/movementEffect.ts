@@ -17,5 +17,5 @@ export const MovementEffectSchema = defineEntity({
     },
 });
 
-export class MovementEffect extends MovementEffectSchema.class implements IMovementEffect { }
+export class MovementEffect extends MovementEffectSchema.class implements IMovementEffect {}
 MovementEffectSchema.setClass(MovementEffect);

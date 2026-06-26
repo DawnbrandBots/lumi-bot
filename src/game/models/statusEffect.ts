@@ -17,5 +17,5 @@ export const StatusEffectSchema = defineEntity({
     },
 });
 
-export class StatusEffect extends StatusEffectSchema.class implements IStatusEffect { }
+export class StatusEffect extends StatusEffectSchema.class implements IStatusEffect {}
 StatusEffectSchema.setClass(StatusEffect);
