@@ -14,9 +14,11 @@ type DeepPickResult<T, TShape> = T extends (infer TItem)[]
       ? readonly DeepPickResult<TItem, TShape>[]
       : T extends object
         ? {
-              [TKey in keyof TShape & keyof T]: NonNullable<TShape[TKey]> extends true
-                  ? T[TKey]
-                  : DeepPickResult<T[TKey], NonNullable<TShape[TKey]>>;
+              [TKey in keyof T as TKey extends keyof TShape ? TKey : never]: TKey extends keyof TShape
+                  ? NonNullable<TShape[TKey]> extends true
+                      ? T[TKey]
+                      : DeepPickResult<T[TKey], NonNullable<TShape[TKey]>>
+                  : never;
           }
         : T;
 
