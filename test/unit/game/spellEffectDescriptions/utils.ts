@@ -1,5 +1,5 @@
-import type { TSpellEffectDescriptionsInput } from "../../../src/game/spellEffectDescriptions/utils.ts";
-import { ESpellEffectValueUnitKind, EStat } from "../../../src/game/types.ts";
+import type { TSpellEffectDescriptionsInput } from "../../../../src/game/spellEffectDescriptions/utils.ts";
+import { ESpellEffectValueUnitKind, EStat } from "../../../../src/game/types.ts";
 
 type TRootSpellEffect = TSpellEffectDescriptionsInput["effects"][number];
 type TDamageEffect = Extract<TRootSpellEffect, { kind: "DAMAGE" }>;

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../src/game/spellEffectDescriptions/effects.ts";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../src/game/types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../src/game/spellEffectDescriptions/effects.ts";
+import { ESpellEffectKind, ESpellEffectTarget } from "../../../../src/game/types.ts";
 import {
     ATK_PERCENT_VALUE_UNIT,
     ATK_STAT,

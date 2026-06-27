@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getDiscipleBaseStatsTable } from "../../../src/search/handlers/disciple.ts";
+import { getDiscipleBaseStatsTable } from "../../../../src/search/handlers/disciple.ts";
 
 describe(getDiscipleBaseStatsTable.name, () => {
     test("returns stats for level 1 and the relevant levels", () => {

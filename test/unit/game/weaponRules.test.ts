@@ -3,8 +3,8 @@ import {
     getWeaponTypeDiscipleBaseAtkModifier,
     getWeaponTypeSkill,
     getWeaponVariantStat,
-} from "../../src/game/weaponRules.ts";
-import type { IWeaponSkill } from "../../src/game/types.ts";
+} from "../../../src/game/weaponRules.ts";
+import type { IWeaponSkill } from "../../../src/game/types.ts";
 
 describe(getWeaponTypeDiscipleBaseAtkModifier.name, () => {
     test.each([

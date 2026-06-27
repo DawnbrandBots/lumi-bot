@@ -1,12 +1,12 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import { Disciple } from "../src/game/models/disciple.ts";
-import { Spell } from "../src/game/models/spell.ts";
-import { SPELL_DRAGGING_MODE } from "../src/game/models/spellDraggingMode.ts";
-import { Weapon } from "../src/game/models/weapon.ts";
-import { describeSpellEffects } from "../src/game/spellEffectDescriptions/spell.ts";
-import { ESpellDraggingMode } from "../src/game/types.ts";
-import { initTestOrm } from "./orm.ts";
+import { Disciple } from "../../../src/game/models/disciple.ts";
+import { Spell } from "../../../src/game/models/spell.ts";
+import { SPELL_DRAGGING_MODE } from "../../../src/game/models/spellDraggingMode.ts";
+import { Weapon } from "../../../src/game/models/weapon.ts";
+import { describeSpellEffects } from "../../../src/game/spellEffectDescriptions/spell.ts";
+import { ESpellDraggingMode } from "../../../src/game/types.ts";
+import { initTestOrm } from "../../support/orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;

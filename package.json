@@ -18,7 +18,7 @@
     "register": "node --enable-source-maps --env-file-if-exists=.env scripts/registerCommands.ts",
     "bot:profile:update": "node --enable-source-maps --env-file-if-exists=.env scripts/updateBotProfile.ts",
     "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts",
-    "test:db": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts ./test/mikro-orm.test.config.ts",
+    "test:db": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts ./test/support/mikro-orm.test.config.ts",
     "pretest": "yarn test:db",
     "test": "vitest"
   },
