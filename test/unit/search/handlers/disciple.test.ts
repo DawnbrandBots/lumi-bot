@@ -10,8 +10,8 @@ describe(getDiscipleBaseStatsTable.name, () => {
 
         expect(getDiscipleBaseStatsTable(discipleStats)).toEqual([
             ["Level", 1, 8, 9, 10, 11],
-            ["HP", 80, 136, 144, 152, 160],
-            ["Atk", 42, 71, 75, 79, 84],
+            ["HP", 10, 80, 90, 100, 110],
+            ["Atk", 5, 40, 45, 50, 55],
         ]);
     });
 });
