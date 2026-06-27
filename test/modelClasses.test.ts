@@ -4,7 +4,7 @@ import { Disciple } from "../src/game/models/disciple.ts";
 import { Spell } from "../src/game/models/spell.ts";
 import { SPELL_DRAGGING_MODE } from "../src/game/models/spellDraggingMode.ts";
 import { Weapon } from "../src/game/models/weapon.ts";
-import { describeSpellEffects } from "../src/game/spellEffectDescriptions.ts";
+import { describeSpellEffects } from "../src/game/spellEffectDescriptions/spell.ts";
 import { ESpellDraggingMode } from "../src/game/types.ts";
 import { initTestOrm } from "./orm.ts";
 

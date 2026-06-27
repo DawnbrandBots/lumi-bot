@@ -5,7 +5,7 @@ import {
     DISCORD_RED_SQUARE_EMOJI_CALL,
 } from "../../bot/constants.ts";
 import { Spell } from "../../game/models/spell.ts";
-import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
+import { describeSpellEffects } from "../../game/spellEffectDescriptions/spell.ts";
 import type { ISpell } from "../../game/types.ts";
 import type { ISearchHandler } from "../types.ts";
 

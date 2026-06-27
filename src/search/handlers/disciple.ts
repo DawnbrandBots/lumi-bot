@@ -1,7 +1,7 @@
 import type { APIEmbed } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../game/constants.ts";
 import { Disciple } from "../../game/models/disciple.ts";
-import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
+import { describeSpellEffects } from "../../game/spellEffectDescriptions/spell.ts";
 import type { IDisciple } from "../../game/types.ts";
 import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
