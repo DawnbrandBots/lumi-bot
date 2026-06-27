@@ -1,6 +1,6 @@
 import type { DeepPick } from "../../utils/types.ts";
 import { WEAPON_TYPE_RANGE_ATK_MODIFIER, WEAPON_VARIANTS_BONUSES } from "../constants.ts";
-import type { IWeapon, IWeaponSkill, IWeaponType } from "../types.ts";
+import type { IWeapon, IWeaponType } from "../types.ts";
 
 export function getWeaponTypeDiscipleBaseAtkModifier(weaponTypeData: DeepPick<IWeaponType, { range: true }>): number {
     return WEAPON_TYPE_RANGE_ATK_MODIFIER[weaponTypeData.range];
@@ -14,17 +14,14 @@ export function getWeaponVariantStat(
     return arg.weaponData.level === 1 ? 0 : arg.weaponData[arg.stat] + WEAPON_VARIANTS_BONUSES[arg.variant][arg.stat];
 }
 
-export function getWeaponTypeSkill(
-    arg: DeepPick<IWeapon, { level: true; weaponType: { weaponSkills: true } }>,
-): IWeaponSkill | null | undefined {
-    const skills = Array.from(arg.weaponType.weaponSkills);
+export function getWeaponTypeSkillRankByWeaponLevel(arg: DeepPick<IWeapon, { level: true }>): number | null {
     if (arg.level <= 1) {
         return null;
     } else if (arg.level <= 3) {
-        return skills[0];
+        return 0;
     } else if (arg.level <= 5) {
-        return skills[1];
+        return 1;
     } else {
-        return skills[2];
+        return 2;
     }
 }

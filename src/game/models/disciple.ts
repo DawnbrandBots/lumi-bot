@@ -1,5 +1,5 @@
 import { defineEntity, p, raw } from "@mikro-orm/core";
-import { getDiscipleAtk, getDiscipleBaseAtk, getDiscipleBaseHp, getDiscipleHp } from "../discipleStats.ts";
+import { getDiscipleAtk, getDiscipleBaseAtk, getDiscipleBaseHp, getDiscipleHp } from "../rules/disciple.ts";
 import type { IDisciple } from "../types.ts";
 import { MovementType } from "./movementType.ts";
 import { Music } from "./music.ts";

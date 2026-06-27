@@ -1,10 +1,9 @@
 import { describe, expect, test } from "vitest";
 import {
     getWeaponTypeDiscipleBaseAtkModifier,
-    getWeaponTypeSkill,
+    getWeaponTypeSkillRankByWeaponLevel,
     getWeaponVariantStat,
-} from "../../../src/game/weaponRules.ts";
-import type { IWeaponSkill } from "../../../src/game/types.ts";
+} from "../../../../src/game/rules/weapon.ts";
 
 describe(getWeaponTypeDiscipleBaseAtkModifier.name, () => {
     test.each([
@@ -32,22 +31,16 @@ describe(getWeaponVariantStat.name, () => {
     });
 });
 
-describe(getWeaponTypeSkill.name, () => {
-    const skills = [{ id: "rank-1" }, { id: "rank-2" }, { id: "rank-3" }] as IWeaponSkill[];
-
+describe(getWeaponTypeSkillRankByWeaponLevel.name, () => {
     test.each([
         [1, null],
-        [2, skills[0]],
-        [3, skills[0]],
-        [4, skills[1]],
-        [5, skills[1]],
-        [6, skills[2]],
-        [8, skills[2]],
+        [2, 0],
+        [3, 0],
+        [4, 1],
+        [5, 1],
+        [6, 2],
+        [8, 2],
     ])("selects the skill for weapon level %i", (level, expected) => {
-        expect(getWeaponTypeSkill({ level, weaponType: { weaponSkills: skills } })).toBe(expected);
-    });
-
-    test("returns undefined when no skill exists for the weapon level", () => {
-        expect(getWeaponTypeSkill({ level: 8, weaponType: { weaponSkills: [] } })).toBeUndefined();
+        expect(getWeaponTypeSkillRankByWeaponLevel({ level })).toBe(expected);
     });
 });

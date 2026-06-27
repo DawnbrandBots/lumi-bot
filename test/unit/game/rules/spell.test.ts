@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { getSpellDraggingModeKind, isSpellShapeAoe } from "../../../src/game/spellRules.ts";
-import { ESpellDraggingMode, ESpellEffectTarget } from "../../../src/game/types.ts";
+import { getSpellDraggingModeKind, isSpellShapeAoe } from "../../../../src/game/rules/spell.ts";
+import { ESpellDraggingMode, ESpellEffectTarget } from "../../../../src/game/types.ts";
 
 describe(isSpellShapeAoe.name, () => {
     test.each([
