@@ -1,0 +1,862 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`search command messages > returns the complete Axe Fighter + Infantry message (summon) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Estel",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "Light",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "inline": true,
+          "name": "Only for",
+          "value": "Infantry units",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Summons Axe Infantry minion with 75 HP and 60 Atk.",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Axe Fighter Plus Infantry, AFPI",
+      },
+      "title": "Axe Fighter + Infantry",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Crosswind Grav EX message (limits stat status effect) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Claude",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Deals 40 Green damage to targets.
+1. Grants status to targets: Limits Movement to 1 (permanent).",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Crosswind Grav EX, CWGEX",
+      },
+      "title": "Crosswind Grav EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Dark Cross Poison Patch message (tile) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Corrin",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "Shadow",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Grants effect to target tiles: Deals 25 Colorless damage every 3 seconds (5 times).",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Dark Cross Poison Patch, DCPP",
+      },
+      "title": "Dark Cross Poison Patch",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Dark Crossfire + Tome message (countdown with shared status intro) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Robin",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "Shadow",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "4 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "inline": true,
+          "name": "Only for",
+          "value": "Tome units",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "After 2 seconds:
+1. Grants status to targets: Deals 40 Red damage every 6 seconds (2 times).",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Dark Crossfire Plus Tome, DCFPT",
+      },
+      "title": "Dark Crossfire + Tome",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Dark Tetrafire message (countdown before damage) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Ike",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "Shadow",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::blue_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "After 2 seconds:
+1. Deals 75 Red damage to targets.",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Dark Tetrafire, DTF",
+      },
+      "title": "Dark Tetrafire",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Dual Invigorate EX message (dual spell) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Ananke",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Grants status to user and targets: Increases HP by 10% (permanent).
+1. Restores 10 HP to user and targets.",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Dual Invigorate EX, DIEX",
+      },
+      "title": "Dual Invigorate EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Elfire message (plain damage) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Kurt",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "Light",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Deals 60 Red damage to targets.",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Elfire, EF",
+      },
+      "title": "Elfire",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Heal Warp EX message (warp) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Sai",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Restores 50 HP to targets.
+1. Moves user to target tile.",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Heal Warp EX, HWEX",
+      },
+      "title": "Heal Warp EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Self Cross Shield message (area self-targeted status) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Corrin",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "Light",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "User tile only",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns).",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Self Cross Shield, SCS",
+      },
+      "title": "Self Cross Shield",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Self Mend message (single-tile self heal) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Rose",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "Light",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "User tile only",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Restores 80 HP to user.",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Self Mend, SM",
+      },
+      "title": "Self Mend",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Slow Self Shield EX message (cooldown increasing spell effect) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Tiki",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Grants status to targets: Increases Cooldown by 10% (3 turns).
+1. Grants status to user: Decreases Received Weapon Damage by 25% (permanent).",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Slow Self Shield EX, SSSEX",
+      },
+      "title": "Slow Self Shield EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Tetrathunder Wall EX message (ice blocks) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Shea",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::blue_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Grants status to targets: Deals 40 Blue damage every 6 seconds (2 times).
+1. Summons ice blocks with 60 HP.",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Tetrathunder Wall EX, TTWEX",
+      },
+      "title": "Tetrathunder Wall EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Thunder Self Edge EX message (mixed damage and status) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Ephraim",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Deals 60 Blue damage to targets.
+1. Grants status to user: Increases Atk by 30% (permanent).",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Thunder Self Edge EX, TSEEX",
+      },
+      "title": "Thunder Self Edge EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Trinity Shield Edge EX message (shared status intro) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Robin",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "Grants statuses to targets:
+1. Decreases Received Weapon Damage by 20% (permanent).
+1. Increases Atk by 30% (permanent).
+1. Decreases Color Affinity by 20% (permanent).",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Trinity Shield Edge EX, TSEEX",
+      },
+      "title": "Trinity Shield Edge EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
