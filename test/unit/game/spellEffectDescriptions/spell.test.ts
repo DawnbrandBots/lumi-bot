@@ -40,7 +40,7 @@ describe(describeSpellEffects.name, () => {
         expect(describeSpellEffects(spell, true)).toBe("after 2 seconds, moves user to target tile.");
     });
 
-    test("appends non-default properties to inline descriptions", () => {
+    test("appends properties with non-default values to inline descriptions", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
             uses: 1,
             cooldown: 3,
