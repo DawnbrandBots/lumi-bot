@@ -341,7 +341,7 @@ export interface ISpellEffectValue {
      * Value of spell effect for the spell's level 1.
      */
     readonly base: number;
-    readonly unit: ISpellEffectValueUnit;
+    readonly unit: TSpellEffectValueUnit;
     readonly effectiveness?: ISpellEffectValueEffectivenessItem[] | null;
 }
 
