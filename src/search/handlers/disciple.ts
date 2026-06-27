@@ -7,7 +7,7 @@ import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
 import type { ISearchHandler } from "../types.ts";
 
-export function getDiscipleBaseStatsTable(disciple: IDisciple): (string | number)[][] {
+export function getDiscipleBaseStatsTable(disciple: Pick<IDisciple, "getHp" | "getAtk">): (string | number)[][] {
     const relevantLevels = Array.from(
         range({ start: DISCIPLE_MINIMUM_RELEVANT_LEVEL, end: DISCIPLE_MAXIXUM_LEVEL + 1 }),
     );
