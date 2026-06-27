@@ -1,7 +1,8 @@
-import { defineEntity, p } from "@mikro-orm/sqlite";
+import { defineEntity, p, raw } from "@mikro-orm/core";
 import { getDiscipleAtk, getDiscipleBaseAtk, getDiscipleBaseHp, getDiscipleHp } from "../discipleStats.ts";
 import type { IDisciple } from "../types.ts";
 import { MovementType } from "./movementType.ts";
+import { Music } from "./music.ts";
 import { Spell } from "./spell.ts";
 import { Weapon } from "./weapon.ts";
 import { WeaponType } from "./weaponType.ts";
@@ -15,6 +16,12 @@ export const DiscipleSchema = defineEntity({
         weaponType: () => p.manyToOne(WeaponType),
         prfWeapon: () => p.oneToOne(Weapon).inversedBy("prfDisciple").owner(),
         spells: () => p.oneToMany(Spell).mappedBy("disciple"),
+        shadowMusic: () => p.manyToOne(Music).inversedBy("shadowMusicFor"),
+        shadowResultsScreenMusic: () =>
+            p
+                .manyToOne(Music)
+                .formula((columns) => raw("?? || ?", [columns.shadowMusic, "_RESULTS_SCREEN"]))
+                .inversedBy("shadowResultsScreenMusicFor"),
     },
 });
 

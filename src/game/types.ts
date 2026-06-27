@@ -149,6 +149,14 @@ export interface IDisciple {
      */
     readonly prfWeapon: IWeapon;
     /**
+     * Music that plays when this disciple is revealed to be the Shadow.
+     */
+    readonly shadowMusic: IMusic;
+    /**
+     * Music that plays when this disciple the Shadow and the battle is over.
+     */
+    readonly shadowResultsScreenMusic: IMusic;
+    /**
      * Spells this disciple provides as their souls are collected.
      */
     readonly spells: Iterable<ISpell>;
@@ -527,3 +535,21 @@ export type TRootSpellEffect =
     | ISummonEffect;
 
 export type TSpellEffect = TRootSpellEffect | IStatEffect | IRepeatEffect;
+
+export interface IMusic {
+    readonly kind: "music";
+    readonly id: TId;
+    readonly name: string;
+    /**
+     * URL to media for this music.
+     */
+    readonly url?: string | null;
+    /**
+     * Shadow disciples for which this song plays during battle.
+     */
+    readonly shadowMusicFor?: Iterable<IDisciple> | null;
+    /**
+     * Shadow disciples for which this song plays on a battle's results screen.
+     */
+    readonly shadowResultsScreenMusicFor?: Iterable<IDisciple> | null;
+}
