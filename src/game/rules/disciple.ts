@@ -1,6 +1,6 @@
-import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from "./constants.ts";
-import type { IDisciple } from "./types.ts";
-import type { DeepPick } from "../utils/types.ts";
+import type { DeepPick } from "../../utils/types.ts";
+import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from "../constants.ts";
+import type { IDisciple } from "../types.ts";
 
 export function getDiscipleBaseHp(
     arg: DeepPick<IDisciple, { movementType: { discipleBaseHpModifier: true } }>,
