@@ -320,6 +320,16 @@
     "uniqueSkill": "DRAGONSCALE"
   },
   {
+    "id": "ANCIENT_STONE_PLUS",
+    "name": "Ancient Stone +",
+    "weaponType": "STONE",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "NIGHTMARE_S_END"
+  },
+  {
     "id": "ROYAL_SWORD",
     "name": "Royal Sword",
     "weaponType": "SWORD",
@@ -560,6 +570,16 @@
     "uniqueSkill": "FOX_S_SUNBURST"
   },
   {
+    "id": "RESOLUTE_STAFF",
+    "name": "Resolute Staff",
+    "weaponType": "STAFF",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
+  },
+  {
     "id": "ANCESTRAL_STAFF",
     "name": "Ancestral Staff",
     "weaponType": "STAFF",
@@ -658,6 +678,26 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "DRAGONSCALE"
+  },
+  {
+    "id": "ANCIENT_STONE",
+    "name": "Ancient Stone",
+    "weaponType": "STONE",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "NIGHTMARE_S_END"
+  },
+  {
+    "id": "SUMMER_FAIR_STAFF",
+    "name": "Summer Fair Staff",
+    "weaponType": "STAFF",
+    "level": 6,
+    "hp": 5,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "FOX_S_SUNBURST"
   },
   {
     "id": "SAKURA_BOW",
@@ -807,6 +847,15 @@
     "atk": 20,
     "freeSkillSlots": 2,
     "uniqueSkill": "SPIRITED_ATTACK"
+  },
+  {
+    "id": "MOONLIT_AXE",
+    "name": "Moonlit Axe",
+    "weaponType": "AXE",
+    "level": 5,
+    "hp": 5,
+    "atk": 25,
+    "freeSkillSlots": 2
   },
   {
     "id": "SILVER_CLAWS",
@@ -1006,6 +1055,15 @@
     "id": "TRI_DANGO_LANCE",
     "name": "Tri-Dango Lance",
     "weaponType": "LANCE",
+    "level": 4,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
+  },
+  {
+    "id": "ICE_CREAM_AXE",
+    "name": "Ice Cream Axe",
+    "weaponType": "AXE",
     "level": 4,
     "hp": 5,
     "atk": 20,
