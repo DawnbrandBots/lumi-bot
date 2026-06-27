@@ -254,5 +254,13 @@
     "weaponType": "SWORD",
     "prfWeapon": "EMINENCE_SWORD_PLUS",
     "shadowMusic": "BETRAYAL_BOOK_3"
+  },
+  {
+    "id": "TIKI",
+    "name": "Tiki",
+    "movementType": "INFANTRY",
+    "weaponType": "STONE",
+    "prfWeapon": "ANCIENT_STONE_PLUS",
+    "shadowMusic": "BETRAYAL_MYSTERY_OF_THE_EMBLEM"
   }
 ]
