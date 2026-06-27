@@ -48,6 +48,10 @@
     "description": "Deal 30% more weapon damage against Staff foes."
   },
   {
+    "id": "WEAPON_DAMAGE_VS_STONE_40",
+    "description": "Deal 40% more weapon damage against Stone foes."
+  },
+  {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_20",
     "description": "Deal 20% more weapon damage against Cavalry foes."
   },

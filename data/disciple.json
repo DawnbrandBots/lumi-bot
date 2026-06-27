@@ -222,5 +222,12 @@
     "movementType": "ARMORED",
     "weaponType": "SWORD",
     "prfWeapon": "EMINENCE_SWORD_PLUS"
+  },
+  {
+    "id": "TIKI",
+    "name": "Tiki",
+    "movementType": "INFANTRY",
+    "weaponType": "STONE",
+    "prfWeapon": "ANCIENT_STONE_PLUS"
   }
 ]
