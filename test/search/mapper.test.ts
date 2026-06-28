@@ -24,13 +24,12 @@ import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
-type SearchItem = TSearchItem;
-let searchEngine: ISearchEngine<SearchItem>;
+let searchEngine: ISearchEngine<TSearchItem>;
 
 beforeAll(async () => {
     orm = await initTestOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<SearchItem>({ items: await getSearchItems(em) });
+    searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
 });
 
 afterAll(async () => {
@@ -55,13 +54,13 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
     });
 
     test("maps a database miss to an error message", async () => {
-        const missingSearchItem: SearchItem = {
+        const missingSearchItem: TSearchItem = {
             id: "MISSING_ID",
             kind: "weapon",
             name: "Missing Weapon",
             aliases: ["Missing Weapon"],
         };
-        const mockedSearchEngine: ISearchEngine<SearchItem> = {
+        const mockedSearchEngine: ISearchEngine<TSearchItem> = {
             search: vi.fn(),
             searchOne: vi.fn().mockReturnValue(missingSearchItem),
         };

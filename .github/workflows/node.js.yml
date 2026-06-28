@@ -1,9 +1,13 @@
 name: Compile and lint
+
 on:
+  workflow_dispatch:
   push:
     branches: [master]
   pull_request:
     branches: [master]
+    types: [ready_for_review, review_requested]
+
 permissions: {}
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -12,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: true
       - uses: actions/setup-node@v6

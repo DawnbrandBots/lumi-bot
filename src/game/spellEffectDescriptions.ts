@@ -1,5 +1,6 @@
 import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "./constants.ts";
 import {
+    ESpellEffectKind,
     ESpellEffectTarget,
     ESpellEffectValueUnitKind,
     type ISpell,
@@ -50,6 +51,10 @@ function describeTarget(effect: ISpellEffect, spell: ISpell, inline = false): st
 
     if (effect.target.kind === ESpellEffectTarget.SELF && spell.shape.isAoe) {
         return `targets in ${inline ? spell.shape.name : "shape"} centered around user`;
+    }
+
+    if (effect.kind === ESpellEffectKind.TILE) {
+        return `target tiles${inline ? ` (${spell.shape.name})` : ""}`;
     }
 
     if (effect.target.kind === ESpellEffectTarget.ANY && inline) {
@@ -119,7 +124,7 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
         return `Summons ice blocks with ${effect.hp.base} HP`;
     },
     TILE(effect, spell, inline) {
-        return `Grants effect to target tiles: ${describeSpellEffect(effect.repeat, spell, inline)}`;
+        return `Grants effect to ${describeTarget(effect, spell, inline)}: ${describeSpellEffect(effect.repeat, spell, inline)}`;
     },
     SUMMON(effect) {
         const minion = `${effect.weaponType.name} ${effect.movementType.name} minion`;

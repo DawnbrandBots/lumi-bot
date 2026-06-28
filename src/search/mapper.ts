@@ -34,8 +34,8 @@ function mapSearchFeatureSuccessValueToMessage<Kind extends TSearchKind>(value: 
         // Showing aliases when there is only one is redundant.
         value.searchItem.aliases.length > 1
             ? {
-                  text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${value.searchItem.aliases.join(", ")}`,
-              }
+                text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${value.searchItem.aliases.join(", ")}`,
+            }
             : undefined;
 
     return createPositiveMessage({ embed: { ...SEARCH_MAPPERS[value.kind](value.entity), footer } });
