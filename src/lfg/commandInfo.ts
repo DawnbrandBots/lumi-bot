@@ -54,7 +54,8 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
                             .setDescription("Room code.")
                             .setMinLength(LFG_MIN_ROOM_CODE_LENGTH)
                             .setMaxLength(LFG_MAX_ROOM_CODE_LENGTH)
-                            .setRequired(true),
+                            .setRequired(true)
+                            .setAutocomplete(true),
                     ),
             )
             .addSubcommand((subcommand) =>
