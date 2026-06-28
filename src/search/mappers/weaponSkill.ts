@@ -31,19 +31,19 @@ export default function mapWeaponSkillToMessage(weaponSkill: IWeaponSkill) {
         },
         ...(weaponTypeSkillStr.length > 0
             ? [
-                {
-                    name: "Weapon Type Skill",
-                    value: weaponTypeSkillStr,
-                },
-            ]
+                  {
+                      name: "Weapon Type Skill",
+                      value: weaponTypeSkillStr,
+                  },
+              ]
             : []),
         ...(uniqueSkillWeapons.length > 0
             ? [
-                {
-                    name: "Unique skill for weapon(s)",
-                    value: uniqueSkillWeapons,
-                },
-            ]
+                  {
+                      name: "Unique skill for weapon(s)",
+                      value: uniqueSkillWeapons,
+                  },
+              ]
             : []),
     ];
     return {

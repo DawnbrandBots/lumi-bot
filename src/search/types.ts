@@ -68,12 +68,12 @@ export type TSearchFeatureReturn<Kind extends TSearchKind = TSearchKind> =
     | { readonly kind: ESearchFeatureReturnKind.INPUT_TOO_LONG }
     | { readonly kind: ESearchFeatureReturnKind.NO_RESULT }
     | {
-        readonly kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB;
-        readonly value: {
-            readonly kind: Kind;
-            readonly id: TId;
-        };
-    };
+          readonly kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB;
+          readonly value: {
+              readonly kind: Kind;
+              readonly id: TId;
+          };
+      };
 
 /**
  * Defines what ORM entity should be searched for.
