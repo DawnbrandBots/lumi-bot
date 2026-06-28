@@ -8,7 +8,6 @@ import searchFeature from "../../src/search/feature.ts";
 import type { TSearchItem } from "../../src/search/types.ts";
 import { ESearchFeatureReturnKind, type ISearchEngine } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
-import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
@@ -101,8 +100,14 @@ describe(searchFeature.name, () => {
             em,
         });
 
-        typedGuardExpectToBe(result.kind, ESearchFeatureReturnKind.SUCCESS);
-        expect(result.value.searchItem).toEqual(searchItem);
-        expect(result.value.entity.id).toBe(searchItem?.id);
+        expect(result).toMatchObject({
+            kind: ESearchFeatureReturnKind.SUCCESS,
+            value: {
+                searchItem,
+                entity: {
+                    id: searchItem?.id,
+                },
+            },
+        });
     });
 });

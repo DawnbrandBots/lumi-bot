@@ -1,5 +1,6 @@
 import type { EntityName, Populate } from "@mikro-orm/sqlite";
 import type { Disciple } from "../game/models/disciple.ts";
+import type { Music } from "../game/models/music.ts";
 import type { Spell } from "../game/models/spell.ts";
 import type { Weapon } from "../game/models/weapon.ts";
 import type { WeaponSkill } from "../game/models/weaponSkill.ts";
@@ -10,6 +11,7 @@ export interface ISearchEntityMap {
     weapon: Weapon;
     weaponSkill: WeaponSkill;
     spell: Spell;
+    music: Music;
 }
 
 export type TSearchKind = keyof ISearchEntityMap;
@@ -113,3 +115,8 @@ export interface ISearchEngine<Items extends ISearchItem> {
      */
     search(userInput: string, limit?: number): Items[];
 }
+
+// /**
+//  * All entities which can be retrieved by the search feature at the moment.
+//  */
+// export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell | Music;

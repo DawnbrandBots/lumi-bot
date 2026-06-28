@@ -69,7 +69,11 @@ export default function mapSpellToMessage(spell: ISpell) {
     ];
 
     return {
-        title: spell.name,
-        fields,
+        reply: {
+            embed: {
+                title: spell.name,
+                fields,
+            },
+        },
     };
 }

@@ -62,7 +62,11 @@ export default function mapWeaponToMessage(weapon: IWeapon) {
         },
     ];
     return {
-        title: weapon.name,
-        fields: fields,
+        reply: {
+            embed: {
+                title: weapon.name,
+                fields: fields,
+            },
+        },
     };
 }
