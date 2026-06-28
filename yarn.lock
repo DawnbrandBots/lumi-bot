@@ -194,10 +194,24 @@
   resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-7.1.3.tgz#65149ec5f56db17378bb5a175a44eee46e21dcb9"
   integrity sha512-fTZhCgqJqA1+hWmdE7oPbMYIm/6GsN3bxQAJqJFSG9NteUDILg/p86L/D/P+cmK2+iCv/3QE1k3YuBFEYAMzow==
 
+"@mikro-orm/migrations@^7.1.3":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-7.1.5.tgz#a375989c0eda22af8b03d7803ed549145c18fe8f"
+  integrity sha512-5d3nZ3ROjxM58W2UJtoMxYMx2uQjY3IPljvH3WfdKCwKubvrmluVJfUgcgmf7nZChEFAnogbBO3pmYbBme4wjg==
+  dependencies:
+    "@mikro-orm/sql" "7.1.5"
+
 "@mikro-orm/sql@7.1.3":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.1.3.tgz#f855cb80b2fc2633b4deddec01dcad8152e15072"
   integrity sha512-ZEdl4+pUXwRfiTONEswsyEtntP+PKp0A5QL7P3UsAefd8g62XC0WsSLA4tYQzbjfSY0u8BDkBF/bhQej6IPjTw==
+  dependencies:
+    kysely "0.29.2"
+
+"@mikro-orm/sql@7.1.5":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.1.5.tgz#9d1cc699ea2b02844d7c8e7052e33574a8fb81ea"
+  integrity sha512-WeiyjzVrxx2WHafCFmhbfbNphPSXqN9+7USet6iNcc9EzKqN0ULPvQd555m+5Nh0tmkX151FwPMLm9/a2wG0ng==
   dependencies:
     kysely "0.29.2"
 
