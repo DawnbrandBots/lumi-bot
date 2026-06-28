@@ -194,10 +194,24 @@
   resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-7.1.4.tgz#ef32901683e6ed85f85a91a22e2f0c8d3c9330a2"
   integrity sha512-JPpOoBw2r98hVmsa7kFdt9HDqTa6/x9dhLL2MZRJQt1HwNg7S7A6Eh+nJ21dmB5QfXhu2PXqt03Y+xZZDnUD0w==
 
+"@mikro-orm/migrations@^7.1.4":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-7.1.5.tgz#a375989c0eda22af8b03d7803ed549145c18fe8f"
+  integrity sha512-5d3nZ3ROjxM58W2UJtoMxYMx2uQjY3IPljvH3WfdKCwKubvrmluVJfUgcgmf7nZChEFAnogbBO3pmYbBme4wjg==
+  dependencies:
+    "@mikro-orm/sql" "7.1.5"
+
 "@mikro-orm/sql@7.1.4":
   version "7.1.4"
   resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.1.4.tgz#19a9e52d69f885954cd1eba4126cfad42253fbc4"
   integrity sha512-YOie3z0Y24XlzWPUrATGJja5U6Ij81gji9yEDT6JkZxJH9uF1tbmZ2qX9WHectnMB5h8JHCic5AMvaflhBviNg==
+  dependencies:
+    kysely "0.29.2"
+
+"@mikro-orm/sql@7.1.5":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.1.5.tgz#9d1cc699ea2b02844d7c8e7052e33574a8fb81ea"
+  integrity sha512-WeiyjzVrxx2WHafCFmhbfbNphPSXqN9+7USet6iNcc9EzKqN0ULPvQd555m+5Nh0tmkX151FwPMLm9/a2wG0ng==
   dependencies:
     kysely "0.29.2"
 
@@ -1479,6 +1493,11 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==
 
+tagged-tag@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tagged-tag/-/tagged-tag-1.0.0.tgz#a0b5917c2864cba54841495abfa3f6b13edcf4d6"
+  integrity sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==
+
 tar-fs@^2.0.0:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-2.1.5.tgz#33e9c29413dce0c58ada7ff77db4e5a30afffe70"
@@ -1551,6 +1570,13 @@ type-check@^0.4.0, type-check@~0.4.0:
   integrity sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==
   dependencies:
     prelude-ls "^1.2.1"
+
+type-fest@^5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-5.7.0.tgz#bae586d3b7c2596bd9c7e62195f33c7fcada1c91"
+  integrity sha512-1URUxUqfHFM1c+zfSPsa3gnkO7Aq21qyH75SIduNYz4SzY964rn1X2vCMQaHSHhktiw+0kPa2iyb6PUpXqB6Vg==
+  dependencies:
+    tagged-tag "^1.0.0"
 
 typescript-eslint@^8.62.0:
   version "8.62.0"
