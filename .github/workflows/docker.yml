@@ -1,6 +1,7 @@
 name: Build Docker image
 
 on:
+  workflow_dispatch:
   push:
     branches: ["master"] # Publish as Docker "latest"
     tags: ["*"]
@@ -10,14 +11,15 @@ on:
     paths:
       - Dockerfile
       - .github/workflows/docker.yml
+    types: [ready_for_review, review_requested]
 
 jobs:
   lint-dockerfile:
     runs-on: ubuntu-latest
     permissions: {}
     steps:
-      - uses: actions/checkout@v6
-      - uses: hadolint/hadolint-action@v3.1.0
+      - uses: actions/checkout@v7
+      - uses: hadolint/hadolint-action@v3.3.0
   build:
     runs-on: ubuntu-latest
     if: >-
@@ -31,7 +33,7 @@ jobs:
     steps:
       # docker/build-push-action uses the Git context by default and ignores checkout
       # so this is only to retrieve the Node.js version for the base image.
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: .node-version
       - id: node-version
