@@ -25,9 +25,9 @@ const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const commands = {
+    search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
-    search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
 } as const;
 
 bot.on(Events.ClientReady, (client) => {

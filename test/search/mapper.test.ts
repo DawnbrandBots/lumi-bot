@@ -180,7 +180,6 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
         });
         test("source medial url doesn't exist", () => {
             const result = {
-                // const result: Extract<Awaited<ReturnType<typeof searchFeature<TSearchableEntity>>>, {kind: ESearchFeatureReturnKind.SUCCESS}> & {value: {kind: "music"}} = {
                 kind: ESearchFeatureReturnKind.SUCCESS as const,
                 value: {
                     kind: "music" as const,

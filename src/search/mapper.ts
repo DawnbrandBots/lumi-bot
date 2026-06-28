@@ -24,7 +24,6 @@ export type TSearchMapperReturnType = { reply: ISingleEmbedMessageOptions; follo
 export type ISearchMapper<Kind extends TSearchKind> = (entity: TSearchEntity<Kind>) => TSearchMapperReturnType;
 export type ISearchMappers = { [Kind in TSearchKind]: ISearchMapper<Kind> };
 
-// const SEARCH_MAPPERS: ISearchMappers = {
 const SEARCH_MAPPERS: ISearchMappers = {
     disciple: mapDiscipleToMessage,
     weapon: mapWeaponToMessage,
@@ -33,7 +32,7 @@ const SEARCH_MAPPERS: ISearchMappers = {
     music: mapMusicToMessage,
 };
 
-function mapSearchFeatureSuccessValueToMessage<Kind extends TSearchKind>(value: TSearchFeatureSuccessValue<Kind>) {
+function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>(value: TSearchFeatureSuccessValue<Kind>) {
     const footer: APIEmbed["footer"] =
         // Showing aliases when there is only one is redundant.
         value.searchItem.aliases.length > 1
@@ -49,7 +48,7 @@ function mapSearchFeatureSuccessValueToMessage<Kind extends TSearchKind>(value: 
 function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof searchFeature>>) {
     switch (result.kind) {
         case ESearchFeatureReturnKind.SUCCESS: {
-            const { reply, followUps } = mapSearchFeatureSuccessValueToMessage(result.value);
+            const { reply, followUps } = mapSearchFeatureSuccessValueToMessages(result.value);
             return { reply: createPositiveMessage(reply), followUps };
         }
         case ESearchFeatureReturnKind.INPUT_TOO_LONG:
