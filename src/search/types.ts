@@ -6,17 +6,10 @@ import type { Weapon } from "../game/models/weapon.ts";
 import type { WeaponSkill } from "../game/models/weaponSkill.ts";
 import type { TId } from "../game/types.ts";
 
-export interface ISearchEntityMap {
-    disciple: Disciple;
-    weapon: Weapon;
-    weaponSkill: WeaponSkill;
-    spell: Spell;
-    music: Music;
-}
-
-export type TSearchKind = keyof ISearchEntityMap;
-export type TSearchEntity<Kind extends TSearchKind> = ISearchEntityMap[Kind] & ISearchableEntity;
-export type TSearchableEntity = TSearchEntity<TSearchKind>;
+export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell | Music;
+export type TSearchKind = TSearchableEntity["kind"];
+export type ISearchEntityMap = { [Entity in TSearchableEntity as Entity["kind"]]: Entity };
+export type TSearchEntity<Kind extends TSearchKind> = ISearchEntityMap[Kind];
 
 /**
  * Properties required for entities to be searchable.
@@ -115,8 +108,3 @@ export interface ISearchEngine<Items extends ISearchItem> {
      */
     search(userInput: string, limit?: number): Items[];
 }
-
-// /**
-//  * All entities which can be retrieved by the search feature at the moment.
-//  */
-// export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell | Music;
