@@ -1,4 +1,6 @@
+import type { ChatInputCommandInteraction } from "discord.js";
 import { MessageFlags, userMention, type InteractionReplyOptions } from "discord.js";
+import type { PickDeep } from "type-fest";
 import {
     createErrorMessage,
     createNegativeMessage,
@@ -6,6 +8,7 @@ import {
     createPositiveMessage,
 } from "../bot/message.ts";
 import * as LfgConstants from "./constants.ts";
+import { LFG_SHOW_RESPONSE_OPTION_NAME } from "./constants.ts";
 import type { TLfgFeatureReturnOfKind } from "./types.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
 
@@ -82,13 +85,22 @@ function formatPlayerNotInRoom(targetId: string) {
     return `${userMention(targetId)} is not in your room.`;
 }
 
-function mapLfgFeatureReturnToMessage(result: TLfgFeatureReturn) {
+function mapLfgFeatureReturnToMessage({
+    result,
+    interaction,
+}: {
+    result: TLfgFeatureReturn;
+    // Using Pick before of PickDeep to avoid "type too complex" error
+    interaction: PickDeep<Pick<ChatInputCommandInteraction, "options">, "options.getBoolean">;
+}) {
     switch (result.kind) {
-        case ELfgFeatureReturnKind.ROOMS_LISTED:
+        case ELfgFeatureReturnKind.ROOMS_LISTED: {
+            const displayToEveryone = interaction.options.getBoolean(LFG_SHOW_RESPONSE_OPTION_NAME, false);
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: { description: formatList(result.value.rooms) },
-                flags: MessageFlags.Ephemeral,
+                flags: displayToEveryone ? undefined : MessageFlags.Ephemeral,
             });
+        }
         case ELfgFeatureReturnKind.HELP:
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },

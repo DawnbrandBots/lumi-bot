@@ -3,12 +3,7 @@ import { describe, expect, test } from "vitest";
 import { EMessageKind } from "../../src/bot/types.ts";
 import * as LfgConstants from "../../src/lfg/constants.ts";
 import mapLfgFeatureReturnToMessage from "../../src/lfg/mapper.ts";
-import {
-    ELfgFeatureReturnKind,
-    ELfgPlayerRemovalKind,
-    type IRoom,
-    type TLfgFeatureReturn,
-} from "../../src/lfg/types.ts";
+import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom } from "../../src/lfg/types.ts";
 
 const ROOM: IRoom = {
     code: "alpha",
@@ -20,15 +15,22 @@ function roomDescription(room: IRoom) {
     return `\`${room.code}\`: ${userMention(room.ownerId)} (${LfgConstants.LFG_ROOM_OWNER_LABEL}), ${userMention("player-1")}, ${userMention("player-2")}`;
 }
 
+type Input = Parameters<typeof mapLfgFeatureReturnToMessage>[0];
+
 describe(mapLfgFeatureReturnToMessage.name, () => {
+    /**
+     * Default interaction object to satisfy type checks.
+     */
+    const interaction: Input["interaction"] = { options: { getBoolean: () => false } };
+
     test.each<{
         readonly name: string;
-        readonly input: TLfgFeatureReturn;
+        readonly input: Input;
         readonly expected: Pick<ReturnType<typeof mapLfgFeatureReturnToMessage>, "kind" | "embeds" | "flags">;
     }>([
         {
             name: "non-empty room list",
-            input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
                 embeds: [{ description: `- ${roomDescription(ROOM)}` }],
@@ -36,8 +38,20 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
             },
         },
         {
+            name: "non-empty room list (shown to everyone)",
+            input: {
+                interaction: { options: { getBoolean: () => true } },
+                result: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+            },
+            expected: {
+                kind: EMessageKind.NEUTRAL,
+                embeds: [{ description: `- ${roomDescription(ROOM)}` }],
+                flags: undefined,
+            },
+        },
+        {
             name: "empty room list",
-            input: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [] } },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [] } } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
                 embeds: [{ description: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION }],
@@ -46,7 +60,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "help",
-            input: { kind: ELfgFeatureReturnKind.HELP },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.HELP } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
                 embeds: [{ description: "help text" }],
@@ -55,7 +69,10 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "room created",
-            input: { kind: ELfgFeatureReturnKind.ROOM_CREATED, value: { userId: "owner", room: ROOM } },
+            input: {
+                interaction,
+                result: { kind: ELfgFeatureReturnKind.ROOM_CREATED, value: { userId: "owner", room: ROOM } },
+            },
             expected: {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
@@ -68,8 +85,11 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         {
             name: "room joined with previous room context",
             input: {
-                kind: ELfgFeatureReturnKind.ROOM_JOINED,
-                value: { userId: "player-1", room: ROOM, leftRoomCode: "beta" },
+                interaction,
+                result: {
+                    kind: ELfgFeatureReturnKind.ROOM_JOINED,
+                    value: { userId: "player-1", room: ROOM, leftRoomCode: "beta" },
+                },
             },
             expected: {
                 kind: EMessageKind.POSITIVE,
@@ -83,8 +103,11 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         {
             name: "ownership transferred",
             input: {
-                kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
-                value: { userId: "owner", targetId: "player-1", room: ROOM },
+                interaction,
+                result: {
+                    kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
+                    value: { userId: "owner", targetId: "player-1", room: ROOM },
+                },
             },
             expected: {
                 kind: EMessageKind.POSITIVE,
@@ -98,8 +121,11 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         {
             name: "player kicked",
             input: {
-                kind: ELfgFeatureReturnKind.PLAYER_KICKED,
-                value: { userId: "owner", targetId: "player-1", room: ROOM },
+                interaction,
+                result: {
+                    kind: ELfgFeatureReturnKind.PLAYER_KICKED,
+                    value: { userId: "owner", targetId: "player-1", room: ROOM },
+                },
             },
             expected: {
                 kind: EMessageKind.POSITIVE,
@@ -113,8 +139,11 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         {
             name: "room left",
             input: {
-                kind: ELfgFeatureReturnKind.ROOM_LEFT,
-                value: { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY, userId: "player-1", code: ROOM.code },
+                interaction,
+                result: {
+                    kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                    value: { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY, userId: "player-1", code: ROOM.code },
+                },
             },
             expected: {
                 kind: EMessageKind.POSITIVE,
@@ -128,8 +157,11 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         {
             name: "room left and deleted",
             input: {
-                kind: ELfgFeatureReturnKind.ROOM_LEFT,
-                value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: "owner", code: ROOM.code },
+                interaction,
+                result: {
+                    kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                    value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: "owner", code: ROOM.code },
+                },
             },
             expected: {
                 kind: EMessageKind.POSITIVE,
@@ -143,12 +175,15 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         {
             name: "room left and ownership transferred",
             input: {
-                kind: ELfgFeatureReturnKind.ROOM_LEFT,
-                value: {
-                    kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
-                    userId: "owner",
-                    code: ROOM.code,
-                    newOwnerId: "player-1",
+                interaction,
+                result: {
+                    kind: ELfgFeatureReturnKind.ROOM_LEFT,
+                    value: {
+                        kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
+                        userId: "owner",
+                        code: ROOM.code,
+                        newOwnerId: "player-1",
+                    },
                 },
             },
             expected: {
@@ -162,7 +197,10 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "room disbanded",
-            input: { kind: ELfgFeatureReturnKind.ROOM_DISBANDED, value: { userId: "owner", code: ROOM.code } },
+            input: {
+                interaction,
+                result: { kind: ELfgFeatureReturnKind.ROOM_DISBANDED, value: { userId: "owner", code: ROOM.code } },
+            },
             expected: {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
@@ -174,7 +212,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "invalid room code",
-            input: { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -186,7 +224,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "already in a room",
-            input: { kind: ELfgFeatureReturnKind.ALREADY_IN_A_ROOM },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.ALREADY_IN_A_ROOM } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -199,7 +237,10 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "room already exists",
-            input: { kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS, value: { code: ROOM.code } },
+            input: {
+                interaction,
+                result: { kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS, value: { code: ROOM.code } },
+            },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -212,7 +253,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "room not found",
-            input: { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code: ROOM.code } },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code: ROOM.code } } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -225,7 +266,10 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "already in target room",
-            input: { kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM, value: { room: ROOM } },
+            input: {
+                interaction,
+                result: { kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM, value: { room: ROOM } },
+            },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [{ description: roomDescription(ROOM) }],
@@ -234,7 +278,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "room full",
-            input: { kind: ELfgFeatureReturnKind.ROOM_IS_FULL, value: { code: ROOM.code } },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.ROOM_IS_FULL, value: { code: ROOM.code } } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -247,7 +291,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "cannot transfer to yourself",
-            input: { kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -260,7 +304,10 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "player not in room",
-            input: { kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM, value: { targetId: "target" } },
+            input: {
+                interaction,
+                result: { kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM, value: { targetId: "target" } },
+            },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -273,7 +320,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "not room owner",
-            input: { kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.NOT_ROOM_OWNER } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -285,7 +332,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "cannot kick yourself",
-            input: { kind: ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -298,7 +345,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "not in a room",
-            input: { kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -310,7 +357,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
         },
         {
             name: "invalid subcommand",
-            input: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
+            input: { interaction, result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } },
             expected: {
                 kind: EMessageKind.ERROR,
                 embeds: [

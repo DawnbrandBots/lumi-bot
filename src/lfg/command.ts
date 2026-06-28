@@ -80,7 +80,8 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
             }
 
             const subcommand = interaction.options.getSubcommand(false);
-            const response = mapLfgFeatureReturnToMessage(await runSubcommand(interaction, guildId, subcommand));
+            const result = await runSubcommand(interaction, guildId, subcommand);
+            const response = mapLfgFeatureReturnToMessage({ result, interaction });
             return interaction.reply(response);
         },
     });

@@ -19,6 +19,7 @@ import {
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MIN_ROOM_CODE_LENGTH,
     LFG_PLAYER_OPTION_NAME,
+    LFG_SHOW_RESPONSE_OPTION_NAME,
     LFG_STATUS_SUBCOMMAND_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
@@ -77,7 +78,14 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
                 subcommand.setName(LFG_DISBAND_SUBCOMMAND_NAME).setDescription(LFG_DISBAND_SUBCOMMAND_DESCRIPTION),
             )
             .addSubcommand((subcommand) =>
-                subcommand.setName(LFG_STATUS_SUBCOMMAND_NAME).setDescription(LFG_STATUS_SUBCOMMAND_DESCRIPTION),
+                subcommand
+                    .setName(LFG_STATUS_SUBCOMMAND_NAME)
+                    .setDescription(LFG_STATUS_SUBCOMMAND_DESCRIPTION)
+                    .addBooleanOption((option) =>
+                        option
+                            .setName(LFG_SHOW_RESPONSE_OPTION_NAME)
+                            .setDescription("Show response to everyone. false by default."),
+                    ),
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_HELP_SUBCOMMAND_NAME).setDescription(LFG_HELP_SUBCOMMAND_DESCRIPTION),
