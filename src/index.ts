@@ -60,10 +60,8 @@ bot.on(Events.MessageCreate, async (interaction) => {
     const result = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
     const { reply, followUps } = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
     await interaction.reply(reply);
-    if (followUps) {
-        for (const followUp of followUps) {
-            await interaction.reply(followUp);
-        }
+    for (const followUp of followUps ?? []) {
+        await interaction.reply(followUp);
     }
 });
 
