@@ -16,7 +16,7 @@ import {
 } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
-import mapSearchFeatureReturnToMessage from "../../src/search/mapper.ts";
+import mapSearchFeatureReturnToMessages from "../../src/search/mapper.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
 import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
@@ -37,7 +37,7 @@ afterAll(async () => {
     await orm.close();
 });
 
-describe(mapSearchFeatureReturnToMessage.name, () => {
+describe(mapSearchFeatureReturnToMessages.name, () => {
     test("maps no result to an error message", async () => {
         const result = await searchFeature<TSearchableEntity>({
             input: NO_SEARCH_RESULT_INPUT,
@@ -45,10 +45,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.kind, EMessageKind.NEGATIVE);
-        expect(message.embeds?.[0]).toMatchObject({
+        typedGuardExpectToBe(message.reply.kind, EMessageKind.NEGATIVE);
+        expect(message.reply.embeds?.[0]).toMatchObject({
             title: INPUT_TITLE,
             description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
         });
@@ -74,11 +74,11 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             handlers: SEARCH_HANDLERS,
             em: mockedEntityManager,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.kind, EMessageKind.ERROR);
-        expect(message.content).toBeDefined();
-        expect(message.embeds?.[0]).toMatchObject({
+        typedGuardExpectToBe(message.reply.kind, EMessageKind.ERROR);
+        expect(message.reply.content).toBeDefined();
+        expect(message.reply.embeds?.[0]).toMatchObject({
             title: MISSING_DATABASE_RESULT_TITLE,
             fields: [
                 { name: ENTITY_KIND_FIELD_NAME, value: missingSearchItem.kind, inline: true },
@@ -94,10 +94,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.kind, EMessageKind.NEGATIVE);
-        expect(message.embeds?.[0]).toMatchObject({
+        typedGuardExpectToBe(message.reply.kind, EMessageKind.NEGATIVE);
+        expect(message.reply.embeds?.[0]).toMatchObject({
             title: INVALID_INPUT_TITLE,
             description: INPUT_TOO_LONG_DESCRIPTION,
         });
@@ -110,9 +110,28 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
+        typedGuardExpectToBe(message.reply.kind, EMessageKind.POSITIVE);
+    });
+
+    test("preserves follow-ups returned by the search handler", async () => {
+        const followUps = [{ content: "Follow-up" }];
+        const originalMessage = SEARCH_HANDLERS.weapon.message;
+        vi.spyOn(SEARCH_HANDLERS.weapon, "message").mockImplementationOnce((weapon) => ({
+            ...originalMessage(weapon),
+            followUps,
+        }));
+        const result = await searchFeature<TSearchableEntity>({
+            input: "Royal Sword",
+            searchEngine,
+            handlers: SEARCH_HANDLERS,
+            em,
+        });
+
+        const messages = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+
+        expect(messages.followUps).toEqual(followUps);
     });
 
     describe("footer", () => {
@@ -127,10 +146,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
                 handlers: SEARCH_HANDLERS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
-            expect(message.embeds?.[0]?.footer?.text).toBe(
+            typedGuardExpectToBe(message.reply.kind, EMessageKind.POSITIVE);
+            expect(message.reply.embeds?.[0]?.footer?.text).toBe(
                 `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
             );
         });
@@ -146,10 +165,10 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
                 handlers: SEARCH_HANDLERS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
-            expect(message.embeds?.[0]?.footer).toBeUndefined();
+            typedGuardExpectToBe(message.reply.kind, EMessageKind.POSITIVE);
+            expect(message.reply.embeds?.[0]?.footer).toBeUndefined();
         });
     });
 });
