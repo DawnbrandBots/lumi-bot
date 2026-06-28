@@ -13,7 +13,6 @@ import {
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
-import { DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT } from "../bot/constants.ts";
 import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../bot/message.ts";
 import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
@@ -39,6 +38,7 @@ import {
 import type { LfgFeature } from "./feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "./mapper.ts";
 import { ELfgFeatureReturnKind } from "./types.ts";
+import getRoomCodeAutocomplete from "./utils/roomCodeAutocomplete.ts";
 
 const log = debug("bot:lfg");
 
@@ -242,31 +242,6 @@ export function getLfgCommand({
 
             return reply;
         },
-        autocomplete: async (interaction) => {
-            if (!interaction.guildId) {
-                return [];
-            }
-            // TODO: the following if branches show that autocomplete should probably be handled at the option level,
-            // not at the root command level.
-
-            const focusedOption = interaction.options.getFocused(true);
-            if (focusedOption.name !== LFG_CODE_OPTION_NAME) {
-                return [];
-            }
-
-            const subcommand = interaction.options.getSubcommand(true);
-            if (subcommand === LFG_CREATE_SUBCOMMAND_NAME) {
-                return [];
-            }
-
-            const status = await lfgFeature.status(interaction.guildId);
-            return (
-                status.value.rooms
-                    .filter((room) => room.code.includes(focusedOption.value))
-                    // TODO: handle max count at the db query level so it does not return more than 25 entries in the first place?
-                    .slice(0, DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT)
-                    .map((room) => ({ name: room.code, value: room.code }))
-            );
-        },
+        autocomplete: getRoomCodeAutocomplete({ lfgFeature, ignoredSubCommands: [LFG_CREATE_SUBCOMMAND_NAME] }),
     });
 }
