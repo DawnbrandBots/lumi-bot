@@ -25,11 +25,10 @@ export function getSearchCommand<Items extends ISearchableEntity>({
             }
             const result = await searchFeature({ em, searchEngine, handlers, input });
             const { reply, followUps } = mapSearchFeatureReturnToMessages<Items>(result, handlers);
-            const initialResponse = await interaction.reply(reply);
+            await interaction.reply(reply);
             for (const followUp of followUps ?? []) {
                 await interaction.followUp(followUp);
             }
-            return initialResponse;
         },
         autocomplete: (interaction) => {
             const focusedOption = interaction.options.getFocused(true);

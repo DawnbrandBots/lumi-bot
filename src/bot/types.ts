@@ -5,7 +5,6 @@ import type {
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
-    InteractionResponse,
     SharedSlashCommand,
     SlashCommandBuilder,
 } from "discord.js";
@@ -41,8 +40,9 @@ export interface ICommand {
     readonly info: ICommandInfo;
     /**
      * What the command does. Must reply to the interaction.
+     * May do additional Discord-related operations like sending additional messages.
      */
-    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<InteractionResponse<boolean>>;
+    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<void>;
     /**
      * Provides autocomplete suggestions for the command's options.
      */
