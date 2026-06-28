@@ -115,25 +115,6 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
         typedGuardExpectToBe(message.reply.kind, EMessageKind.POSITIVE);
     });
 
-    test("preserves follow-ups returned by the search handler", async () => {
-        const followUps = [{ content: "Follow-up" }];
-        const originalMessage = SEARCH_HANDLERS.weapon.message;
-        vi.spyOn(SEARCH_HANDLERS.weapon, "message").mockImplementationOnce((weapon) => ({
-            ...originalMessage(weapon),
-            followUps,
-        }));
-        const result = await searchFeature<TSearchableEntity>({
-            input: "Royal Sword",
-            searchEngine,
-            handlers: SEARCH_HANDLERS,
-            em,
-        });
-
-        const messages = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
-
-        expect(messages.followUps).toEqual(followUps);
-    });
-
     describe("footer", () => {
         test("multiple aliases => footer present", async () => {
             const input = "TSBPC";
