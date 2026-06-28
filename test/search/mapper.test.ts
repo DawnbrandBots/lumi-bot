@@ -19,7 +19,6 @@ import searchFeature from "../../src/search/feature.ts";
 import mapSearchFeatureReturnToMessages from "../../src/search/mapper.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
-import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
@@ -47,10 +46,16 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
         });
         const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.reply.kind, EMessageKind.NEGATIVE);
-        expect(message.reply.embeds?.[0]).toMatchObject({
-            title: INPUT_TITLE,
-            description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
+        expect(message).toMatchObject({
+            reply: {
+                kind: EMessageKind.NEGATIVE,
+                embeds: [
+                    {
+                        title: INPUT_TITLE,
+                        description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
+                    },
+                ],
+            },
         });
     });
 
@@ -76,14 +81,21 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
         });
         const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.reply.kind, EMessageKind.ERROR);
-        expect(message.reply.content).toBeDefined();
-        expect(message.reply.embeds?.[0]).toMatchObject({
-            title: MISSING_DATABASE_RESULT_TITLE,
-            fields: [
-                { name: ENTITY_KIND_FIELD_NAME, value: missingSearchItem.kind, inline: true },
-                { name: ID_FIELD_NAME, value: missingSearchItem.id, inline: true },
-            ],
+        expect(message).toMatchObject({
+            reply: {
+                kind: EMessageKind.ERROR,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                content: expect.any(String),
+                embeds: [
+                    {
+                        title: MISSING_DATABASE_RESULT_TITLE,
+                        fields: [
+                            { name: ENTITY_KIND_FIELD_NAME, value: missingSearchItem.kind, inline: true },
+                            { name: ID_FIELD_NAME, value: missingSearchItem.id, inline: true },
+                        ],
+                    },
+                ],
+            },
         });
     });
 
@@ -96,10 +108,16 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
         });
         const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.reply.kind, EMessageKind.NEGATIVE);
-        expect(message.reply.embeds?.[0]).toMatchObject({
-            title: INVALID_INPUT_TITLE,
-            description: INPUT_TOO_LONG_DESCRIPTION,
+        expect(message).toMatchObject({
+            reply: {
+                kind: EMessageKind.NEGATIVE,
+                embeds: [
+                    {
+                        title: INVALID_INPUT_TITLE,
+                        description: INPUT_TOO_LONG_DESCRIPTION,
+                    },
+                ],
+            },
         });
     });
 
@@ -112,7 +130,11 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
         });
         const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.reply.kind, EMessageKind.POSITIVE);
+        expect(message).toMatchObject({
+            reply: {
+                kind: EMessageKind.POSITIVE,
+            },
+        });
     });
 
     describe("footer", () => {
@@ -129,10 +151,18 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             });
             const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            typedGuardExpectToBe(message.reply.kind, EMessageKind.POSITIVE);
-            expect(message.reply.embeds?.[0]?.footer?.text).toBe(
-                `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
-            );
+            expect(message).toMatchObject({
+                reply: {
+                    kind: EMessageKind.POSITIVE,
+                    embeds: [
+                        {
+                            footer: {
+                                text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
+                            },
+                        },
+                    ],
+                },
+            });
         });
 
         test("single alias => footer absent", async () => {
@@ -148,8 +178,17 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             });
             const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            typedGuardExpectToBe(message.reply.kind, EMessageKind.POSITIVE);
-            expect(message.reply.embeds?.[0]?.footer).toBeUndefined();
+            expect(message).toMatchObject({
+                reply: {
+                    kind: EMessageKind.POSITIVE,
+                    embeds: [
+                        expect.not.objectContaining({
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                            footer: expect.anything(),
+                        }),
+                    ],
+                },
+            });
         });
     });
 });
