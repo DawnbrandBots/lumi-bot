@@ -17,9 +17,8 @@
     "format:check": "prettier --check .",
     "register": "node --enable-source-maps --env-file-if-exists=.env scripts/registerCommands.ts",
     "bot:profile:update": "node --enable-source-maps --env-file-if-exists=.env scripts/updateBotProfile.ts",
-    "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts",
-    "test:db": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts ./test/mikro-orm.test.config.ts",
-    "pretest": "yarn test:db",
+    "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateStaticGameDataDb.ts",
+    "db:migrate": "node --enable-source-maps --env-file-if-exists=.env scripts/migrateLumiDb.ts",
     "test": "vitest"
   },
   "engines": {
@@ -28,6 +27,7 @@
   },
   "dependencies": {
     "@mikro-orm/core": "^7.1.4",
+    "@mikro-orm/migrations": "^7.1.4",
     "@mikro-orm/sqlite": "^7.1.4",
     "debug": "^4.4.3",
     "discord.js": "~14.26.3",

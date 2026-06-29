@@ -9,7 +9,7 @@ import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
 import getSearchItems from "./loaders/searchItems.ts";
-import mikroOrmConfig from "./mikro-orm.config.ts";
+import { appMikroOrmConfig } from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
@@ -19,8 +19,9 @@ import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
 const log = debug("bot");
 
-const orm = await getOrm(mikroOrmConfig);
+const orm = await getOrm(appMikroOrmConfig);
 const em = orm.em.fork();
+
 const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();

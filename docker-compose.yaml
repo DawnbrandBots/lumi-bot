@@ -1,10 +1,28 @@
 services:
+  db-init:
+    build:
+      context: .
+      target: db-init
+    env_file: ${DOCKER_COMPOSE_ENV_FILE}
+    volumes:
+      - ${LUMI_STATE_HOST_DIR}:${LUMI_STATE_DB_DIR}
+      - db-static:${LUMI_STATIC_DB_DIR}
+
   bot:
     image: "ghcr.io/dawnbrandbots/lumi-bot:${DOCKER_TAG:-latest}"
-    environment:
-      DEBUG: "*"
-      DISCORD_TOKEN:
+    env_file: ${DOCKER_COMPOSE_ENV_FILE}
     logging:
       driver: "${DOCKER_LOG_DRIVER:-journald}"
-    build: .
+    build:
+      context: .
+      target: bot
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
     restart: unless-stopped
+    volumes:
+      - ${LUMI_STATE_HOST_DIR}:${LUMI_STATE_DB_DIR}
+      - db-static:${LUMI_STATIC_DB_DIR}
+
+volumes:
+  db-static:
