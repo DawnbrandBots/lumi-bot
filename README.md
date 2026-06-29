@@ -4,7 +4,13 @@ A free and open-source Discord bot for Fire Emblem Shadows.
 
 ## Features
 
+### Data lookup
+
 Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search` command or `@Lumi <SEARCH TERMS>`.
+
+### Looking For Game (LFG) management
+
+`/lfg` allows players to create server-scoped groups of up to three. Meant to organize for farming in Friend Battles.
 
 ## Discord permissions
 
@@ -16,17 +22,28 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ## Getting started
 
+### Running locally with Node
+
 1. Install Node.js 24+ LTS with Yarn v1. [Fast Node Manager](https://github.com/Schniz/fnm) is a good option for managing multiple installations.
-1. `yarn`
-1. Create a `.env` file with the Discord token for your bot, e.g.
-    ```env
-    DEBUG=* # optional
-    DISCORD_TOKEN=HERE.PLS
-    ```
-1. `yarn build`
-1. `yarn register user-install`
-1. `yarn db:recreate`
-1. `yarn start`
+1. `cp .env.template .env`, fill in secrets and change default values at your convenience.
+1. ```
+   yarn
+   yarn build
+   yarn register user-install
+   yarn db:recreate
+   yarn db:migrate
+   yarn start
+   ```
+
+### Running locally with Docker Compose
+
+1. `cp .env.docker.template .env.docker`, fill in secrets and change default values at your convenience.
+1. `docker compose --env-file .env.docker up --build`
+
+## Running tests
+
+1. `cp .env.test.template .env.test` and change default values at your convenience.
+1. `yarn test`
 
 ## Inner workings
 

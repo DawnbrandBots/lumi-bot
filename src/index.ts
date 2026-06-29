@@ -1,15 +1,20 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
+import { AdminCommand } from "./admin/command.ts";
+import { AdminFeature } from "./admin/feature.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
+import type { ICommand } from "./bot/types.ts";
 import { getHelpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
+import { getLfgCommand } from "./lfg/command.ts";
+import { LfgFeature } from "./lfg/feature.ts";
 import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
 import getSearchItems from "./loaders/searchItems.ts";
-import mikroOrmConfig from "./mikro-orm.config.ts";
+import { configsById } from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
@@ -19,16 +24,24 @@ import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
 const log = debug("bot");
 
-const orm = await getOrm(mikroOrmConfig);
-const em = orm.em.fork();
-const searchItems = await getSearchItems(em);
+const gameOrm = await getOrm(configsById.game);
+const gameEm = gameOrm.em.fork();
+
+const lumiOrm = await getOrm(configsById.lumi);
+const lumiEm = lumiOrm.em.fork();
+
+const searchItems = await getSearchItems(gameEm);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
+const adminFeature = new AdminFeature({ em: lumiEm });
+const lfgFeature = new LfgFeature({ em: lumiEm });
 const commands = {
-    search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
+    admin: new AdminCommand({ adminFeature }),
+    search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
+    lfg: getLfgCommand({ adminFeature, lfgFeature }),
 } as const;
 
 bot.on(Events.ClientReady, (client) => {
@@ -57,7 +70,12 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const result = await searchFeature<TSearchableEntity>({ em, searchEngine, handlers: SEARCH_HANDLERS, input });
+    const result = await searchFeature<TSearchableEntity>({
+        em: gameEm,
+        searchEngine,
+        handlers: SEARCH_HANDLERS,
+        input,
+    });
     const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
     await interaction.reply(message);
 });
@@ -75,7 +93,7 @@ bot.on(Events.InteractionCreate, async (interaction) => {
         if (!isKeyOfExactObject(commands, interaction.commandName)) {
             return;
         }
-        const command = commands[interaction.commandName];
+        const command: ICommand = commands[interaction.commandName];
         const choices = await command.autocomplete?.(interaction);
         if (!choices) {
             return;
