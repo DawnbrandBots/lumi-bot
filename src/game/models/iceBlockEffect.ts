@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IIceBlockEffect } from "../types.ts";
+import { ESpellEffectKind, type IIceBlockEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SummonEffectStatValue } from "./summonEffectStat.ts";
 
@@ -7,9 +7,9 @@ export const IceBlockEffectSchema = defineEntity({
     name: "IceBlockEffect",
     embeddable: true,
     extends: SpellEffect,
-    discriminatorValue: "ICE_BLOCK",
+    discriminatorValue: ESpellEffectKind.ICE_BLOCK,
     properties: {
-        kind: p.enum(["ICE_BLOCK"]),
+        kind: p.enum([ESpellEffectKind.ICE_BLOCK]),
         hp: () => p.embedded(SummonEffectStatValue).object(),
     },
 });

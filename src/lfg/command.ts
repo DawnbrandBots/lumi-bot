@@ -117,8 +117,8 @@ export function getLfgCommand({
             const result = await runSubcommand(interaction, guildId, subcommand);
             const configResult = await adminFeature.getGuildConfig(guildId);
 
-            const messageBase = mapLfgFeatureReturnToMessageBase(result, configResult.value);
-            const message = mapLfgMessageBaseToReply(messageBase, interaction, configResult.value);
+            const messageBase = mapLfgFeatureReturnToMessageBase({ result, guildConfig: configResult.value });
+            const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig: configResult.value });
 
             const reply = await interaction.reply(message);
             if (
