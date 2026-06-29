@@ -26,10 +26,8 @@ export function getSearchCommand({
             const result = await searchFeature({ em, searchEngine, configs, input });
             const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
             await interaction.reply(reply);
-            if (followUps) {
-                for (const followUp of followUps) {
-                    await interaction.followUp(followUp);
-                }
+            for (const followUp of followUps ?? []) {
+                await interaction.followUp(followUp);
             }
         },
         autocomplete: (interaction) => {
