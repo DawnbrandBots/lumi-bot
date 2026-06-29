@@ -168,6 +168,13 @@ export type TCommandHandlers<Data extends TCommandData> = {
     ? { readonly autocomplete?: never }
     : { readonly autocomplete: TCommandAutocompleteHandlers<Data> });
 
+/**
+ * Maps every command name in a command-data tuple to the handlers derived from that command's data.
+ */
+export type TCommandRegistry<CommandData extends readonly TCommandData[]> = {
+    readonly [Data in CommandData[number] as Data["name"]]: TCommandHandlers<Data>;
+};
+
 export const enum EMessageKind {
     POSITIVE = "POSITIVE",
     NEGATIVE = "NEGATIVE",
