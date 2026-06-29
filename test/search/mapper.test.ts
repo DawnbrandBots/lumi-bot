@@ -16,10 +16,9 @@ import {
 } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
-import mapSearchFeatureReturnToMessage from "../../src/search/mapper.ts";
+import mapSearchFeatureReturnToMessages from "../../src/search/mapper.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
-import typedGuardExpectToBe from "../utils/expectTypeGuard.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
@@ -37,7 +36,7 @@ afterAll(async () => {
     await orm.close();
 });
 
-describe(mapSearchFeatureReturnToMessage.name, () => {
+describe(mapSearchFeatureReturnToMessages.name, () => {
     test("maps no result to an error message", async () => {
         const result = await searchFeature<TSearchableEntity>({
             input: NO_SEARCH_RESULT_INPUT,
@@ -45,12 +44,18 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.kind, EMessageKind.NEGATIVE);
-        expect(message.embeds?.[0]).toMatchObject({
-            title: INPUT_TITLE,
-            description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
+        expect(message).toMatchObject({
+            reply: {
+                kind: EMessageKind.NEGATIVE,
+                embeds: [
+                    {
+                        title: INPUT_TITLE,
+                        description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
+                    },
+                ],
+            },
         });
     });
 
@@ -74,16 +79,23 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             handlers: SEARCH_HANDLERS,
             em: mockedEntityManager,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.kind, EMessageKind.ERROR);
-        expect(message.content).toBeDefined();
-        expect(message.embeds?.[0]).toMatchObject({
-            title: MISSING_DATABASE_RESULT_TITLE,
-            fields: [
-                { name: ENTITY_KIND_FIELD_NAME, value: missingSearchItem.kind, inline: true },
-                { name: ID_FIELD_NAME, value: missingSearchItem.id, inline: true },
-            ],
+        expect(message).toMatchObject({
+            reply: {
+                kind: EMessageKind.ERROR,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                content: expect.any(String),
+                embeds: [
+                    {
+                        title: MISSING_DATABASE_RESULT_TITLE,
+                        fields: [
+                            { name: ENTITY_KIND_FIELD_NAME, value: missingSearchItem.kind, inline: true },
+                            { name: ID_FIELD_NAME, value: missingSearchItem.id, inline: true },
+                        ],
+                    },
+                ],
+            },
         });
     });
 
@@ -94,12 +106,18 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.kind, EMessageKind.NEGATIVE);
-        expect(message.embeds?.[0]).toMatchObject({
-            title: INVALID_INPUT_TITLE,
-            description: INPUT_TOO_LONG_DESCRIPTION,
+        expect(message).toMatchObject({
+            reply: {
+                kind: EMessageKind.NEGATIVE,
+                embeds: [
+                    {
+                        title: INVALID_INPUT_TITLE,
+                        description: INPUT_TOO_LONG_DESCRIPTION,
+                    },
+                ],
+            },
         });
     });
 
@@ -110,9 +128,13 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
             handlers: SEARCH_HANDLERS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-        typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
+        expect(message).toMatchObject({
+            reply: {
+                kind: EMessageKind.POSITIVE,
+            },
+        });
     });
 
     describe("footer", () => {
@@ -127,12 +149,20 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
                 handlers: SEARCH_HANDLERS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
-            expect(message.embeds?.[0]?.footer?.text).toBe(
-                `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
-            );
+            expect(message).toMatchObject({
+                reply: {
+                    kind: EMessageKind.POSITIVE,
+                    embeds: [
+                        {
+                            footer: {
+                                text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${searchItem?.aliases.join(", ")}`,
+                            },
+                        },
+                    ],
+                },
+            });
         });
 
         test("single alias => footer absent", async () => {
@@ -146,10 +176,19 @@ describe(mapSearchFeatureReturnToMessage.name, () => {
                 handlers: SEARCH_HANDLERS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
 
-            typedGuardExpectToBe(message.kind, EMessageKind.POSITIVE);
-            expect(message.embeds?.[0]?.footer).toBeUndefined();
+            expect(message).toMatchObject({
+                reply: {
+                    kind: EMessageKind.POSITIVE,
+                    embeds: [
+                        expect.not.objectContaining({
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                            footer: expect.anything(),
+                        }),
+                    ],
+                },
+            });
         });
     });
 });
