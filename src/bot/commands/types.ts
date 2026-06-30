@@ -10,7 +10,7 @@ import type {
 } from "discord.js";
 
 /**
- * Executes a Discord chat-input command and replies to its interaction.
+ * Executes a Discord chat-input command, replies to its interaction and may run other Discrod-related actions like sending additional messages.
  */
 export type TCommandRunHandler = (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<void>;
 
