@@ -1,12 +1,12 @@
 import type { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { getCommandAutocompleteHandler, getCommandRunHandler } from "../../src/bot/commands/handlers.ts";
+import { getCommandAutocompleteHandler, getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
 import type {
     TCommandAutocompleteHandler,
     TCommandRegistry,
     TCommandRunHandler,
-} from "../../src/bot/commands/types.ts";
-import type { nestedCommandData, plainCommandData, rootCommandData } from "./commandTypes.ts";
+} from "../../../src/bot/commands/types.ts";
+import type { nestedCommandData, plainCommandData, rootCommandData } from "./types.ts";
 
 const rootRun = vi.fn<TCommandRunHandler>();
 const listRun = vi.fn<TCommandRunHandler>();
