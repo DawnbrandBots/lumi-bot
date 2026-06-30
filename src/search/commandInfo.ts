@@ -1,11 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
+import { DISCORD_COMMAND_DEFAULTS } from "../bot/commands/constants.ts";
 import type { TCommandData, TCommandInfo } from "../bot/commands/types.ts";
-import {
-    DISCORD_BOT_NAME,
-    DISCORD_COMMAND_DEFAULTS,
-    SEARCH_MAX_INPUT_LENGTH,
-    SEARCH_TERMS_OPTION_NAME,
-} from "../bot/constants.ts";
+import { DISCORD_BOT_NAME, SEARCH_MAX_INPUT_LENGTH, SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
 
 export const searchCommandData = {
     ...DISCORD_COMMAND_DEFAULTS,

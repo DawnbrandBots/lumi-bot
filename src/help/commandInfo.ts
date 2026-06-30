@@ -1,5 +1,6 @@
+import { DISCORD_COMMAND_DEFAULTS } from "../bot/commands/constants.ts";
 import type { TCommandData, TCommandInfo } from "../bot/commands/types.ts";
-import { DISCORD_BOT_NAME, DISCORD_COMMAND_DEFAULTS } from "../bot/constants.ts";
+import { DISCORD_BOT_NAME } from "../bot/constants.ts";
 
 export const helpCommandData = {
     ...DISCORD_COMMAND_DEFAULTS,

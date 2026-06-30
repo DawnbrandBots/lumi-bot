@@ -1,5 +1,5 @@
+import { DISCORD_COMMAND_DEFAULTS } from "../bot/commands/constants.ts";
 import type { TCommandData, TCommandInfo } from "../bot/commands/types.ts";
-import { DISCORD_COMMAND_DEFAULTS } from "../bot/constants.ts";
 
 export const linksCommandData = {
     ...DISCORD_COMMAND_DEFAULTS,

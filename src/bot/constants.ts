@@ -1,13 +1,10 @@
 import {
-    ApplicationIntegrationType,
     Colors,
     formatEmoji,
     hyperlink,
-    InteractionContextType,
     subtext,
-    userMention,
+    userMention
 } from "discord.js";
-import type { TCommandData } from "./commands/types.ts";
 
 export const DISCORD_BOT_NAME = "Lumi";
 
@@ -64,11 +61,6 @@ export const DISCORD_BOT_ABOUT_ME = `${DISCORD_BOT_INTRODUCTION}
 Use \`/help\` to see what I can do!
 
 ${DISCORD_BOT_ABOUT_ME_DEVELOPMENT}`;
-
-export const DISCORD_COMMAND_DEFAULTS = {
-    integration_types: [ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall],
-    contexts: [InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel],
-} as const satisfies Required<Pick<TCommandData, "integration_types" | "contexts">>;
 
 export const DISCORD_MESSAGE_POSITIVE_COLOR = Colors.Green;
 export const DISCORD_MESSAGE_NEUTRAL_COLOR = Colors.DarkGold;
