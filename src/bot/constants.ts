@@ -7,7 +7,7 @@ import {
     subtext,
     userMention,
 } from "discord.js";
-import type { TCommandData } from "./types.ts";
+import type { TCommandData } from "./commands/types.ts";
 
 export const DISCORD_BOT_NAME = "Lumi";
 

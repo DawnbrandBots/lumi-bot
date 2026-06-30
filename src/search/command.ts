@@ -1,6 +1,6 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
+import type { TCommandHandlers } from "../bot/commands/types.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
-import type { TCommandHandlers } from "../bot/types.ts";
 import type { searchCommandData } from "./commandInfo.ts";
 import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
 import searchFeature from "./feature.ts";

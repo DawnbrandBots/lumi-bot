@@ -4,7 +4,7 @@ import type {
     TCommandData,
     TCommandHandlers,
     TCommandRunHandler,
-} from "../../src/bot/types.ts";
+} from "../../src/bot/commands/types.ts";
 
 declare const run: TCommandRunHandler;
 declare const autocomplete: TCommandAutocompleteHandler;

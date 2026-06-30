@@ -1,5 +1,5 @@
 import type { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
-import type { TCommandAutocompleteHandler, TCommandRunHandler } from "../types.ts";
+import type { TCommandAutocompleteHandler, TCommandRunHandler } from "./types.ts";
 
 // TODO: still confused about THandler's typing, and how routes are handled
 

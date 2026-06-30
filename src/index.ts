@@ -1,8 +1,8 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
 import { getCommandAutocompleteHandler, getCommandRunHandler } from "./bot/commands/handlers.ts";
+import type { TCommandRegistry } from "./bot/commands/types.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
-import type { TCommandRegistry } from "./bot/types.ts";
 import { getHelpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";

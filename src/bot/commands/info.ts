@@ -16,7 +16,7 @@ import type {
     SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 import { ApplicationCommandOptionType, SlashCommandBuilder } from "discord.js";
-import type { TCommandData } from "../types.ts";
+import type { TCommandData } from "./types.ts";
 
 type TNameAndDescriptionData = Pick<
     TCommandData,
