@@ -18,10 +18,7 @@ export function getSearchCommand<Items extends ISearchableEntity>({
 }) {
     return {
         run: async function (interaction) {
-            const input = interaction.options.getString(SEARCH_TERMS_OPTION_NAME);
-            if (!input) {
-                throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`);
-            }
+            const input = interaction.options.getString(SEARCH_TERMS_OPTION_NAME, true);
             const result = await searchFeature({ em, searchEngine, handlers, input });
             const { reply, followUps } = mapSearchFeatureReturnToMessages<Items>(result, handlers);
             await interaction.reply(reply);
