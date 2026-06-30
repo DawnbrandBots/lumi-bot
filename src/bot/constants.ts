@@ -1,4 +1,10 @@
-import { Colors, formatEmoji, hyperlink, subtext, userMention } from "discord.js";
+import {
+    Colors,
+    formatEmoji,
+    hyperlink,
+    subtext,
+    userMention
+} from "discord.js";
 
 export const DISCORD_BOT_NAME = "Lumi";
 
