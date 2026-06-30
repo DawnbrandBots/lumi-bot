@@ -24,21 +24,21 @@ export type TCommandAutocompleteHandler = (
 /**
  * The Discord API representation of a chat-input command.
  *
- * Concrete command data should use `as const satisfies {@link ICommandData}` so command,
+ * Concrete command API info should use `as const satisfies {@link ICommandApiInfo}` so command,
  * subcommand and option names remain available as literal types.
  */
-export type ICommandData = RESTPostAPIChatInputApplicationCommandsJSONBody;
+export type ICommandApiInfo = RESTPostAPIChatInputApplicationCommandsJSONBody;
 
 /**
- * Combines a command's Discord API data with application-only help metadata.
+ * Combines a command's Discord API info with application-only help metadata.
  */
-export type ICommandInfo<Data extends ICommandData> = {
-    readonly data: Data;
+export type ICommandInfo<ApiInfo extends ICommandApiInfo> = {
+    readonly apiInfo: ApiInfo;
     readonly pingEquivalent?: string;
 };
 
 /**
- * Extracts the options declared directly on command data, a subcommand or a subcommand group.
+ * Extracts the options declared directly on command API info, a subcommand or a subcommand group.
  */
 type TOptionsOf<Parent> = Parent extends {
     readonly options: infer Options extends readonly APIApplicationCommandOption[];
@@ -111,29 +111,29 @@ type TSubcommandAutocompleteHandlers<Options extends readonly APIApplicationComm
  * A command without subcommands resolves to one handler. Commands with
  * subcommands resolve to an object mirroring their subcommand-group structure.
  */
-export type TCommandRunHandlers<Data extends ICommandData> = TRunHandlersForOptions<TOptionsOf<Data>>;
+export type TCommandRunHandlers<ApiInfo extends ICommandApiInfo> = TRunHandlersForOptions<TOptionsOf<ApiInfo>>;
 
 /**
  * Autocomplete handlers required by the options declaring `autocomplete: true`.
  */
-export type TCommandAutocompleteHandlers<Data extends ICommandData> = [TSubcommandRoute<TOptionsOf<Data>>] extends [
-    never,
-]
-    ? TBasicAutocompleteHandlers<TOptionsOf<Data>>
-    : TSubcommandAutocompleteHandlers<TOptionsOf<Data>>;
+export type TCommandAutocompleteHandlers<ApiInfo extends ICommandApiInfo> = [
+    TSubcommandRoute<TOptionsOf<ApiInfo>>,
+] extends [never]
+    ? TBasicAutocompleteHandlers<TOptionsOf<ApiInfo>>
+    : TSubcommandAutocompleteHandlers<TOptionsOf<ApiInfo>>;
 
 /**
- * All handlers required to implement a command's static data.
+ * All handlers required to implement a command's API info.
  */
-export type TCommandHandlers<Data extends ICommandData> = {
-    readonly run: TCommandRunHandlers<Data>;
-} & (keyof TCommandAutocompleteHandlers<Data> extends never
+export type TCommandHandlers<ApiInfo extends ICommandApiInfo> = {
+    readonly run: TCommandRunHandlers<ApiInfo>;
+} & (keyof TCommandAutocompleteHandlers<ApiInfo> extends never
     ? { readonly autocomplete?: never }
-    : { readonly autocomplete: TCommandAutocompleteHandlers<Data> });
+    : { readonly autocomplete: TCommandAutocompleteHandlers<ApiInfo> });
 
 /**
- * Maps every command name in a command-data union to the handlers derived from that command's data.
+ * Maps every command name in a command API info union to the handlers derived from that command's API info.
  */
-export type TCommandRegistry<CommandData extends ICommandData> = {
-    readonly [Data in CommandData as Data["name"]]: TCommandHandlers<Data>;
+export type TCommandRegistry<CommandApiInfo extends ICommandApiInfo> = {
+    readonly [ApiInfo in CommandApiInfo as ApiInfo["name"]]: TCommandHandlers<ApiInfo>;
 };

@@ -8,7 +8,7 @@ import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
-import type { TAllCommandData } from "./loaders/commandInfo.ts";
+import type { TAllCommandApiInfo } from "./loaders/commandInfo.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
 import getSearchItems from "./loaders/searchItems.ts";
@@ -32,7 +32,7 @@ const commands = {
     search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
-} satisfies TCommandRegistry<TAllCommandData>;
+} satisfies TCommandRegistry<TAllCommandApiInfo>;
 
 bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);

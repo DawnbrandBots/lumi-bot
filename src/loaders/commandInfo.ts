@@ -4,6 +4,6 @@ import { searchCommandInfo } from "../search/commandInfo.ts";
 
 const allCommandInfo = [helpCommandInfo, searchCommandInfo, linksCommandInfo] as const;
 
-export type TAllCommandData = (typeof allCommandInfo)[number]["data"];
+export type TAllCommandApiInfo = (typeof allCommandInfo)[number]["apiInfo"];
 
 export default allCommandInfo;

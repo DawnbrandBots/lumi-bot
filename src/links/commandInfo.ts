@@ -1,12 +1,12 @@
 import { DISCORD_COMMAND_DEFAULTS } from "../bot/commands/constants.ts";
-import type { ICommandData, ICommandInfo } from "../bot/commands/types.ts";
+import type { ICommandApiInfo, ICommandInfo } from "../bot/commands/types.ts";
 
-export const linksCommandData = {
+export const linksCommandApiInfo = {
     ...DISCORD_COMMAND_DEFAULTS,
     name: "links",
     description: "Displays official Fire Emblem Shadows links.",
-} as const satisfies ICommandData;
+} as const satisfies ICommandApiInfo;
 
 export const linksCommandInfo = {
-    data: linksCommandData,
-} as const satisfies ICommandInfo<typeof linksCommandData>;
+    apiInfo: linksCommandApiInfo,
+} as const satisfies ICommandInfo<typeof linksCommandApiInfo>;

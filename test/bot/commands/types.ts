@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import type {
-    ICommandData,
+    ICommandApiInfo,
     TCommandAutocompleteHandler,
     TCommandHandlers,
     TCommandRunHandler,
@@ -9,7 +9,7 @@ import type {
 declare const run: TCommandRunHandler;
 declare const autocomplete: TCommandAutocompleteHandler;
 
-export const rootCommandData = {
+export const rootCommandApiInfo = {
     name: "search",
     description: "Searches for something.",
     options: [
@@ -21,16 +21,16 @@ export const rootCommandData = {
             autocomplete: true,
         },
     ],
-} as const satisfies ICommandData;
+} as const satisfies ICommandApiInfo;
 
 export const rootCommandHandlers = {
     run,
     autocomplete: {
         query: autocomplete,
     },
-} satisfies TCommandHandlers<typeof rootCommandData>;
+} satisfies TCommandHandlers<typeof rootCommandApiInfo>;
 
-export const nestedCommandData = {
+export const nestedCommandApiInfo = {
     name: "rooms",
     description: "Manages rooms.",
     options: [
@@ -78,7 +78,7 @@ export const nestedCommandData = {
             ],
         },
     ],
-} as const satisfies ICommandData;
+} as const satisfies ICommandApiInfo;
 
 export const nestedCommandHandlers = {
     run: {
@@ -99,7 +99,7 @@ export const nestedCommandHandlers = {
             },
         },
     },
-} satisfies TCommandHandlers<typeof nestedCommandData>;
+} satisfies TCommandHandlers<typeof nestedCommandApiInfo>;
 
 const missingRunHandler = {
     run: {
@@ -111,7 +111,7 @@ const missingRunHandler = {
         },
     },
     autocomplete: nestedCommandHandlers.autocomplete,
-} satisfies TCommandHandlers<typeof nestedCommandData>;
+} satisfies TCommandHandlers<typeof nestedCommandApiInfo>;
 void missingRunHandler;
 
 const missingAutocompleteHandler = {
@@ -122,13 +122,13 @@ const missingAutocompleteHandler = {
             query: autocomplete,
         },
     },
-} satisfies TCommandHandlers<typeof nestedCommandData>;
+} satisfies TCommandHandlers<typeof nestedCommandApiInfo>;
 void missingAutocompleteHandler;
 
-export const plainCommandData = {
+export const plainCommandApiInfo = {
     name: "plain",
     description: "Has no autocomplete options.",
-} as const satisfies ICommandData;
+} as const satisfies ICommandApiInfo;
 
 const unexpectedAutocompleteHandler = {
     run,
@@ -136,5 +136,5 @@ const unexpectedAutocompleteHandler = {
     autocomplete: {
         query: autocomplete,
     },
-} satisfies TCommandHandlers<typeof plainCommandData>;
+} satisfies TCommandHandlers<typeof plainCommandApiInfo>;
 void unexpectedAutocompleteHandler;

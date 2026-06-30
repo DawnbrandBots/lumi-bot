@@ -1,5 +1,5 @@
 import type { TCommandHandlers } from "../bot/commands/types.ts";
-import type { helpCommandData } from "./commandInfo.ts";
+import type { helpCommandApiInfo } from "./commandInfo.ts";
 import helpFeature from "./feature.ts";
 import mapHelpFeatureReturnToMessage from "./mapper.ts";
 
@@ -8,5 +8,5 @@ export function getHelpCommand() {
         run: async function (interaction) {
             await interaction.reply(mapHelpFeatureReturnToMessage(helpFeature()));
         },
-    } satisfies TCommandHandlers<typeof helpCommandData>;
+    } satisfies TCommandHandlers<typeof helpCommandApiInfo>;
 }

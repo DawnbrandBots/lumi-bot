@@ -1,5 +1,5 @@
 import type { TCommandHandlers } from "../bot/commands/types.ts";
-import type { linksCommandData } from "./commandInfo.ts";
+import type { linksCommandApiInfo } from "./commandInfo.ts";
 import linksFeature from "./feature.ts";
 import mapLinksFeatureReturnToMessage from "./mapper.ts";
 
@@ -8,5 +8,5 @@ export function getLinksCommand() {
         run: async function (interaction) {
             await interaction.reply(mapLinksFeatureReturnToMessage(linksFeature()));
         },
-    } satisfies TCommandHandlers<typeof linksCommandData>;
+    } satisfies TCommandHandlers<typeof linksCommandApiInfo>;
 }

@@ -8,7 +8,7 @@ import allCommandInfo from "../loaders/commandInfo.ts";
 const commandsStr = allCommandInfo
     .map((info) => {
         const pingEquivalent = "pingEquivalent" in info ? info.pingEquivalent : undefined;
-        return `- \`/${info.data.name}\`: ${info.data.description}${pingEquivalent ? ` (also try \`${pingEquivalent}\`)` : ""}`;
+        return `- \`/${info.apiInfo.name}\`: ${info.apiInfo.description}${pingEquivalent ? ` (also try \`${pingEquivalent}\`)` : ""}`;
     })
     .join("\n");
 

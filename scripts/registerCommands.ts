@@ -12,7 +12,7 @@ async function registerSlashCommands(guild?: `${bigint}` | "user-install") {
     const botUser = (await api.get(Routes.user())) as APIUser;
     log(`${botUser.username}#${botUser.discriminator} (${botUser.id})`);
     const info: RESTPostAPIChatInputApplicationCommandsJSONBody[] = commands.map((command) =>
-        getSlashCommandBuilder(command.data).toJSON(),
+        getSlashCommandBuilder(command.apiInfo).toJSON(),
     );
     const created = await api.put(
         guild === undefined || guild === "user-install"

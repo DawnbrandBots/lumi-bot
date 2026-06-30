@@ -6,7 +6,7 @@ import type {
     TCommandRegistry,
     TCommandRunHandler,
 } from "../../../src/bot/commands/types.ts";
-import type { nestedCommandData, plainCommandData, rootCommandData } from "./types.ts";
+import type { nestedCommandApiInfo, plainCommandApiInfo, rootCommandApiInfo } from "./types.ts";
 
 const rootRun = vi.fn<TCommandRunHandler>();
 const listRun = vi.fn<TCommandRunHandler>();
@@ -18,7 +18,7 @@ const rootAutocomplete = vi.fn<TCommandAutocompleteHandler>();
 const findAutocomplete = vi.fn<TCommandAutocompleteHandler>();
 const moveAutocomplete = vi.fn<TCommandAutocompleteHandler>();
 
-type TAllCommandData = typeof rootCommandData | typeof nestedCommandData | typeof plainCommandData;
+type TAllCommandApiInfo = typeof rootCommandApiInfo | typeof nestedCommandApiInfo | typeof plainCommandApiInfo;
 
 /**
  * Fake command handlers tree tests attempt to retrieve handlers from.
@@ -53,7 +53,7 @@ const commandHandlers = {
     plain: {
         run: plainRun,
     },
-} satisfies TCommandRegistry<TAllCommandData>;
+} satisfies TCommandRegistry<TAllCommandApiInfo>;
 
 function getMockChatInputInteraction({
     commandName,
