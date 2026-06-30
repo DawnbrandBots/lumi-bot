@@ -20,6 +20,9 @@ const moveAutocomplete = vi.fn<TCommandAutocompleteHandler>();
 
 type TAllCommandData = typeof rootCommandData | typeof nestedCommandData | typeof plainCommandData;
 
+/**
+ * Fake command handlers tree tests attempt to retrieve handlers from.
+ */
 const commandHandlers = {
     search: {
         run: rootRun,
