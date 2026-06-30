@@ -19,7 +19,7 @@ export type TCommandRunHandler = (interaction: ChatInputCommandInteraction<Cache
  */
 export type TCommandAutocompleteHandler = (
     interaction: AutocompleteInteraction<CacheType>,
-) => MaybePromise<ApplicationCommandOptionChoiceData[] | null>;
+) => MaybePromise<ApplicationCommandOptionChoiceData[]>;
 
 /**
  * The Discord API representation of a chat-input command.
