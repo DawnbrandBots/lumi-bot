@@ -5,8 +5,8 @@ import mapLinksFeatureReturnToMessage from "./mapper.ts";
 
 export function getLinksCommand() {
     return {
-        run: function (interaction) {
-            return interaction.reply(mapLinksFeatureReturnToMessage(linksFeature()));
+        run: async function (interaction) {
+            await interaction.reply(mapLinksFeatureReturnToMessage(linksFeature()));
         },
     } satisfies TCommandHandlers<typeof linksCommandData>;
 }

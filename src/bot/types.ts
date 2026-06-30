@@ -7,7 +7,6 @@ import type {
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
-    InteractionResponse,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "discord.js";
 import type { MaybePromise } from "../utils/types.ts";
@@ -15,9 +14,7 @@ import type { MaybePromise } from "../utils/types.ts";
 /**
  * Executes a Discord chat-input command and replies to its interaction.
  */
-export type TCommandRunHandler = (
-    interaction: ChatInputCommandInteraction<CacheType>,
-) => Promise<InteractionResponse<boolean>>;
+export type TCommandRunHandler = (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<void>;
 
 /**
  * Produces choices for an option focused by a Discord autocomplete interaction.

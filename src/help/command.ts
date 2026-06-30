@@ -5,8 +5,8 @@ import mapHelpFeatureReturnToMessage from "./mapper.ts";
 
 export function getHelpCommand() {
     return {
-        run: function (interaction) {
-            return interaction.reply(mapHelpFeatureReturnToMessage(helpFeature()));
+        run: async function (interaction) {
+            await interaction.reply(mapHelpFeatureReturnToMessage(helpFeature()));
         },
     } satisfies TCommandHandlers<typeof helpCommandData>;
 }
