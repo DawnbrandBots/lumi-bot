@@ -1,4 +1,4 @@
-import { Colors, formatEmoji, hyperlink, userMention } from "discord.js";
+import { Colors, formatEmoji, hyperlink, subtext, userMention } from "discord.js";
 
 export const DISCORD_BOT_NAME = "Lumi";
 
@@ -71,4 +71,13 @@ export const DISCORD_SAI_LAUGH_EMOJI_ID = "1474191899781758976";
 export const DISCORD_SAI_LAUGH_EMOJI_CALL = formatEmoji(DISCORD_SAI_LAUGH_EMOJI_ID);
 
 export const SEARCH_TERMS_OPTION_NAME = "terms";
-export const SEARCH_MAX_INPUT_LENGTH = 32;
+/**
+ * Somewhat arbitrarily chosen character limit.
+ * The point is to prevent giant strings from reaching the search engine.
+ * Ensure that this number is longer than the longest search alias loaded into the engine.
+ */
+export const SEARCH_MAX_INPUT_LENGTH = 48;
+
+export const DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT = subtext(
+    `Everyone point and laugh at ${DISCORD_NOTABOT_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`,
+);

@@ -6,6 +6,7 @@ import { HealEffect } from "./game/models/healEffect.ts";
 import { IceBlockEffect } from "./game/models/iceBlockEffect.ts";
 import { MovementEffect } from "./game/models/movementEffect.ts";
 import { MovementType } from "./game/models/movementType.ts";
+import { Music } from "./game/models/music.ts";
 import { RepeatEffect } from "./game/models/repeatEffect.ts";
 import { Spell } from "./game/models/spell.ts";
 import { SpellEffect } from "./game/models/spellEffect.ts";
@@ -47,6 +48,7 @@ export default defineConfig({
         SummonEffect,
         Disciple,
         MovementType,
+        Music,
         Spell,
         SpellEffectValueEffectivenessItem,
         SpellEffectValueFixedUnit,

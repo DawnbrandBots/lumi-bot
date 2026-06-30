@@ -5,7 +5,7 @@ import { SEARCH_TERMS_OPTION_NAME } from "../../src/bot/constants.ts";
 import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { getSearchCommand } from "../../src/search/command.ts";
-import { AUTOCOMPLETE_RESULTS_LIMIT } from "../../src/search/constants.ts";
+import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
@@ -58,11 +58,11 @@ describe("search autocomplete", () => {
         ).toEqual([]);
     });
 
-    test(`returns at most ${AUTOCOMPLETE_RESULTS_LIMIT} choices mapped from item names`, async () => {
+    test(`returns at most ${SEARCH_AUTOCOMPLETE_RESULTS_LIMIT} choices mapped from item names`, async () => {
         const choices = await searchCommand.autocomplete?.(
             getMockAutocompleteInteraction("Sword", SEARCH_TERMS_OPTION_NAME),
         );
 
-        expect(choices).toHaveLength(AUTOCOMPLETE_RESULTS_LIMIT);
+        expect(choices).toHaveLength(SEARCH_AUTOCOMPLETE_RESULTS_LIMIT);
     });
 });

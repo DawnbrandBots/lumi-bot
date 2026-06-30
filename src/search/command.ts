@@ -2,7 +2,7 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { Command } from "../bot/command.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
 import { searchCommandInfo } from "./commandInfo.ts";
-import { AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
+import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
 import searchFeature from "./feature.ts";
 import mapSearchFeatureReturnToMessages from "./mapper.ts";
 import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "./types.ts";
@@ -34,7 +34,7 @@ export function getSearchCommand<Items extends ISearchableEntity>({
             const focusedOption = interaction.options.getFocused(true);
             if (focusedOption.name === SEARCH_TERMS_OPTION_NAME) {
                 return searchEngine
-                    .search(focusedOption.value, AUTOCOMPLETE_RESULTS_LIMIT)
+                    .search(focusedOption.value, SEARCH_AUTOCOMPLETE_RESULTS_LIMIT)
                     .map((item) => ({ name: item.name, value: item.name }));
             }
             return null;
