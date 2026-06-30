@@ -3,12 +3,12 @@ import {
     DISCORD_BOT_INTRODUCTION,
     DISCORD_BOT_NAME,
 } from "../bot/constants.ts";
-import allCommandInfo from "../loaders/commandInfo.ts";
+import allCommandRuntimeInfo from "../loaders/commandRuntimeInfo.ts";
 
-const commandsStr = allCommandInfo
-    .map((info) => {
-        const pingEquivalent = "pingEquivalent" in info ? info.pingEquivalent : undefined;
-        return `- \`/${info.apiInfo.name}\`: ${info.apiInfo.description}${pingEquivalent ? ` (also try \`${pingEquivalent}\`)` : ""}`;
+const commandsStr = allCommandRuntimeInfo
+    .map((runtimeInfo) => {
+        const pingEquivalent = "pingEquivalent" in runtimeInfo ? runtimeInfo.pingEquivalent : undefined;
+        return `- \`/${runtimeInfo.apiInfo.name}\`: ${runtimeInfo.apiInfo.description}${pingEquivalent ? ` (also try \`${pingEquivalent}\`)` : ""}`;
     })
     .join("\n");
 

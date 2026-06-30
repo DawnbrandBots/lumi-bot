@@ -9,7 +9,7 @@ import {
 import { describe, expect, test } from "vitest";
 import { getSlashCommandBuilder } from "../../../src/bot/commands/builder.ts";
 import type { ICommandApiInfo } from "../../../src/bot/commands/types.ts";
-import allCommandInfo from "../../../src/loaders/commandInfo.ts";
+import allCommandRuntimeInfo from "../../../src/loaders/commandRuntimeInfo.ts";
 
 const commandWithBasicOptions = {
     name: "configure",
@@ -174,7 +174,7 @@ const tooManyChoices: ICommandApiInfo = {
 };
 
 describe(getSlashCommandBuilder.name, () => {
-    test.each(allCommandInfo)("rebuilds /$apiInfo.name", ({ apiInfo }) => {
+    test.each(allCommandRuntimeInfo)("rebuilds /$apiInfo.name", ({ apiInfo }) => {
         expect(getSlashCommandBuilder(apiInfo).toJSON()).toMatchObject(apiInfo);
     });
 

@@ -1,5 +1,5 @@
 import type { TCommandHandlers } from "../bot/commands/types.ts";
-import type { helpCommandApiInfo } from "./commandInfo.ts";
+import type { helpCommandApiInfo } from "./commandRuntimeInfo.ts";
 import helpFeature from "./feature.ts";
 import mapHelpFeatureReturnToMessage from "./mapper.ts";
 

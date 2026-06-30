@@ -32,7 +32,7 @@ export type ICommandApiInfo = RESTPostAPIChatInputApplicationCommandsJSONBody;
 /**
  * Combines a command's Discord API info with application-only help metadata.
  */
-export type ICommandInfo<ApiInfo extends ICommandApiInfo> = {
+export type ICommandRuntimeInfo<ApiInfo extends ICommandApiInfo> = {
     readonly apiInfo: ApiInfo;
     readonly pingEquivalent?: string;
 };

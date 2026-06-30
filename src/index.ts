@@ -8,7 +8,7 @@ import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
-import type { TAllCommandApiInfo } from "./loaders/commandInfo.ts";
+import type { TAllCommandApiInfo } from "./loaders/commandRuntimeInfo.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
 import getSearchItems from "./loaders/searchItems.ts";
