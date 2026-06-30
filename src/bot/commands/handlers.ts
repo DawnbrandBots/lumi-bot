@@ -44,23 +44,23 @@ function getHandlerAtRoute<Handler extends THandler>(
  * Retrieves the run handler matching an interaction's subcommand group and subcommand.
  */
 export function getCommandRunHandler(
-    command: TCommandHandlersAtRuntime,
+    commandHandlers: TCommandHandlersAtRuntime,
     interaction: ChatInputCommandInteraction<CacheType>,
 ): TCommandRunHandler | undefined {
-    return getHandlerAtRoute(command.run, getSubcommandRoute(interaction));
+    return getHandlerAtRoute(commandHandlers.run, getSubcommandRoute(interaction));
 }
 
 /**
  * Retrieves the autocomplete handler matching an interaction's route and focused option.
  */
 export function getCommandAutocompleteHandler(
-    command: TCommandHandlersAtRuntime,
+    commandHandlers: TCommandHandlersAtRuntime,
     interaction: AutocompleteInteraction<CacheType>,
 ): TCommandAutocompleteHandler | undefined {
-    if (!command.autocomplete) {
+    if (!commandHandlers.autocomplete) {
         return undefined;
     }
 
     const focusedOption = interaction.options.getFocused(true);
-    return getHandlerAtRoute(command.autocomplete, [...getSubcommandRoute(interaction), focusedOption.name]);
+    return getHandlerAtRoute(commandHandlers.autocomplete, [...getSubcommandRoute(interaction), focusedOption.name]);
 }
