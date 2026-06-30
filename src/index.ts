@@ -94,6 +94,7 @@ bot.on(Events.InteractionCreate, async (interaction) => {
         const choices = await autocomplete?.(interaction);
         if (!choices) {
             // TODO: this should be reported in another PR
+            await interaction.respond([]);
             return;
         }
         await interaction.respond(choices);
