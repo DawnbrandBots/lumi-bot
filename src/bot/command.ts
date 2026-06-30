@@ -1,5 +1,5 @@
 import type { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
-import type { ICommand, TCommandAutocompleteHandler, TCommandRunHandler } from "./types.ts";
+import type { TCommandAutocompleteHandler, TCommandRunHandler } from "./types.ts";
 
 // TODO: still confused about THandler's typing, and how routes are handled
 
@@ -63,16 +63,4 @@ export function getCommandAutocompleteHandler(
 
     const focusedOption = interaction.options.getFocused(true);
     return getHandlerAtRoute(command.autocomplete, [...getSubcommandRoute(interaction), focusedOption.name]);
-}
-
-export class Command implements ICommand {
-    public readonly info: ICommand["info"];
-    public readonly run: ICommand["run"];
-    public readonly autocomplete: ICommand["autocomplete"];
-
-    public constructor(arg: ICommand) {
-        this.info = arg.info;
-        this.run = arg.run;
-        this.autocomplete = arg.autocomplete;
-    }
 }

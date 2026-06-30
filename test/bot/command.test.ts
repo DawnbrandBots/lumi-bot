@@ -14,7 +14,7 @@ const rootAutocomplete = vi.fn<TCommandAutocompleteHandler>();
 const findAutocomplete = vi.fn<TCommandAutocompleteHandler>();
 const moveAutocomplete = vi.fn<TCommandAutocompleteHandler>();
 
-type TAllCommandData = readonly [typeof rootCommandData, typeof nestedCommandData, typeof plainCommandData];
+type TAllCommandData = typeof rootCommandData | typeof nestedCommandData | typeof plainCommandData;
 
 const commandHandlers = {
     search: {

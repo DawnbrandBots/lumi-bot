@@ -1,20 +1,29 @@
-import type { SlashCommandBuilder } from "discord.js";
-import { CommandInfo } from "../bot/commandInfo.ts";
-import { DISCORD_BOT_NAME, SEARCH_MAX_INPUT_LENGTH, SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
-import type { ICommandInfo } from "../bot/types.ts";
+import { ApplicationCommandOptionType } from "discord.js";
+import {
+    DISCORD_BOT_NAME,
+    DISCORD_COMMAND_DEFAULTS,
+    SEARCH_MAX_INPUT_LENGTH,
+    SEARCH_TERMS_OPTION_NAME,
+} from "../bot/constants.ts";
+import type { TCommandData, TCommandInfo } from "../bot/types.ts";
 
-export const searchCommandInfo: ICommandInfo = new CommandInfo({
-    customInfo: function (baseInfo: SlashCommandBuilder) {
-        return baseInfo.addStringOption((option) =>
-            option
-                .setName(SEARCH_TERMS_OPTION_NAME)
-                .setDescription("Name to search for.")
-                .setRequired(true)
-                .setMaxLength(SEARCH_MAX_INPUT_LENGTH)
-                .setAutocomplete(true),
-        );
-    },
+export const searchCommandData = {
+    ...DISCORD_COMMAND_DEFAULTS,
     name: "search",
     description: "Displays info about weapon, unique weapon skill, disciple or spell matching search terms the most.",
+    options: [
+        {
+            type: ApplicationCommandOptionType.String,
+            name: SEARCH_TERMS_OPTION_NAME,
+            description: "Name to search for.",
+            required: true,
+            max_length: SEARCH_MAX_INPUT_LENGTH,
+            autocomplete: true,
+        },
+    ],
+} as const satisfies TCommandData;
+
+export const searchCommandInfo = {
+    data: searchCommandData,
     pingEquivalent: `@${DISCORD_BOT_NAME} <SEARCH_TERMS>`,
-});
+} as const satisfies TCommandInfo<typeof searchCommandData>;

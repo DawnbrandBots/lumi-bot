@@ -1,12 +1,13 @@
-import { CommandInfo } from "../bot/commandInfo.ts";
-import { DISCORD_BOT_NAME } from "../bot/constants.ts";
-import type { ICommandInfo } from "../bot/types.ts";
+import { DISCORD_BOT_NAME, DISCORD_COMMAND_DEFAULTS } from "../bot/constants.ts";
+import type { TCommandData, TCommandInfo } from "../bot/types.ts";
 
-export const helpCommandInfo: ICommandInfo = new CommandInfo({
-    customInfo: function (baseInfo) {
-        return baseInfo;
-    },
+export const helpCommandData = {
+    ...DISCORD_COMMAND_DEFAULTS,
     name: "help",
     description: `Displays help for ${DISCORD_BOT_NAME} bot.`,
+} as const satisfies TCommandData;
+
+export const helpCommandInfo = {
+    data: helpCommandData,
     pingEquivalent: `@${DISCORD_BOT_NAME}`,
-});
+} as const satisfies TCommandInfo<typeof helpCommandData>;

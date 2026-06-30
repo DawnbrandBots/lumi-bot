@@ -9,33 +9,8 @@ import type {
     ChatInputCommandInteraction,
     InteractionResponse,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
-    SharedSlashCommand,
-    SlashCommandBuilder,
 } from "discord.js";
 import type { MaybePromise } from "../utils/types.ts";
-
-/**
- * Holds info about a command. Info may then be displayed while using the command or in help commands' output.
- */
-export interface ICommandInfo {
-    /**
-     * Object with info about the command to be included in payload to register commands.
-     */
-    readonly registerCommandInfo: ReturnType<SharedSlashCommand["toJSON"]>;
-    readonly name: string;
-    /**
-     * Briefly explains what the command does.
-     */
-    readonly description: string;
-    /**
-     * Additional info about the command to be registered.
-     */
-    readonly customInfo: (this: ICommandInfo, baseInfo: SlashCommandBuilder) => SharedSlashCommand;
-    /**
-     * Describes how to format a message pinging the bot to use the feature.
-     */
-    readonly pingEquivalent?: string;
-}
 
 /**
  * Executes a Discord chat-input command and replies to its interaction.
@@ -52,27 +27,20 @@ export type TCommandAutocompleteHandler = (
 ) => MaybePromise<ApplicationCommandOptionChoiceData[] | null>;
 
 /**
- * Represents a Discord slash command.
- */
-export interface ICommand {
-    readonly info: ICommandInfo;
-    /**
-     * What the command does. Must reply to the interaction.
-     */
-    readonly run: TCommandRunHandler;
-    /**
-     * Provides autocomplete suggestions for the command's options.
-     */
-    readonly autocomplete?: TCommandAutocompleteHandler;
-}
-
-/**
  * The Discord API representation of a chat-input command.
  *
  * Concrete command data should use `as const satisfies {@link TCommandData}` so command,
  * subcommand and option names remain available as literal types.
  */
 export type TCommandData = RESTPostAPIChatInputApplicationCommandsJSONBody;
+
+/**
+ * Combines a command's Discord API data with application-only help metadata.
+ */
+export type TCommandInfo<Data extends TCommandData> = {
+    readonly data: Data;
+    readonly pingEquivalent?: string;
+};
 
 /**
  * Extracts the options declared directly on command data, a subcommand or a subcommand group.
@@ -169,10 +137,10 @@ export type TCommandHandlers<Data extends TCommandData> = {
     : { readonly autocomplete: TCommandAutocompleteHandlers<Data> });
 
 /**
- * Maps every command name in a command-data tuple to the handlers derived from that command's data.
+ * Maps every command name in a command-data union to the handlers derived from that command's data.
  */
-export type TCommandRegistry<CommandData extends readonly TCommandData[]> = {
-    readonly [Data in CommandData[number] as Data["name"]]: TCommandHandlers<Data>;
+export type TCommandRegistry<CommandData extends TCommandData> = {
+    readonly [Data in CommandData as Data["name"]]: TCommandHandlers<Data>;
 };
 
 export const enum EMessageKind {

@@ -6,10 +6,10 @@ import {
 import allCommandInfo from "../loaders/commandInfo.ts";
 
 const commandsStr = allCommandInfo
-    .map(
-        (info) =>
-            `- \`/${info.name}\`: ${info.description}${info.pingEquivalent ? ` (also try \`${info.pingEquivalent}\`)` : ""}`,
-    )
+    .map((info) => {
+        const pingEquivalent = "pingEquivalent" in info ? info.pingEquivalent : undefined;
+        return `- \`/${info.data.name}\`: ${info.data.description}${pingEquivalent ? ` (also try \`${pingEquivalent}\`)` : ""}`;
+    })
     .join("\n");
 
 const description = `### ${DISCORD_BOT_NAME}

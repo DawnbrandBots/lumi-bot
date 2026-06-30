@@ -1,13 +1,12 @@
-import { Command } from "../bot/command.ts";
-import { helpCommandInfo } from "./commandInfo.ts";
+import type { TCommandHandlers } from "../bot/types.ts";
+import type { helpCommandData } from "./commandInfo.ts";
 import helpFeature from "./feature.ts";
 import mapHelpFeatureReturnToMessage from "./mapper.ts";
 
 export function getHelpCommand() {
-    return new Command({
-        info: helpCommandInfo,
+    return {
         run: function (interaction) {
             return interaction.reply(mapHelpFeatureReturnToMessage(helpFeature()));
         },
-    });
+    } satisfies TCommandHandlers<typeof helpCommandData>;
 }

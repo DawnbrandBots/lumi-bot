@@ -9,6 +9,7 @@ import {
 import { describe, expect, test } from "vitest";
 import { getSlashCommandBuilder } from "../../src/bot/commandInfo.ts";
 import type { TCommandData } from "../../src/bot/types.ts";
+import allCommandInfo from "../../src/loaders/commandInfo.ts";
 
 const commandWithBasicOptions = {
     name: "configure",
@@ -173,6 +174,10 @@ const tooManyChoices: TCommandData = {
 };
 
 describe(getSlashCommandBuilder.name, () => {
+    test.each(allCommandInfo)("rebuilds /$data.name", ({ data }) => {
+        expect(getSlashCommandBuilder(data).toJSON()).toMatchObject(data);
+    });
+
     test.each([
         ["basic options", commandWithBasicOptions],
         ["subcommands", commandWithSubcommands],
