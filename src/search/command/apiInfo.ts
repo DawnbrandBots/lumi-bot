@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { DISCORD_COMMAND_DEFAULTS } from "../bot/commands/constants.ts";
-import type { ICommandApiInfo, ICommandRuntimeInfo } from "../bot/commands/types.ts";
-import { DISCORD_BOT_NAME, SEARCH_MAX_INPUT_LENGTH, SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
+import { DISCORD_COMMAND_DEFAULTS } from "../../bot/commands/constants.ts";
+import type { ICommandApiInfo } from "../../bot/commands/types.ts";
+import { SEARCH_MAX_INPUT_LENGTH, SEARCH_TERMS_OPTION_NAME } from "../../bot/constants.ts";
 
 export const searchCommandApiInfo = {
     ...DISCORD_COMMAND_DEFAULTS,
@@ -18,8 +18,3 @@ export const searchCommandApiInfo = {
         },
     ],
 } as const satisfies ICommandApiInfo;
-
-export const searchCommandRuntimeInfo = {
-    apiInfo: searchCommandApiInfo,
-    pingEquivalent: `@${DISCORD_BOT_NAME} <SEARCH_TERMS>`,
-} as const satisfies ICommandRuntimeInfo<typeof searchCommandApiInfo>;

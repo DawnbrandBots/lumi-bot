@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { SEARCH_TERMS_OPTION_NAME } from "../../src/bot/constants.ts";
 import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
-import { getSearchCommand } from "../../src/search/command.ts";
+import { getSearchCommand } from "../../src/search/command/handlers.ts";
 import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";

@@ -1,11 +1,11 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TCommandHandlers } from "../bot/commands/types.ts";
-import { SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
-import type { searchCommandApiInfo } from "./commandRuntimeInfo.ts";
-import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
-import searchFeature from "./feature.ts";
-import mapSearchFeatureReturnToMessages from "./mapper.ts";
-import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "./types.ts";
+import type { TCommandHandlers } from "../../bot/commands/types.ts";
+import { SEARCH_TERMS_OPTION_NAME } from "../../bot/constants.ts";
+import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../constants.ts";
+import searchFeature from "../feature.ts";
+import mapSearchFeatureReturnToMessages from "../mapper.ts";
+import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "../types.ts";
+import type { searchCommandApiInfo } from "./apiInfo.ts";
 
 export function getSearchCommand<Items extends ISearchableEntity>({
     searchEngine,

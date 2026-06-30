@@ -1,7 +1,7 @@
-import type { TCommandHandlers } from "../bot/commands/types.ts";
-import type { helpCommandApiInfo } from "./commandRuntimeInfo.ts";
-import helpFeature from "./feature.ts";
-import mapHelpFeatureReturnToMessage from "./mapper.ts";
+import type { TCommandHandlers } from "../../bot/commands/types.ts";
+import helpFeature from "../feature.ts";
+import mapHelpFeatureReturnToMessage from "../mapper.ts";
+import type { helpCommandApiInfo } from "./apiInfo.ts";
 
 export function getHelpCommand() {
     return {
