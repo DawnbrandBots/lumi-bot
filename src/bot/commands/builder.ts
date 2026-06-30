@@ -16,10 +16,10 @@ import type {
     SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 import { ApplicationCommandOptionType, SlashCommandBuilder } from "discord.js";
-import type { TCommandData } from "./types.ts";
+import type { ICommandData } from "./types.ts";
 
 type TNameAndDescriptionData = Pick<
-    TCommandData,
+    ICommandData,
     "name" | "name_localizations" | "description" | "description_localizations"
 >;
 
@@ -162,11 +162,11 @@ function setSubcommandGroupData(
 }
 
 /**
- * Builds a {@link SlashCommandBuilder} instance from a {@link TCommandData}-shaped object.
+ * Builds a {@link SlashCommandBuilder} instance from a {@link ICommandData}-shaped object.
  *
  * Unless the returned builder is updated, calling {@link SlashCommandBuilder.toJSON} should return an object equal to the one provided to {@link getSlashCommandBuilder}.
  */
-export function getSlashCommandBuilder(data: TCommandData): SlashCommandBuilder {
+export function getSlashCommandBuilder(data: ICommandData): SlashCommandBuilder {
     const builder = setNameAndDescription(new SlashCommandBuilder(), data);
 
     if (data.contexts !== undefined) {

@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import type {
+    ICommandData,
     TCommandAutocompleteHandler,
-    TCommandData,
     TCommandHandlers,
     TCommandRunHandler,
 } from "../../../src/bot/commands/types.ts";
@@ -21,7 +21,7 @@ export const rootCommandData = {
             autocomplete: true,
         },
     ],
-} as const satisfies TCommandData;
+} as const satisfies ICommandData;
 
 export const rootCommandHandlers = {
     run,
@@ -78,7 +78,7 @@ export const nestedCommandData = {
             ],
         },
     ],
-} as const satisfies TCommandData;
+} as const satisfies ICommandData;
 
 export const nestedCommandHandlers = {
     run: {
@@ -128,7 +128,7 @@ void missingAutocompleteHandler;
 export const plainCommandData = {
     name: "plain",
     description: "Has no autocomplete options.",
-} as const satisfies TCommandData;
+} as const satisfies ICommandData;
 
 const unexpectedAutocompleteHandler = {
     run,

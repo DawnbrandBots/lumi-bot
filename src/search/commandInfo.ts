@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { DISCORD_COMMAND_DEFAULTS } from "../bot/commands/constants.ts";
-import type { TCommandData, TCommandInfo } from "../bot/commands/types.ts";
+import type { ICommandData, ICommandInfo } from "../bot/commands/types.ts";
 import { DISCORD_BOT_NAME, SEARCH_MAX_INPUT_LENGTH, SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
 
 export const searchCommandData = {
@@ -17,9 +17,9 @@ export const searchCommandData = {
             autocomplete: true,
         },
     ],
-} as const satisfies TCommandData;
+} as const satisfies ICommandData;
 
 export const searchCommandInfo = {
     data: searchCommandData,
     pingEquivalent: `@${DISCORD_BOT_NAME} <SEARCH_TERMS>`,
-} as const satisfies TCommandInfo<typeof searchCommandData>;
+} as const satisfies ICommandInfo<typeof searchCommandData>;

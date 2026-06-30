@@ -8,7 +8,7 @@ import {
 } from "discord.js";
 import { describe, expect, test } from "vitest";
 import { getSlashCommandBuilder } from "../../../src/bot/commands/builder.ts";
-import type { TCommandData } from "../../../src/bot/commands/types.ts";
+import type { ICommandData } from "../../../src/bot/commands/types.ts";
 import allCommandInfo from "../../../src/loaders/commandInfo.ts";
 
 const commandWithBasicOptions = {
@@ -88,7 +88,7 @@ const commandWithBasicOptions = {
             description: "Attachment option.",
         },
     ],
-} as const satisfies TCommandData;
+} as const satisfies ICommandData;
 
 const commandWithSubcommands = {
     name: "rooms",
@@ -128,9 +128,9 @@ const commandWithSubcommands = {
             ],
         },
     ],
-} as const satisfies TCommandData;
+} as const satisfies ICommandData;
 
-const tooManyOptions: TCommandData = {
+const tooManyOptions: ICommandData = {
     name: "options",
     description: "Has too many options.",
     options: Array.from({ length: 26 }, (_, index) => ({
@@ -140,12 +140,12 @@ const tooManyOptions: TCommandData = {
     })),
 };
 
-const invalidCommandName: TCommandData = {
+const invalidCommandName: ICommandData = {
     name: "INVALID",
     description: "Invalid name.",
 };
 
-const invalidOptionName: TCommandData = {
+const invalidOptionName: ICommandData = {
     name: "invalid-option",
     description: "Has an invalid option.",
     options: [
@@ -157,7 +157,7 @@ const invalidOptionName: TCommandData = {
     ],
 };
 
-const tooManyChoices: TCommandData = {
+const tooManyChoices: ICommandData = {
     name: "choices",
     description: "Has too many choices.",
     options: [

@@ -24,15 +24,15 @@ export type TCommandAutocompleteHandler = (
 /**
  * The Discord API representation of a chat-input command.
  *
- * Concrete command data should use `as const satisfies {@link TCommandData}` so command,
+ * Concrete command data should use `as const satisfies {@link ICommandData}` so command,
  * subcommand and option names remain available as literal types.
  */
-export type TCommandData = RESTPostAPIChatInputApplicationCommandsJSONBody;
+export type ICommandData = RESTPostAPIChatInputApplicationCommandsJSONBody;
 
 /**
  * Combines a command's Discord API data with application-only help metadata.
  */
-export type TCommandInfo<Data extends TCommandData> = {
+export type ICommandInfo<Data extends ICommandData> = {
     readonly data: Data;
     readonly pingEquivalent?: string;
 };
@@ -111,12 +111,12 @@ type TSubcommandAutocompleteHandlers<Options extends readonly APIApplicationComm
  * A command without subcommands resolves to one handler. Commands with
  * subcommands resolve to an object mirroring their subcommand-group structure.
  */
-export type TCommandRunHandlers<Data extends TCommandData> = TRunHandlersForOptions<TOptionsOf<Data>>;
+export type TCommandRunHandlers<Data extends ICommandData> = TRunHandlersForOptions<TOptionsOf<Data>>;
 
 /**
  * Autocomplete handlers required by the options declaring `autocomplete: true`.
  */
-export type TCommandAutocompleteHandlers<Data extends TCommandData> = [TSubcommandRoute<TOptionsOf<Data>>] extends [
+export type TCommandAutocompleteHandlers<Data extends ICommandData> = [TSubcommandRoute<TOptionsOf<Data>>] extends [
     never,
 ]
     ? TBasicAutocompleteHandlers<TOptionsOf<Data>>
@@ -125,7 +125,7 @@ export type TCommandAutocompleteHandlers<Data extends TCommandData> = [TSubcomma
 /**
  * All handlers required to implement a command's static data.
  */
-export type TCommandHandlers<Data extends TCommandData> = {
+export type TCommandHandlers<Data extends ICommandData> = {
     readonly run: TCommandRunHandlers<Data>;
 } & (keyof TCommandAutocompleteHandlers<Data> extends never
     ? { readonly autocomplete?: never }
@@ -134,6 +134,6 @@ export type TCommandHandlers<Data extends TCommandData> = {
 /**
  * Maps every command name in a command-data union to the handlers derived from that command's data.
  */
-export type TCommandRegistry<CommandData extends TCommandData> = {
+export type TCommandRegistry<CommandData extends ICommandData> = {
     readonly [Data in CommandData as Data["name"]]: TCommandHandlers<Data>;
 };
