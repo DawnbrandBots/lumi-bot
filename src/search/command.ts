@@ -2,9 +2,9 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
 import type { TCommandHandlers } from "../bot/types.ts";
 import type { searchCommandData } from "./commandInfo.ts";
-import { AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
+import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
 import searchFeature from "./feature.ts";
-import mapSearchFeatureReturnToMessage from "./mapper.ts";
+import mapSearchFeatureReturnToMessages from "./mapper.ts";
 import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "./types.ts";
 
 export function getSearchCommand<Items extends ISearchableEntity>({
@@ -23,14 +23,17 @@ export function getSearchCommand<Items extends ISearchableEntity>({
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`);
             }
             const result = await searchFeature({ em, searchEngine, handlers, input });
-            const message = mapSearchFeatureReturnToMessage<Items>(result, handlers);
-            return interaction.reply(message);
+            const { reply, followUps } = mapSearchFeatureReturnToMessages<Items>(result, handlers);
+            await interaction.reply(reply);
+            for (const followUp of followUps ?? []) {
+                await interaction.followUp(followUp);
+            }
         },
         autocomplete: {
             [SEARCH_TERMS_OPTION_NAME]: (interaction) => {
                 const input = interaction.options.getFocused();
                 return searchEngine
-                    .search(input, AUTOCOMPLETE_RESULTS_LIMIT)
+                    .search(input, SEARCH_AUTOCOMPLETE_RESULTS_LIMIT)
                     .map((item) => ({ name: item.name, value: item.name }));
             },
         },

@@ -1,10 +1,11 @@
-import type { APIEmbed } from "discord.js";
+import { hyperlink, unorderedList, type APIEmbed } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../game/constants.ts";
 import { Disciple } from "../../game/models/disciple.ts";
 import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
-import type { IDisciple } from "../../game/types.ts";
+import type { IDisciple, IMusic } from "../../game/types.ts";
 import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
+import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../constants.ts";
 import type { ISearchHandler } from "../types.ts";
 
 export function getDiscipleBaseStatsTable(disciple: IDisciple): (string | number)[][] {
@@ -18,6 +19,12 @@ export function getDiscipleBaseStatsTable(disciple: IDisciple): (string | number
     ];
 }
 
+function formatShadowMusicStrValue(music: IMusic) {
+    return music.url
+        ? hyperlink(music.name, music.url)
+        : `${music.name}\n  ${SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA}`;
+}
+
 const discipleSearchHandler: ISearchHandler<Disciple> = {
     class: Disciple,
     message: (disciple: IDisciple) => {
@@ -28,6 +35,11 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
         const baseStatsTable = getDiscipleBaseStatsTable(disciple);
         const baseStatsTableAscii = toAsciiTable({ data: baseStatsTable, cellPadding: 3 });
         const baseStatsStr = `\`\`\`\n${baseStatsTableAscii}\n\`\`\``;
+
+        const shadowMusicStr = unorderedList([
+            formatShadowMusicStrValue(disciple.shadowMusic),
+            formatShadowMusicStrValue(disciple.shadowResultsScreenMusic),
+        ]);
 
         const fields: NonNullable<APIEmbed["fields"]> = [
             {
@@ -46,6 +58,11 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
                 inline: true,
             },
             {
+                name: "Shadow music",
+                value: shadowMusicStr,
+                inline: true,
+            },
+            {
                 name: "Spells",
                 value: spellsStr,
             },
@@ -56,8 +73,12 @@ const discipleSearchHandler: ISearchHandler<Disciple> = {
         ];
 
         return {
-            title: disciple.name,
-            fields,
+            reply: {
+                embed: {
+                    title: disciple.name,
+                    fields,
+                },
+            },
         };
     },
 } as const;

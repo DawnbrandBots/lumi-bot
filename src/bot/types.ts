@@ -163,15 +163,15 @@ export type IBaseMessageArgCustomProps = {
 };
 
 export type TMessageOptionsUnusedProperties = "embeds";
-
-export type IBaseMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+export type ISingleEmbedMessageOptions<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
     MessageOptions,
     TMessageOptionsUnusedProperties
-> &
-    IBaseMessageArgCustomProps;
+> & {
+    embed: APIEmbed;
+};
 
-export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
-    MessageOptions,
-    TMessageOptionsUnusedProperties
-> &
-    IChildMessageArgCustomProps;
+export type IBaseMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    ISingleEmbedMessageOptions<MessageOptions> & IBaseMessageArgCustomProps;
+
+export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    ISingleEmbedMessageOptions<MessageOptions> & IChildMessageArgCustomProps;
