@@ -86,6 +86,7 @@ bot.on(Events.InteractionCreate, async (interaction) => {
         return;
     } else if (interaction.isAutocomplete()) {
         if (!isKeyOfExactObject(commands, interaction.commandName)) {
+            // TODO: this should be reported in another PR
             return;
         }
         const command = commands[interaction.commandName];
