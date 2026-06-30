@@ -7,7 +7,7 @@ import {
     SlashCommandBuilder,
 } from "discord.js";
 import { describe, expect, test } from "vitest";
-import { getSlashCommandBuilder } from "../../../src/bot/commands/info.ts";
+import { getSlashCommandBuilder } from "../../../src/bot/commands/builder.ts";
 import type { TCommandData } from "../../../src/bot/commands/types.ts";
 import allCommandInfo from "../../../src/loaders/commandInfo.ts";
 
