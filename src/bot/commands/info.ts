@@ -162,7 +162,9 @@ function setSubcommandGroupData(
 }
 
 /**
- * Rebuilds static command data with Discord.js builders so their runtime validation is applied.
+ * Builds a {@link SlashCommandBuilder} instance from a {@link TCommandData}-shaped object.
+ *
+ * Unless the returned builder is updated, calling {@link SlashCommandBuilder.toJSON} should return an object equal to the one provided to {@link getSlashCommandBuilder}.
  */
 export function getSlashCommandBuilder(data: TCommandData): SlashCommandBuilder {
     const builder = setNameAndDescription(new SlashCommandBuilder(), data);
