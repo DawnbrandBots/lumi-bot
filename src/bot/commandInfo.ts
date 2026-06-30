@@ -139,10 +139,6 @@ function addBasicOption(
         case ApplicationCommandOptionType.User:
             builder.addUserOption((optionBuilder) => setBasicOptionData(optionBuilder, option));
             return;
-        default: {
-            const unexpectedOption: never = option;
-            throw new TypeError(`Unsupported basic command option: ${JSON.stringify(unexpectedOption)}`);
-        }
     }
 }
 
