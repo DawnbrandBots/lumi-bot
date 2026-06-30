@@ -1,6 +1,6 @@
 import type { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { getCommandAutocompleteHandler, getCommandRunHandler } from "../../src/bot/command.ts";
+import { getCommandAutocompleteHandler, getCommandRunHandler } from "../../src/bot/commands/handlers.ts";
 import type { TCommandAutocompleteHandler, TCommandRegistry, TCommandRunHandler } from "../../src/bot/types.ts";
 import type { nestedCommandData, plainCommandData, rootCommandData } from "./commandTypes.ts";
 
