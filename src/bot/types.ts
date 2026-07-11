@@ -71,7 +71,6 @@ export type IBaseMessageArgCustomProps = {
 };
 
 export type TMessageOptionsUnusedProperties = "embeds";
-
 export type ISingleEmbedMessageOptions<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
     MessageOptions,
     TMessageOptionsUnusedProperties
