@@ -28,7 +28,11 @@ export default async function recreateStaticGameDataDb(config: Options): Promise
                 encoding: "utf-8",
             });
             const entries = JSON.parse(str) as object[];
-            await em.insertMany(entityMetadata.className as never, entries, { convertCustomTypes: false });
+            // Types for insertMany and the likes do not accept strings as first argument,
+            // yet passing an entity name string works.
+            await em.insertMany(entityMetadata.className as unknown as Parameters<typeof em.insertMany>[0], entries, {
+                convertCustomTypes: false,
+            });
         }
         await em.flush();
 
