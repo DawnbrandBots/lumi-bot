@@ -41,8 +41,11 @@ function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>(value:
               }
             : undefined;
 
-    const { reply, followUps } = SEARCH_MAPPERS[value.kind](value.entity);
-    return { reply: { ...reply, footer }, followUps };
+    const {
+        reply: { embed, ...otherReplyProps },
+        followUps,
+    } = SEARCH_MAPPERS[value.kind](value.entity);
+    return { reply: { embed: { ...embed, footer }, ...otherReplyProps }, followUps };
 }
 
 function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof searchFeature>>) {
