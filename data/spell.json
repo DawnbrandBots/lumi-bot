@@ -1322,9 +1322,6 @@
                 }
               ]
             },
-            "unit": {
-              "kind": "FIXED"
-            },
             "color": "GREEN"
           },
           "times": 2,
@@ -1811,9 +1808,6 @@
                   "base": 40
                 }
               ]
-            },
-            "unit": {
-              "kind": "FIXED"
             },
             "color": "BLUE"
           },
