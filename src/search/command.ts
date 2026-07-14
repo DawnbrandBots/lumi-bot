@@ -5,16 +5,16 @@ import { searchCommandInfo } from "./commandInfo.ts";
 import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
 import searchFeature from "./feature.ts";
 import mapSearchFeatureReturnToMessages from "./mapper.ts";
-import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "./types.ts";
+import type { ISearchConfigs, ISearchEngine, TSearchItem } from "./types.ts";
 
-export function getSearchCommand<Items extends ISearchableEntity>({
+export function getSearchCommand({
     searchEngine,
     em,
-    handlers,
+    configs,
 }: {
-    searchEngine: ISearchEngine<ISearchItem & { kind: Items["kind"] }>;
+    searchEngine: ISearchEngine<TSearchItem>;
     em: EntityManager;
-    handlers: ISearchHandlers<Items>;
+    configs: ISearchConfigs;
 }) {
     return new Command({
         info: searchCommandInfo,
@@ -23,8 +23,8 @@ export function getSearchCommand<Items extends ISearchableEntity>({
             if (!input) {
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`);
             }
-            const result = await searchFeature({ em, searchEngine, handlers, input });
-            const { reply, followUps } = mapSearchFeatureReturnToMessages<Items>(result, handlers);
+            const result = await searchFeature({ em, searchEngine, configs, input });
+            const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
             await interaction.reply(reply);
             for (const followUp of followUps ?? []) {
                 await interaction.followUp(followUp);

@@ -1,28 +1,23 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
-import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
+import SEARCH_CONFIGS from "../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
-import {
-    ESearchFeatureReturnKind,
-    type ISearchEngine,
-    type ISearchItem,
-    type TSearchableEntity,
-} from "../../src/search/types.ts";
+import type { TSearchItem } from "../../src/search/types.ts";
+import { ESearchFeatureReturnKind, type ISearchEngine } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
-type SearchItem = ISearchItem & { kind: TSearchableEntity["kind"] };
-let searchEngine: ISearchEngine<SearchItem>;
+let searchEngine: ISearchEngine<TSearchItem>;
 
 beforeAll(async () => {
     orm = await initTestOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<SearchItem>({ items: await getSearchItems(em) });
+    searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
 });
 
 afterAll(async () => {
@@ -31,10 +26,10 @@ afterAll(async () => {
 
 describe(searchFeature.name, () => {
     test("no result", async () => {
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: NO_SEARCH_RESULT_INPUT,
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
 
@@ -44,13 +39,13 @@ describe(searchFeature.name, () => {
     });
 
     test("missing from database", async () => {
-        const missingSearchItem: SearchItem = {
+        const missingSearchItem: TSearchItem = {
             id: "MISSING_ID",
             kind: "weapon",
             name: "Missing Weapon",
             aliases: ["Missing Weapon"],
         };
-        const mockedSearchEngine: ISearchEngine<SearchItem> = {
+        const mockedSearchEngine: ISearchEngine<TSearchItem> = {
             search: vi.fn(),
             searchOne: vi.fn().mockReturnValue(missingSearchItem),
         };
@@ -59,10 +54,10 @@ describe(searchFeature.name, () => {
             findOne,
         } as unknown as EntityManager;
 
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: "Missing Weapon",
             searchEngine: mockedSearchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em: mockedEntityManager,
         });
 
@@ -74,17 +69,17 @@ describe(searchFeature.name, () => {
             },
         });
         expect(findOne).toHaveBeenCalledWith(
-            SEARCH_HANDLERS.weapon.class,
+            SEARCH_CONFIGS.weapon.class,
             { id: missingSearchItem.id },
-            { populate: SEARCH_HANDLERS.weapon.populate },
+            { populate: SEARCH_CONFIGS.weapon.populate },
         );
     });
 
     test("input too long", async () => {
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
 
@@ -98,10 +93,10 @@ describe(searchFeature.name, () => {
         const searchItem = searchEngine.searchOne(input);
         expect(searchItem).toBeDefined();
 
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input,
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
 
