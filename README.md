@@ -16,9 +16,9 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 | Permission                                 | Purpose                                         | Recommendation                                                                                         |
 | ------------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| **Send messages**                          | Replying to commands and pings.                 | Required                                                                                               |
-| **Send messages in thread**                | Same reason as _Send messages_, but in threads. | Optional                                                                                               |
-| **Read message history**                   | Being able to detect pings to act upon them.    | Recommended                                                                                            |
+| **Send messages**                          | Replying to commands and pings.                 | If you want most commands to work properly in regular channels                                         |
+| **Send messages in thread**                | Same reason as _Send messages_, but in threads. | If you want most commands to work properly in threads                                                  |
+| **Read message history**                   | Being able to detect pings to act upon them.    | If you want users to be able to trigger `/help` and `/search` by mentioning the bot                    |
 | **Mention @everyone, @here and All Roles** | Ping roles dedicated to LFG.                    | If roles you want the bot to be able to ping don't have "Allow everyone to @mention this role" enabled |
 
 ## Getting started
