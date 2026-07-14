@@ -2,20 +2,19 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import type { AutocompleteInteraction, CacheType } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { SEARCH_TERMS_OPTION_NAME } from "../../src/bot/constants.ts";
-import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
+import SEARCH_CONFIGS from "../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import { getSearchCommand } from "../../src/search/command.ts";
 import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
-import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
+import type { ISearchEngine, TSearchItem } from "../../src/search/types.ts";
 import { initTestGameOrm } from "../orm.ts";
 import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
-type SearchItem = ISearchItem & { kind: TSearchableEntity["kind"] };
-let searchEngine: ISearchEngine<SearchItem>;
-let searchCommand: ReturnType<typeof getSearchCommand<TSearchableEntity>>;
+let searchEngine: ISearchEngine<TSearchItem>;
+let searchCommand: ReturnType<typeof getSearchCommand>;
 
 function getMockAutocompleteInteraction(input: string, optionName: string) {
     return {
@@ -28,8 +27,8 @@ function getMockAutocompleteInteraction(input: string, optionName: string) {
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<SearchItem>({ items: await getSearchItems(em) });
-    searchCommand = getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS });
+    searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
+    searchCommand = getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS });
 });
 
 afterAll(async () => {

@@ -1,12 +1,15 @@
 import type { EntityName, Populate } from "@mikro-orm/sqlite";
-import type { BaseMessageOptions } from "discord.js";
-import type { ISingleEmbedMessageOptions } from "../bot/types.ts";
 import type { Disciple } from "../game/models/disciple.ts";
 import type { Music } from "../game/models/music.ts";
 import type { Spell } from "../game/models/spell.ts";
 import type { Weapon } from "../game/models/weapon.ts";
 import type { WeaponSkill } from "../game/models/weaponSkill.ts";
 import type { TId } from "../game/types.ts";
+
+export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell | Music;
+export type TSearchKind = TSearchableEntity["kind"];
+export type ISearchEntityMap = { [Entity in TSearchableEntity as Entity["kind"]]: Entity };
+export type TSearchEntity<Kind extends TSearchKind> = ISearchEntityMap[Kind];
 
 /**
  * Properties required for entities to be searchable.
@@ -31,6 +34,10 @@ export interface ISearchItem {
     readonly aliases: string[];
 }
 
+export type TSearchItem<Kind extends TSearchKind = TSearchKind> = {
+    [K in Kind]: ISearchItem & { kind: K };
+}[Kind];
+
 export const enum ESearchFeatureReturnKind {
     SUCCESS = "SUCCESS",
     INPUT_TOO_LONG = "INPUT_TOO_LONG",
@@ -38,23 +45,40 @@ export const enum ESearchFeatureReturnKind {
     FOUND_BY_ENGINE_BUT_NOT_BY_DB = "FOUND_BY_ENGINE_BUT_NOT_BY_DB",
 }
 
+export type TSearchFeatureSuccessValue<Kind extends TSearchKind> = {
+    readonly kind: Kind;
+    readonly entity: TSearchEntity<Kind>;
+    readonly searchItem: TSearchItem<Kind>;
+};
+
+export type TSearchFeatureSuccess<Kind extends TSearchKind = TSearchKind> = {
+    readonly kind: ESearchFeatureReturnKind.SUCCESS;
+    readonly value: TSearchFeatureSuccessValue<Kind>;
+};
+
+export type TSearchFeatureReturn<Kind extends TSearchKind = TSearchKind> =
+    | TSearchFeatureSuccess<Kind>
+    | { readonly kind: ESearchFeatureReturnKind.INPUT_TOO_LONG }
+    | { readonly kind: ESearchFeatureReturnKind.NO_RESULT }
+    | {
+          readonly kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB;
+          readonly value: {
+              readonly kind: Kind;
+              readonly id: TId;
+          };
+      };
+
 /**
- * Defines what ORM entity should be searched for and what message should be generated given the entity.
+ * Defines what ORM entity should be searched for.
  */
-// TODO: "message" argument type should be refined to take populate's type into account
-// (to account for potentially not loaded and therefore missing properties that regular typescript types don't see)
-export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
+export interface ISearchConfig<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
     /**
      * ORM entity class required to search for an entry.
      */
     class: EntityName<EntityType>;
     /**
-     * Given the ORM entity, returns the formatted message to be sent to the client.
-     */
-    message: (entity: EntityType) => { reply: ISingleEmbedMessageOptions; followUps?: BaseMessageOptions[] };
-    /**
      * MikroORM populate paths for fetched entities.
-     * Search handlers might need deeply nested properties that need to be referred to explicitly
+     * Search mappers might need deeply nested properties that need to be referred to explicitly
      * because just using ["*"] won't populate them.
      *
      * Example: Weapon's search handler displaying the unique skill's effect description.
@@ -65,10 +89,10 @@ export interface ISearchHandler<EntityType extends ISearchableEntity, PopulateHi
 }
 
 /**
- * Associates a {@link ISearchHandler} to each searchable entity.
+ * Associates a {@link ISearchConfig} to each searchable entity.
  */
-export type ISearchHandlers<Items extends ISearchableEntity> = {
-    [Kind in Items["kind"]]: ISearchHandler<Items & { kind: Kind }, string>;
+export type ISearchConfigs = {
+    [Kind in TSearchKind]: ISearchConfig<TSearchEntity<Kind>, string>;
 };
 
 /**
@@ -84,8 +108,3 @@ export interface ISearchEngine<Items extends ISearchItem> {
      */
     search(userInput: string, limit?: number): Items[];
 }
-
-/**
- * All entities which can be retrieved by the search feature at the moment.
- */
-export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell | Music;

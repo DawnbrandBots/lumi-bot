@@ -5,7 +5,7 @@ import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT, SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
 import { EMessageKind } from "../../src/bot/types.ts";
 import type { Disciple } from "../../src/game/models/disciple.ts";
-import SEARCH_HANDLERS from "../../src/loaders/searchHandlers.ts";
+import SEARCH_CONFIGS from "../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../src/loaders/searchItems.ts";
 import {
     SEARCH_ALIASES_FOOTER_PREFIX,
@@ -21,20 +21,19 @@ import {
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
 import mapSearchFeatureReturnToMessages from "../../src/search/mapper.ts";
-import type { ISearchEngine, ISearchItem, TSearchableEntity } from "../../src/search/types.ts";
+import type { ISearchEngine, TSearchItem } from "../../src/search/types.ts";
 import { ESearchFeatureReturnKind } from "../../src/search/types.ts";
 import { initTestGameOrm } from "../orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
-type SearchItem = ISearchItem & { kind: TSearchableEntity["kind"] };
-let searchEngine: ISearchEngine<SearchItem>;
+let searchEngine: ISearchEngine<TSearchItem>;
 
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<SearchItem>({ items: await getSearchItems(em) });
+    searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
 });
 
 afterAll(async () => {
@@ -43,13 +42,13 @@ afterAll(async () => {
 
 describe(mapSearchFeatureReturnToMessages.name, () => {
     test("maps no result to an error message", async () => {
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: NO_SEARCH_RESULT_INPUT,
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages(result);
 
         expect(message).toMatchObject({
             reply: {
@@ -65,26 +64,26 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
     });
 
     test("maps a database miss to an error message", async () => {
-        const missingSearchItem: SearchItem = {
+        const missingSearchItem: TSearchItem = {
             id: "MISSING_ID",
             kind: "weapon",
             name: "Missing Weapon",
             aliases: ["Missing Weapon"],
         };
-        const mockedSearchEngine: ISearchEngine<SearchItem> = {
+        const mockedSearchEngine: ISearchEngine<TSearchItem> = {
             search: vi.fn(),
             searchOne: vi.fn().mockReturnValue(missingSearchItem),
         };
         const mockedEntityManager = {
             findOne: vi.fn().mockResolvedValue(null),
         } as unknown as EntityManager;
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: "Missing Weapon",
             searchEngine: mockedSearchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em: mockedEntityManager,
         });
-        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages(result);
 
         expect(message).toMatchObject({
             reply: {
@@ -105,13 +104,13 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
     });
 
     test("maps input too long to an error message", async () => {
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages(result);
 
         expect(message).toMatchObject({
             reply: {
@@ -127,13 +126,13 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
     });
 
     test("maps success to a success message", async () => {
-        const result = await searchFeature<TSearchableEntity>({
+        const result = await searchFeature({
             input: "Royal Sword",
             searchEngine,
-            handlers: SEARCH_HANDLERS,
+            configs: SEARCH_CONFIGS,
             em,
         });
-        const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+        const message = mapSearchFeatureReturnToMessages(result);
 
         expect(message).toMatchObject({
             reply: {
@@ -148,13 +147,13 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
         test("source medial url exists", async () => {
             const MUSIC_SEARCH_INPUT = "Betrayal – The Exiled Prince";
 
-            const result = await searchFeature<TSearchableEntity>({
+            const result = await searchFeature({
                 input: MUSIC_SEARCH_INPUT,
                 searchEngine,
-                handlers: SEARCH_HANDLERS,
+                configs: SEARCH_CONFIGS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessages(result);
 
             expect(message).toMatchObject({
                 reply: {
@@ -181,9 +180,9 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
         });
         test("source medial url doesn't exist", () => {
             const result = {
-                // const result: Extract<Awaited<ReturnType<typeof searchFeature<TSearchableEntity>>>, {kind: ESearchFeatureReturnKind.SUCCESS}> & {value: {kind: "music"}} = {
                 kind: ESearchFeatureReturnKind.SUCCESS as const,
                 value: {
+                    kind: "music" as const,
                     entity: {
                         id: "MISSING_URL_SONG",
                         name: "Missing Url Song",
@@ -204,7 +203,7 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                     },
                 },
             };
-            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessages(result);
 
             expect(message).toMatchObject({
                 reply: {
@@ -232,13 +231,13 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             const searchItem = searchEngine.searchOne(input);
             expect(searchItem?.aliases.length).toBeGreaterThan(1);
 
-            const result = await searchFeature<TSearchableEntity>({
+            const result = await searchFeature({
                 input,
                 searchEngine,
-                handlers: SEARCH_HANDLERS,
+                configs: SEARCH_CONFIGS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessages(result);
 
             expect(message).toMatchObject({
                 reply: {
@@ -259,13 +258,13 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             const searchItem = searchEngine.searchOne(input);
             expect(searchItem?.aliases).toHaveLength(1);
 
-            const result = await searchFeature<TSearchableEntity>({
+            const result = await searchFeature({
                 input,
                 searchEngine,
-                handlers: SEARCH_HANDLERS,
+                configs: SEARCH_CONFIGS,
                 em,
             });
-            const message = mapSearchFeatureReturnToMessages<TSearchableEntity>(result, SEARCH_HANDLERS);
+            const message = mapSearchFeatureReturnToMessages(result);
 
             expect(message).toMatchObject({
                 reply: {
