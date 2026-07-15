@@ -262,5 +262,13 @@
     "weaponType": "STONE",
     "prfWeapon": "ANCIENT_STONE_PLUS",
     "shadowMusic": "BETRAYAL_MYSTERY_OF_THE_EMBLEM"
+  },
+  {
+    "id": "PERENNA",
+    "name": "Perenna",
+    "movementType": "FLYING",
+    "weaponType": "TOME",
+    "prfWeapon": "TUTELAGE_TOME_PLUS",
+    "shadowMusic": "BETRAYAL_BOOK_3"
   }
 ]
