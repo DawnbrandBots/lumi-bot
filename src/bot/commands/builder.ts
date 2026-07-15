@@ -1,3 +1,18 @@
+/**
+ * @file
+ * Disclaimer: Codex generated this file.
+ * It's imperfect in that it doesn't type-check that all properties of {@link RESTPostAPIChatInputApplicationCommandsJSONBody} are handled.
+ * If properties are added or changed later, there won't be a type error reporting it.
+ * I had Codex generate an improved version of this file that does type-check the above, but I ultimately found that it made the code way more complex, less readble.
+ * The point is that currently this works for the latest Discord.js version at the time of writing. I am not expecting the API to change much in the near future.
+ * Hopefully Discord.js will have its own constructor at some point so we can remove this.
+ *
+ * discord.js does not provide a way to create a {@link SlashCommandBuilder} from {@link RESTPostAPIChatInputApplicationCommandsJSONBody},
+ * so a custom one had to be implemented... but I don't want to spend much time maintaining it VS working on the bot's actual own code.
+ *
+ * The most important part: ensuring that the one test in builder.test.ts on {@link getSlashCommandBuilder} when given items from {@link allCommandRuntimeInfo} passes.
+ */
+
 import type {
     APIApplicationCommandBasicOption,
     APIApplicationCommandChannelOption,
@@ -16,6 +31,8 @@ import type {
     SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 import { ApplicationCommandOptionType, SlashCommandBuilder } from "discord.js";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- referred to in file comment above
+import type allCommandRuntimeInfo from "../../loaders/commandRuntimeInfo.ts";
 import type { ICommandApiInfo } from "./types.ts";
 
 type TNameAndDescriptionData = Pick<
