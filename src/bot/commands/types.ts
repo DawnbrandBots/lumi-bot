@@ -1,3 +1,10 @@
+/**
+ * @file
+ * Disclaimer: Codex generated most of this file.
+ * See ./types.test.ts to understand how.
+ * Most importantly: see {@link TCommandHandlers}'s comment.
+ */
+
 import type { MaybePromise } from "@mikro-orm/core";
 import type {
     APIApplicationCommandOption,
