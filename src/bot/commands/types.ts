@@ -167,7 +167,7 @@ export type TCommandHandlers<ApiInfo extends ICommandApiInfo> = {
     : { readonly autocomplete: TCommandAutocompleteHandlers<ApiInfo> });
 
 /**
- * Turns a {@link ICommandApiInfo} union into a {@link ICommandApiInfo.name} to {@link TCommandHandlers}-map.
+ * Turns a {@link ICommandApiInfo} union into a ({@link ICommandApiInfo.name} to {@link TCommandHandlers})-map.
  */
 export type TCommandRegistry<CommandApiInfo extends ICommandApiInfo> = {
     readonly [ApiInfo in CommandApiInfo as ApiInfo["name"]]: TCommandHandlers<ApiInfo>;
