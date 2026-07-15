@@ -130,7 +130,35 @@ export type TCommandAutocompleteHandlers<ApiInfo extends ICommandApiInfo> = [
     : TSubcommandAutocompleteHandlers<TOptionsOf<ApiInfo>>;
 
 /**
- * All handlers required to implement a command's API info.
+ * Object with two trees `run` and `autocomplete` containing functions that will be executed for a specific command/command option when receiving a command/autocomplete interaction.
+ *
+ * Examples:
+ *
+ * ```
+ * const searchCommandHandlers = {
+ *   run: () => {},
+ *   autocomplete: {
+ *     query: () => {},
+ *   },
+ * }
+ * const lfgCommandHandlers = {
+ *   run: {
+ *     create: () => {},
+ *     join: () => {}
+ *     // ...
+ *   },
+ *
+ *   autocomplete: {
+ *     create: {
+ *       code: () => {},
+ *     },
+ *     join: {
+ *       code: () => {},
+ *     },
+ *     // ...
+ *   },
+ * }
+ * ```
  */
 export type TCommandHandlers<ApiInfo extends ICommandApiInfo> = {
     readonly run: TCommandRunHandlers<ApiInfo>;
