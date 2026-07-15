@@ -107,9 +107,11 @@ type TAutocompleteHandlersForSubcommandRoute<Option extends TSubcommandRoute<rea
  * Maps only subcommand routes containing autocomplete options to their nested handler maps.
  */
 type TSubcommandAutocompleteHandlers<Options extends readonly APIApplicationCommandOption[]> = {
-    readonly [Option in TSubcommandRoute<Options> as keyof TAutocompleteHandlersForSubcommandRoute<Option> extends never
-        ? never
-        : Option["name"]]: TAutocompleteHandlersForSubcommandRoute<Option>;
+    readonly [
+        Option in TSubcommandRoute<Options> as keyof TAutocompleteHandlersForSubcommandRoute<Option> extends never
+            ? never
+            : Option["name"]
+    ]: TAutocompleteHandlersForSubcommandRoute<Option>;
 };
 
 /**

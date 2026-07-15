@@ -1,7 +1,4 @@
-import type {
-    APIEmbed,
-    BaseMessageOptions
-} from "discord.js";
+import type { APIEmbed, BaseMessageOptions } from "discord.js";
 
 export const enum EMessageKind {
     POSITIVE = "POSITIVE",
