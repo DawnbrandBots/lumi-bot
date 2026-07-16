@@ -11,7 +11,7 @@ import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
 import getSearchItems from "./loaders/searchItems.ts";
-import { configsById } from "./mikro-orm.config.ts";
+import { appMikroOrmConfig } from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
@@ -21,19 +21,16 @@ import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
 const log = debug("bot");
 
-const gameOrm = await getOrm(configsById.game);
-const gameEm = gameOrm.em.fork();
+const orm = await getOrm(appMikroOrmConfig);
+const em = orm.em.fork();
 
-const lumiOrm = await getOrm(configsById.lumi);
-const lumiEm = lumiOrm.em.fork();
-
-const searchItems = await getSearchItems(gameEm);
+const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
-const lfgFeature = new LfgFeature({ em: lumiEm });
+const lfgFeature = new LfgFeature({ em });
 const commands = {
-    search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
+    search: getSearchCommand<TSearchableEntity>({ searchEngine, em, handlers: SEARCH_HANDLERS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
     lfg: getLfgCommand({ lfgFeature }),
@@ -66,7 +63,7 @@ bot.on(Events.MessageCreate, async (interaction) => {
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
     const result = await searchFeature<TSearchableEntity>({
-        em: gameEm,
+        em,
         searchEngine,
         handlers: SEARCH_HANDLERS,
         input,
