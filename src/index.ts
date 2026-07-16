@@ -12,33 +12,29 @@ import { LfgFeature } from "./lfg/feature.ts";
 import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
-import SEARCH_HANDLERS from "./loaders/searchHandlers.ts";
+import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
 import getSearchItems from "./loaders/searchItems.ts";
-import { configsById } from "./mikro-orm.config.ts";
+import { appMikroOrmConfig } from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
-import mapSearchFeatureReturnToMessage from "./search/mapper.ts";
-import type { TSearchableEntity } from "./search/types.ts";
+import mapSearchFeatureReturnToMessages from "./search/mapper.ts";
 import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
 const log = debug("bot");
 
-const gameOrm = await getOrm(configsById.game);
-const gameEm = gameOrm.em.fork();
+const orm = await getOrm(appMikroOrmConfig);
+const em = orm.em.fork();
 
-const lumiOrm = await getOrm(configsById.lumi);
-const lumiEm = lumiOrm.em.fork();
-
-const searchItems = await getSearchItems(gameEm);
+const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
-const adminFeature = new AdminFeature({ em: lumiEm });
-const lfgFeature = new LfgFeature({ em: lumiEm });
+const adminFeature = new AdminFeature({ em });
+const lfgFeature = new LfgFeature({ em });
 const commands = {
     admin: new AdminCommand({ adminFeature }),
-    search: getSearchCommand<TSearchableEntity>({ searchEngine, em: gameEm, handlers: SEARCH_HANDLERS }),
+    search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
     lfg: getLfgCommand({ adminFeature, lfgFeature }),
@@ -70,14 +66,12 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const result = await searchFeature<TSearchableEntity>({
-        em: gameEm,
-        searchEngine,
-        handlers: SEARCH_HANDLERS,
-        input,
-    });
-    const message = mapSearchFeatureReturnToMessage<TSearchableEntity>(result, SEARCH_HANDLERS);
-    await interaction.reply(message);
+    const result = await searchFeature({ em, searchEngine, configs: SEARCH_CONFIGS, input });
+    const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
+    await interaction.reply(reply);
+    for (const followUp of followUps ?? []) {
+        await interaction.reply(followUp);
+    }
 });
 
 bot.on(Events.InteractionCreate, async (interaction) => {
