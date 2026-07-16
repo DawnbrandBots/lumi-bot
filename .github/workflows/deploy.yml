@@ -37,10 +37,10 @@ jobs:
         env:
           DOCKER_HOST: tcp://${{ secrets.TS_DEPLOY_HOST }}:${{ secrets.TS_DEPLOY_PORT }}
           DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         run: |
-          docker compose pull
-          docker compose up -d
+          cat .env.docker.template | sed "s/DISCORD_TOKEN=/DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}/g" > .env.docker
+          docker compose --env-file .env.docker pull
+          docker compose --env-file .env.docker up -d
       - uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
