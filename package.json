@@ -27,24 +27,24 @@
     "yarn": "1.22.x"
   },
   "dependencies": {
-    "@mikro-orm/core": "^7.1.5",
-    "@mikro-orm/sqlite": "^7.1.5",
+    "@mikro-orm/core": "^7.1.6",
+    "@mikro-orm/sqlite": "^7.1.6",
     "debug": "^4.4.3",
-    "discord.js": "~14.26.3",
-    "fuse.js": "^7.4.2"
+    "discord.js": "~14.26.5",
+    "fuse.js": "^7.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@mikro-orm/cli": "^7.1.5",
+    "@mikro-orm/cli": "^7.1.6",
     "@tsconfig/node24": "^24.0.4",
     "@types/debug": "^4.1.13",
     "@types/node": "^26.1.1",
-    "eslint": "^10.6.0",
+    "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.7.0",
-    "prettier": "3.9.4",
+    "prettier": "3.9.5",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.63.0",
+    "typescript-eslint": "^8.64.0",
     "vitest": "^4.1.10"
   },
   "optionalDependencies": {
