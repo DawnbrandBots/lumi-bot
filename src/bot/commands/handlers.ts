@@ -1,0 +1,64 @@
+import type { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import type { TCommandAutocompleteHandler, TCommandRunHandler } from "./types.ts";
+
+type THandler = TCommandRunHandler | TCommandAutocompleteHandler;
+type THandlerTree<Handler extends THandler> = Handler | IHandlerMap<Handler>;
+
+interface IHandlerMap<Handler extends THandler> {
+    readonly [name: string]: THandlerTree<Handler>;
+}
+
+type TCommandHandlersAtRuntime = {
+    readonly run: THandlerTree<TCommandRunHandler>;
+    readonly autocomplete?: THandlerTree<TCommandAutocompleteHandler>;
+};
+
+type TCommandInteraction = ChatInputCommandInteraction<CacheType> | AutocompleteInteraction<CacheType>;
+
+function getSubcommandRoute(interaction: TCommandInteraction): string[] {
+    const subcommandGroup = interaction.options.getSubcommandGroup(false);
+    const subcommand = interaction.options.getSubcommand(false);
+
+    return [subcommandGroup, subcommand].filter((part) => part !== null);
+}
+
+function getHandlerAtRoute<Handler extends THandler>(
+    tree: THandlerTree<Handler>,
+    route: readonly string[],
+): Handler | undefined {
+    let current: THandlerTree<Handler> | undefined = tree;
+
+    for (const part of route) {
+        if (typeof current !== "object") {
+            return undefined;
+        }
+        current = current[part];
+    }
+
+    return typeof current === "function" ? current : undefined;
+}
+
+/**
+ * Retrieves the run handler matching an interaction's subcommand group and subcommand.
+ */
+export function getCommandRunHandler(
+    commandHandlers: TCommandHandlersAtRuntime,
+    interaction: ChatInputCommandInteraction<CacheType>,
+): TCommandRunHandler | undefined {
+    return getHandlerAtRoute(commandHandlers.run, getSubcommandRoute(interaction));
+}
+
+/**
+ * Retrieves the autocomplete handler matching an interaction's route and focused option.
+ */
+export function getCommandAutocompleteHandler(
+    commandHandlers: TCommandHandlersAtRuntime,
+    interaction: AutocompleteInteraction<CacheType>,
+): TCommandAutocompleteHandler | undefined {
+    if (!commandHandlers.autocomplete) {
+        return undefined;
+    }
+
+    const focusedOption = interaction.options.getFocused(true);
+    return getHandlerAtRoute(commandHandlers.autocomplete, [...getSubcommandRoute(interaction), focusedOption.name]);
+}

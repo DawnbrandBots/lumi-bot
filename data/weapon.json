@@ -200,6 +200,16 @@
     "uniqueSkill": "FOX_S_TRICKERY"
   },
   {
+    "id": "TUTELAGE_TOME_PLUS",
+    "name": "Tutelage Tome +",
+    "weaponType": "TOME",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "TRIFLING_SHADOW"
+  },
+  {
     "id": "PANTHER_STAFF_PLUS",
     "name": "Panther Staff +",
     "weaponType": "STAFF",
@@ -538,6 +548,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "FOX_S_TRICKERY"
+  },
+  {
+    "id": "TUTELAGE_TOME",
+    "name": "Tutelage Tome",
+    "weaponType": "TOME",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "TRIFLING_SHADOW"
   },
   {
     "id": "RESOLUTE_TOME",
