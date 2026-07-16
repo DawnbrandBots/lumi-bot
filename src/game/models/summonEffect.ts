@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { ISummonEffect } from "../types.ts";
+import { ESpellEffectKind, type ISummonEffect } from "../types.ts";
 import { MovementType } from "./movementType.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SummonEffectStatValue } from "./summonEffectStat.ts";
@@ -9,9 +9,9 @@ export const SummonEffectSchema = defineEntity({
     name: "SummonEffect",
     embeddable: true,
     extends: SpellEffect,
-    discriminatorValue: "SUMMON",
+    discriminatorValue: ESpellEffectKind.SUMMON,
     properties: {
-        kind: p.enum(["SUMMON"]),
+        kind: p.enum([ESpellEffectKind.SUMMON]),
         movementType: () => p.manyToOne(MovementType),
         weaponType: () => p.manyToOne(WeaponType),
         hp: () => p.embedded(SummonEffectStatValue).object(),

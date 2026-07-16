@@ -45,7 +45,7 @@ export class AdminCommand implements ICommand {
     public async run(interaction: ChatInputCommandInteraction<CacheType>) {
         const guildId = interaction.guildId;
         if (!guildId) {
-            return interaction.reply(
+            await interaction.reply(
                 createErrorMessage<InteractionReplyOptions>({
                     embed: {
                         title: "Admin unavailable",
@@ -54,10 +54,8 @@ export class AdminCommand implements ICommand {
                     flags: MessageFlags.Ephemeral,
                 }),
             );
-        }
-
-        if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
-            return interaction.reply(
+        } else if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
+            await interaction.reply(
                 createErrorMessage<InteractionReplyOptions>({
                     embed: {
                         title: "Missing permission",
@@ -66,18 +64,18 @@ export class AdminCommand implements ICommand {
                     flags: MessageFlags.Ephemeral,
                 }),
             );
+        } else {
+            const response = await this.runSubcommand(interaction, guildId);
+            await interaction.reply(response);
         }
-
-        const response = await this.runSubcommand(interaction, guildId);
-        return interaction.reply(response);
     }
 
     private async runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
     ): Promise<InteractionReplyOptions> {
-        const group = interaction.options.getSubcommandGroup(false);
-        const subcommand = interaction.options.getSubcommand(false);
+        const group = interaction.options.getSubcommandGroup(true);
+        const subcommand = interaction.options.getSubcommand(true);
         if (group !== ADMIN_LFG_GROUP_NAME) {
             return this.invalidSubcommand();
         }
