@@ -195,11 +195,11 @@
   integrity sha512-JPpOoBw2r98hVmsa7kFdt9HDqTa6/x9dhLL2MZRJQt1HwNg7S7A6Eh+nJ21dmB5QfXhu2PXqt03Y+xZZDnUD0w==
 
 "@mikro-orm/migrations@^7.1.4":
-  version "7.1.5"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-7.1.5.tgz#a375989c0eda22af8b03d7803ed549145c18fe8f"
-  integrity sha512-5d3nZ3ROjxM58W2UJtoMxYMx2uQjY3IPljvH3WfdKCwKubvrmluVJfUgcgmf7nZChEFAnogbBO3pmYbBme4wjg==
+  version "7.1.6"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-7.1.6.tgz#90eb0704506422d4c9ed1aee686195761b6bd179"
+  integrity sha512-857wUGF8o2gB9h+NxBXyhep9LWBLSX8eli/CdB6gU21GrHe1WUh5OAg/vSbhBV0GHzFsM8vclNvsLNAIFvqtsg==
   dependencies:
-    "@mikro-orm/sql" "7.1.5"
+    "@mikro-orm/sql" "7.1.6"
 
 "@mikro-orm/sql@7.1.4":
   version "7.1.4"
@@ -208,12 +208,12 @@
   dependencies:
     kysely "0.29.2"
 
-"@mikro-orm/sql@7.1.5":
-  version "7.1.5"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.1.5.tgz#9d1cc699ea2b02844d7c8e7052e33574a8fb81ea"
-  integrity sha512-WeiyjzVrxx2WHafCFmhbfbNphPSXqN9+7USet6iNcc9EzKqN0ULPvQd555m+5Nh0tmkX151FwPMLm9/a2wG0ng==
+"@mikro-orm/sql@7.1.6":
+  version "7.1.6"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/sql/-/sql-7.1.6.tgz#72063fb3f405f6df386e896498839eada0fed2bc"
+  integrity sha512-GPyOWd7mX0eiePvzFAW9xneulu/YA/Aa/i6E3vqoeulyG0+86N1Wh0Ow7GIu4ZAS5lm4+tFR/vOCAux/Bx5vBg==
   dependencies:
-    kysely "0.29.2"
+    kysely "0.29.3"
 
 "@mikro-orm/sqlite@^7.1.4":
   version "7.1.4"
@@ -1072,6 +1072,11 @@ kysely@0.29.2:
   version "0.29.2"
   resolved "https://registry.yarnpkg.com/kysely/-/kysely-0.29.2.tgz#4a07da18db3bba2911693c2b3bd4af415104a85f"
   integrity sha512-s6WVJyEZrbm6jhBpiKHsGHyePMrVQKJ85wZCFCr9W4QHv6WTjWIrdvTmO9hDEA3bNK0xkrE2DqrHsXMLWuZpQg==
+
+kysely@0.29.3:
+  version "0.29.3"
+  resolved "https://registry.yarnpkg.com/kysely/-/kysely-0.29.3.tgz#e219d9290a4398706fb5d1aa73fbe46a13e37287"
+  integrity sha512-VHtBdW6XB/pgoTSqraM3UAa2rYoYdNXqnNPpX+8XXP+cwYbVEFuAp3HyPt1vpNfU9l7Y2kpUrA9QDPsy8uUqOQ==
 
 levn@^0.4.1:
   version "0.4.1"

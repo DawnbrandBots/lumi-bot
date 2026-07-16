@@ -93,7 +93,7 @@ const GAME_DB_SCHEMA = "game";
 export const appMikroOrmConfig = defineConfig({
     entities: [...GAME_DATA_ENTITIES, ...RUNTIME_ENTITIES],
     dbName: STATE_DB_NAME,
-    // SQLite's way of adding another db to the same connection.
+    // MikroORM's way of dealing with multiple SQLite databases.
     // A single Mikro-ORM instance using this db config can manipulate entities from both dbs.
     // https://mikro-orm.io/docs/multiple-schemas#sqlite-attach-database
     attachDatabases: [{ name: GAME_DB_SCHEMA, path: GAME_DB_NAME }],

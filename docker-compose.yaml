@@ -1,5 +1,6 @@
 services:
   db-init:
+    image: "ghcr.io/dawnbrandbots/lumi-db-initI a:${DOCKER_TAG:-latest}"
     build:
       context: .
       target: db-init
