@@ -194,7 +194,7 @@
   resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-7.1.6.tgz#227151d766063e70ec9d7da978704318f58a700c"
   integrity sha512-p9mMyGYS+xE0dB29fdtxTj50wuYzrevtCensCsZ6+StvwoTSA6B0ELEm/A0Cch7FfCLYORbND7ui9pW6ugE2tQ==
 
-"@mikro-orm/migrations@^7.1.4":
+"@mikro-orm/migrations@^7.1.5":
   version "7.1.6"
   resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-7.1.6.tgz#90eb0704506422d4c9ed1aee686195761b6bd179"
   integrity sha512-857wUGF8o2gB9h+NxBXyhep9LWBLSX8eli/CdB6gU21GrHe1WUh5OAg/vSbhBV0GHzFsM8vclNvsLNAIFvqtsg==
