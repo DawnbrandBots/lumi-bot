@@ -7,6 +7,11 @@ export const enum EAdminFeatureReturnKind {
     LFG_CHANNEL_CLEARED = "LFG_CHANNEL_CLEARED",
     LFG_CHANNEL_MISSING_CHANNEL = "LFG_CHANNEL_MISSING_CHANNEL",
     LFG_CHANNEL_INVALID_OPTIONS = "LFG_CHANNEL_INVALID_OPTIONS",
+    LFG_ROLE_PING_COOLDOWN_HELP = "LFG_ROLE_PING_COOLDOWN_HELP",
+    LFG_ROLE_PING_COOLDOWN_SET = "LFG_ROLE_PING_COOLDOWN_SET",
+    LFG_ROLE_PING_COOLDOWN_CLEARED = "LFG_ROLE_PING_COOLDOWN_CLEARED",
+    LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES = "LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES",
+    LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS = "LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS",
     LFG_ROLE_HELP = "LFG_ROLE_HELP",
     LFG_ROLE_ADDED = "LFG_ROLE_ADDED",
     LFG_ROLE_REMOVED = "LFG_ROLE_REMOVED",
@@ -23,6 +28,8 @@ export const enum EAdminFeatureReturnKind {
 type TAdminFeatureReturnValueByKind = {
     [EAdminFeatureReturnKind.LFG_CHANNEL_HELP]: { readonly channel: string | null | undefined };
     [EAdminFeatureReturnKind.LFG_CHANNEL_SET]: { readonly channel: string };
+    [EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP]: { readonly minutes: number | null | undefined };
+    [EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET]: { readonly minutes: number };
     [EAdminFeatureReturnKind.LFG_ROLE_HELP]: { readonly roles: readonly string[] };
     [EAdminFeatureReturnKind.LFG_ROLE_ADDED]: { readonly role: string };
     [EAdminFeatureReturnKind.LFG_ROLE_REMOVED]: { readonly role: string };
@@ -36,6 +43,9 @@ type TAdminFeatureReturnValueByKind = {
         | EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
         | EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL
         | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS
+        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED
+        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
+        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
         | EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE
         | EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS
         | EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED
@@ -60,6 +70,13 @@ export type TAdminFeatureReturnTypes = {
         | EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
         | EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL
         | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS
+    >;
+    lfgRolePingCooldown: TAdminFeatureReturnOfKind<
+        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP
+        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET
+        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED
+        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
+        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
     >;
     lfgRole: TAdminFeatureReturnOfKind<
         | EAdminFeatureReturnKind.LFG_ROLE_HELP

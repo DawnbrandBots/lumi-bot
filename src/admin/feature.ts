@@ -17,6 +17,7 @@ type AdminFeatureCtorArg = {
 
 export type AdminActionOptions = typeof ADMIN_ACTION_SET | typeof ADMIN_ACTION_CLEAR;
 export type AdminLfgChannelAction = AdminActionOptions;
+export type AdminLfgRolePingCooldownAction = AdminActionOptions;
 export type AdminLfgRoleAction = typeof ADMIN_ACTION_ADD | typeof ADMIN_ACTION_REMOVE;
 
 export class AdminFeature {
@@ -36,6 +37,7 @@ export class AdminFeature {
             id: randomUUID(),
             guild,
             lfgChannel: null,
+            lfgRolePingCooldownMinutes: null,
         });
         this.em.persist(newConfig);
         await this.em.flush();
@@ -96,6 +98,42 @@ export class AdminFeature {
         }
 
         return { kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS };
+    }
+
+    public async lfgRolePingCooldown(
+        guild: string,
+        action: AdminLfgRolePingCooldownAction | null,
+        minutes: number | null,
+    ): Promise<TAdminFeatureReturnTypes["lfgRolePingCooldown"]> {
+        const config = await this.getOrCreateConfig(guild);
+
+        if (!action && minutes === null) {
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+                value: { minutes: config.lfgRolePingCooldownMinutes },
+            };
+        }
+
+        if (action === ADMIN_ACTION_SET && minutes !== null && minutes >= 0) {
+            config.lfgRolePingCooldownMinutes = minutes;
+            await this.em.flush();
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+                value: { minutes },
+            };
+        }
+
+        if (action === ADMIN_ACTION_CLEAR && minutes === null) {
+            config.lfgRolePingCooldownMinutes = null;
+            await this.em.flush();
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED };
+        }
+
+        if (action === ADMIN_ACTION_SET && minutes === null) {
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES };
+        }
+
+        return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS };
     }
 
     public async getLfgRoleConfig(guild: string, role: string): Promise<TAdminFeatureReturnTypes["getLfgRoleConfig"]> {

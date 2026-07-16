@@ -17,7 +17,11 @@ const ROOM: IRoom = {
     playerIds: ["player-1", "owner", "player-2"],
 };
 const PUBLIC_CHANNEL_ID = "public-channel";
-const GUILD_CONFIG = { guild: "guild-1", lfgChannel: PUBLIC_CHANNEL_ID } as GuildConfig;
+const GUILD_CONFIG = {
+    guild: "guild-1",
+    lfgChannel: PUBLIC_CHANNEL_ID,
+    lfgRolePingCooldownMinutes: 45,
+} as GuildConfig;
 
 function roomDescription(room: IRoom) {
     return `\`${room.code}\`: ${userMention(room.ownerId)} (${LfgConstants.LFG_ROOM_OWNER_LABEL}), ${userMention("player-1")}, ${userMention("player-2")}`;
@@ -26,13 +30,26 @@ function roomDescription(room: IRoom) {
 function statusDescription({
     roomsDescription,
     lfgChannel,
+    lfgRolePingCooldownMinutes = null,
 }: {
     readonly roomsDescription: string;
     readonly lfgChannel: string;
+    readonly lfgRolePingCooldownMinutes?: number | null;
 }) {
-    return ["### Rooms", roomsDescription, "### Server config", unorderedList([`LFG channel: ${lfgChannel}`])].join(
-        "\n\n",
-    );
+    return [
+        "### Rooms",
+        roomsDescription,
+        "### Server config",
+        unorderedList([
+            `LFG channel: ${lfgChannel}`,
+            `LFG roles: ${LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION}`,
+            `LFG roles ping cooldown: ${
+                lfgRolePingCooldownMinutes != null
+                    ? `${lfgRolePingCooldownMinutes} minutes`
+                    : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION
+            }`,
+        ]),
+    ].join("\n");
 }
 
 function getInteraction(channelId: string) {
@@ -360,6 +377,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                     description: statusDescription({
                         roomsDescription: `- ${roomDescription(ROOM)}`,
                         lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
+                        lfgRolePingCooldownMinutes: 45,
                     }),
                 },
             ],

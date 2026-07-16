@@ -18,8 +18,10 @@ import {
     ADMIN_CHANNEL_OPTION_NAME,
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     ADMIN_LFG_GROUP_NAME,
+    ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME,
     ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
+    ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
 } from "./constants.ts";
 import type { AdminFeature } from "./feature.ts";
@@ -85,6 +87,8 @@ export class AdminCommand implements ICommand {
                 return this.runLfgChannel(interaction, guildId);
             case ADMIN_LFG_ROLE_SUBCOMMAND_NAME:
                 return this.runLfgRole(interaction, guildId);
+            case ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME:
+                return this.runLfgRolePingCooldown(interaction, guildId);
             case ADMIN_LFG_SHOW_SUBCOMMAND_NAME:
                 return mapAdminFeatureReturnToMessage(await this.adminFeature.getGuildConfig(guildId));
             default:
@@ -132,6 +136,23 @@ export class AdminCommand implements ICommand {
         }
 
         const result = await this.adminFeature.lfgRole(guildId, action, role?.id ?? null);
+        return mapAdminFeatureReturnToMessage(result);
+    }
+
+    private async runLfgRolePingCooldown(interaction: ChatInputCommandInteraction<CacheType>, guildId: string) {
+        const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
+        const minutes = interaction.options.getInteger(ADMIN_MINUTES_OPTION_NAME, false);
+
+        if (action !== null && action !== ADMIN_ACTION_SET && action !== ADMIN_ACTION_CLEAR) {
+            return createErrorMessage<InteractionReplyOptions>({
+                embed: {
+                    description: `Action must be \`${ADMIN_ACTION_SET}\` or \`${ADMIN_ACTION_CLEAR}\`.`,
+                },
+                flags: MessageFlags.Ephemeral,
+            });
+        }
+
+        const result = await this.adminFeature.lfgRolePingCooldown(guildId, action, minutes);
         return mapAdminFeatureReturnToMessage(result);
     }
 
