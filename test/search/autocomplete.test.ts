@@ -8,10 +8,10 @@ import { getSearchCommand } from "../../src/search/command.ts";
 import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import type { ISearchEngine, TSearchItem } from "../../src/search/types.ts";
-import { initTestOrm } from "../orm.ts";
+import { initTestGameOrm } from "../orm.ts";
 import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES } from "./constants.ts";
 
-let orm: Awaited<ReturnType<typeof initTestOrm>>;
+let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
 let searchEngine: ISearchEngine<TSearchItem>;
 let searchCommand: ReturnType<typeof getSearchCommand>;
@@ -25,7 +25,7 @@ function getMockAutocompleteInteraction(input: string, optionName: string) {
 }
 
 beforeAll(async () => {
-    orm = await initTestOrm();
+    orm = await initTestGameOrm();
     em = orm.em.fork();
     searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
     searchCommand = getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS });

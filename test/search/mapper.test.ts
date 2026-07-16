@@ -23,15 +23,15 @@ import searchFeature from "../../src/search/feature.ts";
 import mapSearchFeatureReturnToMessages from "../../src/search/mapper.ts";
 import type { ISearchEngine, TSearchItem } from "../../src/search/types.ts";
 import { ESearchFeatureReturnKind } from "../../src/search/types.ts";
-import { initTestOrm } from "../orm.ts";
+import { initTestGameOrm } from "../orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
-let orm: Awaited<ReturnType<typeof initTestOrm>>;
+let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
 let searchEngine: ISearchEngine<TSearchItem>;
 
 beforeAll(async () => {
-    orm = await initTestOrm();
+    orm = await initTestGameOrm();
     em = orm.em.fork();
     searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
 });

@@ -16,21 +16,34 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ## Getting started
 
+### Running locally with Node
+
 1. Install Node.js 24+ LTS with Yarn v1. [Fast Node Manager](https://github.com/Schniz/fnm) is a good option for managing multiple installations.
-1. `yarn`
-1. Create a `.env` file with the Discord token for your bot, e.g.
-    ```env
-    DEBUG=* # optional
-    DISCORD_TOKEN=HERE.PLS
-    ```
-1. `yarn build`
-1. `yarn register user-install`
-1. `yarn db:recreate`
-1. `yarn start`
+1. `cp .env.template .env`, fill in secrets and change default values at your convenience.
+1. ```
+   yarn
+   yarn build
+   yarn register user-install
+   yarn db:recreate
+   yarn db:migrate
+   yarn start
+   ```
+
+### Running locally with Docker Compose
+
+1. `cp .env.docker.template .env.docker`, fill in secrets and change default values at your convenience.
+1. `docker compose --env-file .env.docker up --build`
+
+## Running tests
+
+1. `cp .env.test.template .env.test` and change default values at your convenience.
+1. `yarn test`
 
 ## Inner workings
 
-Game data is stored as JSON files under `/data/`. `yarn db:recreate` creates an sqlite3 database using these JSON files as source. The server reads the data at runtime using [MikroORM](https://mikro-orm.io/).
+Game data is stored as JSON files under `/data/`. `yarn db:recreate` recreates an [sqlite](https://sqlite.org) database using these JSON files as source.
+Bot features data is stored in a separate sqlite database. `yarn db:migrate` to create it.
+The server connects to the main database and attaches the game data database in a single [MikroORM](https://mikro-orm.io/) connection.
 
 Searchable game data is loaded into a [fuse.js](https://www.fusejs.io/) instance at startup, which is then used as source for the `/search` feature.
 
