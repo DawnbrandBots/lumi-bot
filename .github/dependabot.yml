@@ -19,6 +19,11 @@ updates:
     allow:
       - dependency-type: all
     groups:
-      all:
+      # Minor and patch updates are grouped together,
+      # each major update gets its own PR.
+      minor-and-patch:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
