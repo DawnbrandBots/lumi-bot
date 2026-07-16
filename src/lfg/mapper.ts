@@ -37,11 +37,19 @@ function formatStatus(rooms: readonly IRoom[], guildConfig: GuildConfig | null) 
                   .map((lfgRole) => roleMention(lfgRole.role))
                   .join(", ")
             : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    const lfgRolePingCooldown =
+        guildConfig?.lfgRolePingCooldownMinutes != null
+            ? `${guildConfig.lfgRolePingCooldownMinutes} minutes`
+            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
     return [
         heading("Rooms", 3),
         formatList(rooms),
         heading("Server config", 3),
-        unorderedList([`LFG channel: ${lfgChannel}`, `LFG roles: ${lfgRoles}`]),
+        unorderedList([
+            `LFG channel: ${lfgChannel}`,
+            `LFG roles: ${lfgRoles}`,
+            `LFG roles ping cooldown: ${lfgRolePingCooldown}`,
+        ]),
     ].join("\n");
 }
 
