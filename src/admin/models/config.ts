@@ -8,6 +8,7 @@ export const GuildConfigSchema = defineEntity({
         guild: p.string().unique(),
         lfgChannel: p.string().nullable().default(null),
         lfgRoles: () => p.oneToMany(GuildConfigLfgRole).mappedBy("guildConfig"),
+        lfgRolePingCooldownMinutes: p.integer().nullable(),
     },
 });
 

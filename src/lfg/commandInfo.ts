@@ -22,6 +22,7 @@ import {
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
     LFG_ROLE_OPTION_NAME,
+    LFG_SHOW_RESPONSE_OPTION_NAME,
     LFG_STATUS_SUBCOMMAND_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
@@ -80,7 +81,14 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
                 subcommand.setName(LFG_DISBAND_SUBCOMMAND_NAME).setDescription(LFG_DISBAND_SUBCOMMAND_DESCRIPTION),
             )
             .addSubcommand((subcommand) =>
-                subcommand.setName(LFG_STATUS_SUBCOMMAND_NAME).setDescription(LFG_STATUS_SUBCOMMAND_DESCRIPTION),
+                subcommand
+                    .setName(LFG_STATUS_SUBCOMMAND_NAME)
+                    .setDescription(LFG_STATUS_SUBCOMMAND_DESCRIPTION)
+                    .addBooleanOption((option) =>
+                        option
+                            .setName(LFG_SHOW_RESPONSE_OPTION_NAME)
+                            .setDescription("Show response to everyone. false by default."),
+                    ),
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_HELP_SUBCOMMAND_NAME).setDescription(LFG_HELP_SUBCOMMAND_DESCRIPTION),
@@ -95,7 +103,7 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
             );
     },
     name: LFG_COMMAND_NAME,
-    description: "Create and manage looking-for-game rooms.",
+    description: "Create and join looking-for-game rooms for playing with other server members.",
     contexts: [InteractionContextType.Guild],
     integrationTypes: [ApplicationIntegrationType.GuildInstall],
 });

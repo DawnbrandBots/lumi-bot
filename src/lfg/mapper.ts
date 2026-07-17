@@ -8,6 +8,7 @@ import {
     userMention,
     type InteractionReplyOptions,
 } from "discord.js";
+import type { PickDeep } from "type-fest";
 import type { GuildConfig } from "../admin/models/config.ts";
 import {
     createErrorMessage,
@@ -17,6 +18,7 @@ import {
 } from "../bot/message.ts";
 import { EMessageKind } from "../bot/types.ts";
 import * as LfgConstants from "./constants.ts";
+import { LFG_SHOW_RESPONSE_OPTION_NAME } from "./constants.ts";
 import type { TLfgFeatureReturnOfKind } from "./types.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
 
@@ -27,21 +29,29 @@ function formatList(rooms: readonly IRoom[]) {
     return unorderedList(rooms.map(formatRoom));
 }
 
-function formatStatus(rooms: readonly IRoom[], guildConfig: GuildConfig | null) {
+function formatStatus(rooms: readonly IRoom[], guildConfig?: GuildConfig | null) {
     const lfgChannel = guildConfig?.lfgChannel
         ? channelMention(guildConfig.lfgChannel)
         : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
     const lfgRoles =
         guildConfig?.lfgRoles && guildConfig.lfgRoles.length
             ? Array.from(guildConfig.lfgRoles)
-                .map((lfgRole) => roleMention(lfgRole.role))
-                .join(", ")
+                  .map((lfgRole) => roleMention(lfgRole.role))
+                  .join(", ")
+            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    const lfgRolePingCooldown =
+        guildConfig?.lfgRolePingCooldownMinutes != null
+            ? `${guildConfig.lfgRolePingCooldownMinutes} minutes`
             : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
     return [
         heading("Rooms", 3),
         formatList(rooms),
         heading("Server config", 3),
-        unorderedList([`LFG channel: ${lfgChannel}`, `LFG roles: ${lfgRoles}`]),
+        unorderedList([
+            `LFG channel: ${lfgChannel}`,
+            `LFG roles: ${lfgRoles}`,
+            `LFG roles ping cooldown: ${lfgRolePingCooldown}`,
+        ]),
     ].join("\n");
 }
 
@@ -111,12 +121,19 @@ function formatPlayerNotInRoom(targetId: string) {
     return `${userMention(targetId)} is not in your room.`;
 }
 
-export function mapLfgFeatureReturnToMessageBase(result: TLfgFeatureReturn, guildConfig: GuildConfig | null = null) {
+export function mapLfgFeatureReturnToMessageBase({
+    result,
+    guildConfig,
+}: {
+    result: TLfgFeatureReturn;
+    guildConfig?: GuildConfig | null;
+}) {
     switch (result.kind) {
-        case ELfgFeatureReturnKind.ROOMS_LISTED:
+        case ELfgFeatureReturnKind.ROOMS_LISTED: {
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: { description: formatStatus(result.value.rooms, guildConfig) },
             });
+        }
         case ELfgFeatureReturnKind.HELP:
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },
@@ -234,12 +251,25 @@ export function mapLfgFeatureReturnToMessageBase(result: TLfgFeatureReturn, guil
     }
 }
 
-export function mapLfgMessageBaseToReply(
-    messageBase: ReturnType<typeof mapLfgFeatureReturnToMessageBase>,
-    interaction: ChatInputCommandInteraction,
-    guildConfig: GuildConfig | null,
-) {
-    if (messageBase.kind === EMessageKind.POSITIVE && interaction.channelId === guildConfig?.lfgChannel) {
+export function mapLfgMessageBaseToReply({
+    messageBase,
+    interaction,
+    guildConfig,
+}: {
+    messageBase: ReturnType<typeof mapLfgFeatureReturnToMessageBase>;
+    // Using Pick before of PickDeep to avoid "type too complex" error
+    interaction: PickDeep<
+        Pick<ChatInputCommandInteraction, "options" | "channelId">,
+        "options.getBoolean" | "channelId"
+    >;
+    guildConfig: GuildConfig | null;
+}) {
+    const displayToEveryone = interaction.options.getBoolean(LFG_SHOW_RESPONSE_OPTION_NAME, false);
+
+    if (
+        displayToEveryone ||
+        (messageBase.kind === EMessageKind.POSITIVE && interaction.channelId === guildConfig?.lfgChannel)
+    ) {
         return messageBase;
     }
     return { ...messageBase, flags: [MessageFlags.Ephemeral] } as const;

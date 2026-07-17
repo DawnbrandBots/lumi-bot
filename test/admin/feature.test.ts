@@ -108,6 +108,62 @@ describe(AdminFeature.name, () => {
         expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS });
     });
 
+    test("sets role ping cooldown", async () => {
+        const result = await feature.lfgRolePingCooldown(GUILD_ID, "set", 45);
+
+        expect(result).toEqual({
+            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+            value: { minutes: 45 },
+        });
+        expect((await getStoredConfig())?.lfgRolePingCooldownMinutes).toBe(45);
+    });
+
+    test("clears role ping cooldown", async () => {
+        await feature.lfgRolePingCooldown(GUILD_ID, "set", 45);
+
+        const result = await feature.lfgRolePingCooldown(GUILD_ID, "clear", null);
+
+        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED });
+        expect((await getStoredConfig())?.lfgRolePingCooldownMinutes).toBeNull();
+    });
+
+    test("role ping cooldown command without options explains the setting and shows current value", async () => {
+        const result = await feature.lfgRolePingCooldown(GUILD_ID, null, null);
+
+        expect(result).toEqual({
+            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+            value: { minutes: null },
+        });
+    });
+
+    test("rejects set role ping cooldown without minutes", async () => {
+        const result = await feature.lfgRolePingCooldown(GUILD_ID, "set", null);
+
+        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES });
+    });
+
+    test("rejects clear role ping cooldown with minutes", async () => {
+        const result = await feature.lfgRolePingCooldown(GUILD_ID, "clear", 45);
+
+        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
+    });
+
+    test("rejects role ping cooldown minutes without set action", async () => {
+        const result = await feature.lfgRolePingCooldown(GUILD_ID, null, 45);
+
+        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
+    });
+
+    test("accepts zero role ping cooldown minutes as no cooldown", async () => {
+        const result = await feature.lfgRolePingCooldown(GUILD_ID, "set", 0);
+
+        expect(result).toEqual({
+            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+            value: { minutes: 0 },
+        });
+        expect((await getStoredConfig())?.lfgRolePingCooldownMinutes).toBe(0);
+    });
+
     test("adds role", async () => {
         const result = await feature.lfgRole(GUILD_ID, "add", ROLE_ID);
 

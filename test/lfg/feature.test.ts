@@ -5,8 +5,7 @@ import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
 import { LfgFeature } from "../../src/lfg/feature.ts";
 import { LfgRoom } from "../../src/lfg/models/room.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IUser } from "../../src/lfg/types.ts";
-import { configsById } from "../mikro-orm.test.config.ts";
-import { initTestLumiOrm } from "../orm.ts";
+import { migrationMikroOrmConfig } from "../mikro-orm.test.config.ts";
 
 const GUILD_ID = "guild-1";
 const OTHER_GUILD_ID = "guild-2";
@@ -42,10 +41,11 @@ async function getRooms(guildId: string): Promise<TestRoom[]> {
     }));
 }
 
-describe(LfgFeature.name, () => {
+// Tests recreate dbs. Simultaneous recreations cause errors. Therefore `concurrent: false`.
+describe(LfgFeature.name, { concurrent: false }, () => {
     beforeEach(async () => {
-        await recreateDb(configsById.lumi);
-        orm = await initTestLumiOrm();
+        // Runtime entities only
+        orm = await recreateDb(migrationMikroOrmConfig);
         feature = new LfgFeature({ em: orm.em.fork() });
     });
 

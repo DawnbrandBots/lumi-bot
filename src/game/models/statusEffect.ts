@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IStatusEffect } from "../types.ts";
+import { ESpellEffectKind, type IStatusEffect } from "../types.ts";
 import { RepeatEffect } from "./repeatEffect.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SpellEffectTargetType } from "./spellEffectTarget.ts";
@@ -9,9 +9,9 @@ export const StatusEffectSchema = defineEntity({
     name: "StatusEffect",
     embeddable: true,
     extends: SpellEffect,
-    discriminatorValue: "STATUS",
+    discriminatorValue: ESpellEffectKind.STATUS,
     properties: {
-        kind: p.enum(["STATUS"]),
+        kind: p.enum([ESpellEffectKind.STATUS]),
         effect: () => p.embedded([RepeatEffect, StatEffect]).object(),
         target: p.type(SpellEffectTargetType),
     },
