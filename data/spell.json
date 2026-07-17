@@ -307,7 +307,8 @@
           "amount": {
             "base": 60,
             "unit": {
-              "kind": "FIXED"
+              "kind": "PERCENT",
+              "stat": "ATK"
             }
           },
           "stat": "ATK"
@@ -1321,9 +1322,6 @@
                 }
               ]
             },
-            "unit": {
-              "kind": "FIXED"
-            },
             "color": "GREEN"
           },
           "times": 2,
@@ -1810,9 +1808,6 @@
                   "base": 40
                 }
               ]
-            },
-            "unit": {
-              "kind": "FIXED"
             },
             "color": "BLUE"
           },
@@ -2513,7 +2508,7 @@
     "disciple": "YUNI",
     "role": "LIGHT",
     "shape": "2X2_SQUARE",
-    "uses": null,
+    "uses": 1,
     "cooldown": 5,
     "effects": [
       {
@@ -3714,5 +3709,272 @@
       }
     ],
     "onlyFor": ["movementType", "ARMORED"]
+  },
+  {
+    "id": "SLOW_SELF_SHIELD_EX",
+    "name": "Slow Self Shield EX",
+    "disciple": "TIKI",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "duration": 3,
+          "amount": {
+            "base": 10,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "COOLDOWN"
+            }
+          },
+          "stat": "COOLDOWN"
+        },
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 25,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "SELF"
+      }
+    ]
+  },
+  {
+    "id": "DARK_THUNDER_WARD_PLUS_STONE",
+    "name": "Dark Thunder Ward + Stone",
+    "disciple": "TIKI",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "countdown": 2,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "BLUE",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "duration": 1,
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_SPELL_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_SPELL_DAMAGE"
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": ["weaponType", "STONE"]
+  },
+  {
+    "id": "CROSS_HEAL_ZONE",
+    "name": "Cross Heal Zone",
+    "disciple": "TIKI",
+    "role": "LIGHT",
+    "shape": "3X3_CROSS",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "TILE",
+        "repeat": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "HEAL",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              }
+            }
+          },
+          "times": 5,
+          "interval": 3
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_DRAGON_FIGHTER_PLUS_INFANTRY",
+    "name": "Dark Dragon Fighter + Infantry",
+    "disciple": "TIKI",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "INFANTRY",
+        "weaponType": "STONE",
+        "hp": {
+          "base": 120
+        },
+        "atk": {
+          "base": 80
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "INFANTRY"]
+  },
+  {
+    "id": "FIRE_EDGE_BREAK_EX",
+    "name": "Fire Edge Break EX",
+    "disciple": "PERENNA",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 25,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "HAMMER_FIRE",
+    "name": "Hammer Fire",
+    "disciple": "PERENNA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "effectiveness": [
+                {
+                  "kind": "ARMORED",
+                  "base": 40
+                }
+              ],
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "RED"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "HOLY_FIRE",
+    "name": "Holy Fire",
+    "disciple": "PERENNA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "effectiveness": [
+            {
+              "kind": "MINION",
+              "base": 90
+            }
+          ],
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_FIRE_WARP_PLUS_FLYING",
+    "name": "Dark Fire Warp + Flying",
+    "disciple": "PERENNA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "FLYING"]
   }
 ]

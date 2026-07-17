@@ -5,6 +5,7 @@ export const LFG_COMMAND_NAME = "lfg";
 export const LFG_CODE_OPTION_NAME = "code";
 export const LFG_PLAYER_OPTION_NAME = "player";
 export const LFG_ROLE_OPTION_NAME = "role";
+export const LFG_SHOW_RESPONSE_OPTION_NAME = "show_response";
 
 export const LFG_CREATE_SUBCOMMAND_NAME = "create";
 export const LFG_JOIN_SUBCOMMAND_NAME = "join";
@@ -49,7 +50,7 @@ export const LFG_ROLE_NOT_CONFIGURED_DESCRIPTION = "This role is not configured 
 export const LFG_ROLE_TO_PING_DELETED_DESCRIPTION = "Role to ping appears to no longer exist.";
 export const LFG_ROLE_PINGED_DESCRIPTION = "LFG role pinged.";
 
-export const LFG_ROLE_PING_COOLDOWN_MS = 30 * 60 * 1000;
+export const LFG_ROLE_PING_MINIMUM_COOLDOWN_MINUTES = 0;
 
 export const LFG_HELP_DESCRIPTION = `${formatCommand([LFG_COMMAND_NAME])} groups subcommands for managing ${bold("rooms")} for Friend Battles.
 
@@ -65,7 +66,7 @@ Want to play? First check ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMA
 Use ${formatCommand([LFG_COMMAND_NAME, LFG_JOIN_SUBCOMMAND_NAME])} to join a room, or ${formatCommand([LFG_COMMAND_NAME, LFG_CREATE_SUBCOMMAND_NAME])} to create one as the owner.
 
 Still missing players? Use ${formatCommand([LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME])} to ping users who have a role dedicated to LFG.
-Each role may be pinged once every ${LFG_ROLE_PING_COOLDOWN_MS / (1000 * 60) /* TODO: formatting? */} minutes per server.
+${formatCommand([LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME])} enters a cooldown period for the pinged role after use.
 
 When you are done playing, use ${formatCommand([LFG_COMMAND_NAME, LFG_LEAVE_SUBCOMMAND_NAME])} so other players can see that you are not playing anymore.
 
@@ -87,6 +88,7 @@ ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])} also displays t
 ${unorderedList([
     `${bold("LFG channel")}: channel to which will be sent a public copy of all responses returned by ${formatCommand([LFG_COMMAND_NAME])} subcommands following successful execution.`,
     `${bold("LFG roles")}: roles which may be pinged by ${formatCommand([LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME])}.`,
+    `${bold("LFG roles ping cooldown")}: time between pings for each role.`,
 ])}
 
 Have fun!!`;

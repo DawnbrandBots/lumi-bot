@@ -30,7 +30,6 @@ import {
     LFG_PLAYER_OPTION_NAME,
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
     LFG_ROLE_OPTION_NAME,
-    LFG_ROLE_PING_COOLDOWN_MS,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
@@ -147,13 +146,15 @@ export function getLfgCommand({
 
         const now = new Date();
         const lastPingedAt = roleConfigResult.value.lastPingedAt;
-        if (lastPingedAt && now.getTime() - new Date(lastPingedAt).getTime() < LFG_ROLE_PING_COOLDOWN_MS) {
+        const cooldownMinutes = configResult.value?.lfgRolePingCooldownMinutes ?? 0;
+        const cooldownMs = cooldownMinutes * 60 * 1000;
+        if (lastPingedAt && now.getTime() - new Date(lastPingedAt).getTime() < cooldownMs) {
             return interaction.reply(
                 createNegativeMessage<InteractionReplyOptions>({
                     embed: {
                         // TODO: consider date library or Intl.Temporal (but requires node 26)
                         description: `${roleMention(role.id)} can be pinged again on ${time(
-                            new Date(new Date(lastPingedAt).getTime() + LFG_ROLE_PING_COOLDOWN_MS),
+                            new Date(new Date(lastPingedAt).getTime() + cooldownMs),
                         )}.`,
                     },
                     flags: [MessageFlags.Ephemeral],
@@ -205,7 +206,7 @@ export function getLfgCommand({
         run: async function (interaction) {
             const guildId = interaction.guildId;
             if (!guildId) {
-                return interaction.reply(
+                return void interaction.reply(
                     createErrorMessage<InteractionReplyOptions>({
                         embed: {
                             title: "LFG unavailable",
@@ -221,16 +222,20 @@ export function getLfgCommand({
             // it just answers to Discord directly
             // Still, if feels weird having this check here, apart from the others.
             if (subcommand === LFG_PING_SUBCOMMAND_NAME) {
-                return runPing(interaction, guildId);
+                return void (await runPing(interaction, guildId));
             }
 
             const result = await runSubcommand(interaction, guildId, subcommand);
             const configResult = await adminFeature.getGuildConfig(guildId);
 
-            const messageBase = mapLfgFeatureReturnToMessageBase(result, interaction.user.id, configResult.value);
-            const message = mapLfgMessageBaseToReply(messageBase, interaction, configResult.value);
+            const messageBase = mapLfgFeatureReturnToMessageBase({
+                result,
+                callerId: interaction.user.id,
+                guildConfig: configResult.value,
+            });
+            const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig: configResult.value });
 
-            const reply = await interaction.reply(message);
+            await interaction.reply(message);
             if (
                 messageBase.kind === EMessageKind.POSITIVE &&
                 configResult.value?.lfgChannel &&
@@ -238,8 +243,6 @@ export function getLfgCommand({
             ) {
                 await sendPublicCopy(interaction, configResult.value.lfgChannel, messageBase);
             }
-
-            return reply;
         },
     });
 }

@@ -95,6 +95,11 @@
     "effect": "MAX_HP_BOOST_5"
   },
   {
+    "id": "TRIFLING_SHADOW",
+    "name": "Trifling Shadow",
+    "effect": "WEAPON_DAMAGE_WHEN_HP_LE_50_120"
+  },
+  {
     "id": "DRAGON_S_ROAR",
     "name": "Dragon's Roar",
     "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15"
@@ -158,6 +163,11 @@
     "id": "DRAGONSCALE",
     "name": "Dragonscale",
     "effect": "WEAPON_DAMAGE_VS_ARMORED_20"
+  },
+  {
+    "id": "NIGHTMARE_S_END",
+    "name": "Nightmare's End",
+    "effect": "WEAPON_DAMAGE_VS_STONE_40"
   },
   {
     "id": "RIDER_BANE_1",
