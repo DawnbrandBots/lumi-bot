@@ -29,7 +29,6 @@ export const LFG_MAX_ROOM_CODE_LENGTH = 8;
 export const LFG_MAX_ROOM_PLAYERS = 3;
 
 export const LFG_EMPTY_ROOM_LIST_DESCRIPTION = "No active rooms. :(";
-export const LFG_ROOM_OWNER_LABEL = "owner";
 
 export const LFG_INVALID_ROOM_CODE_DESCRIPTION = `Room codes must be between ${LFG_MIN_ROOM_CODE_LENGTH} and ${LFG_MAX_ROOM_CODE_LENGTH} characters.`;
 export const LFG_ALREADY_IN_A_ROOM_DESCRIPTION = "Leave your current room before creating a new one.";

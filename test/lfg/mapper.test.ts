@@ -12,7 +12,7 @@ const ROOM: IRoom = {
 };
 
 function roomDescription(room: IRoom) {
-    return `\`${room.code}\`: ${userMention(room.ownerId)} (${LfgConstants.LFG_ROOM_OWNER_LABEL}), ${userMention("player-1")}, ${userMention("player-2")}`;
+    return `\`${room.code}\`: ${userMention(room.ownerId)} (owner), ${userMention("player-1")}, ${userMention("player-2")}`;
 }
 
 type Input = Parameters<typeof mapLfgFeatureReturnToMessage>[0];

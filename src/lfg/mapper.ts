@@ -26,10 +26,7 @@ function formatRoom(room: IRoom) {
 function formatRoomPlayers(room: IRoom) {
     return room.playerIds
         .toSorted((a, b) => (a === room.ownerId ? -1 : b === room.ownerId ? 1 : 0))
-        .map(
-            (playerId) =>
-                `${userMention(playerId)}${playerId === room.ownerId ? ` (${LfgConstants.LFG_ROOM_OWNER_LABEL})` : ""}`,
-        )
+        .map((playerId) => `${userMention(playerId)}${playerId === room.ownerId ? ` (owner)` : ""}`)
         .join(", ");
 }
 
