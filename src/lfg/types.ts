@@ -41,12 +41,12 @@ export const enum ELfgPlayerRemovalKind {
 
 export type TLfgPlayerRemovalResult =
     | {
-        readonly kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY | ELfgPlayerRemovalKind.ROOM_DELETED;
-    }
+          readonly kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY | ELfgPlayerRemovalKind.ROOM_DELETED;
+      }
     | {
-        readonly kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED;
-        readonly newOwnerId: string;
-    };
+          readonly kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED;
+          readonly newOwnerId: string;
+      };
 
 type TLfgFeatureReturnValueByKind = {
     [ELfgFeatureReturnKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
@@ -77,23 +77,25 @@ type TLfgFeatureReturnValueByKind = {
     [ELfgFeatureReturnKind.ROOM_LEFT]: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
     [ELfgFeatureReturnKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
 } & {
-    [_ in
-    | ELfgFeatureReturnKind.HELP
-    | ELfgFeatureReturnKind.INVALID_ROOM_CODE
-    | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
-    | ELfgFeatureReturnKind.NOT_ROOM_OWNER
-    | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
-    | ELfgFeatureReturnKind.NOT_IN_A_ROOM
-    | ELfgFeatureReturnKind.INVALID_SUBCOMMAND]: never;
+    [
+        _ in
+            | ELfgFeatureReturnKind.HELP
+            | ELfgFeatureReturnKind.INVALID_ROOM_CODE
+            | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
+            | ELfgFeatureReturnKind.NOT_ROOM_OWNER
+            | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
+            | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+            | ELfgFeatureReturnKind.INVALID_SUBCOMMAND
+    ]: never;
 };
 
 export type TLfgFeatureReturnOfKind<Kind extends ELfgFeatureReturnKind> =
     // https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
     Kind extends ELfgFeatureReturnKind
-    ? TLfgFeatureReturnValueByKind[Kind] extends never
-    ? { readonly kind: Kind }
-    : { readonly kind: Kind; readonly value: TLfgFeatureReturnValueByKind[Kind] }
-    : never;
+        ? TLfgFeatureReturnValueByKind[Kind] extends never
+            ? { readonly kind: Kind }
+            : { readonly kind: Kind; readonly value: TLfgFeatureReturnValueByKind[Kind] }
+        : never;
 
 export type TLfgFeatureReturn = {
     [Kind in ELfgFeatureReturnKind]: TLfgFeatureReturnOfKind<Kind>;
@@ -150,7 +152,6 @@ export type TLfgFeatureReturnTypes = {
 
 export interface ILfgFeature {
     status(guildId: string): MaybePromise<TLfgFeatureReturnTypes["status"]>;
-    help(): MaybePromise<TLfgFeatureReturnTypes["help"]>;
     create(guildId: string, owner: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["create"]>;
     move(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["move"]>;
     transfer(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;

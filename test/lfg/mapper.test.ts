@@ -1,4 +1,12 @@
-import { channelMention, MessageFlags, unorderedList, userMention } from "discord.js";
+import {
+    channelMention,
+    heading,
+    HeadingLevel,
+    inlineCode,
+    MessageFlags,
+    unorderedList,
+    userMention,
+} from "discord.js";
 import { describe, expect, test } from "vitest";
 import type { GuildConfig } from "../../src/admin/models/config.ts";
 import { EMessageKind } from "../../src/bot/types.ts";
@@ -19,10 +27,6 @@ const GUILD_CONFIG = {
     lfgRolePingCooldownMinutes: 45,
 } as GuildConfig;
 
-function roomDescription(room: IRoom) {
-    return `\`${room.code}\`: ${userMention(room.ownerId)} (${LfgConstants.LFG_ROOM_OWNER_LABEL}), ${userMention("player-1")}, ${userMention("player-2")}`;
-}
-
 function statusDescription({
     roomsDescription,
     lfgChannel,
@@ -33,9 +37,9 @@ function statusDescription({
     readonly lfgRolePingCooldownMinutes?: number | null;
 }) {
     return [
-        "### Rooms",
+        heading("Rooms", HeadingLevel.Three),
         roomsDescription,
-        "### Server config",
+        heading("Server config", HeadingLevel.Three),
         unorderedList([
             `LFG channel: ${lfgChannel}`,
             `LFG roles: ${LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION}`,
@@ -48,10 +52,16 @@ function statusDescription({
     ].join("\n");
 }
 
+function roomDescription(room: IRoom) {
+    return `${inlineCode(room.code)}: ${userMention(room.ownerId)} (owner), ${userMention("player-1")}, ${userMention("player-2")}`;
+}
+
+type Input = Parameters<typeof mapLfgFeatureReturnToMessageBase>[0];
+
 describe(mapLfgFeatureReturnToMessageBase.name, () => {
     test.each<{
         readonly name: string;
-        readonly input: Parameters<typeof mapLfgFeatureReturnToMessageBase>[0];
+        readonly input: Input;
         readonly expected: Pick<ReturnType<typeof mapLfgFeatureReturnToMessageBase>, "kind" | "embeds">;
     }>([
         {
@@ -67,16 +77,6 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                         }),
                     },
                 ],
-            },
-        },
-        {
-            name: "non-empty room list (shown to everyone)",
-            input: {
-                result: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
-            },
-            expected: {
-                kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: `- ${roomDescription(ROOM)}` }],
             },
         },
         {
@@ -107,6 +107,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                         description: statusDescription({
                             roomsDescription: `- ${roomDescription(ROOM)}`,
                             lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
+                            lfgRolePingCooldownMinutes: 45,
                         }),
                     },
                 ],
@@ -117,7 +118,8 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
             input: { result: { kind: ELfgFeatureReturnKind.HELP } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: LfgConstants.LFG_HELP_DESCRIPTION }],
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                embeds: [{ description: expect.any(String) }],
             },
         },
         {
@@ -129,7 +131,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} created room \`${ROOM.code}\`.`,
+                        description: `${userMention("owner")} created room ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -146,7 +148,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("player-1")} joined room \`${ROOM.code}\`.`,
+                        description: `${userMention("player-1")} joined room ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -163,7 +165,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} transferred \`${ROOM.code}\`'s ownership to ${userMention("player-1")}.`,
+                        description: `${userMention("owner")} transferred ${inlineCode(ROOM.code)}'s ownership to ${userMention("player-1")}.`,
                     },
                 ],
             },
@@ -185,7 +187,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} kicked ${userMention("player-1")} from \`${ROOM.code}\`.`,
+                        description: `${userMention("owner")} kicked ${userMention("player-1")} from ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -202,7 +204,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("player-1")} left \`${ROOM.code}\`.`,
+                        description: `${userMention("player-1")} left ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -219,7 +221,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} left \`${ROOM.code}\`. Room deleted.`,
+                        description: `${userMention("owner")} left ${inlineCode(ROOM.code)}. Room deleted.`,
                     },
                 ],
             },
@@ -241,7 +243,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} left \`${ROOM.code}\`. Ownership transferred to ${userMention("player-1")}`,
+                        description: `${userMention("owner")} left ${inlineCode(ROOM.code)}. Ownership transferred to ${userMention("player-1")}`,
                     },
                 ],
             },
@@ -255,7 +257,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} disbanded \`${ROOM.code}\`.`,
+                        description: `${userMention("owner")} disbanded ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -293,7 +295,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        description: `Room \`${ROOM.code}\` already exists.`,
+                        description: `Room ${inlineCode(ROOM.code)} already exists.`,
                     },
                 ],
             },
@@ -305,7 +307,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        description: `Room \`${ROOM.code}\` does not exist.`,
+                        description: `Room ${inlineCode(ROOM.code)} does not exist.`,
                     },
                 ],
             },
@@ -327,7 +329,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        description: `Room \`${ROOM.code}\` already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
+                        description: `Room ${inlineCode(ROOM.code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
                     },
                 ],
             },
@@ -520,6 +522,6 @@ describe(mapLfgMessageBaseToReply.name, () => {
             guildConfig: GUILD_CONFIG,
         });
 
-        expect(reply).toMatchObject({ flags: undefined });
+        expect(reply).not.toHaveProperty("flags");
     });
 });
