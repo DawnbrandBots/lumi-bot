@@ -1,5 +1,5 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import { MessageFlags, userMention, type InteractionReplyOptions } from "discord.js";
+import { inlineCode, MessageFlags, userMention, type InteractionReplyOptions } from "discord.js";
 import type { PickDeep } from "type-fest";
 import {
     createErrorMessage,
@@ -34,7 +34,7 @@ function formatRoomPlayers(room: IRoom) {
 }
 
 function formatRoomCode(code: string) {
-    return `${LfgConstants.LFG_ROOM_CODE_MARKER}${code}${LfgConstants.LFG_ROOM_CODE_MARKER}`;
+    return inlineCode(code);
 }
 
 function formatRoomCreated(userId: string, room: IRoom) {
