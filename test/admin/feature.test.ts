@@ -1,13 +1,12 @@
-import type { MikroORM } from "@mikro-orm/sqlite";
+import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import recreateDb from "../../scripts/utils/recreateDb.ts";
 import { ADMIN_LFG_ROLE_LIMIT } from "../../src/admin/constants.ts";
 import { AdminFeature } from "../../src/admin/feature.ts";
 import { GuildConfig } from "../../src/admin/models/config.ts";
 import { GuildConfigLfgRole } from "../../src/admin/models/configLfgRole.ts";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
-import getOrm from "../../src/loaders/orm.ts";
-import { configsById } from "../mikro-orm.test.config.ts";
+import { migrationMikroOrmConfig } from "../mikro-orm.test.config.ts";
+import getSameConfigInMemory from "../utils/getSameConfigInMemory.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
@@ -16,7 +15,7 @@ const ROLE_ID = "role-1";
 let orm: MikroORM;
 let feature: AdminFeature;
 
-async function getStoredConfig(): Promise<GuildConfig | null> {
+function getStoredConfig(): Promise<GuildConfig | null> {
     return orm.em.fork().findOne(GuildConfig, { guild: GUILD_ID });
 }
 
@@ -24,10 +23,12 @@ async function getStoredRoles(): Promise<GuildConfigLfgRole[]> {
     return orm.em.fork().find(GuildConfigLfgRole, { guildConfig: { guild: GUILD_ID } }, { orderBy: { role: "asc" } });
 }
 
+const config = getSameConfigInMemory(migrationMikroOrmConfig);
+
 describe(AdminFeature.name, () => {
     beforeEach(async () => {
-        await recreateDb(configsById.lumi);
-        orm = await getOrm(configsById.lumi);
+        orm = await MikroORM.init(config);
+        await orm.schema.create();
         feature = new AdminFeature({ em: orm.em.fork() });
     });
 

@@ -1,13 +1,5 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import {
-    channelMention,
-    heading,
-    MessageFlags,
-    roleMention,
-    unorderedList,
-    userMention,
-    type InteractionReplyOptions,
-} from "discord.js";
+import { channelMention, heading, inlineCode, MessageFlags, roleMention, unorderedList, userMention } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { GuildConfig } from "../admin/models/config.ts";
 import {
@@ -62,15 +54,12 @@ function formatRoom(room: IRoom) {
 function formatRoomPlayers(room: IRoom) {
     return room.playerIds
         .toSorted((a, b) => (a === room.ownerId ? -1 : b === room.ownerId ? 1 : 0))
-        .map(
-            (playerId) =>
-                `${userMention(playerId)}${playerId === room.ownerId ? ` (${LfgConstants.LFG_ROOM_OWNER_LABEL})` : ""}`,
-        )
+        .map((playerId) => `${userMention(playerId)}${playerId === room.ownerId ? ` (owner)` : ""}`)
         .join(", ");
 }
 
 function formatRoomCode(code: string) {
-    return `${LfgConstants.LFG_ROOM_CODE_MARKER}${code}${LfgConstants.LFG_ROOM_CODE_MARKER}`;
+    return inlineCode(code);
 }
 
 function formatRoomCreated(callerId: string, userId: string, room: IRoom) {
@@ -142,22 +131,6 @@ function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_
     }
 }
 
-function formatRoomDisbanded(callerId: string, code: string) {
-    return `${userMention(callerId)} disbanded room ${formatRoomCode(code)}.`;
-}
-
-function formatRoomAlreadyExists(code: string) {
-    return `Room ${formatRoomCode(code)} already exists.`;
-}
-
-function formatRoomNotFound(code: string) {
-    return `Room ${formatRoomCode(code)} does not exist.`;
-}
-
-function formatRoomIsFull(code: string) {
-    return `Room ${formatRoomCode(code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`;
-}
-
 function formatAlreadyInRoom(callerId: string, userId: string) {
     if (callerId === userId) {
         return LfgConstants.LFG_ALREADY_IN_A_ROOM_DESCRIPTION;
@@ -197,16 +170,16 @@ export function mapLfgFeatureReturnToMessageBase({
 }) {
     switch (result.kind) {
         case ELfgFeatureReturnKind.ROOMS_LISTED: {
-            return createNeutralMessage<InteractionReplyOptions>({
+            return createNeutralMessage({
                 embed: { description: formatStatus(result.value.rooms, guildConfig) },
             });
         }
         case ELfgFeatureReturnKind.HELP:
-            return createNeutralMessage<InteractionReplyOptions>({
+            return createNeutralMessage({
                 embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },
             });
         case ELfgFeatureReturnKind.ROOM_CREATED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: formatRoomCreated(callerId, result.value.userId, result.value.room),
                 },
@@ -235,7 +208,7 @@ export function mapLfgFeatureReturnToMessageBase({
                 },
             });
         case ELfgFeatureReturnKind.PLAYER_KICKED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: formatPlayerKicked(
                         callerId,
@@ -247,7 +220,7 @@ export function mapLfgFeatureReturnToMessageBase({
                 },
             });
         case ELfgFeatureReturnKind.ROOM_LEFT:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: formatRoomLeft(result),
                 },
@@ -255,7 +228,7 @@ export function mapLfgFeatureReturnToMessageBase({
         case ELfgFeatureReturnKind.ROOM_DISBANDED:
             return createPositiveMessage({
                 embed: {
-                    description: formatRoomDisbanded(callerId, result.value.code),
+                    description: `${userMention(callerId)} disbanded ${formatRoomCode(result.value.code)}.`,
                 },
             });
         case ELfgFeatureReturnKind.INVALID_ROOM_CODE:
@@ -273,13 +246,13 @@ export function mapLfgFeatureReturnToMessageBase({
         case ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS:
             return createNegativeMessage({
                 embed: {
-                    description: formatRoomAlreadyExists(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} already exists.`,
                 },
             });
         case ELfgFeatureReturnKind.ROOM_NOT_FOUND:
             return createNegativeMessage({
                 embed: {
-                    description: formatRoomNotFound(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} does not exist.`,
                 },
             });
         case ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM:
@@ -291,7 +264,7 @@ export function mapLfgFeatureReturnToMessageBase({
         case ELfgFeatureReturnKind.ROOM_IS_FULL:
             return createNegativeMessage({
                 embed: {
-                    description: formatRoomIsFull(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
                 },
             });
         case ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF:
