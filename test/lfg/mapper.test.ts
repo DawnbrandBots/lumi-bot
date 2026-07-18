@@ -61,7 +61,7 @@ type Input = Parameters<typeof mapLfgFeatureReturnToMessageBase>[0];
 describe(mapLfgFeatureReturnToMessageBase.name, () => {
     test.each<{
         readonly name: string;
-        readonly input: Omit<Input, "callerId">;
+        readonly input: Omit<Input, "callerId"> & { readonly callerId?: Input["callerId"] };
         readonly expected: Pick<ReturnType<typeof mapLfgFeatureReturnToMessageBase>, "kind" | "embeds">;
     }>([
         {
@@ -139,6 +139,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
         {
             name: "room joined with previous room context",
             input: {
+                callerId: "player-1",
                 result: {
                     kind: ELfgFeatureReturnKind.ROOM_JOINED,
                     value: { userId: "player-1", room: ROOM, leftRoomCode: "beta" },
@@ -315,6 +316,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
         {
             name: "already in target room",
             input: {
+                callerId: "player-1",
                 result: {
                     kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM,
                     value: { room: ROOM, userId: "player-1" },
@@ -340,6 +342,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
         {
             name: "cannot transfer to yourself",
             input: {
+                callerId: "user",
                 result: {
                     kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF,
                     value: { code: ROOM.code, userId: "user" },
@@ -419,8 +422,9 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 ],
             },
         },
-    ])("maps $name", ({ input: { result }, expected }) => {
-        const messageBase = mapLfgFeatureReturnToMessageBase({ result, callerId: "admin" });
+    ])("maps $name", ({ input, expected }) => {
+        const { callerId = "owner", ...mapperInput } = input;
+        const messageBase = mapLfgFeatureReturnToMessageBase({ ...mapperInput, callerId });
         expect(messageBase).toMatchObject(expected);
     });
 
