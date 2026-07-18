@@ -1,4 +1,4 @@
-import { bold, unorderedList } from "discord.js";
+import { bold, inlineCode, unorderedList } from "discord.js";
 import formatCommand from "./utils/formatCommand.ts";
 
 export const LFG_COMMAND_NAME = "lfg";
@@ -30,14 +30,12 @@ export const LFG_MAX_ROOM_PLAYERS = 3;
 
 export const LFG_EMPTY_ROOM_LIST_DESCRIPTION = "No active rooms. :(";
 export const LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION = "Not configured";
-export const LFG_ROOM_OWNER_LABEL = "owner";
-export const LFG_ROOM_CODE_MARKER = "`";
 
 export const LFG_INVALID_ROOM_CODE_DESCRIPTION = `Room codes must be between ${LFG_MIN_ROOM_CODE_LENGTH} and ${LFG_MAX_ROOM_CODE_LENGTH} characters.`;
 export const LFG_ALREADY_IN_A_ROOM_DESCRIPTION = "Leave your current room before creating a new one.";
 export const LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION = "Choose another player in your room.";
 export const LFG_NOT_ROOM_OWNER_DESCRIPTION = "Only the room owner can do that.";
-export const LFG_CANNOT_KICK_YOURSELF_DESCRIPTION = `Use ${LFG_ROOM_CODE_MARKER}/${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}${LFG_ROOM_CODE_MARKER} to leave your room.`;
+export const LFG_CANNOT_KICK_YOURSELF_DESCRIPTION = `Use ${inlineCode(`${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}`)} to leave your room.`;
 export const LFG_NOT_IN_A_ROOM_DESCRIPTION = "Join or create a room first.";
 export const LFG_INVALID_SUBCOMMAND_DESCRIPTION = "Please specify a valid subcommand.";
 

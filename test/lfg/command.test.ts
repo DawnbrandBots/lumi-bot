@@ -36,6 +36,7 @@ function getInteractionFixture(channelId: string, send = vi.fn().mockResolvedVal
         options: {
             getSubcommand: vi.fn().mockReturnValue(LFG_CREATE_SUBCOMMAND_NAME),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
+            getBoolean: vi.fn().mockReturnValue(false),
         },
         reply,
     } as unknown as ChatInputCommandInteraction;
