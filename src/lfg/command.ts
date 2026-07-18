@@ -23,7 +23,7 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
-        subcommand: string | null,
+        subcommand: string,
     ) {
         switch (subcommand) {
             case LFG_CREATE_SUBCOMMAND_NAME:
@@ -79,7 +79,7 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
                 ));
             }
 
-            const subcommand = interaction.options.getSubcommand(false);
+            const subcommand = interaction.options.getSubcommand(true);
             const result = await runSubcommand(interaction, guildId, subcommand);
             const response = mapLfgFeatureReturnToMessage({ result, interaction });
             return void (await interaction.reply(response));
