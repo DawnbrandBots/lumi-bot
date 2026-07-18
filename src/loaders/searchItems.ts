@@ -1,9 +1,11 @@
 import type { SqlEntityManager } from "@mikro-orm/sqlite";
 import { SPELL_NAME_SUFFIXES } from "../game/constants.ts";
 import { Disciple } from "../game/models/disciple.ts";
+import { Music } from "../game/models/music.ts";
 import { Spell } from "../game/models/spell.ts";
 import { Weapon } from "../game/models/weapon.ts";
 import { WeaponSkill } from "../game/models/weaponSkill.ts";
+import type { IMusic } from "../game/types.ts";
 import type { ISearchableEntity, ISearchItem } from "../search/types.ts";
 
 function* id(value: string) {
@@ -49,11 +51,19 @@ export default async function getSearchItems(em: SqlEntityManager) {
     const disciples: Disciple[] = await localEm.findAll(Disciple);
     const weaponSkills: WeaponSkill[] = await localEm.findAll(WeaponSkill);
     const spells: Spell[] = await localEm.findAll(Spell);
+    const music: IMusic[] = await localEm.findAll(Music);
 
     const weaponSearchItems = weapons.flatMap(getToSearchItemMapper(aliasWeaponName));
     const discipleSearchItems = disciples.flatMap(getToSearchItemMapper(id));
     const weaponSkillSearchItems = weaponSkills.flatMap(getToSearchItemMapper(id));
     const spellSearchItems = spells.flatMap(getToSearchItemMapper(aliasSpellName));
+    const musicSearchItems = music.flatMap(getToSearchItemMapper(id));
 
-    return [...weaponSearchItems, ...discipleSearchItems, ...weaponSkillSearchItems, ...spellSearchItems];
+    return [
+        ...weaponSearchItems,
+        ...discipleSearchItems,
+        ...weaponSkillSearchItems,
+        ...spellSearchItems,
+        ...musicSearchItems,
+    ];
 }

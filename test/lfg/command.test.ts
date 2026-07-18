@@ -8,6 +8,7 @@ import {
     type InteractionResponse,
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
+import type { AdminFeature } from "../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
 import type { Command } from "../../src/bot/command.ts";
 import { getLfgCommand } from "../../src/lfg/command.ts";
@@ -46,6 +47,11 @@ type ReplyArg = {
     readonly embeds?: readonly { readonly description?: string }[];
     readonly flags?: unknown;
 };
+type SetLfgRoleLastPingedAtMock = ReturnType<typeof getSetLfgRoleLastPingedAtMock>;
+
+function getSetLfgRoleLastPingedAtMock() {
+    return vi.fn<AdminFeature["setLfgRoleLastPingedAt"]>();
+}
 
 function getInteractionFixture({
     channelId,
@@ -81,6 +87,7 @@ function getInteractionFixture({
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
             getRole: vi.fn((name: string) => (name === LFG_ROLE_OPTION_NAME ? { id: roleId } : null)),
+            getBoolean: vi.fn().mockReturnValue(false),
         },
         reply,
     } as unknown as ChatInputCommandInteraction;
@@ -92,13 +99,15 @@ function getCommand({
     channel,
     lfgRole = null,
     lfgRoleLastPingedAt = null,
-    setLfgRoleLastPingedAt = vi.fn(),
+    lfgRolePingCooldownMinutes = undefined,
+    setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock(),
 }: {
     readonly result: TLfgFeatureReturn;
     readonly channel: string | null;
     readonly lfgRole?: string | null;
     readonly lfgRoleLastPingedAt?: Date | null;
-    readonly setLfgRoleLastPingedAt?: ReturnType<typeof vi.fn>;
+    readonly lfgRolePingCooldownMinutes?: number;
+    readonly setLfgRoleLastPingedAt?: SetLfgRoleLastPingedAtMock;
 }): Command {
     return getLfgCommand({
         lfgFeature: {
@@ -107,7 +116,7 @@ function getCommand({
         adminFeature: {
             getGuildConfig: vi.fn().mockResolvedValue({
                 kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
-                value: channel ? { guild: GUILD_ID, lfgChannel: channel } : null,
+                value: channel ? { guild: GUILD_ID, lfgChannel: channel, lfgRolePingCooldownMinutes } : null,
             }),
             getLfgRoleConfig: vi.fn().mockResolvedValue({
                 kind: EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG,
@@ -238,7 +247,7 @@ describe(getLfgCommand.name, () => {
     });
 
     test("lfg ping replies ephemerally when the requested role is everyone", async () => {
-        const setLfgRoleLastPingedAt = vi.fn();
+        const setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock();
         const command = getCommand({
             result: POSITIVE_RESULT,
             channel: PUBLIC_CHANNEL_ID,
@@ -265,7 +274,7 @@ describe(getLfgCommand.name, () => {
     });
 
     test("lfg ping replies ephemerally when the configured role no longer exists", async () => {
-        const setLfgRoleLastPingedAt = vi.fn();
+        const setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock();
         const command = getCommand({
             result: POSITIVE_RESULT,
             channel: PUBLIC_CHANNEL_ID,
@@ -292,12 +301,13 @@ describe(getLfgCommand.name, () => {
     });
 
     test("lfg ping respects the per-guild cooldown", async () => {
-        const setLfgRoleLastPingedAt = vi.fn();
+        const setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock();
         const command = getCommand({
             result: POSITIVE_RESULT,
             channel: PUBLIC_CHANNEL_ID,
             lfgRole: ROLE_ID,
             lfgRoleLastPingedAt: new Date(),
+            lfgRolePingCooldownMinutes: 30,
             setLfgRoleLastPingedAt,
         });
         const { interaction, reply } = getInteractionFixture({
@@ -309,13 +319,59 @@ describe(getLfgCommand.name, () => {
 
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.flags).toEqual([MessageFlags.Ephemeral]);
-        expect(response?.embeds?.[0]?.description).toContain(ROLE_NAME);
+        expect(response?.embeds?.[0]?.description).toContain(roleMention(ROLE_ID));
         expect(response?.embeds?.[0]?.description).toContain("again on");
         expect(setLfgRoleLastPingedAt).not.toHaveBeenCalled();
     });
 
+    test("lfg ping uses configured cooldown minutes", async () => {
+        const setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock();
+        const command = getCommand({
+            result: POSITIVE_RESULT,
+            channel: PUBLIC_CHANNEL_ID,
+            lfgRole: ROLE_ID,
+            lfgRoleLastPingedAt: new Date(Date.now() - 31 * 60 * 1000),
+            lfgRolePingCooldownMinutes: 45,
+            setLfgRoleLastPingedAt,
+        });
+        const { interaction, reply } = getInteractionFixture({
+            channelId: OTHER_CHANNEL_ID,
+            subcommand: LFG_PING_SUBCOMMAND_NAME,
+        });
+
+        await command.run(interaction);
+
+        const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
+        expect(response?.flags).toEqual([MessageFlags.Ephemeral]);
+        expect(response?.embeds?.[0]?.description).toContain("again on");
+        expect(setLfgRoleLastPingedAt).not.toHaveBeenCalled();
+    });
+
+    test("lfg ping treats zero cooldown minutes as no cooldown", async () => {
+        const setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock().mockResolvedValue(undefined);
+        const send = vi.fn().mockResolvedValue({});
+        const command = getCommand({
+            result: POSITIVE_RESULT,
+            channel: PUBLIC_CHANNEL_ID,
+            lfgRole: ROLE_ID,
+            lfgRoleLastPingedAt: new Date(Date.now() - 31 * 60 * 1000),
+            lfgRolePingCooldownMinutes: 0,
+            setLfgRoleLastPingedAt,
+        });
+        const { interaction } = getInteractionFixture({
+            channelId: OTHER_CHANNEL_ID,
+            subcommand: LFG_PING_SUBCOMMAND_NAME,
+            send,
+        });
+
+        await command.run(interaction);
+
+        expect(send).toHaveBeenCalled();
+        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
+    });
+
     test("lfg ping sends to the LFG channel, replies ephemerally, and records the timestamp", async () => {
-        const setLfgRoleLastPingedAt = vi.fn().mockResolvedValue(undefined);
+        const setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock().mockResolvedValue(undefined);
         const send = vi.fn().mockResolvedValue({});
         const command = getCommand({
             result: POSITIVE_RESULT,
@@ -340,12 +396,14 @@ describe(getLfgCommand.name, () => {
         expect(publicMessage?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.flags).toEqual([MessageFlags.Ephemeral]);
-        expect(response?.embeds?.[0]?.description).toBe(`Ping triggered in ${channelMention(PUBLIC_CHANNEL_ID)}.`);
+        expect(response?.embeds?.[0]?.description).toBe(
+            `${roleMention(ROLE_ID)} pinged in ${channelMention(PUBLIC_CHANNEL_ID)}.`,
+        );
         expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
     });
 
     test("lfg ping replies publicly in the LFG channel and records the timestamp", async () => {
-        const setLfgRoleLastPingedAt = vi.fn().mockResolvedValue(undefined);
+        const setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock().mockResolvedValue(undefined);
         const command = getCommand({
             result: POSITIVE_RESULT,
             channel: PUBLIC_CHANNEL_ID,
