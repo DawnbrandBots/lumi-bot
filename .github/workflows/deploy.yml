@@ -25,7 +25,7 @@ jobs:
           tags: tag:github-actions
           version: latest
           # ping doesn't seem to be working but does not impact connectivity
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.revision || github.sha }}
       - uses: docker/login-action@v4
@@ -38,9 +38,9 @@ jobs:
           DOCKER_HOST: tcp://${{ secrets.TS_DEPLOY_HOST }}:${{ secrets.TS_DEPLOY_PORT }}
           DOCKER_TAG: ${{ env.DOCKER_TAG }}
         run: |
-          cat .env.template | sed "s/DISCORD_TOKEN=/DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}/g" > .env
-          docker compose pull
-          docker compose up -d
+          cat .env.docker.template | sed "s/DISCORD_TOKEN=/DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}/g" > .env.docker
+          docker compose --env-file .env.docker pull
+          docker compose --env-file .env.docker up -d
       - uses: actions/setup-node@v6
         with:
           node-version-file: .node-version

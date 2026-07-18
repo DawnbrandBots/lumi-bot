@@ -13,7 +13,7 @@ import {
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
-import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../bot/message.ts";
+import { createNegativeMessage, createPositiveMessage } from "../bot/message.ts";
 import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
@@ -51,7 +51,7 @@ export function getLfgCommand({
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
-        subcommand: string | null,
+        subcommand: string,
     ) {
         switch (subcommand) {
             case LFG_CREATE_SUBCOMMAND_NAME:
@@ -207,32 +207,35 @@ export function getLfgCommand({
         run: async function (interaction) {
             const guildId = interaction.guildId;
             if (!guildId) {
-                return interaction.reply(
-                    createErrorMessage<InteractionReplyOptions>({
+                return void (await interaction.reply(
+                    createNegativeMessage<InteractionReplyOptions>({
                         embed: {
-                            title: "LFG unavailable",
                             description: "LFG is only available in servers.",
                         },
                         flags: MessageFlags.Ephemeral,
                     }),
-                );
+                ));
             }
 
-            const subcommand = interaction.options.getSubcommand(false);
+            const subcommand = interaction.options.getSubcommand(true);
             // TODO: ping does indeed not need to call lfgFeature, since
             // it just answers to Discord directly
             // Still, if feels weird having this check here, apart from the others.
             if (subcommand === LFG_PING_SUBCOMMAND_NAME) {
-                return runPing(interaction, guildId);
+                return void (await runPing(interaction, guildId));
             }
 
             const result = await runSubcommand(interaction, guildId, subcommand);
             const configResult = await adminFeature.getGuildConfig(guildId);
 
-            const messageBase = mapLfgFeatureReturnToMessageBase(result, interaction.user.id, configResult.value);
-            const message = mapLfgMessageBaseToReply(messageBase, interaction, configResult.value);
+            const messageBase = mapLfgFeatureReturnToMessageBase({
+                result,
+                callerId: interaction.user.id,
+                guildConfig: configResult.value,
+            });
+            const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig: configResult.value });
 
-            const reply = await interaction.reply(message);
+            await interaction.reply(message);
             if (
                 messageBase.kind === EMessageKind.POSITIVE &&
                 configResult.value?.lfgChannel &&
@@ -240,8 +243,6 @@ export function getLfgCommand({
             ) {
                 await sendPublicCopy(interaction, configResult.value.lfgChannel, messageBase);
             }
-
-            return reply;
         },
         autocomplete: getRoomCodeAutocomplete({ lfgFeature, ignoredSubCommands: [LFG_CREATE_SUBCOMMAND_NAME] }),
     });

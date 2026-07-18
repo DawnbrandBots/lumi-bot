@@ -2,19 +2,19 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { Command } from "../bot/command.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../bot/constants.ts";
 import { searchCommandInfo } from "./commandInfo.ts";
-import { AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
+import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "./constants.ts";
 import searchFeature from "./feature.ts";
-import mapSearchFeatureReturnToMessage from "./mapper.ts";
-import type { ISearchableEntity, ISearchEngine, ISearchHandlers, ISearchItem } from "./types.ts";
+import mapSearchFeatureReturnToMessages from "./mapper.ts";
+import type { ISearchConfigs, ISearchEngine, TSearchItem } from "./types.ts";
 
-export function getSearchCommand<Items extends ISearchableEntity>({
+export function getSearchCommand({
     searchEngine,
     em,
-    handlers,
+    configs,
 }: {
-    searchEngine: ISearchEngine<ISearchItem & { kind: Items["kind"] }>;
+    searchEngine: ISearchEngine<TSearchItem>;
     em: EntityManager;
-    handlers: ISearchHandlers<Items>;
+    configs: ISearchConfigs;
 }) {
     return new Command({
         info: searchCommandInfo,
@@ -23,15 +23,18 @@ export function getSearchCommand<Items extends ISearchableEntity>({
             if (!input) {
                 throw new Error(`No value provided for "${SEARCH_TERMS_OPTION_NAME}" option.`);
             }
-            const result = await searchFeature({ em, searchEngine, handlers, input });
-            const message = mapSearchFeatureReturnToMessage<Items>(result, handlers);
-            return interaction.reply(message);
+            const result = await searchFeature({ em, searchEngine, configs, input });
+            const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
+            await interaction.reply(reply);
+            for (const followUp of followUps ?? []) {
+                await interaction.followUp(followUp);
+            }
         },
         autocomplete: (interaction) => {
             const focusedOption = interaction.options.getFocused(true);
             if (focusedOption.name === SEARCH_TERMS_OPTION_NAME) {
                 return searchEngine
-                    .search(focusedOption.value, AUTOCOMPLETE_RESULTS_LIMIT)
+                    .search(focusedOption.value, SEARCH_AUTOCOMPLETE_RESULTS_LIMIT)
                     .map((item) => ({ name: item.name, value: item.name }));
             }
             return null;

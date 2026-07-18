@@ -1,4 +1,4 @@
-import { Colors, formatEmoji, hyperlink, unorderedList, userMention } from "discord.js";
+import { Colors, formatEmoji, hyperlink, subtext, unorderedList, userMention } from "discord.js";
 
 export const DISCORD_BOT_NAME = "Umbra";
 
@@ -25,11 +25,20 @@ export const DISCORD_KURTSUS_EMOJI_CALL = formatEmoji(DISCORD_KURTSUS_EMOJI_ID);
 export const DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT = 25;
 
 export const SEARCH_TERMS_OPTION_NAME = "terms";
-export const SEARCH_MAX_INPUT_LENGTH = 32;
+/**
+ * Somewhat arbitrarily chosen character limit.
+ * The point is to prevent giant strings from reaching the search engine.
+ * Ensure that this number is longer than the longest search alias loaded into the engine.
+ */
+export const SEARCH_MAX_INPUT_LENGTH = 48;
 
 export const DISCORD_NOTABOT_ID = "1454944471358898209";
 export const DISCORD_NOTABOT_MENTION = userMention(DISCORD_NOTABOT_ID);
 export const DISCORD_KEVIN_LU_ID = "1266919844549234812";
+
+export const DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT = subtext(
+    `Everyone point and laugh at ${DISCORD_NOTABOT_MENTION}! ${DISCORD_SAI_LAUGH_EMOJI_CALL}`,
+);
 
 export const DISCORD_BOT_INTRODUCTION = `I am Umbra. I am like Lumi, just... more unstable. ${DISCORD_SMILING_IMP_EMOJI_CALL}`;
 export const DISCORD_BOT_REPOSITORY_LINK = `https://github.com/DawnbrandBots/lumi-bot`;

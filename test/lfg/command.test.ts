@@ -87,6 +87,7 @@ function getInteractionFixture({
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
             getRole: vi.fn((name: string) => (name === LFG_ROLE_OPTION_NAME ? { id: roleId } : null)),
+            getBoolean: vi.fn().mockReturnValue(false),
         },
         reply,
     } as unknown as ChatInputCommandInteraction;
@@ -395,7 +396,9 @@ describe(getLfgCommand.name, () => {
         expect(publicMessage?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.flags).toEqual([MessageFlags.Ephemeral]);
-        expect(response?.embeds?.[0]?.description).toBe(`Ping triggered in ${channelMention(PUBLIC_CHANNEL_ID)}.`);
+        expect(response?.embeds?.[0]?.description).toBe(
+            `${roleMention(ROLE_ID)} pinged in ${channelMention(PUBLIC_CHANNEL_ID)}.`,
+        );
         expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
     });
 

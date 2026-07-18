@@ -1,11 +1,11 @@
 import type { MikroORM } from "@mikro-orm/sqlite";
 import getOrm from "../src/loaders/orm.ts";
-import { configsById } from "./mikro-orm.test.config.ts";
+import { appMikroOrmConfig, staticGameDataMikroOrmConfig } from "./mikro-orm.test.config.ts";
 
-export function initTestGameOrm(): Promise<MikroORM> {
-    return getOrm(configsById.game);
+export function initTestOrm(): Promise<MikroORM> {
+    return getOrm(appMikroOrmConfig);
 }
 
-export function initTestLumiOrm(): Promise<MikroORM> {
-    return getOrm(configsById.lumi);
+export function initTestGameOrm(): Promise<MikroORM> {
+    return getOrm(staticGameDataMikroOrmConfig);
 }
