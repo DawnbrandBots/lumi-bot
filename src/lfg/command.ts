@@ -1,7 +1,7 @@
 import type { InteractionReplyOptions } from "discord.js";
 import { MessageFlags, type CacheType, type ChatInputCommandInteraction } from "discord.js";
 import { Command } from "../bot/command.ts";
-import { createErrorMessage } from "../bot/message.ts";
+import { createNegativeMessage } from "../bot/message.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
     LFG_CODE_OPTION_NAME,
@@ -69,7 +69,7 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
             const guildId = interaction.guildId;
             if (!guildId) {
                 return void (await interaction.reply(
-                    createErrorMessage<InteractionReplyOptions>({
+                    createNegativeMessage<InteractionReplyOptions>({
                         embed: {
                             description: "LFG is only available in servers.",
                         },
