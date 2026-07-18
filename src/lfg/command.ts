@@ -68,7 +68,7 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
         run: async function (interaction) {
             const guildId = interaction.guildId;
             if (!guildId) {
-                return interaction.reply(
+                return void (await interaction.reply(
                     createErrorMessage<InteractionReplyOptions>({
                         embed: {
                             title: "LFG unavailable",
@@ -76,13 +76,13 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
                         },
                         flags: MessageFlags.Ephemeral,
                     }),
-                );
+                ));
             }
 
             const subcommand = interaction.options.getSubcommand(false);
             const result = await runSubcommand(interaction, guildId, subcommand);
             const response = mapLfgFeatureReturnToMessage({ result, interaction });
-            return interaction.reply(response);
+            return void (await interaction.reply(response));
         },
     });
 }
