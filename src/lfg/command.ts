@@ -71,7 +71,6 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
                 return void (await interaction.reply(
                     createErrorMessage<InteractionReplyOptions>({
                         embed: {
-                            title: "LFG unavailable",
                             description: "LFG is only available in servers.",
                         },
                         flags: MessageFlags.Ephemeral,
