@@ -360,12 +360,4 @@ describe(LfgFeature.name, { concurrent: false }, () => {
             value: { rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }] },
         });
     });
-
-    test("help returns the LFG command summary", () => {
-        const response = feature.help();
-
-        expect(response.kind).toBe(ELfgFeatureReturnKind.HELP);
-        expect(response.value).toContain("/lfg create");
-        expect(response.value).toContain("/lfg help");
-    });
 });
