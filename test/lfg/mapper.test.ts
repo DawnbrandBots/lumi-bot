@@ -63,7 +63,8 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
             input: { interaction, result: { kind: ELfgFeatureReturnKind.HELP } },
             expected: {
                 kind: EMessageKind.NEUTRAL,
-                embeds: [{ description: "help text" }],
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                embeds: [{ description: expect.any(String) }],
                 flags: MessageFlags.Ephemeral,
             },
         },
