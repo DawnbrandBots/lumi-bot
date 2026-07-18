@@ -1,14 +1,14 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IWarpEffect } from "../types.ts";
+import { ESpellEffectKind, type IWarpEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 
 export const WarpEffectSchema = defineEntity({
     name: "WarpEffect",
     embeddable: true,
     extends: SpellEffect,
-    discriminatorValue: "WARP",
+    discriminatorValue: ESpellEffectKind.WARP,
     properties: {
-        kind: p.enum(["WARP"]),
+        kind: p.enum([ESpellEffectKind.WARP]),
     },
 });
 

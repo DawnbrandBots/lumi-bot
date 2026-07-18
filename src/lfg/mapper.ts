@@ -1,13 +1,6 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import {
-    channelMention,
-    heading,
-    MessageFlags,
-    roleMention,
-    unorderedList,
-    userMention,
-    type InteractionReplyOptions,
-} from "discord.js";
+import { channelMention, heading, inlineCode, MessageFlags, roleMention, unorderedList, userMention } from "discord.js";
+import type { PickDeep } from "type-fest";
 import type { GuildConfig } from "../admin/models/config.ts";
 import {
     createErrorMessage,
@@ -17,6 +10,7 @@ import {
 } from "../bot/message.ts";
 import { EMessageKind } from "../bot/types.ts";
 import * as LfgConstants from "./constants.ts";
+import { LFG_SHOW_RESPONSE_OPTION_NAME } from "./constants.ts";
 import type { TLfgFeatureReturnOfKind } from "./types.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
 
@@ -27,7 +21,7 @@ function formatList(rooms: readonly IRoom[]) {
     return unorderedList(rooms.map(formatRoom));
 }
 
-function formatStatus(rooms: readonly IRoom[], guildConfig: GuildConfig | null) {
+function formatStatus(rooms: readonly IRoom[], guildConfig?: GuildConfig | null) {
     const lfgChannel = guildConfig?.lfgChannel
         ? channelMention(guildConfig.lfgChannel)
         : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
@@ -37,11 +31,19 @@ function formatStatus(rooms: readonly IRoom[], guildConfig: GuildConfig | null) 
                   .map((lfgRole) => roleMention(lfgRole.role))
                   .join(", ")
             : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    const lfgRolePingCooldown =
+        guildConfig?.lfgRolePingCooldownMinutes != null
+            ? `${guildConfig.lfgRolePingCooldownMinutes} minutes`
+            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
     return [
         heading("Rooms", 3),
         formatList(rooms),
         heading("Server config", 3),
-        unorderedList([`LFG channel: ${lfgChannel}`, `LFG roles: ${lfgRoles}`]),
+        unorderedList([
+            `LFG channel: ${lfgChannel}`,
+            `LFG roles: ${lfgRoles}`,
+            `LFG roles ping cooldown: ${lfgRolePingCooldown}`,
+        ]),
     ].join("\n");
 }
 
@@ -52,15 +54,12 @@ function formatRoom(room: IRoom) {
 function formatRoomPlayers(room: IRoom) {
     return room.playerIds
         .toSorted((a, b) => (a === room.ownerId ? -1 : b === room.ownerId ? 1 : 0))
-        .map(
-            (playerId) =>
-                `${userMention(playerId)}${playerId === room.ownerId ? ` (${LfgConstants.LFG_ROOM_OWNER_LABEL})` : ""}`,
-        )
+        .map((playerId) => `${userMention(playerId)}${playerId === room.ownerId ? ` (owner)` : ""}`)
         .join(", ");
 }
 
 function formatRoomCode(code: string) {
-    return `${LfgConstants.LFG_ROOM_CODE_MARKER}${code}${LfgConstants.LFG_ROOM_CODE_MARKER}`;
+    return inlineCode(code);
 }
 
 function formatRoomCreated(callerId: string, userId: string, room: IRoom) {
@@ -132,22 +131,6 @@ function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_
     }
 }
 
-function formatRoomDisbanded(callerId: string, code: string) {
-    return `${userMention(callerId)} disbanded room ${formatRoomCode(code)}.`;
-}
-
-function formatRoomAlreadyExists(code: string) {
-    return `Room ${formatRoomCode(code)} already exists.`;
-}
-
-function formatRoomNotFound(code: string) {
-    return `Room ${formatRoomCode(code)} does not exist.`;
-}
-
-function formatRoomIsFull(code: string) {
-    return `Room ${formatRoomCode(code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`;
-}
-
 function formatAlreadyInRoom(callerId: string, userId: string) {
     if (callerId === userId) {
         return LfgConstants.LFG_ALREADY_IN_A_ROOM_DESCRIPTION;
@@ -176,22 +159,27 @@ function formatPlayerNotInRoom(callerId: string, ownerId: string, targetId: stri
     return `${userMention(targetId)} is not in your room.`;
 }
 
-export function mapLfgFeatureReturnToMessageBase(
-    result: TLfgFeatureReturn,
-    callerId: string,
-    guildConfig: GuildConfig | null = null,
-) {
+export function mapLfgFeatureReturnToMessageBase({
+    result,
+    callerId,
+    guildConfig,
+}: {
+    result: TLfgFeatureReturn;
+    callerId: string;
+    guildConfig?: GuildConfig | null;
+}) {
     switch (result.kind) {
-        case ELfgFeatureReturnKind.ROOMS_LISTED:
-            return createNeutralMessage<InteractionReplyOptions>({
+        case ELfgFeatureReturnKind.ROOMS_LISTED: {
+            return createNeutralMessage({
                 embed: { description: formatStatus(result.value.rooms, guildConfig) },
             });
+        }
         case ELfgFeatureReturnKind.HELP:
-            return createNeutralMessage<InteractionReplyOptions>({
+            return createNeutralMessage({
                 embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },
             });
         case ELfgFeatureReturnKind.ROOM_CREATED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: formatRoomCreated(callerId, result.value.userId, result.value.room),
                 },
@@ -220,7 +208,7 @@ export function mapLfgFeatureReturnToMessageBase(
                 },
             });
         case ELfgFeatureReturnKind.PLAYER_KICKED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: formatPlayerKicked(
                         callerId,
@@ -232,7 +220,7 @@ export function mapLfgFeatureReturnToMessageBase(
                 },
             });
         case ELfgFeatureReturnKind.ROOM_LEFT:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: formatRoomLeft(result),
                 },
@@ -240,7 +228,7 @@ export function mapLfgFeatureReturnToMessageBase(
         case ELfgFeatureReturnKind.ROOM_DISBANDED:
             return createPositiveMessage({
                 embed: {
-                    description: formatRoomDisbanded(callerId, result.value.code),
+                    description: `${userMention(callerId)} disbanded ${formatRoomCode(result.value.code)}.`,
                 },
             });
         case ELfgFeatureReturnKind.INVALID_ROOM_CODE:
@@ -258,13 +246,13 @@ export function mapLfgFeatureReturnToMessageBase(
         case ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS:
             return createNegativeMessage({
                 embed: {
-                    description: formatRoomAlreadyExists(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} already exists.`,
                 },
             });
         case ELfgFeatureReturnKind.ROOM_NOT_FOUND:
             return createNegativeMessage({
                 embed: {
-                    description: formatRoomNotFound(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} does not exist.`,
                 },
             });
         case ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM:
@@ -276,7 +264,7 @@ export function mapLfgFeatureReturnToMessageBase(
         case ELfgFeatureReturnKind.ROOM_IS_FULL:
             return createNegativeMessage({
                 embed: {
-                    description: formatRoomIsFull(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
                 },
             });
         case ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF:
@@ -321,12 +309,25 @@ export function mapLfgFeatureReturnToMessageBase(
     }
 }
 
-export function mapLfgMessageBaseToReply(
-    messageBase: ReturnType<typeof mapLfgFeatureReturnToMessageBase>,
-    interaction: ChatInputCommandInteraction,
-    guildConfig: GuildConfig | null,
-) {
-    if (messageBase.kind === EMessageKind.POSITIVE && interaction.channelId === guildConfig?.lfgChannel) {
+export function mapLfgMessageBaseToReply({
+    messageBase,
+    interaction,
+    guildConfig,
+}: {
+    messageBase: ReturnType<typeof mapLfgFeatureReturnToMessageBase>;
+    // Using Pick before of PickDeep to avoid "type too complex" error
+    interaction: PickDeep<
+        Pick<ChatInputCommandInteraction, "options" | "channelId">,
+        "options.getBoolean" | "channelId"
+    >;
+    guildConfig: GuildConfig | null;
+}) {
+    const displayToEveryone = interaction.options.getBoolean(LFG_SHOW_RESPONSE_OPTION_NAME, false);
+
+    if (
+        displayToEveryone ||
+        (messageBase.kind === EMessageKind.POSITIVE && interaction.channelId === guildConfig?.lfgChannel)
+    ) {
         return messageBase;
     }
     return { ...messageBase, flags: [MessageFlags.Ephemeral] } as const;

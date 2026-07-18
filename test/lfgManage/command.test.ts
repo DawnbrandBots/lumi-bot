@@ -1,7 +1,6 @@
 import {
     ChannelType,
     MessageFlags,
-    PermissionFlagsBits,
     userMention,
     type ChatInputCommandInteraction,
     type InteractionResponse,
@@ -22,31 +21,29 @@ const OTHER_CHANNEL_ID = "other-channel";
 const REPLY = {} as InteractionResponse<boolean>;
 
 function getInteractionFixture({
-    canManageGuild = true,
     channelId = OTHER_CHANNEL_ID,
+    guildId = GUILD_ID,
     subcommand = "create",
     send = vi.fn().mockResolvedValue({}),
 }: {
-    readonly canManageGuild?: boolean;
     readonly channelId?: string;
+    readonly guildId?: string | null;
     readonly subcommand?: string;
     readonly send?: ReturnType<typeof vi.fn>;
 } = {}) {
     const channelFetch = vi.fn().mockResolvedValue({ type: ChannelType.GuildText, send });
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
-        guildId: GUILD_ID,
+        guildId,
         channelId,
         user: { id: ADMIN_ID },
-        memberPermissions: {
-            has: vi.fn((permission) => permission === PermissionFlagsBits.ManageGuild && canManageGuild),
-        },
         guild: {
             channels: {
                 fetch: channelFetch,
             },
         },
         options: {
+            getBoolean: vi.fn().mockReturnValue(false),
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
             getUser: vi.fn((name: string) => (name === LFG_PLAYER_OPTION_NAME ? { id: PLAYER_ID } : null)),
@@ -95,18 +92,18 @@ describe(getLfgManageCommand.name, () => {
         expect(command.info.registerCommandInfo.options?.some((option) => option.name === "transfer")).toBe(true);
     });
 
-    test("rejects users without Manage Server", async () => {
+    test("rejects non-guild interactions", async () => {
         const { adminFeature, command, lfgFeature } = getCommand({
             result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
         });
-        const { interaction, reply } = getInteractionFixture({ canManageGuild: false });
+        const { interaction, reply } = getInteractionFixture({ guildId: null });
 
         await command.run(interaction);
 
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: MessageFlags.Ephemeral,
-                embeds: [expect.objectContaining({ title: "Missing permission" })],
+                embeds: [expect.objectContaining({ title: "LFG management unavailable" })],
             }),
         );
         expect(adminFeature.getGuildConfig).not.toHaveBeenCalled();
