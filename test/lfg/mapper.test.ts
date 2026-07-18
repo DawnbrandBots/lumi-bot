@@ -1,4 +1,4 @@
-import { MessageFlags, userMention } from "discord.js";
+import { inlineCode, MessageFlags, userMention } from "discord.js";
 import { describe, expect, test } from "vitest";
 import { EMessageKind } from "../../src/bot/types.ts";
 import * as LfgConstants from "../../src/lfg/constants.ts";
@@ -12,7 +12,7 @@ const ROOM: IRoom = {
 };
 
 function roomDescription(room: IRoom) {
-    return `\`${room.code}\`: ${userMention(room.ownerId)} (owner), ${userMention("player-1")}, ${userMention("player-2")}`;
+    return `${inlineCode(room.code)}: ${userMention(room.ownerId)} (owner), ${userMention("player-1")}, ${userMention("player-2")}`;
 }
 
 type Input = Parameters<typeof mapLfgFeatureReturnToMessage>[0];
@@ -78,7 +78,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} created room \`${ROOM.code}\`.`,
+                        description: `${userMention("owner")} created room ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -96,7 +96,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("player-1")} joined room \`${ROOM.code}\`.`,
+                        description: `${userMention("player-1")} joined room ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -114,7 +114,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} transferred \`${ROOM.code}\`'s ownership to ${userMention("player-1")}.`,
+                        description: `${userMention("owner")} transferred ${inlineCode(ROOM.code)}'s ownership to ${userMention("player-1")}.`,
                     },
                 ],
             },
@@ -132,7 +132,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} kicked ${userMention("player-1")} from \`${ROOM.code}\`.`,
+                        description: `${userMention("owner")} kicked ${userMention("player-1")} from ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -150,7 +150,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("player-1")} left \`${ROOM.code}\`.`,
+                        description: `${userMention("player-1")} left ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -168,7 +168,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} left \`${ROOM.code}\`. Room deleted.`,
+                        description: `${userMention("owner")} left ${inlineCode(ROOM.code)}. Room deleted.`,
                     },
                 ],
             },
@@ -191,7 +191,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} left \`${ROOM.code}\`. Ownership transferred to ${userMention("player-1")}`,
+                        description: `${userMention("owner")} left ${inlineCode(ROOM.code)}. Ownership transferred to ${userMention("player-1")}`,
                     },
                 ],
             },
@@ -206,7 +206,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.POSITIVE,
                 embeds: [
                     {
-                        description: `${userMention("owner")} disbanded \`${ROOM.code}\`.`,
+                        description: `${userMention("owner")} disbanded ${inlineCode(ROOM.code)}.`,
                     },
                 ],
             },
@@ -246,7 +246,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        description: `Room \`${ROOM.code}\` already exists.`,
+                        description: `Room ${inlineCode(ROOM.code)} already exists.`,
                     },
                 ],
                 flags: MessageFlags.Ephemeral,
@@ -259,7 +259,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        description: `Room \`${ROOM.code}\` does not exist.`,
+                        description: `Room ${inlineCode(ROOM.code)} does not exist.`,
                     },
                 ],
                 flags: MessageFlags.Ephemeral,
@@ -284,7 +284,7 @@ describe(mapLfgFeatureReturnToMessage.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        description: `Room \`${ROOM.code}\` already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
+                        description: `Room ${inlineCode(ROOM.code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
                     },
                 ],
                 flags: MessageFlags.Ephemeral,
