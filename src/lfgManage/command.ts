@@ -5,7 +5,7 @@ import {
     MessageFlags,
     type CacheType,
     type ChatInputCommandInteraction,
-    type InteractionReplyOptions
+    type InteractionReplyOptions,
 } from "discord.js";
 import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
@@ -30,7 +30,7 @@ export function getLfgManageCommand({
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
-        subcommand: string | null,
+        subcommand: string,
     ) {
         const code = interaction.options.getString(LFG_CODE_OPTION_NAME, true);
         switch (subcommand) {
@@ -72,7 +72,7 @@ export function getLfgManageCommand({
             const guildId = interaction.guildId;
             if (!guildId) {
                 // TODO: this does not exist in the regular lgf command's .run
-                return interaction.reply(
+                await interaction.reply(
                     createErrorMessage<InteractionReplyOptions>({
                         embed: {
                             title: "LFG management unavailable",
@@ -81,6 +81,7 @@ export function getLfgManageCommand({
                         flags: MessageFlags.Ephemeral,
                     }),
                 );
+                return;
             }
 
             // TODO: there used to be a check on the ManageGuild permission here
@@ -89,12 +90,20 @@ export function getLfgManageCommand({
             // This is especially relevant if other ways to call the application layers are added later.
             // We don't want anyone to be able use these command.
 
-            const result = await runSubcommand(interaction, guildId, interaction.options.getSubcommand(false));
+            const result = await runSubcommand(interaction, guildId, interaction.options.getSubcommand(true));
             const configResult = await adminFeature.getGuildConfig(guildId);
-            const messageBase = mapLfgFeatureReturnToMessageBase(result, interaction.user.id, configResult.value);
-            const message = mapLfgMessageBaseToReply(messageBase, interaction, configResult.value);
+            const messageBase = mapLfgFeatureReturnToMessageBase({
+                result,
+                callerId: interaction.user.id,
+                guildConfig: configResult.value,
+            });
+            const message = mapLfgMessageBaseToReply({
+                messageBase,
+                interaction,
+                guildConfig: configResult.value,
+            });
 
-            const reply = await interaction.reply(message);
+            await interaction.reply(message);
             if (
                 messageBase.kind === EMessageKind.POSITIVE &&
                 configResult.value?.lfgChannel &&
@@ -102,8 +111,6 @@ export function getLfgManageCommand({
             ) {
                 await sendPublicCopy(interaction, configResult.value.lfgChannel, messageBase);
             }
-
-            return reply;
         },
     });
 }
