@@ -28,10 +28,6 @@ export class LfgFeature implements ILfgFeature {
         } as const;
     }
 
-    public help() {
-        return { kind: ELfgFeatureReturnKind.HELP } as const;
-    }
-
     public async create(guildId: string, owner: IUser, code: string) {
         if (code.length < LFG_MIN_ROOM_CODE_LENGTH || code.length > LFG_MAX_ROOM_CODE_LENGTH) {
             return { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;

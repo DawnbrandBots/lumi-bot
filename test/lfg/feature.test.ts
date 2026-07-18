@@ -1,11 +1,11 @@
-import type { MikroORM } from "@mikro-orm/sqlite";
+import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import recreateDb from "../../scripts/utils/recreateDb.ts";
 import { LFG_MAX_ROOM_CODE_LENGTH } from "../../src/lfg/constants.ts";
 import { LfgFeature } from "../../src/lfg/feature.ts";
 import { LfgRoom } from "../../src/lfg/models/room.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IUser } from "../../src/lfg/types.ts";
 import { migrationMikroOrmConfig } from "../mikro-orm.test.config.ts";
+import getSameConfigInMemory from "../utils/getSameConfigInMemory.ts";
 
 const GUILD_ID = "guild-1";
 const OTHER_GUILD_ID = "guild-2";
@@ -41,11 +41,14 @@ async function getRooms(guildId: string): Promise<TestRoom[]> {
     }));
 }
 
+const config = getSameConfigInMemory(migrationMikroOrmConfig);
+
 // Tests recreate dbs. Simultaneous recreations cause errors. Therefore `concurrent: false`.
 describe(LfgFeature.name, { concurrent: false }, () => {
     beforeEach(async () => {
         // Runtime entities only
-        orm = await recreateDb(migrationMikroOrmConfig);
+        orm = await MikroORM.init(config);
+        await orm.schema.create();
         feature = new LfgFeature({ em: orm.em.fork() });
     });
 
@@ -359,11 +362,5 @@ describe(LfgFeature.name, { concurrent: false }, () => {
             kind: ELfgFeatureReturnKind.ROOMS_LISTED,
             value: { rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }] },
         });
-    });
-
-    test("help returns the help result kind", () => {
-        const response = feature.help();
-
-        expect(response).toEqual({ kind: ELfgFeatureReturnKind.HELP });
     });
 });
