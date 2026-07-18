@@ -34,22 +34,6 @@ function formatRoomCode(code: string) {
     return inlineCode(code);
 }
 
-function formatRoomCreated(userId: string, room: IRoom) {
-    return `${userMention(userId)} created room ${formatRoomCode(room.code)}.`;
-}
-
-function formatRoomJoined(userId: string, room: IRoom) {
-    return `${userMention(userId)} joined room ${formatRoomCode(room.code)}.`;
-}
-
-function formatOwnershipTransferred(userId: string, targetId: string, room: IRoom) {
-    return `${userMention(userId)} transferred ${formatRoomCode(room.code)}'s ownership to ${userMention(targetId)}.`;
-}
-
-function formatPlayerKicked(userId: string, targetId: string, room: IRoom) {
-    return `${userMention(userId)} kicked ${userMention(targetId)} from ${formatRoomCode(room.code)}.`;
-}
-
 function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT>) {
     const res = `${userMention(arg.value.userId)} left ${formatRoomCode(arg.value.code)}.`;
     switch (arg.value.kind) {
@@ -60,26 +44,6 @@ function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_
         case ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY:
             return res;
     }
-}
-
-function formatRoomDisbanded(userId: string, code: string) {
-    return `${userMention(userId)} disbanded ${formatRoomCode(code)}.`;
-}
-
-function formatRoomAlreadyExists(code: string) {
-    return `Room ${formatRoomCode(code)} already exists.`;
-}
-
-function formatRoomNotFound(code: string) {
-    return `Room ${formatRoomCode(code)} does not exist.`;
-}
-
-function formatRoomIsFull(code: string) {
-    return `Room ${formatRoomCode(code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`;
-}
-
-function formatPlayerNotInRoom(targetId: string) {
-    return `${userMention(targetId)} is not in your room.`;
 }
 
 function mapLfgFeatureReturnToMessage({
@@ -106,32 +70,28 @@ function mapLfgFeatureReturnToMessage({
         case ELfgFeatureReturnKind.ROOM_CREATED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatRoomCreated(result.value.userId, result.value.room),
+                    description: `${userMention(result.value.userId)} created room ${formatRoomCode(result.value.room.code)}.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_JOINED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatRoomJoined(result.value.userId, result.value.room),
+                    description: `${userMention(result.value.userId)} joined room ${formatRoomCode(result.value.room.code)}.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatOwnershipTransferred(
-                        result.value.userId,
-                        result.value.targetId,
-                        result.value.room,
-                    ),
+                    description: `${userMention(result.value.userId)} transferred ${formatRoomCode(result.value.room.code)}'s ownership to ${userMention(result.value.targetId)}.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.PLAYER_KICKED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatPlayerKicked(result.value.userId, result.value.targetId, result.value.room),
+                    description: `${userMention(result.value.userId)} kicked ${userMention(result.value.targetId)} from ${formatRoomCode(result.value.room.code)}.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
@@ -145,7 +105,7 @@ function mapLfgFeatureReturnToMessage({
         case ELfgFeatureReturnKind.ROOM_DISBANDED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatRoomDisbanded(result.value.userId, result.value.code),
+                    description: `${userMention(result.value.userId)} disbanded ${formatRoomCode(result.value.code)}.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
@@ -166,14 +126,14 @@ function mapLfgFeatureReturnToMessage({
         case ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS:
             return createNegativeMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatRoomAlreadyExists(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} already exists.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_NOT_FOUND:
             return createNegativeMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatRoomNotFound(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} does not exist.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
@@ -187,7 +147,7 @@ function mapLfgFeatureReturnToMessage({
         case ELfgFeatureReturnKind.ROOM_IS_FULL:
             return createNegativeMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatRoomIsFull(result.value.code),
+                    description: `Room ${formatRoomCode(result.value.code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
@@ -201,7 +161,7 @@ function mapLfgFeatureReturnToMessage({
         case ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM:
             return createNegativeMessage<InteractionReplyOptions>({
                 embed: {
-                    description: formatPlayerNotInRoom(result.value.targetId),
+                    description: `${userMention(result.value.targetId)} is not in your room.`,
                 },
                 flags: MessageFlags.Ephemeral,
             });
