@@ -1,10 +1,12 @@
 import type {
     APIEmbed,
     ApplicationCommandOptionChoiceData,
+    ApplicationIntegrationType,
     AutocompleteInteraction,
     BaseMessageOptions,
     CacheType,
     ChatInputCommandInteraction,
+    InteractionContextType,
     SharedSlashCommand,
     SlashCommandBuilder,
 } from "discord.js";
@@ -23,6 +25,8 @@ export interface ICommandInfo {
      * Briefly explains what the command does.
      */
     readonly description: string;
+    readonly contexts: InteractionContextType[];
+    readonly integrationTypes: ApplicationIntegrationType[];
     /**
      * Additional info about the command to be registered.
      */

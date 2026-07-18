@@ -4,6 +4,8 @@ import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
 import { getHelpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
+import { getLfgCommand } from "./lfg/command.ts";
+import { LfgFeature } from "./lfg/feature.ts";
 import { getLinksCommand } from "./links/command.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
@@ -25,10 +27,12 @@ const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
+const lfgFeature = new LfgFeature({ em });
 const commands = {
     search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
+    lfg: getLfgCommand({ lfgFeature }),
 } as const;
 
 bot.on(Events.ClientReady, (client) => {

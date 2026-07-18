@@ -4,7 +4,13 @@ A free and open-source Discord bot for Fire Emblem Shadows.
 
 ## Features
 
+### Data lookup
+
 Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search` command or `@Lumi <SEARCH TERMS>`.
+
+### Looking For Game (LFG) management
+
+`/lfg` allows players to create server-scoped groups of up to three. Meant to organize for farming in Friend Battles.
 
 ## Discord permissions
 
