@@ -4,11 +4,12 @@ import {
     HeadingLevel,
     inlineCode,
     MessageFlags,
+    roleMention,
+    time,
     unorderedList,
     userMention,
 } from "discord.js";
-import { describe, expect, test } from "vitest";
-import type { GuildConfig } from "../../src/admin/models/config.ts";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import { EMessageKind } from "../../src/bot/types.ts";
 import * as LfgConstants from "../../src/lfg/constants.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../src/lfg/mapper.ts";
@@ -25,24 +26,33 @@ const GUILD_CONFIG = {
     guild: "guild-1",
     lfgChannel: PUBLIC_CHANNEL_ID,
     lfgRolePingCooldownMinutes: 45,
-} as GuildConfig;
+};
+const PINGABLE_ROLE_ID = "pingable-role";
+const COOLDOWN_ROLE_ID = "cooldown-role";
+
+afterEach(() => {
+    vi.useRealTimers();
+});
 
 function statusDescription({
     roomsDescription,
     lfgChannel,
+    lfgRoles = LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
     lfgRolePingCooldownMinutes = null,
 }: {
     readonly roomsDescription: string;
     readonly lfgChannel: string;
+    readonly lfgRoles?: string | readonly string[];
     readonly lfgRolePingCooldownMinutes?: number | null;
 }) {
+    const lfgRolesDescription = typeof lfgRoles === "string" ? [`LFG roles: ${lfgRoles}`] : ["LFG roles:", lfgRoles];
     return [
         heading("Rooms", HeadingLevel.Three),
         roomsDescription,
         heading("Server config", HeadingLevel.Three),
         unorderedList([
             `LFG channel: ${lfgChannel}`,
-            `LFG roles: ${LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION}`,
+            ...lfgRolesDescription,
             `LFG roles ping cooldown: ${
                 lfgRolePingCooldownMinutes != null
                     ? `${lfgRolePingCooldownMinutes} minutes`
@@ -566,11 +576,24 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
         );
     });
 
-    test("maps status with configured LFG channel", () => {
+    test("maps status with configured LFG values", () => {
+        const STATUS_NOW = new Date("2026-07-19T10:00:00.000Z");
+        const COOLDOWN_ROLE_LAST_PINGED_AT = new Date("2026-07-19T09:30:00.000Z");
+        const COOLDOWN_ROLE_PINGABLE_AT = new Date("2026-07-19T10:15:00.000Z");
+
+        vi.useFakeTimers();
+        vi.setSystemTime(STATUS_NOW);
+
         const messageBase = mapLfgFeatureReturnToMessageBase({
             result: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
             callerId: "owner",
-            guildConfig: GUILD_CONFIG,
+            guildConfig: {
+                ...GUILD_CONFIG,
+                lfgRoles: [
+                    { role: PINGABLE_ROLE_ID, lastPingedAt: null },
+                    { role: COOLDOWN_ROLE_ID, lastPingedAt: COOLDOWN_ROLE_LAST_PINGED_AT },
+                ],
+            },
         });
 
         expect(messageBase).toMatchObject({
@@ -580,6 +603,10 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                     description: statusDescription({
                         roomsDescription: `- ${roomDescription(ROOM)}`,
                         lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
+                        lfgRoles: [
+                            `${roleMention(PINGABLE_ROLE_ID)} (pingable immediately)`,
+                            `${roleMention(COOLDOWN_ROLE_ID)} (pingable on ${time(COOLDOWN_ROLE_PINGABLE_AT)})`,
+                        ],
                         lfgRolePingCooldownMinutes: 45,
                     }),
                 },
