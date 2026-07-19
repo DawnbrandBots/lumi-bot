@@ -1,5 +1,14 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import { channelMention, heading, inlineCode, MessageFlags, roleMention, unorderedList, userMention } from "discord.js";
+import {
+    channelMention,
+    heading,
+    inlineCode,
+    MessageFlags,
+    roleMention,
+    time,
+    unorderedList,
+    userMention,
+} from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { GuildConfig } from "../admin/models/config.ts";
 import {
@@ -14,6 +23,22 @@ import { LFG_SHOW_RESPONSE_OPTION_NAME } from "./constants.ts";
 import type { TLfgFeatureReturnOfKind } from "./types.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
 
+/** Role config fields needed to render one pingable role's status. */
+type LfgRoleStatus = {
+    // TODO: `Date | string | null` because the Mikro-ORM model uses string for date fields
+    // I believe this is a symptom of needing to map the Mikro-ORM model to some other representation for use in the LFG feature.
+    readonly lastPingedAt?: Date | string | null;
+    readonly role: string;
+};
+
+/** Guild config fields needed to render the LFG status output. */
+type LfgStatusGuildConfig = Pick<GuildConfig, "lfgChannel" | "lfgRolePingCooldownMinutes"> & {
+    readonly lfgRoles?: Iterable<LfgRoleStatus>;
+};
+
+/** Guild config fields needed to decide whether an LFG reply should be public. */
+type LfgReplyGuildConfig = Pick<GuildConfig, "lfgChannel">;
+
 function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
         return LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION;
@@ -21,16 +46,33 @@ function formatList(rooms: readonly IRoom[]) {
     return unorderedList(rooms.map(formatRoom));
 }
 
-function formatStatus(rooms: readonly IRoom[], guildConfig?: GuildConfig | null) {
+/** Formats one pingable role with its current ping cooldown state. */
+function formatLfgRoleStatus(lfgRole: LfgRoleStatus, cooldownMs: number, now: Date) {
+    const pingableAt = lfgRole.lastPingedAt ? new Date(new Date(lfgRole.lastPingedAt).getTime() + cooldownMs) : null;
+    const cooldownStatus =
+        pingableAt && pingableAt.getTime() > now.getTime() ? `pingable on ${time(pingableAt)}` : "pingable immediately";
+
+    return `${roleMention(lfgRole.role)} (${cooldownStatus})`;
+}
+
+/** Formats pingable LFG roles as missing config text or nested status list entries. */
+function formatLfgRoles(guildConfig?: LfgStatusGuildConfig | null) {
+    const lfgRoles = guildConfig?.lfgRoles ? Array.from(guildConfig.lfgRoles) : [];
+    if (lfgRoles.length === 0) {
+        return LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    }
+
+    const cooldownMs = (guildConfig?.lfgRolePingCooldownMinutes ?? 0) * 60 * 1000;
+    const now = new Date();
+    return lfgRoles.map((lfgRole) => formatLfgRoleStatus(lfgRole, cooldownMs, now));
+}
+
+function formatStatus(rooms: readonly IRoom[], guildConfig?: LfgStatusGuildConfig | null) {
     const lfgChannel = guildConfig?.lfgChannel
         ? channelMention(guildConfig.lfgChannel)
         : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
-    const lfgRoles =
-        guildConfig?.lfgRoles && guildConfig.lfgRoles.length
-            ? Array.from(guildConfig.lfgRoles)
-                  .map((lfgRole) => roleMention(lfgRole.role))
-                  .join(", ")
-            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    const lfgRoles = formatLfgRoles(guildConfig);
+    const lfgRolesListItem = Array.isArray(lfgRoles) ? ["LFG roles:", lfgRoles] : [`LFG roles: ${lfgRoles}`];
     const lfgRolePingCooldown =
         guildConfig?.lfgRolePingCooldownMinutes != null
             ? `${guildConfig.lfgRolePingCooldownMinutes} minutes`
@@ -41,7 +83,7 @@ function formatStatus(rooms: readonly IRoom[], guildConfig?: GuildConfig | null)
         heading("Server config", 3),
         unorderedList([
             `LFG channel: ${lfgChannel}`,
-            `LFG roles: ${lfgRoles}`,
+            ...lfgRolesListItem,
             `LFG roles ping cooldown: ${lfgRolePingCooldown}`,
         ]),
     ].join("\n");
@@ -166,7 +208,7 @@ export function mapLfgFeatureReturnToMessageBase({
 }: {
     result: TLfgFeatureReturn;
     callerId: string;
-    guildConfig?: GuildConfig | null;
+    guildConfig?: LfgStatusGuildConfig | null;
 }) {
     switch (result.kind) {
         case ELfgFeatureReturnKind.ROOMS_LISTED: {
@@ -320,7 +362,7 @@ export function mapLfgMessageBaseToReply({
         Pick<ChatInputCommandInteraction, "options" | "channelId">,
         "options.getBoolean" | "channelId"
     >;
-    guildConfig: GuildConfig | null;
+    guildConfig: LfgReplyGuildConfig | null;
 }) {
     const displayToEveryone = interaction.options.getBoolean(LFG_SHOW_RESPONSE_OPTION_NAME, false);
 
