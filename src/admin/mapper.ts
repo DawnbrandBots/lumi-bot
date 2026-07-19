@@ -7,11 +7,7 @@ import {
     type InteractionReplyOptions,
 } from "discord.js";
 import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../bot/message.ts";
-import {
-    LFG_COMMAND_NAME,
-    LFG_NOT_CONFIGURED_DESCRIPTION,
-    LFG_PING_SUBCOMMAND_NAME,
-} from "../lfg/constants.ts";
+import { LFG_COMMAND_NAME, LFG_NOT_CONFIGURED_DESCRIPTION, LFG_PING_SUBCOMMAND_NAME } from "../lfg/constants.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
