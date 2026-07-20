@@ -22,14 +22,14 @@ const SPELL_VALUE_LEVELS_ROW_2 = Array.from(range({ start: 7, end: 13 }));
 function formatSpellValues(spell: ISpell): string | null {
     const rows1 = spellEffectsValues(spell).flatMap((values, index) => {
         return values.map((value, valueIndex) => [
-            valueIndex === 0 ? index + 1 : "",
+            valueIndex === 0 ? `${index + 1}.` : "",
             ...SPELL_VALUE_LEVELS_ROW_1.map((level) => value.toLevel(level)),
         ]);
     });
 
     const rows2 = spellEffectsValues(spell).flatMap((values, index) => {
         return values.map((value, valueIndex) => [
-            valueIndex === 0 ? index + 1 : "",
+            valueIndex === 0 ? `${index + 1}.` : "",
             ...SPELL_VALUE_LEVELS_ROW_2.map((level) => value.toLevel(level)),
         ]);
     });
