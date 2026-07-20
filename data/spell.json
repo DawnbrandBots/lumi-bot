@@ -1327,9 +1327,6 @@
                 }
               ]
             },
-            "unit": {
-              "kind": "FIXED"
-            },
             "color": "GREEN"
           },
           "times": 2,
@@ -1816,9 +1813,6 @@
                   "base": 40
                 }
               ]
-            },
-            "unit": {
-              "kind": "FIXED"
             },
             "color": "BLUE"
           },
@@ -3864,5 +3858,134 @@
       }
     ],
     "onlyFor": ["movementType", "INFANTRY"]
+  },
+  {
+    "id": "FIRE_EDGE_BREAK_EX",
+    "name": "Fire Edge Break EX",
+    "disciple": "PERENNA",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 25,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "HAMMER_FIRE",
+    "name": "Hammer Fire",
+    "disciple": "PERENNA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "effectiveness": [
+                {
+                  "kind": "ARMORED",
+                  "base": 40
+                }
+              ],
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "RED"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "HOLY_FIRE",
+    "name": "Holy Fire",
+    "disciple": "PERENNA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "effectiveness": [
+            {
+              "kind": "MINION",
+              "base": 90
+            }
+          ],
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_FIRE_WARP_PLUS_FLYING",
+    "name": "Dark Fire Warp + Flying",
+    "disciple": "PERENNA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "FLYING"]
   }
 ]
