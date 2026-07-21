@@ -5,14 +5,38 @@ import { Music } from "../game/models/music.ts";
 import { Spell } from "../game/models/spell.ts";
 import { Weapon } from "../game/models/weapon.ts";
 import { WeaponSkill } from "../game/models/weaponSkill.ts";
-import type { ISearchItem, TSearchableEntity, TSearchKind } from "../search/types.ts";
-
-function* id(entity: TSearchableEntity) {
-    yield entity.name;
-}
+import { ESpellRole } from "../game/types.ts";
+import type { ISearchItem, TSearchableEntity } from "../search/types.ts";
 
 function* aliasWeapon(weapon: Weapon) {
     yield weapon.name.replace("+", "Plus");
+    if (weapon.prfDisciple) {
+        yield `${weapon.prfDisciple.name}'s weapon`;
+    }
+}
+
+function* aliasDisciple(disciple: Disciple) {
+    yield disciple.name;
+    if (disciple.prfWeapon) {
+        yield `${disciple.prfWeapon.name}'s disciple`;
+    }
+}
+
+function* aliasWeaponSkill(weaponSkill: WeaponSkill) {
+    yield weaponSkill.name;
+    for (const weapon of weaponSkill.uniqueSkillWeapons) {
+        yield `${weapon.name}'s skill`;
+    }
+}
+
+function* aliasMusic(music: Music) {
+    yield music.name;
+    for (const disciple of music.shadowMusicFor || []) {
+        yield `Shadow ${disciple.name}'s music`;
+    }
+    for (const disciple of music.shadowResultsScreenMusicFor || []) {
+        yield `Shadow ${disciple.name}'s results screen music`;
+    }
 }
 
 const SPELL_NAME_PREFIX_SPLIT_REGEX = new RegExp(`\\s|(?=${SPELL_NAME_SUFFIXES.join("|")})`, "i");
@@ -22,6 +46,9 @@ function* aliasSpell(spell: Spell): Generator<string> {
     yield norm;
     const normSplit = norm.split(SPELL_NAME_PREFIX_SPLIT_REGEX);
     yield normSplit.map((s) => (s === "EX" ? s : s === "Plus" ? "P" : s[0]?.toUpperCase())).join("");
+    if (spell.disciple && spell.role.kind === ESpellRole.EX) {
+        yield `${spell.disciple.name}'s EX`;
+    }
 }
 
 function getToSearchItemMapper<Kind extends string>(
@@ -47,17 +74,19 @@ export default async function getSearchItems(em: SqlEntityManager) {
     const localEm = em.fork();
 
     // No need to populate entities. We only care about the id, name and kind for the sake of the search.
-    const weapons: Weapon[] = await localEm.findAll(Weapon);
-    const disciples: Disciple[] = await localEm.findAll(Disciple);
-    const weaponSkills: WeaponSkill[] = await localEm.findAll(WeaponSkill);
-    const spells: Spell[] = await localEm.findAll(Spell);
-    const music: Music[] = await localEm.findAll(Music);
+    const weapons: Weapon[] = await localEm.findAll(Weapon, { populate: ["prfDisciple"] });
+    const disciples: Disciple[] = await localEm.findAll(Disciple, { populate: ["prfWeapon"] });
+    const weaponSkills: WeaponSkill[] = await localEm.findAll(WeaponSkill, { populate: ["uniqueSkillWeapons"] });
+    const spells: Spell[] = await localEm.findAll(Spell, { populate: ["disciple"] });
+    const music: Music[] = await localEm.findAll(Music, {
+        populate: ["shadowMusicFor", "shadowResultsScreenMusicFor"],
+    });
 
     const weaponSearchItems = weapons.flatMap(getToSearchItemMapper(aliasWeapon));
-    const discipleSearchItems = disciples.flatMap(getToSearchItemMapper<TSearchKind>(id));
-    const weaponSkillSearchItems = weaponSkills.flatMap(getToSearchItemMapper<TSearchKind>(id));
+    const discipleSearchItems = disciples.flatMap(getToSearchItemMapper(aliasDisciple));
+    const weaponSkillSearchItems = weaponSkills.flatMap(getToSearchItemMapper(aliasWeaponSkill));
     const spellSearchItems = spells.flatMap(getToSearchItemMapper(aliasSpell));
-    const musicSearchItems = music.flatMap(getToSearchItemMapper<TSearchKind>(id));
+    const musicSearchItems = music.flatMap(getToSearchItemMapper(aliasMusic));
 
     return [
         ...weaponSearchItems,
