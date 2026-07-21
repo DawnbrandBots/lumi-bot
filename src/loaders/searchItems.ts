@@ -5,31 +5,31 @@ import { Music } from "../game/models/music.ts";
 import { Spell } from "../game/models/spell.ts";
 import { Weapon } from "../game/models/weapon.ts";
 import { WeaponSkill } from "../game/models/weaponSkill.ts";
-import type { IMusic } from "../game/types.ts";
-import type { ISearchableEntity, ISearchItem } from "../search/types.ts";
+import type { ISearchItem, TSearchableEntity, TSearchKind } from "../search/types.ts";
 
-function* id(value: string) {
-    yield value;
+function* id(entity: TSearchableEntity) {
+    yield entity.name;
 }
 
-function* aliasWeaponName(value: string) {
-    yield value.replace("+", "Plus");
+function* aliasWeapon(weapon: Weapon) {
+    yield weapon.name.replace("+", "Plus");
 }
 
 const SPELL_NAME_PREFIX_SPLIT_REGEX = new RegExp(`\\s|(?=${SPELL_NAME_SUFFIXES.join("|")})`, "i");
 
-function* aliasSpellName(value: string): Generator<string> {
-    const norm = value.replace("+", "Plus");
+function* aliasSpell(spell: Spell): Generator<string> {
+    const norm = spell.name.replace("+", "Plus");
     yield norm;
     const normSplit = norm.split(SPELL_NAME_PREFIX_SPLIT_REGEX);
     yield normSplit.map((s) => (s === "EX" ? s : s === "Plus" ? "P" : s[0]?.toUpperCase())).join("");
 }
 
 function getToSearchItemMapper<Kind extends string>(
-    aliaser: (value: string) => Iterable<string>,
-): (entity: ISearchableEntity & { kind: Kind }) => ISearchItem & { kind: Kind } {
-    return ({ id, name, kind }: ISearchableEntity & { kind: Kind }) => {
-        const aliases = [...aliaser(name)];
+    aliaser: (value: Extract<TSearchableEntity, { kind: Kind }>) => Iterable<string>,
+): (entity: Extract<TSearchableEntity, { kind: Kind }>) => ISearchItem & { kind: Kind } {
+    return (entity: Extract<TSearchableEntity, { kind: Kind }>) => {
+        const aliases = [...aliaser(entity)];
+        const { id, name, kind } = entity;
         return {
             id,
             name,
@@ -51,13 +51,13 @@ export default async function getSearchItems(em: SqlEntityManager) {
     const disciples: Disciple[] = await localEm.findAll(Disciple);
     const weaponSkills: WeaponSkill[] = await localEm.findAll(WeaponSkill);
     const spells: Spell[] = await localEm.findAll(Spell);
-    const music: IMusic[] = await localEm.findAll(Music);
+    const music: Music[] = await localEm.findAll(Music);
 
-    const weaponSearchItems = weapons.flatMap(getToSearchItemMapper(aliasWeaponName));
-    const discipleSearchItems = disciples.flatMap(getToSearchItemMapper(id));
-    const weaponSkillSearchItems = weaponSkills.flatMap(getToSearchItemMapper(id));
-    const spellSearchItems = spells.flatMap(getToSearchItemMapper(aliasSpellName));
-    const musicSearchItems = music.flatMap(getToSearchItemMapper(id));
+    const weaponSearchItems = weapons.flatMap(getToSearchItemMapper(aliasWeapon));
+    const discipleSearchItems = disciples.flatMap(getToSearchItemMapper<TSearchKind>(id));
+    const weaponSkillSearchItems = weaponSkills.flatMap(getToSearchItemMapper<TSearchKind>(id));
+    const spellSearchItems = spells.flatMap(getToSearchItemMapper(aliasSpell));
+    const musicSearchItems = music.flatMap(getToSearchItemMapper<TSearchKind>(id));
 
     return [
         ...weaponSearchItems,
