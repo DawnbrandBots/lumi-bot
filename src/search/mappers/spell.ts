@@ -40,14 +40,14 @@ function formatSpellValues(spell: ISpell): string | null {
 
     return codeBlock(
         toAsciiTable({
-            data: [["", ...SPELL_VALUE_LEVELS_ROW_1], ...rows1],
+            data: [["Lv", ...SPELL_VALUE_LEVELS_ROW_1], ...rows1],
             cellPadding: 3,
         }) +
             "\n" +
             separator({ data: [["", ...SPELL_VALUE_LEVELS_ROW_1], ...rows1], cellPadding: 3, cross: "╪", line: "=" }) +
             "\n" +
             toAsciiTable({
-                data: [["", ...SPELL_VALUE_LEVELS_ROW_2], ...rows2],
+                data: [["Lv", ...SPELL_VALUE_LEVELS_ROW_2], ...rows2],
                 cellPadding: 3,
             }),
     );
