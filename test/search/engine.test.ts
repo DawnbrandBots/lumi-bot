@@ -4,7 +4,7 @@ import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import type { ISearchEngine, ISearchItem } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
-import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES } from "./constants.ts";
+import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES, SEARCH_RANKING_KNOWN_FAILURE_CASES } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
@@ -28,6 +28,12 @@ describe(FuseSearchEngine.name, () => {
             });
         }
 
+        for (const { expectedId, expectedName, inputs } of SEARCH_RANKING_KNOWN_FAILURE_CASES) {
+            test.fails.each(inputs)(`%s returns ${expectedName}`, (input) => {
+                expect(searchEngine.searchOne(input)?.id).toBe(expectedId);
+            });
+        }
+
         test("returns undefined when there is no result", () => {
             expect(searchEngine.searchOne(NO_SEARCH_RESULT_INPUT)).toBeUndefined();
         });
@@ -40,6 +46,15 @@ describe(FuseSearchEngine.name, () => {
             });
         }
 
+        for (const { expectedId, expectedName, inputs } of SEARCH_RANKING_KNOWN_FAILURE_CASES) {
+            test.fails.each(inputs)(`%s returns ${expectedName} as first result`, (input) => {
+                expect(searchEngine.search(input)[0]?.id).toBe(expectedId);
+            });
+        }
+
+        test("returns an empty array on empty input", () => {
+            expect(searchEngine.search("")).toEqual([]);
+        });
         test("returns an empty array when there is no result", () => {
             expect(searchEngine.search(NO_SEARCH_RESULT_INPUT)).toEqual([]);
         });
