@@ -1,5 +1,6 @@
 import { distance } from "fastest-levenshtein";
 import Fuse, { type FuseSortFunctionArg } from "fuse.js";
+import removeDiacritics from "../utils/removeDiacritics.ts";
 import type { ISearchEngine, ISearchItem } from "./types.ts";
 
 /** Alias match type provided by Fuse to custom sort functions. */
@@ -15,12 +16,8 @@ function getBestAlias(result: FuseSortFunctionArg): TAliasMatch | null {
     );
 }
 
-function normalize(str: string) {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
 function getAliasDistanceToInput({ alias, input }: { alias: TAliasMatch | null; input: string }): number {
-    return alias ? distance(normalize(alias.value), normalize(input)) : Number.POSITIVE_INFINITY;
+    return alias ? distance(removeDiacritics(alias.value), removeDiacritics(input)) : Number.POSITIVE_INFINITY;
 }
 
 export abstract class SearchEngine<Items extends ISearchItem> implements ISearchEngine<Items> {
