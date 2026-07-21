@@ -2383,7 +2383,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 50,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
           }
@@ -2398,6 +2397,7 @@
           "statChange": "INCREASE",
           "amount": {
             "base": 20,
+            "scalesWithLevel": false,
             "unit": {
               "kind": "PERCENT",
               "stat": "COLOR_AFFINITY"
