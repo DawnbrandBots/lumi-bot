@@ -6,8 +6,6 @@ type TSpellValueFunctions = {
     [K in TSpellEffect["kind"]]: (effect: Extract<TSpellEffect, { kind: K }>) => ISpellEffectValueWithToLevel[];
 };
 
-export type ISpellEffectValueScaleUnit = "FIXED" | "PERCENT";
-
 // TODO: admittedly, this name sucks. I think I should include something like "DBModel" in db-related models name so I could use "ISpellEffectValue" here for example.
 // Maybe in another PR that refactors data access for this repository.
 export type ISpellEffectValueWithToLevel = Omit<ISpellEffectValue, "effectiveness" | "scalesWithLevel"> &
