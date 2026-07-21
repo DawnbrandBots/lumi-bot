@@ -29,16 +29,20 @@ function formatSpellValues(spell: ISpell): string | null {
         return toAsciiTable({ data, cellPadding: 3 });
     };
 
-    const innerTable1 = innerTable({
-        start: 1,
-        end: 7,
-    });
-    const innerTable2 = innerTable({
-        start: 7,
-        end: 13,
-    });
+    if (spell.disciple) {
+        const innerTable1 = innerTable({
+            start: 1,
+            end: 7,
+        });
+        const innerTable2 = innerTable({
+            start: 7,
+            end: 13,
+        });
 
-    return codeBlock(innerTable1 + "\n" + " ".repeat(innerTable1.indexOf("\n")) + "\n" + innerTable2);
+        return codeBlock(innerTable1 + "\n" + " ".repeat(innerTable1.indexOf("\n")) + "\n" + innerTable2);
+    } else {
+        return codeBlock(innerTable({ start: 1, end: 2 }));
+    }
 }
 
 export default function mapSpellToMessage(spell: ISpell) {
