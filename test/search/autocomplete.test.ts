@@ -14,6 +14,7 @@ import {
     SEARCH_RANKING_CASES,
     SEARCH_RANKING_KNOWN_FAILURE_CASES,
     SEARCH_RELATED_ENTITY_ALIAS_CASES,
+    SEARCH_RELATED_STANDALONE_ALIAS_CASES,
 } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
@@ -68,6 +69,19 @@ describe("search autocomplete", () => {
     }
 
     for (const [input, { expectedName }] of Object.entries(SEARCH_RELATED_ENTITY_ALIAS_CASES)) {
+        test(`${input} returns ${expectedName} as first choice`, () => {
+            expect(
+                searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
+                    getMockAutocompleteInteraction(input, SEARCH_TERMS_OPTION_NAME),
+                )?.[0],
+            ).toEqual({
+                name: expectedName,
+                value: expectedName,
+            });
+        });
+    }
+
+    for (const [input, { expectedName }] of Object.entries(SEARCH_RELATED_STANDALONE_ALIAS_CASES)) {
         test(`${input} returns ${expectedName} as first choice`, () => {
             expect(
                 searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](

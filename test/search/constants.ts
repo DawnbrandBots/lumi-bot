@@ -87,3 +87,23 @@ export const SEARCH_RELATED_ENTITY_ALIAS_CASES = {
         expectedName: "Kurt",
     },
 } as const;
+
+/** Search expectations for relative aliases generated from standalone aliases of related entities. */
+export const SEARCH_RELATED_STANDALONE_ALIAS_CASES = {
+    "Royal Sword Plus disciple": {
+        expectedId: "KURT",
+        expectedName: "Kurt",
+    },
+    "EFEX disciple": {
+        expectedId: "KURT",
+        expectedName: "Kurt",
+    },
+    "Royal Sword Plus weapon skill": {
+        expectedId: "ROYAL_SCION",
+        expectedName: "Royal Scion",
+    },
+    "Royal Sword weapon skill": {
+        expectedId: "ROYAL_SCION",
+        expectedName: "Royal Scion",
+    },
+} as const;

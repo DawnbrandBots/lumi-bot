@@ -9,6 +9,7 @@ import {
     SEARCH_RANKING_CASES,
     SEARCH_RANKING_KNOWN_FAILURE_CASES,
     SEARCH_RELATED_ENTITY_ALIAS_CASES,
+    SEARCH_RELATED_STANDALONE_ALIAS_CASES,
 } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
@@ -45,6 +46,12 @@ describe(FuseSearchEngine.name, () => {
             });
         }
 
+        for (const [input, { expectedId, expectedName }] of Object.entries(SEARCH_RELATED_STANDALONE_ALIAS_CASES)) {
+            test(`${input} returns ${expectedName}`, () => {
+                expect(searchEngine.searchOne(input)?.id).toBe(expectedId);
+            });
+        }
+
         test("returns undefined when there is no result", () => {
             expect(searchEngine.searchOne(NO_SEARCH_RESULT_INPUT)).toBeUndefined();
         });
@@ -64,6 +71,12 @@ describe(FuseSearchEngine.name, () => {
         }
 
         for (const [input, { expectedId, expectedName }] of Object.entries(SEARCH_RELATED_ENTITY_ALIAS_CASES)) {
+            test(`${input} returns ${expectedName} as first result`, () => {
+                expect(searchEngine.search(input)[0]?.id).toBe(expectedId);
+            });
+        }
+
+        for (const [input, { expectedId, expectedName }] of Object.entries(SEARCH_RELATED_STANDALONE_ALIAS_CASES)) {
             test(`${input} returns ${expectedName} as first result`, () => {
                 expect(searchEngine.search(input)[0]?.id).toBe(expectedId);
             });
