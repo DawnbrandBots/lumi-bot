@@ -8,6 +8,10 @@ import { WeaponSkill } from "../game/models/weaponSkill.ts";
 import { ESpellRole } from "../game/types.ts";
 import type { ISearchItem, TSearchableEntity } from "../search/types.ts";
 
+// Standalone aliases are aliases created from an entity's own properties. eg. `Ennea Fire EX` and `EFEX` are based on the spell's name only.
+// Relative aliases are aliases created from an entity's relationship's properties. eg. `Ennea Fire EX disciple` points to `Kurt`,
+// and so do `EFEX Disciple`, `Royal Sword + disciple` and `Royal Sword Plus disciple`!
+
 function* standaloneAliasWeapon(weapon: Weapon) {
     yield weapon.name;
     if (weapon.name.includes("+")) {
