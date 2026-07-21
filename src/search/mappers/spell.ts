@@ -5,6 +5,7 @@ import {
     DISCORD_RED_SQUARE_EMOJI_CALL,
 } from "../../bot/constants.ts";
 import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
+import type { ISpellEffectValueWithToLevel } from "../../game/spellEffectValues.ts";
 import { spellEffectsValues } from "../../game/spellEffectValues.ts";
 import type { ISpell } from "../../game/types.ts";
 import range from "../../utils/range.ts";
@@ -16,10 +17,10 @@ const tileEmojis: Record<string, string> = {
     ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
 };
 
-function formatSpellValues(spell: ISpell): string | null {
+function formatSpellValues({ spell, values }: { spell: ISpell; values: ISpellEffectValueWithToLevel[][] }): string {
     const innerTable = (rangeArg: { start: number; end: number }) => {
         const levelsRow = Array.from(range(rangeArg));
-        const rows = spellEffectsValues(spell).flatMap((values, index) => {
+        const rows = values.flatMap((values, index) => {
             return values.map((value, valueIndex) => [
                 valueIndex === 0 ? `${index + 1}.` : "",
                 ...levelsRow.map((level, index) => (!value.scalesWithLevel && index > 0 ? "." : value.toLevel(level))),
@@ -50,7 +51,8 @@ export default function mapSpellToMessage(spell: ISpell) {
         .replaceAll(/(.{5})(?<!$)/g, "$1\n")
         .replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
 
-    const valuesStr = formatSpellValues(spell);
+    const values = spellEffectsValues(spell);
+    const valuesStr = values.some((valuesSubArray) => valuesSubArray.length) && formatSpellValues({ spell, values });
     const effectsStr = describeSpellEffects(spell);
 
     const onlyFor = spell.onlyFor && {
