@@ -40,6 +40,9 @@ describe(FuseSearchEngine.name, () => {
             });
         }
 
+        test("returns an empty array on empty input", () => {
+            expect(searchEngine.search("")).toEqual([]);
+        });
         test("returns an empty array when there is no result", () => {
             expect(searchEngine.search(NO_SEARCH_RESULT_INPUT)).toEqual([]);
         });

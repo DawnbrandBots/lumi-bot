@@ -49,6 +49,14 @@ describe("search autocomplete", () => {
         });
     }
 
+    test("returns an empty array on empty input", () => {
+        expect(
+            searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
+                getMockAutocompleteInteraction("", SEARCH_TERMS_OPTION_NAME),
+            ),
+        ).toEqual([]);
+    });
+
     test("returns an empty array when there is no result", () => {
         expect(
             searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
