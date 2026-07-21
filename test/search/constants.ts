@@ -55,3 +55,35 @@ export const SEARCH_RANKING_KNOWN_FAILURE_CASES = [
         inputs: ["Sword + Royal", "Royal +"],
     },
 ] as const;
+
+/** Search alias expectations for aliases derived from related entities. */
+export const SEARCH_RELATED_ENTITY_ALIAS_CASES = {
+    "Kurt EX": {
+        expectedId: "ENNEA_FIRE_EX",
+        expectedName: "Ennea Fire EX",
+    },
+    "Kurt Music": {
+        expectedId: "BETRAYAL_EXILED_PRINCE",
+        expectedName: "Betrayal – The Exiled Prince",
+    },
+    "Kurt Music Results": {
+        expectedId: "BETRAYAL_EXILED_PRINCE_RESULTS_SCREEN",
+        expectedName: "Betrayal – The Exiled Prince (Results screen)",
+    },
+    "Kurt Weapon": {
+        expectedId: "ROYAL_SWORD_PLUS",
+        expectedName: "Royal Sword +",
+    },
+    "Royal Sword + disciple": {
+        expectedId: "KURT",
+        expectedName: "Kurt",
+    },
+    "Royal Sword + skill": {
+        expectedId: "ROYAL_SCION",
+        expectedName: "Royal Scion",
+    },
+    "Ennea Fire EX disciple": {
+        expectedId: "KURT",
+        expectedName: "Kurt",
+    },
+} as const;
