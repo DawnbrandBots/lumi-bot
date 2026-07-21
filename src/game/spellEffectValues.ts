@@ -19,8 +19,6 @@ export type ISpellEffectValueWithToLevelAndConsistentScale = ISpellEffectValueWi
     scale: number;
 };
 
-// TODO: shoudldn't TSpellEffectValueUnit be used in the spellvaluedefinition?
-
 const UNIT_TO_SCALE_DENOMINATOR: Record<keyof typeof ESpellEffectValueUnitKind, number> = {
     [ESpellEffectValueUnitKind.FIXED]: 10,
     [ESpellEffectValueUnitKind.PERCENT]: 20,
@@ -149,7 +147,6 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellValueFunctions = {
                 unit: { kind: "FIXED" },
             }),
         ];
-        // { base: effect.hp.base, scale: effect.hp.base / 10, unit: { kind: "FIXED" } }];
     },
     TILE(effect) {
         return valuesForEffect(effect.repeat);
