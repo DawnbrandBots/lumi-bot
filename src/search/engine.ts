@@ -19,7 +19,7 @@ function normalize(str: string) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-function getAliasLengthDistance({ alias, input }: { alias: TAliasMatch | null; input: string }): number {
+function getAliasDistanceToInput({ alias, input }: { alias: TAliasMatch | null; input: string }): number {
     // return alias ? Math.abs(input.length - alias.value.length) : Number.POSITIVE_INFINITY;
     return alias ? distance(normalize(alias.value), normalize(input)) : Number.POSITIVE_INFINITY;
 }
@@ -52,8 +52,8 @@ export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<It
         const bBestAlias = getBestAlias(b);
         return (
             (aBestAlias?.score ?? 1) - (bBestAlias?.score ?? 1) ||
-            getAliasLengthDistance({ alias: aBestAlias, input: this.lastInput }) -
-                getAliasLengthDistance({ alias: bBestAlias, input: this.lastInput }) ||
+            getAliasDistanceToInput({ alias: aBestAlias, input: this.lastInput }) -
+                getAliasDistanceToInput({ alias: bBestAlias, input: this.lastInput }) ||
             a.idx - b.idx
         );
     }
