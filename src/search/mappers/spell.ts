@@ -8,7 +8,7 @@ import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
 import { spellEffectsValues } from "../../game/spellEffectValues.ts";
 import type { ISpell } from "../../game/types.ts";
 import range from "../../utils/range.ts";
-import { separator, toAsciiTable } from "../../utils/table.ts";
+import { toAsciiTable } from "../../utils/table.ts";
 
 const tileEmojis: Record<string, string> = {
     X: DISCORD_RED_SQUARE_EMOJI_CALL,
@@ -16,41 +16,29 @@ const tileEmojis: Record<string, string> = {
     ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
 };
 
-const SPELL_VALUE_LEVELS_ROW_1 = Array.from(range({ start: 1, end: 7 }));
-const SPELL_VALUE_LEVELS_ROW_2 = Array.from(range({ start: 7, end: 13 }));
-
 function formatSpellValues(spell: ISpell): string | null {
-    const rows1 = spellEffectsValues(spell).flatMap((values, index) => {
-        return values.map((value, valueIndex) => [
-            valueIndex === 0 ? `${index + 1}.` : "",
-            ...SPELL_VALUE_LEVELS_ROW_1.map((level) => value.toLevel(level)),
-        ]);
+    const innerTable = (rangeArg: { start: number; end: number }) => {
+        const levelsRow = Array.from(range(rangeArg));
+        const rows = spellEffectsValues(spell).flatMap((values, index) => {
+            return values.map((value, valueIndex) => [
+                valueIndex === 0 ? `${index + 1}.` : "",
+                ...levelsRow.map((level) => value.toLevel(level)),
+            ]);
+        });
+        const data = [["Lv", ...levelsRow], ...rows];
+        return toAsciiTable({ data, cellPadding: 3 });
+    };
+
+    const innerTable1 = innerTable({
+        start: 1,
+        end: 7,
+    });
+    const innerTable2 = innerTable({
+        start: 7,
+        end: 13,
     });
 
-    const rows2 = spellEffectsValues(spell).flatMap((values, index) => {
-        return values.map((value, valueIndex) => [
-            valueIndex === 0 ? `${index + 1}.` : "",
-            ...SPELL_VALUE_LEVELS_ROW_2.map((level) => value.toLevel(level)),
-        ]);
-    });
-
-    if (!rows1.length || !rows2.length) {
-        return null;
-    }
-
-    return codeBlock(
-        toAsciiTable({
-            data: [["Lv", ...SPELL_VALUE_LEVELS_ROW_1], ...rows1],
-            cellPadding: 3,
-        }) +
-            "\n" +
-            separator({ data: [["", ...SPELL_VALUE_LEVELS_ROW_1], ...rows1], cellPadding: 3, cross: "╪", line: "=" }) +
-            "\n" +
-            toAsciiTable({
-                data: [["Lv", ...SPELL_VALUE_LEVELS_ROW_2], ...rows2],
-                cellPadding: 3,
-            }),
-    );
+    return codeBlock(innerTable1 + "\n" + " ".repeat(innerTable1.indexOf("\n")) + "\n" + innerTable2);
 }
 
 export default function mapSpellToMessage(spell: ISpell) {
