@@ -23,6 +23,9 @@ function* aliasDisciple(disciple: Disciple) {
     if (disciple.prfWeapon) {
         yield `${disciple.prfWeapon.name}'s disciple`;
     }
+    for (const spell of disciple.spells) {
+        yield `${spell.name}'s disciple`;
+    }
 }
 
 function* aliasWeaponSkill(weaponSkill: WeaponSkill) {
@@ -86,7 +89,7 @@ export default async function getSearchItems(em: SqlEntityManager) {
 
     // No need to populate entities. We only care about the id, name and kind for the sake of the search.
     const weapons: Weapon[] = await localEm.findAll(Weapon, { populate: ["prfDisciple"] });
-    const disciples: Disciple[] = await localEm.findAll(Disciple, { populate: ["prfWeapon"] });
+    const disciples: Disciple[] = await localEm.findAll(Disciple, { populate: ["prfWeapon", "spells"] });
     const weaponSkills: WeaponSkill[] = await localEm.findAll(WeaponSkill, { populate: ["uniqueSkillWeapons"] });
     const spells: Spell[] = await localEm.findAll(Spell, { populate: ["disciple"] });
     const music: Music[] = await localEm.findAll(Music, {
