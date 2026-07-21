@@ -1,38 +1,48 @@
-import { SPELL_MAXIMUM_LEVEL } from "./constants.ts";
+import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "./constants.ts";
 import type { IDamageEffect, IHealEffect, IStatEffect, TSpellEffect } from "./types.ts";
 import { ESpellEffectValueUnitKind, ESpellRole, type ISpell, type ISpellEffectValue } from "./types.ts";
 
 type TSpellValueFunctions = {
-    [K in TSpellEffect["kind"]]: (
-        effect: Extract<TSpellEffect, { kind: K }>,
-        // spell: ISpell,
-    ) => ISpellEffectValueWithScale[];
+    [K in TSpellEffect["kind"]]: (effect: Extract<TSpellEffect, { kind: K }>) => ISpellEffectValueWithToLevel[];
 };
 
 export type ISpellEffectValueScaleUnit = "FIXED" | "PERCENT";
 
-// export type ISpellEffectValueScale = ISpellEffectValue & {
-//     value: number;
-//     unit: ISpellEffectValueScaleUnit;
-// };
-export type ISpellEffectValueWithScale = Omit<ISpellEffectValue, "effectiveness" | "scalesWithLevel"> & {
-    scalesWithLevel: boolean;
+// TODO: admittedly, this name sucks. I think I should include something like "DBModel" in db-related models name so I could use "ISpellEffectValue" here for example.
+// Maybe in another PR that refactors data access for this repository.
+export type ISpellEffectValueWithToLevel = Omit<ISpellEffectValue, "effectiveness" | "scalesWithLevel"> &
+    Required<Pick<ISpellEffectValue, "scalesWithLevel">> & {
+        toLevel(level: number): number;
+    };
+
+export type ISpellEffectValueWithToLevelAndConsistentScale = ISpellEffectValueWithToLevel & {
     scale: number;
-    // scale: ISpellEffectValueScale;
-    toLevel(level: number): number;
 };
 
 // TODO: shoudldn't TSpellEffectValueUnit be used in the spellvaluedefinition?
 
-export abstract class Value implements ISpellEffectValueWithScale {
-    public readonly base: ISpellEffectValueWithScale["base"];
-    public readonly scalesWithLevel: ISpellEffectValueWithScale["scalesWithLevel"];
-    public abstract readonly unit: ISpellEffectValueWithScale["unit"];
-    public abstract readonly scale: ISpellEffectValueWithScale["scale"];
+const UNIT_TO_SCALE_DENOMINATOR: Record<keyof typeof ESpellEffectValueUnitKind, number> = {
+    [ESpellEffectValueUnitKind.FIXED]: 10,
+    [ESpellEffectValueUnitKind.PERCENT]: 20,
+};
+
+export abstract class Value implements ISpellEffectValueWithToLevel {
+    public readonly base: ISpellEffectValueWithToLevel["base"];
+    public readonly scalesWithLevel: ISpellEffectValueWithToLevel["scalesWithLevel"];
+    public abstract readonly unit: ISpellEffectValueWithToLevel["unit"];
+    public abstract toLevel(level: number): number;
 
     public constructor(arg: Pick<ISpellEffectValue, "base" | "scalesWithLevel">) {
         this.base = arg.base;
         this.scalesWithLevel = arg.scalesWithLevel ?? true;
+    }
+}
+
+export abstract class ValueWithScale extends Value implements ISpellEffectValueWithToLevelAndConsistentScale {
+    public abstract readonly scale: ISpellEffectValueWithToLevelAndConsistentScale["scale"];
+
+    public constructor(arg: Pick<ISpellEffectValue, "base" | "scalesWithLevel">) {
+        super(arg);
     }
 
     public toLevel(level: number) {
@@ -40,10 +50,12 @@ export abstract class Value implements ISpellEffectValueWithScale {
     }
 }
 
-export class NormalValue extends Value implements ISpellEffectValueWithScale {
-    public readonly unit: ISpellEffectValueWithScale["unit"];
+export class NormalValue extends ValueWithScale implements ISpellEffectValueWithToLevelAndConsistentScale {
+    public readonly unit: ISpellEffectValueWithToLevelAndConsistentScale["unit"];
 
-    public constructor(arg: ConstructorParameters<typeof Value>[0] & Pick<ISpellEffectValueWithScale, "unit">) {
+    public constructor(
+        arg: ConstructorParameters<typeof Value>[0] & Pick<ISpellEffectValueWithToLevelAndConsistentScale, "unit">,
+    ) {
         super(arg);
         this.unit = arg.unit;
     }
@@ -57,7 +69,10 @@ export class NormalValue extends Value implements ISpellEffectValueWithScale {
     }
 }
 
-export class MinionAtkValue extends Value implements ISpellEffectValueWithScale {
+const MINION_ATK_SCALE_DENOMINATOR_BEFORE_SCALE_CHANGE_LEVEL = 5;
+const MINION_ATK_SCALE_DENOMINATOR_AFTER_SCALE_CHANGE_LEVEL = 10;
+
+export class MinionAtkValue extends Value implements ISpellEffectValueWithToLevel {
     public constructor(arg: ConstructorParameters<typeof Value>[0]) {
         super(arg);
     }
@@ -66,16 +81,27 @@ export class MinionAtkValue extends Value implements ISpellEffectValueWithScale 
         return { kind: "FIXED" } as const;
     }
 
-    public get scale() {
+    public toLevel(level: number) {
         if (!this.scalesWithLevel) {
-            return 0;
+            return this.base;
         }
 
-        return this.base / 5;
+        const scaleBeforeScaleChangeLevel = this.base / MINION_ATK_SCALE_DENOMINATOR_BEFORE_SCALE_CHANGE_LEVEL;
+        if (level < SPELL_MINION_ATK_SCALE_CHANGE_LEVEL) {
+            return Math.floor(this.base + scaleBeforeScaleChangeLevel * (level - 1));
+        }
+
+        const scaleAfterScaleChangeLevel = this.base / MINION_ATK_SCALE_DENOMINATOR_AFTER_SCALE_CHANGE_LEVEL;
+        return Math.floor(
+            this.base +
+                scaleBeforeScaleChangeLevel * (SPELL_MINION_ATK_SCALE_CHANGE_LEVEL - 2) +
+                scaleAfterScaleChangeLevel *
+                    ((level === SPELL_MAXIMUM_LEVEL ? level + 1 : level) - (SPELL_MINION_ATK_SCALE_CHANGE_LEVEL - 1)),
+        );
     }
 }
 
-export class DarkSlashValue extends Value implements ISpellEffectValueWithScale {
+export class DarkSlashValue extends ValueWithScale implements ISpellEffectValueWithToLevelAndConsistentScale {
     public get unit() {
         return { kind: "PERCENT" } as const;
     }
@@ -88,11 +114,6 @@ export class DarkSlashValue extends Value implements ISpellEffectValueWithScale 
         return 5;
     }
 }
-
-const UNIT_TO_SCALE_DENOMINATOR: Record<keyof typeof ESpellEffectValueUnitKind, number> = {
-    [ESpellEffectValueUnitKind.FIXED]: 10,
-    [ESpellEffectValueUnitKind.PERCENT]: 20,
-};
 
 const noValues = () => [];
 const withEffectiveness = (effect: IDamageEffect | IHealEffect | IStatEffect) => {
@@ -146,13 +167,12 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellValueFunctions = {
 };
 
 function valuesForEffect<K extends TSpellEffect["kind"]>(
-    // effect: TSpellEffect & { kind: K },
     effect: Extract<TSpellEffect, { kind: K }>,
-): ISpellEffectValueWithScale[] {
+): ISpellEffectValueWithToLevel[] {
     return SPELL_EFFECT_VALUE_GETTERS[effect.kind](effect);
 }
 
-export function spellEffectsValues(spell: ISpell): ISpellEffectValueWithScale[][] {
+export function spellEffectsValues(spell: ISpell): ISpellEffectValueWithToLevel[][] {
     if (
         spell.effects.length === 1 &&
         spell.effects[0]!.kind === "DAMAGE" &&

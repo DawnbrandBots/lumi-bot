@@ -15,5 +15,5 @@ export const SpellEffectValueSchema = defineEntity({
     },
 });
 
-export class SpellEffectValue extends SpellEffectValueSchema.class implements ISpellEffectValue { }
+export class SpellEffectValue extends SpellEffectValueSchema.class implements ISpellEffectValue {}
 SpellEffectValueSchema.setClass(SpellEffectValue);
