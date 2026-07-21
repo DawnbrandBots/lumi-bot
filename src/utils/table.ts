@@ -44,6 +44,6 @@ function rowToStr({
         row
             .slice(1)
             .map((n) => `${n}`.padStart(cellPadding, " "))
-            .join("  ")
+            .join(" ")
     );
 }
