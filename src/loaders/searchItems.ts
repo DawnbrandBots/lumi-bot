@@ -8,18 +8,29 @@ import { WeaponSkill } from "../game/models/weaponSkill.ts";
 import { ESpellRole } from "../game/types.ts";
 import type { ISearchItem, TSearchableEntity } from "../search/types.ts";
 
-function* aliasWeapon(weapon: Weapon) {
+function* standaloneAliasWeapon(weapon: Weapon) {
     yield weapon.name;
     if (weapon.name.includes("+")) {
         yield weapon.name.replace("+", "Plus");
     }
+}
+
+function* relativeAliasWeapon(weapon: Weapon) {
     if (weapon.prfDisciple) {
         yield `${weapon.prfDisciple.name}'s weapon`;
     }
 }
 
-function* aliasDisciple(disciple: Disciple) {
+function* aliasWeapon(weapon: Weapon) {
+    yield* standaloneAliasWeapon(weapon);
+    yield* relativeAliasWeapon(weapon);
+}
+
+function* standaloneAliasDisciple(disciple: Disciple) {
     yield disciple.name;
+}
+
+function* relativeAliasDisciple(disciple: Disciple) {
     if (disciple.prfWeapon) {
         yield `${disciple.prfWeapon.name}'s disciple`;
     }
@@ -28,15 +39,31 @@ function* aliasDisciple(disciple: Disciple) {
     }
 }
 
-function* aliasWeaponSkill(weaponSkill: WeaponSkill) {
+function* aliasDisciple(disciple: Disciple) {
+    yield* standaloneAliasDisciple(disciple);
+    yield* relativeAliasDisciple(disciple);
+}
+
+function* standaloneAliasWeaponSkill(weaponSkill: WeaponSkill) {
     yield weaponSkill.name;
+}
+
+function* relativeAliasWeaponSkill(weaponSkill: WeaponSkill) {
     for (const weapon of weaponSkill.uniqueSkillWeapons) {
         yield `${weapon.name}'s skill`;
     }
 }
 
-function* aliasMusic(music: Music) {
+function* aliasWeaponSkill(weaponSkill: WeaponSkill) {
+    yield* standaloneAliasWeaponSkill(weaponSkill);
+    yield* relativeAliasWeaponSkill(weaponSkill);
+}
+
+function* standaloneAliasMusic(music: Music) {
     yield music.name;
+}
+
+function* relativeAliasMusic(music: Music) {
     for (const disciple of music.shadowMusicFor || []) {
         yield `Shadow ${disciple.name}'s music`;
     }
@@ -45,9 +72,14 @@ function* aliasMusic(music: Music) {
     }
 }
 
+function* aliasMusic(music: Music) {
+    yield* standaloneAliasMusic(music);
+    yield* relativeAliasMusic(music);
+}
+
 const SPELL_NAME_PREFIX_SPLIT_REGEX = new RegExp(`\\s|(?=${SPELL_NAME_SUFFIXES.join("|")})`, "i");
 
-function* aliasSpell(spell: Spell): Generator<string> {
+function* standaloneAliasSpell(spell: Spell): Generator<string> {
     yield spell.name;
     if (spell.name.includes("+")) {
         yield spell.name.replace("+", "Plus");
@@ -59,10 +91,17 @@ function* aliasSpell(spell: Spell): Generator<string> {
     if (spell.name.includes("+")) {
         yield acronym.replace("+", "P");
     }
+}
 
+function* relativeAliasSpell(spell: Spell): Generator<string> {
     if (spell.disciple && spell.role.kind === ESpellRole.EX) {
         yield `${spell.disciple.name}'s EX`;
     }
+}
+
+function* aliasSpell(spell: Spell): Generator<string> {
+    yield* standaloneAliasSpell(spell);
+    yield* relativeAliasSpell(spell);
 }
 
 function getToSearchItemMapper<Kind extends string>(
