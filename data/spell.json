@@ -2432,8 +2432,8 @@
     "onlyFor": ["movementType", "ARMORED"]
   },
   {
-    "id": "AXE_KNIGHT",
-    "name": "Axe Knight",
+    "id": "AXE_ARMOR",
+    "name": "Axe Armor",
     "disciple": "EDELGARD",
     "role": "LIGHT",
     "shape": "1_TILE",
