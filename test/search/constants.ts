@@ -25,6 +25,7 @@ export const SEARCH_RANKING_CASES = [
             "ROYAL SWORD +",
             "ROYAL SWORD PLUS",
             "Royal Plus",
+            "Kurt Weapon",
         ],
     },
     {
@@ -42,6 +43,31 @@ export const SEARCH_RANKING_CASES = [
             "tsbpc",
         ],
     },
+    {
+        expectedId: "ENNEA_FIRE_EX",
+        expectedName: "Ennea Fire EX",
+        inputs: ["Kurt EX"],
+    },
+    {
+        expectedId: "BETRAYAL_EXILED_PRINCE",
+        expectedName: "Betrayal – The Exiled Prince",
+        inputs: ["Kurt Music"],
+    },
+    {
+        expectedId: "BETRAYAL_EXILED_PRINCE_RESULTS_SCREEN",
+        expectedName: "Betrayal – The Exiled Prince (Results screen)",
+        inputs: ["Kurt Music Results"],
+    },
+    {
+        expectedId: "KURT",
+        expectedName: "Kurt",
+        inputs: ["Royal Sword + disciple", "Ennea Fire EX disciple", "Royal Sword Plus disciple", "EFEX disciple"],
+    },
+    {
+        expectedId: "ROYAL_SCION",
+        expectedName: "Royal Scion",
+        inputs: ["Royal Sword + skill", "Royal Sword Plus weapon skill", "Royal Sword weapon skill"],
+    },
 ] as const;
 
 /**
@@ -55,55 +81,3 @@ export const SEARCH_RANKING_KNOWN_FAILURE_CASES = [
         inputs: ["Sword + Royal", "Royal +"],
     },
 ] as const;
-
-/** Search alias expectations for aliases derived from related entities. */
-export const SEARCH_RELATED_ENTITY_ALIAS_CASES = {
-    "Kurt EX": {
-        expectedId: "ENNEA_FIRE_EX",
-        expectedName: "Ennea Fire EX",
-    },
-    "Kurt Music": {
-        expectedId: "BETRAYAL_EXILED_PRINCE",
-        expectedName: "Betrayal – The Exiled Prince",
-    },
-    "Kurt Music Results": {
-        expectedId: "BETRAYAL_EXILED_PRINCE_RESULTS_SCREEN",
-        expectedName: "Betrayal – The Exiled Prince (Results screen)",
-    },
-    "Kurt Weapon": {
-        expectedId: "ROYAL_SWORD_PLUS",
-        expectedName: "Royal Sword +",
-    },
-    "Royal Sword + disciple": {
-        expectedId: "KURT",
-        expectedName: "Kurt",
-    },
-    "Royal Sword + skill": {
-        expectedId: "ROYAL_SCION",
-        expectedName: "Royal Scion",
-    },
-    "Ennea Fire EX disciple": {
-        expectedId: "KURT",
-        expectedName: "Kurt",
-    },
-} as const;
-
-/** Search expectations for relative aliases generated from standalone aliases of related entities. */
-export const SEARCH_RELATED_STANDALONE_ALIAS_CASES = {
-    "Royal Sword Plus disciple": {
-        expectedId: "KURT",
-        expectedName: "Kurt",
-    },
-    "EFEX disciple": {
-        expectedId: "KURT",
-        expectedName: "Kurt",
-    },
-    "Royal Sword Plus weapon skill": {
-        expectedId: "ROYAL_SCION",
-        expectedName: "Royal Scion",
-    },
-    "Royal Sword weapon skill": {
-        expectedId: "ROYAL_SCION",
-        expectedName: "Royal Scion",
-    },
-} as const;
