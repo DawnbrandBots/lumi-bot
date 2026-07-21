@@ -26,6 +26,9 @@ export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<It
     }
 
     public search(input: string, limit?: number): Items[] {
+        if (input.length === 0) {
+            return [];
+        }
         return this.fuse.search(this.normalizeInput(input), { limit }).map((result) => result.item);
     }
 
