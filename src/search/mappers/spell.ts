@@ -22,7 +22,7 @@ function formatSpellValues(spell: ISpell): string | null {
         const rows = spellEffectsValues(spell).flatMap((values, index) => {
             return values.map((value, valueIndex) => [
                 valueIndex === 0 ? `${index + 1}.` : "",
-                ...levelsRow.map((level) => value.toLevel(level)),
+                ...levelsRow.map((level, index) => (!value.scalesWithLevel && index > 0 ? "." : value.toLevel(level))),
             ]);
         });
         const data = [["Lv", ...levelsRow], ...rows];
