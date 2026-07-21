@@ -20,7 +20,6 @@ function normalize(str: string) {
 }
 
 function getAliasDistanceToInput({ alias, input }: { alias: TAliasMatch | null; input: string }): number {
-    // return alias ? Math.abs(input.length - alias.value.length) : Number.POSITIVE_INFINITY;
     return alias ? distance(normalize(alias.value), normalize(input)) : Number.POSITIVE_INFINITY;
 }
 
