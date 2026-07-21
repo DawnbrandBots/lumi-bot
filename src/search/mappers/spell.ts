@@ -1,11 +1,15 @@
-import type { APIEmbed } from "discord.js";
+import { codeBlock, type APIEmbed } from "discord.js";
 import {
     DISCORD_BLACK_SQUARE_EMOJI_CALL,
     DISCORD_BLUE_SQUARE_EMOJI_CALL,
     DISCORD_RED_SQUARE_EMOJI_CALL,
 } from "../../bot/constants.ts";
 import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
+import type { ISpellEffectValueWithToLevel } from "../../game/spellEffectValues.ts";
+import { spellEffectsValues } from "../../game/spellEffectValues.ts";
 import type { ISpell } from "../../game/types.ts";
+import range from "../../utils/range.ts";
+import { toAsciiTable } from "../../utils/table.ts";
 
 const tileEmojis: Record<string, string> = {
     X: DISCORD_RED_SQUARE_EMOJI_CALL,
@@ -13,11 +17,42 @@ const tileEmojis: Record<string, string> = {
     ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
 };
 
+function formatSpellValues({ spell, values }: { spell: ISpell; values: ISpellEffectValueWithToLevel[][] }): string {
+    const innerTable = (rangeArg: { start: number; end: number }) => {
+        const levelsRow = Array.from(range(rangeArg));
+        const rows = values.flatMap((values, index) => {
+            return values.map((value, valueIndex) => [
+                valueIndex === 0 ? `${index + 1}.` : "",
+                ...levelsRow.map((level, index) => (!value.scalesWithLevel && index > 0 ? "." : value.toLevel(level))),
+            ]);
+        });
+        const data = [["Lv", ...levelsRow], ...rows];
+        return toAsciiTable({ data, cellPadding: 3 });
+    };
+
+    if (spell.disciple) {
+        const innerTable1 = innerTable({
+            start: 1,
+            end: 7,
+        });
+        const innerTable2 = innerTable({
+            start: 7,
+            end: 13,
+        });
+
+        return codeBlock(innerTable1 + "\n" + " ".repeat(innerTable1.indexOf("\n")) + "\n" + innerTable2);
+    } else {
+        return codeBlock(innerTable({ start: 1, end: 2 }));
+    }
+}
+
 export default function mapSpellToMessage(spell: ISpell) {
     const shapeStr = spell.shape.tiles
         .replaceAll(/(.{5})(?<!$)/g, "$1\n")
         .replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
 
+    const values = spellEffectsValues(spell);
+    const valuesStr = values.some((valuesSubArray) => valuesSubArray.length) && formatSpellValues({ spell, values });
     const effectsStr = describeSpellEffects(spell);
 
     const onlyFor = spell.onlyFor && {
@@ -66,6 +101,14 @@ export default function mapSpellToMessage(spell: ISpell) {
             value: effectsStr,
             inline: true,
         },
+        ...(valuesStr
+            ? [
+                  {
+                      name: "Values",
+                      value: valuesStr,
+                  },
+              ]
+            : []),
     ];
 
     return {
