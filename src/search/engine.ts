@@ -1,5 +1,28 @@
-import Fuse from "fuse.js";
+import { distance } from "fastest-levenshtein";
+import Fuse, { type FuseSortFunctionArg } from "fuse.js";
 import type { ISearchEngine, ISearchItem } from "./types.ts";
+
+/** Alias match type provided by Fuse to custom sort functions. */
+type TAliasMatch = NonNullable<FuseSortFunctionArg["matches"]>[number];
+
+/** Gets the best individual alias match from a Fuse result before Fuse combines scores for the item. */
+function getBestAlias(result: FuseSortFunctionArg): TAliasMatch | null {
+    return (
+        result.matches?.reduce<TAliasMatch | null>(
+            (bestAlias, alias) => (bestAlias && bestAlias.score <= alias.score ? bestAlias : alias),
+            null,
+        ) ?? null
+    );
+}
+
+function normalize(str: string) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function getAliasLengthDistance({ alias, input }: { alias: TAliasMatch | null; input: string }): number {
+    // return alias ? Math.abs(input.length - alias.value.length) : Number.POSITIVE_INFINITY;
+    return alias ? distance(normalize(alias.value), normalize(input)) : Number.POSITIVE_INFINITY;
+}
 
 export abstract class SearchEngine<Items extends ISearchItem> implements ISearchEngine<Items> {
     abstract searchOne(input: string): Items | undefined;
@@ -8,6 +31,8 @@ export abstract class SearchEngine<Items extends ISearchItem> implements ISearch
 
 export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<Items> {
     private readonly fuse: Fuse<Items>;
+
+    private lastInput: string = "";
 
     public constructor({ items }: { items: Items[] }) {
         super();
@@ -18,18 +43,27 @@ export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<It
             isCaseSensitive: false,
             useTokenSearch: true,
             ignoreLocation: true,
+            sortFn: (a, b) => this.sortByBestAliasScore(a, b),
         });
     }
 
-    protected normalizeInput(input: string): string {
-        return input.replace("+", "Plus");
+    protected sortByBestAliasScore(a: FuseSortFunctionArg, b: FuseSortFunctionArg): number {
+        const aBestAlias = getBestAlias(a);
+        const bBestAlias = getBestAlias(b);
+        return (
+            (aBestAlias?.score ?? 1) - (bBestAlias?.score ?? 1) ||
+            getAliasLengthDistance({ alias: aBestAlias, input: this.lastInput }) -
+                getAliasLengthDistance({ alias: bBestAlias, input: this.lastInput }) ||
+            a.idx - b.idx
+        );
     }
 
     public search(input: string, limit?: number): Items[] {
         if (input.length === 0) {
             return [];
         }
-        return this.fuse.search(this.normalizeInput(input), { limit }).map((result) => result.item);
+        this.lastInput = input;
+        return this.fuse.search(this.lastInput, { limit }).map((result) => result.item);
     }
 
     public searchOne(input: string): Items | undefined {

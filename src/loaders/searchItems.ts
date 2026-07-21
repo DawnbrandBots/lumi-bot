@@ -9,7 +9,10 @@ import { ESpellRole } from "../game/types.ts";
 import type { ISearchItem, TSearchableEntity } from "../search/types.ts";
 
 function* aliasWeapon(weapon: Weapon) {
-    yield weapon.name.replace("+", "Plus");
+    yield weapon.name;
+    if (weapon.name.includes("+")) {
+        yield weapon.name.replace("+", "Plus");
+    }
     if (weapon.prfDisciple) {
         yield `${weapon.prfDisciple.name}'s weapon`;
     }
@@ -42,10 +45,18 @@ function* aliasMusic(music: Music) {
 const SPELL_NAME_PREFIX_SPLIT_REGEX = new RegExp(`\\s|(?=${SPELL_NAME_SUFFIXES.join("|")})`, "i");
 
 function* aliasSpell(spell: Spell): Generator<string> {
-    const norm = spell.name.replace("+", "Plus");
-    yield norm;
-    const normSplit = norm.split(SPELL_NAME_PREFIX_SPLIT_REGEX);
-    yield normSplit.map((s) => (s === "EX" ? s : s === "Plus" ? "P" : s[0]?.toUpperCase())).join("");
+    yield spell.name;
+    if (spell.name.includes("+")) {
+        yield spell.name.replace("+", "Plus");
+    }
+
+    const nameSplit = spell.name.split(SPELL_NAME_PREFIX_SPLIT_REGEX);
+    const acronym = nameSplit.map((s) => (s === "EX" ? s : s[0]?.toUpperCase())).join("");
+    yield acronym;
+    if (spell.name.includes("+")) {
+        yield acronym.replace("+", "P");
+    }
+
     if (spell.disciple && spell.role.kind === ESpellRole.EX) {
         yield `${spell.disciple.name}'s EX`;
     }
