@@ -18,7 +18,7 @@ function* standaloneAliasWeapon(weapon: Weapon) {
 function* relativeAliasWeapon(weapon: Weapon) {
     if (weapon.prfDisciple) {
         for (const discipleAlias of standaloneAliasDisciple(weapon.prfDisciple)) {
-            yield `${discipleAlias}'s weapon`;
+            yield `${discipleAlias} weapon`;
         }
     }
 }
@@ -35,12 +35,12 @@ function* standaloneAliasDisciple(disciple: Disciple) {
 function* relativeAliasDisciple(disciple: Disciple) {
     if (disciple.prfWeapon) {
         for (const weaponAlias of standaloneAliasWeapon(disciple.prfWeapon)) {
-            yield `${weaponAlias}'s disciple`;
+            yield `${weaponAlias} disciple`;
         }
     }
     for (const spell of disciple.spells) {
         for (const spellAlias of standaloneAliasSpell(spell)) {
-            yield `${spellAlias}'s disciple`;
+            yield `${spellAlias} disciple`;
         }
     }
 }
@@ -57,7 +57,7 @@ function* standaloneAliasWeaponSkill(weaponSkill: WeaponSkill) {
 function* relativeAliasWeaponSkill(weaponSkill: WeaponSkill) {
     for (const weapon of weaponSkill.uniqueSkillWeapons) {
         for (const weaponAlias of standaloneAliasWeapon(weapon)) {
-            yield `${weaponAlias}'s weapon skill`;
+            yield `${weaponAlias} weapon skill`;
         }
     }
 }
@@ -74,12 +74,12 @@ function* standaloneAliasMusic(music: Music) {
 function* relativeAliasMusic(music: Music) {
     for (const disciple of music.shadowMusicFor || []) {
         for (const discipleAlias of standaloneAliasDisciple(disciple)) {
-            yield `Shadow ${discipleAlias}'s music`;
+            yield `Shadow ${discipleAlias} music`;
         }
     }
     for (const disciple of music.shadowResultsScreenMusicFor || []) {
         for (const discipleAlias of standaloneAliasDisciple(disciple)) {
-            yield `Shadow ${discipleAlias}'s results screen music`;
+            yield `Shadow ${discipleAlias} results screen music`;
         }
     }
 }
@@ -108,7 +108,7 @@ function* standaloneAliasSpell(spell: Spell): Generator<string> {
 function* relativeAliasSpell(spell: Spell): Generator<string> {
     if (spell.disciple && spell.role.kind === ESpellRole.EX) {
         for (const discipleAlias of standaloneAliasDisciple(spell.disciple)) {
-            yield `${discipleAlias}'s EX`;
+            yield `${discipleAlias} EX`;
         }
     }
 }
