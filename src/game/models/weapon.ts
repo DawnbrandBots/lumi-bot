@@ -36,7 +36,7 @@ export class Weapon extends WeaponSchema.class implements IWeapon {
     }
 
     public get weaponTypeSkill(): IWeaponSkill | null | undefined {
-        return WeaponRules.typeSkill(this);
+        return WeaponRules.weaponTypeSkill(this);
     }
 }
 WeaponSchema.setClass(Weapon);

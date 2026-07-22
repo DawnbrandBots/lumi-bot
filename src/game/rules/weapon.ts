@@ -8,7 +8,7 @@ export function typeDiscipleBaseAtkModifier(weaponTypeData: DeepPick<IWeaponType
 }
 
 /** Selects the weapon type skill unlocked by a weapon's level. */
-export function typeSkill(
+export function weaponTypeSkill(
     arg: DeepPick<IWeapon, { level: true; weaponType: { weaponSkills: true } }>,
 ): IWeaponSkill | null | undefined {
     const skills = Array.from(arg.weaponType.weaponSkills);
@@ -26,7 +26,7 @@ export function typeSkill(
 /** Domain rules for weapons and weapon types. */
 const Weapon = {
     typeDiscipleBaseAtkModifier,
-    typeSkill,
+    weaponTypeSkill,
 };
 
 export default Weapon;
