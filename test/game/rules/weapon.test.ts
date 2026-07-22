@@ -11,23 +11,6 @@ describe(Weapon.typeDiscipleBaseAtkModifier.name, () => {
     });
 });
 
-describe(Weapon.variantStat.name, () => {
-    test.each(["hp", "atk"] as const)("returns 0 for a level 1 weapon's %s", (stat) => {
-        expect(Weapon.variantStat({ weaponData: { level: 1, hp: 100, atk: 100 }, variant: "ATK", stat })).toBe(0);
-    });
-
-    test.each([
-        ["HP", "hp", 16],
-        ["HP", "atk", 35],
-        ["NEUTRAL", "hp", 11],
-        ["NEUTRAL", "atk", 45],
-        ["ATK", "hp", 6],
-        ["ATK", "atk", 55],
-    ] as const)("returns the %s variant's %s", (variant, stat, expected) => {
-        expect(Weapon.variantStat({ weaponData: { level: 8, hp: 6, atk: 35 }, variant, stat })).toBe(expected);
-    });
-});
-
 describe(Weapon.typeSkill.name, () => {
     const skills = [{ id: "rank-1" }, { id: "rank-2" }, { id: "rank-3" }] as IWeaponSkill[];
 

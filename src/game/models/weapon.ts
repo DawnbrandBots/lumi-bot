@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 import WeaponRules from "../rules/weapon.ts";
+import WeaponVariantRules, { WEAPON_VARIANTS } from "../rules/weaponVariant.ts";
 import type { IWeapon, IWeaponSkill } from "../types.ts";
 import { Disciple } from "./disciple.ts";
 import { WeaponSkill } from "./weaponSkill.ts";
@@ -26,7 +27,12 @@ export class Weapon extends WeaponSchema.class implements IWeapon {
     }
 
     public getWeaponVariantStat({ stat, variant }: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number {
-        return WeaponRules.variantStat({ weaponData: this, stat, variant });
+        return WeaponVariantRules.stat({
+            weaponData: this,
+            weaponVariantData: WEAPON_VARIANTS[variant],
+            stat,
+            variant,
+        });
     }
 
     public get weaponTypeSkill(): IWeaponSkill | null | undefined {
