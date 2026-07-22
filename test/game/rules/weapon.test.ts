@@ -1,13 +1,14 @@
 import { describe, expect, test } from "vitest";
 import Weapon from "../../../src/game/rules/weapon.ts";
+import WeaponType from "../../../src/game/rules/weaponType.ts";
 import type { IWeaponSkill } from "../../../src/game/types.ts";
 
-describe(Weapon.typeDiscipleBaseAtkModifier.name, () => {
+describe(WeaponType.discipleBaseAtkModifier.name, () => {
     test.each([
         [1, 1],
         [2, 2 / 3],
     ] as const)("range %i => %f", (range, expected) => {
-        expect(Weapon.typeDiscipleBaseAtkModifier({ range })).toBe(expected);
+        expect(WeaponType.discipleBaseAtkModifier({ range })).toBe(expected);
     });
 });
 
