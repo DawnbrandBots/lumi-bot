@@ -1,7 +1,6 @@
 import type { DeepPick } from "../../utils/types.ts";
 import type { IWeapon, IWeaponSkill } from "../types.ts";
 
-/** Selects the weapon type skill unlocked by a weapon's level. */
 export function weaponTypeSkill(
     arg: DeepPick<IWeapon, { level: true; weaponType: { weaponSkills: true } }>,
 ): IWeaponSkill | null | undefined {
@@ -17,7 +16,6 @@ export function weaponTypeSkill(
     }
 }
 
-/** Domain rules for weapons and weapon types. */
 const Weapon = {
     weaponTypeSkill,
 };

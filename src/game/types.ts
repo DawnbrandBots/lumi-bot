@@ -119,7 +119,6 @@ export interface IWeapon {
     getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number;
 }
 
-/** A weapon stat modifier preset chosen when a weapon is obtained. */
 export interface IWeaponVariant {
     readonly kind: "HP" | "NEUTRAL" | "ATK";
     readonly hp: number;

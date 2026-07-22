@@ -20,8 +20,4 @@ type DeepPickResult<T, TShape> = T extends (infer TItem)[]
           }
         : T;
 
-/**
- * Recursively selects properties from a type while deriving leaf types from it.
- * Use `true` to select a leaf property.
- */
 export type DeepPick<T, TShape extends DeepPickShape<T>> = DeepPickResult<T, TShape>;
