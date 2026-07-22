@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { getSpellDraggingModeKind } from "../rules/spell.ts";
+import { Spell as SpellRules } from "../rules/spell.ts";
 import type { ISpell, ISpellDraggingMode } from "../types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { Disciple } from "./disciple.ts";
@@ -57,7 +57,7 @@ export class Spell extends SpellSchema.class implements ISpell {
     }
 
     get draggingMode(): ISpellDraggingMode {
-        return SPELL_DRAGGING_MODE[getSpellDraggingModeKind(this)];
+        return SPELL_DRAGGING_MODE[SpellRules.draggingModeKind(this)];
     }
 }
 SpellSchema.setClass(Spell);

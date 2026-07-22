@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { isSpellShapeAoe } from "../rules/spell.ts";
+import { Spell as SpellRules } from "../rules/spell.ts";
 import type { ISpellShape } from "../types.ts";
 
 export const SpellShapeSchema = defineEntity({
@@ -12,7 +12,7 @@ export const SpellShapeSchema = defineEntity({
 });
 export class SpellShape extends SpellShapeSchema.class implements ISpellShape {
     public get isAoe(): boolean {
-        return isSpellShapeAoe(this);
+        return SpellRules.shapeIsAoe(this);
     }
 }
 SpellShapeSchema.setClass(SpellShape);

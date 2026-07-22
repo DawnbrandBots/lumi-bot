@@ -1,5 +1,5 @@
 import { defineEntity, p, raw } from "@mikro-orm/sqlite";
-import { getDiscipleAtk, getDiscipleBaseAtk, getDiscipleBaseHp, getDiscipleHp } from "../rules/disciple.ts";
+import { Disciple as DiscipleRules } from "../rules/disciple.ts";
 import type { IDisciple } from "../types.ts";
 import { MovementType } from "./movementType.ts";
 import { Music } from "./music.ts";
@@ -31,19 +31,19 @@ export class Disciple extends DiscipleSchema.class implements IDisciple {
     }
 
     public get baseHp() {
-        return getDiscipleBaseHp(this);
+        return DiscipleRules.baseHp(this);
     }
 
     public get baseAtk() {
-        return getDiscipleBaseAtk(this);
+        return DiscipleRules.baseAtk(this);
     }
 
     public getHp({ level }: { level: number }): number {
-        return getDiscipleHp({ discipleData: this, level });
+        return DiscipleRules.hp({ discipleData: this, level });
     }
 
     public getAtk({ level }: { level: number }): number {
-        return getDiscipleAtk({ discipleData: this, level });
+        return DiscipleRules.atk({ discipleData: this, level });
     }
 }
 DiscipleSchema.setClass(Disciple);

@@ -1,18 +1,18 @@
 import { describe, expect, test } from "vitest";
-import { getSpellDraggingModeKind, isSpellShapeAoe } from "../../../src/game/rules/spell.ts";
+import { Spell } from "../../../src/game/rules/spell.ts";
 import { ESpellDraggingMode, ESpellEffectTarget } from "../../../src/game/types.ts";
 
-describe(isSpellShapeAoe.name, () => {
+describe(Spell.shapeIsAoe.name, () => {
     test.each([
         ["............X............", false],
         ["...........OX............", true],
         ["..........OOXOO..........", true],
     ])("tiles %s => %s", (tiles, expected) => {
-        expect(isSpellShapeAoe({ tiles })).toBe(expected);
+        expect(Spell.shapeIsAoe({ tiles })).toBe(expected);
     });
 });
 
-describe(getSpellDraggingModeKind.name, () => {
+describe(Spell.draggingModeKind.name, () => {
     test.each([
         [[ESpellEffectTarget.SELF], ESpellDraggingMode.SELF],
         [[ESpellEffectTarget.SELF, ESpellEffectTarget.SELF], ESpellDraggingMode.SELF],
@@ -22,6 +22,6 @@ describe(getSpellDraggingModeKind.name, () => {
     ] as const)("targets %o => %s", (targets, expected) => {
         const effects = targets.map((kind) => ({ target: { kind } }));
 
-        expect(getSpellDraggingModeKind({ effects })).toBe(expected);
+        expect(Spell.draggingModeKind({ effects })).toBe(expected);
     });
 });
