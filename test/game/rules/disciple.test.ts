@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Disciple } from "../../../src/game/rules/disciple.ts";
+import Disciple from "../../../src/game/rules/disciple.ts";
 import range from "../../../src/utils/range.ts";
 
 const LEVELS = Array.from(range({ start: 1, end: 12 }));

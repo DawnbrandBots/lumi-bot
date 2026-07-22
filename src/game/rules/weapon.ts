@@ -3,12 +3,12 @@ import { WEAPON_TYPE_RANGE_ATK_MODIFIER, WEAPON_VARIANTS_BONUSES } from "../cons
 import type { IWeapon, IWeaponSkill, IWeaponType } from "../types.ts";
 
 /** Calculates the disciple base Atk modifier granted by a weapon type's range. */
-function typeDiscipleBaseAtkModifier(weaponTypeData: DeepPick<IWeaponType, { range: true }>): number {
+export function typeDiscipleBaseAtkModifier(weaponTypeData: DeepPick<IWeaponType, { range: true }>): number {
     return WEAPON_TYPE_RANGE_ATK_MODIFIER[weaponTypeData.range];
 }
 
 /** Calculates a weapon variant stat from the base weapon stat and selected variant. */
-function variantStat(
+export function variantStat(
     arg: { weaponData: DeepPick<IWeapon, { level: true; hp: true; atk: true }> } & Parameters<
         IWeapon["getWeaponVariantStat"]
     >[0],
@@ -17,7 +17,7 @@ function variantStat(
 }
 
 /** Selects the weapon type skill unlocked by a weapon's level. */
-function typeSkill(
+export function typeSkill(
     arg: DeepPick<IWeapon, { level: true; weaponType: { weaponSkills: true } }>,
 ): IWeaponSkill | null | undefined {
     const skills = Array.from(arg.weaponType.weaponSkills);
@@ -33,8 +33,10 @@ function typeSkill(
 }
 
 /** Domain rules for weapons and weapon types. */
-export const Weapon = {
+const Weapon = {
     typeDiscipleBaseAtkModifier,
     variantStat,
     typeSkill,
 };
+
+export default Weapon;

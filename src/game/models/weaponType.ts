@@ -1,5 +1,5 @@
 import { UnderscoreNamingStrategy, defineEntity, p } from "@mikro-orm/sqlite";
-import { Weapon as WeaponRules } from "../rules/weapon.ts";
+import WeaponRules from "../rules/weapon.ts";
 import type { IWeaponType } from "../types.ts";
 import { Color } from "./color.ts";
 import { WeaponSkill } from "./weaponSkill.ts";

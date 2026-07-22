@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Spell } from "../../../src/game/rules/spell.ts";
+import Spell from "../../../src/game/rules/spell.ts";
 import { ESpellDraggingMode, ESpellEffectTarget } from "../../../src/game/types.ts";
 
 describe(Spell.shapeIsAoe.name, () => {

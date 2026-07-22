@@ -8,12 +8,12 @@ import {
 } from "../types.ts";
 
 /** Checks whether a spell shape covers at least one area-of-effect tile. */
-function shapeIsAoe(shapeData: DeepPick<ISpellShape, { tiles: true }>): boolean {
+export function shapeIsAoe(shapeData: DeepPick<ISpellShape, { tiles: true }>): boolean {
     return shapeData.tiles.includes("O");
 }
 
 /** Determines whether every root spell effect targets the user. */
-function draggingModeKind(
+export function draggingModeKind(
     spellData: DeepPick<ISpell, { effects: { target: { kind: true } } }>,
 ): ISpellDraggingMode["kind"] {
     // TODO: target being nullable is due to some spell effects being wrongly typed:
@@ -26,7 +26,9 @@ function draggingModeKind(
 }
 
 /** Domain rules for spells and spell shapes. */
-export const Spell = {
+const Spell = {
     draggingModeKind,
     shapeIsAoe,
 };
+
+export default Spell;
