@@ -1,16 +1,18 @@
-import type { DeepPick } from "../utils/types.ts";
+import type { DeepPick } from "../../utils/types.ts";
 import {
     ESpellDraggingMode,
     ESpellEffectTarget,
     type ISpell,
     type ISpellDraggingMode,
     type ISpellShape,
-} from "./types.ts";
+} from "../types.ts";
 
+/** Checks whether a spell shape covers at least one area-of-effect tile. */
 export function isSpellShapeAoe(shapeData: DeepPick<ISpellShape, { tiles: true }>): boolean {
     return shapeData.tiles.includes("O");
 }
 
+/** Determines whether every root spell effect targets the user. */
 export function getSpellDraggingModeKind(
     spellData: DeepPick<ISpell, { effects: { target: { kind: true } } }>,
 ): ISpellDraggingMode["kind"] {

@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { isSpellShapeAoe } from "../spellRules.ts";
+import { isSpellShapeAoe } from "../rules/spell.ts";
 import type { ISpellShape } from "../types.ts";
 
 export const SpellShapeSchema = defineEntity({

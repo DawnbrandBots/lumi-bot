@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { getSpellDraggingModeKind } from "../spellRules.ts";
+import { getSpellDraggingModeKind } from "../rules/spell.ts";
 import type { ISpell, ISpellDraggingMode } from "../types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { Disciple } from "./disciple.ts";
