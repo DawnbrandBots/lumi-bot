@@ -1,8 +1,8 @@
-import type { DeepPick } from "../../utils/types.ts";
+import type { PickDeep } from "type-fest";
 import type { IWeapon, IWeaponSkill } from "../types.ts";
 
 export function weaponTypeSkill(
-    arg: DeepPick<IWeapon, { level: true; weaponType: { weaponSkills: true } }>,
+    arg: PickDeep<IWeapon, "level" | "weaponType.weaponSkills">,
 ): IWeaponSkill | null | undefined {
     const skills = Array.from(arg.weaponType.weaponSkills);
     if (arg.level <= 1) {

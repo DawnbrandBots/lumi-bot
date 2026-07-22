@@ -1,7 +1,7 @@
-import type { DeepPick } from "../../utils/types.ts";
+import type { PickDeep } from "type-fest";
 import type { ISpellShape } from "../types.ts";
 
-export function isAoe(shapeData: DeepPick<ISpellShape, { tiles: true }>): boolean {
+export function isAoe(shapeData: PickDeep<ISpellShape, "tiles">): boolean {
     return shapeData.tiles.includes("O");
 }
 
