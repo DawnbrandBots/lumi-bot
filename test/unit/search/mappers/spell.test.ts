@@ -1,8 +1,15 @@
 import { describe, expect, test } from "vitest";
-import mapSpellToMessage from "../../../../src/search/mappers/spell.ts";
+import spellShapes from "../../../../data/spellShape.json" with { type: "json" };
+import mapSpellToMessage, { formatSpellShape } from "../../../../src/search/mappers/spell.ts";
 import { WEAPON_TYPE } from "./common.fixtures.ts";
 import { DISCIPLE } from "./disciple.fixtures.ts";
 import { SPELL } from "./spell.fixtures.ts";
+
+describe(formatSpellShape.name, () => {
+    test.each(spellShapes.map((shape) => [shape.name, shape] as const))("%s", (_, shape) => {
+        expect(formatSpellShape(shape)).toMatchSnapshot();
+    });
+});
 
 describe(mapSpellToMessage.name, () => {
     test.each([
