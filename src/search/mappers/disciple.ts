@@ -6,7 +6,7 @@ import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
 import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../constants.ts";
 
-export function getDiscipleBaseStatsTable(disciple: IDisciple): (string | number)[][] {
+export function getDiscipleBaseStatsTable(disciple: Pick<IDisciple, "getHp" | "getAtk">): (string | number)[][] {
     const relevantLevels = Array.from(
         range({ start: DISCIPLE_MINIMUM_RELEVANT_LEVEL, end: DISCIPLE_MAXIXUM_LEVEL + 1 }),
     );

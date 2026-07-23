@@ -1,30 +1,134 @@
+import type { PickDeep } from "type-fest";
 import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "./constants.ts";
 import {
     ESpellEffectKind,
     ESpellEffectTarget,
     ESpellEffectValueUnitKind,
+    type IDamageEffect,
+    type IHealEffect,
+    type IIceBlockEffect,
+    type IMovementType,
+    type IMovementEffect,
+    type IRepeatEffect,
     type ISpell,
     type ISpellEffect,
+    type ISpellEffectTarget,
     type ISpellEffectValue,
+    type ISpellEffectValueFixedUnit,
+    type ISpellEffectValueUnit,
     type ISpellEffectValuePercentUnit,
     type IStat,
+    type IStatEffect,
+    type IStatusEffect,
+    type ISummonEffect,
+    type ITileEffect,
+    type IWeaponType,
+    type IWarpEffect,
     type TSpellEffect,
 } from "./types.ts";
 
+export type TSpellEffectValue = PickDeep<ISpellEffectValue, "base" | "effectiveness"> & {
+    unit:
+        | PickDeep<ISpellEffectValueFixedUnit, "kind">
+        | PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat.id" | "stat.name">;
+};
+
+type TSpellEffectTargetInput = PickDeep<ISpellEffectTarget, "kind" | "asString"> | null | undefined;
+
+export type TDamageEffect = PickDeep<IDamageEffect, "kind" | "color.name"> & {
+    amount: TSpellEffectValue;
+    target?: TSpellEffectTargetInput;
+};
+
+export type THealEffect = PickDeep<IHealEffect, "kind"> & {
+    amount: TSpellEffectValue;
+    target?: TSpellEffectTargetInput;
+};
+
+export type TMovementEffect = PickDeep<
+    IMovementEffect,
+    "kind" | "target.kind" | "target.asString" | "count" | "direction.noun"
+>;
+
+export type TStatEffect = PickDeep<
+    IStatEffect,
+    "kind" | "stat.id" | "stat.name" | "statChange.verb" | "statChange.preposition" | "duration"
+> & { amount: TSpellEffectValue };
+
+export type TRepeatEffect = PickDeep<IRepeatEffect, "kind" | "interval" | "times"> & {
+    effect: TDamageEffect | THealEffect;
+};
+
+export type TStatusEffect = PickDeep<IStatusEffect, "kind"> & {
+    effect: TStatEffect | TRepeatEffect;
+    target: NonNullable<TSpellEffectTargetInput>;
+};
+
+export type TWarpEffect = PickDeep<IWarpEffect, "kind">;
+export type TIceBlockEffect = PickDeep<IIceBlockEffect, "kind" | "hp.base">;
+
+export type TTileEffect = PickDeep<ITileEffect, "kind"> & {
+    repeat: TRepeatEffect;
+    target?: TSpellEffectTargetInput;
+};
+
+export type TSummonEffect = PickDeep<
+    ISummonEffect,
+    "kind" | "movementType.name" | "weaponType.name" | "hp.base" | "atk.base"
+>;
+
+export type TRootSpellEffect =
+    | TDamageEffect
+    | THealEffect
+    | TMovementEffect
+    | TStatusEffect
+    | TWarpEffect
+    | TIceBlockEffect
+    | TTileEffect
+    | TSummonEffect;
+
+export type TDescribedSpellEffect = TSpellEffect | TRootSpellEffect | TStatEffect | TRepeatEffect;
+
+export type TSpellEffectDescriptionContext = PickDeep<ISpell, "shape.name" | "shape.isAoe">;
+
+type TSpellEffectDescriptionOnlyFor =
+    PickDeep<IMovementType, "name"> | PickDeep<IWeaponType, "name"> | null | undefined;
+
+export type TSpellEffectDescriptionsInput = TSpellEffectDescriptionContext &
+    PickDeep<ISpell, "countdown" | "uses" | "cooldown"> & {
+        effects: TRootSpellEffect[];
+        onlyFor?: TSpellEffectDescriptionOnlyFor;
+    };
+
+type TSpellEffectDescriptionsArgument = ISpell | TSpellEffectDescriptionsInput;
+
 type TSpellEffectDescriptionFunctions = {
-    [K in TSpellEffect["kind"]]: (effect: Extract<TSpellEffect, { kind: K }>, spell: ISpell, inline: boolean) => string;
+    [K in TDescribedSpellEffect["kind"]]: (
+        effect: Extract<TDescribedSpellEffect, { kind: K }>,
+        spell: TSpellEffectDescriptionContext,
+        inline: boolean,
+    ) => string;
 };
 
 function lowercaseFirstLetter(description: string): string {
     return description.charAt(0).toLowerCase() + description.slice(1);
 }
 
-function formatSpellEffectValue(amount: ISpellEffectValue, stat?: IStat): string {
-    if (amount.unit.kind === ESpellEffectValueUnitKind.FIXED) {
+function isPercentUnit(
+    unit: ISpellEffectValueUnit | TSpellEffectValue["unit"],
+): unit is PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat.id" | "stat.name"> {
+    return unit.kind === ESpellEffectValueUnitKind.PERCENT;
+}
+
+function formatSpellEffectValue(
+    amount: ISpellEffectValue | TSpellEffectValue,
+    stat?: PickDeep<IStat, "id" | "name">,
+): string {
+    if (!isPercentUnit(amount.unit)) {
         return amount.base.toString();
     }
 
-    const unit = amount.unit as ISpellEffectValuePercentUnit;
+    const unit = amount.unit;
     if (stat?.id === unit.stat.id) {
         return `${amount.base}%`;
     }
@@ -32,7 +136,7 @@ function formatSpellEffectValue(amount: ISpellEffectValue, stat?: IStat): string
     return `(${amount.base}% of ${unit.stat.name})`;
 }
 
-function formatEffectiveness(amount: ISpellEffectValue, preposition: "against" | "for"): string {
+function formatEffectiveness(amount: ISpellEffectValue | TSpellEffectValue, preposition: "against" | "for"): string {
     if (!amount.effectiveness?.length) {
         return "";
     }
@@ -44,7 +148,15 @@ function formatStatusEffectIntro(targetStr: string, lowercase: boolean): string 
     return `${lowercase ? "g" : "G"}rants statuses to ${targetStr}:`;
 }
 
-function describeTarget(effect: ISpellEffect, spell: ISpell, inline = false): string | null {
+function isStatusEffect(effect: TSpellEffect | TRootSpellEffect): effect is IStatusEffect | TStatusEffect {
+    return effect.kind === ESpellEffectKind.STATUS;
+}
+
+function describeTarget(
+    effect: PickDeep<ISpellEffect, "kind"> & { target?: TSpellEffectTargetInput },
+    spell: TSpellEffectDescriptionContext,
+    inline = false,
+): string | null {
     if (!effect.target) {
         return null;
     }
@@ -65,8 +177,11 @@ function describeTarget(effect: ISpellEffect, spell: ISpell, inline = false): st
 }
 
 function describeValueEffect(
-    effect: ISpellEffect & { amount: ISpellEffectValue },
-    spell: ISpell,
+    effect: PickDeep<ISpellEffect, "kind"> & {
+        amount: ISpellEffectValue | TSpellEffectValue;
+        target?: TSpellEffectTargetInput;
+    },
+    spell: TSpellEffectDescriptionContext,
     {
         verb,
         object,
@@ -82,7 +197,7 @@ function describeValueEffect(
     return `${verb} ${amountStr} ${object}${targetStr}${effectivenessStr}`;
 }
 
-const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
+export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
     DAMAGE(effect, spell, inline) {
         return describeValueEffect(effect, spell, {
             verb: "Deals",
@@ -133,9 +248,9 @@ const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
     },
 } satisfies TSpellEffectDescriptionFunctions;
 
-function describeSpellEffect<K extends TSpellEffect["kind"]>(
-    effect: Extract<TSpellEffect, { kind: K }>,
-    spell: ISpell,
+function describeSpellEffect<K extends TDescribedSpellEffect["kind"]>(
+    effect: Extract<TDescribedSpellEffect, { kind: K }>,
+    spell: TSpellEffectDescriptionContext,
     inline = false,
 ): string {
     const description = SPELL_EFFECT_DESCRIPTION_FORMATTERS[effect.kind](effect, spell, inline);
@@ -145,7 +260,7 @@ function describeSpellEffect<K extends TSpellEffect["kind"]>(
 const REGULAR_DESCRIPTION_SEPARATOR = "\n";
 const INLINE_DESCRIPTION_SEPARATOR = ", ";
 
-function formatInlineSpellProperties(spell: ISpell): string {
+function formatInlineSpellProperties(spell: TSpellEffectDescriptionsArgument): string {
     const properties: string[] = [];
 
     // TODO: ?? because uses can also be undefined. This field should be number only, with Infinity as default value.
@@ -168,7 +283,7 @@ function formatInlineSpellProperties(spell: ISpell): string {
  * @returns A string describing the spell's effects. Meant to be displayed in a message on Discord.
  */
 export function describeSpellEffects(
-    spell: ISpell,
+    spell: TSpellEffectDescriptionsArgument,
     /**
      * If false, returns the description on multiple lines, formatted in Discord Markdown.
      *
@@ -186,24 +301,25 @@ export function describeSpellEffects(
     }
     const nonEmptyRes = !!res.length;
 
-    const firstSpellEffect = spell.effects[0]; // to please TypeScript
+    const statusEffects = spell.effects.filter(isStatusEffect);
+    const firstStatusEffect = statusEffects[0];
     // The description intro for status effects ("Grants status to <TARGETS>:") can be long.
     // This if branch moves the intro of status effects at the beginning of the resulting string
     // if all effects are of kind "STATUS" and have the same target kind, as to not repeat the
     // intro on each line.
     if (
         spell.effects.length > 1 &&
-        spell.effects.every((effect) => effect.kind === "STATUS") &&
-        firstSpellEffect &&
-        spell.effects.every((effect) => effect.target.kind === firstSpellEffect.target?.kind)
+        statusEffects.length === spell.effects.length &&
+        firstStatusEffect &&
+        statusEffects.every((effect) => effect.target.kind === firstStatusEffect.target.kind)
     ) {
         // TODO: target guaranteed to exist for IStatusEffect, but type should be updated to reflect that
-        const target = describeTarget(firstSpellEffect, spell, inline)!;
+        const target = describeTarget(firstStatusEffect, spell, inline)!;
         if (nonEmptyRes) {
             res += INLINE_DESCRIPTION_SEPARATOR;
         }
         const statusEffectIntro = formatStatusEffectIntro(target, nonEmptyRes || inline);
-        const descriptions = spell.effects.map((effect) => describeSpellEffect(effect.effect, spell, inline));
+        const descriptions = statusEffects.map((effect) => describeSpellEffect(effect.effect, spell, inline));
         res += inline
             ? `${statusEffectIntro} ${descriptions.join(INLINE_DESCRIPTION_SEPARATOR)}.`
             : [statusEffectIntro, ...descriptions.map((description) => `1. ${description}.`)].join(
