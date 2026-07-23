@@ -31,13 +31,6 @@ export interface IWeaponType {
      * Number of tiles from which a unit may auto attack another one.
      */
     readonly range: 1 | 2;
-    /**
-     * Value by which the disciple who wields a weapon of this type has their Atk multiplied by.
-     *
-     * Ranged weapon types have worse Atk than non-ranged.
-     */
-    // TODO: Currently only range influences Atk so maybe this should be a property of range rather than WeaponType. Not a big deal.
-    readonly discipleBaseAtkModifier: number;
     readonly weaponSkills: Iterable<IWeaponSkill>;
 }
 
@@ -138,8 +131,8 @@ export interface IMovementType {
      */
     readonly distance: number;
     readonly canTraverseWaterTiles: boolean;
-    readonly discipleBaseHpModifier: number;
-    readonly discipleBaseAtkModifier: number;
+    readonly baseHp: number;
+    readonly baseAtkByRange: Readonly<Record<IWeaponType["range"], number>>;
 }
 
 /**
