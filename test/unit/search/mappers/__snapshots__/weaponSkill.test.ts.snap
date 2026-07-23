@@ -1,30 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`mapWeaponSkillToMessage > with weapon type and unique skills 1`] = `
-{
-  "reply": {
-    "embed": {
-      "fields": [
-        {
-          "inline": true,
-          "name": "Effect",
-          "value": "Deals more damage to Armored units.",
-        },
-        {
-          "name": "Weapon Type Skill",
-          "value": "Possessed by Sword weapons of level 5.",
-        },
-        {
-          "name": "Unique skill for weapon(s)",
-          "value": "Royal Sword",
-        },
-      ],
-      "title": "Armor Bane 2",
-    },
-  },
-}
-`;
-
 exports[`mapWeaponSkillToMessage > with weapon type and unique usages 1`] = `
 {
   "reply": {
@@ -42,23 +17,6 @@ exports[`mapWeaponSkillToMessage > with weapon type and unique usages 1`] = `
         {
           "name": "Unique skill for weapon(s)",
           "value": "Royal Sword",
-        },
-      ],
-      "title": "Armor Bane 2",
-    },
-  },
-}
-`;
-
-exports[`mapWeaponSkillToMessage > without skills 1`] = `
-{
-  "reply": {
-    "embed": {
-      "fields": [
-        {
-          "inline": true,
-          "name": "Effect",
-          "value": "Deals more damage to Armored units.",
         },
       ],
       "title": "Armor Bane 2",

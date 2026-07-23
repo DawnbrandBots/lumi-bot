@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import mapDiscipleToMessage, { getDiscipleBaseStatsTable } from "../../../../src/search/mappers/disciple.ts";
-import { DISCIPLE } from "./utils.ts";
+import { DISCIPLE } from "./disciple.fixtures.ts";
 
 describe(getDiscipleBaseStatsTable.name, () => {
     test("returns stats for level 1 and the relevant levels", () => {

@@ -1,6 +1,8 @@
 import { describe, expect, test } from "vitest";
 import mapSpellToMessage from "../../../../src/search/mappers/spell.ts";
-import { DISCIPLE, SPELL, WEAPON_TYPE } from "./utils.ts";
+import { WEAPON_TYPE } from "./common.fixtures.ts";
+import { DISCIPLE } from "./disciple.fixtures.ts";
+import { SPELL } from "./spell.fixtures.ts";
 
 describe(mapSpellToMessage.name, () => {
     test.each([

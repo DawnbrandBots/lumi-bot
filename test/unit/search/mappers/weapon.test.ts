@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import mapWeaponToMessage from "../../../../src/search/mappers/weapon.ts";
-import { DISCIPLE, WEAPON } from "./utils.ts";
+import { DISCIPLE } from "./disciple.fixtures.ts";
+import { WEAPON } from "./weapon.fixtures.ts";
 
 describe(mapWeaponToMessage.name, () => {
     test.each([
