@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
-import Weapon from "../../../src/game/rules/weapon.ts";
-import WeaponType from "../../../src/game/rules/weaponType.ts";
-import type { IWeaponSkill } from "../../../src/game/types.ts";
+import Weapon from "../../../../src/game/rules/weapon.ts";
+import WeaponType from "../../../../src/game/rules/weaponType.ts";
+import type { IWeaponSkill } from "../../../../src/game/types.ts";
 
 describe(WeaponType.discipleBaseAtkModifier.name, () => {
     test.each([
