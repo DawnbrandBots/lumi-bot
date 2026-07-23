@@ -119,6 +119,13 @@ export interface IWeapon {
     getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number;
 }
 
+/** Stat modifier possessed by every weapon (except at level 1) that cannot be changed. */
+export interface IWeaponVariant {
+    readonly kind: "HP" | "NEUTRAL" | "ATK";
+    readonly hp: number;
+    readonly atk: number;
+}
+
 /**
  * A unit has a movement type which influences its stats and how it walks on the grid.
  */
@@ -312,6 +319,12 @@ export const ESpellEffectValueUnitKind = {
      * Value is a percentage of a stat of the spell user.
      */
     PERCENT: "PERCENT",
+} as const;
+
+export const EWeaponVariant = {
+    HP: "HP",
+    NEUTRAL: "NEUTRAL",
+    ATK: "ATK",
 } as const;
 
 export interface ISpellEffectValueUnit {

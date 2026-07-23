@@ -1,5 +1,5 @@
 import { UnderscoreNamingStrategy, defineEntity, p } from "@mikro-orm/sqlite";
-import { WEAPON_TYPE_RANGE_ATK_MODIFIER } from "../constants.ts";
+import { default as WeaponTypeRules } from "../rules/weaponType.ts";
 import type { IWeaponType } from "../types.ts";
 import { Color } from "./color.ts";
 import { WeaponSkill } from "./weaponSkill.ts";
@@ -34,7 +34,7 @@ export class WeaponType extends WeaponTypeSchema.class implements IWeaponType {
     }
 
     get discipleBaseAtkModifier(): number {
-        return WEAPON_TYPE_RANGE_ATK_MODIFIER[this.range];
+        return WeaponTypeRules.discipleBaseAtkModifier(this);
     }
 }
 WeaponTypeSchema.setClass(WeaponType);
