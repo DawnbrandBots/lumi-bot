@@ -1,12 +1,13 @@
 import type { PickDeep } from "type-fest";
 import { WEAPON_VARIANTS_BONUSES } from "../constants.ts";
 import type { IWeapon, IWeaponVariant } from "../types.ts";
+import { EWeaponVariant } from "../types.ts";
 
 export const WEAPON_VARIANTS = {
-    HP: { kind: "HP", ...WEAPON_VARIANTS_BONUSES.HP },
-    NEUTRAL: { kind: "NEUTRAL", ...WEAPON_VARIANTS_BONUSES.NEUTRAL },
-    ATK: { kind: "ATK", ...WEAPON_VARIANTS_BONUSES.ATK },
-} satisfies Record<IWeaponVariant["kind"], IWeaponVariant>;
+    [EWeaponVariant.HP]: { kind: EWeaponVariant.HP, ...WEAPON_VARIANTS_BONUSES.HP },
+    [EWeaponVariant.NEUTRAL]: { kind: EWeaponVariant.NEUTRAL, ...WEAPON_VARIANTS_BONUSES.NEUTRAL },
+    [EWeaponVariant.ATK]: { kind: EWeaponVariant.ATK, ...WEAPON_VARIANTS_BONUSES.ATK },
+} as const satisfies { [K in keyof typeof EWeaponVariant]: IWeaponVariant & { kind: K } };
 
 export function stat(
     arg: {

@@ -321,6 +321,12 @@ export const ESpellEffectValueUnitKind = {
     PERCENT: "PERCENT",
 } as const;
 
+export const EWeaponVariant = {
+    HP: "HP",
+    NEUTRAL: "NEUTRAL",
+    ATK: "ATK",
+} as const;
+
 export interface ISpellEffectValueUnit {
     readonly kind: keyof typeof ESpellEffectValueUnitKind;
 }
