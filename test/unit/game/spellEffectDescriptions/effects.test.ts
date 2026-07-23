@@ -1,7 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../src/game/spellEffectDescriptions.ts";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../../src/game/types.ts";
+import { ESpellEffectKind } from "../../../../src/game/types.ts";
 import {
+    ANY_TARGET,
     ATK_PERCENT_VALUE_UNIT,
     ATK_STAT,
     BLUE_COLOR,
@@ -14,6 +15,7 @@ import {
     RECEIVED_WEAPON_DAMAGE_PERCENT_VALUE_UNIT,
     RECEIVED_WEAPON_DAMAGE_STAT,
     RED_COLOR,
+    SELF_TARGET,
     SINGLE_TILE_SHAPE,
 } from "./utils.ts";
 
@@ -27,7 +29,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE.name, () => {
                 effectiveness: [{ base: 90, kind: "Flying" }],
             },
             color: RED_COLOR,
-            target: { kind: ESpellEffectTarget.ANY, asString: "targets" },
+            target: ANY_TARGET,
         };
         const spell: Parameters<typeof SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE>[1] = {
             shape: SINGLE_TILE_SHAPE,
@@ -70,7 +72,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.HEAL.name, () => {
                         unit: FIXED_VALUE_UNIT,
                         effectiveness: [{ base: 70, kind: "Armored" }],
                     },
-                    target: { kind: ESpellEffectTarget.SELF, asString: "user" },
+                    target: SELF_TARGET,
                 },
                 { shape: SINGLE_TILE_SHAPE },
                 false,
@@ -90,7 +92,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.MOVEMENT.name, () => {
                     kind: ESpellEffectKind.MOVEMENT,
                     direction: { noun: "up" },
                     count,
-                    target: { kind: ESpellEffectTarget.ANY, asString: "targets" },
+                    target: ANY_TARGET,
                 },
                 { shape: CROSS_SHAPE },
                 true,
@@ -140,7 +142,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS.name, () => {
     test("describes a self-targeted status over an area", () => {
         const effect: Parameters<typeof SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS>[0] = {
             kind: ESpellEffectKind.STATUS,
-            target: { kind: ESpellEffectTarget.SELF, asString: "user" },
+            target: SELF_TARGET,
             effect: {
                 kind: ESpellEffectKind.STAT,
                 stat: RECEIVED_WEAPON_DAMAGE_STAT,
@@ -219,7 +221,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.TILE.name, () => {
             SPELL_EFFECT_DESCRIPTION_FORMATTERS.TILE(
                 {
                     kind: ESpellEffectKind.TILE,
-                    target: { kind: ESpellEffectTarget.ANY, asString: "targets" },
+                    target: ANY_TARGET,
                     repeat: {
                         kind: ESpellEffectKind.REPEAT,
                         effect: {

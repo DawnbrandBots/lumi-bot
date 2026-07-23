@@ -1,7 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { describeSpellEffects } from "../../../../src/game/spellEffectDescriptions.ts";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../../src/game/types.ts";
+import { ESpellEffectKind } from "../../../../src/game/types.ts";
 import {
+    ANY_TARGET,
     ATK_PERCENT_VALUE_UNIT,
     ATK_STAT,
     CROSS_SHAPE,
@@ -9,6 +10,7 @@ import {
     HP_PERCENT_VALUE_UNIT,
     HP_STAT,
     INCREASE_STAT_CHANGE,
+    SELF_TARGET,
     SINGLE_TILE_SHAPE,
 } from "./utils.ts";
 
@@ -63,7 +65,7 @@ describe(describeSpellEffects.name, () => {
             effects: [
                 {
                     kind: ESpellEffectKind.STATUS,
-                    target: { kind: ESpellEffectTarget.ANY, asString: "targets" },
+                    target: ANY_TARGET,
                     effect: {
                         kind: ESpellEffectKind.STAT,
                         stat: HP_STAT,
@@ -77,7 +79,7 @@ describe(describeSpellEffects.name, () => {
                 },
                 {
                     kind: ESpellEffectKind.STATUS,
-                    target: { kind: ESpellEffectTarget.ANY, asString: "targets" },
+                    target: ANY_TARGET,
                     effect: {
                         kind: ESpellEffectKind.STAT,
                         stat: ATK_STAT,
@@ -115,7 +117,7 @@ describe(describeSpellEffects.name, () => {
             effects: [
                 {
                     kind: ESpellEffectKind.STATUS,
-                    target: { kind: ESpellEffectTarget.ANY, asString: "targets" },
+                    target: ANY_TARGET,
                     effect: {
                         kind: ESpellEffectKind.STAT,
                         stat: HP_STAT,
@@ -126,7 +128,7 @@ describe(describeSpellEffects.name, () => {
                 },
                 {
                     kind: ESpellEffectKind.STATUS,
-                    target: { kind: ESpellEffectTarget.SELF, asString: "user" },
+                    target: SELF_TARGET,
                     effect: {
                         kind: ESpellEffectKind.STAT,
                         stat: ATK_STAT,

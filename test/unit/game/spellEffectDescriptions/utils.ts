@@ -1,10 +1,11 @@
 import type { TSpellEffectDescriptionsInput } from "../../../../src/game/spellEffectDescriptions.ts";
-import { ESpellEffectValueUnitKind, EStat } from "../../../../src/game/types.ts";
+import { ESpellEffectTarget, ESpellEffectValueUnitKind, EStat } from "../../../../src/game/types.ts";
 
 type TRootSpellEffect = TSpellEffectDescriptionsInput["effects"][number];
 type TDamageEffect = Extract<TRootSpellEffect, { kind: "DAMAGE" }>;
 type TStatusEffect = Extract<TRootSpellEffect, { kind: "STATUS" }>;
 type TStatEffect = Extract<TStatusEffect["effect"], { kind: "STAT" }>;
+type TSpellEffectTarget = NonNullable<TDamageEffect["target"]>;
 type TSpellEffectValueUnit = TDamageEffect["amount"]["unit"];
 
 export const SINGLE_TILE_SHAPE = {
@@ -27,6 +28,9 @@ export const RECEIVED_WEAPON_DAMAGE_STAT = {
 export const RED_COLOR = { name: "Red" } satisfies TDamageEffect["color"];
 export const BLUE_COLOR = { name: "Blue" } satisfies TDamageEffect["color"];
 export const COLORLESS_COLOR = { name: "Colorless" } satisfies TDamageEffect["color"];
+
+export const ANY_TARGET = { kind: ESpellEffectTarget.ANY, asString: "targets" } satisfies TSpellEffectTarget;
+export const SELF_TARGET = { kind: ESpellEffectTarget.SELF, asString: "user" } satisfies TSpellEffectTarget;
 
 export const INCREASE_STAT_CHANGE = {
     verb: "Increases",
