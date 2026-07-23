@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { getDiscipleBaseStatsTable } from "../../../../src/search/mappers/disciple.ts";
+import mapDiscipleToMessage, { getDiscipleBaseStatsTable } from "../../../../src/search/mappers/disciple.ts";
+import { DISCIPLE } from "./utils.ts";
 
 describe(getDiscipleBaseStatsTable.name, () => {
     test("returns stats for level 1 and the relevant levels", () => {
@@ -13,5 +14,23 @@ describe(getDiscipleBaseStatsTable.name, () => {
             ["HP", 10, 80, 90, 100, 110],
             ["Atk", 5, 40, 45, 50, 55],
         ]);
+    });
+});
+
+describe(mapDiscipleToMessage.name, () => {
+    test.each([
+        ["with linked shadow music", DISCIPLE],
+        [
+            "with an unlinked shadow music",
+            {
+                ...DISCIPLE,
+                shadowMusic: {
+                    ...DISCIPLE.shadowMusic,
+                    url: null,
+                },
+            },
+        ],
+    ])("%s", (_, disciple) => {
+        expect(mapDiscipleToMessage(disciple)).toMatchSnapshot();
     });
 });

@@ -1,0 +1,58 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mapMusicToMessage > with a URL and linked disciple 1`] = `
+{
+  "followUps": [
+    {
+      "content": "-# https://example.com/shadow-theme",
+    },
+  ],
+  "reply": {
+    "embed": {
+      "description": undefined,
+      "fields": [
+        {
+          "name": "Shadow music for",
+          "value": "Kurt",
+        },
+      ],
+      "title": "Shadow Theme",
+    },
+  },
+}
+`;
+
+exports[`mapMusicToMessage > without a URL 1`] = `
+{
+  "followUps": [],
+  "reply": {
+    "embed": {
+      "description": "-# No known source media for this song :(",
+      "fields": [
+        {
+          "name": "Shadow music for",
+          "value": "Kurt",
+        },
+      ],
+      "title": "Shadow Theme",
+    },
+  },
+}
+`;
+
+exports[`mapMusicToMessage > without linked disciples 1`] = `
+{
+  "followUps": [
+    {
+      "content": "-# https://example.com/shadow-theme",
+    },
+  ],
+  "reply": {
+    "embed": {
+      "description": undefined,
+      "fields": [],
+      "title": "Shadow Theme",
+    },
+  },
+}
+`;
