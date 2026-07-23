@@ -11,6 +11,7 @@ import {
     DECREASE_STAT_CHANGE,
     FIXED_VALUE_UNIT,
     HP_STAT,
+    INCREASE_STAT_CHANGE,
     LIMIT_STAT_CHANGE,
     RECEIVED_WEAPON_DAMAGE_PERCENT_VALUE_UNIT,
     RECEIVED_WEAPON_DAMAGE_STAT,
@@ -108,7 +109,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STAT.name, () => {
                 {
                     kind: ESpellEffectKind.STAT,
                     stat: ATK_STAT,
-                    statChange: { verb: "Increases", preposition: "by" },
+                    statChange: INCREASE_STAT_CHANGE,
                     amount: {
                         base: 30,
                         unit: ATK_PERCENT_VALUE_UNIT,
