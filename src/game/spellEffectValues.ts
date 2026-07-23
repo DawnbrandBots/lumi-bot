@@ -1,9 +1,70 @@
+import type { PickDeep } from "type-fest";
 import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "./constants.ts";
-import type { IDamageEffect, IHealEffect, IStatEffect, TSpellEffect } from "./types.ts";
-import { ESpellEffectValueUnitKind, ESpellRole, type ISpell, type ISpellEffectValue } from "./types.ts";
+import type {
+    IDamageEffect,
+    IHealEffect,
+    IIceBlockEffect,
+    IMovementEffect,
+    IRepeatEffect,
+    ISpell,
+    ISpellEffectValue,
+    ISpellEffectValueEffectivenessItem,
+    IStatEffect,
+    IStatusEffect,
+    ISummonEffect,
+    ITileEffect,
+    IWarpEffect,
+} from "./types.ts";
+import { ESpellEffectValueUnitKind, ESpellRole } from "./types.ts";
+
+type TSpellEffectValueInput = PickDeep<ISpellEffectValue, "base" | "scalesWithLevel" | "unit.kind"> & {
+    readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "base">> | null;
+};
+
+type TEffectWithAmountInput = {
+    readonly amount: TSpellEffectValueInput;
+};
+
+type TDamageEffectInput = PickDeep<IDamageEffect, "kind"> & TEffectWithAmountInput;
+type THealEffectInput = PickDeep<IHealEffect, "kind"> & TEffectWithAmountInput;
+type TMovementEffectInput = PickDeep<IMovementEffect, "kind">;
+type TStatEffectInput = PickDeep<IStatEffect, "kind"> & TEffectWithAmountInput;
+type TRepeatEffectInput = PickDeep<IRepeatEffect, "kind"> & {
+    readonly effect: TDamageEffectInput | THealEffectInput;
+};
+type TStatusEffectInput = PickDeep<IStatusEffect, "kind"> & {
+    readonly effect: TStatEffectInput | TRepeatEffectInput;
+};
+type TWarpEffectInput = PickDeep<IWarpEffect, "kind">;
+type TIceBlockEffectInput = PickDeep<IIceBlockEffect, "kind" | "hp.base" | "hp.scalesWithLevel">;
+type TTileEffectInput = PickDeep<ITileEffect, "kind"> & {
+    readonly repeat: TRepeatEffectInput;
+};
+type TSummonEffectInput = PickDeep<
+    ISummonEffect,
+    "kind" | "hp.base" | "hp.scalesWithLevel" | "atk.base" | "atk.scalesWithLevel"
+>;
+
+type TSpellEffectValueGetterInput =
+    | TDamageEffectInput
+    | THealEffectInput
+    | TMovementEffectInput
+    | TStatEffectInput
+    | TStatusEffectInput
+    | TRepeatEffectInput
+    | TWarpEffectInput
+    | TIceBlockEffectInput
+    | TTileEffectInput
+    | TSummonEffectInput;
+
+export type TSpellEffectsValuesInput = PickDeep<ISpell, "role.kind"> & {
+    readonly effects: TSpellEffectValueGetterInput[];
+};
 
 type TSpellValueFunctions = {
-    [K in TSpellEffect["kind"]]: (effect: Extract<TSpellEffect, { kind: K }>) => ISpellEffectValueWithToLevel[];
+    [K in TSpellEffectValueGetterInput["kind"]]: (
+        effect: Extract<TSpellEffectValueGetterInput, { kind: K }>,
+    ) => ISpellEffectValueWithToLevel[];
 };
 
 // TODO: admittedly, this name sucks. I think I should include something like "DBModel" in db-related models name so I could use "ISpellEffectValue" here for example.
@@ -118,7 +179,7 @@ export class DarkSlashValue extends ValueWithScale implements ISpellEffectValueW
 }
 
 const noValues = () => [];
-const withEffectiveness = (effect: IDamageEffect | IHealEffect | IStatEffect) => {
+const withEffectiveness = (effect: TEffectWithAmountInput) => {
     return [new NormalValue(effect.amount)].concat(
         effect.amount.effectiveness?.map(
             (eff) =>
@@ -167,10 +228,29 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellValueFunctions = {
     },
 };
 
-function valuesForEffect<K extends TSpellEffect["kind"]>(
-    effect: Extract<TSpellEffect, { kind: K }>,
-): ISpellEffectValueWithToLevel[] {
-    return SPELL_EFFECT_VALUE_GETTERS[effect.kind](effect);
+function valuesForEffect(effect: TSpellEffectValueGetterInput): ISpellEffectValueWithToLevel[] {
+    switch (effect.kind) {
+        case "DAMAGE":
+            return SPELL_EFFECT_VALUE_GETTERS.DAMAGE(effect);
+        case "HEAL":
+            return SPELL_EFFECT_VALUE_GETTERS.HEAL(effect);
+        case "MOVEMENT":
+            return SPELL_EFFECT_VALUE_GETTERS.MOVEMENT(effect);
+        case "STAT":
+            return SPELL_EFFECT_VALUE_GETTERS.STAT(effect);
+        case "STATUS":
+            return SPELL_EFFECT_VALUE_GETTERS.STATUS(effect);
+        case "REPEAT":
+            return SPELL_EFFECT_VALUE_GETTERS.REPEAT(effect);
+        case "WARP":
+            return SPELL_EFFECT_VALUE_GETTERS.WARP(effect);
+        case "ICE_BLOCK":
+            return SPELL_EFFECT_VALUE_GETTERS.ICE_BLOCK(effect);
+        case "TILE":
+            return SPELL_EFFECT_VALUE_GETTERS.TILE(effect);
+        case "SUMMON":
+            return SPELL_EFFECT_VALUE_GETTERS.SUMMON(effect);
+    }
 }
 
 /**
@@ -187,7 +267,7 @@ function valuesForEffect<K extends TSpellEffect["kind"]>(
  * - "Heal Pull" as argument returns an array with one subarray with only an entry for the Heal effect since Movement does not scale with a spell's level.
  * - "Minor Pull" as argument returns an empty table since it only has one effect that does not scale with the spell's level.
  */
-export function spellEffectsValues(spell: ISpell): ISpellEffectValueWithToLevel[][] {
+export function spellEffectsValues(spell: TSpellEffectsValuesInput): ISpellEffectValueWithToLevel[][] {
     if (
         spell.effects.length === 1 &&
         spell.effects[0]!.kind === "DAMAGE" &&
