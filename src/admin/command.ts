@@ -22,7 +22,7 @@ import {
     ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
     ADMIN_MINUTES_OPTION_NAME,
-    ADMIN_ROLE_OPTION_NAME
+    ADMIN_ROLE_OPTION_NAME,
 } from "./constants.ts";
 import type { AdminFeature } from "./feature.ts";
 import mapAdminFeatureReturnToMessage from "./mapper.ts";

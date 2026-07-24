@@ -1,10 +1,6 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { randomUUID } from "node:crypto";
-import {
-    LFG_MAX_ROOM_CODE_LENGTH,
-    LFG_MAX_ROOM_PLAYERS,
-    LFG_MIN_ROOM_CODE_LENGTH
-} from "./constants.ts";
+import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "./constants.ts";
 import { LfgRoom } from "./models/room.ts";
 import { LfgRoomPlayer } from "./models/roomPlayer.ts";
 import type { TLfgPlayerRemovalResult } from "./types.ts";

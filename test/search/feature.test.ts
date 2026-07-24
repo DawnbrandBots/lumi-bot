@@ -6,7 +6,10 @@ import getSearchItems from "../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import searchFeature from "../../src/search/feature.ts";
 import type { TSearchItem } from "../../src/search/types.ts";
-import { ESearchFeatureReturnKind, type ISearchEngine } from "../../src/search/types.ts";
+import {
+    ESearchFeatureReturnKind,
+    type ISearchEngine
+} from "../../src/search/types.ts";
 import { initTestGameOrm } from "../orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
