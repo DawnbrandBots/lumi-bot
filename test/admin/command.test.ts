@@ -99,6 +99,7 @@ describe(AdminCommand.name, () => {
                 flags: [MessageFlags.Ephemeral],
                 embeds: [
                     expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         description: expect.stringContaining(CHANNEL_ID),
                     }),
                 ],
@@ -132,6 +133,7 @@ describe(AdminCommand.name, () => {
                 flags: [MessageFlags.Ephemeral],
                 embeds: [
                     expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         description: expect.stringContaining(ROLE_ID),
                     }),
                 ],
@@ -165,6 +167,7 @@ describe(AdminCommand.name, () => {
                 flags: [MessageFlags.Ephemeral],
                 embeds: [
                     expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         description: expect.stringContaining("45 minutes"),
                     }),
                 ],
@@ -192,6 +195,7 @@ describe(AdminCommand.name, () => {
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 embeds: [expect.objectContaining({ fields: expect.any(Array) })],
             }),
         );

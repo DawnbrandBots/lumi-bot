@@ -336,12 +336,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
         },
         {
             name: "cannot transfer to yourself",
-            input: {
-                result: {
-                    kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF,
-                    value: { code: ROOM.code, userId: "user" },
-                },
-            },
+            input: { result: { kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF } },
             expected: {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
@@ -354,10 +349,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
         {
             name: "player not in room",
             input: {
-                result: {
-                    kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
-                    value: { targetId: "target", code: ROOM.code },
-                },
+                result: { kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM, value: { targetId: "target" } },
             },
             expected: {
                 kind: EMessageKind.NEGATIVE,
