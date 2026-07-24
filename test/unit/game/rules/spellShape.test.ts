@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import SpellShape from "../../../src/game/rules/spellShape.ts";
+import SpellShape from "../../../../src/game/rules/spellShape.ts";
 
 describe(SpellShape.isAoe.name, () => {
     test.each([

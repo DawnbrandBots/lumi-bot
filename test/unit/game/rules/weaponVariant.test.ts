@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import WeaponVariant, { WEAPON_VARIANTS } from "../../../src/game/rules/weaponVariant.ts";
+import WeaponVariant, { WEAPON_VARIANTS } from "../../../../src/game/rules/weaponVariant.ts";
 
 describe(WeaponVariant.stat.name, () => {
     test.each(["hp", "atk"] as const)("returns 0 for a level 1 weapon's %s", (stat) => {

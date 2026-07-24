@@ -1,8 +1,8 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import { Disciple } from "../../../src/game/models/disciple.ts";
-import { getDiscipleBaseStatsTable } from "../../../src/search/mappers/disciple.ts";
-import { initTestOrm } from "../../orm.ts";
+import { Disciple } from "../../../../src/game/models/disciple.ts";
+import { getDiscipleBaseStatsTable } from "../../../../src/search/mappers/disciple.ts";
+import { initTestOrm } from "../../../utils/orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
