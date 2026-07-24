@@ -4,7 +4,7 @@ import type {
     ISpell,
     ISpellEffectValue,
     ISpellEffectValueEffectivenessItem,
-    TSpellEffectKindToEffectMap
+    TSpellEffectKindToEffectMap,
 } from "./types.ts";
 import { ESpellEffectValueUnitKind, ESpellRole } from "./types.ts";
 
@@ -35,10 +35,6 @@ type TSpellEffectValueGetterInputMap = {
         Pick<TSpellEffectKindToEffectMap[K], "kind">;
 };
 type TSpellEffectValueGetterInput = TSpellEffectValueGetterInputMap[keyof TSpellEffectValueGetterInputMap];
-
-export type TSpellEffectsValuesInput = PickDeep<ISpell, "role.kind"> & {
-    readonly effects: TSpellEffectValueGetterInput[];
-};
 
 type TSpellValueFunctions = {
     [K in TSpellEffectValueGetterInput["kind"]]: (
@@ -227,7 +223,11 @@ function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
  * - "Heal Pull" as argument returns an array with one subarray with only an entry for the Heal effect since Movement does not scale with a spell's level.
  * - "Minor Pull" as argument returns an empty table since it only has one effect that does not scale with the spell's level.
  */
-export function spellEffectsValues(spell: TSpellEffectsValuesInput): ISpellEffectValueWithToLevel[][] {
+export function spellEffectsValues(
+    spell: PickDeep<ISpell, "role.kind"> & {
+        readonly effects: TSpellEffectValueGetterInput[];
+    },
+): ISpellEffectValueWithToLevel[][] {
     if (
         spell.effects.length === 1 &&
         spell.effects[0]!.kind === "DAMAGE" &&

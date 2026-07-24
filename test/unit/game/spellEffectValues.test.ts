@@ -1,8 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
     spellEffectsValues,
-    type ISpellEffectValueWithToLevel,
-    type TSpellEffectsValuesInput,
+    type ISpellEffectValueWithToLevel
 } from "../../../src/game/spellEffectValues.ts";
 import { ESpellEffectKind, ESpellEffectValueUnitKind, ESpellRole } from "../../../src/game/types.ts";
 
@@ -142,7 +141,7 @@ describe(spellEffectsValues.name, () => {
                 ],
             },
         ],
-    ] satisfies ReadonlyArray<readonly [string, TSpellEffectsValuesInput]>)("%s", (_, spell) => {
+    ] satisfies ReadonlyArray<readonly [string, Parameters<typeof spellEffectsValues>[0]]>)("%s", (_, spell) => {
         expect(serializeValues(spellEffectsValues(spell))).toMatchSnapshot();
     });
 });
