@@ -1,0 +1,142 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`spellEffectsValues > damage and heal values 1`] = `
+[
+  [
+    {
+      "base": 50,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "FIXED",
+      },
+    },
+  ],
+  [
+    {
+      "base": 30,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "FIXED",
+      },
+    },
+  ],
+]
+`;
+
+exports[`spellEffectsValues > damage with effectiveness values 1`] = `
+[
+  [
+    {
+      "base": 25,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "FIXED",
+      },
+    },
+    {
+      "base": 40,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "FIXED",
+      },
+    },
+  ],
+]
+`;
+
+exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
+[
+  [
+    {
+      "base": 35,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "FIXED",
+      },
+    },
+  ],
+  [],
+]
+`;
+
+exports[`spellEffectsValues > only valueless movement 1`] = `
+[
+  [],
+]
+`;
+
+exports[`spellEffectsValues > shadow percent damage 1`] = `
+[
+  [
+    {
+      "base": 35,
+      "className": "DarkSlashValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "PERCENT",
+      },
+    },
+  ],
+]
+`;
+
+exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
+[
+  [
+    {
+      "base": 20,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "PERCENT",
+      },
+    },
+  ],
+  [
+    {
+      "base": 30,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "PERCENT",
+      },
+    },
+    {
+      "base": 0,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "PERCENT",
+      },
+    },
+  ],
+]
+`;
+
+exports[`spellEffectsValues > summon values 1`] = `
+[
+  [
+    {
+      "base": 70,
+      "className": "NormalValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "FIXED",
+      },
+    },
+    {
+      "base": 45,
+      "className": "MinionAtkValue",
+      "scalesWithLevel": true,
+      "unit": {
+        "kind": "FIXED",
+      },
+    },
+  ],
+]
+`;

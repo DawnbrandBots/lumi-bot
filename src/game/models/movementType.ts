@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IMovementType } from "../types.ts";
+import type { IMovementType, IWeaponType } from "../types.ts";
 
 export const MovementTypeSchema = defineEntity({
     name: "MovementType",
@@ -8,8 +8,8 @@ export const MovementTypeSchema = defineEntity({
         name: p.string(),
         distance: p.integer(),
         canTraverseWaterTiles: p.boolean(),
-        discipleBaseHpModifier: p.integer(),
-        discipleBaseAtkModifier: p.integer(),
+        baseHp: p.integer(),
+        baseAtkByRange: p.json<Readonly<Record<IWeaponType["range"], number>>>(),
     },
 });
 

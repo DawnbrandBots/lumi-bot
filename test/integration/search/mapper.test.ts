@@ -2,11 +2,11 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { Collection } from "@mikro-orm/sqlite";
 import { subtext } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT, SEARCH_MAX_INPUT_LENGTH } from "../../src/bot/constants.ts";
-import { EMessageKind } from "../../src/bot/types.ts";
-import type { Disciple } from "../../src/game/models/disciple.ts";
-import SEARCH_CONFIGS from "../../src/loaders/searchConfigs.ts";
-import getSearchItems from "../../src/loaders/searchItems.ts";
+import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT, SEARCH_MAX_INPUT_LENGTH } from "../../../src/bot/constants.ts";
+import { EMessageKind } from "../../../src/bot/types.ts";
+import type { Disciple } from "../../../src/game/models/disciple.ts";
+import SEARCH_CONFIGS from "../../../src/loaders/searchConfigs.ts";
+import getSearchItems from "../../../src/loaders/searchItems.ts";
 import {
     SEARCH_ALIASES_FOOTER_PREFIX,
     SEARCH_ENTITY_KIND_FIELD_NAME,
@@ -17,13 +17,13 @@ import {
     SEARCH_MISSING_DATABASE_RESULT_TITLE,
     SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-} from "../../src/search/constants.ts";
-import { FuseSearchEngine } from "../../src/search/engine.ts";
-import searchFeature from "../../src/search/feature.ts";
-import mapSearchFeatureReturnToMessages from "../../src/search/mapper.ts";
-import type { ISearchEngine, TSearchItem } from "../../src/search/types.ts";
-import { ESearchFeatureReturnKind } from "../../src/search/types.ts";
-import { initTestOrm } from "../orm.ts";
+} from "../../../src/search/constants.ts";
+import { FuseSearchEngine } from "../../../src/search/engine.ts";
+import searchFeature from "../../../src/search/feature.ts";
+import mapSearchFeatureReturnToMessages from "../../../src/search/mapper.ts";
+import type { ISearchEngine, TSearchItem } from "../../../src/search/types.ts";
+import { ESearchFeatureReturnKind } from "../../../src/search/types.ts";
+import { initTestOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;

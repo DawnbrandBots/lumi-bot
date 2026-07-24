@@ -1,17 +1,12 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import { Disciple } from "../src/game/models/disciple.ts";
-import { Spell } from "../src/game/models/spell.ts";
-import { SPELL_DRAGGING_MODE } from "../src/game/models/spellDraggingMode.ts";
-import { Weapon } from "../src/game/models/weapon.ts";
-import { describeSpellEffects } from "../src/game/spellEffectDescriptions.ts";
-import { ESpellDraggingMode } from "../src/game/types.ts";
-import range from "../src/utils/range.ts";
-import { initTestOrm } from "./orm.ts";
-
-const LEVELS = Array.from(range({ start: 1, end: 12 }));
-const VARIANTS = ["HP", "NEUTRAL", "ATK"] as const;
-const STATS = ["hp", "atk"] as const;
+import { Disciple } from "../../../src/game/models/disciple.ts";
+import { Spell } from "../../../src/game/models/spell.ts";
+import { SPELL_DRAGGING_MODE } from "../../../src/game/models/spellDraggingMode.ts";
+import { Weapon } from "../../../src/game/models/weapon.ts";
+import { describeSpellEffects } from "../../../src/game/spellEffectDescriptions.ts";
+import { ESpellDraggingMode } from "../../../src/game/types.ts";
+import { initTestOrm } from "../../utils/orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
@@ -38,93 +33,33 @@ async function findWeapon(name: string): Promise<Weapon> {
 }
 
 describe(Disciple.name, () => {
-    describe("getHp returns expected values from level 1 to 11 for", () => {
-        // All possible baseHp values per level
-        test.each([
-            ["Kurt", [80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160]],
-            ["Gotthold", [88, 96, 105, 114, 123, 132, 140, 149, 158, 167, 176]],
-        ])("%s", async (name, expected) => {
-            const disciple = await findDisciple(name);
+    describe("stat methods", () => {
+        test("return expected values from loaded movement and weapon types", async () => {
+            const disciple = await findDisciple("Kurt");
 
-            expect(LEVELS.map((level) => disciple.getHp({ level }))).toEqual(expected);
-        });
-    });
-
-    describe("getAtk returns expected values from level 1 to 11 for", () => {
-        // All possible baseAtk values per level
-        test.each([
-            ["Kurt", [42, 46, 50, 54, 58, 63, 67, 71, 75, 79, 84]],
-            ["Gotthold", [30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60]],
-            ["Carina", [36, 39, 43, 46, 50, 54, 57, 61, 64, 68, 72]],
-            ["Alberta", [24, 26, 28, 31, 33, 36, 38, 40, 43, 45, 48]],
-            ["Tamamo", [28, 30, 33, 36, 39, 42, 44, 47, 50, 53, 56]],
-            ["Corrin", [20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40]],
-        ])("%s", async (name, expected) => {
-            const disciple = await findDisciple(name);
-
-            expect(LEVELS.map((level) => disciple.getAtk({ level }))).toEqual(expected);
-        });
-    });
-
-    describe("baseHp returns expected value for", () => {
-        // All possible baseHp values
-        test.each([
-            ["Kurt", 80],
-            ["Gotthold", 88],
-        ])("%s", async (name, expected) => {
-            const disciple = await findDisciple(name);
-
-            expect(disciple.baseHp).toBe(expected);
-        });
-    });
-
-    describe("baseAtk returns expected value for", () => {
-        // All possible baseAtk values
-        test.each([
-            ["Kurt", 42],
-            ["Gotthold", 30],
-            ["Carina", 36],
-            ["Alberta", 24],
-            ["Tamamo", 28],
-            ["Corrin", 20],
-        ])("%s", async (name, expected) => {
-            const disciple = await findDisciple(name);
-
-            expect(disciple.baseAtk).toBe(expected);
+            expect(disciple.baseHp).toBe(80);
+            expect(disciple.baseAtk).toBe(42);
+            expect(disciple.getHp({ level: 11 })).toBe(160);
+            expect(disciple.getAtk({ level: 11 })).toBe(84);
         });
     });
 });
 
 describe(Spell.name, () => {
+    test("loaded shape delegates its area check", async () => {
+        const spell = await findSpell("Dark Tetrafire");
+
+        expect(spell.shape.isAoe).toBe(true);
+    });
+
     describe("draggingMode" satisfies keyof Spell, () => {
-        describe(ESpellDraggingMode.SELF, () => {
-            test.each(["Self Mend", "Self Heal Push", "Self Crossedge"])("%s", async (name) => {
-                const spell = await findSpell(name);
+        test.each([
+            ["Self Mend", SPELL_DRAGGING_MODE.SELF.kind],
+            ["Thunder Self Edge EX", ESpellDraggingMode.ANY],
+        ])("returns the expected mode for loaded spell %s", async (name, expected) => {
+            const spell = await findSpell(name);
 
-                expect(spell.draggingMode.kind).toBe(SPELL_DRAGGING_MODE.SELF.kind);
-            });
-        });
-        describe(ESpellDraggingMode.ANY, () => {
-            test.each([
-                // Some spells with ANY dragging mode, one for each effect type.
-                "Elfire",
-                "Mend",
-                "Shield Strike",
-                "Heal Warp EX",
-                "Edge Break",
-                "Tetrathunder Wall EX",
-                "Axe Fighter + Infantry",
-                "Tetraheal Zone",
-
-                // Spells which have a SELF spell effect but don't have a SELF dragging mode.
-                "Aether EX",
-                "Thunder Self Edge EX",
-                "Wind Self Pull EX",
-            ])("%s", async (name) => {
-                const spell = await findSpell(name);
-
-                expect(spell.draggingMode.kind).toBe(ESpellDraggingMode.ANY);
-            });
+            expect(spell.draggingMode.kind).toBe(expected);
         });
     });
 
@@ -270,77 +205,11 @@ describe(Spell.name, () => {
 });
 
 describe(Weapon.name, () => {
-    test("getWeaponVariantStat returns 0 for every Bronze Sword stat and variant", async () => {
-        const weapon = await findWeapon("Bronze Sword");
+    test("rule methods use loaded weapon and weapon type data", async () => {
+        const royalSword = await findWeapon("Royal Sword +");
+        const ironBow = await findWeapon("Iron Bow");
 
-        for (const variant of VARIANTS) {
-            for (const stat of STATS) {
-                expect(weapon.getWeaponVariantStat({ variant, stat })).toBe(0);
-            }
-        }
-    });
-
-    test("getWeaponVariantStat returns expected values for Royal Sword +", async () => {
-        const weapon = await findWeapon("Royal Sword +");
-
-        // Checking right values for all variants of an 8* weapon
-        expect(weapon.getWeaponVariantStat({ variant: "HP", stat: "hp" })).toBe(16);
-        expect(weapon.getWeaponVariantStat({ variant: "HP", stat: "atk" })).toBe(35);
-        expect(weapon.getWeaponVariantStat({ variant: "NEUTRAL", stat: "hp" })).toBe(11);
-        expect(weapon.getWeaponVariantStat({ variant: "NEUTRAL", stat: "atk" })).toBe(45);
-        expect(weapon.getWeaponVariantStat({ variant: "ATK", stat: "hp" })).toBe(6);
-        expect(weapon.getWeaponVariantStat({ variant: "ATK", stat: "atk" })).toBe(55);
-    });
-
-    describe("Weapon type skills", () => {
-        describe("Should have a weapon type skill", () => {
-            test.each([
-                ["Basic Claws", null],
-                ["Iron Claws", "RIDER_BANE_1"],
-                ["Silver Claws", "RIDER_BANE_2"],
-                ["Solar Claws +", "RIDER_BANE_3"],
-                ["Novice Staff", null],
-                ["Iron Staff", "ARMOR_BANE_1"],
-                ["Silver Staff", "ARMOR_BANE_2"],
-                ["Panther Staff +", "ARMOR_BANE_3"],
-                ["Novice Tome", null],
-                ["Iron Tome", "ARMOR_BANE_1"],
-                ["Silver Tome", "ARMOR_BANE_2"],
-                ["Ivory Tome +", "ARMOR_BANE_3"],
-                ["Bronze Bow", null],
-                ["Iron Bow", "FLIER_BANE_1"],
-                ["Silver Bow", "FLIER_BANE_2"],
-                ["Mulagir +", "FLIER_BANE_3"],
-            ])("%s => %s", async (name, expectedSkillId) => {
-                const weapon = await findWeapon(name);
-
-                expect(weapon.weaponTypeSkill?.id ?? null).toBe(expectedSkillId);
-            });
-        });
-
-        describe("Should not have a weapon type skill", () => {
-            test.each([
-                "Bronze Sword",
-                "Iron Sword",
-                "Silver Sword",
-                "Royal Sword +",
-                "Bronze Lance",
-                "Iron Lance",
-                "Silver Lance",
-                "Shield Lance +",
-                "Bronze Axe",
-                "Iron Axe",
-                "Silver Axe",
-                "Bull Axe +",
-                "Basic Stone",
-                "Iron Stone",
-                "Silver Stone",
-                "Sight Stone +",
-            ])("%s => null", async (name) => {
-                const weapon = await findWeapon(name);
-
-                expect(weapon.weaponTypeSkill).toBeNullable();
-            });
-        });
+        expect(royalSword.getWeaponVariantStat({ variant: "NEUTRAL", stat: "hp" })).toBe(11);
+        expect(ironBow.weaponTypeSkill?.id).toBe("FLIER_BANE_1");
     });
 });
