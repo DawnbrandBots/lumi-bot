@@ -7,7 +7,6 @@ import type {
     CacheType,
     ChatInputCommandInteraction,
     InteractionContextType,
-    InteractionResponse,
     SharedSlashCommand,
     SlashCommandBuilder,
 } from "discord.js";
@@ -45,8 +44,9 @@ export interface ICommand {
     readonly info: ICommandInfo;
     /**
      * What the command does. Must reply to the interaction.
+     * May do additional Discord-related operations like sending additional messages.
      */
-    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<InteractionResponse<boolean>>;
+    readonly run: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<void>;
     /**
      * Provides autocomplete suggestions for the command's options.
      */
@@ -75,15 +75,15 @@ export type IBaseMessageArgCustomProps = {
 };
 
 export type TMessageOptionsUnusedProperties = "embeds";
-
-export type IBaseMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
+export type ISingleEmbedMessageOptions<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
     MessageOptions,
     TMessageOptionsUnusedProperties
-> &
-    IBaseMessageArgCustomProps;
+> & {
+    embed: APIEmbed;
+};
 
-export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> = Omit<
-    MessageOptions,
-    TMessageOptionsUnusedProperties
-> &
-    IChildMessageArgCustomProps;
+export type IBaseMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    ISingleEmbedMessageOptions<MessageOptions> & IBaseMessageArgCustomProps;
+
+export type IChildMessageArg<MessageOptions extends BaseMessageOptions = BaseMessageOptions> =
+    ISingleEmbedMessageOptions<MessageOptions> & IChildMessageArgCustomProps;

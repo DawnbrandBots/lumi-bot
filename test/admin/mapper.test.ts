@@ -41,7 +41,6 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
         expect(message.kind).toBe(EMessageKind.POSITIVE);
         expect(message.embeds?.[0]).toMatchObject({
-            title: "LFG public channel set",
             description: `LFG messages will be posted in ${channelMention(CHANNEL_ID)}.`,
         });
     });
@@ -52,7 +51,9 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
         );
 
         expect(message.kind).toBe(EMessageKind.POSITIVE);
-        expect(message.embeds?.[0]).toMatchObject({ title: "LFG public channel cleared" });
+        expect(message.embeds?.[0]).toMatchObject({
+            description: "LFG messages are now only visible by command users.",
+        });
     });
 
     test("maps LFG config", () => {
@@ -62,6 +63,7 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
                 value: {
                     guild: "guild-1",
                     lfgChannel: CHANNEL_ID,
+                    lfgRolePingCooldownMinutes: 45,
                     lfgRoles: {
                         toArray: () => [{ role: ROLE_ID }],
                     },
@@ -71,11 +73,39 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
         expect(message.kind).toBe(EMessageKind.NEUTRAL);
         expect(message.embeds?.[0]).toMatchObject({
-            title: "LFG config",
             fields: [
                 { name: "Channel", value: channelMention(CHANNEL_ID) },
                 { name: "Roles", value: roleMention(ROLE_ID) },
+                { name: "Role ping cooldown", value: "45 minutes" },
             ],
+        });
+    });
+
+    test("maps LFG role ping cooldown help", () => {
+        const message = assertMessage(
+            mapAdminFeatureReturnToMessage({
+                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+                value: { minutes: 45 },
+            }),
+        );
+
+        expect(message.kind).toBe(EMessageKind.NEUTRAL);
+        expect(message.flags).toEqual([MessageFlags.Ephemeral]);
+        expect(description(message)).toContain("Valid combinations");
+        expect(description(message)).toContain("45 minutes");
+    });
+
+    test("maps LFG role ping cooldown set", () => {
+        const message = assertMessage(
+            mapAdminFeatureReturnToMessage({
+                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+                value: { minutes: 45 },
+            }),
+        );
+
+        expect(message.kind).toBe(EMessageKind.POSITIVE);
+        expect(message.embeds?.[0]).toMatchObject({
+            description: "LFG pingable roles can be pinged every 45 minutes.",
         });
     });
 
@@ -103,7 +133,6 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
         expect(message.kind).toBe(EMessageKind.POSITIVE);
         expect(message.embeds?.[0]).toMatchObject({
-            title: "LFG ping role added",
             description: `${roleMention(ROLE_ID)} can now be pinged by \`lfg ping\`.`,
         });
     });
@@ -117,7 +146,9 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
         );
 
         expect(message.kind).toBe(EMessageKind.POSITIVE);
-        expect(message.embeds?.[0]).toMatchObject({ title: "LFG ping role removed" });
+        expect(message.embeds?.[0]).toMatchObject({
+            description: `${roleMention(ROLE_ID)} can no longer be pinged by \`\`\`\nlfg ping\n\`\`\`.`,
+        });
     });
 
     test("maps invalid LFG channel options", () => {
@@ -148,16 +179,15 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
         );
 
         expect(missingChannel.kind).toBe(EMessageKind.ERROR);
-        expect(missingChannel.embeds?.[0]).toMatchObject({ title: "Missing channel" });
+        expect(missingChannel.embeds?.[0]).toMatchObject({ description: "Missing channel" });
         expect(invalidOptions.kind).toBe(EMessageKind.ERROR);
-        expect(invalidOptions.embeds?.[0]).toMatchObject({ title: "Invalid options" });
+        expect(invalidOptions.embeds?.[0]).toMatchObject({ description: "Invalid options" });
         expect(missingRole.kind).toBe(EMessageKind.ERROR);
-        expect(missingRole.embeds?.[0]).toMatchObject({ title: "Missing role" });
+        expect(missingRole.embeds?.[0]).toMatchObject({ description: "Missing role" });
         expect(invalidRoleOptions.kind).toBe(EMessageKind.ERROR);
-        expect(invalidRoleOptions.embeds?.[0]).toMatchObject({ title: "Invalid options" });
+        expect(invalidRoleOptions.embeds?.[0]).toMatchObject({ description: "Invalid options" });
         expect(everyoneRole.kind).toBe(EMessageKind.ERROR);
         expect(everyoneRole.embeds?.[0]).toMatchObject({
-            title: "Invalid role",
             description: "`@everyone` cannot be configured as an LFG pingable role.",
         });
     });

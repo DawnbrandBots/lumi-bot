@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { ITileEffect } from "../types.ts";
+import { ESpellEffectKind, type ITileEffect } from "../types.ts";
 import { RepeatEffect } from "./repeatEffect.ts";
 import { SpellEffect } from "./spellEffect.ts";
 
@@ -7,9 +7,9 @@ export const TileEffectSchema = defineEntity({
     name: "TileEffect",
     embeddable: true,
     extends: SpellEffect,
-    discriminatorValue: "TILE",
+    discriminatorValue: ESpellEffectKind.TILE,
     properties: {
-        kind: p.enum(["TILE"]),
+        kind: p.enum([ESpellEffectKind.TILE]),
         // TODO: "repeat" was originally called effect, and I wish it remained so.
         // However, a crash occurs during MikroORM's schema discovery
         // when the property is named "effect".

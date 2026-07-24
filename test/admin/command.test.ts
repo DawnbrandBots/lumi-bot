@@ -6,8 +6,10 @@ import {
     ADMIN_CHANNEL_OPTION_NAME,
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     ADMIN_LFG_GROUP_NAME,
+    ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME,
     ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
+    ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
 } from "../../src/admin/constants.ts";
 import type { AdminFeature } from "../../src/admin/feature.ts";
@@ -23,12 +25,14 @@ function getInteractionFixture({
     subcommand = ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     action = null,
     channel = null,
+    minutes = null,
     role = null,
 }: {
     readonly canManageGuild?: boolean;
     readonly subcommand?: string;
     readonly action?: string | null;
     readonly channel?: { id: string; type: ChannelType } | null;
+    readonly minutes?: number | null;
     readonly role?: { id: string } | null;
 } = {}) {
     const reply = vi.fn().mockResolvedValue(REPLY);
@@ -42,6 +46,7 @@ function getInteractionFixture({
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === ADMIN_ACTION_OPTION_NAME ? action : null)),
             getChannel: vi.fn((name: string) => (name === ADMIN_CHANNEL_OPTION_NAME ? channel : null)),
+            getInteger: vi.fn((name: string) => (name === ADMIN_MINUTES_OPTION_NAME ? minutes : null)),
             getRole: vi.fn((name: string) => (name === ADMIN_ROLE_OPTION_NAME ? role : null)),
         },
         reply,
@@ -76,6 +81,7 @@ describe(AdminCommand.name, () => {
         });
         const adminFeature = {
             lfgChannel,
+            lfgRolePingCooldown: vi.fn(),
             lfgRole: vi.fn(),
             getGuildConfig: vi.fn(),
         } as unknown as AdminFeature;
@@ -91,7 +97,12 @@ describe(AdminCommand.name, () => {
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
-                embeds: [expect.objectContaining({ title: "LFG public channel set" })],
+                embeds: [
+                    expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        description: expect.stringContaining(CHANNEL_ID),
+                    }),
+                ],
             }),
         );
     });
@@ -103,6 +114,7 @@ describe(AdminCommand.name, () => {
         });
         const adminFeature = {
             lfgChannel: vi.fn(),
+            lfgRolePingCooldown: vi.fn(),
             lfgRole,
             getGuildConfig: vi.fn(),
         } as unknown as AdminFeature;
@@ -119,7 +131,46 @@ describe(AdminCommand.name, () => {
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
-                embeds: [expect.objectContaining({ title: "LFG ping role added" })],
+                embeds: [
+                    expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        description: expect.stringContaining(ROLE_ID),
+                    }),
+                ],
+            }),
+        );
+    });
+
+    test("dispatches lfg role ping cooldown", async () => {
+        const lfgRolePingCooldown = vi.fn().mockResolvedValue({
+            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+            value: { minutes: 45 },
+        });
+        const adminFeature = {
+            lfgChannel: vi.fn(),
+            lfgRolePingCooldown,
+            lfgRole: vi.fn(),
+            getGuildConfig: vi.fn(),
+        } as unknown as AdminFeature;
+        const command = new AdminCommand({ adminFeature });
+        const { interaction, reply } = getInteractionFixture({
+            subcommand: ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME,
+            action: "set",
+            minutes: 45,
+        });
+
+        await command.run(interaction);
+
+        expect(lfgRolePingCooldown).toHaveBeenCalledWith(GUILD_ID, "set", 45);
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [
+                    expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        description: expect.stringContaining("45 minutes"),
+                    }),
+                ],
             }),
         );
     });
@@ -131,6 +182,7 @@ describe(AdminCommand.name, () => {
         });
         const adminFeature = {
             lfgChannel: vi.fn(),
+            lfgRolePingCooldown: vi.fn(),
             lfgRole: vi.fn(),
             getGuildConfig,
         } as unknown as AdminFeature;
@@ -143,7 +195,8 @@ describe(AdminCommand.name, () => {
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
-                embeds: [expect.objectContaining({ title: "LFG config" })],
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                embeds: [expect.objectContaining({ fields: expect.any(Array) })],
             }),
         );
     });

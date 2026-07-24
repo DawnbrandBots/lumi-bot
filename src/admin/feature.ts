@@ -9,7 +9,8 @@ import {
 } from "./constants.ts";
 import { GuildConfig } from "./models/config.ts";
 import { GuildConfigLfgRole } from "./models/configLfgRole.ts";
-import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "./types.ts";
+import type { TAdminFeatureReturnTypes } from "./types.ts";
+import { EAdminFeatureReturnKind } from "./types.ts";
 
 type AdminFeatureCtorArg = {
     readonly em: EntityManager;
@@ -17,6 +18,7 @@ type AdminFeatureCtorArg = {
 
 export type AdminActionOptions = typeof ADMIN_ACTION_SET | typeof ADMIN_ACTION_CLEAR;
 export type AdminLfgChannelAction = AdminActionOptions;
+export type AdminLfgRolePingCooldownAction = AdminActionOptions;
 export type AdminLfgRoleAction = typeof ADMIN_ACTION_ADD | typeof ADMIN_ACTION_REMOVE;
 
 export class AdminFeature {
@@ -36,6 +38,7 @@ export class AdminFeature {
             id: randomUUID(),
             guild,
             lfgChannel: null,
+            lfgRolePingCooldownMinutes: null,
         });
         this.em.persist(newConfig);
         await this.em.flush();
@@ -98,6 +101,42 @@ export class AdminFeature {
         return { kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS };
     }
 
+    public async lfgRolePingCooldown(
+        guild: string,
+        action: AdminLfgRolePingCooldownAction | null,
+        minutes: number | null,
+    ): Promise<TAdminFeatureReturnTypes["lfgRolePingCooldown"]> {
+        const config = await this.getOrCreateConfig(guild);
+
+        if (!action && minutes === null) {
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+                value: { minutes: config.lfgRolePingCooldownMinutes },
+            };
+        }
+
+        if (action === ADMIN_ACTION_SET && minutes !== null && minutes >= 0) {
+            config.lfgRolePingCooldownMinutes = minutes;
+            await this.em.flush();
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+                value: { minutes },
+            };
+        }
+
+        if (action === ADMIN_ACTION_CLEAR && minutes === null) {
+            config.lfgRolePingCooldownMinutes = null;
+            await this.em.flush();
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED };
+        }
+
+        if (action === ADMIN_ACTION_SET && minutes === null) {
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES };
+        }
+
+        return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS };
+    }
+
     public async getLfgRoleConfig(guild: string, role: string): Promise<TAdminFeatureReturnTypes["getLfgRoleConfig"]> {
         const lfgRole = await this.getLfgRole(guild, role);
         return {
@@ -153,11 +192,11 @@ export class AdminFeature {
     }
 
     protected _getGuildConfig(guild: string): Promise<GuildConfig | null> {
-        return this.em.findOne(GuildConfig, { guild });
+        return this.em.findOne(GuildConfig, { guild }, { populate: ["lfgRoles"] });
     }
 
     public async getGuildConfig(guild: string): Promise<TAdminFeatureReturnTypes["getGuildConfig"]> {
-        const config = await this.em.findOne(GuildConfig, { guild }, { populate: ["lfgRoles"] });
+        const config = await this._getGuildConfig(guild);
         return {
             kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
             value: config,

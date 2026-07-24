@@ -31,71 +31,112 @@ import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
 import { LfgRoom } from "./lfg/models/room.ts";
 import { LfgRoomPlayer } from "./lfg/models/roomPlayer.ts";
 
-const STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;
-const STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
-const GAME_DB_NAME = process.env.LUMI_GAME_DB_NAME;
-const LUMI_DB_NAME = process.env.LUMI_DB_NAME;
+const LUMI_STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
+const LUMI_STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;
+const LUMI_STATE_DB_NAME = process.env.LUMI_STATE_DB_NAME;
+const LUMI_GAME_DB_NAME = process.env.LUMI_GAME_DB_NAME;
 
-if (!STATIC_DB_DIR || !STATE_DB_DIR || !GAME_DB_NAME || !LUMI_DB_NAME) {
+if (!LUMI_STATE_DB_DIR || !LUMI_STATIC_DB_DIR || !LUMI_STATE_DB_NAME || !LUMI_GAME_DB_NAME) {
     throw new Error(
         "One or more required environment variables are not set: " +
-        JSON.stringify({
-            STATIC_DB_DIR,
-            STATE_DB_DIR,
-            GAME_DB_NAME,
-            LUMI_DB_NAME,
-        }),
+            JSON.stringify({
+                LUMI_STATE_DB_DIR,
+                LUMI_STATIC_DB_DIR,
+                LUMI_STATE_DB_NAME,
+                LUMI_GAME_DB_NAME,
+            }),
     );
 }
 
-const GAME_CONFIG = defineConfig({
-    contextName: "game",
-    entities: [
-        SpellEffect,
-        WeaponSkill,
-        WeaponSkillEffect,
-        WeaponTypeWeaponSkill,
-        Weapon,
-        WeaponType,
-        Color,
-        SpellEffectValue,
-        DamageEffect,
-        HealEffect,
-        MovementEffect,
-        StatEffect,
-        StatusEffect,
-        RepeatEffect,
-        WarpEffect,
-        TileEffect,
-        IceBlockEffect,
-        SummonEffect,
-        Disciple,
-        MovementType,
-        Spell,
-        SpellEffectValueEffectivenessItem,
-        SpellEffectValueFixedUnit,
-        SpellEffectValuePercentUnit,
-        SpellShape,
-    ],
-    dbName: path.join(STATIC_DB_DIR, `${GAME_DB_NAME}.db3`),
+/**
+ * Game data entities. Not managed by migrations. Rather, their dedicated DB is recreated during deployment.
+ */
+export const GAME_DATA_ENTITIES = [
+    SpellEffect,
+    WeaponSkill,
+    WeaponSkillEffect,
+    WeaponTypeWeaponSkill,
+    Weapon,
+    WeaponType,
+    Color,
+    SpellEffectValue,
+    DamageEffect,
+    HealEffect,
+    MovementEffect,
+    StatEffect,
+    StatusEffect,
+    RepeatEffect,
+    WarpEffect,
+    TileEffect,
+    IceBlockEffect,
+    SummonEffect,
+    Disciple,
+    MovementType,
+    Spell,
+    SpellEffectValueEffectivenessItem,
+    SpellEffectValueFixedUnit,
+    SpellEffectValuePercentUnit,
+    SpellShape,
+];
+
+/**
+ * Main db entities.
+ */
+const RUNTIME_ENTITIES = [GuildConfig, GuildConfigLfgRole, LfgRoom, LfgRoomPlayer];
+
+const STATE_DB_NAME = path.join(LUMI_STATE_DB_DIR, `${LUMI_STATE_DB_NAME}.db3`);
+const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.db3`);
+
+const GAME_DB_SCHEMA = "game";
+
+/**
+ * Main ORM config used at runtime. Default CLI config.
+ */
+export const appMikroOrmConfig = defineConfig({
+    entities: [...GAME_DATA_ENTITIES, ...RUNTIME_ENTITIES],
+    dbName: STATE_DB_NAME,
+    // MikroORM's way of dealing with multiple SQLite databases.
+    // A single Mikro-ORM instance using this db config can manipulate entities from both dbs.
+    // https://mikro-orm.io/docs/multiple-schemas#sqlite-attach-database
+    attachDatabases: [{ name: GAME_DB_SCHEMA, path: GAME_DB_NAME }],
+    discovery: {
+        // Mikro ORM requires defining the `schema` property for entities in attached databases.
+        // The official documentation recommends setting the schema on the entity definition directly:
+        // https://mikro-orm.io/docs/multiple-schemas#entity-definition
+        // However, this prevents using the game database as main database in a separate config,
+        // as Mikro-ORM will write queries referring to game entities under the "game" schema, rather than at the database's root level.
+        // This hook assigns a schema to entities based on whether they belong to GAME_DATA_ENTITIES.
+        onMetadata(meta) {
+            meta.schema = GAME_DATA_ENTITIES.includes(meta.class) ? GAME_DB_SCHEMA : "main";
+        },
+    },
+    metadataCache: { enabled: false },
 });
 
-const LUMI_CONFIG = defineConfig({
-    contextName: "lumi",
-    entities: [GuildConfig, GuildConfigLfgRole, LfgRoom, LfgRoomPlayer],
-    dbName: path.join(STATE_DB_DIR, `${LUMI_DB_NAME}.db3`),
+/**
+ * ORM config used to manipulate only the static game data db.
+ */
+export const staticGameDataMikroOrmConfig = defineConfig({
+    contextName: "static-game-data",
+    entities: GAME_DATA_ENTITIES,
+    dbName: GAME_DB_NAME,
+    metadataCache: { enabled: false },
+});
+
+/**
+ * ORM config used for migrating non-game data entities.
+ */
+export const migrationMikroOrmConfig = defineConfig({
+    contextName: "migration",
+    entities: RUNTIME_ENTITIES,
+    dbName: STATE_DB_NAME,
     migrations: {
-        pathTs: "./src/migrations/lumi",
+        pathTs: path.join("src", "migrations", LUMI_STATE_DB_NAME),
     },
     extensions: [Migrator],
 });
 
-// Still export array of configs as default for compatibility with MikroORM CLI.
-// Use --contextName option to specify config.
+// Exporting an array of configs as default allows referring to non-default config using `--contextName`.
+// https://mikro-orm.io/blog/mikro-orm-6-4-released#support-for-multiple-orm-configurations
 // https://mikro-orm.io/docs/quick-start#configuration-file-structure
-export default [GAME_CONFIG, LUMI_CONFIG] as const;
-
-export const configsById = {
-    game: GAME_CONFIG,
-    lumi: LUMI_CONFIG,
-} as const;
+export default [appMikroOrmConfig, staticGameDataMikroOrmConfig, migrationMikroOrmConfig];

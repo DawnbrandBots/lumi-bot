@@ -16,4 +16,6 @@ export default async function recreateDb(config: Options) {
 
     const orm = await MikroORM.init(config);
     await orm.schema.create();
+
+    return orm;
 }

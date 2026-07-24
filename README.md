@@ -14,11 +14,12 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ## Discord permissions
 
-| Permission                  | Purpose                                         | Recommendation |
-| --------------------------- | ----------------------------------------------- | -------------- |
-| **Send messages**           | Replying to commands and pings.                 | Required       |
-| **Send messages in thread** | Same reason as _Send messages_, but in threads. | Optional       |
-| **Read message history**    | Being able to detect pings to act upon them.    | Recommended    |
+| Permission                                 | Purpose                                         | Recommendation                                                                                         |
+| ------------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Send messages**                          | Replying to commands and pings.                 | If you want most commands to work properly in regular channels                                         |
+| **Send messages in thread**                | Same reason as _Send messages_, but in threads. | If you want most commands to work properly in threads                                                  |
+| **Read message history**                   | Being able to detect pings to act upon them.    | If you want users to be able to trigger `/help` and `/search` by mentioning the bot                    |
+| **Mention @everyone, @here and All Roles** | Ping roles dedicated to LFG.                    | If roles you want the bot to be able to ping don't have "Allow everyone to @mention this role" enabled |
 
 ## Getting started
 
@@ -47,7 +48,9 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ## Inner workings
 
-Game data is stored as JSON files under `/data/`. `yarn db:recreate` creates an sqlite3 database using these JSON files as source. The server reads the data at runtime using [MikroORM](https://mikro-orm.io/).
+Game data is stored as JSON files under `/data/`. `yarn db:recreate` recreates an [sqlite](https://sqlite.org) database using these JSON files as source.
+Bot features data is stored in a separate sqlite database. `yarn db:migrate` to create it.
+The server connects to the main database and attaches the game data database in a single [MikroORM](https://mikro-orm.io/) connection.
 
 Searchable game data is loaded into a [fuse.js](https://www.fusejs.io/) instance at startup, which is then used as source for the `/search` feature.
 
