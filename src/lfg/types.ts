@@ -56,17 +56,24 @@ type TLfgFeatureReturnValueByKind = {
         readonly userId: string;
         readonly room: IRoom;
         readonly leftRoomCode?: string;
+        readonly removalResult?: TLfgPlayerRemovalResult;
     };
     [ELfgFeatureReturnKind.ROOM_NOT_FOUND]: { readonly code: string };
     [ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM]: { readonly room: IRoom };
     [ELfgFeatureReturnKind.ROOM_IS_FULL]: { readonly code: string };
+    [ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF]: { readonly userId: string; readonly code: string };
     [ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED]: {
         readonly userId: string;
         readonly targetId: string;
         readonly room: IRoom;
     };
-    [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: { readonly targetId: string };
-    [ELfgFeatureReturnKind.PLAYER_KICKED]: { readonly userId: string; readonly targetId: string; readonly room: IRoom };
+    [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: { readonly targetId: string; readonly code: string };
+    [ELfgFeatureReturnKind.PLAYER_KICKED]: {
+        readonly userId: string;
+        readonly targetId: string;
+        readonly room: IRoom;
+        readonly removalResult: TLfgPlayerRemovalResult;
+    };
     [ELfgFeatureReturnKind.ROOM_LEFT]: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
     [ELfgFeatureReturnKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
 } & {
@@ -75,7 +82,6 @@ type TLfgFeatureReturnValueByKind = {
             | ELfgFeatureReturnKind.HELP
             | ELfgFeatureReturnKind.INVALID_ROOM_CODE
             | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
-            | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
             | ELfgFeatureReturnKind.NOT_ROOM_OWNER
             | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
             | ELfgFeatureReturnKind.NOT_IN_A_ROOM
@@ -104,7 +110,7 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
         | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
     >;
-    join: TLfgFeatureReturnOfKind<
+    move: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_JOINED
         | ELfgFeatureReturnKind.ROOM_NOT_FOUND
         | ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM
@@ -114,10 +120,21 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
         | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
         | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
+        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    >;
+    transferOwnedRoom: TLfgFeatureReturnOfKind<
+        | ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
+        | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
+        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
     >;
     kick: TLfgFeatureReturnOfKind<
+        | ELfgFeatureReturnKind.PLAYER_KICKED
+        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
+        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    >;
+    kickFromOwnedRoom: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.PLAYER_KICKED
         | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
         | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
@@ -125,7 +142,8 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
     >;
     leave: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT | ELfgFeatureReturnKind.NOT_IN_A_ROOM>;
-    disband: TLfgFeatureReturnOfKind<
+    disband: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_DISBANDED | ELfgFeatureReturnKind.ROOM_NOT_FOUND>;
+    disbandOwnedRoom: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_DISBANDED
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
@@ -135,9 +153,20 @@ export type TLfgFeatureReturnTypes = {
 export interface ILfgFeature {
     status(guildId: string): MaybePromise<TLfgFeatureReturnTypes["status"]>;
     create(guildId: string, owner: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["create"]>;
-    join(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["join"]>;
-    transfer(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
-    kick(guildId: string, owner: IUser, target: IUser): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
+    move(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["move"]>;
+    transfer(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
+    transferOwnedRoom(
+        guildId: string,
+        owner: IUser,
+        target: IUser,
+    ): MaybePromise<TLfgFeatureReturnTypes["transferOwnedRoom"]>;
+    kick(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
+    kickFromOwnedRoom(
+        guildId: string,
+        owner: IUser,
+        target: IUser,
+    ): MaybePromise<TLfgFeatureReturnTypes["kickFromOwnedRoom"]>;
     leave(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["leave"]>;
-    disband(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
+    disband(guildId: string, code: string): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
+    disbandOwnedRoom(guildId: string, owner: IUser): MaybePromise<TLfgFeatureReturnTypes["disbandOwnedRoom"]>;
 }

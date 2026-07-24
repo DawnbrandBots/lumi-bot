@@ -175,7 +175,12 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
             input: {
                 result: {
                     kind: ELfgFeatureReturnKind.PLAYER_KICKED,
-                    value: { userId: "owner", targetId: "player-1", room: ROOM },
+                    value: {
+                        userId: "owner",
+                        targetId: "player-1",
+                        room: ROOM,
+                        removalResult: { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY },
+                    },
                 },
             },
             expected: {
