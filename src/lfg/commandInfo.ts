@@ -18,7 +18,10 @@ import {
     LFG_LEAVE_SUBCOMMAND_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MIN_ROOM_CODE_LENGTH,
+    LFG_PING_SUBCOMMAND_DESCRIPTION,
+    LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
+    LFG_ROLE_OPTION_NAME,
     LFG_SHOW_RESPONSE_OPTION_NAME,
     LFG_STATUS_SUBCOMMAND_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
@@ -89,6 +92,14 @@ export const lfgCommandInfo: ICommandInfo = new CommandInfo({
             )
             .addSubcommand((subcommand) =>
                 subcommand.setName(LFG_HELP_SUBCOMMAND_NAME).setDescription(LFG_HELP_SUBCOMMAND_DESCRIPTION),
+            )
+            .addSubcommand((subcommand) =>
+                subcommand
+                    .setName(LFG_PING_SUBCOMMAND_NAME)
+                    .setDescription(LFG_PING_SUBCOMMAND_DESCRIPTION)
+                    .addRoleOption((option) =>
+                        option.setName(LFG_ROLE_OPTION_NAME).setDescription("LFG role to ping.").setRequired(true),
+                    ),
             );
     },
     name: LFG_COMMAND_NAME,

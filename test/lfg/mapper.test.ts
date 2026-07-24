@@ -21,20 +21,34 @@ const ROOM: IRoom = {
     playerIds: ["player-1", "owner", "player-2"],
 };
 const PUBLIC_CHANNEL_ID = "public-channel";
-const GUILD_CONFIG = { guild: "guild-1", lfgChannel: PUBLIC_CHANNEL_ID } as GuildConfig;
+const GUILD_CONFIG = {
+    guild: "guild-1",
+    lfgChannel: PUBLIC_CHANNEL_ID,
+    lfgRolePingCooldownMinutes: 45,
+} as GuildConfig;
 
 function statusDescription({
     roomsDescription,
     lfgChannel,
+    lfgRolePingCooldownMinutes = null,
 }: {
     readonly roomsDescription: string;
     readonly lfgChannel: string;
+    readonly lfgRolePingCooldownMinutes?: number | null;
 }) {
     return [
         heading("Rooms", HeadingLevel.Three),
         roomsDescription,
         heading("Server config", HeadingLevel.Three),
-        unorderedList([`LFG channel: ${lfgChannel}`]),
+        unorderedList([
+            `LFG channel: ${lfgChannel}`,
+            `LFG roles: ${LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION}`,
+            `LFG roles ping cooldown: ${
+                lfgRolePingCooldownMinutes != null
+                    ? `${lfgRolePingCooldownMinutes} minutes`
+                    : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION
+            }`,
+        ]),
     ].join("\n");
 }
 
@@ -59,7 +73,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                     {
                         description: statusDescription({
                             roomsDescription: `- ${roomDescription(ROOM)}`,
-                            lfgChannel: LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION,
+                            lfgChannel: LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
                         }),
                     },
                 ],
@@ -74,7 +88,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                     {
                         description: statusDescription({
                             roomsDescription: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION,
-                            lfgChannel: LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION,
+                            lfgChannel: LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
                         }),
                     },
                 ],
@@ -93,6 +107,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                         description: statusDescription({
                             roomsDescription: `- ${roomDescription(ROOM)}`,
                             lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
+                            lfgRolePingCooldownMinutes: 45,
                         }),
                     },
                 ],
@@ -391,6 +406,26 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
     ])("maps $name", ({ input, expected }) => {
         const messageBase = mapLfgFeatureReturnToMessageBase(input);
         expect(messageBase).toMatchObject(expected);
+    });
+
+    test("maps status with configured LFG channel", () => {
+        const messageBase = mapLfgFeatureReturnToMessageBase({
+            result: { kind: ELfgFeatureReturnKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+            guildConfig: GUILD_CONFIG,
+        });
+
+        expect(messageBase).toMatchObject({
+            kind: EMessageKind.NEUTRAL,
+            embeds: [
+                {
+                    description: statusDescription({
+                        roomsDescription: `- ${roomDescription(ROOM)}`,
+                        lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
+                        lfgRolePingCooldownMinutes: 45,
+                    }),
+                },
+            ],
+        });
     });
 });
 

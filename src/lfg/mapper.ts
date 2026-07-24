@@ -1,5 +1,5 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import { channelMention, heading, inlineCode, MessageFlags, unorderedList, userMention } from "discord.js";
+import { channelMention, heading, inlineCode, MessageFlags, roleMention, unorderedList, userMention } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { GuildConfig } from "../admin/models/config.ts";
 import {
@@ -24,12 +24,26 @@ function formatList(rooms: readonly IRoom[]) {
 function formatStatus(rooms: readonly IRoom[], guildConfig?: GuildConfig | null) {
     const lfgChannel = guildConfig?.lfgChannel
         ? channelMention(guildConfig.lfgChannel)
-        : LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION;
+        : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    const lfgRoles =
+        guildConfig?.lfgRoles && guildConfig.lfgRoles.length
+            ? Array.from(guildConfig.lfgRoles)
+                  .map((lfgRole) => roleMention(lfgRole.role))
+                  .join(", ")
+            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+    const lfgRolePingCooldown =
+        guildConfig?.lfgRolePingCooldownMinutes != null
+            ? `${guildConfig.lfgRolePingCooldownMinutes} minutes`
+            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
     return [
         heading("Rooms", 3),
         formatList(rooms),
         heading("Server config", 3),
-        unorderedList([`LFG channel: ${lfgChannel}`]),
+        unorderedList([
+            `LFG channel: ${lfgChannel}`,
+            `LFG roles: ${lfgRoles}`,
+            `LFG roles ping cooldown: ${lfgRolePingCooldown}`,
+        ]),
     ].join("\n");
 }
 
