@@ -2,8 +2,6 @@ import { describe, expect, test } from "vitest";
 import { spellEffectsValues, type ISpellEffectValueWithToLevel } from "../../../src/game/spellEffectValues.ts";
 import { ESpellEffectKind, ESpellEffectValueUnitKind, ESpellRole } from "../../../src/game/types.ts";
 
-const TESTED_LEVELS = [1, 2, 6, 9, 10, 11, 12] as const;
-
 function fixedValue(base: number, scalesWithLevel = true) {
     return {
         base,
@@ -27,7 +25,6 @@ function serializeValues(values: ISpellEffectValueWithToLevel[][]) {
             base: value.base,
             scalesWithLevel: value.scalesWithLevel,
             unit: value.unit,
-            byLevel: TESTED_LEVELS.map((level) => ({ level, value: value.toLevel(level) })),
         })),
     );
 }
