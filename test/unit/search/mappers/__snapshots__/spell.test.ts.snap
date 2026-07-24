@@ -1,5 +1,69 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`formatSpellShape > 2x2 square 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::blue_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 3x3 X 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::blue_square::black_large_square::blue_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::blue_square::black_large_square::blue_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 3x3 cross 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 3x3 square 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::blue_square::blue_square::blue_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::blue_square::blue_square::blue_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 5 tiles column 1`] = `
+":black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 5 tiles row 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:blue_square::blue_square::red_square::blue_square::blue_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 5x5 cross 1`] = `
+":black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:blue_square::blue_square::red_square::blue_square::blue_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > single tile 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
 exports[`mapSpellToMessage > with a disciple and usage restrictions 1`] = `
 {
   "reply": {
