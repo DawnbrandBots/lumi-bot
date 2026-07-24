@@ -32,7 +32,9 @@ const SEARCH_MAPPERS: ISearchMappers = {
     music: mapMusicToMessage,
 };
 
-function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>(value: TSearchFeatureSuccessValue<Kind>) {
+export function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>(
+    value: TSearchFeatureSuccessValue<Kind>,
+) {
     const footer: APIEmbed["footer"] =
         // Showing aliases when there is only one is redundant.
         value.searchItem.aliases.length > 1
