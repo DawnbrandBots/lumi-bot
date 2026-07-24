@@ -9,5 +9,5 @@ export const GuildConfigSchema = defineEntity({
     },
 });
 
-export class GuildConfig extends GuildConfigSchema.class { }
+export class GuildConfig extends GuildConfigSchema.class {}
 GuildConfigSchema.setClass(GuildConfig);

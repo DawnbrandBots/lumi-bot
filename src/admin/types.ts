@@ -15,17 +15,19 @@ type TAdminFeatureReturnValueByKind = {
     // TODO: add IGuildConfig
     [EAdminFeatureReturnKind.LFG_GET_CONFIG]: GuildConfig | null;
 } & {
-    [_ in
-    | EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
-    | EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL
-    | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS]: never;
+    [
+        _ in
+            | EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
+            | EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL
+            | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS
+    ]: never;
 };
 
 // TODO: implement a utility type to reuse the following logic which can also be found in lfg/types
 export type TAdminFeatureReturnOfKind<Kind extends EAdminFeatureReturnKind> = Kind extends EAdminFeatureReturnKind
     ? TAdminFeatureReturnValueByKind[Kind] extends never
-    ? { readonly kind: Kind }
-    : { readonly kind: Kind; readonly value: TAdminFeatureReturnValueByKind[Kind] }
+        ? { readonly kind: Kind }
+        : { readonly kind: Kind; readonly value: TAdminFeatureReturnValueByKind[Kind] }
     : never;
 
 export type TAdminFeatureReturn = {
