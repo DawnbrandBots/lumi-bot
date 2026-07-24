@@ -39,12 +39,6 @@ type TSpellEffectValueGetterInputMap = {
 };
 type TSpellEffectValueGetterInput = TSpellEffectValueGetterInputMap[keyof TSpellEffectValueGetterInputMap];
 
-type TSpellValueFunctions = {
-    [K in TSpellEffectValueGetterInput["kind"]]: (
-        effect: Extract<TSpellEffectValueGetterInput, { kind: K }>,
-    ) => ISpellEffectValueWithToLevel[];
-};
-
 // TODO: admittedly, this name sucks. I think I should include something like "DBModel" in db-related models name so I could use "ISpellEffectValue" here for example.
 // Maybe in another PR that refactors data access for this repository.
 // TODO: maybe this weird `Omit<ISpellEffectValue, "effectiveness"> &` construct is a sign I should rethink of effectiveness is represented in ISpellEffectValue.
@@ -170,7 +164,11 @@ const withEffectiveness = (effect: TEffectWithAmountInput) => {
     );
 };
 
-const SPELL_EFFECT_VALUE_GETTERS: TSpellValueFunctions = {
+const SPELL_EFFECT_VALUE_GETTERS: {
+    [K in TSpellEffectValueGetterInput["kind"]]: (
+        effect: Extract<TSpellEffectValueGetterInput, { kind: K }>,
+    ) => ISpellEffectValueWithToLevel[];
+} = {
     DAMAGE: withEffectiveness,
     HEAL: withEffectiveness,
     MOVEMENT: noValues,
