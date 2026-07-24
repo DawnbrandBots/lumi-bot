@@ -9,6 +9,9 @@ import type {
 import { ESpellEffectValueUnitKind, ESpellRole } from "./types.ts";
 
 type TEffectWithAmountInput = {
+    // Can't just straight up use PickDeep over IDamageEffect and IHealEffect because
+    // `amount.effectiveness.${number}.base` removes `null` from `effectiveness`.
+    // Not necessarily a bug: https://github.com/sindresorhus/type-fest/issues/880
     readonly amount: PickDeep<ISpellEffectValue, "base" | "scalesWithLevel" | "unit.kind"> & {
         readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "base">> | null;
     };
