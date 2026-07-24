@@ -430,6 +430,19 @@ export const ESpellEffectKind = {
     SUMMON: "SUMMON",
 } as const;
 
+export type TSpellEffectKindToEffectMap = {
+    DAMAGE: IDamageEffect;
+    HEAL: IHealEffect;
+    MOVEMENT: IMovementEffect;
+    STAT: IStatEffect;
+    STATUS: IStatusEffect;
+    REPEAT: IRepeatEffect;
+    WARP: IWarpEffect;
+    ICE_BLOCK: IIceBlockEffect;
+    TILE: ITileEffect;
+    SUMMON: ISummonEffect;
+};
+
 /**
  * Something that occurs on tiles a spell is dragged on, and affects units on these tiles.
  */

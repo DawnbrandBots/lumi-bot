@@ -1,10 +1,43 @@
+import type { PickDeep } from "type-fest";
 import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "./constants.ts";
-import type { IDamageEffect, IHealEffect, IStatEffect, TSpellEffect } from "./types.ts";
-import { ESpellEffectValueUnitKind, ESpellRole, type ISpell, type ISpellEffectValue } from "./types.ts";
+import type {
+    ISpell,
+    ISpellEffectValue,
+    ISpellEffectValueEffectivenessItem,
+    TSpellEffectKindToEffectMap,
+} from "./types.ts";
+import { ESpellEffectValueUnitKind, ESpellRole } from "./types.ts";
 
-type TSpellValueFunctions = {
-    [K in TSpellEffect["kind"]]: (effect: Extract<TSpellEffect, { kind: K }>) => ISpellEffectValueWithToLevel[];
+type TEffectWithAmountInput = {
+    // Can't just straight up use PickDeep over IDamageEffect and IHealEffect because
+    // `amount.effectiveness.${number}.base` removes `null` from `effectiveness`.
+    // Not necessarily a bug: https://github.com/sindresorhus/type-fest/issues/880
+    readonly amount: PickDeep<ISpellEffectValue, "base" | "scalesWithLevel" | "unit.kind"> & {
+        readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "base">> | null;
+    };
 };
+
+type TSpellEffectValueGetterInputMapWithoutKind = {
+    DAMAGE: TEffectWithAmountInput;
+    HEAL: TEffectWithAmountInput;
+    MOVEMENT: object;
+    STAT: TEffectWithAmountInput;
+    REPEAT: { readonly effect: TSpellEffectValueGetterInputMap["DAMAGE" | "HEAL"] };
+    STATUS: { readonly effect: TSpellEffectValueGetterInputMap["STAT" | "REPEAT"] };
+    WARP: object;
+    ICE_BLOCK: PickDeep<TSpellEffectKindToEffectMap["ICE_BLOCK"], "hp.base" | "hp.scalesWithLevel">;
+    TILE: { readonly repeat: TSpellEffectValueGetterInputMap["REPEAT"] };
+    SUMMON: PickDeep<
+        TSpellEffectKindToEffectMap["SUMMON"],
+        "hp.base" | "hp.scalesWithLevel" | "atk.base" | "atk.scalesWithLevel"
+    >;
+};
+
+type TSpellEffectValueGetterInputMap = {
+    [K in keyof TSpellEffectValueGetterInputMapWithoutKind]: TSpellEffectValueGetterInputMapWithoutKind[K] &
+        Pick<TSpellEffectKindToEffectMap[K], "kind">;
+};
+type TSpellEffectValueGetterInput = TSpellEffectValueGetterInputMap[keyof TSpellEffectValueGetterInputMap];
 
 // TODO: admittedly, this name sucks. I think I should include something like "DBModel" in db-related models name so I could use "ISpellEffectValue" here for example.
 // Maybe in another PR that refactors data access for this repository.
@@ -118,7 +151,7 @@ export class DarkSlashValue extends ValueWithScale implements ISpellEffectValueW
 }
 
 const noValues = () => [];
-const withEffectiveness = (effect: IDamageEffect | IHealEffect | IStatEffect) => {
+const withEffectiveness = (effect: TEffectWithAmountInput) => {
     return [new NormalValue(effect.amount)].concat(
         effect.amount.effectiveness?.map(
             (eff) =>
@@ -131,7 +164,11 @@ const withEffectiveness = (effect: IDamageEffect | IHealEffect | IStatEffect) =>
     );
 };
 
-const SPELL_EFFECT_VALUE_GETTERS: TSpellValueFunctions = {
+const SPELL_EFFECT_VALUE_GETTERS: {
+    [K in TSpellEffectValueGetterInput["kind"]]: (
+        effect: Extract<TSpellEffectValueGetterInput, { kind: K }>,
+    ) => ISpellEffectValueWithToLevel[];
+} = {
     DAMAGE: withEffectiveness,
     HEAL: withEffectiveness,
     MOVEMENT: noValues,
@@ -167,8 +204,8 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellValueFunctions = {
     },
 };
 
-function valuesForEffect<K extends TSpellEffect["kind"]>(
-    effect: Extract<TSpellEffect, { kind: K }>,
+function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
+    effect: Extract<TSpellEffectValueGetterInput, { kind: K }>,
 ): ISpellEffectValueWithToLevel[] {
     return SPELL_EFFECT_VALUE_GETTERS[effect.kind](effect);
 }
@@ -187,7 +224,11 @@ function valuesForEffect<K extends TSpellEffect["kind"]>(
  * - "Heal Pull" as argument returns an array with one subarray with only an entry for the Heal effect since Movement does not scale with a spell's level.
  * - "Minor Pull" as argument returns an empty table since it only has one effect that does not scale with the spell's level.
  */
-export function spellEffectsValues(spell: ISpell): ISpellEffectValueWithToLevel[][] {
+export function spellEffectsValues(
+    spell: PickDeep<ISpell, "role.kind"> & {
+        readonly effects: TSpellEffectValueGetterInput[];
+    },
+): ISpellEffectValueWithToLevel[][] {
     if (
         spell.effects.length === 1 &&
         spell.effects[0]!.kind === "DAMAGE" &&
