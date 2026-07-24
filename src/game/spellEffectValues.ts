@@ -228,29 +228,10 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellValueFunctions = {
     },
 };
 
-function valuesForEffect(effect: TSpellEffectValueGetterInput): ISpellEffectValueWithToLevel[] {
-    switch (effect.kind) {
-        case "DAMAGE":
-            return SPELL_EFFECT_VALUE_GETTERS.DAMAGE(effect);
-        case "HEAL":
-            return SPELL_EFFECT_VALUE_GETTERS.HEAL(effect);
-        case "MOVEMENT":
-            return SPELL_EFFECT_VALUE_GETTERS.MOVEMENT(effect);
-        case "STAT":
-            return SPELL_EFFECT_VALUE_GETTERS.STAT(effect);
-        case "STATUS":
-            return SPELL_EFFECT_VALUE_GETTERS.STATUS(effect);
-        case "REPEAT":
-            return SPELL_EFFECT_VALUE_GETTERS.REPEAT(effect);
-        case "WARP":
-            return SPELL_EFFECT_VALUE_GETTERS.WARP(effect);
-        case "ICE_BLOCK":
-            return SPELL_EFFECT_VALUE_GETTERS.ICE_BLOCK(effect);
-        case "TILE":
-            return SPELL_EFFECT_VALUE_GETTERS.TILE(effect);
-        case "SUMMON":
-            return SPELL_EFFECT_VALUE_GETTERS.SUMMON(effect);
-    }
+function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
+    effect: Extract<TSpellEffectValueGetterInput, { kind: K }>,
+): ISpellEffectValueWithToLevel[] {
+    return SPELL_EFFECT_VALUE_GETTERS[effect.kind](effect);
 }
 
 /**
