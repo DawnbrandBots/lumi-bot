@@ -4,30 +4,24 @@ import {
     ESpellEffectKind,
     ESpellEffectTarget,
     ESpellEffectValueUnitKind,
-    type IDamageEffect,
-    type IHealEffect,
-    type IIceBlockEffect,
     type IMovementType,
-    type IMovementEffect,
-    type IRepeatEffect,
     type ISpell,
     type ISpellEffect,
     type ISpellEffectTarget,
     type ISpellEffectValue,
+    type ISpellEffectValueEffectivenessItem,
     type ISpellEffectValueFixedUnit,
-    type ISpellEffectValueUnit,
     type ISpellEffectValuePercentUnit,
+    type ISpellEffectValueUnit,
     type IStat,
-    type IStatEffect,
     type IStatusEffect,
-    type ISummonEffect,
-    type ITileEffect,
     type IWeaponType,
-    type IWarpEffect,
     type TSpellEffect,
+    type TSpellEffectKindToEffectMap
 } from "./types.ts";
 
-export type TSpellEffectValue = PickDeep<ISpellEffectValue, "base" | "effectiveness"> & {
+export type TSpellEffectValue = PickDeep<ISpellEffectValue, "base"> & {
+    readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "kind" | "base">> | null;
     unit:
         | PickDeep<ISpellEffectValueFixedUnit, "kind">
         | PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat.id" | "stat.name">;
@@ -35,59 +29,56 @@ export type TSpellEffectValue = PickDeep<ISpellEffectValue, "base" | "effectiven
 
 type TSpellEffectTargetInput = PickDeep<ISpellEffectTarget, "kind" | "asString"> | null | undefined;
 
-export type TDamageEffect = PickDeep<IDamageEffect, "kind" | "color.name"> & {
-    amount: TSpellEffectValue;
-    target?: TSpellEffectTargetInput;
+type TEffectWithAmountInput = {
+    readonly amount: TSpellEffectValue;
 };
 
-export type THealEffect = PickDeep<IHealEffect, "kind"> & {
-    amount: TSpellEffectValue;
-    target?: TSpellEffectTargetInput;
+type TEffectWithOptionalTargetInput = {
+    readonly target?: TSpellEffectTargetInput;
 };
 
-export type TMovementEffect = PickDeep<
-    IMovementEffect,
-    "kind" | "target.kind" | "target.asString" | "count" | "direction.noun"
->;
-
-export type TStatEffect = PickDeep<
-    IStatEffect,
-    "kind" | "stat.id" | "stat.name" | "statChange.verb" | "statChange.preposition" | "duration"
-> & { amount: TSpellEffectValue };
-
-export type TRepeatEffect = PickDeep<IRepeatEffect, "kind" | "interval" | "times"> & {
-    effect: TDamageEffect | THealEffect;
+type TSpellEffectDescriptionInputMapWithoutKind = {
+    DAMAGE: PickDeep<TSpellEffectKindToEffectMap["DAMAGE"], "color.name"> &
+        TEffectWithAmountInput &
+        TEffectWithOptionalTargetInput;
+    HEAL: TEffectWithAmountInput & TEffectWithOptionalTargetInput;
+    MOVEMENT: PickDeep<
+        TSpellEffectKindToEffectMap["MOVEMENT"],
+        "target.kind" | "target.asString" | "count" | "direction.noun"
+    >;
+    STAT: PickDeep<
+        TSpellEffectKindToEffectMap["STAT"],
+        "stat.id" | "stat.name" | "statChange.verb" | "statChange.preposition" | "duration"
+    > &
+        TEffectWithAmountInput;
+    REPEAT: PickDeep<TSpellEffectKindToEffectMap["REPEAT"], "interval" | "times"> & {
+        readonly effect: TSpellEffectDescriptionInputMap["DAMAGE" | "HEAL"];
+    };
+    STATUS: {
+        readonly effect: TSpellEffectDescriptionInputMap["STAT" | "REPEAT"];
+        readonly target: NonNullable<TSpellEffectTargetInput>;
+    };
+    WARP: object;
+    ICE_BLOCK: PickDeep<TSpellEffectKindToEffectMap["ICE_BLOCK"], "hp.base">;
+    TILE: TEffectWithOptionalTargetInput & {
+        readonly repeat: TSpellEffectDescriptionInputMap["REPEAT"];
+    };
+    SUMMON: PickDeep<
+        TSpellEffectKindToEffectMap["SUMMON"],
+        "movementType.name" | "weaponType.name" | "hp.base" | "atk.base"
+    >;
 };
 
-export type TStatusEffect = PickDeep<IStatusEffect, "kind"> & {
-    effect: TStatEffect | TRepeatEffect;
-    target: NonNullable<TSpellEffectTargetInput>;
+type TSpellEffectDescriptionInputMap = {
+    [K in keyof TSpellEffectDescriptionInputMapWithoutKind]: TSpellEffectDescriptionInputMapWithoutKind[K] &
+        Pick<TSpellEffectKindToEffectMap[K], "kind">;
 };
 
-export type TWarpEffect = PickDeep<IWarpEffect, "kind">;
-export type TIceBlockEffect = PickDeep<IIceBlockEffect, "kind" | "hp.base">;
+type TRootSpellEffectKind = Exclude<keyof TSpellEffectDescriptionInputMap, "STAT" | "REPEAT">;
+export type TRootSpellEffect = TSpellEffectDescriptionInputMap[TRootSpellEffectKind];
 
-export type TTileEffect = PickDeep<ITileEffect, "kind"> & {
-    repeat: TRepeatEffect;
-    target?: TSpellEffectTargetInput;
-};
-
-export type TSummonEffect = PickDeep<
-    ISummonEffect,
-    "kind" | "movementType.name" | "weaponType.name" | "hp.base" | "atk.base"
->;
-
-export type TRootSpellEffect =
-    | TDamageEffect
-    | THealEffect
-    | TMovementEffect
-    | TStatusEffect
-    | TWarpEffect
-    | TIceBlockEffect
-    | TTileEffect
-    | TSummonEffect;
-
-export type TDescribedSpellEffect = TSpellEffect | TRootSpellEffect | TStatEffect | TRepeatEffect;
+export type TDescribedSpellEffect =
+    TSpellEffect | TSpellEffectDescriptionInputMap[keyof TSpellEffectDescriptionInputMap];
 
 export type TSpellEffectDescriptionContext = PickDeep<ISpell, "shape.name" | "shape.isAoe">;
 
@@ -148,7 +139,9 @@ function formatStatusEffectIntro(targetStr: string, lowercase: boolean): string 
     return `${lowercase ? "g" : "G"}rants statuses to ${targetStr}:`;
 }
 
-function isStatusEffect(effect: TSpellEffect | TRootSpellEffect): effect is IStatusEffect | TStatusEffect {
+function isStatusEffect(
+    effect: TSpellEffect | TRootSpellEffect,
+): effect is IStatusEffect | TSpellEffectDescriptionInputMap["STATUS"] {
     return effect.kind === ESpellEffectKind.STATUS;
 }
 
