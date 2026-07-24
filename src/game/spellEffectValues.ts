@@ -1,61 +1,40 @@
 import type { PickDeep } from "type-fest";
 import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "./constants.ts";
 import type {
-    IDamageEffect,
-    IHealEffect,
-    IIceBlockEffect,
-    IMovementEffect,
-    IRepeatEffect,
     ISpell,
     ISpellEffectValue,
     ISpellEffectValueEffectivenessItem,
-    IStatEffect,
-    IStatusEffect,
-    ISummonEffect,
-    ITileEffect,
-    IWarpEffect,
+    TSpellEffectKindToEffectMap
 } from "./types.ts";
 import { ESpellEffectValueUnitKind, ESpellRole } from "./types.ts";
 
-type TSpellEffectValueInput = PickDeep<ISpellEffectValue, "base" | "scalesWithLevel" | "unit.kind"> & {
-    readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "base">> | null;
-};
-
 type TEffectWithAmountInput = {
-    readonly amount: TSpellEffectValueInput;
+    readonly amount: PickDeep<ISpellEffectValue, "base" | "scalesWithLevel" | "unit.kind"> & {
+        readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "base">> | null;
+    };
 };
 
-type TDamageEffectInput = PickDeep<IDamageEffect, "kind"> & TEffectWithAmountInput;
-type THealEffectInput = PickDeep<IHealEffect, "kind"> & TEffectWithAmountInput;
-type TMovementEffectInput = PickDeep<IMovementEffect, "kind">;
-type TStatEffectInput = PickDeep<IStatEffect, "kind"> & TEffectWithAmountInput;
-type TRepeatEffectInput = PickDeep<IRepeatEffect, "kind"> & {
-    readonly effect: TDamageEffectInput | THealEffectInput;
+type TSpellEffectValueGetterInputMapWithoutKind = {
+    DAMAGE: TEffectWithAmountInput;
+    HEAL: TEffectWithAmountInput;
+    MOVEMENT: object;
+    STAT: TEffectWithAmountInput;
+    REPEAT: { readonly effect: TSpellEffectValueGetterInputMap["DAMAGE" | "HEAL"] };
+    STATUS: { readonly effect: TSpellEffectValueGetterInputMap["STAT" | "REPEAT"] };
+    WARP: object;
+    ICE_BLOCK: PickDeep<TSpellEffectKindToEffectMap["ICE_BLOCK"], "hp.base" | "hp.scalesWithLevel">;
+    TILE: { readonly repeat: TSpellEffectValueGetterInputMap["REPEAT"] };
+    SUMMON: PickDeep<
+        TSpellEffectKindToEffectMap["SUMMON"],
+        "hp.base" | "hp.scalesWithLevel" | "atk.base" | "atk.scalesWithLevel"
+    >;
 };
-type TStatusEffectInput = PickDeep<IStatusEffect, "kind"> & {
-    readonly effect: TStatEffectInput | TRepeatEffectInput;
-};
-type TWarpEffectInput = PickDeep<IWarpEffect, "kind">;
-type TIceBlockEffectInput = PickDeep<IIceBlockEffect, "kind" | "hp.base" | "hp.scalesWithLevel">;
-type TTileEffectInput = PickDeep<ITileEffect, "kind"> & {
-    readonly repeat: TRepeatEffectInput;
-};
-type TSummonEffectInput = PickDeep<
-    ISummonEffect,
-    "kind" | "hp.base" | "hp.scalesWithLevel" | "atk.base" | "atk.scalesWithLevel"
->;
 
-type TSpellEffectValueGetterInput =
-    | TDamageEffectInput
-    | THealEffectInput
-    | TMovementEffectInput
-    | TStatEffectInput
-    | TStatusEffectInput
-    | TRepeatEffectInput
-    | TWarpEffectInput
-    | TIceBlockEffectInput
-    | TTileEffectInput
-    | TSummonEffectInput;
+type TSpellEffectValueGetterInputMap = {
+    [K in keyof TSpellEffectValueGetterInputMapWithoutKind]: TSpellEffectValueGetterInputMapWithoutKind[K] &
+        Pick<TSpellEffectKindToEffectMap[K], "kind">;
+};
+type TSpellEffectValueGetterInput = TSpellEffectValueGetterInputMap[keyof TSpellEffectValueGetterInputMap];
 
 export type TSpellEffectsValuesInput = PickDeep<ISpell, "role.kind"> & {
     readonly effects: TSpellEffectValueGetterInput[];
