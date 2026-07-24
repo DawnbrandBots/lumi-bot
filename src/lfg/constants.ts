@@ -29,6 +29,7 @@ export const LFG_MAX_ROOM_CODE_LENGTH = 8;
 export const LFG_MAX_ROOM_PLAYERS = 3;
 
 export const LFG_EMPTY_ROOM_LIST_DESCRIPTION = "No active rooms. :(";
+export const LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION = "Not configured";
 
 export const LFG_INVALID_ROOM_CODE_DESCRIPTION = `Room codes must be between ${LFG_MIN_ROOM_CODE_LENGTH} and ${LFG_MAX_ROOM_CODE_LENGTH} characters.`;
 export const LFG_ALREADY_IN_A_ROOM_DESCRIPTION = "Leave your current room before creating a new one.";
@@ -64,5 +65,12 @@ ${unorderedList([
 
 Ownership is automatically transferred when the owner leaves the room.
 Rooms are deleted when all players leave.
+
+${formatCommand([LFG_COMMAND_NAME])} subcommands may be used in any channel without fear of spamming as all responses are visible to the user only.
+
+${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])} also displays the server's config for the LFG feature as set by admins:
+${unorderedList([
+    `${bold("LFG channel")}: channel to which will be sent a public copy of all responses returned by ${formatCommand([LFG_COMMAND_NAME])} subcommands following successful execution.`,
+])}
 
 Have fun!!`;

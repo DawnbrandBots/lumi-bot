@@ -1,6 +1,9 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
+import { AdminCommand } from "./admin/command.ts";
+import { AdminFeature } from "./admin/feature.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
+import type { ICommand } from "./bot/types.ts";
 import { getHelpCommand } from "./help/command.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
@@ -27,12 +30,14 @@ const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
+const adminFeature = new AdminFeature({ em });
 const lfgFeature = new LfgFeature({ em });
 const commands = {
+    admin: new AdminCommand({ adminFeature }),
     search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
-    lfg: getLfgCommand({ lfgFeature }),
+    lfg: getLfgCommand({ adminFeature, lfgFeature }),
 } as const;
 
 bot.on(Events.ClientReady, (client) => {
@@ -82,7 +87,7 @@ bot.on(Events.InteractionCreate, async (interaction) => {
         if (!isKeyOfExactObject(commands, interaction.commandName)) {
             return;
         }
-        const command = commands[interaction.commandName];
+        const command: ICommand = commands[interaction.commandName];
         const choices = await command.autocomplete?.(interaction);
         if (!choices) {
             return;

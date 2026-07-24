@@ -1,12 +1,14 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import { inlineCode, MessageFlags, userMention, type InteractionReplyOptions } from "discord.js";
+import { channelMention, heading, inlineCode, MessageFlags, unorderedList, userMention } from "discord.js";
 import type { PickDeep } from "type-fest";
+import type { GuildConfig } from "../admin/models/config.ts";
 import {
     createErrorMessage,
     createNegativeMessage,
     createNeutralMessage,
     createPositiveMessage,
 } from "../bot/message.ts";
+import { EMessageKind } from "../bot/types.ts";
 import * as LfgConstants from "./constants.ts";
 import { LFG_SHOW_RESPONSE_OPTION_NAME } from "./constants.ts";
 import type { TLfgFeatureReturnOfKind } from "./types.ts";
@@ -16,7 +18,19 @@ function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
         return LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION;
     }
-    return rooms.map((room) => `- ${formatRoom(room)}`).join("\n");
+    return unorderedList(rooms.map(formatRoom));
+}
+
+function formatStatus(rooms: readonly IRoom[], guildConfig?: GuildConfig | null) {
+    const lfgChannel = guildConfig?.lfgChannel
+        ? channelMention(guildConfig.lfgChannel)
+        : LfgConstants.LFG_NO_CHANNEL_CONFIGURED_DESCRIPTION;
+    return [
+        heading("Rooms", 3),
+        formatList(rooms),
+        heading("Server config", 3),
+        unorderedList([`LFG channel: ${lfgChannel}`]),
+    ].join("\n");
 }
 
 function formatRoom(room: IRoom) {
@@ -46,152 +60,152 @@ function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_
     }
 }
 
-function mapLfgFeatureReturnToMessage({
+export function mapLfgFeatureReturnToMessageBase({
     result,
-    interaction,
+    guildConfig,
 }: {
     result: TLfgFeatureReturn;
-    // Using Pick before of PickDeep to avoid "type too complex" error
-    interaction: PickDeep<Pick<ChatInputCommandInteraction, "options">, "options.getBoolean">;
+    guildConfig?: GuildConfig | null;
 }) {
     switch (result.kind) {
         case ELfgFeatureReturnKind.ROOMS_LISTED: {
-            const displayToEveryone = interaction.options.getBoolean(LFG_SHOW_RESPONSE_OPTION_NAME, false);
-            return createNeutralMessage<InteractionReplyOptions>({
-                embed: { description: formatList(result.value.rooms) },
-                flags: displayToEveryone ? undefined : MessageFlags.Ephemeral,
+            return createNeutralMessage({
+                embed: { description: formatStatus(result.value.rooms, guildConfig) },
             });
         }
         case ELfgFeatureReturnKind.HELP:
-            return createNeutralMessage<InteractionReplyOptions>({
+            return createNeutralMessage({
                 embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_CREATED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: `${userMention(result.value.userId)} created room ${formatRoomCode(result.value.room.code)}.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_JOINED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: `${userMention(result.value.userId)} joined room ${formatRoomCode(result.value.room.code)}.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: `${userMention(result.value.userId)} transferred ${formatRoomCode(result.value.room.code)}'s ownership to ${userMention(result.value.targetId)}.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.PLAYER_KICKED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: `${userMention(result.value.userId)} kicked ${userMention(result.value.targetId)} from ${formatRoomCode(result.value.room.code)}.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_LEFT:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: formatRoomLeft(result),
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_DISBANDED:
-            return createPositiveMessage<InteractionReplyOptions>({
+            return createPositiveMessage({
                 embed: {
                     description: `${userMention(result.value.userId)} disbanded ${formatRoomCode(result.value.code)}.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.INVALID_ROOM_CODE:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ALREADY_IN_A_ROOM:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: LfgConstants.LFG_ALREADY_IN_A_ROOM_DESCRIPTION,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: `Room ${formatRoomCode(result.value.code)} already exists.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_NOT_FOUND:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: `Room ${formatRoomCode(result.value.code)} does not exist.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: formatRoom(result.value.room),
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.ROOM_IS_FULL:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: `Room ${formatRoomCode(result.value.code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: LfgConstants.LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: `${userMention(result.value.targetId)} is not in your room.`,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.NOT_ROOM_OWNER:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: LfgConstants.LFG_NOT_ROOM_OWNER_DESCRIPTION,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: {
                     description: LfgConstants.LFG_CANNOT_KICK_YOURSELF_DESCRIPTION,
                 },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.NOT_IN_A_ROOM:
-            return createNegativeMessage<InteractionReplyOptions>({
+            return createNegativeMessage({
                 embed: { description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION },
-                flags: MessageFlags.Ephemeral,
             });
         case ELfgFeatureReturnKind.INVALID_SUBCOMMAND:
-            return createErrorMessage<InteractionReplyOptions>({
+            return createErrorMessage({
                 embed: {
                     description: LfgConstants.LFG_INVALID_SUBCOMMAND_DESCRIPTION,
                 },
-                flags: MessageFlags.Ephemeral,
             });
     }
 }
 
-export default mapLfgFeatureReturnToMessage;
+export function mapLfgMessageBaseToReply({
+    messageBase,
+    interaction,
+    guildConfig,
+}: {
+    messageBase: ReturnType<typeof mapLfgFeatureReturnToMessageBase>;
+    // Using Pick before of PickDeep to avoid "type too complex" error
+    interaction: PickDeep<
+        Pick<ChatInputCommandInteraction, "options" | "channelId">,
+        "options.getBoolean" | "channelId"
+    >;
+    guildConfig: GuildConfig | null;
+}) {
+    const displayToEveryone = interaction.options.getBoolean(LFG_SHOW_RESPONSE_OPTION_NAME, false);
+
+    if (
+        displayToEveryone ||
+        (messageBase.kind === EMessageKind.POSITIVE && interaction.channelId === guildConfig?.lfgChannel)
+    ) {
+        return messageBase;
+    }
+    return { ...messageBase, flags: [MessageFlags.Ephemeral] } as const;
+}

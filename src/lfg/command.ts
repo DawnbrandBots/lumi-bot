@@ -1,7 +1,16 @@
-import type { InteractionReplyOptions } from "discord.js";
-import { MessageFlags, type CacheType, type ChatInputCommandInteraction } from "discord.js";
+import debug from "debug";
+import type { TextChannel } from "discord.js";
+import {
+    ChannelType,
+    MessageFlags,
+    type CacheType,
+    type ChatInputCommandInteraction,
+    type InteractionReplyOptions,
+} from "discord.js";
+import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
 import { createNegativeMessage } from "../bot/message.ts";
+import { EMessageKind } from "../bot/types.ts";
 import { lfgCommandInfo } from "./commandInfo.ts";
 import {
     LFG_CODE_OPTION_NAME,
@@ -16,10 +25,18 @@ import {
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "./constants.ts";
 import type { LfgFeature } from "./feature.ts";
-import mapLfgFeatureReturnToMessage from "./mapper.ts";
+import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "./mapper.ts";
 import { ELfgFeatureReturnKind } from "./types.ts";
 
-export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature }) {
+const log = debug("bot:lfg");
+
+export function getLfgCommand({
+    lfgFeature,
+    adminFeature,
+}: {
+    readonly lfgFeature: LfgFeature;
+    readonly adminFeature: Pick<AdminFeature, "getGuildConfig">;
+}) {
     async function runSubcommand(
         interaction: ChatInputCommandInteraction<CacheType>,
         guildId: string,
@@ -63,6 +80,23 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
         }
     }
 
+    async function sendPublicCopy(
+        interaction: ChatInputCommandInteraction<CacheType>,
+        channelId: string,
+        message: Parameters<TextChannel["send"]>[0],
+    ): Promise<void> {
+        try {
+            const channel = await interaction.guild?.channels.fetch(channelId);
+            if (!channel || channel.type !== ChannelType.GuildText) {
+                log(`Configured LFG channel ${channelId} is unavailable or not a guild text channel.`);
+                return;
+            }
+            await channel.send(message);
+        } catch (error) {
+            log("Failed to publish LFG response", error);
+        }
+    }
+
     return new Command({
         info: lfgCommandInfo,
         run: async function (interaction) {
@@ -80,8 +114,19 @@ export function getLfgCommand({ lfgFeature }: { readonly lfgFeature: LfgFeature 
 
             const subcommand = interaction.options.getSubcommand(true);
             const result = await runSubcommand(interaction, guildId, subcommand);
-            const response = mapLfgFeatureReturnToMessage({ result, interaction });
-            return void (await interaction.reply(response));
+            const configResult = await adminFeature.getGuildConfig(guildId);
+
+            const messageBase = mapLfgFeatureReturnToMessageBase({ result, guildConfig: configResult.value });
+            const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig: configResult.value });
+
+            await interaction.reply(message);
+            if (
+                messageBase.kind === EMessageKind.POSITIVE &&
+                configResult.value?.lfgChannel &&
+                interaction.channelId !== configResult.value.lfgChannel
+            ) {
+                await sendPublicCopy(interaction, configResult.value.lfgChannel, messageBase);
+            }
         },
     });
 }
