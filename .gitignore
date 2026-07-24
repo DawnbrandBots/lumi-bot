@@ -54,3 +54,6 @@ lumi-test
 Thumbs.db
 
 .idea/
+
+# Vitest coverage
+coverage/

@@ -1,17 +1,12 @@
 import type { PickDeep } from "type-fest";
-import { DISCIPLE_BASE_ATK, DISCIPLE_BASE_HP } from "../constants.ts";
 import type { IDisciple } from "../types.ts";
 
-export function baseHp(arg: PickDeep<IDisciple, "movementType.discipleBaseHpModifier">): number {
-    return Math.floor(DISCIPLE_BASE_HP * arg.movementType.discipleBaseHpModifier);
+export function baseHp(arg: PickDeep<IDisciple, "movementType.baseHp">): number {
+    return arg.movementType.baseHp;
 }
 
-export function baseAtk(
-    arg: PickDeep<IDisciple, "movementType.discipleBaseAtkModifier" | "weaponType.discipleBaseAtkModifier">,
-): number {
-    return Math.floor(
-        DISCIPLE_BASE_ATK * arg.movementType.discipleBaseAtkModifier * arg.weaponType.discipleBaseAtkModifier,
-    );
+export function baseAtk(arg: PickDeep<IDisciple, "movementType.baseAtkByRange" | "weaponType.range">): number {
+    return arg.movementType.baseAtkByRange[arg.weaponType.range];
 }
 
 export function hp(arg: { discipleData: PickDeep<IDisciple, "baseHp"> } & Parameters<IDisciple["getHp"]>[0]): number {

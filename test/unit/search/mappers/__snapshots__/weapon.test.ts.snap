@@ -1,0 +1,130 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mapWeaponToMessage > with an exclusive disciple 1`] = `
+{
+  "reply": {
+    "embed": {
+      "fields": [
+        {
+          "inline": true,
+          "name": "Level",
+          "value": "6",
+        },
+        {
+          "inline": true,
+          "name": "Weapon Type",
+          "value": "Sword",
+        },
+        {
+          "inline": true,
+          "name": "Free skill slots count",
+          "value": "2",
+        },
+        {
+          "inline": true,
+          "name": "Exclusive to",
+          "value": "Kurt",
+        },
+        {
+          "name": "Weapon Type skill",
+          "value": "Armor Bane 1: Deals more damage to Armored units.",
+        },
+        {
+          "name": "Unique skill",
+          "value": "Royal Focus: Increases damage dealt by this weapon.",
+        },
+        {
+          "name": "Stats",
+          "value": "\`\`\`
+Variant | Atk (-)  HP
+────────┼────────────
+HP      |  12  17  22
+Atk     |  54  44  34
+\`\`\`",
+        },
+      ],
+      "title": "Royal Sword",
+    },
+  },
+}
+`;
+
+exports[`mapWeaponToMessage > with skills 1`] = `
+{
+  "reply": {
+    "embed": {
+      "fields": [
+        {
+          "inline": true,
+          "name": "Level",
+          "value": "6",
+        },
+        {
+          "inline": true,
+          "name": "Weapon Type",
+          "value": "Sword",
+        },
+        {
+          "inline": true,
+          "name": "Free skill slots count",
+          "value": "2",
+        },
+        {
+          "name": "Weapon Type skill",
+          "value": "Armor Bane 1: Deals more damage to Armored units.",
+        },
+        {
+          "name": "Unique skill",
+          "value": "Royal Focus: Increases damage dealt by this weapon.",
+        },
+        {
+          "name": "Stats",
+          "value": "\`\`\`
+Variant | Atk (-)  HP
+────────┼────────────
+HP      |  12  17  22
+Atk     |  54  44  34
+\`\`\`",
+        },
+      ],
+      "title": "Royal Sword",
+    },
+  },
+}
+`;
+
+exports[`mapWeaponToMessage > without optional skills 1`] = `
+{
+  "reply": {
+    "embed": {
+      "fields": [
+        {
+          "inline": true,
+          "name": "Level",
+          "value": "6",
+        },
+        {
+          "inline": true,
+          "name": "Weapon Type",
+          "value": "Sword",
+        },
+        {
+          "inline": true,
+          "name": "Free skill slots count",
+          "value": "2",
+        },
+        {
+          "name": "Stats",
+          "value": "\`\`\`
+Variant | Atk (-)  HP
+────────┼────────────
+HP      |  12  17  22
+Atk     |  54  44  34
+\`\`\`",
+        },
+      ],
+      "title": "Royal Sword",
+    },
+  },
+}
+`;
