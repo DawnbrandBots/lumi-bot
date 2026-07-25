@@ -99,7 +99,10 @@ describe(LfgFeature.name, { concurrent: false }, () => {
 
             const response = await feature.create(GUILD_ID, OWNER, "room-2");
 
-            expect(response).toEqual({ kind: ELfgFeatureReturnKind.ALREADY_IN_A_ROOM });
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ALREADY_IN_A_ROOM,
+                value: { userId: OWNER.id },
+            });
         });
     });
 
@@ -207,7 +210,13 @@ describe(LfgFeature.name, { concurrent: false }, () => {
 
             const response = await feature.move(GUILD_ID, OWNER, "room");
 
-            expect(response.kind).toBe(ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM);
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM,
+                value: {
+                    userId: OWNER.id,
+                    room: { code: "room", ownerId: OWNER.id, playerIds: [OWNER.id] },
+                },
+            });
         });
     });
 
@@ -229,7 +238,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
-                value: { targetId: PLAYER_1.id, code: "room" },
+                value: { ownerId: OWNER.id, targetId: PLAYER_1.id, code: "room" },
             });
         });
 
@@ -287,7 +296,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
-                value: { targetId: PLAYER_1.id, code: "room" },
+                value: { ownerId: OWNER.id, targetId: PLAYER_1.id, code: "room" },
             });
         });
 
@@ -329,7 +338,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
-                value: { targetId: PLAYER_1.id, code: "room" },
+                value: { ownerId: OWNER.id, targetId: PLAYER_1.id, code: "room" },
             });
         });
 
@@ -425,7 +434,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
 
             expect(response).toEqual({
                 kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
-                value: { targetId: PLAYER_1.id, code: "room" },
+                value: { ownerId: OWNER.id, targetId: PLAYER_1.id, code: "room" },
             });
         });
     });

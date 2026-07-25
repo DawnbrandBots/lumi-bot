@@ -31,7 +31,7 @@ export class LfgFeature implements ILfgFeature {
 
         const currentPlayer = await this.getRoomPlayerInGuild(guildId, owner.id);
         if (currentPlayer) {
-            return { kind: ELfgFeatureReturnKind.ALREADY_IN_A_ROOM } as const;
+            return { kind: ELfgFeatureReturnKind.ALREADY_IN_A_ROOM, value: { userId: owner.id } } as const;
         }
         const existingRoom = await this.getRoomByGuildAndCode(guildId, code);
         if (existingRoom) {
@@ -68,7 +68,7 @@ export class LfgFeature implements ILfgFeature {
         if (currentPlayer?.room.id === room.id) {
             return {
                 kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM,
-                value: { room: this.toRoom(room) },
+                value: { userId: user.id, room: this.toRoom(room) },
             } as const;
         }
 
@@ -121,7 +121,7 @@ export class LfgFeature implements ILfgFeature {
         if (targetPlayer?.room.id !== room.id) {
             return {
                 kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
-                value: { targetId: target.id, code: room.code },
+                value: { ownerId: previousOwnerId, targetId: target.id, code: room.code },
             } as const;
         }
 
@@ -157,7 +157,7 @@ export class LfgFeature implements ILfgFeature {
         if (targetPlayer?.room.id !== room.id) {
             return {
                 kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
-                value: { targetId: target.id, code: room.code },
+                value: { ownerId: room.ownerId, targetId: target.id, code: room.code },
             } as const;
         }
 
