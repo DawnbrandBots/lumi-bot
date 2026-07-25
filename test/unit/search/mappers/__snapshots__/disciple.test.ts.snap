@@ -1,0 +1,94 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mapDiscipleToMessage > with an unlinked shadow music 1`] = `
+{
+  "reply": {
+    "embed": {
+      "fields": [
+        {
+          "inline": true,
+          "name": "Weapon Type",
+          "value": "Sword",
+        },
+        {
+          "inline": true,
+          "name": "Movement Type",
+          "value": "Infantry",
+        },
+        {
+          "inline": true,
+          "name": "PRF Weapon",
+          "value": "Royal Sword",
+        },
+        {
+          "inline": true,
+          "name": "Shadow music",
+          "value": "- Betrayal - The Exiled Prince
+  -# No known source media for this song :(
+- [Victory - The Exiled Prince](https://example.com/victory)",
+        },
+        {
+          "name": "Spells",
+          "value": "- **Elfire**: deals 60 Red damage to targets (single tile).",
+        },
+        {
+          "name": "Base stats",
+          "value": "\`\`\`
+Level |   1   8   9  10  11
+──────┼────────────────────
+HP    |  80 136 144 152 160
+Atk   |  42  71  75  79  84
+\`\`\`",
+        },
+      ],
+      "title": "Kurt",
+    },
+  },
+}
+`;
+
+exports[`mapDiscipleToMessage > with linked shadow music 1`] = `
+{
+  "reply": {
+    "embed": {
+      "fields": [
+        {
+          "inline": true,
+          "name": "Weapon Type",
+          "value": "Sword",
+        },
+        {
+          "inline": true,
+          "name": "Movement Type",
+          "value": "Infantry",
+        },
+        {
+          "inline": true,
+          "name": "PRF Weapon",
+          "value": "Royal Sword",
+        },
+        {
+          "inline": true,
+          "name": "Shadow music",
+          "value": "- [Betrayal - The Exiled Prince](https://example.com/betrayal)
+- [Victory - The Exiled Prince](https://example.com/victory)",
+        },
+        {
+          "name": "Spells",
+          "value": "- **Elfire**: deals 60 Red damage to targets (single tile).",
+        },
+        {
+          "name": "Base stats",
+          "value": "\`\`\`
+Level |   1   8   9  10  11
+──────┼────────────────────
+HP    |  80 136 144 152 160
+Atk   |  42  71  75  79  84
+\`\`\`",
+        },
+      ],
+      "title": "Kurt",
+    },
+  },
+}
+`;

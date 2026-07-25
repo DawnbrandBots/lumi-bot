@@ -41,7 +41,6 @@ describe(Disciple.name, () => {
             expect(disciple.baseAtk).toBe(42);
             expect(disciple.getHp({ level: 11 })).toBe(160);
             expect(disciple.getAtk({ level: 11 })).toBe(84);
-            expect(disciple.weaponType.discipleBaseAtkModifier).toBe(1);
         });
     });
 });

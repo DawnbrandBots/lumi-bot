@@ -1,0 +1,200 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`formatSpellShape > 2x2 square 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::blue_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 3x3 X 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::blue_square::black_large_square::blue_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::blue_square::black_large_square::blue_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 3x3 cross 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 3x3 square 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::blue_square::blue_square::blue_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::blue_square::blue_square::blue_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 5 tiles column 1`] = `
+":black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 5 tiles row 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:blue_square::blue_square::red_square::blue_square::blue_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > 5x5 cross 1`] = `
+":black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:blue_square::blue_square::red_square::blue_square::blue_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:"
+`;
+
+exports[`formatSpellShape > single tile 1`] = `
+":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+`;
+
+exports[`mapSpellToMessage > with a disciple and usage restrictions 1`] = `
+{
+  "reply": {
+    "embed": {
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Kurt",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "8 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "target tile",
+        },
+        {
+          "inline": true,
+          "name": "Only for",
+          "value": "Sword units",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Deals 60 Red damage to targets.",
+        },
+        {
+          "name": "Values",
+          "value": "\`\`\`
+Lv |   1   2   3   4   5   6
+───┼────────────────────────
+1. |  60  66  72  78  84  90
+                            
+Lv |   7   8   9  10  11  12
+───┼────────────────────────
+1. |  96 102 108 114 120 132
+\`\`\`",
+        },
+      ],
+      "title": "Elfire",
+    },
+  },
+}
+`;
+
+exports[`mapSpellToMessage > without a disciple 1`] = `
+{
+  "reply": {
+    "embed": {
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "*None*",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "target tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Deals 60 Red damage to targets.",
+        },
+        {
+          "name": "Values",
+          "value": "\`\`\`
+Lv |   1
+───┼────
+1. |  60
+\`\`\`",
+        },
+      ],
+      "title": "Elfire",
+    },
+  },
+}
+`;
