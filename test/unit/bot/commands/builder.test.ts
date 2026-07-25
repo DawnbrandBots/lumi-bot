@@ -7,9 +7,9 @@ import {
     SlashCommandBuilder,
 } from "discord.js";
 import { describe, expect, test } from "vitest";
-import { getSlashCommandBuilder } from "../../../src/bot/commands/builder.ts";
-import type { ICommandApiInfo } from "../../../src/bot/commands/types.ts";
-import allCommandRuntimeInfo from "../../../src/loaders/commandRuntimeInfo.ts";
+import { getSlashCommandBuilder } from "../../../../src/bot/commands/builder.ts";
+import type { ICommandApiInfo } from "../../../../src/bot/commands/types.ts";
+import allCommandRuntimeInfo from "../../../../src/loaders/commandRuntimeInfo.ts";
 
 const commandWithBasicOptions = {
     name: "configure",

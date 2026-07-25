@@ -31,13 +31,6 @@ export interface IWeaponType {
      * Number of tiles from which a unit may auto attack another one.
      */
     readonly range: 1 | 2;
-    /**
-     * Value by which the disciple who wields a weapon of this type has their Atk multiplied by.
-     *
-     * Ranged weapon types have worse Atk than non-ranged.
-     */
-    // TODO: Currently only range influences Atk so maybe this should be a property of range rather than WeaponType. Not a big deal.
-    readonly discipleBaseAtkModifier: number;
     readonly weaponSkills: Iterable<IWeaponSkill>;
 }
 
@@ -119,6 +112,13 @@ export interface IWeapon {
     getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number;
 }
 
+/** Stat modifier possessed by every weapon (except at level 1) that cannot be changed. */
+export interface IWeaponVariant {
+    readonly kind: "HP" | "NEUTRAL" | "ATK";
+    readonly hp: number;
+    readonly atk: number;
+}
+
 /**
  * A unit has a movement type which influences its stats and how it walks on the grid.
  */
@@ -131,8 +131,8 @@ export interface IMovementType {
      */
     readonly distance: number;
     readonly canTraverseWaterTiles: boolean;
-    readonly discipleBaseHpModifier: number;
-    readonly discipleBaseAtkModifier: number;
+    readonly baseHp: number;
+    readonly baseAtkByRange: Readonly<Record<IWeaponType["range"], number>>;
 }
 
 /**
@@ -314,6 +314,12 @@ export const ESpellEffectValueUnitKind = {
     PERCENT: "PERCENT",
 } as const;
 
+export const EWeaponVariant = {
+    HP: "HP",
+    NEUTRAL: "NEUTRAL",
+    ATK: "ATK",
+} as const;
+
 export interface ISpellEffectValueUnit {
     readonly kind: keyof typeof ESpellEffectValueUnitKind;
 }
@@ -423,6 +429,19 @@ export const ESpellEffectKind = {
     TILE: "TILE",
     SUMMON: "SUMMON",
 } as const;
+
+export type TSpellEffectKindToEffectMap = {
+    DAMAGE: IDamageEffect;
+    HEAL: IHealEffect;
+    MOVEMENT: IMovementEffect;
+    STAT: IStatEffect;
+    STATUS: IStatusEffect;
+    REPEAT: IRepeatEffect;
+    WARP: IWarpEffect;
+    ICE_BLOCK: IIceBlockEffect;
+    TILE: ITileEffect;
+    SUMMON: ISummonEffect;
+};
 
 /**
  * Something that occurs on tiles a spell is dragged on, and affects units on these tiles.

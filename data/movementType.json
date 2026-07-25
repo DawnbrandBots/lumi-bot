@@ -4,31 +4,43 @@
     "name": "Infantry",
     "distance": 2,
     "canTraverseWaterTiles": false,
-    "discipleBaseHpModifier": 1,
-    "discipleBaseAtkModifier": 1.1666666666666667
+    "baseHp": 80,
+    "baseAtkByRange": {
+      "1": 42,
+      "2": 28
+    }
   },
   {
     "id": "CAVALRY",
     "name": "Cavalry",
     "distance": 3,
     "canTraverseWaterTiles": false,
-    "discipleBaseHpModifier": 1,
-    "discipleBaseAtkModifier": 1
+    "baseHp": 80,
+    "baseAtkByRange": {
+      "1": 36,
+      "2": 24
+    }
   },
   {
     "id": "FLYING",
     "name": "Flying",
     "distance": 2,
     "canTraverseWaterTiles": true,
-    "discipleBaseHpModifier": 1,
-    "discipleBaseAtkModifier": 1
+    "baseHp": 80,
+    "baseAtkByRange": {
+      "1": 36,
+      "2": 24
+    }
   },
   {
     "id": "ARMORED",
     "name": "Armored",
     "distance": 2,
     "canTraverseWaterTiles": false,
-    "discipleBaseHpModifier": 1.1,
-    "discipleBaseAtkModifier": 0.8333333333333334
+    "baseHp": 88,
+    "baseAtkByRange": {
+      "1": 30,
+      "2": 20
+    }
   }
 ]

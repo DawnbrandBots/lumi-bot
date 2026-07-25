@@ -1,5 +1,4 @@
 import { UnderscoreNamingStrategy, defineEntity, p } from "@mikro-orm/sqlite";
-import { WEAPON_TYPE_RANGE_ATK_MODIFIER } from "../constants.ts";
 import type { IWeaponType } from "../types.ts";
 import { Color } from "./color.ts";
 import { WeaponSkill } from "./weaponSkill.ts";
@@ -31,10 +30,6 @@ export const WeaponTypeSchema = defineEntity({
 export class WeaponType extends WeaponTypeSchema.class implements IWeaponType {
     get kind() {
         return "weaponType" as const;
-    }
-
-    get discipleBaseAtkModifier(): number {
-        return WEAPON_TYPE_RANGE_ATK_MODIFIER[this.range];
     }
 }
 WeaponTypeSchema.setClass(WeaponType);
