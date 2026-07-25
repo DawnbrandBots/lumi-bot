@@ -70,6 +70,8 @@ export const DISCORD_BLACK_SQUARE_EMOJI_CALL = `:${DISCORD_BLACK_SQUARE_EMOJI_ID
 export const DISCORD_SAI_LAUGH_EMOJI_ID = "1474191899781758976";
 export const DISCORD_SAI_LAUGH_EMOJI_CALL = formatEmoji(DISCORD_SAI_LAUGH_EMOJI_ID);
 
+export const DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT = 25;
+
 export const SEARCH_TERMS_OPTION_NAME = "terms";
 /**
  * Somewhat arbitrarily chosen character limit.

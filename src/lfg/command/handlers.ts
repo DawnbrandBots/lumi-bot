@@ -36,6 +36,7 @@ import {
 import type { LfgFeature } from "../feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../mapper.ts";
 import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../types.ts";
+import getRoomCodeAutocomplete from "../utils/roomCodeAutocomplete.ts";
 import type { lfgCommandApiInfo } from "./apiInfo.ts";
 
 const log = debug("bot:lfg");
@@ -93,7 +94,11 @@ export function getLfgCommand({ lfgFeature, adminFeature }: TLfgCommandArgs) {
         const result = await getResult();
         const configResult = await adminFeature.getGuildConfig(guildId);
 
-        const messageBase = mapLfgFeatureReturnToMessageBase({ result, guildConfig: configResult.value });
+        const messageBase = mapLfgFeatureReturnToMessageBase({
+            result,
+            callerId: interaction.user.id,
+            guildConfig: configResult.value,
+        });
         const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig: configResult.value });
 
         await interaction.reply(message);
@@ -219,7 +224,7 @@ export function getLfgCommand({ lfgFeature, adminFeature }: TLfgCommandArgs) {
             [LFG_JOIN_SUBCOMMAND_NAME]: (interaction) =>
                 runWithGuild(interaction, (guildId) =>
                     runFeatureSubcommand(interaction, guildId, () =>
-                        lfgFeature.join(
+                        lfgFeature.move(
                             guildId,
                             interaction.user,
                             interaction.options.getString(LFG_CODE_OPTION_NAME, true),
@@ -229,7 +234,7 @@ export function getLfgCommand({ lfgFeature, adminFeature }: TLfgCommandArgs) {
             [LFG_TRANSFER_SUBCOMMAND_NAME]: (interaction) =>
                 runWithGuild(interaction, (guildId) =>
                     runFeatureSubcommand(interaction, guildId, () =>
-                        lfgFeature.transfer(
+                        lfgFeature.transferOwnedRoom(
                             guildId,
                             interaction.user,
                             interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
@@ -239,7 +244,7 @@ export function getLfgCommand({ lfgFeature, adminFeature }: TLfgCommandArgs) {
             [LFG_KICK_SUBCOMMAND_NAME]: (interaction) =>
                 runWithGuild(interaction, (guildId) =>
                     runFeatureSubcommand(interaction, guildId, () =>
-                        lfgFeature.kick(
+                        lfgFeature.kickFromOwnedRoom(
                             guildId,
                             interaction.user,
                             interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
@@ -252,7 +257,9 @@ export function getLfgCommand({ lfgFeature, adminFeature }: TLfgCommandArgs) {
                 ),
             [LFG_DISBAND_SUBCOMMAND_NAME]: (interaction) =>
                 runWithGuild(interaction, (guildId) =>
-                    runFeatureSubcommand(interaction, guildId, () => lfgFeature.disband(guildId, interaction.user)),
+                    runFeatureSubcommand(interaction, guildId, () =>
+                        lfgFeature.disbandOwnedRoom(guildId, interaction.user),
+                    ),
                 ),
             [LFG_STATUS_SUBCOMMAND_NAME]: (interaction) =>
                 runWithGuild(interaction, (guildId) =>
@@ -264,6 +271,14 @@ export function getLfgCommand({ lfgFeature, adminFeature }: TLfgCommandArgs) {
                 ),
             [LFG_PING_SUBCOMMAND_NAME]: (interaction) =>
                 runWithGuild(interaction, (guildId) => runPing(interaction, guildId)),
+        },
+        autocomplete: {
+            [LFG_JOIN_SUBCOMMAND_NAME]: {
+                [LFG_CODE_OPTION_NAME]: getRoomCodeAutocomplete({
+                    lfgFeature,
+                    ignoredSubCommands: [LFG_CREATE_SUBCOMMAND_NAME],
+                }),
+            },
         },
     } satisfies TCommandHandlers<typeof lfgCommandApiInfo>;
 }

@@ -10,6 +10,7 @@ import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLfgCommand } from "./lfg/command/handlers.ts";
 import { LfgFeature } from "./lfg/feature.ts";
+import { getLfgManageCommand } from "./lfgManage/command/handlers.ts";
 import { getLinksCommand } from "./links/command/handlers.ts";
 import getBot from "./loaders/bot.ts";
 import type { TAllCommandApiInfo } from "./loaders/commandRuntimeInfo.ts";
@@ -40,6 +41,7 @@ const commands = {
     help: getHelpCommand(),
     links: getLinksCommand(),
     lfg: getLfgCommand({ adminFeature, lfgFeature }),
+    "lfg-manage": getLfgManageCommand({ adminFeature, lfgFeature }),
 } satisfies TCommandRegistry<TAllCommandApiInfo>;
 
 bot.on(Events.ClientReady, (client) => {

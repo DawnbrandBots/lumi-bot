@@ -60,7 +60,7 @@ export const lfgCommandApiInfo = {
             type: ApplicationCommandOptionType.Subcommand,
             name: LFG_JOIN_SUBCOMMAND_NAME,
             description: LFG_JOIN_SUBCOMMAND_DESCRIPTION,
-            options: [roomCodeOption],
+            options: [{ ...roomCodeOption, autocomplete: true }],
         },
         {
             type: ApplicationCommandOptionType.Subcommand,
