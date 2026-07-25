@@ -10,8 +10,10 @@ import {
 import { describe, expect, test, vi } from "vitest";
 import type { AdminFeature } from "../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
-import type { Command } from "../../src/bot/command.ts";
-import { getLfgCommand } from "../../src/lfg/command.ts";
+import { getCommandRunHandler } from "../../src/bot/commands/handlers.ts";
+import type { TCommandHandlers } from "../../src/bot/commands/types.ts";
+import type { lfgCommandApiInfo } from "../../src/lfg/command/apiInfo.ts";
+import { getLfgCommand } from "../../src/lfg/command/handlers.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CODE_OPTION_NAME,
@@ -84,6 +86,7 @@ function getInteractionFixture({
             },
         },
         options: {
+            getSubcommandGroup: vi.fn().mockReturnValue(null),
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
             getRole: vi.fn((name: string) => (name === LFG_ROLE_OPTION_NAME ? { id: roleId } : null)),
@@ -108,7 +111,7 @@ function getCommand({
     readonly lfgRoleLastPingedAt?: Date | null;
     readonly lfgRolePingCooldownMinutes?: number;
     readonly setLfgRoleLastPingedAt?: SetLfgRoleLastPingedAtMock;
-}): Command {
+}): TCommandHandlers<typeof lfgCommandApiInfo> {
     return getLfgCommand({
         lfgFeature: {
             create: vi.fn().mockResolvedValue(result),
@@ -127,12 +130,23 @@ function getCommand({
     });
 }
 
+async function runCommand(
+    command: TCommandHandlers<typeof lfgCommandApiInfo>,
+    interaction: ChatInputCommandInteraction,
+) {
+    const run = getCommandRunHandler(command, interaction);
+    if (!run) {
+        throw new Error("No run handler found for test interaction.");
+    }
+    await run(interaction);
+}
+
 describe(getLfgCommand.name, () => {
     test("replies ephemerally when no channel is configured", async () => {
         const command = getCommand({ result: POSITIVE_RESULT, channel: null });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).not.toHaveBeenCalled();
@@ -143,7 +157,7 @@ describe(getLfgCommand.name, () => {
         const send = vi.fn().mockResolvedValue({});
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID, send });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
@@ -155,7 +169,7 @@ describe(getLfgCommand.name, () => {
         const command = getCommand({ result: POSITIVE_RESULT, channel: PUBLIC_CHANNEL_ID });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: PUBLIC_CHANNEL_ID });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         const publicReply = reply.mock.calls[0]?.[0] as { readonly flags?: unknown } | undefined;
         expect(publicReply?.flags).toBeUndefined();
@@ -169,7 +183,7 @@ describe(getLfgCommand.name, () => {
         });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).not.toHaveBeenCalled();
@@ -182,7 +196,7 @@ describe(getLfgCommand.name, () => {
         });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).not.toHaveBeenCalled();
@@ -195,7 +209,7 @@ describe(getLfgCommand.name, () => {
             subcommand: LFG_PING_SUBCOMMAND_NAME,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -215,7 +229,7 @@ describe(getLfgCommand.name, () => {
             channelExists: false,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         expect(reply).toHaveBeenCalledWith(
@@ -234,7 +248,7 @@ describe(getLfgCommand.name, () => {
             subcommand: LFG_PING_SUBCOMMAND_NAME,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         expect(reply).toHaveBeenCalledWith(
@@ -260,7 +274,7 @@ describe(getLfgCommand.name, () => {
             roleId: GUILD_ID,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         expect(reply).toHaveBeenCalledWith(
@@ -287,7 +301,7 @@ describe(getLfgCommand.name, () => {
             roleExists: false,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         expect(roleFetch).toHaveBeenCalledWith(ROLE_ID);
@@ -315,7 +329,7 @@ describe(getLfgCommand.name, () => {
             subcommand: LFG_PING_SUBCOMMAND_NAME,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.flags).toEqual([MessageFlags.Ephemeral]);
@@ -339,7 +353,7 @@ describe(getLfgCommand.name, () => {
             subcommand: LFG_PING_SUBCOMMAND_NAME,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         const response = reply.mock.calls[0]?.[0] as ReplyArg | undefined;
         expect(response?.flags).toEqual([MessageFlags.Ephemeral]);
@@ -364,7 +378,7 @@ describe(getLfgCommand.name, () => {
             send,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(send).toHaveBeenCalled();
         expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
@@ -386,7 +400,7 @@ describe(getLfgCommand.name, () => {
             send,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         const publicMessage = send.mock.calls[0]?.[0] as ReplyArg | undefined;
@@ -416,7 +430,7 @@ describe(getLfgCommand.name, () => {
             subcommand: LFG_PING_SUBCOMMAND_NAME,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         expect(send).not.toHaveBeenCalled();

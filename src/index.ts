@@ -1,6 +1,6 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
-import { AdminCommand } from "./admin/command.ts";
+import { getAdminCommand } from "./admin/command/handlers.ts";
 import { AdminFeature } from "./admin/feature.ts";
 import { getCommandAutocompleteHandler, getCommandRunHandler } from "./bot/commands/handlers.ts";
 import type { TCommandRegistry } from "./bot/commands/types.ts";
@@ -8,7 +8,7 @@ import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
 import { getHelpCommand } from "./help/command/handlers.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
-import { getLfgCommand } from "./lfg/command.ts";
+import { getLfgCommand } from "./lfg/command/handlers.ts";
 import { LfgFeature } from "./lfg/feature.ts";
 import { getLinksCommand } from "./links/command/handlers.ts";
 import getBot from "./loaders/bot.ts";
@@ -35,7 +35,7 @@ const bot = getBot();
 const adminFeature = new AdminFeature({ em });
 const lfgFeature = new LfgFeature({ em });
 const commands = {
-    admin: new AdminCommand({ adminFeature }),
+    admin: getAdminCommand({ adminFeature }),
     search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
