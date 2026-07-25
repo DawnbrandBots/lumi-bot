@@ -345,7 +345,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 callerId: "user",
                 result: {
                     kind: ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF,
-                    value: { code: ROOM.code, userId: "user" },
+                    value: { code: ROOM.code, userId: "owner" },
                 },
             },
             expected: {

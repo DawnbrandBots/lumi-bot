@@ -138,4 +138,5 @@ export const migrationMikroOrmConfig = defineConfig({
 
 // Exporting an array of configs as default allows referring to non-default config using `--contextName`.
 // https://mikro-orm.io/blog/mikro-orm-6-4-released#support-for-multiple-orm-configurations
+// https://mikro-orm.io/docs/quick-start#configuration-file-structure
 export default [appMikroOrmConfig, staticGameDataMikroOrmConfig, migrationMikroOrmConfig];

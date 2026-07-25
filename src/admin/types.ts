@@ -39,17 +39,19 @@ type TAdminFeatureReturnValueByKind = {
     [EAdminFeatureReturnKind.LFG_GET_CONFIG]: GuildConfig | null;
     [EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG]: GuildConfigLfgRole | null;
 } & {
-    [_ in
-        | EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
-        | EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL
-        | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS
-        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED
-        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
-        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
-        | EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE
-        | EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS
-        | EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED
-        | EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE]: never;
+    [
+        _ in
+            | EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
+            | EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL
+            | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS
+            | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED
+            | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
+            | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
+            | EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE
+            | EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS
+            | EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED
+            | EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE
+    ]: never;
 };
 
 // TODO: implement a utility type to reuse the following logic which can also be found in lfg/types
