@@ -9,7 +9,7 @@ import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../../src/search/constants.ts
 import { FuseSearchEngine } from "../../src/search/engine.ts";
 import type { ISearchEngine, TSearchItem } from "../../src/search/types.ts";
 import { initTestOrm } from "../orm.ts";
-import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES } from "./constants.ts";
+import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES, SEARCH_RANKING_KNOWN_FAILURE_CASES } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestOrm>>;
 let em: EntityManager;
@@ -48,6 +48,27 @@ describe("search autocomplete", () => {
             });
         });
     }
+
+    for (const { expectedName, inputs } of SEARCH_RANKING_KNOWN_FAILURE_CASES) {
+        test.fails.each(inputs)(`%s returns ${expectedName} as first choice`, (input) => {
+            expect(
+                searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
+                    getMockAutocompleteInteraction(input, SEARCH_TERMS_OPTION_NAME),
+                )?.[0],
+            ).toEqual({
+                name: expectedName,
+                value: expectedName,
+            });
+        });
+    }
+
+    test("returns an empty array on empty input", () => {
+        expect(
+            searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
+                getMockAutocompleteInteraction("", SEARCH_TERMS_OPTION_NAME),
+            ),
+        ).toEqual([]);
+    });
 
     test("returns an empty array when there is no result", () => {
         expect(

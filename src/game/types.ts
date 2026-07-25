@@ -349,6 +349,7 @@ export interface ISpellEffectValue {
      * Value of spell effect for the spell's level 1.
      */
     readonly base: number;
+    readonly scalesWithLevel: boolean;
     readonly unit: ISpellEffectValueUnit;
     readonly effectiveness?: ISpellEffectValueEffectivenessItem[] | null;
 }
@@ -407,6 +408,7 @@ export interface ISpellEffectTarget {
 // TODO: scale property added in later PR
 export interface ISummonEffectStatValue {
     readonly base: number;
+    readonly scalesWithLevel: boolean;
 }
 
 export const ESpellEffectKind = {
