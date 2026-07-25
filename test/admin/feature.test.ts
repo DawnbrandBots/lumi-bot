@@ -22,10 +22,10 @@ function getStoredConfig(): Promise<GuildConfig | null> {
 async function getStoredRoles(): Promise<GuildConfigLfgRole[]> {
     return orm.em.fork().find(GuildConfigLfgRole, { guildConfig: { guild: GUILD_ID } }, { orderBy: { role: "asc" } });
 }
-
 const config = getSameConfigInMemory(migrationMikroOrmConfig);
 
-describe(AdminFeature.name, () => {
+// Tests recreate dbs. Simultaneous recreations cause errors. Therefore `concurrent: false`.
+describe(AdminFeature.name, { concurrent: false }, () => {
     beforeEach(async () => {
         orm = await MikroORM.init(config);
         await orm.schema.create();
