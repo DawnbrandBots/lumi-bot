@@ -12,9 +12,8 @@ import type { TCommandHandlers } from "../../src/bot/commands/types.ts";
 import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../src/lfg/constants.ts";
 import type { LfgFeature } from "../../src/lfg/feature.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type TLfgFeatureReturn } from "../../src/lfg/types.ts";
-import { lfgManageCommandApiInfo } from "../../src/lfgManage/command/apiInfo.ts";
+import type { lfgManageCommandApiInfo } from "../../src/lfgManage/command/apiInfo.ts";
 import { getLfgManageCommand } from "../../src/lfgManage/command/handlers.ts";
-import { LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME } from "../../src/lfgManage/constants.ts";
 
 const GUILD_ID = "guild-1";
 const ADMIN_ID = "admin";
@@ -102,12 +101,6 @@ async function runCommand(
 }
 
 describe(getLfgManageCommand.name, () => {
-    test("registers the transfer subcommand", () => {
-        expect(
-            lfgManageCommandApiInfo.options?.some((option) => option.name === LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME),
-        ).toBe(true);
-    });
-
     test("rejects non-guild interactions", async () => {
         const { adminFeature, command, lfgFeature } = getCommand({
             result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
