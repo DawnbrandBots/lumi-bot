@@ -1,3 +1,7 @@
+/**
+ * @file Tests on {@link describeSpellEffects}.
+ */
+
 import { describe, expect, test } from "vitest";
 import { describeSpellEffects } from "../../../../src/game/spellEffectDescriptions.ts";
 import { ESpellEffectKind } from "../../../../src/game/types.ts";
