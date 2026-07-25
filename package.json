@@ -20,7 +20,8 @@
     "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts",
     "test:db": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateDb.ts ./test/mikro-orm.test.config.ts",
     "pretest": "yarn test:db",
-    "test": "vitest"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
   },
   "engines": {
     "node": ">=24",
@@ -40,6 +41,7 @@
     "@tsconfig/node24": "^24.0.4",
     "@types/debug": "^4.1.13",
     "@types/node": "^26.1.1",
+    "@vitest/coverage-v8": "4.1.10",
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.7.0",
