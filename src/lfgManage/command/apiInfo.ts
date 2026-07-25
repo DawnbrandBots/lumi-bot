@@ -1,0 +1,82 @@
+import {
+    ApplicationCommandOptionType,
+    ApplicationIntegrationType,
+    InteractionContextType,
+    PermissionFlagsBits,
+} from "discord.js";
+import type { ICommandApiInfo } from "../../bot/commands/types.ts";
+import {
+    LFG_CODE_OPTION_NAME,
+    LFG_MAX_ROOM_CODE_LENGTH,
+    LFG_MIN_ROOM_CODE_LENGTH,
+    LFG_PLAYER_OPTION_NAME,
+} from "../../lfg/constants.ts";
+import {
+    LFG_MANAGE_COMMAND_NAME,
+    LFG_MANAGE_CREATE_SUBCOMMAND_NAME,
+    LFG_MANAGE_DISBAND_SUBCOMMAND_NAME,
+    LFG_MANAGE_KICK_SUBCOMMAND_NAME,
+    LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
+    LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
+} from "../constants.ts";
+
+const playerOption = {
+    type: ApplicationCommandOptionType.User,
+    name: LFG_PLAYER_OPTION_NAME,
+    description: "Player.",
+    required: true,
+} as const;
+
+const roomCodeOption = {
+    type: ApplicationCommandOptionType.String,
+    name: LFG_CODE_OPTION_NAME,
+    description: "Room code.",
+    min_length: LFG_MIN_ROOM_CODE_LENGTH,
+    max_length: LFG_MAX_ROOM_CODE_LENGTH,
+    required: true,
+} as const;
+
+const autocompletedRoomCodeOption = {
+    ...roomCodeOption,
+    autocomplete: true,
+} as const;
+
+export const lfgManageCommandApiInfo = {
+    name: LFG_MANAGE_COMMAND_NAME,
+    description: "Manage looking-for-game rooms for all server members.",
+    contexts: [InteractionContextType.Guild],
+    integration_types: [ApplicationIntegrationType.GuildInstall],
+    default_member_permissions: PermissionFlagsBits.ManageGuild.toString(),
+    options: [
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_MANAGE_CREATE_SUBCOMMAND_NAME,
+            description: "Create a room for a player.",
+            options: [{ ...playerOption, description: "Room owner." }, roomCodeOption],
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
+            description: "Move a player to a room.",
+            options: [{ ...playerOption, description: "Player to move." }, autocompletedRoomCodeOption],
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_MANAGE_KICK_SUBCOMMAND_NAME,
+            description: "Kick a player from their room.",
+            options: [{ ...playerOption, description: "Player to kick." }, autocompletedRoomCodeOption],
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
+            description: "Transfer room ownership.",
+            options: [{ ...playerOption, description: "New room owner." }, autocompletedRoomCodeOption],
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_MANAGE_DISBAND_SUBCOMMAND_NAME,
+            description: "Disband a room.",
+            options: [autocompletedRoomCodeOption],
+        },
+    ],
+} as const satisfies ICommandApiInfo;
