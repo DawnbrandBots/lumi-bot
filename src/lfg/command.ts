@@ -37,6 +37,7 @@ import {
 import type { LfgFeature } from "./feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "./mapper.ts";
 import { ELfgFeatureReturnKind } from "./types.ts";
+import getRoomCodeAutocomplete from "./utils/roomCodeAutocomplete.ts";
 
 const log = debug("bot:lfg");
 
@@ -243,5 +244,6 @@ export function getLfgCommand({
                 await sendPublicCopy(interaction, configResult.value.lfgChannel, messageBase);
             }
         },
+        autocomplete: getRoomCodeAutocomplete({ lfgFeature, ignoredSubCommands: [LFG_CREATE_SUBCOMMAND_NAME] }),
     });
 }

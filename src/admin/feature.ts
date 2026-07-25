@@ -9,8 +9,7 @@ import {
 } from "./constants.ts";
 import { GuildConfig } from "./models/config.ts";
 import { GuildConfigLfgRole } from "./models/configLfgRole.ts";
-import type { TAdminFeatureReturnTypes } from "./types.ts";
-import { EAdminFeatureReturnKind } from "./types.ts";
+import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "./types.ts";
 
 type AdminFeatureCtorArg = {
     readonly em: EntityManager;

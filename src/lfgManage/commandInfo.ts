@@ -14,14 +14,15 @@ import {
     LFG_PLAYER_OPTION_NAME,
 } from "../lfg/constants.ts";
 
-function addRoomCodeOption(subcommand: SlashCommandSubcommandBuilder) {
+function addRoomCodeOption(subcommand: SlashCommandSubcommandBuilder, autocomplete: boolean = true) {
     return subcommand.addStringOption((option) =>
         option
             .setName(LFG_CODE_OPTION_NAME)
             .setDescription("Room code.")
             .setMinLength(LFG_MIN_ROOM_CODE_LENGTH)
             .setMaxLength(LFG_MAX_ROOM_CODE_LENGTH)
-            .setRequired(true),
+            .setRequired(true)
+            .setAutocomplete(autocomplete),
     );
 }
 
@@ -37,6 +38,7 @@ export const lfgManageCommandInfo: ICommandInfo = new CommandInfo({
                         .addUserOption((option) =>
                             option.setName(LFG_PLAYER_OPTION_NAME).setDescription("Room owner.").setRequired(true),
                         ),
+                    false,
                 ),
             )
             .addSubcommand((subcommand) =>

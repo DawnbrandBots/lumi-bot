@@ -11,10 +11,11 @@ import type { AdminFeature } from "../admin/feature.ts";
 import { Command } from "../bot/command.ts";
 import { createErrorMessage } from "../bot/message.ts";
 import { EMessageKind } from "../bot/types.ts";
-import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../lfg/constants.ts";
+import { LFG_CODE_OPTION_NAME, LFG_CREATE_SUBCOMMAND_NAME, LFG_PLAYER_OPTION_NAME } from "../lfg/constants.ts";
 import type { LfgFeature } from "../lfg/feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../lfg/mapper.ts";
 import { ELfgFeatureReturnKind } from "../lfg/types.ts";
+import getRoomCodeAutocomplete from "../lfg/utils/roomCodeAutocomplete.ts";
 import { lfgManageCommandInfo } from "./commandInfo.ts";
 
 const log = debug("bot:lfg-manage");
@@ -112,5 +113,6 @@ export function getLfgManageCommand({
                 await sendPublicCopy(interaction, configResult.value.lfgChannel, messageBase);
             }
         },
+        autocomplete: getRoomCodeAutocomplete({ lfgFeature, ignoredSubCommands: [LFG_CREATE_SUBCOMMAND_NAME] }),
     });
 }
