@@ -2,20 +2,22 @@ import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
 import { AdminCommand } from "./admin/command.ts";
 import { AdminFeature } from "./admin/feature.ts";
+import { getCommandAutocompleteHandler, getCommandRunHandler } from "./bot/commands/handlers.ts";
+import type { TCommandRegistry } from "./bot/commands/types.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
-import type { ICommand } from "./bot/types.ts";
-import { getHelpCommand } from "./help/command.ts";
+import { getHelpCommand } from "./help/command/handlers.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
 import { getLfgCommand } from "./lfg/command.ts";
 import { LfgFeature } from "./lfg/feature.ts";
-import { getLinksCommand } from "./links/command.ts";
+import { getLinksCommand } from "./links/command/handlers.ts";
 import getBot from "./loaders/bot.ts";
+import type { TAllCommandApiInfo } from "./loaders/commandRuntimeInfo.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
 import getSearchItems from "./loaders/searchItems.ts";
 import { appMikroOrmConfig } from "./mikro-orm.config.ts";
-import { getSearchCommand } from "./search/command.ts";
+import { getSearchCommand } from "./search/command/handlers.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import searchFeature from "./search/feature.ts";
 import mapSearchFeatureReturnToMessages from "./search/mapper.ts";
@@ -38,7 +40,7 @@ const commands = {
     help: getHelpCommand(),
     links: getLinksCommand(),
     lfg: getLfgCommand({ adminFeature, lfgFeature }),
-} as const;
+} satisfies TCommandRegistry<TAllCommandApiInfo>;
 
 bot.on(Events.ClientReady, (client) => {
     log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
@@ -78,18 +80,29 @@ bot.on(Events.InteractionCreate, async (interaction) => {
     log(interaction);
 
     if (interaction.isChatInputCommand()) {
-        const command = isKeyOfExactObject(commands, interaction.commandName)
-            ? commands[interaction.commandName]
-            : commands.help;
-        await command.run(interaction);
+        if (!isKeyOfExactObject(commands, interaction.commandName)) {
+            // TODO: this should be reported in another PR
+            return;
+        }
+        const command = commands[interaction.commandName];
+        const run = getCommandRunHandler(command, interaction);
+        if (!run) {
+            // TODO: this should be reported in another PR
+            return;
+        }
+        await run(interaction);
         return;
     } else if (interaction.isAutocomplete()) {
         if (!isKeyOfExactObject(commands, interaction.commandName)) {
+            // TODO: this should be reported in another PR
             return;
         }
-        const command: ICommand = commands[interaction.commandName];
-        const choices = await command.autocomplete?.(interaction);
+        const command = commands[interaction.commandName];
+        const autocomplete = getCommandAutocompleteHandler(command, interaction);
+        const choices = await autocomplete?.(interaction);
         if (!choices) {
+            // TODO: this should be reported in another PR
+            await interaction.respond([]);
             return;
         }
         await interaction.respond(choices);
