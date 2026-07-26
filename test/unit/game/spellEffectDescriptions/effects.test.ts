@@ -44,7 +44,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE.name, () => {
             "Deals 60 Red damage to targets (90 against Flying units)",
         );
         expect(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE(effect, spell, true)).toBe(
-            "Deals 60 Red damage to targets (single tile) (90 against Flying units)",
+            "Deals 60 Red damage to targets (single space) (90 against Flying units)",
         );
     });
 
