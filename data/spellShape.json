@@ -26,12 +26,12 @@
   },
   {
     "id": "5_VERTICAL",
-    "name": "5 tiles column",
+    "name": "5 tiles-high column",
     "tiles": "..O....O....X....O....O.."
   },
   {
     "id": "5_HORIZONTAL",
-    "name": "5 tiles row",
+    "name": "5 tiles-wide row",
     "tiles": "..........OOXOO.........."
   },
   {
