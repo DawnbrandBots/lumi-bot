@@ -29,7 +29,7 @@ exports[`mapDiscipleToMessage > with an unlinked shadow music 1`] = `
         },
         {
           "name": "Spells",
-          "value": "- **Elfire**: deals 60 Red damage to targets (single tile).",
+          "value": "- **Elfire**: Deals 60 Red damage to targets on a single space.",
         },
         {
           "name": "Base stats",
@@ -75,7 +75,7 @@ exports[`mapDiscipleToMessage > with linked shadow music 1`] = `
         },
         {
           "name": "Spells",
-          "value": "- **Elfire**: deals 60 Red damage to targets (single tile).",
+          "value": "- **Elfire**: Deals 60 Red damage to targets on a single space.",
         },
         {
           "name": "Base stats",

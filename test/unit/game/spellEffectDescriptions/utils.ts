@@ -9,7 +9,7 @@ type TSpellEffectTarget = NonNullable<TDamageEffect["target"]>;
 type TSpellEffectValueUnit = TDamageEffect["amount"]["unit"];
 
 export const SINGLE_TILE_SHAPE = {
-    name: "single tile",
+    name: "single space",
     isAoe: false,
 } satisfies TSpellEffectDescriptionsInput["shape"];
 

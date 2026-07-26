@@ -127,7 +127,7 @@ exports[`search command messages > returns the complete Crosswind Grav EX messag
           "inline": true,
           "name": "Effects",
           "value": "1. Deals 40 Green damage to targets.
-1. Grants status to targets: Limits Movement to 1 (permanent).",
+1. Grants "limits Movement to 1 (permanent)" to targets.",
         },
         {
           "name": "Values",
@@ -279,7 +279,7 @@ exports[`search command messages > returns the complete Dark Crossfire + Tome me
           "inline": true,
           "name": "Effects",
           "value": "After 2 seconds:
-1. Grants status to targets: Deals 40 Red damage every 6 seconds (2 times).",
+1. Grants "deals 40 Red damage every 6 seconds (2 times)" to targets.",
         },
         {
           "name": "Values",
@@ -424,7 +424,7 @@ exports[`search command messages > returns the complete Dual Invigorate EX messa
         {
           "inline": true,
           "name": "Effects",
-          "value": "1. Grants status to user and targets: Increases HP by 10% (permanent).
+          "value": "1. Grants "increases HP by 10% (permanent)" to user and targets.
 1. Restores 10 HP to user and targets.",
         },
         {
@@ -644,7 +644,7 @@ exports[`search command messages > returns the complete Self Cross Shield messag
         {
           "inline": true,
           "name": "Effects",
-          "value": "1. Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns).",
+          "value": "1. Grants "decreases Received Weapon Damage by 30% (3 turns)" to targets in shape centered around user.",
         },
         {
           "name": "Values",
@@ -788,8 +788,8 @@ exports[`search command messages > returns the complete Slow Self Shield EX mess
         {
           "inline": true,
           "name": "Effects",
-          "value": "1. Grants status to targets: Increases Cooldown by 10% (3 turns).
-1. Grants status to user: Decreases Received Weapon Damage by 25% (permanent).",
+          "value": "1. Grants "increases Cooldown by 10% (3 turns)" to targets.
+1. Grants "decreases Received Weapon Damage by 25% (permanent)" to user.",
         },
         {
           "name": "Values",
@@ -863,7 +863,7 @@ exports[`search command messages > returns the complete Tetrathunder Wall EX mes
         {
           "inline": true,
           "name": "Effects",
-          "value": "1. Grants status to targets: Deals 40 Blue damage every 6 seconds (2 times).
+          "value": "1. Grants "deals 40 Blue damage every 6 seconds (2 times)" to targets.
 1. Summons ice blocks with 60 HP.",
         },
         {
@@ -939,7 +939,7 @@ exports[`search command messages > returns the complete Thunder Self Edge EX mes
           "inline": true,
           "name": "Effects",
           "value": "1. Deals 60 Blue damage to targets.
-1. Grants status to user: Increases Atk by 30% (permanent).",
+1. Grants "increases Atk by 30% (permanent)" to user.",
         },
         {
           "name": "Values",
