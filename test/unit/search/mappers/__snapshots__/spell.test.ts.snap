@@ -115,7 +115,7 @@ exports[`mapSpellToMessage > with a disciple and usage restrictions 1`] = `
         {
           "inline": true,
           "name": "Effects",
-          "value": "1. Deals 60 Red damage to targets in a single tile.",
+          "value": "1. Deals 60 Red damage to targets.",
         },
         {
           "name": "Values",
@@ -182,7 +182,7 @@ exports[`mapSpellToMessage > without a disciple 1`] = `
         {
           "inline": true,
           "name": "Effects",
-          "value": "1. Deals 60 Red damage to targets in a single tile.",
+          "value": "1. Deals 60 Red damage to targets.",
         },
         {
           "name": "Values",

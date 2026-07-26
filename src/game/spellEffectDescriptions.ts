@@ -155,15 +155,15 @@ function describeTarget(
     }
 
     if (effect.target.kind === ESpellEffectTarget.SELF && spell.shape.isAoe) {
-        return `targets in ${inline ? spell.shape.name : "shape"} centered around user`;
+        return `targets in ${inline ? `on a ${spell.shape.name}` : "shape"} centered around user`;
     }
 
     if (effect.kind === ESpellEffectKind.TILE) {
-        return `target tiles${inline ? ` (${spell.shape.name})` : ""}`;
+        return `target tiles${inline ? ` on a ${spell.shape.name}` : ""}`;
     }
 
     if (effect.target.kind === ESpellEffectTarget.ANY && inline) {
-        return `${effect.target.asString} (${spell.shape.name})`;
+        return `${effect.target.asString} on a ${spell.shape.name}`;
     }
 
     return effect.target.asString;

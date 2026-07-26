@@ -107,7 +107,7 @@ describe(describeSpellEffects.name, () => {
         );
         expect(describeSpellEffects(spell, true)).toBe(
             [
-                "grants statuses to targets (3x3 cross): increases HP by 20% (permanent)",
+                "grants statuses to targets on a 3x3 cross: increases HP by 20% (permanent)",
                 "increases Atk by 30% (permanent).",
             ].join(", "),
         );

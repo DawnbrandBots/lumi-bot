@@ -44,7 +44,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE.name, () => {
             "Deals 60 Red damage to targets (90 against Flying units)",
         );
         expect(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE(effect, spell, true)).toBe(
-            "Deals 60 Red damage to targets (single space) (90 against Flying units)",
+            "Deals 60 Red damage to targets on a single space (90 against Flying units)",
         );
     });
 
@@ -102,7 +102,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.MOVEMENT.name, () => {
                 { shape: CROSS_SHAPE },
                 true,
             ),
-        ).toBe(`Moves targets (3x3 cross) ${count} ${unit} up`);
+        ).toBe(`Moves targets on a 3x3 cross ${count} ${unit} up`);
     });
 });
 
@@ -167,7 +167,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS.name, () => {
             "Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns)",
         );
         expect(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS(effect, spell, true)).toBe(
-            "Grants status to targets in 3x3 cross centered around user: decreases Received Weapon Damage by 30% (3 turns)",
+            "Grants status to targets on a 3x3 cross centered around user: Decreases Received Weapon Damage by 30% (3 turns)",
         );
     });
 });
@@ -241,7 +241,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.TILE.name, () => {
                 { shape: CROSS_SHAPE },
                 true,
             ),
-        ).toBe("Grants effect to target tiles (3x3 cross): deals 15 Colorless damage every 2 seconds (4 times)");
+        ).toBe("Grants effect to target tiles on a 3x3 cross: Deals 15 Colorless damage every 2 seconds (4 times)");
     });
 });
 
