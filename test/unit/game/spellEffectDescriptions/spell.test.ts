@@ -30,7 +30,7 @@ describe(describeSpellEffects.name, () => {
         expect(describeSpellEffects(spell)).toBe(
             ["1. Moves user to target tile.", "1. Summons ice blocks with 50 HP."].join("\n"),
         );
-        expect(describeSpellEffects(spell, true)).toBe("moves user to target tile, summons ice blocks with 50 HP.");
+        expect(describeSpellEffects(spell, true)).toBe("Moves user to target tile, summons ice blocks with 50 HP.");
     });
 
     test("prefixes a countdown", () => {
@@ -43,7 +43,7 @@ describe(describeSpellEffects.name, () => {
         };
 
         expect(describeSpellEffects(spell)).toBe("After 2 seconds:\n1. Moves user to target tile.");
-        expect(describeSpellEffects(spell, true)).toBe("after 2 seconds, moves user to target tile.");
+        expect(describeSpellEffects(spell, true)).toBe("After 2 seconds: Moves user to target tile.");
     });
 
     test("appends properties with non-default values to inline descriptions", () => {
@@ -57,7 +57,7 @@ describe(describeSpellEffects.name, () => {
 
         expect(describeSpellEffects(spell)).toBe("1. Moves user to target tile.");
         expect(describeSpellEffects(spell, true)).toBe(
-            "moves user to target tile. (Uses: 1, Cooldown: 3, Usable only by Infantry units)",
+            "Moves user to target tile. (Uses: 1, Cooldown: 3, Usable only by Infantry units)",
         );
     });
 
@@ -106,10 +106,7 @@ describe(describeSpellEffects.name, () => {
             ].join("\n"),
         );
         expect(describeSpellEffects(spell, true)).toBe(
-            [
-                "grants statuses to targets on a 3x3 cross: increases HP by 20% (permanent)",
-                "increases Atk by 30% (permanent).",
-            ].join(", "),
+            `Grants "increases HP by 20% (permanent), increases Atk by 30% (permanent)" to targets on a 3x3 cross.`,
         );
     });
 
@@ -146,8 +143,8 @@ describe(describeSpellEffects.name, () => {
 
         expect(describeSpellEffects(spell)).toBe(
             [
-                "1. Grants status to targets: Increases HP by 10 (permanent).",
-                "1. Grants status to user: Increases Atk by 5 (permanent).",
+                `1. Grants "increases HP by 10 (permanent)" to targets.`,
+                `1. Grants "increases Atk by 5 (permanent)" to user.`,
             ].join("\n"),
         );
     });

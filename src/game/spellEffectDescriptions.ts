@@ -135,10 +135,6 @@ function formatEffectiveness(amount: ISpellEffectValue | TSpellEffectValue, prep
     return ` (${amount.effectiveness.map(({ base, kind }) => `${base} ${preposition} ${kind} units`).join(", ")})`;
 }
 
-function formatStatusEffectIntro(targetStr: string, lowercase: boolean): string {
-    return `${lowercase ? "g" : "G"}rants statuses to ${targetStr}:`;
-}
-
 function isStatusEffect(
     effect: TSpellEffect | TRootSpellEffect,
 ): effect is IStatusEffect | TSpellEffectDescriptionInputMap["STATUS"] {
@@ -219,8 +215,8 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
         return `${effect.statChange.verb} ${effect.stat.name} ${effect.statChange.preposition} ${valueStr}${effectivenessStr} (${effect.duration == null ? "permanent" : effect.duration + " turns"})`;
     },
     STATUS(effect, spell, inline) {
-        const description = describeSpellEffect(effect.effect, spell, inline);
-        return `Grants status to ${describeTarget(effect, spell, inline)}: ${description}`;
+        const description = lowercaseFirstLetter(describeSpellEffect(effect.effect, spell, inline));
+        return `Grants "${description}" to ${describeTarget(effect, spell, inline)}`;
     },
     REPEAT(effect, spell, inline) {
         return `${describeSpellEffect(effect.effect, spell, inline)} every ${effect.interval} seconds (${effect.times} times)`;
@@ -246,8 +242,7 @@ function describeSpellEffect<K extends TDescribedSpellEffect["kind"]>(
     spell: TSpellEffectDescriptionContext,
     inline = false,
 ): string {
-    const description = SPELL_EFFECT_DESCRIPTION_FORMATTERS[effect.kind](effect, spell, inline);
-    return inline ? lowercaseFirstLetter(description) : description;
+    return SPELL_EFFECT_DESCRIPTION_FORMATTERS[effect.kind](effect, spell, inline);
 }
 
 const REGULAR_DESCRIPTION_SEPARATOR = "\n";
@@ -289,8 +284,7 @@ export function describeSpellEffects(
     let res = "";
 
     if (spell.countdown) {
-        res += inline ? "after " : "After ";
-        res += `${spell.countdown} seconds`;
+        res += `After ${spell.countdown} seconds`;
     }
     const nonEmptyRes = !!res.length;
 
@@ -311,20 +305,24 @@ export function describeSpellEffects(
         if (nonEmptyRes) {
             res += INLINE_DESCRIPTION_SEPARATOR;
         }
-        const statusEffectIntro = formatStatusEffectIntro(target, nonEmptyRes || inline);
+        const grantsStr = (nonEmptyRes ? "g" : "G") + "rants";
         const descriptions = statusEffects.map((effect) => describeSpellEffect(effect.effect, spell, inline));
-        res += inline
-            ? `${statusEffectIntro} ${descriptions.join(INLINE_DESCRIPTION_SEPARATOR)}.`
-            : [statusEffectIntro, ...descriptions.map((description) => `1. ${description}.`)].join(
-                  REGULAR_DESCRIPTION_SEPARATOR,
-              );
+        if (inline) {
+            res += `${grantsStr} "${descriptions.map(lowercaseFirstLetter).join(INLINE_DESCRIPTION_SEPARATOR)}" to ${target}.`;
+        } else {
+            res += [
+                `${grantsStr} statuses to ${target}:`,
+                ...descriptions.map((description) => `1. ${description}.`),
+            ].join(REGULAR_DESCRIPTION_SEPARATOR);
+        }
     } else {
         if (nonEmptyRes) {
-            res += inline ? INLINE_DESCRIPTION_SEPARATOR : ":" + REGULAR_DESCRIPTION_SEPARATOR;
+            res += inline ? ": " : ":" + REGULAR_DESCRIPTION_SEPARATOR;
         }
         const descriptions = spell.effects.map((effect) => describeSpellEffect(effect, spell, inline));
+        const [firstDescription, ...otherDescriptions] = descriptions;
         res += inline
-            ? `${descriptions.join(INLINE_DESCRIPTION_SEPARATOR)}.`
+            ? `${[firstDescription!, ...otherDescriptions.map(lowercaseFirstLetter)].join(INLINE_DESCRIPTION_SEPARATOR)}.`
             : descriptions.map((description) => `1. ${description}.`).join(REGULAR_DESCRIPTION_SEPARATOR);
     }
 

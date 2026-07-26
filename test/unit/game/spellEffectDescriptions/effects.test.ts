@@ -164,10 +164,10 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS.name, () => {
         };
 
         expect(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS(effect, spell, false)).toBe(
-            "Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns)",
+            `Grants "decreases Received Weapon Damage by 30% (3 turns)" to targets in shape centered around user`,
         );
         expect(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS(effect, spell, true)).toBe(
-            "Grants status to targets on a 3x3 cross centered around user: Decreases Received Weapon Damage by 30% (3 turns)",
+            `Grants "decreases Received Weapon Damage by 30% (3 turns)" to targets on a 3x3 cross centered around user`,
         );
     });
 });
@@ -189,7 +189,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.REPEAT.name, () => {
                 { shape: SINGLE_TILE_SHAPE },
                 true,
             ),
-        ).toBe("deals 20 Red damage every 4 seconds (3 times)");
+        ).toBe("Deals 20 Red damage every 4 seconds (3 times)");
     });
 });
 
