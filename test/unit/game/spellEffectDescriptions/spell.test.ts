@@ -43,7 +43,7 @@ describe(describeSpellEffects.name, () => {
         };
 
         expect(describeSpellEffects(spell)).toBe("After 2 seconds:\n1. Moves user to target tile.");
-        expect(describeSpellEffects(spell, true)).toBe("After 2 seconds: Moves user to target tile.");
+        expect(describeSpellEffects(spell, true)).toBe("After 2 seconds, moves user to target tile.");
     });
 
     test("appends properties with non-default values to inline descriptions", () => {

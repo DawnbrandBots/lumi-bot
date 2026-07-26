@@ -317,12 +317,12 @@ export function describeSpellEffects(
         }
     } else {
         if (nonEmptyRes) {
-            res += inline ? ": " : ":" + REGULAR_DESCRIPTION_SEPARATOR;
+            res += inline ? INLINE_DESCRIPTION_SEPARATOR : ":" + REGULAR_DESCRIPTION_SEPARATOR;
         }
         const descriptions = spell.effects.map((effect) => describeSpellEffect(effect, spell, inline));
-        const [firstDescription, ...otherDescriptions] = descriptions;
+        const firstDescription = nonEmptyRes ? lowercaseFirstLetter(descriptions[0]!) : descriptions[0]!;
         res += inline
-            ? `${[firstDescription!, ...otherDescriptions.map(lowercaseFirstLetter)].join(INLINE_DESCRIPTION_SEPARATOR)}.`
+            ? `${[firstDescription, ...descriptions.slice(1).map(lowercaseFirstLetter)].join(INLINE_DESCRIPTION_SEPARATOR)}.`
             : descriptions.map((description) => `1. ${description}.`).join(REGULAR_DESCRIPTION_SEPARATOR);
     }
 
