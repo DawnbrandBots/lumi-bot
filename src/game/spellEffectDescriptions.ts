@@ -155,7 +155,7 @@ function describeTarget(
     }
 
     if (effect.target.kind === ESpellEffectTarget.SELF && spell.shape.isAoe) {
-        return `targets in ${inline ? `on a ${spell.shape.name}` : "shape"} centered around user`;
+        return `targets ${inline ? `on a ${spell.shape.name}` : "in shape"} centered around user`;
     }
 
     if (effect.kind === ESpellEffectKind.TILE) {
