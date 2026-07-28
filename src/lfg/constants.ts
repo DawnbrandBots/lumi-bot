@@ -3,6 +3,7 @@ import formatCommand from "./utils/formatCommand.ts";
 
 export const LFG_COMMAND_NAME = "lfg";
 export const LFG_CODE_OPTION_NAME = "code";
+export const LFG_NEW_CODE_OPTION_NAME = "new_code";
 export const LFG_PLAYER_OPTION_NAME = "player";
 export const LFG_ROLE_OPTION_NAME = "role";
 export const LFG_SHOW_RESPONSE_OPTION_NAME = "show_response";

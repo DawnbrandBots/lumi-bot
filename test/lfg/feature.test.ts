@@ -174,6 +174,60 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
+    describe(LfgFeature.prototype.changeRoomCode.name, () => {
+        test("changes the room code identified by code", async () => {
+            await feature.create(GUILD_ID, OWNER, "old");
+            await feature.move(GUILD_ID, PLAYER_1, "old");
+
+            const response = await feature.changeRoomCode(GUILD_ID, "old", NEW_ROOM_CODE);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+                value: {
+                    oldCode: "old",
+                    newCode: NEW_ROOM_CODE,
+                },
+            });
+            expect(await getRooms(GUILD_ID)).toEqual([
+                { code: NEW_ROOM_CODE, ownerId: OWNER.id, playerIds: [OWNER.id, PLAYER_1.id] },
+            ]);
+        });
+
+        test("rejects missing rooms", async () => {
+            const response = await feature.changeRoomCode(GUILD_ID, "missing", NEW_ROOM_CODE);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND,
+                value: { code: "missing" },
+            });
+        });
+
+        test("rejects invalid room code length", async () => {
+            await feature.create(GUILD_ID, OWNER, "old");
+
+            const response = await feature.changeRoomCode(GUILD_ID, "old", "x".repeat(LFG_MAX_ROOM_CODE_LENGTH + 1));
+
+            expect(response).toEqual({ kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE });
+            expect(await getRooms(GUILD_ID)).toEqual([{ code: "old", ownerId: OWNER.id, playerIds: [OWNER.id] }]);
+        });
+
+        test("rejects duplicate room codes in the same guild", async () => {
+            await feature.create(GUILD_ID, OWNER, "old");
+            await feature.create(GUILD_ID, PLAYER_1, NEW_ROOM_CODE);
+
+            const response = await feature.changeRoomCode(GUILD_ID, "old", NEW_ROOM_CODE);
+
+            expect(response).toEqual({
+                kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS,
+                value: { code: NEW_ROOM_CODE },
+            });
+            expect(await getRooms(GUILD_ID)).toEqual([
+                { code: "old", ownerId: OWNER.id, playerIds: [OWNER.id] },
+                { code: NEW_ROOM_CODE, ownerId: PLAYER_1.id, playerIds: [PLAYER_1.id] },
+            ]);
+        });
+    });
+
     describe(LfgFeature.prototype.move.name, () => {
         test("joins an existing room", async () => {
             await feature.create(GUILD_ID, OWNER, "room");

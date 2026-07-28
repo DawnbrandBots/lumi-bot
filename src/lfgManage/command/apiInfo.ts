@@ -9,9 +9,11 @@ import {
     LFG_CODE_OPTION_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MIN_ROOM_CODE_LENGTH,
+    LFG_NEW_CODE_OPTION_NAME,
     LFG_PLAYER_OPTION_NAME,
 } from "../../lfg/constants.ts";
 import {
+    LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_COMMAND_NAME,
     LFG_MANAGE_CREATE_SUBCOMMAND_NAME,
     LFG_MANAGE_DISBAND_SUBCOMMAND_NAME,
@@ -41,6 +43,12 @@ const autocompletedRoomCodeOption = {
     autocomplete: true,
 } as const;
 
+const newRoomCodeOption = {
+    ...roomCodeOption,
+    name: LFG_NEW_CODE_OPTION_NAME,
+    description: "New room code.",
+} as const;
+
 export const lfgManageCommandApiInfo = {
     name: LFG_MANAGE_COMMAND_NAME,
     description: "Manage looking-for-game rooms for all server members.",
@@ -59,6 +67,12 @@ export const lfgManageCommandApiInfo = {
             name: LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
             description: "Move a player to a room.",
             options: [{ ...playerOption, description: "Player to move." }, autocompletedRoomCodeOption],
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
+            description: "Change a room's code.",
+            options: [autocompletedRoomCodeOption, newRoomCodeOption],
         },
         {
             type: ApplicationCommandOptionType.Subcommand,

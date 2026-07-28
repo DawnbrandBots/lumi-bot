@@ -123,6 +123,12 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.NOT_ROOM_OWNER
         | ELfgFeatureReturnKind.NOT_IN_A_ROOM
     >;
+    changeRoomCode: TLfgFeatureReturnOfKind<
+        | ELfgFeatureReturnKind.ROOM_CODE_CHANGED
+        | ELfgFeatureReturnKind.INVALID_ROOM_CODE
+        | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
+        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    >;
     move: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_JOINED
         | ELfgFeatureReturnKind.ROOM_NOT_FOUND
@@ -171,6 +177,11 @@ export interface ILfgFeature {
         owner: IUser,
         newCode: string,
     ): MaybePromise<TLfgFeatureReturnTypes["changeOwnedRoomCode"]>;
+    changeRoomCode(
+        guildId: string,
+        code: string,
+        newCode: string,
+    ): MaybePromise<TLfgFeatureReturnTypes["changeRoomCode"]>;
     move(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["move"]>;
     transfer(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
     transferOwnedRoom(

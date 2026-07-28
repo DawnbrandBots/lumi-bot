@@ -62,14 +62,6 @@ export class LfgFeature implements ILfgFeature {
         } as const;
     }
 
-    public async changeOwnedRoomCode(guildId: string, owner: IUser, newCode: string) {
-        const result = await this.getOwnedRoom(guildId, owner);
-        if ("kind" in result) {
-            return result;
-        }
-        return this.changeRoomCode(guildId, result, newCode);
-    }
-
     public async move(guildId: string, user: IUser, code: string) {
         const room = await this.getRoomByGuildAndCode(guildId, code);
         if (!room) {
@@ -223,7 +215,23 @@ export class LfgFeature implements ILfgFeature {
         } as const;
     }
 
-    protected async changeRoomCode(guildId: string, room: LfgRoom, newCode: string) {
+    public async changeOwnedRoomCode(guildId: string, owner: IUser, newCode: string) {
+        const result = await this.getOwnedRoom(guildId, owner);
+        if ("kind" in result) {
+            return result;
+        }
+        return this.changeRoomCodeInRoom(guildId, result, newCode);
+    }
+
+    public async changeRoomCode(guildId: string, code: string, newCode: string) {
+        const room = await this.getRoomByGuildAndCode(guildId, code);
+        if (!room) {
+            return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
+        }
+        return this.changeRoomCodeInRoom(guildId, room, newCode);
+    }
+
+    protected async changeRoomCodeInRoom(guildId: string, room: LfgRoom, newCode: string) {
         if (isInvalidRoomCode(newCode)) {
             return { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;
         }
