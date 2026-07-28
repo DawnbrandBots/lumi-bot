@@ -680,6 +680,16 @@
     "uniqueSkill": "STRATEGIC_GENIUS"
   },
   {
+    "id": "RESOLUTE_BOW",
+    "name": "Resolute Bow",
+    "weaponType": "BOW",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
+  },
+  {
     "id": "SIGHT_STONE",
     "name": "Sight Stone",
     "weaponType": "STONE",
@@ -1081,6 +1091,15 @@
     "atk": 20,
     "freeSkillSlots": 2,
     "uniqueSkill": "SPIRITED_ATTACK"
+  },
+  {
+    "id": "MOONLIT_STONE",
+    "name": "Moonlit Stone",
+    "weaponType": "STONE",
+    "level": 5,
+    "hp": 5,
+    "atk": 25,
+    "freeSkillSlots": 2
   },
   {
     "id": "KADOMATSU_SWORD",
