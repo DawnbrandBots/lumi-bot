@@ -304,6 +304,83 @@ Lv |   7   8   9  10  11  12
 }
 `;
 
+exports[`search command messages > returns the complete Dark Harm Sword Fighter message (damage-over-time effect dealing damage only once) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Celica",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "Shadow",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Grants "deals 20 Colorless damage (1 time)" to user.
+1. Summons Sword Infantry minion with 110 HP and 85 Atk.",
+        },
+        {
+          "name": "Values",
+          "value": "\`\`\`
+Lv |   1   2   3   4   5   6
+───┼────────────────────────
+1. |  20  22  24  26  28  30
+2. | 110 121 132 143 154 165
+   |  85 102 119 136 153 170
+                            
+Lv |   7   8   9  10  11  12
+───┼────────────────────────
+1. |  32  34  36  38  40  44
+2. | 176 187 198 209 220 242
+   | 187 204 221 229 238 255
+\`\`\`",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Dark Harm Sword Fighter, DHSF",
+      },
+      "title": "Dark Harm Sword Fighter",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
 exports[`search command messages > returns the complete Dark Tetrafire message (countdown before damage) 1`] = `
 {
   "embeds": [
