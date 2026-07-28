@@ -17,6 +17,7 @@ import { createNegativeMessage, createPositiveMessage } from "../../bot/message.
 import { EMessageKind } from "../../bot/types.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
+    LFG_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_DISBAND_SUBCOMMAND_NAME,
@@ -215,6 +216,16 @@ export function getLfgCommand({ lfgFeature, adminFeature }: TLfgCommandArgs) {
                 runWithGuild(interaction, (guildId) =>
                     runFeatureSubcommand(interaction, guildId, () =>
                         lfgFeature.create(
+                            guildId,
+                            interaction.user,
+                            interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                        ),
+                    ),
+                ),
+            [LFG_CHANGE_CODE_SUBCOMMAND_NAME]: (interaction) =>
+                runWithGuild(interaction, (guildId) =>
+                    runFeatureSubcommand(interaction, guildId, () =>
+                        lfgFeature.changeOwnedRoomCode(
                             guildId,
                             interaction.user,
                             interaction.options.getString(LFG_CODE_OPTION_NAME, true),

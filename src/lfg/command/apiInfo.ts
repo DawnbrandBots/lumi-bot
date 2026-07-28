@@ -2,6 +2,8 @@ import { ApplicationCommandOptionType, ApplicationIntegrationType, InteractionCo
 import type { ICommandApiInfo } from "../../bot/commands/types.ts";
 import {
     LFG_CODE_OPTION_NAME,
+    LFG_CHANGE_CODE_SUBCOMMAND_DESCRIPTION,
+    LFG_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_COMMAND_NAME,
     LFG_CREATE_SUBCOMMAND_DESCRIPTION,
     LFG_CREATE_SUBCOMMAND_NAME,
@@ -55,6 +57,12 @@ export const lfgCommandApiInfo = {
             name: LFG_CREATE_SUBCOMMAND_NAME,
             description: LFG_CREATE_SUBCOMMAND_DESCRIPTION,
             options: [roomCodeOption],
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_CHANGE_CODE_SUBCOMMAND_NAME,
+            description: LFG_CHANGE_CODE_SUBCOMMAND_DESCRIPTION,
+            options: [{ ...roomCodeOption, description: "New room code." }],
         },
         {
             type: ApplicationCommandOptionType.Subcommand,

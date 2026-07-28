@@ -14,6 +14,7 @@ export const enum ELfgFeatureReturnKind {
     ROOMS_LISTED = "ROOMS_LISTED",
     HELP = "HELP",
     ROOM_CREATED = "ROOM_CREATED",
+    ROOM_CODE_CHANGED = "ROOM_CODE_CHANGED",
     INVALID_ROOM_CODE = "INVALID_ROOM_CODE",
     ALREADY_IN_A_ROOM = "ALREADY_IN_A_ROOM",
     ROOM_ALREADY_EXISTS = "ROOM_ALREADY_EXISTS",
@@ -51,6 +52,7 @@ export type TLfgPlayerRemovalResult =
 type TLfgFeatureReturnValueByKind = {
     [ELfgFeatureReturnKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
     [ELfgFeatureReturnKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
+    [ELfgFeatureReturnKind.ROOM_CODE_CHANGED]: { readonly oldCode: string; readonly newCode: string };
     [ELfgFeatureReturnKind.ALREADY_IN_A_ROOM]: { readonly userId: string };
     [ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS]: { readonly code: string };
     [ELfgFeatureReturnKind.ROOM_JOINED]: {
@@ -114,6 +116,13 @@ export type TLfgFeatureReturnTypes = {
         | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
         | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
     >;
+    changeOwnedRoomCode: TLfgFeatureReturnOfKind<
+        | ELfgFeatureReturnKind.ROOM_CODE_CHANGED
+        | ELfgFeatureReturnKind.INVALID_ROOM_CODE
+        | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
+        | ELfgFeatureReturnKind.NOT_ROOM_OWNER
+        | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+    >;
     move: TLfgFeatureReturnOfKind<
         | ELfgFeatureReturnKind.ROOM_JOINED
         | ELfgFeatureReturnKind.ROOM_NOT_FOUND
@@ -157,6 +166,11 @@ export type TLfgFeatureReturnTypes = {
 export interface ILfgFeature {
     status(guildId: string): MaybePromise<TLfgFeatureReturnTypes["status"]>;
     create(guildId: string, owner: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["create"]>;
+    changeOwnedRoomCode(
+        guildId: string,
+        owner: IUser,
+        newCode: string,
+    ): MaybePromise<TLfgFeatureReturnTypes["changeOwnedRoomCode"]>;
     move(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["move"]>;
     transfer(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
     transferOwnedRoom(

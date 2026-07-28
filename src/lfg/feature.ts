@@ -10,6 +10,10 @@ type LfgFeatureCtorArg = {
     readonly em: EntityManager;
 };
 
+function isInvalidRoomCode(code: string) {
+    return code.length < LFG_MIN_ROOM_CODE_LENGTH || code.length > LFG_MAX_ROOM_CODE_LENGTH;
+}
+
 export class LfgFeature implements ILfgFeature {
     private readonly em: EntityManager;
 
@@ -25,7 +29,7 @@ export class LfgFeature implements ILfgFeature {
     }
 
     public async create(guildId: string, owner: IUser, code: string) {
-        if (code.length < LFG_MIN_ROOM_CODE_LENGTH || code.length > LFG_MAX_ROOM_CODE_LENGTH) {
+        if (isInvalidRoomCode(code)) {
             return { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;
         }
 
@@ -56,6 +60,14 @@ export class LfgFeature implements ILfgFeature {
             kind: ELfgFeatureReturnKind.ROOM_CREATED,
             value: { userId: owner.id, room: this.toRoom(room) },
         } as const;
+    }
+
+    public async changeOwnedRoomCode(guildId: string, owner: IUser, newCode: string) {
+        const result = await this.getOwnedRoom(guildId, owner);
+        if ("kind" in result) {
+            return result;
+        }
+        return this.changeRoomCode(guildId, result, newCode);
     }
 
     public async move(guildId: string, user: IUser, code: string) {
@@ -208,6 +220,26 @@ export class LfgFeature implements ILfgFeature {
         return {
             kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
             value: { userId: room.ownerId, code: room.code },
+        } as const;
+    }
+
+    protected async changeRoomCode(guildId: string, room: LfgRoom, newCode: string) {
+        if (isInvalidRoomCode(newCode)) {
+            return { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;
+        }
+
+        const existingRoom = await this.getRoomByGuildAndCode(guildId, newCode);
+        if (existingRoom) {
+            return { kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS, value: { code: newCode } } as const;
+        }
+
+        const oldCode = room.code;
+        room.code = newCode;
+        await this.em.flush();
+
+        return {
+            kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+            value: { oldCode, newCode },
         } as const;
     }
 
