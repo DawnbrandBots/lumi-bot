@@ -187,5 +187,13 @@
   {
     "id": "BETRAYAL_MYSTERY_OF_THE_EMBLEM_RESULTS_SCREEN",
     "name": "Betrayal – Mystery of the Emblem (Results screen)"
+  },
+  {
+    "id": "BETRAYAL_ECHOES_SHADOWS_OF_VALENTIA",
+    "name": "Betrayal – Echoes: Shadows of Valentia"
+  },
+  {
+    "id": "BETRAYAL_ECHOES_SHADOWS_OF_VALENTIA_RESULTS_SCREEN",
+    "name": "Betrayal – Echoes: Shadows of Valentia (Results screen)"
   }
 ]

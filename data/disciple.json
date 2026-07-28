@@ -270,5 +270,13 @@
     "weaponType": "TOME",
     "prfWeapon": "TUTELAGE_TOME_PLUS",
     "shadowMusic": "BETRAYAL_SOVEREIGN_AXE"
+  },
+  {
+    "id": "CELICA",
+    "name": "Celica",
+    "movementType": "INFANTRY",
+    "weaponType": "TOME",
+    "prfWeapon": "PRAYER_TOME_PLUS",
+    "shadowMusic": "BETRAYAL_ECHOES_SHADOWS_OF_VALENTIA"
   }
 ]
