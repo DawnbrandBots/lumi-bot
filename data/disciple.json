@@ -213,7 +213,7 @@
     "movementType": "INFANTRY",
     "weaponType": "AXE",
     "prfWeapon": "SOLO_MERC_AXE_PLUS",
-    "shadowMusic": "BETRAYAL_BOOK_3"
+    "shadowMusic": "BETRAYAL_SOVEREIGN_AXE"
   },
   {
     "id": "ANANKE",
@@ -221,7 +221,7 @@
     "movementType": "CAVALRY",
     "weaponType": "STAFF",
     "prfWeapon": "FOREST_EDGE_STAFF_PLUS",
-    "shadowMusic": "BETRAYAL_BOOK_3"
+    "shadowMusic": "BETRAYAL_SOVEREIGN_AXE"
   },
   {
     "id": "ROBIN",
@@ -237,7 +237,7 @@
     "movementType": "CAVALRY",
     "weaponType": "LANCE",
     "prfWeapon": "HEIRESS_LANCE_PLUS",
-    "shadowMusic": "BETRAYAL_BOOK_3"
+    "shadowMusic": "BETRAYAL_SOVEREIGN_AXE"
   },
   {
     "id": "CLAUDE",
@@ -253,7 +253,7 @@
     "movementType": "ARMORED",
     "weaponType": "SWORD",
     "prfWeapon": "EMINENCE_SWORD_PLUS",
-    "shadowMusic": "BETRAYAL_BOOK_3"
+    "shadowMusic": "BETRAYAL_SOVEREIGN_AXE"
   },
   {
     "id": "TIKI",
@@ -269,6 +269,6 @@
     "movementType": "FLYING",
     "weaponType": "TOME",
     "prfWeapon": "TUTELAGE_TOME_PLUS",
-    "shadowMusic": "BETRAYAL_BOOK_3"
+    "shadowMusic": "BETRAYAL_SOVEREIGN_AXE"
   }
 ]
