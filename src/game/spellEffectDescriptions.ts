@@ -219,7 +219,9 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
         return `Grants "${description}" to ${describeTarget(effect, spell, inline)}`;
     },
     REPEAT(effect, spell, inline) {
-        return `${describeSpellEffect(effect.effect, spell, inline)} every ${effect.interval} seconds (${effect.times} times)`;
+        const intervalStr = effect.interval > 0 ? ` every ${effect.interval} seconds` : "";
+        const timesStr = effect.times === 1 ? "time" : "times";
+        return `${describeSpellEffect(effect.effect, spell, inline)}${intervalStr} (${effect.times} ${timesStr})`;
     },
     WARP() {
         return "Moves user to target tile";
