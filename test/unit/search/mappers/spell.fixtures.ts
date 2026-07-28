@@ -20,7 +20,7 @@ export const SPELL_ROLE = {
 
 export const SPELL_SHAPE = {
     id: "SINGLE_TILE",
-    name: "single tile",
+    name: "single space",
     tiles: "............X............",
     isAoe: false,
 } satisfies ISpellShape;
