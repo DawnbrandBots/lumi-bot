@@ -41,6 +41,7 @@ describe("search command messages", () => {
         ["Tetrathunder Wall EX", "ice blocks"],
         ["Dark Cross Poison Patch", "tile"],
         ["Slow Self Shield EX", "cooldown increasing spell effect"],
+        ["Dark Harm Sword Fighter", "damage-over-time effect dealing damage only once"],
     ])("returns the complete %s message (%s)", async (name) => {
         const reply = vi.fn();
         const followUp = vi.fn();

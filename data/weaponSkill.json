@@ -100,6 +100,11 @@
     "effect": "WEAPON_DAMAGE_WHEN_HP_LE_50_120"
   },
   {
+    "id": "WHITE_ORACLE",
+    "name": "White Oracle",
+    "effect": "WEAPON_DAMAGE_VS_MONSTER_50"
+  },
+  {
     "id": "DRAGON_S_ROAR",
     "name": "Dragon's Roar",
     "effect": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15"

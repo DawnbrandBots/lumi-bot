@@ -44,7 +44,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE.name, () => {
             "Deals 60 Red damage to targets (90 against Flying units)",
         );
         expect(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE(effect, spell, true)).toBe(
-            "Deals 60 Red damage to targets (single tile) (90 against Flying units)",
+            "Deals 60 Red damage to targets on a single space (90 against Flying units)",
         );
     });
 
@@ -102,7 +102,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.MOVEMENT.name, () => {
                 { shape: CROSS_SHAPE },
                 true,
             ),
-        ).toBe(`Moves targets (3x3 cross) ${count} ${unit} up`);
+        ).toBe(`Moves targets on a 3x3 cross ${count} ${unit} up`);
     });
 });
 
@@ -164,10 +164,10 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS.name, () => {
         };
 
         expect(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS(effect, spell, false)).toBe(
-            "Grants status to targets in shape centered around user: Decreases Received Weapon Damage by 30% (3 turns)",
+            `Grants "decreases Received Weapon Damage by 30% (3 turns)" to targets in shape centered around user`,
         );
         expect(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS(effect, spell, true)).toBe(
-            "Grants status to targets in 3x3 cross centered around user: decreases Received Weapon Damage by 30% (3 turns)",
+            `Grants "decreases Received Weapon Damage by 30% (3 turns)" to targets on a 3x3 cross centered around user`,
         );
     });
 });
@@ -189,7 +189,26 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.REPEAT.name, () => {
                 { shape: SINGLE_TILE_SHAPE },
                 true,
             ),
-        ).toBe("deals 20 Red damage every 4 seconds (3 times)");
+        ).toBe("Deals 20 Red damage every 4 seconds (3 times)");
+    });
+
+    test(`omits "every X seconds" when interval = 0`, () => {
+        expect(
+            SPELL_EFFECT_DESCRIPTION_FORMATTERS.REPEAT(
+                {
+                    kind: ESpellEffectKind.REPEAT,
+                    effect: {
+                        kind: ESpellEffectKind.DAMAGE,
+                        amount: { base: 20, unit: FIXED_VALUE_UNIT },
+                        color: RED_COLOR,
+                    },
+                    interval: 0,
+                    times: 1,
+                },
+                { shape: SINGLE_TILE_SHAPE },
+                true,
+            ),
+        ).toBe("Deals 20 Red damage (1 time)");
     });
 });
 
@@ -241,7 +260,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.TILE.name, () => {
                 { shape: CROSS_SHAPE },
                 true,
             ),
-        ).toBe("Grants effect to target tiles (3x3 cross): deals 15 Colorless damage every 2 seconds (4 times)");
+        ).toBe("Grants effect to target tiles on a 3x3 cross: Deals 15 Colorless damage every 2 seconds (4 times)");
     });
 });
 

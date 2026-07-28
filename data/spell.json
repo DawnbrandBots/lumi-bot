@@ -3987,5 +3987,127 @@
       }
     ],
     "onlyFor": ["movementType", "FLYING"]
+  },
+  {
+    "id": "SELF_STRIKE_FIRE_EX",
+    "name": "Self Strike Fire EX",
+    "disciple": "CELICA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 2,
+        "target": "SELF"
+      }
+    ]
+  },
+  {
+    "id": "DUAL_HEALING",
+    "name": "Dual Healing",
+    "disciple": "CELICA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "HEAL",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              }
+            }
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "DUAL"
+      }
+    ]
+  },
+  {
+    "id": "DARK_ELFIRE",
+    "name": "Dark Elfire",
+    "disciple": "CELICA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "countdown": 2,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 90,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_HARM_SWORD_FIGHTER",
+    "name": "Dark Harm Sword Fighter",
+    "disciple": "CELICA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "COLORLESS"
+          },
+          "times": 1,
+          "interval": 0
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "SUMMON",
+        "movementType": "INFANTRY",
+        "weaponType": "SWORD",
+        "hp": {
+          "base": 110
+        },
+        "atk": {
+          "base": 85
+        },
+        "target": "ANY"
+      }
+    ]
   }
 ]
