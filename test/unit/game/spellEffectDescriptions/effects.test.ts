@@ -191,6 +191,25 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.REPEAT.name, () => {
             ),
         ).toBe("Deals 20 Red damage every 4 seconds (3 times)");
     });
+
+    test(`omits "every X seconds" when interval = 0`, () => {
+        expect(
+            SPELL_EFFECT_DESCRIPTION_FORMATTERS.REPEAT(
+                {
+                    kind: ESpellEffectKind.REPEAT,
+                    effect: {
+                        kind: ESpellEffectKind.DAMAGE,
+                        amount: { base: 20, unit: FIXED_VALUE_UNIT },
+                        color: RED_COLOR,
+                    },
+                    interval: 0,
+                    times: 1,
+                },
+                { shape: SINGLE_TILE_SHAPE },
+                true,
+            ),
+        ).toBe("Deals 20 Red damage (1 time)");
+    });
 });
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.WARP.name, () => {
