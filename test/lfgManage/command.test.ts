@@ -9,16 +9,18 @@ import { describe, expect, test, vi } from "vitest";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
 import { getCommandRunHandler } from "../../src/bot/commands/handlers.ts";
 import type { TCommandHandlers } from "../../src/bot/commands/types.ts";
-import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../src/lfg/constants.ts";
+import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../src/lfg/constants.ts";
 import type { LfgFeature } from "../../src/lfg/feature.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type TLfgFeatureReturn } from "../../src/lfg/types.ts";
 import type { lfgManageCommandApiInfo } from "../../src/lfgManage/command/apiInfo.ts";
 import { getLfgManageCommand } from "../../src/lfgManage/command/handlers.ts";
+import { LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME } from "../../src/lfgManage/constants.ts";
 
 const GUILD_ID = "guild-1";
 const ADMIN_ID = "admin";
 const PLAYER_ID = "player";
 const ROOM_CODE = "room";
+const NEW_ROOM_CODE = "new-room";
 const PUBLIC_CHANNEL_ID = "public-channel";
 const OTHER_CHANNEL_ID = "other-channel";
 const REPLY = {} as InteractionResponse<boolean>;
@@ -49,7 +51,9 @@ function getInteractionFixture({
             getBoolean: vi.fn().mockReturnValue(false),
             getSubcommandGroup: vi.fn().mockReturnValue(null),
             getSubcommand: vi.fn().mockReturnValue(subcommand),
-            getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
+            getString: vi.fn((name: string) =>
+                name === LFG_CODE_OPTION_NAME ? ROOM_CODE : name === LFG_NEW_CODE_OPTION_NAME ? NEW_ROOM_CODE : null,
+            ),
             getUser: vi.fn((name: string) => (name === LFG_PLAYER_OPTION_NAME ? { id: PLAYER_ID } : null)),
         },
         reply,
@@ -66,6 +70,7 @@ function getCommand({
     readonly channel?: string | null;
 }) {
     const lfgFeature = {
+        changeRoomCode: vi.fn().mockResolvedValue(result),
         create: vi.fn().mockResolvedValue(result),
         move: vi.fn().mockResolvedValue(result),
         kick: vi.fn().mockResolvedValue(result),
@@ -143,6 +148,18 @@ describe(getLfgManageCommand.name, () => {
                 },
             } satisfies TLfgFeatureReturn,
             expectedArgs: [GUILD_ID, { id: PLAYER_ID }, ROOM_CODE],
+        },
+        {
+            subcommand: LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
+            method: "changeRoomCode",
+            result: {
+                kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+                value: {
+                    oldCode: ROOM_CODE,
+                    newCode: NEW_ROOM_CODE,
+                },
+            } satisfies TLfgFeatureReturn,
+            expectedArgs: [GUILD_ID, ROOM_CODE, NEW_ROOM_CODE],
         },
         {
             subcommand: "kick",

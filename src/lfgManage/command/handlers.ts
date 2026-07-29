@@ -11,12 +11,13 @@ import type { AdminFeature } from "../../admin/feature.ts";
 import type { TCommandHandlers } from "../../bot/commands/types.ts";
 import { createErrorMessage } from "../../bot/message.ts";
 import { EMessageKind } from "../../bot/types.ts";
-import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../lfg/constants.ts";
+import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../lfg/constants.ts";
 import type { LfgFeature } from "../../lfg/feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../lfg/mapper.ts";
 import type { TLfgFeatureReturn } from "../../lfg/types.ts";
 import getRoomCodeAutocomplete from "../../lfg/utils/roomCodeAutocomplete.ts";
 import {
+    LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_CREATE_SUBCOMMAND_NAME,
     LFG_MANAGE_DISBAND_SUBCOMMAND_NAME,
     LFG_MANAGE_KICK_SUBCOMMAND_NAME,
@@ -128,6 +129,16 @@ export function getLfgManageCommand({ adminFeature, lfgFeature }: TLfgManageComm
                         ),
                     ),
                 ),
+            [LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME]: (interaction) =>
+                runWithGuild(interaction, (guildId) =>
+                    runFeatureSubcommand(interaction, guildId, () =>
+                        lfgFeature.changeRoomCode(
+                            guildId,
+                            interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                            interaction.options.getString(LFG_NEW_CODE_OPTION_NAME, true),
+                        ),
+                    ),
+                ),
             [LFG_MANAGE_KICK_SUBCOMMAND_NAME]: (interaction) =>
                 runWithGuild(interaction, (guildId) =>
                     runFeatureSubcommand(interaction, guildId, () =>
@@ -157,6 +168,9 @@ export function getLfgManageCommand({ adminFeature, lfgFeature }: TLfgManageComm
         },
         autocomplete: {
             [LFG_MANAGE_MOVE_SUBCOMMAND_NAME]: {
+                [LFG_CODE_OPTION_NAME]: autocompleteCode,
+            },
+            [LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME]: {
                 [LFG_CODE_OPTION_NAME]: autocompleteCode,
             },
             [LFG_MANAGE_KICK_SUBCOMMAND_NAME]: {

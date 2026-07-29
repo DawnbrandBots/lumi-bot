@@ -3,6 +3,7 @@ import formatCommand from "./utils/formatCommand.ts";
 
 export const LFG_COMMAND_NAME = "lfg";
 export const LFG_CODE_OPTION_NAME = "code";
+export const LFG_NEW_CODE_OPTION_NAME = "new_code";
 export const LFG_PLAYER_OPTION_NAME = "player";
 export const LFG_ROLE_OPTION_NAME = "role";
 export const LFG_SHOW_RESPONSE_OPTION_NAME = "show_response";
@@ -11,6 +12,7 @@ export const LFG_CREATE_SUBCOMMAND_NAME = "create";
 export const LFG_JOIN_SUBCOMMAND_NAME = "join";
 export const LFG_TRANSFER_SUBCOMMAND_NAME = "transfer";
 export const LFG_KICK_SUBCOMMAND_NAME = "kick";
+export const LFG_CHANGE_CODE_SUBCOMMAND_NAME = "change-code";
 export const LFG_LEAVE_SUBCOMMAND_NAME = "leave";
 export const LFG_DISBAND_SUBCOMMAND_NAME = "disband";
 export const LFG_STATUS_SUBCOMMAND_NAME = "status";
@@ -21,6 +23,7 @@ export const LFG_CREATE_SUBCOMMAND_DESCRIPTION = "Create a room.";
 export const LFG_JOIN_SUBCOMMAND_DESCRIPTION = "Join a room.";
 export const LFG_TRANSFER_SUBCOMMAND_DESCRIPTION = "Transfer room ownership.";
 export const LFG_KICK_SUBCOMMAND_DESCRIPTION = "Kick a player from your room.";
+export const LFG_CHANGE_CODE_SUBCOMMAND_DESCRIPTION = "Change your room's code.";
 export const LFG_LEAVE_SUBCOMMAND_DESCRIPTION = "Leave your current room.";
 export const LFG_DISBAND_SUBCOMMAND_DESCRIPTION = "Disband your current room.";
 export const LFG_STATUS_SUBCOMMAND_DESCRIPTION = "Display active rooms.";
@@ -74,6 +77,7 @@ In general, please encourage each other to ensure that ${formatCommand([LFG_COMM
 A room owner may also use the following commands:
 ${unorderedList([
     `${formatCommand([LFG_COMMAND_NAME, LFG_DISBAND_SUBCOMMAND_NAME])}: Delete their room.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_CHANGE_CODE_SUBCOMMAND_NAME])}: Change their room's code.`,
     `${formatCommand([LFG_COMMAND_NAME, LFG_KICK_SUBCOMMAND_NAME])}: Kick a player from their room.`,
     `${formatCommand([LFG_COMMAND_NAME, LFG_TRANSFER_SUBCOMMAND_NAME])}: Transfer ownership to another player in their room.`,
 ])}
