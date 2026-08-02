@@ -5,12 +5,12 @@ services:
       context: .
       target: db-init
     environment:
-      - DISCORD_TOKEN=${DISCORD_TOKEN}
-      - DEBUG=${DEBUG:-*}
-      - LUMI_STATE_DB_DIR=${LUMI_STATE_DB_DIR:-/app/run/state}
-      - LUMI_STATIC_DB_DIR=${LUMI_STATIC_DB_DIR:-/app/run/static}
-      - LUMI_GAME_DB_NAME=${LUMI_GAME_DB_NAME:-game}
-      - LUMI_STATE_DB_NAME=${LUMI_STATE_DB_NAME:-lumi}
+      DEBUG: ${DEBUG:-*}
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      LUMI_STATE_DB_DIR: ${LUMI_STATE_DB_DIR:-/app/run/state}
+      LUMI_STATIC_DB_DIR: ${LUMI_STATIC_DB_DIR:-/app/run/static}
+      LUMI_GAME_DB_NAME: ${LUMI_GAME_DB_NAME:-game}
+      LUMI_STATE_DB_NAME: ${LUMI_STATE_DB_NAME:-lumi}
     volumes:
       - db-state:${LUMI_STATE_DB_DIR:-/app/run/state}
       - db-static:${LUMI_STATIC_DB_DIR:-/app/run/static}
@@ -18,12 +18,12 @@ services:
   bot:
     image: "ghcr.io/dawnbrandbots/lumi-bot:${DOCKER_TAG:-latest}"
     environment:
-      - DISCORD_TOKEN=${DISCORD_TOKEN}
-      - DEBUG=${DEBUG:-*}
-      - LUMI_STATE_DB_DIR=${LUMI_STATE_DB_DIR:-/app/run/state}
-      - LUMI_STATIC_DB_DIR=${LUMI_STATIC_DB_DIR:-/app/run/static}
-      - LUMI_GAME_DB_NAME=${LUMI_GAME_DB_NAME:-game}
-      - LUMI_STATE_DB_NAME=${LUMI_STATE_DB_NAME:-lumi}
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      DEBUG: ${DEBUG:-*}
+      LUMI_STATE_DB_DIR: ${LUMI_STATE_DB_DIR:-/app/run/state}
+      LUMI_STATIC_DB_DIR: ${LUMI_STATIC_DB_DIR:-/app/run/static}
+      LUMI_GAME_DB_NAME: ${LUMI_GAME_DB_NAME:-game}
+      LUMI_STATE_DB_NAME: ${LUMI_STATE_DB_NAME:-lumi}
     logging:
       driver: "${DOCKER_LOG_DRIVER:-journald}"
     build:
