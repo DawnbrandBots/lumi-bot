@@ -41,7 +41,7 @@ jobs:
           cat .env.docker.template | sed "s/DISCORD_TOKEN=/DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}/g" > .env.docker
           docker compose --env-file .env.docker pull
           docker compose --env-file .env.docker up -d
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .node-version
           cache: yarn

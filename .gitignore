@@ -57,3 +57,6 @@ dist/
 Thumbs.db
 
 .idea/
+
+# Vitest coverage
+coverage/

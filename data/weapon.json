@@ -210,6 +210,16 @@
     "uniqueSkill": "TRIFLING_SHADOW"
   },
   {
+    "id": "PRAYER_TOME_PLUS",
+    "name": "Prayer Tome +",
+    "weaponType": "TOME",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "WHITE_ORACLE"
+  },
+  {
     "id": "PANTHER_STAFF_PLUS",
     "name": "Panther Staff +",
     "weaponType": "STAFF",
@@ -560,6 +570,16 @@
     "uniqueSkill": "TRIFLING_SHADOW"
   },
   {
+    "id": "PRAYER_TOME",
+    "name": "Prayer Tome",
+    "weaponType": "TOME",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "WHITE_ORACLE"
+  },
+  {
     "id": "RESOLUTE_TOME",
     "name": "Resolute Tome",
     "weaponType": "TOME",
@@ -658,6 +678,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "STRATEGIC_GENIUS"
+  },
+  {
+    "id": "RESOLUTE_BOW",
+    "name": "Resolute Bow",
+    "weaponType": "BOW",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
   },
   {
     "id": "SIGHT_STONE",
@@ -1061,6 +1091,15 @@
     "atk": 20,
     "freeSkillSlots": 2,
     "uniqueSkill": "SPIRITED_ATTACK"
+  },
+  {
+    "id": "MOONLIT_STONE",
+    "name": "Moonlit Stone",
+    "weaponType": "STONE",
+    "level": 5,
+    "hp": 5,
+    "atk": 25,
+    "freeSkillSlots": 2
   },
   {
     "id": "KADOMATSU_SWORD",
