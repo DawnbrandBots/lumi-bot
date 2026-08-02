@@ -4,14 +4,26 @@ services:
     build:
       context: .
       target: db-init
-    env_file: ${DOCKER_COMPOSE_ENV_FILE}
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DEBUG=${DEBUG:-*}
+      - LUMI_STATE_DB_DIR=${LUMI_STATE_DB_DIR:-/app/run/state}
+      - LUMI_STATIC_DB_DIR=${LUMI_STATIC_DB_DIR:-/app/run/static}
+      - LUMI_GAME_DB_NAME=${LUMI_GAME_DB_NAME:-game}
+      - LUMI_STATE_DB_NAME=${LUMI_STATE_DB_NAME:-lumi}
     volumes:
-      - db-state:${LUMI_STATE_DB_DIR}
-      - db-static:${LUMI_STATIC_DB_DIR}
+      - db-state:${LUMI_STATE_DB_DIR:-/app/run/state}
+      - db-static:${LUMI_STATIC_DB_DIR:-/app/run/static}
 
   bot:
     image: "ghcr.io/dawnbrandbots/lumi-bot:${DOCKER_TAG:-latest}"
-    env_file: ${DOCKER_COMPOSE_ENV_FILE}
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DEBUG=${DEBUG:-*}
+      - LUMI_STATE_DB_DIR=${LUMI_STATE_DB_DIR:-/app/run/state}
+      - LUMI_STATIC_DB_DIR=${LUMI_STATIC_DB_DIR:-/app/run/static}
+      - LUMI_GAME_DB_NAME=${LUMI_GAME_DB_NAME:-game}
+      - LUMI_STATE_DB_NAME=${LUMI_STATE_DB_NAME:-lumi}
     logging:
       driver: "${DOCKER_LOG_DRIVER:-journald}"
     build:
@@ -22,8 +34,8 @@ services:
         condition: service_completed_successfully
     restart: unless-stopped
     volumes:
-      - db-state:${LUMI_STATE_DB_DIR}
-      - db-static:${LUMI_STATIC_DB_DIR}
+      - db-state:${LUMI_STATE_DB_DIR:-/app/run/state}
+      - db-static:${LUMI_STATIC_DB_DIR:-/app/run/static}
 
 volumes:
   db-state:
