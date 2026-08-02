@@ -8,6 +8,10 @@ on:
         description: "GitHub commit SHA"
         required: false
         default: ""
+      environment:
+        type: environment
+        description: "Deployment environment"
+        required: true
 
 env:
   # docker/metadata-action type=sha,format=long
@@ -16,7 +20,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: Lumi#0961
+    environment: ${{ github.event.inputs.environment }}
     steps:
       - uses: tailscale/github-action@v4
         with:
