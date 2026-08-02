@@ -142,6 +142,7 @@ export interface IDisciple {
     readonly kind: "disciple";
     readonly id: TId;
     readonly name: string;
+    readonly epithet: string;
     readonly movementType: IMovementType;
     readonly weaponType: IWeaponType;
     /**

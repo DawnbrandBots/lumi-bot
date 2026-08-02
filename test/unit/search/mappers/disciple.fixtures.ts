@@ -27,6 +27,7 @@ export const DISCIPLE = {
     kind: "disciple",
     id: "KURT",
     name: "Kurt",
+    epithet: "Exiled Prince",
     movementType: INFANTRY_MOVEMENT_TYPE,
     weaponType: WEAPON_TYPE,
     prfWeapon: WEAPON,

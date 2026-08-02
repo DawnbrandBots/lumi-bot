@@ -71,7 +71,7 @@ export default function mapDiscipleToMessage(disciple: IDisciple) {
     return {
         reply: {
             embed: {
-                title: disciple.name,
+                title: `${disciple.name}, ${disciple.epithet}`,
                 fields,
             },
         },

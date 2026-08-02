@@ -12,6 +12,7 @@ export const DiscipleSchema = defineEntity({
     properties: {
         id: p.string().primary(),
         name: p.string(),
+        epithet: p.string(),
         movementType: () => p.manyToOne(MovementType),
         weaponType: () => p.manyToOne(WeaponType),
         prfWeapon: () => p.oneToOne(Weapon).inversedBy("prfDisciple").owner(),
