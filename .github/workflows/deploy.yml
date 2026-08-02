@@ -12,7 +12,6 @@ on:
         type: environment
         description: "Deployment environment"
         required: true
-        default: ""
 
 env:
   # docker/metadata-action type=sha,format=long
