@@ -39,8 +39,8 @@ jobs:
           DOCKER_TAG: ${{ env.DOCKER_TAG }}
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         run: |
-          docker compose pull
-          docker compose up -d
+          docker compose --env-file .env.docker pull
+          docker compose --env-file .env.docker up -d
       - uses: actions/setup-node@v7
         with:
           node-version-file: .node-version

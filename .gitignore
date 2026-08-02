@@ -14,6 +14,7 @@ pids
 *.pid
 *.seed
 *.pid.lock
+run/
 
 # Dependency directories
 node_modules/
@@ -37,12 +38,14 @@ node_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
+.env*
+!.env*.template
 
 dist/
-lumi
-lumi-test
+*.db3
+
+# Mikro ORM migration snapshot files
+*.snapshot*.json
 
 # VSCode editor settings
 .vscode/settings.json
