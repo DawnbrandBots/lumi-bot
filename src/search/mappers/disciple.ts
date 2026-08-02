@@ -5,6 +5,7 @@ import type { IDisciple, IMusic } from "../../game/types.ts";
 import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
 import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../constants.ts";
+import { createHash } from "node:crypto";
 
 export function getDiscipleBaseStatsTable(disciple: Pick<IDisciple, "getHp" | "getAtk">): (string | number)[][] {
     const relevantLevels = Array.from(
@@ -68,12 +69,18 @@ export default function mapDiscipleToMessage(disciple: IDisciple) {
         },
     ];
 
+    // TODO: switch between portraits
+    const portraitName = `FESH_${disciple.name}_${disciple.epithet.replace(" ", "_")}_shadow.jpg`;
+    const hash = createHash("md5").update(portraitName).digest("hex");
+    const url = `https://cdn.fireemblemwiki.org/${hash[0]}/${hash.slice(0, 2)}/${portraitName}`;
+
     return {
         reply: {
             embed: {
                 title: `${disciple.name}, ${disciple.epithet}`,
                 fields,
-            },
+                thumbnail: { url },
+            } satisfies APIEmbed,
         },
     };
 }
