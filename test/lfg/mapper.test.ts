@@ -147,6 +147,23 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
             },
         },
         {
+            name: "room code changed",
+            input: {
+                result: {
+                    kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+                    value: { oldCode: "beta", newCode: ROOM.code },
+                },
+            },
+            expected: {
+                kind: EMessageKind.POSITIVE,
+                embeds: [
+                    {
+                        description: `${userMention("owner")} changed room ${inlineCode("beta")}'s code to ${inlineCode(ROOM.code)}.`,
+                    },
+                ],
+            },
+        },
+        {
             name: "room joined with previous room context",
             input: {
                 callerId: "player-1",
@@ -443,6 +460,14 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
             name: "room creation",
             input: { kind: ELfgFeatureReturnKind.ROOM_CREATED, value: { userId: "owner", room: ROOM } } as const,
             expected: `${userMention("admin")} created room \`${ROOM.code}\` with ${userMention("owner")} as owner.`,
+        },
+        {
+            name: "room code change",
+            input: {
+                kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+                value: { oldCode: "beta", newCode: ROOM.code },
+            } as const,
+            expected: `${userMention("admin")} changed room ${inlineCode("beta")}'s code to ${inlineCode(ROOM.code)}.`,
         },
         {
             name: "player move",

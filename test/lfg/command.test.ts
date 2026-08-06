@@ -16,6 +16,7 @@ import type { lfgCommandApiInfo } from "../../src/lfg/command/apiInfo.ts";
 import { getLfgCommand } from "../../src/lfg/command/handlers.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
+    LFG_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_CODE_OPTION_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
@@ -54,6 +55,15 @@ type SetLfgRoleLastPingedAtMock = ReturnType<typeof getSetLfgRoleLastPingedAtMoc
 function getSetLfgRoleLastPingedAtMock() {
     return vi.fn<AdminFeature["setLfgRoleLastPingedAt"]>();
 }
+
+function getLfgFeature(result: TLfgFeatureReturn) {
+    return {
+        changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
+        create: vi.fn().mockResolvedValue(result),
+    };
+}
+
+type LfgFeatureMock = ReturnType<typeof getLfgFeature>;
 
 function getInteractionFixture({
     channelId,
@@ -100,6 +110,7 @@ function getInteractionFixture({
 function getCommand({
     result,
     channel,
+    lfgFeature = getLfgFeature(result),
     lfgRole = null,
     lfgRoleLastPingedAt = null,
     lfgRolePingCooldownMinutes = undefined,
@@ -107,15 +118,14 @@ function getCommand({
 }: {
     readonly result: TLfgFeatureReturn;
     readonly channel: string | null;
+    readonly lfgFeature?: LfgFeatureMock;
     readonly lfgRole?: string | null;
     readonly lfgRoleLastPingedAt?: Date | null;
     readonly lfgRolePingCooldownMinutes?: number;
     readonly setLfgRoleLastPingedAt?: SetLfgRoleLastPingedAtMock;
 }): TCommandHandlers<typeof lfgCommandApiInfo> {
     return getLfgCommand({
-        lfgFeature: {
-            create: vi.fn().mockResolvedValue(result),
-        } as unknown as LfgFeature,
+        lfgFeature: lfgFeature as unknown as LfgFeature,
         adminFeature: {
             getGuildConfig: vi.fn().mockResolvedValue({
                 kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
@@ -174,6 +184,26 @@ describe(getLfgCommand.name, () => {
         const publicReply = reply.mock.calls[0]?.[0] as { readonly flags?: unknown } | undefined;
         expect(publicReply?.flags).toBeUndefined();
         expect(channelFetch).not.toHaveBeenCalled();
+    });
+
+    test("dispatches lfg change-code", async () => {
+        const result = {
+            kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+            value: {
+                oldCode: "old",
+                newCode: ROOM_CODE,
+            },
+        } satisfies TLfgFeatureReturn;
+        const lfgFeature = getLfgFeature(result);
+        const command = getCommand({ result, channel: null, lfgFeature });
+        const { interaction } = getInteractionFixture({
+            channelId: OTHER_CHANNEL_ID,
+            subcommand: LFG_CHANGE_CODE_SUBCOMMAND_NAME,
+        });
+
+        await runCommand(command, interaction);
+
+        expect(lfgFeature.changeOwnedRoomCode).toHaveBeenCalledWith(GUILD_ID, { id: USER_ID }, ROOM_CODE);
     });
 
     test("does not mirror error responses", async () => {

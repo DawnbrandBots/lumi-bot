@@ -111,6 +111,10 @@ function formatRoomCreated(callerId: string, userId: string, room: IRoom) {
     return `${userMention(userId)} created room ${formatRoomCode(room.code)}.`;
 }
 
+function formatRoomCodeChanged(callerId: string, oldCode: string, newCode: string) {
+    return `${userMention(callerId)} changed room ${formatRoomCode(oldCode)}'s code to ${formatRoomCode(newCode)}.`;
+}
+
 function formatRoomJoined(
     callerId: string,
     userId: string,
@@ -224,6 +228,12 @@ export function mapLfgFeatureReturnToMessageBase({
             return createPositiveMessage({
                 embed: {
                     description: formatRoomCreated(callerId, result.value.userId, result.value.room),
+                },
+            });
+        case ELfgFeatureReturnKind.ROOM_CODE_CHANGED:
+            return createPositiveMessage({
+                embed: {
+                    description: formatRoomCodeChanged(callerId, result.value.oldCode, result.value.newCode),
                 },
             });
         case ELfgFeatureReturnKind.ROOM_JOINED:
