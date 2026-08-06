@@ -6,7 +6,7 @@ export const DISCORD_NOTABOT_ID = "1454944471358898209";
 export const DISCORD_NOTABOT_MENTION = userMention(DISCORD_NOTABOT_ID);
 export const DISCORD_KEVIN_LU_ID = "1266919844549234812";
 
-export const DISCORD_BOT_INTRODUCTION = `I am Lumi! I provide commands to look up Fire Emblem Shadows data and organize Friend Battles (soon 🙃).`;
+export const DISCORD_BOT_INTRODUCTION = `I am Lumi! I provide commands to look up Fire Emblem Shadows data and organize Friend Battles.`;
 export const DISCORD_BOT_REPOSITORY_LINK = `https://github.com/DawnbrandBots/lumi-bot`;
 export const DISCORD_BOT_LICENCE_LINK = `https://github.com/DawnbrandBots/lumi-bot/blob/master/COPYING`;
 export const DISCORD_BOT_AUTHORS = [
