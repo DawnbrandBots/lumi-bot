@@ -191,11 +191,11 @@ export class AdminFeature {
     }
 
     protected _getGuildConfig(guild: string): Promise<GuildConfig | null> {
-        return this.em.findOne(GuildConfig, { guild });
+        return this.em.findOne(GuildConfig, { guild }, { populate: ["lfgRoles"] });
     }
 
     public async getGuildConfig(guild: string): Promise<TAdminFeatureReturnTypes["getGuildConfig"]> {
-        const config = await this.em.findOne(GuildConfig, { guild }, { populate: ["lfgRoles"] });
+        const config = await this._getGuildConfig(guild);
         return {
             kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
             value: config,

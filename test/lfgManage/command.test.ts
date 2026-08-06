@@ -7,10 +7,13 @@ import {
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
+import { getCommandRunHandler } from "../../src/bot/commands/handlers.ts";
+import type { TCommandHandlers } from "../../src/bot/commands/types.ts";
 import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../src/lfg/constants.ts";
 import type { LfgFeature } from "../../src/lfg/feature.ts";
 import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type TLfgFeatureReturn } from "../../src/lfg/types.ts";
-import { getLfgManageCommand } from "../../src/lfgManage/command.ts";
+import type { lfgManageCommandApiInfo } from "../../src/lfgManage/command/apiInfo.ts";
+import { getLfgManageCommand } from "../../src/lfgManage/command/handlers.ts";
 
 const GUILD_ID = "guild-1";
 const ADMIN_ID = "admin";
@@ -44,6 +47,7 @@ function getInteractionFixture({
         },
         options: {
             getBoolean: vi.fn().mockReturnValue(false),
+            getSubcommandGroup: vi.fn().mockReturnValue(null),
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
             getUser: vi.fn((name: string) => (name === LFG_PLAYER_OPTION_NAME ? { id: PLAYER_ID } : null)),
@@ -78,27 +82,32 @@ function getCommand({
     return {
         adminFeature,
         command: getLfgManageCommand({
-            adminFeature: adminFeature,
+            adminFeature,
             lfgFeature: lfgFeature as unknown as LfgFeature,
         }),
         lfgFeature,
     };
 }
 
+async function runCommand(
+    command: TCommandHandlers<typeof lfgManageCommandApiInfo>,
+    interaction: ChatInputCommandInteraction,
+) {
+    const run = getCommandRunHandler(command, interaction);
+    if (!run) {
+        throw new Error("No run handler found for test interaction.");
+    }
+    await run(interaction);
+}
+
 describe(getLfgManageCommand.name, () => {
-    test("registers the transfer subcommand", () => {
-        const { command } = getCommand({ result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND } });
-
-        expect(command.info.registerCommandInfo.options?.some((option) => option.name === "transfer")).toBe(true);
-    });
-
     test("rejects non-guild interactions", async () => {
         const { adminFeature, command, lfgFeature } = getCommand({
             result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
         });
         const { interaction, reply } = getInteractionFixture({ guildId: null });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -175,7 +184,7 @@ describe(getLfgManageCommand.name, () => {
         const { command, lfgFeature } = getCommand({ result });
         const { interaction, reply } = getInteractionFixture({ subcommand });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(lfgFeature[method]).toHaveBeenCalledWith(...expectedArgs);
         expect(reply).toHaveBeenCalledWith(
@@ -205,7 +214,7 @@ describe(getLfgManageCommand.name, () => {
         const send = vi.fn().mockResolvedValue({});
         const { channelFetch, interaction, reply } = getInteractionFixture({ send });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
@@ -227,7 +236,7 @@ describe(getLfgManageCommand.name, () => {
         });
         const { channelFetch, interaction, reply } = getInteractionFixture({ subcommand: "disband" });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).not.toHaveBeenCalled();

@@ -1,6 +1,7 @@
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { AdminCommand } from "../../src/admin/command.ts";
+import type { adminCommandApiInfo } from "../../src/admin/command/apiInfo.ts";
+import { getAdminCommand } from "../../src/admin/command/handlers.ts";
 import {
     ADMIN_ACTION_OPTION_NAME,
     ADMIN_CHANNEL_OPTION_NAME,
@@ -14,6 +15,8 @@ import {
 } from "../../src/admin/constants.ts";
 import type { AdminFeature } from "../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
+import { getCommandRunHandler } from "../../src/bot/commands/handlers.ts";
+import type { TCommandHandlers } from "../../src/bot/commands/types.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
@@ -54,17 +57,28 @@ function getInteractionFixture({
     return { interaction, reply };
 }
 
-describe(AdminCommand.name, () => {
+async function runCommand(
+    command: TCommandHandlers<typeof adminCommandApiInfo>,
+    interaction: ChatInputCommandInteraction,
+) {
+    const run = getCommandRunHandler(command, interaction);
+    if (!run) {
+        throw new Error("No run handler found for test interaction.");
+    }
+    await run(interaction);
+}
+
+describe(getAdminCommand.name, () => {
     test("rejects users without ManageGuild", async () => {
         const adminFeature = {
             lfgChannel: vi.fn(),
             lfgRole: vi.fn(),
             getGuildConfig: vi.fn(),
         } as unknown as AdminFeature;
-        const command = new AdminCommand({ adminFeature });
+        const command = getAdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({ canManageGuild: false });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -85,13 +99,13 @@ describe(AdminCommand.name, () => {
             lfgRole: vi.fn(),
             getGuildConfig: vi.fn(),
         } as unknown as AdminFeature;
-        const command = new AdminCommand({ adminFeature });
+        const command = getAdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({
             action: "set",
             channel: { id: CHANNEL_ID, type: ChannelType.GuildText },
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(lfgChannel).toHaveBeenCalledWith(GUILD_ID, "set", CHANNEL_ID);
         expect(reply).toHaveBeenCalledWith(
@@ -99,6 +113,7 @@ describe(AdminCommand.name, () => {
                 flags: [MessageFlags.Ephemeral],
                 embeds: [
                     expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         description: expect.stringContaining(CHANNEL_ID),
                     }),
                 ],
@@ -117,14 +132,14 @@ describe(AdminCommand.name, () => {
             lfgRole,
             getGuildConfig: vi.fn(),
         } as unknown as AdminFeature;
-        const command = new AdminCommand({ adminFeature });
+        const command = getAdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({
             subcommand: ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
             action: "add",
             role: { id: ROLE_ID },
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(lfgRole).toHaveBeenCalledWith(GUILD_ID, "add", ROLE_ID);
         expect(reply).toHaveBeenCalledWith(
@@ -132,6 +147,7 @@ describe(AdminCommand.name, () => {
                 flags: [MessageFlags.Ephemeral],
                 embeds: [
                     expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         description: expect.stringContaining(ROLE_ID),
                     }),
                 ],
@@ -150,14 +166,14 @@ describe(AdminCommand.name, () => {
             lfgRole: vi.fn(),
             getGuildConfig: vi.fn(),
         } as unknown as AdminFeature;
-        const command = new AdminCommand({ adminFeature });
+        const command = getAdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({
             subcommand: ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME,
             action: "set",
             minutes: 45,
         });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(lfgRolePingCooldown).toHaveBeenCalledWith(GUILD_ID, "set", 45);
         expect(reply).toHaveBeenCalledWith(
@@ -165,6 +181,7 @@ describe(AdminCommand.name, () => {
                 flags: [MessageFlags.Ephemeral],
                 embeds: [
                     expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         description: expect.stringContaining("45 minutes"),
                     }),
                 ],
@@ -183,15 +200,16 @@ describe(AdminCommand.name, () => {
             lfgRole: vi.fn(),
             getGuildConfig,
         } as unknown as AdminFeature;
-        const command = new AdminCommand({ adminFeature });
+        const command = getAdminCommand({ adminFeature });
         const { interaction, reply } = getInteractionFixture({ subcommand: ADMIN_LFG_SHOW_SUBCOMMAND_NAME });
 
-        await command.run(interaction);
+        await runCommand(command, interaction);
 
         expect(getGuildConfig).toHaveBeenCalledWith(GUILD_ID);
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 embeds: [expect.objectContaining({ fields: expect.any(Array) })],
             }),
         );
