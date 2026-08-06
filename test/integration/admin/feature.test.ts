@@ -1,12 +1,12 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { ADMIN_LFG_ROLE_LIMIT } from "../../src/admin/constants.ts";
-import { AdminFeature } from "../../src/admin/feature.ts";
-import { GuildConfig } from "../../src/admin/models/config.ts";
-import { GuildConfigLfgRole } from "../../src/admin/models/configLfgRole.ts";
-import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
-import { migrationMikroOrmConfig } from "../mikro-orm.test.config.ts";
-import getSameConfigInMemory from "../utils/getSameConfigInMemory.ts";
+import { ADMIN_LFG_ROLE_LIMIT } from "../../../src/admin/constants.ts";
+import { AdminFeature } from "../../../src/admin/feature.ts";
+import { GuildConfig } from "../../../src/admin/models/config.ts";
+import { GuildConfigLfgRole } from "../../../src/admin/models/configLfgRole.ts";
+import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
+import { migrationMikroOrmConfig } from "../../mikro-orm.test.config.ts";
+import getSameConfigInMemory from "../../utils/getSameConfigInMemory.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";

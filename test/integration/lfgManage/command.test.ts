@@ -6,15 +6,15 @@ import {
     type InteractionResponse,
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
-import { getCommandRunHandler } from "../../src/bot/commands/handlers.ts";
-import type { TCommandHandlers } from "../../src/bot/commands/types.ts";
-import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../src/lfg/constants.ts";
-import type { LfgFeature } from "../../src/lfg/feature.ts";
-import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type TLfgFeatureReturn } from "../../src/lfg/types.ts";
-import type { lfgManageCommandApiInfo } from "../../src/lfgManage/command/apiInfo.ts";
-import { getLfgManageCommand } from "../../src/lfgManage/command/handlers.ts";
-import { LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME } from "../../src/lfgManage/constants.ts";
+import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
+import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
+import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
+import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../../src/lfg/constants.ts";
+import type { LfgFeature } from "../../../src/lfg/feature.ts";
+import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type TLfgFeatureReturn } from "../../../src/lfg/types.ts";
+import type { lfgManageCommandApiInfo } from "../../../src/lfgManage/command/apiInfo.ts";
+import { getLfgManageCommand } from "../../../src/lfgManage/command/handlers.ts";
+import { LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME } from "../../../src/lfgManage/constants.ts";
 
 const GUILD_ID = "guild-1";
 const ADMIN_ID = "admin";

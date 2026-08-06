@@ -1,19 +1,12 @@
-import {
-    ChannelType,
-    MessageFlags,
-    channelMention,
-    roleMention,
-    userMention,
-    type ChatInputCommandInteraction,
-    type InteractionResponse,
-} from "discord.js";
+import type { ChatInputCommandInteraction, InteractionResponse } from "discord.js";
+import { channelMention, ChannelType, MessageFlags, roleMention, userMention } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { AdminFeature } from "../../src/admin/feature.ts";
-import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
-import { getCommandRunHandler } from "../../src/bot/commands/handlers.ts";
-import type { TCommandHandlers } from "../../src/bot/commands/types.ts";
-import type { lfgCommandApiInfo } from "../../src/lfg/command/apiInfo.ts";
-import { getLfgCommand } from "../../src/lfg/command/handlers.ts";
+import type { AdminFeature } from "../../../src/admin/feature.ts";
+import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
+import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
+import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
+import type { lfgCommandApiInfo } from "../../../src/lfg/command/apiInfo.ts";
+import { getLfgCommand } from "../../../src/lfg/command/handlers.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -24,9 +17,10 @@ import {
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
     LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
-} from "../../src/lfg/constants.ts";
-import type { LfgFeature } from "../../src/lfg/feature.ts";
-import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../src/lfg/types.ts";
+} from "../../../src/lfg/constants.ts";
+import type { LfgFeature } from "../../../src/lfg/feature.ts";
+import type { TLfgFeatureReturn } from "../../../src/lfg/types.ts";
+import { ELfgFeatureReturnKind } from "../../../src/lfg/types.ts";
 
 const GUILD_ID = "guild-1";
 const USER_ID = "user-1";

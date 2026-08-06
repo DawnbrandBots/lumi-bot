@@ -1,8 +1,8 @@
 import { channelMention, MessageFlags, roleMention } from "discord.js";
 import { describe, expect, test } from "vitest";
-import mapAdminFeatureReturnToMessage from "../../src/admin/mapper.ts";
-import { EAdminFeatureReturnKind } from "../../src/admin/types.ts";
-import { EMessageKind } from "../../src/bot/types.ts";
+import mapAdminFeatureReturnToMessage from "../../../src/admin/mapper.ts";
+import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
+import { EMessageKind } from "../../../src/bot/types.ts";
 
 const CHANNEL_ID = "channel-1";
 const ROLE_ID = "role-1";
