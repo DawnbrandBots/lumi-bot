@@ -1,6 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { WEAPON_VARIANTS_BONUSES } from "../constants.ts";
-import type { IWeapon } from "../types.ts";
+import WeaponRules from "../rules/weapon.ts";
+import WeaponVariantRules, { WEAPON_VARIANTS } from "../rules/weaponVariant.ts";
+import type { IWeapon, IWeaponSkill } from "../types.ts";
 import { Disciple } from "./disciple.ts";
 import { WeaponSkill } from "./weaponSkill.ts";
 import { WeaponType } from "./weaponType.ts";
@@ -26,20 +27,16 @@ export class Weapon extends WeaponSchema.class implements IWeapon {
     }
 
     public getWeaponVariantStat({ stat, variant }: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number {
-        return this.level === 1 ? 0 : this[stat] + WEAPON_VARIANTS_BONUSES[variant][stat];
+        return WeaponVariantRules.stat({
+            weaponData: this,
+            weaponVariantData: WEAPON_VARIANTS[variant],
+            stat,
+            variant,
+        });
     }
 
-    public get weaponTypeSkill() {
-        const skills = this.weaponType.weaponSkills.getItems();
-        if (!skills || this.level <= 1) {
-            return null;
-        } else if (this.level <= 3) {
-            return skills[0];
-        } else if (this.level <= 5) {
-            return skills[1];
-        } else {
-            return skills[2];
-        }
+    public get weaponTypeSkill(): IWeaponSkill | null | undefined {
+        return WeaponRules.weaponTypeSkill(this);
     }
 }
 WeaponSchema.setClass(Weapon);

@@ -38,7 +38,7 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ### Running locally with Docker Compose
 
-1. `cp .env.docker.template .env.docker`, fill in secrets and change default values at your convenience.
+1. `cp .env.docker.template .env.docker`, fill in secrets and override default values (set in `docker-compose.yaml`) at your convenience.
 1. `docker compose --env-file .env.docker up --build`
 
 ## Running tests

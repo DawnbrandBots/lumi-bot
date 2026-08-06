@@ -19,7 +19,8 @@
     "bot:profile:update": "node --enable-source-maps --env-file-if-exists=.env scripts/updateBotProfile.ts",
     "db:recreate": "node --enable-source-maps --env-file-if-exists=.env scripts/recreateStaticGameDataDb.ts",
     "db:migrate": "node --enable-source-maps --env-file-if-exists=.env scripts/migrateLumiDb.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
   },
   "engines": {
     "node": ">=24",
@@ -41,10 +42,12 @@
     "@tsconfig/node24": "^24.0.4",
     "@types/debug": "^4.1.13",
     "@types/node": "^26.1.1",
+    "@vitest/coverage-v8": "4.1.10",
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.7.0",
-    "prettier": "3.9.5",
+    "prettier": "3.9.6",
+    "type-fest": "^5.8.0",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.64.0",
     "vitest": "^4.1.10"

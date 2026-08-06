@@ -12,14 +12,36 @@ import type { ISearchItem, TSearchableEntity } from "../search/types.ts";
 // Relative aliases are aliases created from an entity's relationship's properties. eg. `Ennea Fire EX disciple` points to `Kurt`,
 // and so do `EFEX Disciple`, `Royal Sword + disciple` and `Royal Sword Plus disciple`!
 
-function* standaloneAliasWeapon(weapon: Weapon) {
+type TStandaloneAliasWeaponInput = Pick<Weapon, "name">;
+type TAliasWeaponInput = TStandaloneAliasWeaponInput & {
+    readonly prfDisciple?: TStandaloneAliasDiscipleInput | null;
+};
+type TStandaloneAliasDiscipleInput = Pick<Disciple, "name">;
+type TAliasDiscipleInput = TStandaloneAliasDiscipleInput & {
+    readonly prfWeapon?: TStandaloneAliasWeaponInput | null;
+    readonly spells: Iterable<TStandaloneAliasSpellInput>;
+};
+type TAliasWeaponSkillInput = Pick<WeaponSkill, "name"> & {
+    readonly uniqueSkillWeapons: Iterable<TStandaloneAliasWeaponInput>;
+};
+type TAliasMusicInput = Pick<Music, "name"> & {
+    readonly shadowMusicFor?: Iterable<TStandaloneAliasDiscipleInput> | null;
+    readonly shadowResultsScreenMusicFor?: Iterable<TStandaloneAliasDiscipleInput> | null;
+};
+type TStandaloneAliasSpellInput = Pick<Spell, "name">;
+type TAliasSpellInput = TStandaloneAliasSpellInput & {
+    readonly disciple?: TStandaloneAliasDiscipleInput | null;
+    readonly role: Pick<Spell["role"], "kind">;
+};
+
+function* standaloneAliasWeapon(weapon: TStandaloneAliasWeaponInput) {
     yield weapon.name;
     if (weapon.name.includes("+")) {
         yield weapon.name.replace("+", "Plus");
     }
 }
 
-function* relativeAliasWeapon(weapon: Weapon) {
+function* relativeAliasWeapon(weapon: TAliasWeaponInput) {
     if (weapon.prfDisciple) {
         for (const discipleAlias of standaloneAliasDisciple(weapon.prfDisciple)) {
             yield `${discipleAlias} weapon`;
@@ -27,16 +49,16 @@ function* relativeAliasWeapon(weapon: Weapon) {
     }
 }
 
-function* aliasWeapon(weapon: Weapon) {
+export function* aliasWeapon(weapon: TAliasWeaponInput) {
     yield* standaloneAliasWeapon(weapon);
     yield* relativeAliasWeapon(weapon);
 }
 
-function* standaloneAliasDisciple(disciple: Disciple) {
+function* standaloneAliasDisciple(disciple: TStandaloneAliasDiscipleInput) {
     yield disciple.name;
 }
 
-function* relativeAliasDisciple(disciple: Disciple) {
+function* relativeAliasDisciple(disciple: TAliasDiscipleInput) {
     if (disciple.prfWeapon) {
         for (const weaponAlias of standaloneAliasWeapon(disciple.prfWeapon)) {
             yield `${weaponAlias} disciple`;
@@ -49,16 +71,16 @@ function* relativeAliasDisciple(disciple: Disciple) {
     }
 }
 
-function* aliasDisciple(disciple: Disciple) {
+export function* aliasDisciple(disciple: TAliasDiscipleInput) {
     yield* standaloneAliasDisciple(disciple);
     yield* relativeAliasDisciple(disciple);
 }
 
-function* standaloneAliasWeaponSkill(weaponSkill: WeaponSkill) {
+function* standaloneAliasWeaponSkill(weaponSkill: Pick<WeaponSkill, "name">) {
     yield weaponSkill.name;
 }
 
-function* relativeAliasWeaponSkill(weaponSkill: WeaponSkill) {
+function* relativeAliasWeaponSkill(weaponSkill: TAliasWeaponSkillInput) {
     for (const weapon of weaponSkill.uniqueSkillWeapons) {
         for (const weaponAlias of standaloneAliasWeapon(weapon)) {
             yield `${weaponAlias} weapon skill`;
@@ -66,16 +88,16 @@ function* relativeAliasWeaponSkill(weaponSkill: WeaponSkill) {
     }
 }
 
-function* aliasWeaponSkill(weaponSkill: WeaponSkill) {
+export function* aliasWeaponSkill(weaponSkill: TAliasWeaponSkillInput) {
     yield* standaloneAliasWeaponSkill(weaponSkill);
     yield* relativeAliasWeaponSkill(weaponSkill);
 }
 
-function* standaloneAliasMusic(music: Music) {
+function* standaloneAliasMusic(music: Pick<Music, "name">) {
     yield music.name;
 }
 
-function* relativeAliasMusic(music: Music) {
+function* relativeAliasMusic(music: TAliasMusicInput) {
     for (const disciple of music.shadowMusicFor || []) {
         for (const discipleAlias of standaloneAliasDisciple(disciple)) {
             yield `Shadow ${discipleAlias} music`;
@@ -88,14 +110,14 @@ function* relativeAliasMusic(music: Music) {
     }
 }
 
-function* aliasMusic(music: Music) {
+export function* aliasMusic(music: TAliasMusicInput) {
     yield* standaloneAliasMusic(music);
     yield* relativeAliasMusic(music);
 }
 
 const SPELL_NAME_PREFIX_SPLIT_REGEX = new RegExp(`\\s|(?=${SPELL_NAME_SUFFIXES.join("|")})`, "i");
 
-function* standaloneAliasSpell(spell: Spell): Generator<string> {
+function* standaloneAliasSpell(spell: TStandaloneAliasSpellInput): Generator<string> {
     yield spell.name;
     if (spell.name.includes("+")) {
         yield spell.name.replace("+", "Plus");
@@ -109,7 +131,7 @@ function* standaloneAliasSpell(spell: Spell): Generator<string> {
     }
 }
 
-function* relativeAliasSpell(spell: Spell): Generator<string> {
+function* relativeAliasSpell(spell: TAliasSpellInput): Generator<string> {
     if (spell.disciple && spell.role.kind === ESpellRole.EX) {
         for (const discipleAlias of standaloneAliasDisciple(spell.disciple)) {
             yield `${discipleAlias} EX`;
@@ -117,7 +139,7 @@ function* relativeAliasSpell(spell: Spell): Generator<string> {
     }
 }
 
-function* aliasSpell(spell: Spell): Generator<string> {
+export function* aliasSpell(spell: TAliasSpellInput): Generator<string> {
     yield* standaloneAliasSpell(spell);
     yield* relativeAliasSpell(spell);
 }
