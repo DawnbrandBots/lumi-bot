@@ -20,7 +20,7 @@ import getSearchItems from "./loaders/searchItems.ts";
 import { appMikroOrmConfig } from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command/handlers.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
-import searchFeature from "./search/feature.ts";
+import { default as getSearchFeature } from "./search/feature.ts";
 import mapSearchFeatureReturnToMessages from "./search/mapper.ts";
 import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
 
@@ -35,9 +35,11 @@ const bot = getBot();
 
 const adminFeature = new AdminFeature({ em });
 const lfgFeature = new LfgFeature({ em });
+const searchFeature = getSearchFeature({ searchEngine, configs: SEARCH_CONFIGS, em });
+
 const commands = {
     admin: getAdminCommand({ adminFeature }),
-    search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
+    search: getSearchCommand({ searchEngine, searchFeature }),
     help: getHelpCommand(),
     links: getLinksCommand(),
     lfg: getLfgCommand({ adminFeature, lfgFeature }),
@@ -70,7 +72,7 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const result = await searchFeature({ em, searchEngine, configs: SEARCH_CONFIGS, input });
+    const result = await searchFeature(input);
     const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
     await interaction.reply(reply);
     for (const followUp of followUps ?? []) {

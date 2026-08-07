@@ -11,7 +11,7 @@ import {
     SEARCH_MISSING_DATABASE_RESULT_TITLE,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "./constants.ts";
-import type searchFeature from "./feature.ts";
+import type getSearchFeature from "./feature.ts";
 import mapDiscipleToMessage from "./mappers/disciple.ts";
 import mapMusicToMessage from "./mappers/music.ts";
 import mapSpellToMessage from "./mappers/spell.ts";
@@ -50,7 +50,7 @@ export function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>
     return { reply: { embed: { ...embed, footer }, ...otherReplyProps }, followUps };
 }
 
-function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof searchFeature>>) {
+function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<ReturnType<typeof getSearchFeature>>>) {
     switch (result.kind) {
         case ESearchFeatureReturnKind.SUCCESS: {
             const { reply, followUps } = mapSearchFeatureSuccessValueToMessages(result.value);
