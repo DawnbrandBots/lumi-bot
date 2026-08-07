@@ -1,6 +1,8 @@
 import { Migrator } from "@mikro-orm/migrations";
 import { defineConfig } from "@mikro-orm/sqlite";
 import path from "node:path";
+import { GuildConfig } from "./admin/models/config.ts";
+import { GuildConfigLfgRole } from "./admin/models/configLfgRole.ts";
 import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
@@ -26,6 +28,8 @@ import { WeaponSkill } from "./game/models/weaponSkill.ts";
 import { WeaponSkillEffect } from "./game/models/weaponSkillEffect.ts";
 import { WeaponType } from "./game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./game/models/weaponTypeWeaponSkill.ts";
+import { LfgRoom } from "./lfg/models/room.ts";
+import { LfgRoomPlayer } from "./lfg/models/roomPlayer.ts";
 
 const LUMI_STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
 const LUMI_STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;
@@ -76,10 +80,9 @@ export const GAME_DATA_ENTITIES = [
 ];
 
 /**
- * Empty in this PR only but left to demonstrate how it should be used later on.
- * Remove comment in PR adding entities to the main database.
+ * Main db entities.
  */
-const RUNTIME_ENTITIES: never[] = [];
+const RUNTIME_ENTITIES = [GuildConfig, GuildConfigLfgRole, LfgRoom, LfgRoomPlayer];
 
 const STATE_DB_NAME = path.join(LUMI_STATE_DB_DIR, `${LUMI_STATE_DB_NAME}.db3`);
 const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.db3`);
@@ -127,10 +130,6 @@ export const migrationMikroOrmConfig = defineConfig({
     contextName: "migration",
     entities: RUNTIME_ENTITIES,
     dbName: STATE_DB_NAME,
-    discovery: {
-        // Remove in PR adding entities to the main database.
-        warnWhenNoEntities: false,
-    },
     migrations: {
         pathTs: path.join("src", "migrations", LUMI_STATE_DB_NAME),
     },
@@ -139,4 +138,5 @@ export const migrationMikroOrmConfig = defineConfig({
 
 // Exporting an array of configs as default allows referring to non-default config using `--contextName`.
 // https://mikro-orm.io/blog/mikro-orm-6-4-released#support-for-multiple-orm-configurations
+// https://mikro-orm.io/docs/quick-start#configuration-file-structure
 export default [appMikroOrmConfig, staticGameDataMikroOrmConfig, migrationMikroOrmConfig];

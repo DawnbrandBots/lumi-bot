@@ -1,0 +1,261 @@
+import {
+    ChannelType,
+    MessageFlags,
+    userMention,
+    type ChatInputCommandInteraction,
+    type InteractionResponse,
+} from "discord.js";
+import { describe, expect, test, vi } from "vitest";
+import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
+import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
+import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
+import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../../src/lfg/constants.ts";
+import type { LfgFeature } from "../../../src/lfg/feature.ts";
+import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type TLfgFeatureReturn } from "../../../src/lfg/types.ts";
+import type { lfgManageCommandApiInfo } from "../../../src/lfgManage/command/apiInfo.ts";
+import { getLfgManageCommand } from "../../../src/lfgManage/command/handlers.ts";
+import { LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME } from "../../../src/lfgManage/constants.ts";
+
+const GUILD_ID = "guild-1";
+const ADMIN_ID = "admin";
+const PLAYER_ID = "player";
+const ROOM_CODE = "room";
+const NEW_ROOM_CODE = "new-room";
+const PUBLIC_CHANNEL_ID = "public-channel";
+const OTHER_CHANNEL_ID = "other-channel";
+const REPLY = {} as InteractionResponse<boolean>;
+
+function getInteractionFixture({
+    channelId = OTHER_CHANNEL_ID,
+    guildId = GUILD_ID,
+    subcommand = "create",
+    send = vi.fn().mockResolvedValue({}),
+}: {
+    readonly channelId?: string;
+    readonly guildId?: string | null;
+    readonly subcommand?: string;
+    readonly send?: ReturnType<typeof vi.fn>;
+} = {}) {
+    const channelFetch = vi.fn().mockResolvedValue({ type: ChannelType.GuildText, send });
+    const reply = vi.fn().mockResolvedValue(REPLY);
+    const interaction = {
+        guildId,
+        channelId,
+        user: { id: ADMIN_ID },
+        guild: {
+            channels: {
+                fetch: channelFetch,
+            },
+        },
+        options: {
+            getBoolean: vi.fn().mockReturnValue(false),
+            getSubcommandGroup: vi.fn().mockReturnValue(null),
+            getSubcommand: vi.fn().mockReturnValue(subcommand),
+            getString: vi.fn((name: string) =>
+                name === LFG_CODE_OPTION_NAME ? ROOM_CODE : name === LFG_NEW_CODE_OPTION_NAME ? NEW_ROOM_CODE : null,
+            ),
+            getUser: vi.fn((name: string) => (name === LFG_PLAYER_OPTION_NAME ? { id: PLAYER_ID } : null)),
+        },
+        reply,
+    } as unknown as ChatInputCommandInteraction;
+
+    return { channelFetch, interaction, reply, send };
+}
+
+function getCommand({
+    result,
+    channel = null,
+}: {
+    readonly result: TLfgFeatureReturn;
+    readonly channel?: string | null;
+}) {
+    const lfgFeature = {
+        changeRoomCode: vi.fn().mockResolvedValue(result),
+        create: vi.fn().mockResolvedValue(result),
+        move: vi.fn().mockResolvedValue(result),
+        kick: vi.fn().mockResolvedValue(result),
+        transfer: vi.fn().mockResolvedValue(result),
+        disband: vi.fn().mockResolvedValue(result),
+    };
+    const adminFeature = {
+        getGuildConfig: vi.fn().mockResolvedValue({
+            kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+            value: channel ? { guild: GUILD_ID, lfgChannel: channel } : null,
+        }),
+    };
+
+    return {
+        adminFeature,
+        command: getLfgManageCommand({
+            adminFeature,
+            lfgFeature: lfgFeature as unknown as LfgFeature,
+        }),
+        lfgFeature,
+    };
+}
+
+async function runCommand(
+    command: TCommandHandlers<typeof lfgManageCommandApiInfo>,
+    interaction: ChatInputCommandInteraction,
+) {
+    const run = getCommandRunHandler(command, interaction);
+    if (!run) {
+        throw new Error("No run handler found for test interaction.");
+    }
+    await run(interaction);
+}
+
+describe(getLfgManageCommand.name, () => {
+    test("rejects non-guild interactions", async () => {
+        const { adminFeature, command, lfgFeature } = getCommand({
+            result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
+        });
+        const { interaction, reply } = getInteractionFixture({ guildId: null });
+
+        await runCommand(command, interaction);
+
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: MessageFlags.Ephemeral,
+                embeds: [expect.objectContaining({ title: "LFG management unavailable" })],
+            }),
+        );
+        expect(adminFeature.getGuildConfig).not.toHaveBeenCalled();
+        expect(lfgFeature.create).not.toHaveBeenCalled();
+    });
+
+    test.each([
+        {
+            subcommand: "create",
+            method: "create",
+            result: {
+                kind: ELfgFeatureReturnKind.ROOM_CREATED,
+                value: {
+                    userId: PLAYER_ID,
+                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
+                },
+            } satisfies TLfgFeatureReturn,
+            expectedArgs: [GUILD_ID, { id: PLAYER_ID }, ROOM_CODE],
+        },
+        {
+            subcommand: "move",
+            method: "move",
+            result: {
+                kind: ELfgFeatureReturnKind.ROOM_JOINED,
+                value: {
+                    userId: PLAYER_ID,
+                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
+                },
+            } satisfies TLfgFeatureReturn,
+            expectedArgs: [GUILD_ID, { id: PLAYER_ID }, ROOM_CODE],
+        },
+        {
+            subcommand: LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
+            method: "changeRoomCode",
+            result: {
+                kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+                value: {
+                    oldCode: ROOM_CODE,
+                    newCode: NEW_ROOM_CODE,
+                },
+            } satisfies TLfgFeatureReturn,
+            expectedArgs: [GUILD_ID, ROOM_CODE, NEW_ROOM_CODE],
+        },
+        {
+            subcommand: "kick",
+            method: "kick",
+            result: {
+                kind: ELfgFeatureReturnKind.PLAYER_KICKED,
+                value: {
+                    userId: PLAYER_ID,
+                    targetId: PLAYER_ID,
+                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [] },
+                    removalResult: { kind: ELfgPlayerRemovalKind.ROOM_DELETED },
+                },
+            } satisfies TLfgFeatureReturn,
+            expectedArgs: [GUILD_ID, ROOM_CODE, { id: PLAYER_ID }],
+        },
+        {
+            subcommand: "transfer",
+            method: "transfer",
+            result: {
+                kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
+                value: {
+                    userId: PLAYER_ID,
+                    targetId: PLAYER_ID,
+                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
+                },
+            } satisfies TLfgFeatureReturn,
+            expectedArgs: [GUILD_ID, ROOM_CODE, { id: PLAYER_ID }],
+        },
+        {
+            subcommand: "disband",
+            method: "disband",
+            result: {
+                kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
+                value: { userId: PLAYER_ID, code: ROOM_CODE },
+            } satisfies TLfgFeatureReturn,
+            expectedArgs: [GUILD_ID, ROOM_CODE],
+        },
+    ] as const)("dispatches $subcommand", async ({ expectedArgs, method, result, subcommand }) => {
+        const { command, lfgFeature } = getCommand({ result });
+        const { interaction, reply } = getInteractionFixture({ subcommand });
+
+        await runCommand(command, interaction);
+
+        expect(lfgFeature[method]).toHaveBeenCalledWith(...expectedArgs);
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [
+                    expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        description: expect.stringContaining(userMention(ADMIN_ID)),
+                    }),
+                ],
+            }),
+        );
+    });
+
+    test("sends a public copy to the configured LFG channel", async () => {
+        const { command } = getCommand({
+            channel: PUBLIC_CHANNEL_ID,
+            result: {
+                kind: ELfgFeatureReturnKind.ROOM_CREATED,
+                value: {
+                    userId: PLAYER_ID,
+                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
+                },
+            },
+        });
+        const send = vi.fn().mockResolvedValue({});
+        const { channelFetch, interaction, reply } = getInteractionFixture({ send });
+
+        await runCommand(command, interaction);
+
+        expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
+        expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
+        expect(send).toHaveBeenCalledWith(
+            expect.objectContaining({
+                embeds: [
+                    expect.objectContaining({
+                        description: `${userMention(ADMIN_ID)} created room \`${ROOM_CODE}\` with ${userMention(PLAYER_ID)} as owner.`,
+                    }),
+                ],
+            }),
+        );
+    });
+
+    test("does not publish negative results", async () => {
+        const { command } = getCommand({
+            channel: PUBLIC_CHANNEL_ID,
+            result: { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code: ROOM_CODE } },
+        });
+        const { channelFetch, interaction, reply } = getInteractionFixture({ subcommand: "disband" });
+
+        await runCommand(command, interaction);
+
+        expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
+        expect(channelFetch).not.toHaveBeenCalled();
+    });
+});

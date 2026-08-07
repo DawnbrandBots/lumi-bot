@@ -7,15 +7,15 @@ import getSearchItems from "../../../src/loaders/searchItems.ts";
 import { getSearchCommand } from "../../../src/search/command/handlers.ts";
 import { FuseSearchEngine } from "../../../src/search/engine.ts";
 import type { ISearchEngine, TSearchItem } from "../../../src/search/types.ts";
-import { initTestOrm } from "../../utils/orm.ts";
+import { initTestGameOrm } from "../../utils/orm.ts";
 
-let orm: Awaited<ReturnType<typeof initTestOrm>>;
+let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
 let searchEngine: ISearchEngine<TSearchItem>;
 let searchCommand: ReturnType<typeof getSearchCommand>;
 
 beforeAll(async () => {
-    orm = await initTestOrm();
+    orm = await initTestGameOrm();
     em = orm.em.fork();
     searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
     searchCommand = getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS });

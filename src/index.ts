@@ -1,11 +1,16 @@
 import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
+import { getAdminCommand } from "./admin/command/handlers.ts";
+import { AdminFeature } from "./admin/feature.ts";
 import { getCommandAutocompleteHandler, getCommandRunHandler } from "./bot/commands/handlers.ts";
 import type { TCommandRegistry } from "./bot/commands/types.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
 import { getHelpCommand } from "./help/command/handlers.ts";
 import helpFeature from "./help/feature.ts";
 import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
+import { getLfgCommand } from "./lfg/command/handlers.ts";
+import { LfgFeature } from "./lfg/feature.ts";
+import { getLfgManageCommand } from "./lfgManage/command/handlers.ts";
 import { getLinksCommand } from "./links/command/handlers.ts";
 import getBot from "./loaders/bot.ts";
 import type { TAllCommandApiInfo } from "./loaders/commandRuntimeInfo.ts";
@@ -28,10 +33,15 @@ const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
+const adminFeature = new AdminFeature({ em });
+const lfgFeature = new LfgFeature({ em });
 const commands = {
+    admin: getAdminCommand({ adminFeature }),
     search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
     help: getHelpCommand(),
     links: getLinksCommand(),
+    lfg: getLfgCommand({ adminFeature, lfgFeature }),
+    "lfg-manage": getLfgManageCommand({ adminFeature, lfgFeature }),
 } satisfies TCommandRegistry<TAllCommandApiInfo>;
 
 bot.on(Events.ClientReady, (client) => {
