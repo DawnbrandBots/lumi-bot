@@ -1,0 +1,16 @@
+import type { TCommandAutocompleteHandlers } from "../../../bot/commands/types.ts";
+import { LFG_CODE_OPTION_NAME, LFG_CREATE_SUBCOMMAND_NAME, LFG_JOIN_SUBCOMMAND_NAME } from "../../../lfg/constants.ts";
+import type { LfgFeature } from "../../../lfg/feature.ts";
+import getRoomCodeAutocomplete from "../../../lfg/utils/roomCodeAutocomplete.ts";
+import type { lfgCommandCommandRegistrationData } from "../commandRegistrationData/lfg.ts";
+
+export function getLfgAutocomplete({ lfgFeature }: { readonly lfgFeature: LfgFeature }) {
+    return {
+        [LFG_JOIN_SUBCOMMAND_NAME]: {
+            [LFG_CODE_OPTION_NAME]: getRoomCodeAutocomplete({
+                lfgFeature,
+                ignoredSubCommands: [LFG_CREATE_SUBCOMMAND_NAME],
+            }),
+        },
+    } satisfies TCommandAutocompleteHandlers<typeof lfgCommandCommandRegistrationData>;
+}

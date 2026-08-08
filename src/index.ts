@@ -1,22 +1,26 @@
 import debug from "debug";
 import { Events } from "discord.js";
-import { getAdminCommand } from "./admin/command/handlers.ts";
 import { AdminFeature } from "./admin/feature.ts";
 import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
 import type { TCommandRegistry } from "./bot/commands/types.ts";
-import { getHelpCommand } from "./help/command/handlers.ts";
 import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
 import type { TGetEntityByKindAndId as TGetEntityByKindAndIdInfra } from "./infrastructure/game/persistence/searchItemInDb.types.ts";
-import { getLfgCommand } from "./lfg/command/handlers.ts";
 import { LfgFeature } from "./lfg/feature.ts";
-import { getLfgManageCommand } from "./lfgManage/command/handlers.ts";
-import { getLinksCommand } from "./links/command/handlers.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
 import getSearchItems from "./loaders/searchItems.ts";
 import { appMikroOrmConfig } from "./mikro-orm.config.ts";
+import { getLfgAutocomplete } from "./presentation/discord/autocomplete/lfg.ts";
+import { getLfgManageAutocomplete } from "./presentation/discord/autocomplete/lfgManage.ts";
+import { getSearchAutocomplete } from "./presentation/discord/autocomplete/search.ts";
 import type { TAllCommandRegistrationData } from "./presentation/discord/commandRegistrationData.ts";
+import { getAdminCommand } from "./presentation/discord/commands/admin.ts";
+import { getHelpCommand } from "./presentation/discord/commands/help.ts";
+import { getLfgCommand } from "./presentation/discord/commands/lfg.ts";
+import { getLfgManageCommand } from "./presentation/discord/commands/lfgManage.ts";
+import { getLinksCommand } from "./presentation/discord/commands/links.ts";
+import { getSearchCommand } from "./presentation/discord/commands/search.ts";
 import { handleClientReady } from "./presentation/discord/eventHandlers/clientReady.ts";
 import { handleInteractionCreate } from "./presentation/discord/eventHandlers/interactionCreate.ts";
 import type { THandleInteractionCreate } from "./presentation/discord/eventHandlers/interactionCreate.types.ts";
@@ -26,7 +30,6 @@ import { handleCommandInteraction } from "./presentation/discord/eventHandlers/i
 import type { THandleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.types.ts";
 import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
 import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.types.ts";
-import { getSearchCommand } from "./search/command/handlers.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
 import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "./search/infra.types.ts";
 import type { TSearchKind } from "./search/types.ts";
@@ -53,12 +56,21 @@ const _resolveSearchInput = (input: string) =>
     resolveSearchInput({ getBestSearchIndexEntry, getEntityByKindAndId }, input);
 
 const commands = {
-    admin: getAdminCommand({ adminFeature }),
-    search: getSearchCommand({ getSearchIndexEntries, resolveSearchInput: _resolveSearchInput }),
-    help: getHelpCommand(),
-    links: getLinksCommand(),
-    lfg: getLfgCommand({ adminFeature, lfgFeature }),
-    "lfg-manage": getLfgManageCommand({ adminFeature, lfgFeature }),
+    admin: { run: getAdminCommand({ adminFeature }) },
+    search: {
+        run: getSearchCommand({ resolveSearchInput: _resolveSearchInput }),
+        autocomplete: getSearchAutocomplete({ getSearchIndexEntries }),
+    },
+    help: { run: getHelpCommand() },
+    links: { run: getLinksCommand() },
+    lfg: {
+        run: getLfgCommand({ adminFeature, lfgFeature }),
+        autocomplete: getLfgAutocomplete({ lfgFeature }),
+    },
+    "lfg-manage": {
+        run: getLfgManageCommand({ adminFeature, lfgFeature }),
+        autocomplete: getLfgManageAutocomplete({ lfgFeature }),
+    },
 } satisfies TCommandRegistry<TAllCommandRegistrationData>;
 
 bot.on(Events.ClientReady, handleClientReady);

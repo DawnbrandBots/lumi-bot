@@ -6,9 +6,8 @@ import {
     type CacheType,
     type ChatInputCommandInteraction,
 } from "discord.js";
-import type { TCommandHandlers } from "../../bot/commands/types.ts";
-import { createErrorMessage } from "../../bot/message.ts";
-import type { adminCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/admin.ts";
+import type { TCommandRunHandlers } from "../../../bot/commands/types.ts";
+import { createErrorMessage } from "../../../bot/message.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
@@ -23,9 +22,10 @@ import {
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
-} from "../constants.ts";
-import type { AdminFeature } from "../feature.ts";
-import mapAdminFeatureReturnToMessage from "../mapper.ts";
+} from "../../../admin/constants.ts";
+import type { AdminFeature } from "../../../admin/feature.ts";
+import mapAdminFeatureReturnToMessage from "../../../admin/mapper.ts";
+import type { adminCommandCommandRegistrationData } from "../commandRegistrationData/admin.ts";
 
 type TAdminCommandArgs = {
     readonly adminFeature: AdminFeature;
@@ -136,19 +136,17 @@ export function getAdminCommand({ adminFeature }: TAdminCommandArgs) {
     }
 
     return {
-        run: {
-            [ADMIN_LFG_GROUP_NAME]: {
-                [ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME]: (interaction) =>
-                    runWithAdminPermission(interaction, (guildId) => runLfgChannel(interaction, guildId)),
-                [ADMIN_LFG_ROLE_SUBCOMMAND_NAME]: (interaction) =>
-                    runWithAdminPermission(interaction, (guildId) => runLfgRole(interaction, guildId)),
-                [ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME]: (interaction) =>
-                    runWithAdminPermission(interaction, (guildId) => runLfgRolePingCooldown(interaction, guildId)),
-                [ADMIN_LFG_SHOW_SUBCOMMAND_NAME]: (interaction) =>
-                    runWithAdminPermission(interaction, async (guildId) =>
-                        mapAdminFeatureReturnToMessage(await adminFeature.getGuildConfig(guildId)),
-                    ),
-            },
+        [ADMIN_LFG_GROUP_NAME]: {
+            [ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME]: (interaction) =>
+                runWithAdminPermission(interaction, (guildId) => runLfgChannel(interaction, guildId)),
+            [ADMIN_LFG_ROLE_SUBCOMMAND_NAME]: (interaction) =>
+                runWithAdminPermission(interaction, (guildId) => runLfgRole(interaction, guildId)),
+            [ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME]: (interaction) =>
+                runWithAdminPermission(interaction, (guildId) => runLfgRolePingCooldown(interaction, guildId)),
+            [ADMIN_LFG_SHOW_SUBCOMMAND_NAME]: (interaction) =>
+                runWithAdminPermission(interaction, async (guildId) =>
+                    mapAdminFeatureReturnToMessage(await adminFeature.getGuildConfig(guildId)),
+                ),
         },
-    } satisfies TCommandHandlers<typeof adminCommandCommandRegistrationData>;
+    } satisfies TCommandRunHandlers<typeof adminCommandCommandRegistrationData>;
 }
