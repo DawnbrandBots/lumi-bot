@@ -10,7 +10,7 @@ import {
     userMention,
 } from "discord.js";
 import type { PickDeep } from "type-fest";
-import type { GuildConfig } from "../../../infrastructure/admin/models/config.ts";
+import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
 import {
     createErrorMessage,
     createNegativeMessage,
@@ -32,12 +32,12 @@ type LfgRoleStatus = {
 };
 
 /** Guild config fields needed to render the LFG status output. */
-type LfgStatusGuildConfig = Pick<GuildConfig, "lfgChannel" | "lfgRolePingCooldownMinutes"> & {
+type LfgStatusGuildConfig = Pick<TAdminGuildConfig, "lfgChannel" | "lfgRolePingCooldownMinutes"> & {
     readonly lfgRoles?: Iterable<LfgRoleStatus>;
 };
 
 /** Guild config fields needed to decide whether an LFG reply should be public. */
-type LfgReplyGuildConfig = Pick<GuildConfig, "lfgChannel">;
+type LfgReplyGuildConfig = Pick<TAdminGuildConfig, "lfgChannel">;
 
 function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {

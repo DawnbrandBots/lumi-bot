@@ -1,5 +1,4 @@
-import type { GuildConfig } from "../infrastructure/admin/models/config.ts";
-import type { GuildConfigLfgRole } from "../infrastructure/admin/models/configLfgRole.ts";
+import type { TAdminGuildConfig, TAdminLfgRoleConfig } from "../application/admin/types.ts";
 
 export const enum EAdminFeatureReturnKind {
     LFG_CHANNEL_HELP = "LFG_CHANNEL_HELP",
@@ -35,9 +34,8 @@ type TAdminFeatureReturnValueByKind = {
     [EAdminFeatureReturnKind.LFG_ROLE_REMOVED]: { readonly role: string };
     [EAdminFeatureReturnKind.LFG_ROLE_ALREADY_EXISTS]: { readonly role: string };
     [EAdminFeatureReturnKind.LFG_ROLE_NOT_FOUND]: { readonly role: string };
-    // TODO: add IGuildConfig
-    [EAdminFeatureReturnKind.LFG_GET_CONFIG]: GuildConfig | null;
-    [EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG]: GuildConfigLfgRole | null;
+    [EAdminFeatureReturnKind.LFG_GET_CONFIG]: TAdminGuildConfig | null;
+    [EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG]: TAdminLfgRoleConfig | null;
 } & {
     [
         _ in

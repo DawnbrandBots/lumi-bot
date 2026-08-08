@@ -1,11 +1,12 @@
 import debug from "debug";
 import { Events } from "discord.js";
-import { AdminFeature } from "./admin/feature.ts";
+import { getAdminFeature } from "./admin/feature.ts";
 import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
 import type { TCommandRegistry } from "./bot/commands/types.ts";
 import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
 import type { TGetEntityByKindAndId as TGetEntityByKindAndIdInfra } from "./infrastructure/game/persistence/searchItemInDb.types.ts";
 import { getLfgPersistence } from "./infrastructure/lfg/persistence.ts";
+import { getAdminPersistence } from "./infrastructure/admin/persistence.ts";
 import { getLfgFeature } from "./lfg/feature.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
@@ -44,7 +45,7 @@ const searchItems = await getSearchItems(em);
 const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
-const adminFeature = new AdminFeature({ em });
+const adminFeature = getAdminFeature(getAdminPersistence({ em }));
 const lfgFeature = getLfgFeature(getLfgPersistence({ em }));
 
 const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);

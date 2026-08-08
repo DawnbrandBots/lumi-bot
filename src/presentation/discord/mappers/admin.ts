@@ -25,7 +25,7 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
 } from "../../../admin/constants.ts";
-import type { GuildConfig } from "../../../infrastructure/admin/models/config.ts";
+import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
 import type { TAdminFeatureReturn } from "../../../admin/types.ts";
 import { EAdminFeatureReturnKind } from "../../../admin/types.ts";
 
@@ -37,7 +37,7 @@ function formatRoles(roles: readonly string[] | null | undefined): string {
     return roles?.length ? roles.map((role) => roleMention(role)).join("\n") : ADMIN_LFG_ROLE_NO_VALUE;
 }
 
-function formatRolePingCooldown(cooldown: GuildConfig["lfgRolePingCooldownMinutes"] | null | undefined): string {
+function formatRolePingCooldown(cooldown: TAdminGuildConfig["lfgRolePingCooldownMinutes"] | null | undefined): string {
     return cooldown != null ? `${cooldown} minutes` : LFG_NOT_CONFIGURED_DESCRIPTION;
 }
 
@@ -212,7 +212,7 @@ function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
                         { name: "Channel", value: formatChannel(result.value?.lfgChannel) },
                         {
                             name: "Roles",
-                            value: formatRoles(result.value?.lfgRoles.toArray().map((lfgRole) => lfgRole.role)),
+                            value: formatRoles(result.value?.lfgRoles.map((lfgRole) => lfgRole.role)),
                         },
                         {
                             name: "Role ping cooldown",
