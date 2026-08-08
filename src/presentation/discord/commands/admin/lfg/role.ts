@@ -7,6 +7,7 @@ import {
     ADMIN_ROLE_OPTION_NAME,
 } from "../../../../../admin/constants.ts";
 import { createErrorMessage } from "../../../../../bot/message.ts";
+import { EAdminFeatureReturnKind } from "../../../../../admin/types.ts";
 import mapAdminFeatureReturnToMessage from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
@@ -28,8 +29,27 @@ async function runLfgRole(
         });
     }
 
-    const result = await adminFeature.lfgRole(guildId, action, role?.id ?? null);
-    return mapAdminFeatureReturnToMessage(result);
+    if (action === null && !role) {
+        const configResult = await adminFeature.getGuildConfig(guildId);
+        return mapAdminFeatureReturnToMessage({
+            kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
+            value: { roles: configResult.value?.lfgRoles.map((lfgRole) => lfgRole.role) ?? [] },
+        });
+    }
+
+    if (action === ADMIN_ACTION_ADD && role) {
+        return mapAdminFeatureReturnToMessage(await adminFeature.addLfgRole(guildId, role.id));
+    }
+
+    if (action === ADMIN_ACTION_REMOVE && role) {
+        return mapAdminFeatureReturnToMessage(await adminFeature.removeLfgRole(guildId, role.id));
+    }
+
+    if ((action === ADMIN_ACTION_ADD || action === ADMIN_ACTION_REMOVE) && !role) {
+        return mapAdminFeatureReturnToMessage({ kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE });
+    }
+
+    return mapAdminFeatureReturnToMessage({ kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS });
 }
 
 export function getAdminLfgRoleHandler(arg: TAdminCommandArgs) {

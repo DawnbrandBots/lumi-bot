@@ -4,7 +4,6 @@ import { clearLfgChannel } from "./clearLfgChannel.ts";
 import { clearLfgRolePingCooldown } from "./clearLfgRolePingCooldown.ts";
 import { getGuildConfig } from "./getGuildConfig.ts";
 import { getLfgRole } from "./getLfgRole.ts";
-import { getOrCreateGuildConfig } from "./getOrCreateGuildConfig.ts";
 import { listLfgRoles } from "./listLfgRoles.ts";
 import { removeLfgRole } from "./removeLfgRole.ts";
 import { setLfgChannel } from "./setLfgChannel.ts";
@@ -19,7 +18,6 @@ export function getAdminPersistence(context: TAdminPersistenceContext): TAdminPe
         clearLfgRolePingCooldown: (arg) => clearLfgRolePingCooldown(context, arg),
         getGuildConfig: (arg) => getGuildConfig(context, arg),
         getLfgRole: (arg) => getLfgRole(context, arg),
-        getOrCreateGuildConfig: (arg) => getOrCreateGuildConfig(context, arg),
         listLfgRoles: (arg) => listLfgRoles(context, arg),
         removeLfgRole: (arg) => removeLfgRole(context, arg),
         setLfgChannel: (arg) => setLfgChannel(context, arg),

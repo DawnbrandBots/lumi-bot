@@ -1,16 +1,5 @@
-import type {
-    ADMIN_ACTION_ADD,
-    ADMIN_ACTION_CLEAR,
-    ADMIN_ACTION_REMOVE,
-    ADMIN_ACTION_SET,
-} from "../../admin/constants.ts";
 import type { TAdminFeatureReturnTypes } from "../../admin/types.ts";
 import type { MaybePromise } from "../../utils/types.ts";
-
-export type AdminActionOptions = typeof ADMIN_ACTION_SET | typeof ADMIN_ACTION_CLEAR;
-export type AdminLfgChannelAction = AdminActionOptions;
-export type AdminLfgRolePingCooldownAction = AdminActionOptions;
-export type AdminLfgRoleAction = typeof ADMIN_ACTION_ADD | typeof ADMIN_ACTION_REMOVE;
 
 export type TAdminLfgRoleConfig = {
     readonly lastPingedAt: string | null;
@@ -24,24 +13,18 @@ export type TAdminGuildConfig = {
 };
 
 export type TAdminFeature = {
+    readonly addLfgRole: (guild: string, role: string) => Promise<TAdminFeatureReturnTypes["lfgRole"]>;
+    readonly clearLfgChannel: (guild: string) => Promise<TAdminFeatureReturnTypes["lfgChannel"]>;
+    readonly clearLfgRolePingCooldown: (guild: string) => Promise<TAdminFeatureReturnTypes["lfgRolePingCooldown"]>;
     readonly getGuildConfig: (guild: string) => Promise<TAdminFeatureReturnTypes["getGuildConfig"]>;
     readonly getLfgRoleConfig: (guild: string, role: string) => Promise<TAdminFeatureReturnTypes["getLfgRoleConfig"]>;
-    readonly lfgChannel: (
-        guild: string,
-        action: AdminLfgChannelAction | null,
-        channel: string | null,
-    ) => Promise<TAdminFeatureReturnTypes["lfgChannel"]>;
-    readonly lfgRole: (
-        guild: string,
-        action: AdminLfgRoleAction | null,
-        role: string | null,
-    ) => Promise<TAdminFeatureReturnTypes["lfgRole"]>;
-    readonly lfgRolePingCooldown: (
-        guild: string,
-        action: AdminLfgRolePingCooldownAction | null,
-        minutes: number | null,
-    ) => Promise<TAdminFeatureReturnTypes["lfgRolePingCooldown"]>;
+    readonly removeLfgRole: (guild: string, role: string) => Promise<TAdminFeatureReturnTypes["lfgRole"]>;
+    readonly setLfgChannel: (guild: string, channel: string) => Promise<TAdminFeatureReturnTypes["lfgChannel"]>;
     readonly setLfgRoleLastPingedAt: (guild: string, role: string, date: Date) => Promise<void>;
+    readonly setLfgRolePingCooldown: (
+        guild: string,
+        minutes: number,
+    ) => Promise<TAdminFeatureReturnTypes["lfgRolePingCooldown"]>;
 };
 
 export type TAdminPersistence = {
@@ -53,7 +36,6 @@ export type TAdminPersistence = {
         readonly guildId: string;
         readonly roleId: string;
     }) => MaybePromise<TAdminLfgRoleConfig | null>;
-    readonly getOrCreateGuildConfig: (arg: { readonly guildId: string }) => MaybePromise<TAdminGuildConfig>;
     readonly listLfgRoles: (arg: { readonly guildId: string }) => MaybePromise<readonly TAdminLfgRoleConfig[]>;
     readonly removeLfgRole: (arg: { readonly guildId: string; readonly roleId: string }) => MaybePromise<void>;
     readonly setLfgChannel: (arg: { readonly guildId: string; readonly channelId: string }) => MaybePromise<void>;

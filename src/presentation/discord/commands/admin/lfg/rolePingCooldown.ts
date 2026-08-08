@@ -7,6 +7,7 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
 } from "../../../../../admin/constants.ts";
 import { createErrorMessage } from "../../../../../bot/message.ts";
+import { EAdminFeatureReturnKind } from "../../../../../admin/types.ts";
 import mapAdminFeatureReturnToMessage from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
@@ -28,8 +29,29 @@ async function runLfgRolePingCooldown(
         });
     }
 
-    const result = await adminFeature.lfgRolePingCooldown(guildId, action, minutes);
-    return mapAdminFeatureReturnToMessage(result);
+    if (action === null && minutes === null) {
+        const configResult = await adminFeature.getGuildConfig(guildId);
+        return mapAdminFeatureReturnToMessage({
+            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+            value: { minutes: configResult.value?.lfgRolePingCooldownMinutes },
+        });
+    }
+
+    if (action === ADMIN_ACTION_SET && minutes !== null) {
+        return mapAdminFeatureReturnToMessage(await adminFeature.setLfgRolePingCooldown(guildId, minutes));
+    }
+
+    if (action === ADMIN_ACTION_CLEAR && minutes === null) {
+        return mapAdminFeatureReturnToMessage(await adminFeature.clearLfgRolePingCooldown(guildId));
+    }
+
+    if (action === ADMIN_ACTION_SET && minutes === null) {
+        return mapAdminFeatureReturnToMessage({
+            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES,
+        });
+    }
+
+    return mapAdminFeatureReturnToMessage({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
 }
 
 export function getAdminLfgRolePingCooldownHandler(arg: TAdminCommandArgs) {

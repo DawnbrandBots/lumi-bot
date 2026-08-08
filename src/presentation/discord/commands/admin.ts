@@ -1,4 +1,3 @@
-import type { TCommandRunHandlers } from "../../../bot/commands/types.ts";
 import {
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     ADMIN_LFG_GROUP_NAME,
@@ -6,6 +5,7 @@ import {
     ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
 } from "../../../admin/constants.ts";
+import type { TCommandRunHandlers } from "../../../bot/commands/types.ts";
 import type { adminCommandCommandRegistrationData } from "../commandRegistrationData/admin.ts";
 import { getAdminLfgChannelHandler } from "./admin/lfg/channel.ts";
 import { getAdminLfgRoleHandler } from "./admin/lfg/role.ts";
@@ -13,8 +13,7 @@ import { getAdminLfgRolePingCooldownHandler } from "./admin/lfg/rolePingCooldown
 import { getAdminLfgShowHandler } from "./admin/lfg/show.ts";
 import type { TAdminCommandArgs } from "./admin/types.ts";
 
-export function getAdminCommand({ adminFeature }: TAdminCommandArgs) {
-    const arg = { adminFeature };
+export function getAdminCommand(arg: TAdminCommandArgs) {
     return {
         [ADMIN_LFG_GROUP_NAME]: {
             [ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME]: getAdminLfgChannelHandler(arg),
