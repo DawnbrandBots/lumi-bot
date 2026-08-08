@@ -1,3 +1,4 @@
+import { heading, inlineCode, unorderedList } from "discord.js";
 import type { TCommandRunHandlers } from "../../../bot/commands/types.ts";
 import { createNeutralMessage } from "../../../bot/message.ts";
 import type { helpCommandCommandRegistrationData } from "../commandRegistrationData/help.ts";
@@ -8,20 +9,21 @@ import {
 } from "../constants.ts";
 import allCommandRuntimeInfo from "../runtimeInfo.ts";
 
-const commandsStr = allCommandRuntimeInfo
-    .map((runtimeInfo) => {
+const commandsStr = unorderedList(
+    allCommandRuntimeInfo.map((runtimeInfo) => {
         const pingEquivalent = "pingEquivalent" in runtimeInfo ? runtimeInfo.pingEquivalent : undefined;
-        return `- \`/${runtimeInfo.commandRegistrationData.name}\`: ${runtimeInfo.commandRegistrationData.description}${pingEquivalent ? ` (also try \`${pingEquivalent}\`)` : ""}`;
-    })
-    .join("\n");
+        return `${inlineCode(`/${runtimeInfo.commandRegistrationData.name}`)}: ${runtimeInfo.commandRegistrationData.description}${pingEquivalent ? ` (also try ${inlineCode(pingEquivalent)})` : ""}`;
+    }),
+);
 
-const description = `### ${DISCORD_BOT_NAME}
-${DISCORD_BOT_INTRODUCTION}
-
-${DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT}
-### Commands
-
-${commandsStr}`;
+const description = [
+    heading(DISCORD_BOT_NAME, 3),
+    DISCORD_BOT_INTRODUCTION,
+    "",
+    DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT,
+    heading("Commands", 3),
+    commandsStr,
+].join("\n");
 
 export const helpMessage = createNeutralMessage({
     embed: {
