@@ -1,5 +1,5 @@
 import type { EntityManager, FilterQuery } from "@mikro-orm/core";
-import type { ISearchConfigs, TSearchEntity, TSearchKind } from "../search/types.ts";
+import type { ISearchConfigs, TSearchEntity, TSearchKind } from "../../search/types.ts";
 
 function getFromEntityManager<Kind extends TSearchKind>({
     em,
