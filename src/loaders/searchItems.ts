@@ -1,10 +1,10 @@
 import type { SqlEntityManager } from "@mikro-orm/sqlite";
 import { SPELL_NAME_SUFFIXES } from "../game/constants.ts";
-import { Disciple } from "../game/models/disciple.ts";
-import { Music } from "../game/models/music.ts";
-import { Spell } from "../game/models/spell.ts";
-import { Weapon } from "../game/models/weapon.ts";
-import { WeaponSkill } from "../game/models/weaponSkill.ts";
+import { Disciple } from "../infrastructure/game/models/disciple.ts";
+import { Music } from "../infrastructure/game/models/music.ts";
+import { Spell } from "../infrastructure/game/models/spell.ts";
+import { Weapon } from "../infrastructure/game/models/weapon.ts";
+import { WeaponSkill } from "../infrastructure/game/models/weaponSkill.ts";
 import { ESpellRole } from "../game/types.ts";
 import type { ISearchIndexEntry, TSearchableEntity } from "../search/types.ts";
 

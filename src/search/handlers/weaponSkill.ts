@@ -1,4 +1,4 @@
-import { WeaponSkill } from "../../game/models/weaponSkill.ts";
+import { WeaponSkill } from "../../infrastructure/game/models/weaponSkill.ts";
 import type { ISearchConfig } from "../types.ts";
 
 const weaponSkillSearchConfig: ISearchConfig<WeaponSkill> = {

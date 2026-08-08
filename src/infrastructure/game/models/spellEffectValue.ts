@@ -1,0 +1,19 @@
+import { defineEntity, p } from "@mikro-orm/sqlite";
+import type { ISpellEffectValue } from "../../../game/types.ts";
+import { SpellEffectValueEffectivenessItem } from "./spellEffectValueEffectivenessItem.ts";
+import { SpellEffectValueFixedUnit } from "./spellEffectValueFixedUnit.ts";
+import { SpellEffectValuePercentUnit } from "./spellEffectValuePercentUnit.ts";
+
+export const SpellEffectValueSchema = defineEntity({
+    name: "SpellEffectValue",
+    embeddable: true,
+    properties: {
+        base: p.integer(),
+        scalesWithLevel: p.boolean().default(true),
+        unit: () => p.embedded([SpellEffectValueFixedUnit, SpellEffectValuePercentUnit]).object(),
+        effectiveness: () => p.embedded(SpellEffectValueEffectivenessItem).array().nullable(),
+    },
+});
+
+export class SpellEffectValue extends SpellEffectValueSchema.class implements ISpellEffectValue {}
+SpellEffectValueSchema.setClass(SpellEffectValue);

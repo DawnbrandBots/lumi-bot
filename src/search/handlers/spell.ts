@@ -1,4 +1,4 @@
-import { Spell } from "../../game/models/spell.ts";
+import { Spell } from "../../infrastructure/game/models/spell.ts";
 import type { ISearchConfig } from "../types.ts";
 
 const populate = ["*"] as const;

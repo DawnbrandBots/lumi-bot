@@ -1,4 +1,4 @@
-import { Weapon } from "../../game/models/weapon.ts";
+import { Weapon } from "../../infrastructure/game/models/weapon.ts";
 import type { ISearchConfig } from "../types.ts";
 
 const populate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.effect", "prfDisciple"] as const;

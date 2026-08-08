@@ -1,10 +1,10 @@
 import type { EntityName, Populate } from "@mikro-orm/sqlite";
-import type { Disciple } from "../game/models/disciple.ts";
-import type { Music } from "../game/models/music.ts";
-import type { Spell } from "../game/models/spell.ts";
-import type { Weapon } from "../game/models/weapon.ts";
-import type { WeaponSkill } from "../game/models/weaponSkill.ts";
 import type { TId } from "../game/types.ts";
+import type { Disciple } from "../infrastructure/game/models/disciple.ts";
+import type { Music } from "../infrastructure/game/models/music.ts";
+import type { Spell } from "../infrastructure/game/models/spell.ts";
+import type { Weapon } from "../infrastructure/game/models/weapon.ts";
+import type { WeaponSkill } from "../infrastructure/game/models/weaponSkill.ts";
 
 export type TSearchableEntity = Disciple | Weapon | WeaponSkill | Spell | Music;
 export type TSearchKind = TSearchableEntity["kind"];
