@@ -170,32 +170,51 @@ export type TLfgFeatureReturnTypes = {
 };
 
 export interface ILfgFeature {
-    status(guildId: string): MaybePromise<TLfgFeatureReturnTypes["status"]>;
-    create(guildId: string, owner: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["create"]>;
-    changeOwnedRoomCode(
-        guildId: string,
-        owner: IUser,
-        newCode: string,
-    ): MaybePromise<TLfgFeatureReturnTypes["changeOwnedRoomCode"]>;
-    changeRoomCode(
-        guildId: string,
-        code: string,
-        newCode: string,
-    ): MaybePromise<TLfgFeatureReturnTypes["changeRoomCode"]>;
-    move(guildId: string, user: IUser, code: string): MaybePromise<TLfgFeatureReturnTypes["move"]>;
-    transfer(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
-    transferOwnedRoom(
-        guildId: string,
-        owner: IUser,
-        target: IUser,
-    ): MaybePromise<TLfgFeatureReturnTypes["transferOwnedRoom"]>;
-    kick(guildId: string, code: string, target: IUser): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
-    kickFromOwnedRoom(
-        guildId: string,
-        owner: IUser,
-        target: IUser,
-    ): MaybePromise<TLfgFeatureReturnTypes["kickFromOwnedRoom"]>;
-    leave(guildId: string, user: IUser): MaybePromise<TLfgFeatureReturnTypes["leave"]>;
-    disband(guildId: string, code: string): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
-    disbandOwnedRoom(guildId: string, owner: IUser): MaybePromise<TLfgFeatureReturnTypes["disbandOwnedRoom"]>;
+    status(arg: { readonly guildId: string }): MaybePromise<TLfgFeatureReturnTypes["status"]>;
+    create(arg: {
+        readonly guildId: string;
+        readonly owner: IUser;
+        readonly code: string;
+    }): MaybePromise<TLfgFeatureReturnTypes["create"]>;
+    changeOwnedRoomCode(arg: {
+        readonly guildId: string;
+        readonly owner: IUser;
+        readonly newCode: string;
+    }): MaybePromise<TLfgFeatureReturnTypes["changeOwnedRoomCode"]>;
+    changeRoomCode(arg: {
+        readonly guildId: string;
+        readonly code: string;
+        readonly newCode: string;
+    }): MaybePromise<TLfgFeatureReturnTypes["changeRoomCode"]>;
+    move(arg: {
+        readonly guildId: string;
+        readonly user: IUser;
+        readonly code: string;
+    }): MaybePromise<TLfgFeatureReturnTypes["move"]>;
+    transfer(arg: {
+        readonly guildId: string;
+        readonly code: string;
+        readonly target: IUser;
+    }): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
+    transferOwnedRoom(arg: {
+        readonly guildId: string;
+        readonly owner: IUser;
+        readonly target: IUser;
+    }): MaybePromise<TLfgFeatureReturnTypes["transferOwnedRoom"]>;
+    kick(arg: {
+        readonly guildId: string;
+        readonly code: string;
+        readonly target: IUser;
+    }): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
+    kickFromOwnedRoom(arg: {
+        readonly guildId: string;
+        readonly owner: IUser;
+        readonly target: IUser;
+    }): MaybePromise<TLfgFeatureReturnTypes["kickFromOwnedRoom"]>;
+    leave(arg: { readonly guildId: string; readonly user: IUser }): MaybePromise<TLfgFeatureReturnTypes["leave"]>;
+    disband(arg: { readonly guildId: string; readonly code: string }): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
+    disbandOwnedRoom(arg: {
+        readonly guildId: string;
+        readonly owner: IUser;
+    }): MaybePromise<TLfgFeatureReturnTypes["disbandOwnedRoom"]>;
 }

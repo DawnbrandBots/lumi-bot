@@ -5,7 +5,8 @@ import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
 import type { TCommandRegistry } from "./bot/commands/types.ts";
 import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
 import type { TGetEntityByKindAndId as TGetEntityByKindAndIdInfra } from "./infrastructure/game/persistence/searchItemInDb.types.ts";
-import { LfgFeature } from "./lfg/feature.ts";
+import { getLfgPersistence } from "./infrastructure/lfg/persistence.ts";
+import { getLfgFeature } from "./lfg/feature.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
@@ -44,7 +45,7 @@ const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const adminFeature = new AdminFeature({ em });
-const lfgFeature = new LfgFeature({ em });
+const lfgFeature = getLfgFeature(getLfgPersistence({ em }));
 
 const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
 const getSearchIndexEntries: TGetSearchIndexEntries = (arg) => searchEngine.search(arg.input, arg.limit);

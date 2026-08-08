@@ -15,6 +15,7 @@ import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME 
 import type { LfgFeature } from "../../../lfg/feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../mappers/lfg.ts";
 import type { TLfgFeatureReturn } from "../../../lfg/types.ts";
+import type { MaybePromise } from "../../../utils/types.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../commandRegistrationData/lfgManage.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -32,7 +33,7 @@ type TLfgManageCommandArgs = {
     readonly lfgFeature: LfgFeature;
 };
 
-type TLfgFeatureResultGetter = () => Promise<TLfgFeatureReturn> | TLfgFeatureReturn;
+type TLfgFeatureResultGetter = () => MaybePromise<TLfgFeatureReturn>;
 
 async function runWithGuild(
     interaction: ChatInputCommandInteraction<CacheType>,
@@ -105,57 +106,60 @@ export function getLfgManageCommand({ adminFeature, lfgFeature }: TLfgManageComm
         [LFG_MANAGE_CREATE_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.create(
+                    lfgFeature.create({
                         guildId,
-                        interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
-                        interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                    ),
+                        owner: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
+                        code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_MANAGE_MOVE_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.move(
+                    lfgFeature.move({
                         guildId,
-                        interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
-                        interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                    ),
+                        user: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
+                        code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.changeRoomCode(
+                    lfgFeature.changeRoomCode({
                         guildId,
-                        interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                        interaction.options.getString(LFG_NEW_CODE_OPTION_NAME, true),
-                    ),
+                        code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                        newCode: interaction.options.getString(LFG_NEW_CODE_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_MANAGE_KICK_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.kick(
+                    lfgFeature.kick({
                         guildId,
-                        interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                        interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
-                    ),
+                        code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                        target: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.transfer(
+                    lfgFeature.transfer({
                         guildId,
-                        interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                        interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
-                    ),
+                        code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                        target: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_MANAGE_DISBAND_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.disband(guildId, interaction.options.getString(LFG_CODE_OPTION_NAME, true)),
+                    lfgFeature.disband({
+                        guildId,
+                        code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                    }),
                 ),
             ),
     } satisfies TCommandRunHandlers<typeof lfgManageCommandCommandRegistrationData>;

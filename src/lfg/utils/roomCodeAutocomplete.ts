@@ -21,7 +21,7 @@ const getRoomCodeAutocomplete = (arg: { lfgFeature: LfgFeature; ignoredSubComman
             return [];
         }
 
-        const status = await arg.lfgFeature.status(interaction.guildId);
+        const status = await arg.lfgFeature.status({ guildId: interaction.guildId });
         return (
             status.value.rooms
                 .filter((room) => room.code.includes(focusedOption.value))

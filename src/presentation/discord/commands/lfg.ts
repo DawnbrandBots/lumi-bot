@@ -37,6 +37,7 @@ import {
 import type { LfgFeature } from "../../../lfg/feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../mappers/lfg.ts";
 import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../lfg/types.ts";
+import type { MaybePromise } from "../../../utils/types.ts";
 import type { lfgCommandCommandRegistrationData } from "../commandRegistrationData/lfg.ts";
 
 const log = debug("bot:lfg");
@@ -46,7 +47,7 @@ type TLfgCommandArgs = {
     readonly adminFeature: Pick<AdminFeature, "getGuildConfig" | "getLfgRoleConfig" | "setLfgRoleLastPingedAt">;
 };
 
-type TLfgFeatureResultGetter = () => Promise<TLfgFeatureReturn> | TLfgFeatureReturn;
+type TLfgFeatureResultGetter = () => MaybePromise<TLfgFeatureReturn>;
 
 async function runWithGuild(
     interaction: ChatInputCommandInteraction<CacheType>,
@@ -213,64 +214,66 @@ export function getLfgCommand({ lfgFeature, adminFeature }: TLfgCommandArgs) {
         [LFG_CREATE_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.create(
+                    lfgFeature.create({
                         guildId,
-                        interaction.user,
-                        interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                    ),
+                        owner: interaction.user,
+                        code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_CHANGE_CODE_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.changeOwnedRoomCode(
+                    lfgFeature.changeOwnedRoomCode({
                         guildId,
-                        interaction.user,
-                        interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                    ),
+                        owner: interaction.user,
+                        newCode: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_JOIN_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.move(
+                    lfgFeature.move({
                         guildId,
-                        interaction.user,
-                        interaction.options.getString(LFG_CODE_OPTION_NAME, true),
-                    ),
+                        user: interaction.user,
+                        code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_TRANSFER_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.transferOwnedRoom(
+                    lfgFeature.transferOwnedRoom({
                         guildId,
-                        interaction.user,
-                        interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
-                    ),
+                        owner: interaction.user,
+                        target: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_KICK_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
                 runFeatureSubcommand(interaction, guildId, () =>
-                    lfgFeature.kickFromOwnedRoom(
+                    lfgFeature.kickFromOwnedRoom({
                         guildId,
-                        interaction.user,
-                        interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
-                    ),
+                        owner: interaction.user,
+                        target: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
+                    }),
                 ),
             ),
         [LFG_LEAVE_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
-                runFeatureSubcommand(interaction, guildId, () => lfgFeature.leave(guildId, interaction.user)),
+                runFeatureSubcommand(interaction, guildId, () => lfgFeature.leave({ guildId, user: interaction.user })),
             ),
         [LFG_DISBAND_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
-                runFeatureSubcommand(interaction, guildId, () => lfgFeature.disbandOwnedRoom(guildId, interaction.user)),
+                runFeatureSubcommand(interaction, guildId, () =>
+                    lfgFeature.disbandOwnedRoom({ guildId, owner: interaction.user }),
+                ),
             ),
         [LFG_STATUS_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
-                runFeatureSubcommand(interaction, guildId, () => lfgFeature.status(guildId)),
+                runFeatureSubcommand(interaction, guildId, () => lfgFeature.status({ guildId })),
             ),
         [LFG_HELP_SUBCOMMAND_NAME]: (interaction) =>
             runWithGuild(interaction, (guildId) =>
