@@ -1,10 +1,10 @@
 import { hyperlink, unorderedList, type APIEmbed } from "discord.js";
-import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../game/constants.ts";
-import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
-import type { IDisciple, IMusic } from "../../game/types.ts";
-import range from "../../utils/range.ts";
-import { toAsciiTable } from "../../utils/table.ts";
-import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../constants.ts";
+import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../../../game/constants.ts";
+import { describeSpellEffects } from "../../../../game/spellEffectDescriptions.ts";
+import type { IDisciple, IMusic } from "../../../../game/types.ts";
+import range from "../../../../utils/range.ts";
+import { toAsciiTable } from "../../../../utils/table.ts";
+import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../../../../search/constants.ts";
 
 export function getDiscipleBaseStatsTable(disciple: Pick<IDisciple, "getHp" | "getAtk">): (string | number)[][] {
     const relevantLevels = Array.from(

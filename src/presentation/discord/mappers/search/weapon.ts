@@ -1,6 +1,6 @@
 import type { APIEmbed } from "discord.js";
-import type { IWeapon } from "../../game/types.ts";
-import { toAsciiTable } from "../../utils/table.ts";
+import type { IWeapon } from "../../../../game/types.ts";
+import { toAsciiTable } from "../../../../utils/table.ts";
 
 export default function mapWeaponToMessage(weapon: IWeapon) {
     const statsTable = [

@@ -24,7 +24,7 @@ import {
     ADMIN_ROLE_OPTION_NAME,
 } from "../../../admin/constants.ts";
 import type { AdminFeature } from "../../../admin/feature.ts";
-import mapAdminFeatureReturnToMessage from "../../../admin/mapper.ts";
+import mapAdminFeatureReturnToMessage from "../mappers/admin.ts";
 import type { adminCommandCommandRegistrationData } from "../commandRegistrationData/admin.ts";
 
 type TAdminCommandArgs = {

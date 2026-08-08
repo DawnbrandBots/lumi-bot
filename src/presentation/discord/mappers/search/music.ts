@@ -1,6 +1,6 @@
 import { subtext } from "discord.js";
-import type { IDisciple, IMusic } from "../../game/types.ts";
-import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../constants.ts";
+import type { IDisciple, IMusic } from "../../../../game/types.ts";
+import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../../../../search/constants.ts";
 
 function formatShadowMusicFor(shadowMusicFor: Iterable<IDisciple> | null | undefined, name: string) {
     const shadowMusicForArray = shadowMusicFor && Array.from(shadowMusicFor);

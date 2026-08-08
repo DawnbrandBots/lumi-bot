@@ -35,7 +35,7 @@ import {
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../../../lfg/constants.ts";
 import type { LfgFeature } from "../../../lfg/feature.ts";
-import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../../lfg/mapper.ts";
+import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../mappers/lfg.ts";
 import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../lfg/types.ts";
 import type { lfgCommandCommandRegistrationData } from "../commandRegistrationData/lfg.ts";
 

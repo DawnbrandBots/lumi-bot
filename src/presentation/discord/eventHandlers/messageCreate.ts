@@ -2,8 +2,8 @@ import debug from "debug";
 import { userMention } from "discord.js";
 import type { TResolveSearchInput } from "../../../application/search/resolveSearchInput.types.ts";
 import helpFeature from "../../../help/feature.ts";
-import mapHelpFeatureReturnToMessage from "../../../help/mapper.ts";
-import mapSearchFeatureReturnToMessages from "../../../search/mapper.ts";
+import mapHelpFeatureReturnToMessage from "../mappers/help.ts";
+import mapSearchFeatureReturnToMessages from "../mappers/search.ts";
 import type { TMessageCreateEventInteraction } from "./messageCreate.types.ts";
 
 const log = debug(handleMessageCreate.name);

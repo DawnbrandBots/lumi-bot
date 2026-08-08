@@ -10,18 +10,18 @@ import {
     userMention,
 } from "discord.js";
 import type { PickDeep } from "type-fest";
-import type { GuildConfig } from "../admin/models/config.ts";
+import type { GuildConfig } from "../../../admin/models/config.ts";
 import {
     createErrorMessage,
     createNegativeMessage,
     createNeutralMessage,
     createPositiveMessage,
-} from "../bot/message.ts";
-import { EMessageKind } from "../bot/types.ts";
-import * as LfgConstants from "./constants.ts";
-import { LFG_SHOW_RESPONSE_OPTION_NAME } from "./constants.ts";
-import type { TLfgFeatureReturnOfKind } from "./types.ts";
-import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "./types.ts";
+} from "../../../bot/message.ts";
+import { EMessageKind } from "../../../bot/types.ts";
+import * as LfgConstants from "../../../lfg/constants.ts";
+import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../lfg/constants.ts";
+import type { TLfgFeatureReturnOfKind } from "../../../lfg/types.ts";
+import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "../../../lfg/types.ts";
 
 /** Role config fields needed to render one pingable role's status. */
 type LfgRoleStatus = {

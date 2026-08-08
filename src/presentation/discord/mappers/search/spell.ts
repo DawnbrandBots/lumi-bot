@@ -3,13 +3,13 @@ import {
     DISCORD_BLACK_SQUARE_EMOJI_CALL,
     DISCORD_BLUE_SQUARE_EMOJI_CALL,
     DISCORD_RED_SQUARE_EMOJI_CALL,
-} from "../../bot/constants.ts";
-import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
-import type { ISpellEffectValueWithToLevel } from "../../game/spellEffectValues.ts";
-import { spellEffectsValues } from "../../game/spellEffectValues.ts";
-import type { ISpell, ISpellShape } from "../../game/types.ts";
-import range from "../../utils/range.ts";
-import { toAsciiTable } from "../../utils/table.ts";
+} from "../../../../bot/constants.ts";
+import { describeSpellEffects } from "../../../../game/spellEffectDescriptions.ts";
+import type { ISpellEffectValueWithToLevel } from "../../../../game/spellEffectValues.ts";
+import { spellEffectsValues } from "../../../../game/spellEffectValues.ts";
+import type { ISpell, ISpellShape } from "../../../../game/types.ts";
+import range from "../../../../utils/range.ts";
+import { toAsciiTable } from "../../../../utils/table.ts";
 
 const tileEmojis: Record<string, string> = {
     X: DISCORD_RED_SQUARE_EMOJI_CALL,

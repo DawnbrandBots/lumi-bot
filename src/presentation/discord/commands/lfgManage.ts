@@ -13,7 +13,7 @@ import { createErrorMessage } from "../../../bot/message.ts";
 import { EMessageKind } from "../../../bot/types.ts";
 import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../../lfg/constants.ts";
 import type { LfgFeature } from "../../../lfg/feature.ts";
-import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../../lfg/mapper.ts";
+import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../mappers/lfg.ts";
 import type { TLfgFeatureReturn } from "../../../lfg/types.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../commandRegistrationData/lfgManage.ts";
 import {

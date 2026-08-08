@@ -1,7 +1,7 @@
 import type { APIEmbed, BaseMessageOptions } from "discord.js";
-import type { resolveSearchInput } from "../application/search/resolveSearchInput.ts";
-import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../bot/message.ts";
-import type { ISingleEmbedMessageOptions } from "../bot/types.ts";
+import type { resolveSearchInput } from "../../../application/search/resolveSearchInput.ts";
+import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../../../bot/message.ts";
+import type { ISingleEmbedMessageOptions } from "../../../bot/types.ts";
 import {
     SEARCH_ALIASES_FOOTER_PREFIX,
     SEARCH_ENTITY_KIND_FIELD_NAME,
@@ -11,14 +11,14 @@ import {
     SEARCH_INVALID_INPUT_TITLE,
     SEARCH_MISSING_DATABASE_RESULT_TITLE,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-} from "./constants.ts";
-import mapDiscipleToMessage from "./mappers/disciple.ts";
-import mapMusicToMessage from "./mappers/music.ts";
-import mapSpellToMessage from "./mappers/spell.ts";
-import mapWeaponToMessage from "./mappers/weapon.ts";
-import mapWeaponSkillToMessage from "./mappers/weaponSkill.ts";
-import type { TSearchEntity, TSearchFeatureSuccessValue, TSearchKind } from "./types.ts";
-import { ESearchFeatureReturnKind } from "./types.ts";
+} from "../../../search/constants.ts";
+import mapDiscipleToMessage from "./search/disciple.ts";
+import mapMusicToMessage from "./search/music.ts";
+import mapSpellToMessage from "./search/spell.ts";
+import mapWeaponToMessage from "./search/weapon.ts";
+import mapWeaponSkillToMessage from "./search/weaponSkill.ts";
+import type { TSearchEntity, TSearchFeatureSuccessValue, TSearchKind } from "../../../search/types.ts";
+import { ESearchFeatureReturnKind } from "../../../search/types.ts";
 
 export type TSearchMapperReturnType = { reply: ISingleEmbedMessageOptions; followUps?: BaseMessageOptions[] };
 export type ISearchMapper<Kind extends TSearchKind> = (entity: TSearchEntity<Kind>) => TSearchMapperReturnType;

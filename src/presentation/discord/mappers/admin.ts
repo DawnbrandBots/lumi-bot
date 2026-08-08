@@ -6,8 +6,8 @@ import {
     roleMention,
     type InteractionReplyOptions,
 } from "discord.js";
-import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../bot/message.ts";
-import { LFG_COMMAND_NAME, LFG_NOT_CONFIGURED_DESCRIPTION, LFG_PING_SUBCOMMAND_NAME } from "../lfg/constants.ts";
+import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../../../bot/message.ts";
+import { LFG_COMMAND_NAME, LFG_NOT_CONFIGURED_DESCRIPTION, LFG_PING_SUBCOMMAND_NAME } from "../../../lfg/constants.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
@@ -24,10 +24,10 @@ import {
     ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
-} from "./constants.ts";
-import type { GuildConfig } from "./models/config.ts";
-import type { TAdminFeatureReturn } from "./types.ts";
-import { EAdminFeatureReturnKind } from "./types.ts";
+} from "../../../admin/constants.ts";
+import type { GuildConfig } from "../../../admin/models/config.ts";
+import type { TAdminFeatureReturn } from "../../../admin/types.ts";
+import { EAdminFeatureReturnKind } from "../../../admin/types.ts";
 
 function formatChannel(channel: string | null | undefined): string {
     return channel ? channelMention(channel) : ADMIN_LFG_CHANNEL_NO_VALUE;
