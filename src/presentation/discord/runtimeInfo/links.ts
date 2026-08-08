@@ -1,5 +1,5 @@
-import type { ICommandRuntimeInfo } from "../../bot/commands/types.ts";
-import { linksCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/links.ts";
+import type { ICommandRuntimeInfo } from "../../../bot/commands/types.ts";
+import { linksCommandCommandRegistrationData } from "../commandRegistrationData/links.ts";
 
 export const linksCommandRuntimeInfo = {
     commandRegistrationData: linksCommandCommandRegistrationData,

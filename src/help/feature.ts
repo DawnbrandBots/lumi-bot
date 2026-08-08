@@ -3,7 +3,7 @@ import {
     DISCORD_BOT_INTRODUCTION,
     DISCORD_BOT_NAME,
 } from "../bot/constants.ts";
-import allCommandRuntimeInfo from "../loaders/commandRuntimeInfo.ts";
+import allCommandRuntimeInfo from "../presentation/discord/runtimeInfo.ts";
 
 const commandsStr = allCommandRuntimeInfo
     .map((runtimeInfo) => {
