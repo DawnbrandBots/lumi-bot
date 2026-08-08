@@ -17,8 +17,6 @@ import {
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_DESCRIPTION,
     LFG_LEAVE_SUBCOMMAND_NAME,
-    LFG_MAX_ROOM_CODE_LENGTH,
-    LFG_MIN_ROOM_CODE_LENGTH,
     LFG_PING_SUBCOMMAND_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
@@ -28,7 +26,8 @@ import {
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
-} from "../../../lfg/constants.ts";
+} from "../commands/lfg/constants.ts";
+import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MIN_ROOM_CODE_LENGTH } from "../../../lfg/constants.ts";
 
 const roomCodeOption = {
     type: ApplicationCommandOptionType.String,

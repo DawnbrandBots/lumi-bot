@@ -10,7 +10,7 @@ import {
     LFG_PING_SUBCOMMAND_NAME,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
-} from "../../../lfg/constants.ts";
+} from "./lfg/constants.ts";
 import type { lfgCommandCommandRegistrationData } from "../commandRegistrationData/lfg.ts";
 import { getLfgChangeCodeHandler } from "./lfg/changeCode.ts";
 import { getLfgCreateHandler } from "./lfg/create.ts";

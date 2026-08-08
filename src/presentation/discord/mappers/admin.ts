@@ -8,7 +8,6 @@ import {
 } from "discord.js";
 import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 import { ADMIN_LFG_ROLE_LIMIT } from "../../../application/admin/constants.ts";
-import { LFG_COMMAND_NAME, LFG_NOT_CONFIGURED_DESCRIPTION, LFG_PING_SUBCOMMAND_NAME } from "../../../lfg/constants.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
@@ -25,6 +24,7 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
 } from "../commands/admin/constants.ts";
+import { LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME } from "../commands/lfg/constants.ts";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
 import type { TAdminFeatureReturn } from "../../../admin/types.ts";
 import { EAdminFeatureReturnKind } from "../../../admin/types.ts";
@@ -233,3 +233,4 @@ function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
 }
 
 export default mapAdminFeatureReturnToMessage;
+const LFG_NOT_CONFIGURED_DESCRIPTION = "Not configured";

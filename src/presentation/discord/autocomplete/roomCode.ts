@@ -1,7 +1,7 @@
 import type { AutocompleteInteraction } from "discord.js";
-import { DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT } from "../../presentation/discord/constants.ts";
-import { LFG_CODE_OPTION_NAME } from "../constants.ts";
-import type { LfgFeature } from "../feature.ts";
+import { DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT } from "../constants.ts";
+import { LFG_CODE_OPTION_NAME } from "../commands/lfg/constants.ts";
+import type { LfgFeature } from "../../../lfg/feature.ts";
 
 const getRoomCodeAutocomplete = (arg: { lfgFeature: LfgFeature; ignoredSubCommands: string[] }) =>
     async function (interaction: AutocompleteInteraction) {

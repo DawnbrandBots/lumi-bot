@@ -1,5 +1,5 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
-import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../../../lfg/constants.ts";
+import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../lfg/constants.ts";
 import { runFeatureSubcommand } from "./runFeatureSubcommand.ts";
 import { runWithGuild } from "./runWithGuild.ts";
 import type { TLfgManageCommandArgs } from "./types.ts";

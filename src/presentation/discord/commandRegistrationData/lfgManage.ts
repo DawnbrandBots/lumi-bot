@@ -7,11 +7,10 @@ import {
 import type { ICommandCommandRegistrationData } from "../commands/types.ts";
 import {
     LFG_CODE_OPTION_NAME,
-    LFG_MAX_ROOM_CODE_LENGTH,
-    LFG_MIN_ROOM_CODE_LENGTH,
     LFG_NEW_CODE_OPTION_NAME,
     LFG_PLAYER_OPTION_NAME,
-} from "../../../lfg/constants.ts";
+} from "../commands/lfg/constants.ts";
+import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MIN_ROOM_CODE_LENGTH } from "../../../lfg/constants.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_COMMAND_NAME,

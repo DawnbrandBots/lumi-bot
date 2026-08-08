@@ -1,8 +1,10 @@
 import type { ChatInputCommandInteraction } from "discord.js";
 import {
+    bold,
     channelMention,
     heading,
     inlineCode,
+    italic,
     MessageFlags,
     roleMention,
     time,
@@ -11,17 +13,74 @@ import {
 } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
-import {
-    createErrorMessage,
-    createNegativeMessage,
-    createNeutralMessage,
-    createPositiveMessage,
-} from "../message.ts";
-import { EMessageKind } from "../message.types.ts";
-import * as LfgConstants from "../../../lfg/constants.ts";
-import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../lfg/constants.ts";
+import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "../../../lfg/constants.ts";
 import type { TLfgFeatureReturnOfKind } from "../../../lfg/types.ts";
-import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind, type IRoom, type TLfgFeatureReturn } from "../../../lfg/types.ts";
+import {
+    ELfgFeatureReturnKind,
+    ELfgPlayerRemovalKind,
+    type IRoom,
+    type TLfgFeatureReturn,
+} from "../../../lfg/types.ts";
+import formatCommand from "../commands/formatCommand.ts";
+import {
+    LFG_CHANGE_CODE_SUBCOMMAND_NAME,
+    LFG_COMMAND_NAME,
+    LFG_CREATE_SUBCOMMAND_NAME,
+    LFG_DISBAND_SUBCOMMAND_NAME,
+    LFG_JOIN_SUBCOMMAND_NAME,
+    LFG_KICK_SUBCOMMAND_NAME,
+    LFG_LEAVE_SUBCOMMAND_NAME,
+    LFG_PING_SUBCOMMAND_NAME,
+    LFG_SHOW_RESPONSE_OPTION_NAME,
+    LFG_STATUS_SUBCOMMAND_NAME,
+    LFG_TRANSFER_SUBCOMMAND_NAME,
+} from "../commands/lfg/constants.ts";
+import { createErrorMessage, createNegativeMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
+import { EMessageKind } from "../message.types.ts";
+
+const LFG_NOT_CONFIGURED_DESCRIPTION = italic("Not configured");
+
+const LFG_HELP_DESCRIPTION = `${formatCommand([LFG_COMMAND_NAME])} groups subcommands for managing ${bold("rooms")} for Friend Battles.
+
+Rooms:
+${unorderedList([
+    `are groups of up to ${LFG_MAX_ROOM_PLAYERS} players,`,
+    `have a code which should be used in Friend Battles,`,
+    `have an ${bold("owner")} with additional privileges within the group.`,
+])}
+
+Want to play? First check ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])} for vacant spots in existing rooms. Ask active players whether you can join them!
+
+Use ${formatCommand([LFG_COMMAND_NAME, LFG_JOIN_SUBCOMMAND_NAME])} to join a room, or ${formatCommand([LFG_COMMAND_NAME, LFG_CREATE_SUBCOMMAND_NAME])} to create one as the owner.
+
+Still missing players? Use ${formatCommand([LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME])} to ping users who have a role dedicated to LFG.
+${formatCommand([LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME])} enters a cooldown period for the pinged role after use.
+
+When you are done playing, use ${formatCommand([LFG_COMMAND_NAME, LFG_LEAVE_SUBCOMMAND_NAME])} so other players can see that you are not playing anymore.
+
+In general, please encourage each other to ensure that ${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])}'s output is always up-to-date.
+
+A room owner may also use the following commands:
+${unorderedList([
+    `${formatCommand([LFG_COMMAND_NAME, LFG_DISBAND_SUBCOMMAND_NAME])}: Delete their room.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_CHANGE_CODE_SUBCOMMAND_NAME])}: Change their room's code.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_KICK_SUBCOMMAND_NAME])}: Kick a player from their room.`,
+    `${formatCommand([LFG_COMMAND_NAME, LFG_TRANSFER_SUBCOMMAND_NAME])}: Transfer ownership to another player in their room.`,
+])}
+
+Ownership is automatically transferred when the owner leaves the room.
+Rooms are deleted when all players leave.
+
+${formatCommand([LFG_COMMAND_NAME])} subcommands may be used in any channel without fear of spamming as all responses are visible to the user only.
+
+${formatCommand([LFG_COMMAND_NAME, LFG_STATUS_SUBCOMMAND_NAME])} also displays the server's config for the LFG feature as set by admins:
+${unorderedList([
+    `${bold("LFG channel")}: channel to which will be sent a public copy of all responses returned by ${formatCommand([LFG_COMMAND_NAME])} subcommands following successful execution.`,
+    `${bold("LFG roles")}: roles which may be pinged by ${formatCommand([LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME])}.`,
+    `${bold("LFG roles ping cooldown")}: time between pings for each role.`,
+])}
+
+Have fun!!`;
 
 /** Role config fields needed to render one pingable role's status. */
 type LfgRoleStatus = {
@@ -41,7 +100,7 @@ type LfgReplyGuildConfig = Pick<TAdminGuildConfig, "lfgChannel">;
 
 function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
-        return LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION;
+        return "No active rooms. :(";
     }
     return unorderedList(rooms.map(formatRoom));
 }
@@ -59,7 +118,7 @@ function formatLfgRoleStatus(lfgRole: LfgRoleStatus, cooldownMs: number, now: Da
 function formatLfgRoles(guildConfig?: LfgStatusGuildConfig | null) {
     const lfgRoles = guildConfig?.lfgRoles ? Array.from(guildConfig.lfgRoles) : [];
     if (lfgRoles.length === 0) {
-        return LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+        return LFG_NOT_CONFIGURED_DESCRIPTION;
     }
 
     const cooldownMs = (guildConfig?.lfgRolePingCooldownMinutes ?? 0) * 60 * 1000;
@@ -70,13 +129,13 @@ function formatLfgRoles(guildConfig?: LfgStatusGuildConfig | null) {
 function formatStatus(rooms: readonly IRoom[], guildConfig?: LfgStatusGuildConfig | null) {
     const lfgChannel = guildConfig?.lfgChannel
         ? channelMention(guildConfig.lfgChannel)
-        : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+        : LFG_NOT_CONFIGURED_DESCRIPTION;
     const lfgRoles = formatLfgRoles(guildConfig);
     const lfgRolesListItem = Array.isArray(lfgRoles) ? ["LFG roles:", lfgRoles] : [`LFG roles: ${lfgRoles}`];
     const lfgRolePingCooldown =
         guildConfig?.lfgRolePingCooldownMinutes != null
             ? `${guildConfig.lfgRolePingCooldownMinutes} minutes`
-            : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION;
+            : LFG_NOT_CONFIGURED_DESCRIPTION;
     return [
         heading("Rooms", 3),
         formatList(rooms),
@@ -179,7 +238,7 @@ function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_
 
 function formatAlreadyInRoom(callerId: string, userId: string) {
     if (callerId === userId) {
-        return LfgConstants.LFG_ALREADY_IN_A_ROOM_DESCRIPTION;
+        return "Leave your current room before creating a new one.";
     }
     return `${userMention(userId)} is already in a room.`;
 }
@@ -193,7 +252,7 @@ function formatAlreadyInTargetRoom(callerId: string, userId: string, room: IRoom
 
 function formatCannotTransferToCurrentOwner(callerId: string, userId: string, code: string) {
     if (callerId === userId) {
-        return LfgConstants.LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION;
+        return "Choose another player in your room.";
     }
     return `${userMention(userId)} already owns room ${formatRoomCode(code)}.`;
 }
@@ -222,7 +281,7 @@ export function mapLfgFeatureReturnToMessageBase({
         }
         case ELfgFeatureReturnKind.HELP:
             return createNeutralMessage({
-                embed: { description: LfgConstants.LFG_HELP_DESCRIPTION },
+                embed: { description: LFG_HELP_DESCRIPTION },
             });
         case ELfgFeatureReturnKind.ROOM_CREATED:
             return createPositiveMessage({
@@ -286,7 +345,7 @@ export function mapLfgFeatureReturnToMessageBase({
         case ELfgFeatureReturnKind.INVALID_ROOM_CODE:
             return createNegativeMessage({
                 embed: {
-                    description: LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION,
+                    description: `Room codes must be between ${LFG_MIN_ROOM_CODE_LENGTH} and ${LFG_MAX_ROOM_CODE_LENGTH} characters.`,
                 },
             });
         case ELfgFeatureReturnKind.ALREADY_IN_A_ROOM:
@@ -316,7 +375,7 @@ export function mapLfgFeatureReturnToMessageBase({
         case ELfgFeatureReturnKind.ROOM_IS_FULL:
             return createNegativeMessage({
                 embed: {
-                    description: `Room ${formatRoomCode(result.value.code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
+                    description: `Room ${formatRoomCode(result.value.code)} already has ${LFG_MAX_ROOM_PLAYERS} players.`,
                 },
             });
         case ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF:
@@ -339,23 +398,23 @@ export function mapLfgFeatureReturnToMessageBase({
         case ELfgFeatureReturnKind.NOT_ROOM_OWNER:
             return createNegativeMessage({
                 embed: {
-                    description: LfgConstants.LFG_NOT_ROOM_OWNER_DESCRIPTION,
+                    description: "Only the room owner can do that.",
                 },
             });
         case ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF:
             return createNegativeMessage({
                 embed: {
-                    description: LfgConstants.LFG_CANNOT_KICK_YOURSELF_DESCRIPTION,
+                    description: `Use ${inlineCode(`${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}`)} to leave your room.`,
                 },
             });
         case ELfgFeatureReturnKind.NOT_IN_A_ROOM:
             return createNegativeMessage({
-                embed: { description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION },
+                embed: { description: "Join or create a room first." },
             });
         case ELfgFeatureReturnKind.INVALID_SUBCOMMAND:
             return createErrorMessage({
                 embed: {
-                    description: LfgConstants.LFG_INVALID_SUBCOMMAND_DESCRIPTION,
+                    description: "Please specify a valid subcommand.",
                 },
             });
     }

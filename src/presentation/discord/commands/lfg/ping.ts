@@ -16,7 +16,7 @@ import {
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
     LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
-} from "../../../../lfg/constants.ts";
+} from "./constants.ts";
 import { runWithGuild } from "./runWithGuild.ts";
 import type { TLfgCommandArgs } from "./types.ts";
 
