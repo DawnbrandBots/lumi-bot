@@ -1,7 +1,7 @@
 import type { PickDeep } from "type-fest";
-import { WEAPON_VARIANTS_BONUSES } from "../constants.ts";
-import type { IWeapon, IWeaponVariant } from "../types.ts";
-import { EWeaponVariant } from "../types.ts";
+import { WEAPON_VARIANTS_BONUSES } from "../../../game/constants.ts";
+import type { IWeapon, IWeaponVariant } from "../../../game/types.ts";
+import { EWeaponVariant } from "../../../game/types.ts";
 
 export const WEAPON_VARIANTS = {
     [EWeaponVariant.HP]: { kind: EWeaponVariant.HP, ...WEAPON_VARIANTS_BONUSES.HP },

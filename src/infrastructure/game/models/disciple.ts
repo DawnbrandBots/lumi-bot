@@ -1,5 +1,5 @@
 import { defineEntity, p, raw } from "@mikro-orm/sqlite";
-import DiscipleRules from "../../../game/rules/disciple.ts";
+import DiscipleRules from "../../../domain/game/rules/disciple.ts";
 import type { IDisciple } from "../../../game/types.ts";
 import { MovementType } from "./movementType.ts";
 import { Music } from "./music.ts";

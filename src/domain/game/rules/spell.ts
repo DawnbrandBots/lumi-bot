@@ -1,5 +1,5 @@
 import type { PickDeep } from "type-fest";
-import { ESpellDraggingMode, ESpellEffectTarget, type ISpell, type ISpellDraggingMode } from "../types.ts";
+import { ESpellDraggingMode, ESpellEffectTarget, type ISpell, type ISpellDraggingMode } from "../../../game/types.ts";
 
 export function draggingModeKind(
     spellData: PickDeep<ISpell, `effects.${number}.target`> | PickDeep<ISpell, `effects.${number}.target.kind`>,

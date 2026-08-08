@@ -1,5 +1,5 @@
 import type { PickDeep } from "type-fest";
-import type { IWeapon, IWeaponSkill } from "../types.ts";
+import type { IWeapon, IWeaponSkill } from "../../../game/types.ts";
 
 export function weaponTypeSkill(
     arg: PickDeep<IWeapon, "level" | "weaponType.weaponSkills">,
