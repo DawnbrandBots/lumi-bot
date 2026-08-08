@@ -5,7 +5,7 @@ import {
     DISCORD_MESSAGE_NEGATIVE_COLOR,
     DISCORD_MESSAGE_NEUTRAL_COLOR,
     DISCORD_MESSAGE_POSITIVE_COLOR,
-} from "./constants.ts";
+} from "../presentation/discord/constants.ts";
 import type { IBaseMessageArg, IChildMessageArg } from "./types.ts";
 import { EMessageKind } from "./types.ts";
 

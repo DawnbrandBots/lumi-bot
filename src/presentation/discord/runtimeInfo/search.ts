@@ -1,6 +1,6 @@
 import type { ICommandRuntimeInfo } from "../../../bot/commands/types.ts";
-import { DISCORD_BOT_NAME } from "../../../bot/constants.ts";
 import { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
+import { DISCORD_BOT_NAME } from "../constants.ts";
 
 export const searchCommandRuntimeInfo = {
     commandRegistrationData: searchCommandCommandRegistrationData,

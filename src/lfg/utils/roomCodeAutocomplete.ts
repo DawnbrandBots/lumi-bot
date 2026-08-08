@@ -1,5 +1,5 @@
 import type { AutocompleteInteraction } from "discord.js";
-import { DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT } from "../../bot/constants.ts";
+import { DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT } from "../../presentation/discord/constants.ts";
 import { LFG_CODE_OPTION_NAME } from "../constants.ts";
 import type { LfgFeature } from "../feature.ts";
 

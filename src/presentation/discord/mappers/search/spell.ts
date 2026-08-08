@@ -3,7 +3,7 @@ import {
     DISCORD_BLACK_SQUARE_EMOJI_CALL,
     DISCORD_BLUE_SQUARE_EMOJI_CALL,
     DISCORD_RED_SQUARE_EMOJI_CALL,
-} from "../../../../bot/constants.ts";
+} from "../../constants.ts";
 import { describeSpellEffects } from "../../../../game/spellEffectDescriptions.ts";
 import type { ISpellEffectValueWithToLevel } from "../../../../game/spellEffectValues.ts";
 import { spellEffectsValues } from "../../../../game/spellEffectValues.ts";

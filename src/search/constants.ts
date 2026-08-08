@@ -1,7 +1,14 @@
 import { subtext } from "discord.js";
-import { SEARCH_MAX_INPUT_LENGTH } from "../bot/constants.ts";
 
 export const SEARCH_AUTOCOMPLETE_RESULTS_LIMIT = 5;
+
+export const SEARCH_TERMS_OPTION_NAME = "terms";
+/**
+ * Somewhat arbitrarily chosen character limit.
+ * The point is to prevent giant strings from reaching the search engine.
+ * Ensure that this number is longer than the longest search alias loaded into the engine.
+ */
+export const SEARCH_MAX_INPUT_LENGTH = 48;
 
 export const SEARCH_INVALID_INPUT_TITLE = "Invalid input";
 export const SEARCH_INPUT_TOO_LONG_DESCRIPTION = `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`;

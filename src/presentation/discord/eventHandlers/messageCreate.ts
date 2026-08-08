@@ -1,8 +1,7 @@
 import debug from "debug";
 import { userMention } from "discord.js";
 import type { TResolveSearchInput } from "../../../application/search/resolveSearchInput.types.ts";
-import helpFeature from "../../../help/feature.ts";
-import mapHelpFeatureReturnToMessage from "../mappers/help.ts";
+import { helpMessage } from "../commands/help.ts";
 import mapSearchFeatureReturnToMessages from "../mappers/search.ts";
 import type { TMessageCreateEventInteraction } from "./messageCreate.types.ts";
 
@@ -23,8 +22,7 @@ export async function handleMessageCreate(arg: {
     }
     const botMention = userMention(arg.interaction.client.user.id);
     if (arg.interaction.content === botMention) {
-        const message = mapHelpFeatureReturnToMessage(helpFeature());
-        await arg.interaction.reply(message);
+        await arg.interaction.reply(helpMessage);
         return;
     }
     const startingBotMentionAndSpaceStr = botMention + " ";

@@ -1,10 +1,10 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import type { TCommandRunHandlers } from "../../../bot/commands/types.ts";
-import { SEARCH_TERMS_OPTION_NAME } from "../../../bot/constants.ts";
-import mapSearchFeatureReturnToMessages from "../mappers/search.ts";
+import { SEARCH_TERMS_OPTION_NAME } from "../../../search/constants.ts";
 import type { TSearchFeatureReturn } from "../../../search/types.ts";
 import type { MaybePromise } from "../../../utils/types.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
+import mapSearchFeatureReturnToMessages from "../mappers/search.ts";
 
 export async function run(
     arg: {
@@ -21,9 +21,7 @@ export async function run(
     }
 }
 
-export function getSearchCommand(arg: {
-    resolveSearchInput: (input: string) => MaybePromise<TSearchFeatureReturn>;
-}) {
+export function getSearchCommand(arg: { resolveSearchInput: (input: string) => MaybePromise<TSearchFeatureReturn> }) {
     return ((interaction) => run(arg, interaction)) satisfies TCommandRunHandlers<
         typeof searchCommandCommandRegistrationData
     >;

@@ -1,7 +1,7 @@
 import debug from "debug";
 import type { Client } from "discord.js";
 import { ActivityType } from "discord.js";
-import { DISCORD_BOT_ACTIVITY } from "../../../bot/constants.ts";
+import { DISCORD_BOT_ACTIVITY } from "../constants.ts";
 
 const log = debug(handleClientReady.name);
 
