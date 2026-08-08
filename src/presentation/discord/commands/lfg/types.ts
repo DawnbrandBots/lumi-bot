@@ -1,4 +1,4 @@
-import type { AdminFeature } from "../../../../admin/feature.ts";
+import type { TAdminFeature as AdminFeature } from "../../../../application/admin/types.ts";
 import type { LfgFeature } from "../../../../lfg/feature.ts";
 
 export type TLfgCommandArgs = {
