@@ -19,7 +19,7 @@ import {
     LFG_MANAGE_KICK_SUBCOMMAND_NAME,
     LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
     LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
-} from "../../../lfgManage/constants.ts";
+} from "../commands/lfgManage/constants.ts";
 
 const playerOption = {
     type: ApplicationCommandOptionType.User,

@@ -6,7 +6,7 @@ import {
     LFG_MANAGE_KICK_SUBCOMMAND_NAME,
     LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
     LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
-} from "../../../lfgManage/constants.ts";
+} from "./lfgManage/constants.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../commandRegistrationData/lfgManage.ts";
 import { getLfgManageChangeCodeHandler } from "./lfgManage/changeCode.ts";
 import { getLfgManageCreateHandler } from "./lfgManage/create.ts";
