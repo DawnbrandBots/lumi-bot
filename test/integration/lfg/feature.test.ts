@@ -1,6 +1,6 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { LFG_MAX_ROOM_CODE_LENGTH } from "../../../src/lfg/constants.ts";
+import { FRIEND_BATTLE_CODE_MAXIMUM_LENGTH } from "../../../src/domain/game/constants.ts";
 import { LfgFeature } from "../../../src/lfg/feature.ts";
 import { LfgRoom } from "../../../src/lfg/models/room.ts";
 import type { IUser } from "../../../src/lfg/types.ts";
@@ -91,7 +91,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
 
         test("rejects invalid room code length", async () => {
-            const response = await feature.create(GUILD_ID, OWNER, "x".repeat(LFG_MAX_ROOM_CODE_LENGTH + 1));
+            const response = await feature.create(GUILD_ID, OWNER, "x".repeat(FRIEND_BATTLE_CODE_MAXIMUM_LENGTH + 1));
 
             expect(response).toEqual({ kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE });
         });
@@ -133,7 +133,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
             const response = await feature.changeOwnedRoomCode(
                 GUILD_ID,
                 OWNER,
-                "x".repeat(LFG_MAX_ROOM_CODE_LENGTH + 1),
+                "x".repeat(FRIEND_BATTLE_CODE_MAXIMUM_LENGTH + 1),
             );
 
             expect(response).toEqual({ kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE });
@@ -206,7 +206,11 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         test("rejects invalid room code length", async () => {
             await feature.create(GUILD_ID, OWNER, "old");
 
-            const response = await feature.changeRoomCode(GUILD_ID, "old", "x".repeat(LFG_MAX_ROOM_CODE_LENGTH + 1));
+            const response = await feature.changeRoomCode(
+                GUILD_ID,
+                "old",
+                "x".repeat(FRIEND_BATTLE_CODE_MAXIMUM_LENGTH + 1),
+            );
 
             expect(response).toEqual({ kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE });
             expect(await getRooms(GUILD_ID)).toEqual([{ code: "old", ownerId: OWNER.id, playerIds: [OWNER.id] }]);

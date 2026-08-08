@@ -1,4 +1,4 @@
-import { LFG_MAX_ROOM_PLAYERS } from "../../lfg/constants.ts";
+import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../domain/game/constants.ts";
 import { ELfgFeatureReturnKind } from "../../lfg/types.ts";
 import type { TFindLfgRoomByCode, TFindLfgRoomByUser, TLfgFeature, TMoveUserToLfgRoom } from "./types.ts";
 
@@ -27,7 +27,7 @@ export async function move(
         } as const;
     }
 
-    if (room.playerIds.length >= LFG_MAX_ROOM_PLAYERS) {
+    if (room.playerIds.length >= AMOUNT_OF_PLAYERS_IN_A_BATTLE) {
         return { kind: ELfgFeatureReturnKind.ROOM_IS_FULL, value: { code } } as const;
     }
 

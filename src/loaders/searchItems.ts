@@ -1,5 +1,5 @@
 import type { SqlEntityManager } from "@mikro-orm/sqlite";
-import { SPELL_NAME_SUFFIXES } from "../game/constants.ts";
+import { SPELL_NAME_SUFFIXES } from "../domain/game/constants.ts";
 import { Disciple } from "../infrastructure/game/models/disciple.ts";
 import { Music } from "../infrastructure/game/models/music.ts";
 import { Spell } from "../infrastructure/game/models/spell.ts";

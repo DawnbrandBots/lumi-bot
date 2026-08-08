@@ -1,5 +1,0 @@
-export const LFG_MIN_ROOM_CODE_LENGTH = 1;
-export const LFG_MAX_ROOM_CODE_LENGTH = 8;
-export const LFG_MAX_ROOM_PLAYERS = 3;
-
-export const LFG_ROLE_PING_MINIMUM_COOLDOWN_MINUTES = 0;

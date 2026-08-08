@@ -6,6 +6,7 @@ import {
     PermissionFlagsBits,
     type APIApplicationCommandStringOption,
 } from "discord.js";
+import { ROLE_PING_MINIMUM_COOLDOWN_MINUTES } from "../../../domain/lfg/constants.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
@@ -23,7 +24,6 @@ import {
     ADMIN_ROLE_OPTION_NAME,
 } from "../commands/admin/constants.ts";
 import type { ICommandCommandRegistrationData } from "../commands/types.ts";
-import { LFG_ROLE_PING_MINIMUM_COOLDOWN_MINUTES } from "../../../lfg/constants.ts";
 
 const setOrClearActionOption = {
     type: ApplicationCommandOptionType.String,
@@ -97,7 +97,7 @@ export const adminCommandCommandRegistrationData = {
                             name: ADMIN_MINUTES_OPTION_NAME,
                             description: "Cooldown in minutes.",
                             required: false,
-                            min_value: LFG_ROLE_PING_MINIMUM_COOLDOWN_MINUTES,
+                            min_value: ROLE_PING_MINIMUM_COOLDOWN_MINUTES,
                         },
                     ],
                 },

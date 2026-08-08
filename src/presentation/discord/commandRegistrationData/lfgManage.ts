@@ -4,13 +4,11 @@ import {
     InteractionContextType,
     PermissionFlagsBits,
 } from "discord.js";
-import type { ICommandCommandRegistrationData } from "../commands/types.ts";
 import {
-    LFG_CODE_OPTION_NAME,
-    LFG_NEW_CODE_OPTION_NAME,
-    LFG_PLAYER_OPTION_NAME,
-} from "../commands/lfg/constants.ts";
-import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MIN_ROOM_CODE_LENGTH } from "../../../lfg/constants.ts";
+    FRIEND_BATTLE_CODE_MAXIMUM_LENGTH,
+    FRIEND_BATTLE_CODE_MINIMUM_LENGTH,
+} from "../../../domain/game/constants.ts";
+import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../commands/lfg/constants.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_COMMAND_NAME,
@@ -20,6 +18,7 @@ import {
     LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
     LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfgManage/constants.ts";
+import type { ICommandCommandRegistrationData } from "../commands/types.ts";
 
 const playerOption = {
     type: ApplicationCommandOptionType.User,
@@ -32,8 +31,8 @@ const roomCodeOption = {
     type: ApplicationCommandOptionType.String,
     name: LFG_CODE_OPTION_NAME,
     description: "Room code.",
-    min_length: LFG_MIN_ROOM_CODE_LENGTH,
-    max_length: LFG_MAX_ROOM_CODE_LENGTH,
+    min_length: FRIEND_BATTLE_CODE_MINIMUM_LENGTH,
+    max_length: FRIEND_BATTLE_CODE_MAXIMUM_LENGTH,
     required: true,
 } as const;
 

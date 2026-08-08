@@ -11,6 +11,7 @@ import {
 } from "discord.js";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { EMessageKind } from "../../../src/bot/types.ts";
+import * as constants from "../../../src/domain/game/constants.ts";
 import * as LfgConstants from "../../../src/lfg/constants.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../../src/lfg/mapper.ts";
 import type { IRoom } from "../../../src/lfg/types.ts";
@@ -361,7 +362,7 @@ describe(mapLfgFeatureReturnToMessageBase.name, () => {
                 kind: EMessageKind.NEGATIVE,
                 embeds: [
                     {
-                        description: `Room ${inlineCode(ROOM.code)} already has ${LfgConstants.LFG_MAX_ROOM_PLAYERS} players.`,
+                        description: `Room ${inlineCode(ROOM.code)} already has ${constants.AMOUNT_OF_PLAYERS_IN_A_BATTLE} players.`,
                     },
                 ],
             },

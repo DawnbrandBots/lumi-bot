@@ -1,4 +1,8 @@
-import { EWeaponVariant } from "./types.ts";
+import { EWeaponVariant } from "../../game/types.ts";
+
+export const AMOUNT_OF_PLAYERS_IN_A_BATTLE = 3;
+export const FRIEND_BATTLE_CODE_MINIMUM_LENGTH = 1;
+export const FRIEND_BATTLE_CODE_MAXIMUM_LENGTH = 8;
 
 /**
  * Level that can be reached by any disciple as F2P a few games after reaching high rank on both sides.

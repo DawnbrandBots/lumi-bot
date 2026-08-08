@@ -1,5 +1,5 @@
 import type { PickDeep } from "type-fest";
-import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "./constants.ts";
+import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "../domain/game/constants.ts";
 import {
     ESpellEffectKind,
     ESpellEffectTarget,

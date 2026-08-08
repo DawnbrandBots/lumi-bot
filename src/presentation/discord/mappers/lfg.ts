@@ -13,7 +13,11 @@ import {
 } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
-import { LFG_MAX_ROOM_CODE_LENGTH, LFG_MAX_ROOM_PLAYERS, LFG_MIN_ROOM_CODE_LENGTH } from "../../../lfg/constants.ts";
+import {
+    AMOUNT_OF_PLAYERS_IN_A_BATTLE,
+    FRIEND_BATTLE_CODE_MAXIMUM_LENGTH,
+    FRIEND_BATTLE_CODE_MINIMUM_LENGTH,
+} from "../../../domain/game/constants.ts";
 import type { TLfgFeatureReturnOfKind } from "../../../lfg/types.ts";
 import {
     ELfgFeatureReturnKind,
@@ -44,7 +48,7 @@ const LFG_HELP_DESCRIPTION = `${formatCommand([LFG_COMMAND_NAME])} groups subcom
 
 Rooms:
 ${unorderedList([
-    `are groups of up to ${LFG_MAX_ROOM_PLAYERS} players,`,
+    `are groups of up to ${AMOUNT_OF_PLAYERS_IN_A_BATTLE} players,`,
     `have a code which should be used in Friend Battles,`,
     `have an ${bold("owner")} with additional privileges within the group.`,
 ])}
@@ -345,7 +349,7 @@ export function mapLfgFeatureReturnToMessageBase({
         case ELfgFeatureReturnKind.INVALID_ROOM_CODE:
             return createNegativeMessage({
                 embed: {
-                    description: `Room codes must be between ${LFG_MIN_ROOM_CODE_LENGTH} and ${LFG_MAX_ROOM_CODE_LENGTH} characters.`,
+                    description: `Room codes must be between ${FRIEND_BATTLE_CODE_MINIMUM_LENGTH} and ${FRIEND_BATTLE_CODE_MAXIMUM_LENGTH} characters.`,
                 },
             });
         case ELfgFeatureReturnKind.ALREADY_IN_A_ROOM:
@@ -375,7 +379,7 @@ export function mapLfgFeatureReturnToMessageBase({
         case ELfgFeatureReturnKind.ROOM_IS_FULL:
             return createNegativeMessage({
                 embed: {
-                    description: `Room ${formatRoomCode(result.value.code)} already has ${LFG_MAX_ROOM_PLAYERS} players.`,
+                    description: `Room ${formatRoomCode(result.value.code)} already has ${AMOUNT_OF_PLAYERS_IN_A_BATTLE} players.`,
                 },
             });
         case ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF:

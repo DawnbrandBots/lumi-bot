@@ -1,5 +1,5 @@
 import type { PickDeep } from "type-fest";
-import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "./constants.ts";
+import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "../domain/game/constants.ts";
 import type {
     ISpell,
     ISpellEffectValue,
