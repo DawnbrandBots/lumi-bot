@@ -33,10 +33,10 @@ import type {
 import { ApplicationCommandOptionType, SlashCommandBuilder } from "discord.js";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- referred to in file comment above
 import type allCommandRuntimeInfo from "../../loaders/commandRuntimeInfo.ts";
-import type { ICommandApiInfo } from "./types.ts";
+import type { ICommandCommandRegistrationData } from "./types.ts";
 
 type TNameAndDescriptionData = Pick<
-    ICommandApiInfo,
+    ICommandCommandRegistrationData,
     "name" | "name_localizations" | "description" | "description_localizations"
 >;
 
@@ -179,33 +179,33 @@ function setSubcommandGroupData(
 }
 
 /**
- * Builds a {@link SlashCommandBuilder} instance from a {@link ICommandApiInfo}-shaped object.
+ * Builds a {@link SlashCommandBuilder} instance from a {@link ICommandCommandRegistrationData}-shaped object.
  *
  * Unless the returned builder is updated, calling {@link SlashCommandBuilder.toJSON} should return an object equal to the one provided to {@link getSlashCommandBuilder}.
  */
-export function getSlashCommandBuilder(apiInfo: ICommandApiInfo): SlashCommandBuilder {
-    const builder = setNameAndDescription(new SlashCommandBuilder(), apiInfo);
+export function getSlashCommandBuilder(commandRegistrationData: ICommandCommandRegistrationData): SlashCommandBuilder {
+    const builder = setNameAndDescription(new SlashCommandBuilder(), commandRegistrationData);
 
-    if (apiInfo.contexts !== undefined) {
-        builder.setContexts(...apiInfo.contexts);
+    if (commandRegistrationData.contexts !== undefined) {
+        builder.setContexts(...commandRegistrationData.contexts);
     }
-    if (apiInfo.integration_types !== undefined) {
-        builder.setIntegrationTypes(...apiInfo.integration_types);
+    if (commandRegistrationData.integration_types !== undefined) {
+        builder.setIntegrationTypes(...commandRegistrationData.integration_types);
     }
-    if (apiInfo.default_permission !== undefined) {
-        builder.setDefaultPermission(apiInfo.default_permission);
+    if (commandRegistrationData.default_permission !== undefined) {
+        builder.setDefaultPermission(commandRegistrationData.default_permission);
     }
-    if (apiInfo.default_member_permissions !== undefined) {
-        builder.setDefaultMemberPermissions(apiInfo.default_member_permissions);
+    if (commandRegistrationData.default_member_permissions !== undefined) {
+        builder.setDefaultMemberPermissions(commandRegistrationData.default_member_permissions);
     }
-    if (apiInfo.dm_permission !== undefined) {
-        builder.setDMPermission(apiInfo.dm_permission);
+    if (commandRegistrationData.dm_permission !== undefined) {
+        builder.setDMPermission(commandRegistrationData.dm_permission);
     }
-    if (apiInfo.nsfw !== undefined) {
-        builder.setNSFW(apiInfo.nsfw);
+    if (commandRegistrationData.nsfw !== undefined) {
+        builder.setNSFW(commandRegistrationData.nsfw);
     }
 
-    for (const option of apiInfo.options ?? []) {
+    for (const option of commandRegistrationData.options ?? []) {
         switch (option.type) {
             case ApplicationCommandOptionType.Subcommand:
                 builder.addSubcommand((subcommandBuilder) => setSubcommandData(subcommandBuilder, option));

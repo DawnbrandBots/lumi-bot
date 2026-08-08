@@ -4,7 +4,7 @@ import {
     InteractionContextType,
     PermissionFlagsBits,
 } from "discord.js";
-import type { ICommandApiInfo } from "../../../bot/commands/types.ts";
+import type { ICommandCommandRegistrationData } from "../../../bot/commands/types.ts";
 import {
     LFG_CODE_OPTION_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
@@ -49,7 +49,7 @@ const newRoomCodeOption = {
     description: "New room code.",
 } as const;
 
-export const lfgManageCommandApiInfo = {
+export const lfgManageCommandCommandRegistrationData = {
     name: LFG_MANAGE_COMMAND_NAME,
     description: "Manage looking-for-game rooms for all server members.",
     contexts: [InteractionContextType.Guild],
@@ -93,4 +93,4 @@ export const lfgManageCommandApiInfo = {
             options: [autocompletedRoomCodeOption],
         },
     ],
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;

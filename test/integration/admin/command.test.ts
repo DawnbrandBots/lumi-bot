@@ -16,7 +16,7 @@ import type { AdminFeature } from "../../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
 import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
 import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
-import type { adminCommandApiInfo } from "../../../src/presentation/discord/apiInfo/admin.ts";
+import type { adminCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/admin.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
@@ -58,7 +58,7 @@ function getInteractionFixture({
 }
 
 async function runCommand(
-    command: TCommandHandlers<typeof adminCommandApiInfo>,
+    command: TCommandHandlers<typeof adminCommandCommandRegistrationData>,
     interaction: ChatInputCommandInteraction,
 ) {
     const run = getCommandRunHandler(command, interaction);

@@ -5,7 +5,7 @@ import type { AdminFeature } from "../../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
 import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
 import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
-import type { lfgCommandApiInfo } from "../../../src/lfg/command/apiInfo.ts";
+import type { lfgCommandCommandRegistrationData } from "../../../src/lfg/command/commandRegistrationData.ts";
 import { getLfgCommand } from "../../../src/lfg/command/handlers.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
@@ -117,7 +117,7 @@ function getCommand({
     readonly lfgRoleLastPingedAt?: Date | null;
     readonly lfgRolePingCooldownMinutes?: number;
     readonly setLfgRoleLastPingedAt?: SetLfgRoleLastPingedAtMock;
-}): TCommandHandlers<typeof lfgCommandApiInfo> {
+}): TCommandHandlers<typeof lfgCommandCommandRegistrationData> {
     return getLfgCommand({
         lfgFeature: lfgFeature as unknown as LfgFeature,
         adminFeature: {
@@ -135,7 +135,7 @@ function getCommand({
 }
 
 async function runCommand(
-    command: TCommandHandlers<typeof lfgCommandApiInfo>,
+    command: TCommandHandlers<typeof lfgCommandCommandRegistrationData>,
     interaction: ChatInputCommandInteraction,
 ) {
     const run = getCommandRunHandler(command, interaction);

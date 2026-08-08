@@ -8,7 +8,7 @@ import {
 } from "discord.js";
 import type { TCommandHandlers } from "../../bot/commands/types.ts";
 import { createErrorMessage } from "../../bot/message.ts";
-import type { adminCommandApiInfo } from "../../presentation/discord/apiInfo/admin.ts";
+import type { adminCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/admin.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
@@ -150,5 +150,5 @@ export function getAdminCommand({ adminFeature }: TAdminCommandArgs) {
                     ),
             },
         },
-    } satisfies TCommandHandlers<typeof adminCommandApiInfo>;
+    } satisfies TCommandHandlers<typeof adminCommandCommandRegistrationData>;
 }

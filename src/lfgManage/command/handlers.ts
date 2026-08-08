@@ -16,7 +16,7 @@ import type { LfgFeature } from "../../lfg/feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../lfg/mapper.ts";
 import type { TLfgFeatureReturn } from "../../lfg/types.ts";
 import getRoomCodeAutocomplete from "../../lfg/utils/roomCodeAutocomplete.ts";
-import type { lfgManageCommandApiInfo } from "../../presentation/discord/apiInfo/lfgManage.ts";
+import type { lfgManageCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/lfgManage.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_CREATE_SUBCOMMAND_NAME,
@@ -183,5 +183,5 @@ export function getLfgManageCommand({ adminFeature, lfgFeature }: TLfgManageComm
                 [LFG_CODE_OPTION_NAME]: autocompleteCode,
             },
         },
-    } satisfies TCommandHandlers<typeof lfgManageCommandApiInfo>;
+    } satisfies TCommandHandlers<typeof lfgManageCommandCommandRegistrationData>;
 }

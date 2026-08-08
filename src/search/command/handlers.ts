@@ -1,7 +1,7 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import type { TCommandHandlers } from "../../bot/commands/types.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../bot/constants.ts";
-import type { searchCommandApiInfo } from "../../presentation/discord/apiInfo/search.ts";
+import type { searchCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/search.ts";
 import type { MaybePromise } from "../../utils/types.ts";
 import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../constants.ts";
 import type { TGetSearchIndexEntries } from "../infra.types.ts";
@@ -36,5 +36,5 @@ export function getSearchCommand(arg: {
                 return results.map((item) => ({ name: item.name, value: item.name }));
             },
         },
-    } satisfies TCommandHandlers<typeof searchCommandApiInfo>;
+    } satisfies TCommandHandlers<typeof searchCommandCommandRegistrationData>;
 }

@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { DISCORD_COMMAND_DEFAULTS } from "../../../bot/commands/constants.ts";
-import type { ICommandApiInfo } from "../../../bot/commands/types.ts";
+import type { ICommandCommandRegistrationData } from "../../../bot/commands/types.ts";
 import { SEARCH_MAX_INPUT_LENGTH, SEARCH_TERMS_OPTION_NAME } from "../../../bot/constants.ts";
 
-export const searchCommandApiInfo = {
+export const searchCommandCommandRegistrationData = {
     ...DISCORD_COMMAND_DEFAULTS,
     name: "search",
     description: "Displays info about weapon, unique weapon skill, disciple or spell matching search terms the most.",
@@ -17,4 +17,4 @@ export const searchCommandApiInfo = {
             autocomplete: true,
         },
     ],
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;

@@ -8,7 +8,7 @@ import {
 } from "discord.js";
 import { describe, expect, test } from "vitest";
 import { getSlashCommandBuilder } from "../../../../src/bot/commands/builder.ts";
-import type { ICommandApiInfo } from "../../../../src/bot/commands/types.ts";
+import type { ICommandCommandRegistrationData } from "../../../../src/bot/commands/types.ts";
 import allCommandRuntimeInfo from "../../../../src/loaders/commandRuntimeInfo.ts";
 
 const commandWithBasicOptions = {
@@ -88,7 +88,7 @@ const commandWithBasicOptions = {
             description: "Attachment option.",
         },
     ],
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;
 
 const commandWithSubcommands = {
     name: "rooms",
@@ -128,9 +128,9 @@ const commandWithSubcommands = {
             ],
         },
     ],
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;
 
-const tooManyOptions: ICommandApiInfo = {
+const tooManyOptions: ICommandCommandRegistrationData = {
     name: "options",
     description: "Has too many options.",
     options: Array.from({ length: 26 }, (_, index) => ({
@@ -140,12 +140,12 @@ const tooManyOptions: ICommandApiInfo = {
     })),
 };
 
-const invalidCommandName: ICommandApiInfo = {
+const invalidCommandName: ICommandCommandRegistrationData = {
     name: "INVALID",
     description: "Invalid name.",
 };
 
-const invalidOptionName: ICommandApiInfo = {
+const invalidOptionName: ICommandCommandRegistrationData = {
     name: "invalid-option",
     description: "Has an invalid option.",
     options: [
@@ -157,7 +157,7 @@ const invalidOptionName: ICommandApiInfo = {
     ],
 };
 
-const tooManyChoices: ICommandApiInfo = {
+const tooManyChoices: ICommandCommandRegistrationData = {
     name: "choices",
     description: "Has too many choices.",
     options: [
@@ -174,18 +174,18 @@ const tooManyChoices: ICommandApiInfo = {
 };
 
 describe(getSlashCommandBuilder.name, () => {
-    test.each(allCommandRuntimeInfo)("rebuilds /$apiInfo.name", ({ apiInfo }) => {
-        expect(getSlashCommandBuilder(apiInfo).toJSON()).toMatchObject(apiInfo);
+    test.each(allCommandRuntimeInfo)("rebuilds /$commandRegistrationData.name", ({ commandRegistrationData }) => {
+        expect(getSlashCommandBuilder(commandRegistrationData).toJSON()).toMatchObject(commandRegistrationData);
     });
 
     test.each([
         ["basic options", commandWithBasicOptions],
         ["subcommands", commandWithSubcommands],
-    ] as const)("rebuilds command API info with %s", (_name, commandApiInfo) => {
-        const builder = getSlashCommandBuilder(commandApiInfo);
+    ] as const)("rebuilds command registration data with %s", (_name, commandCommandRegistrationData) => {
+        const builder = getSlashCommandBuilder(commandCommandRegistrationData);
 
         expect(builder).toBeInstanceOf(SlashCommandBuilder);
-        expect(builder.toJSON()).toMatchObject(commandApiInfo);
+        expect(builder.toJSON()).toMatchObject(commandCommandRegistrationData);
     });
 
     test.each([
@@ -193,7 +193,7 @@ describe(getSlashCommandBuilder.name, () => {
         ["an invalid option name", invalidOptionName],
         ["too many options", tooManyOptions],
         ["too many choices", tooManyChoices],
-    ] as const)("applies builder validation for %s", (_name, commandApiInfo) => {
-        expect(() => getSlashCommandBuilder(commandApiInfo).toJSON()).toThrow();
+    ] as const)("applies builder validation for %s", (_name, commandCommandRegistrationData) => {
+        expect(() => getSlashCommandBuilder(commandCommandRegistrationData).toJSON()).toThrow();
     });
 });

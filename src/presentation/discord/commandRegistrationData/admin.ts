@@ -22,7 +22,7 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
 } from "../../../admin/constants.ts";
-import type { ICommandApiInfo } from "../../../bot/commands/types.ts";
+import type { ICommandCommandRegistrationData } from "../../../bot/commands/types.ts";
 import { LFG_ROLE_PING_MINIMUM_COOLDOWN_MINUTES } from "../../../lfg/constants.ts";
 
 const setOrClearActionOption = {
@@ -36,7 +36,7 @@ const setOrClearActionOption = {
     ],
 } as const satisfies APIApplicationCommandStringOption;
 
-export const adminCommandApiInfo = {
+export const adminCommandCommandRegistrationData = {
     name: ADMIN_COMMAND_NAME,
     description: "Configure Lumi for this server.",
     contexts: [InteractionContextType.Guild],
@@ -109,4 +109,4 @@ export const adminCommandApiInfo = {
             ],
         },
     ],
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;

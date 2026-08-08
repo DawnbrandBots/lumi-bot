@@ -16,7 +16,7 @@ import getOrm from "./loaders/orm.ts";
 import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
 import getSearchItems from "./loaders/searchItems.ts";
 import { appMikroOrmConfig } from "./mikro-orm.config.ts";
-import type { TAllCommandApiInfo } from "./presentation/discord/apiInfo.ts";
+import type { TAllCommandRegistrationData } from "./presentation/discord/commandRegistrationData.ts";
 import { handleClientReady } from "./presentation/discord/eventHandlers/clientReady.ts";
 import { handleInteractionCreate } from "./presentation/discord/eventHandlers/interactionCreate.ts";
 import type { THandleInteractionCreate } from "./presentation/discord/eventHandlers/interactionCreate.types.ts";
@@ -59,7 +59,7 @@ const commands = {
     links: getLinksCommand(),
     lfg: getLfgCommand({ adminFeature, lfgFeature }),
     "lfg-manage": getLfgManageCommand({ adminFeature, lfgFeature }),
-} satisfies TCommandRegistry<TAllCommandApiInfo>;
+} satisfies TCommandRegistry<TAllCommandRegistrationData>;
 
 bot.on(Events.ClientReady, handleClientReady);
 

@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, ApplicationIntegrationType, InteractionContextType } from "discord.js";
-import type { ICommandApiInfo } from "../../../bot/commands/types.ts";
+import type { ICommandCommandRegistrationData } from "../../../bot/commands/types.ts";
 import {
     LFG_CHANGE_CODE_SUBCOMMAND_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -46,7 +46,7 @@ const playerOption = {
     required: true,
 } as const;
 
-export const lfgCommandApiInfo = {
+export const lfgCommandCommandRegistrationData = {
     name: LFG_COMMAND_NAME,
     description: "Create and join looking-for-game rooms for playing with other server members.",
     contexts: [InteractionContextType.Guild],
@@ -123,4 +123,4 @@ export const lfgCommandApiInfo = {
             ],
         },
     ],
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;

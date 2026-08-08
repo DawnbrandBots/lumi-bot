@@ -8,7 +8,7 @@ import allCommandRuntimeInfo from "../loaders/commandRuntimeInfo.ts";
 const commandsStr = allCommandRuntimeInfo
     .map((runtimeInfo) => {
         const pingEquivalent = "pingEquivalent" in runtimeInfo ? runtimeInfo.pingEquivalent : undefined;
-        return `- \`/${runtimeInfo.apiInfo.name}\`: ${runtimeInfo.apiInfo.description}${pingEquivalent ? ` (also try \`${pingEquivalent}\`)` : ""}`;
+        return `- \`/${runtimeInfo.commandRegistrationData.name}\`: ${runtimeInfo.commandRegistrationData.description}${pingEquivalent ? ` (also try \`${pingEquivalent}\`)` : ""}`;
     })
     .join("\n");
 

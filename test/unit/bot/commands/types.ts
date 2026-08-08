@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import type {
-    ICommandApiInfo,
+    ICommandCommandRegistrationData,
     TCommandAutocompleteHandler,
     TCommandHandlers,
     TCommandRunHandler,
@@ -9,7 +9,7 @@ import type {
 declare const run: TCommandRunHandler;
 declare const autocomplete: TCommandAutocompleteHandler;
 
-export const rootCommandApiInfo = {
+export const rootCommandCommandRegistrationData = {
     name: "search",
     description: "Searches for something.",
     options: [
@@ -21,16 +21,16 @@ export const rootCommandApiInfo = {
             autocomplete: true,
         },
     ],
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;
 
 export const rootCommandHandlers = {
     run,
     autocomplete: {
         query: autocomplete,
     },
-} satisfies TCommandHandlers<typeof rootCommandApiInfo>;
+} satisfies TCommandHandlers<typeof rootCommandCommandRegistrationData>;
 
-export const nestedCommandApiInfo = {
+export const nestedCommandCommandRegistrationData = {
     name: "rooms",
     description: "Manages rooms.",
     options: [
@@ -78,7 +78,7 @@ export const nestedCommandApiInfo = {
             ],
         },
     ],
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;
 
 export const nestedCommandHandlers = {
     run: {
@@ -99,7 +99,7 @@ export const nestedCommandHandlers = {
             },
         },
     },
-} satisfies TCommandHandlers<typeof nestedCommandApiInfo>;
+} satisfies TCommandHandlers<typeof nestedCommandCommandRegistrationData>;
 
 const missingRunHandler = {
     run: {
@@ -111,7 +111,7 @@ const missingRunHandler = {
         },
     },
     autocomplete: nestedCommandHandlers.autocomplete,
-} satisfies TCommandHandlers<typeof nestedCommandApiInfo>;
+} satisfies TCommandHandlers<typeof nestedCommandCommandRegistrationData>;
 void missingRunHandler;
 
 const missingAutocompleteHandler = {
@@ -122,13 +122,13 @@ const missingAutocompleteHandler = {
             query: autocomplete,
         },
     },
-} satisfies TCommandHandlers<typeof nestedCommandApiInfo>;
+} satisfies TCommandHandlers<typeof nestedCommandCommandRegistrationData>;
 void missingAutocompleteHandler;
 
-export const plainCommandApiInfo = {
+export const plainCommandCommandRegistrationData = {
     name: "plain",
     description: "Has no autocomplete options.",
-} as const satisfies ICommandApiInfo;
+} as const satisfies ICommandCommandRegistrationData;
 
 const unexpectedAutocompleteHandler = {
     run,
@@ -136,5 +136,5 @@ const unexpectedAutocompleteHandler = {
     autocomplete: {
         query: autocomplete,
     },
-} satisfies TCommandHandlers<typeof plainCommandApiInfo>;
+} satisfies TCommandHandlers<typeof plainCommandCommandRegistrationData>;
 void unexpectedAutocompleteHandler;

@@ -1,8 +1,8 @@
 import type { ICommandRuntimeInfo } from "../../bot/commands/types.ts";
 import { DISCORD_BOT_NAME } from "../../bot/constants.ts";
-import { searchCommandApiInfo } from "../../presentation/discord/apiInfo/search.ts";
+import { searchCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/search.ts";
 
 export const searchCommandRuntimeInfo = {
-    apiInfo: searchCommandApiInfo,
+    commandRegistrationData: searchCommandCommandRegistrationData,
     pingEquivalent: `@${DISCORD_BOT_NAME} <SEARCH_TERMS>`,
-} as const satisfies ICommandRuntimeInfo<typeof searchCommandApiInfo>;
+} as const satisfies ICommandRuntimeInfo<typeof searchCommandCommandRegistrationData>;

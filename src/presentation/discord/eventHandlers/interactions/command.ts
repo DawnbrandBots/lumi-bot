@@ -1,12 +1,12 @@
 import { getCommandRunHandler } from "../../../../bot/commands/handlers.ts";
 import type { TCommandRegistry } from "../../../../bot/commands/types.ts";
 import isKeyOfExactObject from "../../../../utils/isKeyOfExactObject.ts";
-import type { TAllCommandApiInfo } from "../../apiInfo.ts";
+import type { TAllCommandRegistrationData } from "../../commandRegistrationData.ts";
 import type { TCommandInteraction } from "./command.types.ts";
 
 export async function handleCommandInteraction(arg: {
     interaction: TCommandInteraction;
-    commands: TCommandRegistry<TAllCommandApiInfo>;
+    commands: TCommandRegistry<TAllCommandRegistrationData>;
 }) {
     if (!isKeyOfExactObject(arg.commands, arg.interaction.commandName)) {
         // TODO: this should be reported in another PR
