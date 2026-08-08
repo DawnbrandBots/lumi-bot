@@ -1,5 +1,5 @@
 import type { TAdminFeature as AdminFeature } from "../../../../application/admin/types.ts";
-import type { LfgFeature } from "../../../../lfg/feature.ts";
+import type { TLfgFeature as LfgFeature } from "../../../../application/lfg/types.ts";
 
 export type TLfgCommandArgs = {
     readonly lfgFeature: LfgFeature;

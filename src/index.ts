@@ -7,7 +7,7 @@ import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb
 import type { TGetEntityByKindAndId as TGetEntityByKindAndIdInfra } from "./infrastructure/game/persistence/searchItemInDb.types.ts";
 import { getLfgPersistence } from "./infrastructure/lfg/persistence.ts";
 import { getAdminPersistence } from "./infrastructure/admin/persistence.ts";
-import { getLfgFeature } from "./lfg/feature.ts";
+import { getLfgFeature } from "./application/lfg/feature.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";

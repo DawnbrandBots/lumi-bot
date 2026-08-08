@@ -1,6 +1,6 @@
 import type { TCommandAutocompleteHandlers } from "../commands/types.ts";
 import { LFG_CODE_OPTION_NAME } from "../commands/lfg/constants.ts";
-import type { LfgFeature } from "../../../lfg/feature.ts";
+import type { TLfgFeature as LfgFeature } from "../../../application/lfg/types.ts";
 import getRoomCodeAutocomplete from "./roomCode.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
