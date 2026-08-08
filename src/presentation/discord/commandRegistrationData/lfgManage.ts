@@ -4,7 +4,7 @@ import {
     InteractionContextType,
     PermissionFlagsBits,
 } from "discord.js";
-import type { ICommandCommandRegistrationData } from "../../../bot/commands/types.ts";
+import type { ICommandCommandRegistrationData } from "../commands/types.ts";
 import {
     LFG_CODE_OPTION_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,

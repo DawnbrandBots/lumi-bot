@@ -2,7 +2,7 @@ import debug from "debug";
 import { Events } from "discord.js";
 import { getAdminFeature } from "./admin/feature.ts";
 import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
-import type { TCommandRegistry } from "./bot/commands/types.ts";
+import type { TCommandRegistry } from "./presentation/discord/commands/types.ts";
 import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
 import type { TGetEntityByKindAndId as TGetEntityByKindAndIdInfra } from "./infrastructure/game/persistence/searchItemInDb.types.ts";
 import { getLfgPersistence } from "./infrastructure/lfg/persistence.ts";

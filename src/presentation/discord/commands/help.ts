@@ -1,6 +1,6 @@
 import { heading, inlineCode, unorderedList } from "discord.js";
-import type { TCommandRunHandlers } from "../../../bot/commands/types.ts";
-import { createNeutralMessage } from "../../../bot/message.ts";
+import type { TCommandRunHandlers } from "../commands/types.ts";
+import { createNeutralMessage } from "../message.ts";
 import type { helpCommandCommandRegistrationData } from "../commandRegistrationData/help.ts";
 import {
     DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT,

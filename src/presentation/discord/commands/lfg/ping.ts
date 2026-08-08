@@ -9,7 +9,7 @@ import {
     type ChatInputCommandInteraction,
     type InteractionReplyOptions,
 } from "discord.js";
-import { createNegativeMessage, createPositiveMessage } from "../../../../bot/message.ts";
+import { createNegativeMessage, createPositiveMessage } from "../../message.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,

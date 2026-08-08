@@ -1,6 +1,6 @@
 import { heading, hyperlink, unorderedList } from "discord.js";
-import type { TCommandRunHandlers } from "../../../bot/commands/types.ts";
-import { createNeutralMessage } from "../../../bot/message.ts";
+import type { TCommandRunHandlers } from "../commands/types.ts";
+import { createNeutralMessage } from "../message.ts";
 import type { linksCommandCommandRegistrationData } from "../commandRegistrationData/links.ts";
 
 const response = createNeutralMessage({

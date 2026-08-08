@@ -5,9 +5,9 @@ import {
     DISCORD_MESSAGE_NEGATIVE_COLOR,
     DISCORD_MESSAGE_NEUTRAL_COLOR,
     DISCORD_MESSAGE_POSITIVE_COLOR,
-} from "../presentation/discord/constants.ts";
-import type { IBaseMessageArg, IChildMessageArg } from "./types.ts";
-import { EMessageKind } from "./types.ts";
+} from "./constants.ts";
+import type { IBaseMessageArg, IChildMessageArg } from "./message.types.ts";
+import { EMessageKind } from "./message.types.ts";
 
 /**
  * Formats a single message sent to Discord. All content should reside within a single embed.

@@ -1,4 +1,4 @@
-import type { TCommandRunHandlers } from "../../../bot/commands/types.ts";
+import type { TCommandRunHandlers } from "../commands/types.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_CREATE_SUBCOMMAND_NAME,

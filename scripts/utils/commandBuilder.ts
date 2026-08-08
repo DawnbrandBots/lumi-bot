@@ -32,8 +32,8 @@ import type {
 } from "discord.js";
 import { ApplicationCommandOptionType, SlashCommandBuilder } from "discord.js";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- referred to in file comment above
-import type allCommandRuntimeInfo from "../../presentation/discord/runtimeInfo.ts";
-import type { ICommandCommandRegistrationData } from "./types.ts";
+import type allCommandRuntimeInfo from "../../src/presentation/discord/runtimeInfo.ts";
+import type { ICommandCommandRegistrationData } from "../../src/presentation/discord/commands/types.ts";
 
 type TNameAndDescriptionData = Pick<
     ICommandCommandRegistrationData,

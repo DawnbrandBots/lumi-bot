@@ -1,5 +1,5 @@
 import { MessageFlags, type CacheType, type ChatInputCommandInteraction, type InteractionReplyOptions } from "discord.js";
-import { createNegativeMessage } from "../../../../bot/message.ts";
+import { createNegativeMessage } from "../../message.ts";
 
 export async function runWithGuild(
     interaction: ChatInputCommandInteraction<CacheType>,

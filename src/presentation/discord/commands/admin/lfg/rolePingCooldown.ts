@@ -6,7 +6,7 @@ import {
     ADMIN_ACTION_SET,
     ADMIN_MINUTES_OPTION_NAME,
 } from "../../../../../admin/constants.ts";
-import { createErrorMessage } from "../../../../../bot/message.ts";
+import { createErrorMessage } from "../../../message.ts";
 import { EAdminFeatureReturnKind } from "../../../../../admin/types.ts";
 import mapAdminFeatureReturnToMessage from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";

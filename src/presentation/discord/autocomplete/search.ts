@@ -1,4 +1,4 @@
-import type { TCommandAutocompleteHandlers } from "../../../bot/commands/types.ts";
+import type { TCommandAutocompleteHandlers } from "../commands/types.ts";
 import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT, SEARCH_TERMS_OPTION_NAME } from "../../../search/constants.ts";
 import type { TGetSearchIndexEntries } from "../../../search/infra.types.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";

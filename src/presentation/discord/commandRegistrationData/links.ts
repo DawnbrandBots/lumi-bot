@@ -1,5 +1,5 @@
-import { DISCORD_COMMAND_DEFAULTS } from "../../../bot/commands/constants.ts";
-import type { ICommandCommandRegistrationData } from "../../../bot/commands/types.ts";
+import { DISCORD_COMMAND_DEFAULTS } from "../commands/constants.ts";
+import type { ICommandCommandRegistrationData } from "../commands/types.ts";
 
 export const linksCommandCommandRegistrationData = {
     ...DISCORD_COMMAND_DEFAULTS,

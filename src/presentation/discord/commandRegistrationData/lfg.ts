@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, ApplicationIntegrationType, InteractionContextType } from "discord.js";
-import type { ICommandCommandRegistrationData } from "../../../bot/commands/types.ts";
+import type { ICommandCommandRegistrationData } from "../commands/types.ts";
 import {
     LFG_CHANGE_CODE_SUBCOMMAND_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,

@@ -1,7 +1,7 @@
 import type { APIEmbed, BaseMessageOptions } from "discord.js";
 import type { resolveSearchInput } from "../../../application/search/resolveSearchInput.ts";
-import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../../../bot/message.ts";
-import type { ISingleEmbedMessageOptions } from "../../../bot/types.ts";
+import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../message.ts";
+import type { ISingleEmbedMessageOptions } from "../message.types.ts";
 import {
     SEARCH_ALIASES_FOOTER_PREFIX,
     SEARCH_ENTITY_KIND_FIELD_NAME,

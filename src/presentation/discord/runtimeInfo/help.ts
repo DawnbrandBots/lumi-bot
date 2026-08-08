@@ -1,4 +1,4 @@
-import type { ICommandRuntimeInfo } from "../../../bot/commands/types.ts";
+import type { ICommandRuntimeInfo } from "../commands/types.ts";
 import { helpCommandCommandRegistrationData } from "../commandRegistrationData/help.ts";
 import { DISCORD_BOT_NAME } from "../constants.ts";
 

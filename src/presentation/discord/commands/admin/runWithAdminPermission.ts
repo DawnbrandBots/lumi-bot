@@ -1,6 +1,6 @@
 import type { InteractionReplyOptions } from "discord.js";
 import { MessageFlags, PermissionFlagsBits, type CacheType, type ChatInputCommandInteraction } from "discord.js";
-import { createErrorMessage } from "../../../../bot/message.ts";
+import { createErrorMessage } from "../../message.ts";
 
 export async function runWithAdminPermission(
     interaction: ChatInputCommandInteraction<CacheType>,

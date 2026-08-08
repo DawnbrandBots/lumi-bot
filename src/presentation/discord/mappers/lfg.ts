@@ -16,8 +16,8 @@ import {
     createNegativeMessage,
     createNeutralMessage,
     createPositiveMessage,
-} from "../../../bot/message.ts";
-import { EMessageKind } from "../../../bot/types.ts";
+} from "../message.ts";
+import { EMessageKind } from "../message.types.ts";
 import * as LfgConstants from "../../../lfg/constants.ts";
 import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../lfg/constants.ts";
 import type { TLfgFeatureReturnOfKind } from "../../../lfg/types.ts";

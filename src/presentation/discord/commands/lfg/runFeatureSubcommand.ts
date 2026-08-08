@@ -1,7 +1,7 @@
 import debug from "debug";
 import type { TextChannel } from "discord.js";
 import { ChannelType, type CacheType, type ChatInputCommandInteraction } from "discord.js";
-import { EMessageKind } from "../../../../bot/types.ts";
+import { EMessageKind } from "../../message.types.ts";
 import type { TLfgFeatureReturn } from "../../../../lfg/types.ts";
 import type { MaybePromise } from "../../../../utils/types.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../mappers/lfg.ts";
