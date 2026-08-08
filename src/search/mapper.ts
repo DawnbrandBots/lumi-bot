@@ -6,19 +6,16 @@ import {
     SEARCH_ENTITY_KIND_FIELD_NAME,
     SEARCH_ID_FIELD_NAME,
     SEARCH_INPUT_TITLE,
-    SEARCH_INPUT_TOO_LONG_DESCRIPTION,
-    SEARCH_INVALID_INPUT_TITLE,
     SEARCH_MISSING_DATABASE_RESULT_TITLE,
     SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
 } from "./constants.ts";
-import type getSearchFeature from "./feature.ts";
 import mapDiscipleToMessage from "./mappers/disciple.ts";
 import mapMusicToMessage from "./mappers/music.ts";
 import mapSpellToMessage from "./mappers/spell.ts";
 import mapWeaponToMessage from "./mappers/weapon.ts";
 import mapWeaponSkillToMessage from "./mappers/weaponSkill.ts";
-import type { TSearchEntity } from "./types.ts";
-import { ESearchFeatureReturnKind, type TSearchFeatureSuccessValue, type TSearchKind } from "./types.ts";
+import type { TSearchEntity, TSearchItem } from "./types.ts";
+import { type TSearchFeatureSuccessValue, type TSearchKind } from "./types.ts";
 
 export type TSearchMapperReturnType = { reply: ISingleEmbedMessageOptions; followUps?: BaseMessageOptions[] };
 export type ISearchMapper<Kind extends TSearchKind> = (entity: TSearchEntity<Kind>) => TSearchMapperReturnType;
@@ -50,42 +47,43 @@ export function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>
     return { reply: { embed: { ...embed, footer }, ...otherReplyProps }, followUps };
 }
 
-function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<ReturnType<typeof getSearchFeature>>>) {
-    switch (result.kind) {
-        case ESearchFeatureReturnKind.SUCCESS: {
-            const { reply, followUps } = mapSearchFeatureSuccessValueToMessages(result.value);
-            return { reply: createPositiveMessage(reply), followUps };
-        }
-        case ESearchFeatureReturnKind.INPUT_TOO_LONG:
-            return {
-                reply: createNegativeMessage({
-                    embed: {
-                        title: SEARCH_INVALID_INPUT_TITLE,
-                        description: SEARCH_INPUT_TOO_LONG_DESCRIPTION,
-                    },
-                }),
-            };
-        case ESearchFeatureReturnKind.NO_RESULT:
-            return {
-                reply: createNegativeMessage({
-                    embed: {
-                        title: SEARCH_INPUT_TITLE,
-                        description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-                    },
-                }),
-            };
-        case ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB:
-            return {
-                reply: createErrorMessage({
-                    embed: {
-                        title: SEARCH_MISSING_DATABASE_RESULT_TITLE,
-                        fields: [
-                            { name: SEARCH_ENTITY_KIND_FIELD_NAME, value: result.value.kind, inline: true },
-                            { name: SEARCH_ID_FIELD_NAME, value: result.value.id, inline: true },
-                        ],
-                    },
-                }),
-            };
+function mapSearchFeatureReturnToMessages(
+    arg:
+        | { entity: TSearchEntity<TSearchKind> | null; searchItem: TSearchItem }
+        | {
+              entity: null;
+              searchItem: null;
+          },
+) {
+    if (arg.entity) {
+        const { reply, followUps } = mapSearchFeatureSuccessValueToMessages({
+            entity: arg.entity,
+            searchItem: arg.searchItem,
+            kind: arg.searchItem.kind,
+        });
+        return { reply: createPositiveMessage(reply), followUps };
+    } else if (!arg.searchItem) {
+        // TODO: duplicated
+        return {
+            reply: createNegativeMessage({
+                embed: {
+                    title: SEARCH_INPUT_TITLE,
+                    description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
+                },
+            }),
+        };
+    } else {
+        return {
+            reply: createErrorMessage({
+                embed: {
+                    title: SEARCH_MISSING_DATABASE_RESULT_TITLE,
+                    fields: [
+                        { name: SEARCH_ENTITY_KIND_FIELD_NAME, value: arg.searchItem.kind, inline: true },
+                        { name: SEARCH_ID_FIELD_NAME, value: arg.searchItem.id, inline: true },
+                    ],
+                },
+            }),
+        };
     }
 }
 

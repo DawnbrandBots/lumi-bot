@@ -27,7 +27,7 @@ function getAliasDistanceToInput({ alias, input }: { alias: TAliasMatch | null; 
 }
 
 export abstract class SearchEngine<Items extends ISearchItem> implements ISearchEngine<Items> {
-    abstract searchOne(input: string): Items | undefined;
+    abstract searchOne(input: string): Items | null;
     abstract search(input: string, limit?: number): Items[];
 }
 
@@ -84,7 +84,7 @@ export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<It
         return this.fuse.search(this.lastInput, { limit }).map((result) => result.item);
     }
 
-    public searchOne(input: string): Items | undefined {
-        return this.search(input, 1)[0];
+    public searchOne(input: string): Items | null {
+        return this.search(input, 1)[0] ?? null;
     }
 }
