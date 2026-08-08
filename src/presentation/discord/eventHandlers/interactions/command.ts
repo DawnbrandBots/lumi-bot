@@ -1,0 +1,25 @@
+import { getCommandRunHandler } from "../../../../bot/commands/handlers.ts";
+import type { TCommandRegistry } from "../../../../bot/commands/types.ts";
+import type { TAllCommandApiInfo } from "../../../../loaders/commandRuntimeInfo.ts";
+import isKeyOfExactObject from "../../../../utils/isKeyOfExactObject.ts";
+import type { TCommandInteraction } from "./command.types.ts";
+
+export async function handleCommandInteraction(arg: {
+    interaction: TCommandInteraction;
+    commands: TCommandRegistry<TAllCommandApiInfo>;
+}) {
+    if (!isKeyOfExactObject(arg.commands, arg.interaction.commandName)) {
+        // TODO: this should be reported in another PR
+        return;
+    }
+
+    const command = arg.commands[arg.interaction.commandName];
+    const run = getCommandRunHandler(command, arg.interaction);
+
+    if (!run) {
+        // TODO: this should be reported in another PR
+        return;
+    }
+
+    await run(arg.interaction);
+}

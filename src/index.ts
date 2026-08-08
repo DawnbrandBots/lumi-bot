@@ -20,6 +20,10 @@ import { appMikroOrmConfig } from "./mikro-orm.config.ts";
 import { handleClientReady } from "./presentation/discord/eventHandlers/clientReady.ts";
 import { handleInteractionCreate } from "./presentation/discord/eventHandlers/interactionCreate.ts";
 import type { THandleInteractionCreate } from "./presentation/discord/eventHandlers/interactionCreate.types.ts";
+import { handleAutocompleteInteraction } from "./presentation/discord/eventHandlers/interactions/autocomplete.ts";
+import type { THandleAutocompleteInteraction } from "./presentation/discord/eventHandlers/interactions/autocomplete.types.ts";
+import { handleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.ts";
+import type { THandleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.types.ts";
 import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
 import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.types.ts";
 import { getSearchCommand } from "./search/command/handlers.ts";
@@ -58,11 +62,21 @@ const commands = {
 } satisfies TCommandRegistry<TAllCommandApiInfo>;
 
 bot.on(Events.ClientReady, handleClientReady);
+
 const messageCreateHandler: THandleMessageCreate = (interaction) =>
     handleMessageCreate({ interaction, resolveSearchInput: _resolveSearchInput });
 bot.on(Events.MessageCreate, messageCreateHandler);
+
+const commandInteractionHandler: THandleCommandInteraction = (interaction) =>
+    handleCommandInteraction({ commands, interaction });
+const autocompleteInteractionHandler: THandleAutocompleteInteraction = (interaction) =>
+    handleAutocompleteInteraction({ commands, interaction });
 const interactionCreateHandler: THandleInteractionCreate = (interaction) =>
-    handleInteractionCreate({ interaction, commands });
+    handleInteractionCreate({
+        handleAutocompleteInteraction: autocompleteInteractionHandler,
+        handleCommandInteraction: commandInteractionHandler,
+        interaction,
+    });
 bot.on(Events.InteractionCreate, interactionCreateHandler);
 
 // Implicitly use DISCORD_TOKEN
