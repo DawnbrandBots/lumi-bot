@@ -11,11 +11,11 @@ export async function kickFromOwnedRoom(
     { guildId, owner, target }: Parameters<TLfgFeature["kickFromOwnedRoom"]>[0],
 ) {
     const result = await getOwnedRoom(deps, { guildId, owner });
-    if ("kind" in result) {
-        return result;
+    if (!result.success) {
+        return result.value;
     }
     if (owner.id === target.id) {
         return { kind: ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF } as const;
     }
-    return kickFromRoom(deps, { guildId, room: result, target });
+    return kickFromRoom(deps, { guildId, room: result.value.room, target });
 }

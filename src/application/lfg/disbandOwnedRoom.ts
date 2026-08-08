@@ -10,8 +10,11 @@ export async function disbandOwnedRoom(
     { guildId, owner }: Parameters<TLfgFeature["disbandOwnedRoom"]>[0],
 ) {
     const result = await getOwnedRoom(deps, { guildId, owner });
-    if ("kind" in result) {
-        return result;
+    if (!result.success) {
+        return result.value;
     }
-    return { kind: ELfgFeatureReturnKind.ROOM_DISBANDED, value: await deps.disbandRoom({ roomId: result.id }) } as const;
+    return {
+        kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
+        value: await deps.disbandRoom({ roomId: result.value.room.id }),
+    } as const;
 }

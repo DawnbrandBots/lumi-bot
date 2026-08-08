@@ -11,8 +11,8 @@ export async function changeOwnedRoomCode(
     { guildId, owner, newCode }: Parameters<TLfgFeature["changeOwnedRoomCode"]>[0],
 ) {
     const result = await getOwnedRoom(deps, { guildId, owner });
-    if ("kind" in result) {
-        return result;
+    if (!result.success) {
+        return result.value;
     }
-    return changeRoomCodeInRoom(deps, { guildId, room: result, newCode });
+    return changeRoomCodeInRoom(deps, { guildId, room: result.value.room, newCode });
 }

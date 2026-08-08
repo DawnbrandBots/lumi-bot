@@ -10,8 +10,8 @@ export async function transferOwnedRoom(
     { guildId, owner, target }: Parameters<TLfgFeature["transferOwnedRoom"]>[0],
 ) {
     const result = await getOwnedRoom(deps, { guildId, owner });
-    if ("kind" in result) {
-        return result;
+    if (!result.success) {
+        return result.value;
     }
-    return transferRoom(deps, { guildId, room: result, target });
+    return transferRoom(deps, { guildId, room: result.value.room, target });
 }
