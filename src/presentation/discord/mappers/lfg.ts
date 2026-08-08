@@ -10,7 +10,7 @@ import {
     userMention,
 } from "discord.js";
 import type { PickDeep } from "type-fest";
-import type { GuildConfig } from "../../../admin/models/config.ts";
+import type { GuildConfig } from "../../../infrastructure/admin/models/config.ts";
 import {
     createErrorMessage,
     createNegativeMessage,

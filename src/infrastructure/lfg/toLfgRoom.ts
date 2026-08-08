@@ -1,5 +1,5 @@
 import type { TLfgRoom } from "../../application/lfg/types.ts";
-import type { LfgRoom } from "../../lfg/models/room.ts";
+import type { LfgRoom } from "./models/room.ts";
 
 export function toLfgRoom(room: LfgRoom, excludedPlayerId?: string): TLfgRoom {
     return {

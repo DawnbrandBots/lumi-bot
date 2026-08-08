@@ -7,8 +7,8 @@ import {
     ADMIN_ACTION_SET,
     ADMIN_LFG_ROLE_LIMIT,
 } from "./constants.ts";
-import { GuildConfig } from "./models/config.ts";
-import { GuildConfigLfgRole } from "./models/configLfgRole.ts";
+import { GuildConfig } from "../infrastructure/admin/models/config.ts";
+import { GuildConfigLfgRole } from "../infrastructure/admin/models/configLfgRole.ts";
 import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "./types.ts";
 
 type AdminFeatureCtorArg = {

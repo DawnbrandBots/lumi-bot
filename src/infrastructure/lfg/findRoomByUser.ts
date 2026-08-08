@@ -1,4 +1,4 @@
-import { LfgRoomPlayer } from "../../lfg/models/roomPlayer.ts";
+import { LfgRoomPlayer } from "./models/roomPlayer.ts";
 import type { TLfgPersistence } from "../../application/lfg/types.ts";
 import type { TLfgPersistenceFunction } from "./types.ts";
 import { toLfgRoom } from "./toLfgRoom.ts";

@@ -1,8 +1,8 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import type { TLfgPlayerRemovalResult } from "../../lfg/types.ts";
 import { ELfgPlayerRemovalKind } from "../../lfg/types.ts";
-import type { LfgRoom } from "../../lfg/models/room.ts";
-import type { LfgRoomPlayer } from "../../lfg/models/roomPlayer.ts";
+import type { LfgRoom } from "./models/room.ts";
+import type { LfgRoomPlayer } from "./models/roomPlayer.ts";
 
 export function removePlayerFromRoom(
     { em }: { readonly em: EntityManager },

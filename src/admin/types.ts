@@ -1,5 +1,5 @@
-import type { GuildConfig } from "./models/config.ts";
-import type { GuildConfigLfgRole } from "./models/configLfgRole.ts";
+import type { GuildConfig } from "../infrastructure/admin/models/config.ts";
+import type { GuildConfigLfgRole } from "../infrastructure/admin/models/configLfgRole.ts";
 
 export const enum EAdminFeatureReturnKind {
     LFG_CHANNEL_HELP = "LFG_CHANNEL_HELP",

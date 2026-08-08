@@ -1,8 +1,8 @@
 import { Migrator } from "@mikro-orm/migrations";
 import { defineConfig } from "@mikro-orm/sqlite";
 import path from "node:path";
-import { GuildConfig } from "./admin/models/config.ts";
-import { GuildConfigLfgRole } from "./admin/models/configLfgRole.ts";
+import { GuildConfig } from "./infrastructure/admin/models/config.ts";
+import { GuildConfigLfgRole } from "./infrastructure/admin/models/configLfgRole.ts";
 import { Color } from "./infrastructure/game/models/color.ts";
 import { DamageEffect } from "./infrastructure/game/models/damageEffect.ts";
 import { Disciple } from "./infrastructure/game/models/disciple.ts";
@@ -28,8 +28,8 @@ import { WeaponSkill } from "./infrastructure/game/models/weaponSkill.ts";
 import { WeaponSkillEffect } from "./infrastructure/game/models/weaponSkillEffect.ts";
 import { WeaponType } from "./infrastructure/game/models/weaponType.ts";
 import { WeaponTypeWeaponSkill } from "./infrastructure/game/models/weaponTypeWeaponSkill.ts";
-import { LfgRoom } from "./lfg/models/room.ts";
-import { LfgRoomPlayer } from "./lfg/models/roomPlayer.ts";
+import { LfgRoom } from "./infrastructure/lfg/models/room.ts";
+import { LfgRoomPlayer } from "./infrastructure/lfg/models/roomPlayer.ts";
 
 const LUMI_STATE_DB_DIR = process.env.LUMI_STATE_DB_DIR;
 const LUMI_STATIC_DB_DIR = process.env.LUMI_STATIC_DB_DIR;

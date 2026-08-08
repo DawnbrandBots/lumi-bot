@@ -25,7 +25,7 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
 } from "../../../admin/constants.ts";
-import type { GuildConfig } from "../../../admin/models/config.ts";
+import type { GuildConfig } from "../../../infrastructure/admin/models/config.ts";
 import type { TAdminFeatureReturn } from "../../../admin/types.ts";
 import { EAdminFeatureReturnKind } from "../../../admin/types.ts";
 

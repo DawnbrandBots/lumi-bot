@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type { TLfgPersistence } from "../../application/lfg/types.ts";
-import { LfgRoom } from "../../lfg/models/room.ts";
-import { LfgRoomPlayer } from "../../lfg/models/roomPlayer.ts";
+import { LfgRoom } from "./models/room.ts";
+import { LfgRoomPlayer } from "./models/roomPlayer.ts";
 import type { TLfgPersistenceFunction } from "./types.ts";
 import { toLfgRoom } from "./toLfgRoom.ts";
 

@@ -1,5 +1,5 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import { LfgRoom } from "../../lfg/models/room.ts";
+import { LfgRoom } from "./models/room.ts";
 
 export async function getRoomEntityById(
     { em }: { readonly em: EntityManager },
