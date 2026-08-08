@@ -8,6 +8,7 @@ import {
 } from "discord.js";
 import type { TCommandHandlers } from "../../bot/commands/types.ts";
 import { createErrorMessage } from "../../bot/message.ts";
+import type { adminCommandApiInfo } from "../../presentation/discord/apiInfo/admin.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
@@ -25,7 +26,6 @@ import {
 } from "../constants.ts";
 import type { AdminFeature } from "../feature.ts";
 import mapAdminFeatureReturnToMessage from "../mapper.ts";
-import type { adminCommandApiInfo } from "./apiInfo.ts";
 
 type TAdminCommandArgs = {
     readonly adminFeature: AdminFeature;

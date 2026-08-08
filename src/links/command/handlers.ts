@@ -1,7 +1,7 @@
 import type { TCommandHandlers } from "../../bot/commands/types.ts";
+import type { linksCommandApiInfo } from "../../presentation/discord/apiInfo/links.ts";
 import linksFeature from "../feature.ts";
 import mapLinksFeatureReturnToMessage from "../mapper.ts";
-import type { linksCommandApiInfo } from "./apiInfo.ts";
 
 export function getLinksCommand() {
     return {

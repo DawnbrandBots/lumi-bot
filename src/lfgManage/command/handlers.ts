@@ -16,6 +16,7 @@ import type { LfgFeature } from "../../lfg/feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../lfg/mapper.ts";
 import type { TLfgFeatureReturn } from "../../lfg/types.ts";
 import getRoomCodeAutocomplete from "../../lfg/utils/roomCodeAutocomplete.ts";
+import type { lfgManageCommandApiInfo } from "../../presentation/discord/apiInfo/lfgManage.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_CREATE_SUBCOMMAND_NAME,
@@ -24,7 +25,6 @@ import {
     LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
     LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
 } from "../constants.ts";
-import type { lfgManageCommandApiInfo } from "./apiInfo.ts";
 
 const log = debug("bot:lfg-manage");
 

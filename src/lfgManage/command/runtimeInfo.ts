@@ -1,5 +1,5 @@
 import type { ICommandRuntimeInfo } from "../../bot/commands/types.ts";
-import { lfgManageCommandApiInfo } from "./apiInfo.ts";
+import { lfgManageCommandApiInfo } from "../../presentation/discord/apiInfo/lfgManage.ts";
 
 export const lfgManageCommandRuntimeInfo = {
     apiInfo: lfgManageCommandApiInfo,

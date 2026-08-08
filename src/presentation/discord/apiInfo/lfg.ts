@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionType, ApplicationIntegrationType, InteractionContextType } from "discord.js";
-import type { ICommandApiInfo } from "../../bot/commands/types.ts";
+import type { ICommandApiInfo } from "../../../bot/commands/types.ts";
 import {
-    LFG_CODE_OPTION_NAME,
     LFG_CHANGE_CODE_SUBCOMMAND_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
+    LFG_CODE_OPTION_NAME,
     LFG_COMMAND_NAME,
     LFG_CREATE_SUBCOMMAND_DESCRIPTION,
     LFG_CREATE_SUBCOMMAND_NAME,
@@ -28,7 +28,7 @@ import {
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
-} from "../constants.ts";
+} from "../../../lfg/constants.ts";
 
 const roomCodeOption = {
     type: ApplicationCommandOptionType.String,

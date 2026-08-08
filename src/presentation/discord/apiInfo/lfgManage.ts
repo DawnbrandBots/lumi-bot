@@ -4,14 +4,14 @@ import {
     InteractionContextType,
     PermissionFlagsBits,
 } from "discord.js";
-import type { ICommandApiInfo } from "../../bot/commands/types.ts";
+import type { ICommandApiInfo } from "../../../bot/commands/types.ts";
 import {
     LFG_CODE_OPTION_NAME,
     LFG_MAX_ROOM_CODE_LENGTH,
     LFG_MIN_ROOM_CODE_LENGTH,
     LFG_NEW_CODE_OPTION_NAME,
     LFG_PLAYER_OPTION_NAME,
-} from "../../lfg/constants.ts";
+} from "../../../lfg/constants.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_COMMAND_NAME,
@@ -20,7 +20,7 @@ import {
     LFG_MANAGE_KICK_SUBCOMMAND_NAME,
     LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
     LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
-} from "../constants.ts";
+} from "../../../lfgManage/constants.ts";
 
 const playerOption = {
     type: ApplicationCommandOptionType.User,

@@ -15,6 +15,7 @@ import type { AdminFeature } from "../../admin/feature.ts";
 import type { TCommandHandlers } from "../../bot/commands/types.ts";
 import { createNegativeMessage, createPositiveMessage } from "../../bot/message.ts";
 import { EMessageKind } from "../../bot/types.ts";
+import type { lfgCommandApiInfo } from "../../presentation/discord/apiInfo/lfg.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -38,7 +39,6 @@ import type { LfgFeature } from "../feature.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../mapper.ts";
 import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../types.ts";
 import getRoomCodeAutocomplete from "../utils/roomCodeAutocomplete.ts";
-import type { lfgCommandApiInfo } from "./apiInfo.ts";
 
 const log = debug("bot:lfg");
 

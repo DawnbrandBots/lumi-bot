@@ -6,8 +6,6 @@ import {
     PermissionFlagsBits,
     type APIApplicationCommandStringOption,
 } from "discord.js";
-import type { ICommandApiInfo } from "../../bot/commands/types.ts";
-import { LFG_ROLE_PING_MINIMUM_COOLDOWN_MINUTES } from "../../lfg/constants.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
@@ -23,7 +21,9 @@ import {
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
-} from "../constants.ts";
+} from "../../../admin/constants.ts";
+import type { ICommandApiInfo } from "../../../bot/commands/types.ts";
+import { LFG_ROLE_PING_MINIMUM_COOLDOWN_MINUTES } from "../../../lfg/constants.ts";
 
 const setOrClearActionOption = {
     type: ApplicationCommandOptionType.String,

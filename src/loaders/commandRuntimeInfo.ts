@@ -14,6 +14,6 @@ const allCommandRuntimeInfo = [
     adminCommandRuntimeInfo,
 ] as const;
 
-export type TAllCommandApiInfo = (typeof allCommandRuntimeInfo)[number]["apiInfo"];
+export type TAllCommandRuntimeInfo = (typeof allCommandRuntimeInfo)[number];
 
 export default allCommandRuntimeInfo;

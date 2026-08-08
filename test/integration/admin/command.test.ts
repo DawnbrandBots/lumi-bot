@@ -1,6 +1,5 @@
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { adminCommandApiInfo } from "../../../src/admin/command/apiInfo.ts";
 import { getAdminCommand } from "../../../src/admin/command/handlers.ts";
 import {
     ADMIN_ACTION_OPTION_NAME,
@@ -17,6 +16,7 @@ import type { AdminFeature } from "../../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
 import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
 import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
+import type { adminCommandApiInfo } from "../../../src/presentation/discord/apiInfo/admin.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
