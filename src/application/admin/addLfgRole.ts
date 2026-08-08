@@ -1,4 +1,4 @@
-import { ADMIN_LFG_ROLE_LIMIT } from "../../admin/constants.ts";
+import { ADMIN_LFG_ROLE_LIMIT } from "./constants.ts";
 import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "../../admin/types.ts";
 import type { TAdminPersistence } from "./types.ts";
 

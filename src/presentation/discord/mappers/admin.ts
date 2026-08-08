@@ -7,6 +7,7 @@ import {
     type InteractionReplyOptions,
 } from "discord.js";
 import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
+import { ADMIN_LFG_ROLE_LIMIT } from "../../../application/admin/constants.ts";
 import { LFG_COMMAND_NAME, LFG_NOT_CONFIGURED_DESCRIPTION, LFG_PING_SUBCOMMAND_NAME } from "../../../lfg/constants.ts";
 import {
     ADMIN_ACTION_ADD,
@@ -18,13 +19,12 @@ import {
     ADMIN_COMMAND_NAME,
     ADMIN_LFG_CHANNEL_NO_VALUE,
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
-    ADMIN_LFG_ROLE_LIMIT,
     ADMIN_LFG_ROLE_NO_VALUE,
     ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME,
     ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
-} from "../../../admin/constants.ts";
+} from "../commands/admin/constants.ts";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
 import type { TAdminFeatureReturn } from "../../../admin/types.ts";
 import { EAdminFeatureReturnKind } from "../../../admin/types.ts";

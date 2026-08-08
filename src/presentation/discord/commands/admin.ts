@@ -4,7 +4,7 @@ import {
     ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME,
     ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
-} from "../../../admin/constants.ts";
+} from "../commands/admin/constants.ts";
 import type { TCommandRunHandlers } from "../commands/types.ts";
 import type { adminCommandCommandRegistrationData } from "../commandRegistrationData/admin.ts";
 import { getAdminLfgChannelHandler } from "./admin/lfg/channel.ts";

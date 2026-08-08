@@ -5,7 +5,7 @@ import {
     ADMIN_ACTION_OPTION_NAME,
     ADMIN_ACTION_REMOVE,
     ADMIN_ROLE_OPTION_NAME,
-} from "../../../../../admin/constants.ts";
+} from "../constants.ts";
 import { createErrorMessage } from "../../../message.ts";
 import { EAdminFeatureReturnKind } from "../../../../../admin/types.ts";
 import mapAdminFeatureReturnToMessage from "../../../mappers/admin.ts";

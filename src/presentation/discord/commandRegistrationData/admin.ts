@@ -21,7 +21,7 @@ import {
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
-} from "../../../admin/constants.ts";
+} from "../commands/admin/constants.ts";
 import type { ICommandCommandRegistrationData } from "../commands/types.ts";
 import { LFG_ROLE_PING_MINIMUM_COOLDOWN_MINUTES } from "../../../lfg/constants.ts";
 
