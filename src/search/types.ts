@@ -23,7 +23,7 @@ export interface ISearchableEntity {
 /**
  * Properties of objects stored and retrieved by the search engine.
  */
-export interface ISearchItem {
+export interface ISearchIndexEntry {
     readonly id: TId;
     readonly kind: string;
     readonly name: string;
@@ -34,8 +34,8 @@ export interface ISearchItem {
     readonly aliases: string[];
 }
 
-export type TSearchItem<Kind extends TSearchKind = TSearchKind> = {
-    [K in Kind]: ISearchItem & { kind: K };
+export type TSearchIndexEntry<Kind extends TSearchKind = TSearchKind> = {
+    [K in Kind]: ISearchIndexEntry & { kind: K };
 }[Kind];
 
 export const enum ESearchFeatureReturnKind {
@@ -48,7 +48,7 @@ export const enum ESearchFeatureReturnKind {
 export type TSearchFeatureSuccessValue<Kind extends TSearchKind> = {
     readonly kind: Kind;
     readonly entity: TSearchEntity<Kind>;
-    readonly searchItem: TSearchItem<Kind>;
+    readonly searchItem: TSearchIndexEntry<Kind>;
 };
 
 export type TSearchFeatureSuccess<Kind extends TSearchKind = TSearchKind> = {
@@ -98,7 +98,7 @@ export type ISearchConfigs = {
 /**
  * Handles user text searches.
  */
-export interface ISearchEngine<Items extends ISearchItem> {
+export interface ISearchEngine<Items extends ISearchIndexEntry> {
     /**
      * May return a searchable item when provided with user input.
      */

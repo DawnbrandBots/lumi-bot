@@ -6,7 +6,7 @@ import { Spell } from "../game/models/spell.ts";
 import { Weapon } from "../game/models/weapon.ts";
 import { WeaponSkill } from "../game/models/weaponSkill.ts";
 import { ESpellRole } from "../game/types.ts";
-import type { ISearchItem, TSearchableEntity } from "../search/types.ts";
+import type { ISearchIndexEntry, TSearchableEntity } from "../search/types.ts";
 
 // Standalone aliases are aliases created from an entity's own properties. eg. `Ennea Fire EX` and `EFEX` are based on the spell's name only.
 // Relative aliases are aliases created from an entity's relationship's properties. eg. `Ennea Fire EX disciple` points to `Kurt`,
@@ -146,7 +146,7 @@ export function* aliasSpell(spell: TAliasSpellInput): Generator<string> {
 
 function getToSearchItemMapper<Kind extends string>(
     aliaser: (value: Extract<TSearchableEntity, { kind: Kind }>) => Iterable<string>,
-): (entity: Extract<TSearchableEntity, { kind: Kind }>) => ISearchItem & { kind: Kind } {
+): (entity: Extract<TSearchableEntity, { kind: Kind }>) => ISearchIndexEntry & { kind: Kind } {
     return (entity: Extract<TSearchableEntity, { kind: Kind }>) => {
         const aliases = [...aliaser(entity)];
         const { id, name, kind } = entity;

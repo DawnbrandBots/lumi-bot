@@ -1,16 +1,16 @@
-import type { TGetEntityByKindAndId } from "../game/feature.types.ts";
-import type { TSearchOne } from "./feature.types.ts";
-import type { TSearchFeatureReturn } from "./types.ts";
-import { ESearchFeatureReturnKind } from "./types.ts";
+import type { TGetEntityByKindAndId } from "../../game/feature.types.ts";
+import type { TGetBestSearchIndexEntry } from "../../search/infra.types.ts";
+import type { TSearchFeatureReturn } from "../../search/types.ts";
+import { ESearchFeatureReturnKind } from "../../search/types.ts";
 
-export async function SearchFeature(
+export async function resolveSearchInput(
     deps: {
-        searchOne: TSearchOne;
+        getBestSearchIndexEntry: TGetBestSearchIndexEntry;
         getEntityByKindAndId: TGetEntityByKindAndId;
     },
     input: string,
 ): Promise<TSearchFeatureReturn> {
-    const searchItem = await deps.searchOne(input);
+    const searchItem = await deps.getBestSearchIndexEntry(input);
 
     if (!searchItem) {
         return { kind: ESearchFeatureReturnKind.NO_RESULT };

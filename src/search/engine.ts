@@ -1,7 +1,7 @@
 import { distance } from "fastest-levenshtein";
 import Fuse, { type FuseSortFunctionArg } from "fuse.js";
 import removeDiacritics from "../utils/removeDiacritics.ts";
-import type { ISearchEngine, ISearchItem } from "./types.ts";
+import type { ISearchEngine, ISearchIndexEntry } from "./types.ts";
 
 /** Alias match type provided by Fuse to custom sort functions. */
 type TAliasMatch = NonNullable<FuseSortFunctionArg["matches"]>[number];
@@ -26,12 +26,12 @@ function getAliasDistanceToInput({ alias, input }: { alias: TAliasMatch | null; 
     return alias ? distance(removeDiacritics(alias.value), removeDiacritics(input)) : Number.POSITIVE_INFINITY;
 }
 
-export abstract class SearchEngine<Items extends ISearchItem> implements ISearchEngine<Items> {
+export abstract class SearchEngine<Items extends ISearchIndexEntry> implements ISearchEngine<Items> {
     abstract searchOne(input: string): Items | null;
     abstract search(input: string, limit?: number): Items[];
 }
 
-export class FuseSearchEngine<Items extends ISearchItem> extends SearchEngine<Items> {
+export class FuseSearchEngine<Items extends ISearchIndexEntry> extends SearchEngine<Items> {
     private readonly fuse: Fuse<Items>;
     /** Used in the custom fuse sorting function. `sortFn` does not receive the search input as argument. */
     private lastInput: string = "";

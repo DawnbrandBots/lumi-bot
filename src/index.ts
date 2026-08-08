@@ -2,6 +2,7 @@ import debug from "debug";
 import { ActivityType, Events, userMention } from "discord.js";
 import { getAdminCommand } from "./admin/command/handlers.ts";
 import { AdminFeature } from "./admin/feature.ts";
+import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
 import { getCommandAutocompleteHandler, getCommandRunHandler } from "./bot/commands/handlers.ts";
 import type { TCommandRegistry } from "./bot/commands/types.ts";
 import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
@@ -22,8 +23,7 @@ import getSearchItems from "./loaders/searchItems.ts";
 import { appMikroOrmConfig } from "./mikro-orm.config.ts";
 import { getSearchCommand } from "./search/command/handlers.ts";
 import { FuseSearchEngine } from "./search/engine.ts";
-import { SearchFeature } from "./search/feature.ts";
-import type { TSearch, TSearchOne } from "./search/feature.types.ts";
+import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "./search/infra.types.ts";
 import mapSearchFeatureReturnToMessages from "./search/mapper.ts";
 import type { TSearchKind } from "./search/types.ts";
 import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
@@ -40,19 +40,18 @@ const bot = getBot();
 const adminFeature = new AdminFeature({ em });
 const lfgFeature = new LfgFeature({ em });
 
-const searchOneInfra: TSearchOne = searchEngine.searchOne.bind(searchEngine);
-const searchOne: TSearchOne = searchOneInfra;
-const searchInfra: TSearch = (arg) => searchEngine.search(arg.input, arg.limit);
-const search: TSearch = searchInfra;
+const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
+const getSearchIndexEntries: TGetSearchIndexEntries = (arg) => searchEngine.search(arg.input, arg.limit);
 
 const getEntityByKindAndId: TGetEntityByKindAndIdInfra = <Kind extends TSearchKind>(arg: { kind: Kind; id: string }) =>
     searchItemInDb<Kind>({ configs: SEARCH_CONFIGS, em }, arg);
 
-const searchFeature = (input: string) => SearchFeature({ searchOne, getEntityByKindAndId }, input);
+const _resolveSearchInput = (input: string) =>
+    resolveSearchInput({ getBestSearchIndexEntry, getEntityByKindAndId }, input);
 
 const commands = {
     admin: getAdminCommand({ adminFeature }),
-    search: getSearchCommand({ search, searchAndGetBestMatchData: searchFeature }),
+    search: getSearchCommand({ getSearchIndexEntries, resolveSearchInput: _resolveSearchInput }),
     help: getHelpCommand(),
     links: getLinksCommand(),
     lfg: getLfgCommand({ adminFeature, lfgFeature }),
@@ -85,7 +84,7 @@ bot.on(Events.MessageCreate, async (interaction) => {
         return;
     }
     const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const result = await searchFeature(input);
+    const result = await _resolveSearchInput(input);
     const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
     await interaction.reply(reply);
     for (const followUp of followUps ?? []) {

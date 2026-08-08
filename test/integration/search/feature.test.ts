@@ -1,23 +1,23 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
+import searchFeature from "../../../src/application/search/resolveSearchInput.ts";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/bot/constants.ts";
 import SEARCH_CONFIGS from "../../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../../src/loaders/searchItems.ts";
 import { FuseSearchEngine } from "../../../src/search/engine.ts";
-import searchFeature from "../../../src/search/feature.ts";
-import type { ISearchEngine, TSearchItem } from "../../../src/search/types.ts";
+import type { ISearchEngine, TSearchIndexEntry } from "../../../src/search/types.ts";
 import { ESearchFeatureReturnKind } from "../../../src/search/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
-let searchEngine: ISearchEngine<TSearchItem>;
+let searchEngine: ISearchEngine<TSearchIndexEntry>;
 
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
+    searchEngine = new FuseSearchEngine<TSearchIndexEntry>({ items: await getSearchItems(em) });
 });
 
 afterAll(async () => {
@@ -39,13 +39,13 @@ describe(searchFeature.name, () => {
     });
 
     test("missing from database", async () => {
-        const missingSearchItem: TSearchItem = {
+        const missingSearchItem: TSearchIndexEntry = {
             id: "MISSING_ID",
             kind: "weapon",
             name: "Missing Weapon",
             aliases: ["Missing Weapon"],
         };
-        const mockedSearchEngine: ISearchEngine<TSearchItem> = {
+        const mockedSearchEngine: ISearchEngine<TSearchIndexEntry> = {
             search: vi.fn(),
             searchOne: vi.fn().mockReturnValue(missingSearchItem),
         };
