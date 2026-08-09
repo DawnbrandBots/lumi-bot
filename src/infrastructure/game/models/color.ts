@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IColor } from "../../../game/types.ts";
+import type { IColor } from "../../../domain/game/models/color.types.ts";
 
 export const ColorSchema = defineEntity({
     name: "Color",

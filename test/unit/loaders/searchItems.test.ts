@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { ESpellRole } from "../../../src/game/types.ts";
+import { ESpellRole } from "../../../src/domain/game/models/spell.types.ts";
 import {
     aliasDisciple,
     aliasMusic,

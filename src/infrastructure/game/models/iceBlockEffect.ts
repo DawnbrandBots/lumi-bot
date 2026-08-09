@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectKind, type IIceBlockEffect } from "../../../game/types.ts";
+import { ESpellEffectKind } from "../../../domain/game/models/spellEffect.types.ts";
+import type { IIceBlockEffect } from "../../../domain/game/models/spellEffect.types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SummonEffectStatValue } from "./summonEffectStat.ts";
 

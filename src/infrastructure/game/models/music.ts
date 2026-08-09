@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IMusic } from "../../../game/types.ts";
+import type { IMusic } from "../../../domain/game/models/music.types.ts";
 import { Disciple } from "./disciple.ts";
 
 export const MusicSchema = defineEntity({

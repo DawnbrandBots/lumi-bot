@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectValueUnitKind, type ISpellEffectValuePercentUnit } from "../../../game/types.ts";
+import { ESpellEffectValueUnitKind } from "../../../domain/game/models/spellEffectValue.types.ts";
+import type { ISpellEffectValuePercentUnit } from "../../../domain/game/models/spellEffectValue.types.ts";
 import { SpellEffectValueUnit } from "./spellEffectValueUnit.ts";
 import { StatType } from "./stat.ts";
 

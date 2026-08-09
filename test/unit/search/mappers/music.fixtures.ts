@@ -1,6 +1,6 @@
 // Disclaimer: AI-generated test fixtures
 
-import type { IMusic } from "../../../../src/game/types.ts";
+import type { IMusic } from "../../../../src/domain/game/models/music.types.ts";
 import { DISCIPLE } from "./disciple.fixtures.ts";
 
 export const MUSIC = {

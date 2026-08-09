@@ -1,4 +1,4 @@
-import { EWeaponVariant } from "../../game/types.ts";
+import { EWeaponVariant } from "./models/weaponVariant.types.ts";
 
 export const AMOUNT_OF_PLAYERS_IN_A_BATTLE = 3;
 export const FRIEND_BATTLE_CODE_MINIMUM_LENGTH = 1;

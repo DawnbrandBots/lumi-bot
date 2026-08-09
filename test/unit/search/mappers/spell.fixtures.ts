@@ -1,16 +1,9 @@
 // Disclaimer: AI-generated test fixtures
 
-import {
-    ESpellDraggingMode,
-    ESpellEffectKind,
-    ESpellEffectTarget,
-    ESpellEffectValueUnitKind,
-    ESpellRole,
-    type ISpell,
-    type ISpellDraggingMode,
-    type ISpellRole,
-    type ISpellShape,
-} from "../../../../src/game/types.ts";
+import { ESpellDraggingMode, ESpellRole } from "../../../../src/domain/game/models/spell.types.ts";
+import { ESpellEffectKind, ESpellEffectTarget } from "../../../../src/domain/game/models/spellEffect.types.ts";
+import { ESpellEffectValueUnitKind } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
+import type { ISpell, ISpellDraggingMode, ISpellRole, ISpellShape } from "../../../../src/domain/game/models/spell.types.ts";
 import { RED_COLOR } from "./common.fixtures.ts";
 
 export const SPELL_ROLE = {

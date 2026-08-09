@@ -7,7 +7,7 @@ import {
 import { describeSpellEffects } from "../../../../game/spellEffectDescriptions.ts";
 import type { ISpellEffectValueWithToLevel } from "../../../../game/spellEffectValues.ts";
 import { spellEffectsValues } from "../../../../game/spellEffectValues.ts";
-import type { ISpell, ISpellShape } from "../../../../game/types.ts";
+import type { ISpell, ISpellShape } from "../../../../domain/game/models/spell.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
 

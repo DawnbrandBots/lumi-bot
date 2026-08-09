@@ -1,5 +1,6 @@
 import { Type } from "@mikro-orm/sqlite";
-import { EStat, type IStat } from "../../../game/types.ts";
+import { EStat } from "../../../domain/game/models/stat.types.ts";
+import type { IStat } from "../../../domain/game/models/stat.types.ts";
 
 export class Stat implements IStat {
     readonly id: IStat["id"];

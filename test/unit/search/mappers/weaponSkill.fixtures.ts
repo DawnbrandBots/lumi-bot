@@ -1,6 +1,7 @@
 // Disclaimer: AI-generated test fixtures
 
-import type { IWeaponSkill, IWeaponTypeWeaponSkill } from "../../../../src/game/types.ts";
+import type { IWeaponSkill } from "../../../../src/domain/game/models/weaponSkill.types.ts";
+import type { IWeaponTypeWeaponSkill } from "../../../../src/domain/game/models/weaponTypeWeaponSkill.types.ts";
 import { WEAPON_SKILL_EFFECT, WEAPON_TYPE } from "./common.fixtures.ts";
 import { WEAPON, WEAPON_TYPE_SKILL } from "./weapon.fixtures.ts";
 

@@ -1,6 +1,6 @@
 import { Type } from "@mikro-orm/sqlite";
-import type { ISpellDraggingMode } from "../../../game/types.ts";
-import { ESpellDraggingMode } from "../../../game/types.ts";
+import type { ISpellDraggingMode } from "../../../domain/game/models/spell.types.ts";
+import { ESpellDraggingMode } from "../../../domain/game/models/spell.types.ts";
 
 export class SpellDraggingMode implements ISpellDraggingMode {
     readonly kind: ISpellDraggingMode["kind"];

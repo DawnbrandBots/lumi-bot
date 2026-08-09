@@ -1,5 +1,5 @@
 import type { PickDeep } from "type-fest";
-import type { IDisciple } from "../../../game/types.ts";
+import type { IDisciple } from "../models/disciple.types.ts";
 
 export function baseHp(arg: PickDeep<IDisciple, "movementType.baseHp">): number {
     return arg.movementType.baseHp;

@@ -1,5 +1,5 @@
 import type { EntityName, Populate } from "@mikro-orm/sqlite";
-import type { TId } from "../game/types.ts";
+import type { TId } from "../domain/game/models/base.types.ts";
 import type { Disciple } from "../infrastructure/game/models/disciple.ts";
 import type { Music } from "../infrastructure/game/models/music.ts";
 import type { Spell } from "../infrastructure/game/models/spell.ts";

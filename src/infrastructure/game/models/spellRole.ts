@@ -1,6 +1,6 @@
 import { Type } from "@mikro-orm/sqlite";
-import type { ISpellRole } from "../../../game/types.ts";
-import { ESpellRole } from "../../../game/types.ts";
+import type { ISpellRole } from "../../../domain/game/models/spell.types.ts";
+import { ESpellRole } from "../../../domain/game/models/spell.types.ts";
 
 export class SpellRole implements ISpellRole {
     readonly kind: ISpellRole["kind"];

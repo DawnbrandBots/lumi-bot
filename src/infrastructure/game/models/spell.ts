@@ -1,6 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 import SpellRules from "../../../domain/game/rules/spell.ts";
-import type { ISpell, ISpellDraggingMode } from "../../../game/types.ts";
+import type { ISpell, ISpellDraggingMode } from "../../../domain/game/models/spell.types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { Disciple } from "./disciple.ts";
 import { HealEffect } from "./healEffect.ts";

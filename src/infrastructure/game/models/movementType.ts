@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IMovementType, IWeaponType } from "../../../game/types.ts";
+import type { IMovementType } from "../../../domain/game/models/movement.types.ts";
+import type { IWeaponType } from "../../../domain/game/models/weaponType.types.ts";
 
 export const MovementTypeSchema = defineEntity({
     name: "MovementType",

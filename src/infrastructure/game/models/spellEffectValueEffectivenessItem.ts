@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { ISpellEffectValueEffectivenessItem } from "../../../game/types.ts";
+import type { ISpellEffectValueEffectivenessItem } from "../../../domain/game/models/spellEffectValue.types.ts";
 
 export const SpellEffectValueEffectivenessItemSchema = defineEntity({
     name: "SpellEffectValueEffectivenessItem",

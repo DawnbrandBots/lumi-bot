@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectKind, type IMovementEffect } from "../../../game/types.ts";
+import { ESpellEffectKind } from "../../../domain/game/models/spellEffect.types.ts";
+import type { IMovementEffect } from "../../../domain/game/models/spellEffect.types.ts";
 import { DirectionType } from "./direction.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SpellEffectTargetType } from "./spellEffectTarget.ts";

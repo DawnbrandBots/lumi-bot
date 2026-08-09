@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectKind, type IWarpEffect } from "../../../game/types.ts";
+import { ESpellEffectKind } from "../../../domain/game/models/spellEffect.types.ts";
+import type { IWarpEffect } from "../../../domain/game/models/spellEffect.types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 
 export const WarpEffectSchema = defineEntity({

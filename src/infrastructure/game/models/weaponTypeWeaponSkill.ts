@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import type { IWeaponTypeWeaponSkill } from "../../../game/types.ts";
+import type { IWeaponTypeWeaponSkill } from "../../../domain/game/models/weaponTypeWeaponSkill.types.ts";
 import { WeaponSkill } from "./weaponSkill.ts";
 import { WeaponType } from "./weaponType.ts";
 

@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectKind, type IRepeatEffect } from "../../../game/types.ts";
+import { ESpellEffectKind } from "../../../domain/game/models/spellEffect.types.ts";
+import type { IRepeatEffect } from "../../../domain/game/models/spellEffect.types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { HealEffect } from "./healEffect.ts";
 import { SpellEffect } from "./spellEffect.ts";

@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectValueUnitKind, type ISpellEffectValueFixedUnit } from "../../../game/types.ts";
+import { ESpellEffectValueUnitKind } from "../../../domain/game/models/spellEffectValue.types.ts";
+import type { ISpellEffectValueFixedUnit } from "../../../domain/game/models/spellEffectValue.types.ts";
 import { SpellEffectValueUnit } from "./spellEffectValueUnit.ts";
 
 export const SpellEffectValueFixedUnitSchema = defineEntity({

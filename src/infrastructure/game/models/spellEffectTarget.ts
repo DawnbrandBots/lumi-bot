@@ -1,6 +1,6 @@
 import { Type } from "@mikro-orm/sqlite";
-import type { ISpellEffectTarget } from "../../../game/types.ts";
-import { ESpellEffectTarget } from "../../../game/types.ts";
+import type { ISpellEffectTarget } from "../../../domain/game/models/spellEffect.types.ts";
+import { ESpellEffectTarget } from "../../../domain/game/models/spellEffect.types.ts";
 
 export class SpellEffectTarget implements ISpellEffectTarget {
     readonly kind: ISpellEffectTarget["kind"];

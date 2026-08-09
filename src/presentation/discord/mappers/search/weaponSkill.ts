@@ -1,5 +1,6 @@
 import type { APIEmbed } from "discord.js";
-import type { IWeaponSkill, IWeaponTypeWeaponSkill } from "../../../../game/types.ts";
+import type { IWeaponSkill } from "../../../../domain/game/models/weaponSkill.types.ts";
+import type { IWeaponTypeWeaponSkill } from "../../../../domain/game/models/weaponTypeWeaponSkill.types.ts";
 
 export function getWeaponTypeSkillRankString(rank: IWeaponTypeWeaponSkill["rank"], weaponTypeName: string): string {
     switch (rank) {
