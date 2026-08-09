@@ -1,6 +1,6 @@
 import { hyperlink, unorderedList, type APIEmbed } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../../../domain/game/constants.ts";
-import { describeSpellEffects } from "../../../../game/spellEffectDescriptions.ts";
+import { describeSpellEffects } from "./spellEffectDescriptions.ts";
 import type { IDisciple } from "../../../../domain/game/models/disciple.types.ts";
 import type { IMusic } from "../../../../domain/game/models/music.types.ts";
 import range from "../../../../utils/range.ts";

@@ -1,5 +1,8 @@
 import { describe, expect, test } from "vitest";
-import { spellEffectsValues, type ISpellEffectValueWithToLevel } from "../../../src/game/spellEffectValues.ts";
+import {
+    spellEffectsValues,
+    type ISpellEffectValueWithToLevel,
+} from "../../../src/presentation/discord/mappers/search/spellEffectValues.ts";
 import { ESpellEffectKind } from "../../../src/domain/game/models/spellEffect.types.ts";
 import { ESpellEffectValueUnitKind } from "../../../src/domain/game/models/spellEffectValue.types.ts";
 import { ESpellRole } from "../../../src/domain/game/models/spell.types.ts";

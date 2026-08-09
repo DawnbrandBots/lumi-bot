@@ -1,13 +1,25 @@
 import type { PickDeep } from "type-fest";
-import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "../domain/game/constants.ts";
-import { ESpellEffectKind, ESpellEffectTarget } from "../domain/game/models/spellEffect.types.ts";
-import { ESpellEffectValueUnitKind } from "../domain/game/models/spellEffectValue.types.ts";
-import type { IMovementType } from "../domain/game/models/movement.types.ts";
-import type { ISpell } from "../domain/game/models/spell.types.ts";
-import type { ISpellEffect, ISpellEffectTarget, IStatusEffect, TSpellEffect, TSpellEffectKindToEffectMap } from "../domain/game/models/spellEffect.types.ts";
-import type { ISpellEffectValue, ISpellEffectValueEffectivenessItem, ISpellEffectValueFixedUnit, ISpellEffectValuePercentUnit, ISpellEffectValueUnit } from "../domain/game/models/spellEffectValue.types.ts";
-import type { IStat } from "../domain/game/models/stat.types.ts";
-import type { IWeaponType } from "../domain/game/models/weaponType.types.ts";
+import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "../../../../domain/game/constants.ts";
+import type { IMovementType } from "../../../../domain/game/models/movement.types.ts";
+import type { ISpell } from "../../../../domain/game/models/spell.types.ts";
+import { ESpellEffectKind, ESpellEffectTarget } from "../../../../domain/game/models/spellEffect.types.ts";
+import type {
+    ISpellEffect,
+    ISpellEffectTarget,
+    IStatusEffect,
+    TSpellEffect,
+    TSpellEffectKindToEffectMap,
+} from "../../../../domain/game/models/spellEffect.types.ts";
+import { ESpellEffectValueUnitKind } from "../../../../domain/game/models/spellEffectValue.types.ts";
+import type {
+    ISpellEffectValue,
+    ISpellEffectValueEffectivenessItem,
+    ISpellEffectValueFixedUnit,
+    ISpellEffectValuePercentUnit,
+    ISpellEffectValueUnit,
+} from "../../../../domain/game/models/spellEffectValue.types.ts";
+import type { IStat } from "../../../../domain/game/models/stat.types.ts";
+import type { IWeaponType } from "../../../../domain/game/models/weaponType.types.ts";
 
 export type TSpellEffectValue = PickDeep<ISpellEffectValue, "base"> & {
     readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "kind" | "base">> | null;

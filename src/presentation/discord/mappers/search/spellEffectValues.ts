@@ -1,10 +1,13 @@
 import type { PickDeep } from "type-fest";
-import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "../domain/game/constants.ts";
-import type { ISpell } from "../domain/game/models/spell.types.ts";
-import type { ISpellEffectValue, ISpellEffectValueEffectivenessItem } from "../domain/game/models/spellEffectValue.types.ts";
-import type { TSpellEffectKindToEffectMap } from "../domain/game/models/spellEffect.types.ts";
-import { ESpellEffectValueUnitKind } from "../domain/game/models/spellEffectValue.types.ts";
-import { ESpellRole } from "../domain/game/models/spell.types.ts";
+import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "../../../../domain/game/constants.ts";
+import { ESpellRole } from "../../../../domain/game/models/spell.types.ts";
+import type { ISpell } from "../../../../domain/game/models/spell.types.ts";
+import type { TSpellEffectKindToEffectMap } from "../../../../domain/game/models/spellEffect.types.ts";
+import { ESpellEffectValueUnitKind } from "../../../../domain/game/models/spellEffectValue.types.ts";
+import type {
+    ISpellEffectValue,
+    ISpellEffectValueEffectivenessItem,
+} from "../../../../domain/game/models/spellEffectValue.types.ts";
 
 type TEffectWithAmountInput = {
     // Can't just straight up use PickDeep over IDamageEffect and IHealEffect because

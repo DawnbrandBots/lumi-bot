@@ -4,9 +4,9 @@ import {
     DISCORD_BLUE_SQUARE_EMOJI_CALL,
     DISCORD_RED_SQUARE_EMOJI_CALL,
 } from "../../constants.ts";
-import { describeSpellEffects } from "../../../../game/spellEffectDescriptions.ts";
-import type { ISpellEffectValueWithToLevel } from "../../../../game/spellEffectValues.ts";
-import { spellEffectsValues } from "../../../../game/spellEffectValues.ts";
+import { describeSpellEffects } from "./spellEffectDescriptions.ts";
+import type { ISpellEffectValueWithToLevel } from "./spellEffectValues.ts";
+import { spellEffectsValues } from "./spellEffectValues.ts";
 import type { ISpell, ISpellShape } from "../../../../domain/game/models/spell.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";

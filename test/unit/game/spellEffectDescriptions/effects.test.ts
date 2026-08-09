@@ -3,7 +3,7 @@
  */
 
 import { describe, expect, test } from "vitest";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../src/game/spellEffectDescriptions.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 import { ESpellEffectKind } from "../../../../src/domain/game/models/spellEffect.types.ts";
 import {
     ANY_TARGET,

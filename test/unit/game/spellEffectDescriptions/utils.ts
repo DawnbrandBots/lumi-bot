@@ -1,4 +1,4 @@
-import type { TSpellEffectDescriptionsInput } from "../../../../src/game/spellEffectDescriptions.ts";
+import type { TSpellEffectDescriptionsInput } from "../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 import { ESpellEffectTarget } from "../../../../src/domain/game/models/spellEffect.types.ts";
 import { ESpellEffectValueUnitKind } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
 import { EStat } from "../../../../src/domain/game/models/stat.types.ts";
