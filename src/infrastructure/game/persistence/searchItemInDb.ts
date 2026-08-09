@@ -1,5 +1,6 @@
 import type { EntityManager, FilterQuery } from "@mikro-orm/sqlite";
-import type { ISearchConfigs, TSearchEntity, TSearchKind } from "../../../search/types.ts";
+import type { TSearchKind } from "../../../domain/search/types.ts";
+import type { ISearchConfigs, TSearchOrmEntity } from "../../search/types.ts";
 
 function getFromEntityManager<Kind extends TSearchKind>({
     em,
@@ -8,8 +9,8 @@ function getFromEntityManager<Kind extends TSearchKind>({
 }: {
     em: EntityManager;
     config: ISearchConfigs[Kind];
-    query: FilterQuery<TSearchEntity<Kind>>;
-}): Promise<TSearchEntity<Kind> | null> {
+    query: FilterQuery<TSearchOrmEntity<Kind>>;
+}): Promise<TSearchOrmEntity<Kind> | null> {
     return em.findOne(config.class, query, {
         populate: (config.populate ?? ["*"]) as never,
     });
@@ -27,6 +28,6 @@ export async function searchItemInDb<Kind extends TSearchKind>(
 ) {
     // TODO: figure out the correct types here
     const config = configs[searchItem.kind];
-    const query = { id: searchItem.id } as FilterQuery<TSearchEntity<Kind>>;
+    const query = { id: searchItem.id } as FilterQuery<TSearchOrmEntity<Kind>>;
     return getFromEntityManager({ em, config, query });
 }

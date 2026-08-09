@@ -1,6 +1,9 @@
 import type { APIEmbed, BaseMessageOptions } from "discord.js";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../application/search/constants.ts";
 import type { resolveSearchInput } from "../../../application/search/resolveSearchInput.ts";
+import type { TSearchFeatureSuccessValue } from "../../../application/search/types.ts";
+import { ESearchFeatureReturnKind } from "../../../application/search/types.ts";
+import type { TSearchEntity, TSearchKind } from "../../../domain/search/types.ts";
 import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../message.ts";
 import type { ISingleEmbedMessageOptions } from "../message.types.ts";
 import mapDiscipleToMessage from "./search/disciple.ts";
@@ -8,8 +11,6 @@ import mapMusicToMessage from "./search/music.ts";
 import mapSpellToMessage from "./search/spell.ts";
 import mapWeaponToMessage from "./search/weapon.ts";
 import mapWeaponSkillToMessage from "./search/weaponSkill.ts";
-import type { TSearchEntity, TSearchFeatureSuccessValue, TSearchKind } from "../../../search/types.ts";
-import { ESearchFeatureReturnKind } from "../../../search/types.ts";
 
 export type TSearchMapperReturnType = { reply: ISingleEmbedMessageOptions; followUps?: BaseMessageOptions[] };
 export type ISearchMapper<Kind extends TSearchKind> = (entity: TSearchEntity<Kind>) => TSearchMapperReturnType;

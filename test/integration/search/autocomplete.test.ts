@@ -7,7 +7,8 @@ import getSearchItems from "../../../src/loaders/searchItems.ts";
 import { getSearchCommand } from "../../../src/search/command/handlers.ts";
 import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../../../src/search/constants.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import type { ISearchEngine, TSearchIndexEntry } from "../../../src/search/types.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
+import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES, SEARCH_RANKING_KNOWN_FAILURE_CASES } from "./constants.ts";
 

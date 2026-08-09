@@ -6,7 +6,7 @@ import { Spell } from "../infrastructure/game/models/spell.ts";
 import { Weapon } from "../infrastructure/game/models/weapon.ts";
 import { WeaponSkill } from "../infrastructure/game/models/weaponSkill.ts";
 import { ESpellRole } from "../domain/game/models/spell.types.ts";
-import type { ISearchIndexEntry, TSearchableEntity } from "../search/types.ts";
+import type { ISearchIndexEntry, TSearchableEntity } from "../domain/search/types.ts";
 
 // Standalone aliases are aliases created from an entity's own properties. eg. `Ennea Fire EX` and `EFEX` are based on the spell's name only.
 // Relative aliases are aliases created from an entity's relationship's properties. eg. `Ennea Fire EX disciple` points to `Kurt`,

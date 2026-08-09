@@ -1,13 +1,15 @@
 import debug from "debug";
 import { Events } from "discord.js";
 import { getAdminFeature } from "./application/admin/feature.ts";
-import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
-import type { TCommandRegistry } from "./presentation/discord/commands/types.ts";
-import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
-import type { TGetEntityByKindAndId as TGetEntityByKindAndIdInfra } from "./infrastructure/game/persistence/searchItemInDb.types.ts";
-import { getLfgPersistence } from "./infrastructure/lfg/persistence.ts";
-import { getAdminPersistence } from "./infrastructure/admin/persistence.ts";
 import { getLfgFeature } from "./application/lfg/feature.ts";
+import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "./application/search/ports.ts";
+import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
+import type { TSearchKind } from "./domain/search/types.ts";
+import type { TGetEntityByKindAndId } from "./game/feature.types.ts";
+import { getAdminPersistence } from "./infrastructure/admin/persistence.ts";
+import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
+import { getLfgPersistence } from "./infrastructure/lfg/persistence.ts";
+import { FuseSearchEngine } from "./infrastructure/search/engine.ts";
 import getBot from "./loaders/bot.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
@@ -23,6 +25,7 @@ import { getLfgCommand } from "./presentation/discord/commands/lfg.ts";
 import { getLfgManageCommand } from "./presentation/discord/commands/lfgManage.ts";
 import { getLinksCommand } from "./presentation/discord/commands/links.ts";
 import { getSearchCommand } from "./presentation/discord/commands/search.ts";
+import type { TCommandRegistry } from "./presentation/discord/commands/types.ts";
 import { handleClientReady } from "./presentation/discord/eventHandlers/clientReady.ts";
 import { handleInteractionCreate } from "./presentation/discord/eventHandlers/interactionCreate.ts";
 import type { THandleInteractionCreate } from "./presentation/discord/eventHandlers/interactionCreate.types.ts";
@@ -32,9 +35,6 @@ import { handleCommandInteraction } from "./presentation/discord/eventHandlers/i
 import type { THandleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.types.ts";
 import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
 import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.types.ts";
-import { FuseSearchEngine } from "./infrastructure/search/engine.ts";
-import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "./application/search/ports.ts";
-import type { TSearchKind } from "./search/types.ts";
 
 const log = debug("index.ts");
 
@@ -51,7 +51,7 @@ const lfgFeature = getLfgFeature(getLfgPersistence({ em }));
 const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
 const getSearchIndexEntries: TGetSearchIndexEntries = (arg) => searchEngine.search(arg.input, arg.limit);
 
-const getEntityByKindAndId: TGetEntityByKindAndIdInfra = <Kind extends TSearchKind>(arg: { kind: Kind; id: string }) =>
+const getEntityByKindAndId: TGetEntityByKindAndId = <Kind extends TSearchKind>(arg: { kind: Kind; id: string }) =>
     searchItemInDb<Kind>({ configs: SEARCH_CONFIGS, em }, arg);
 
 const _resolveSearchInput = (input: string) =>

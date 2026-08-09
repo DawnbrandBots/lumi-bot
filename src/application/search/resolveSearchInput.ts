@@ -1,8 +1,8 @@
 import type { TGetEntityByKindAndId } from "../../game/feature.types.ts";
-import type { TGetBestSearchIndexEntry } from "./ports.ts";
-import type { TSearchFeatureReturn } from "../../search/types.ts";
-import { ESearchFeatureReturnKind } from "../../search/types.ts";
 import { SEARCH_MAX_INPUT_LENGTH } from "./constants.ts";
+import type { TGetBestSearchIndexEntry } from "./ports.ts";
+import type { TSearchFeatureReturn } from "./types.ts";
+import { ESearchFeatureReturnKind } from "./types.ts";
 
 export async function resolveSearchInput(
     deps: {

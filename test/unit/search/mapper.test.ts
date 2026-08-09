@@ -1,5 +1,7 @@
 import { Collection } from "@mikro-orm/sqlite";
 import { describe, expect, test } from "vitest";
+import type { TSearchFeatureSuccessValue } from "../../../src/application/search/types.ts";
+import { ESearchFeatureReturnKind } from "../../../src/application/search/types.ts";
 import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT } from "../../../src/bot/constants.ts";
 import { EMessageKind } from "../../../src/bot/types.ts";
 import type { Disciple } from "../../../src/game/models/disciple.ts";
@@ -16,7 +18,6 @@ import {
 import mapSearchFeatureReturnToMessages, {
     mapSearchFeatureSuccessValueToMessages,
 } from "../../../src/search/mapper.ts";
-import { ESearchFeatureReturnKind, type TSearchFeatureSuccessValue } from "../../../src/search/types.ts";
 
 const MUSIC = {
     kind: "music",

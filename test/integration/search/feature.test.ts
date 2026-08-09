@@ -1,12 +1,13 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import searchFeature from "../../../src/application/search/resolveSearchInput.ts";
+import { ESearchFeatureReturnKind } from "../../../src/application/search/types.ts";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/bot/constants.ts";
+import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
+import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import SEARCH_CONFIGS from "../../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../../src/loaders/searchItems.ts";
-import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import type { ISearchEngine, TSearchIndexEntry } from "../../../src/search/types.ts";
-import { ESearchFeatureReturnKind } from "../../../src/search/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 

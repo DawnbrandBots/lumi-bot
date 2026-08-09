@@ -1,6 +1,6 @@
 import { distance } from "fastest-levenshtein";
 import Fuse, { type FuseSortFunctionArg } from "fuse.js";
-import type { ISearchEngine, ISearchIndexEntry } from "../../search/types.ts";
+import type { ISearchIndexEntry } from "../../domain/search/types.ts";
 import removeDiacritics from "../../utils/removeDiacritics.ts";
 
 /** Alias match type provided by Fuse to custom sort functions. */
@@ -24,6 +24,20 @@ function getBestAlias(result: FuseSortFunctionArg): TAliasMatch | null {
 
 function getAliasDistanceToInput({ alias, input }: { alias: TAliasMatch | null; input: string }): number {
     return alias ? distance(removeDiacritics(alias.value), removeDiacritics(input)) : Number.POSITIVE_INFINITY;
+}
+
+/**
+ * Handles user text searches.
+ */
+export interface ISearchEngine<Items extends ISearchIndexEntry> {
+    /**
+     * May return a searchable item when provided with user input.
+     */
+    searchOne(userInput: string): Items | null;
+    /**
+     * Returns an array of searchable items matching the user input.
+     */
+    search(userInput: string, limit?: number): Items[];
 }
 
 export abstract class SearchEngine<Items extends ISearchIndexEntry> implements ISearchEngine<Items> {
