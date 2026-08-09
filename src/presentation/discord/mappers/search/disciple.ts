@@ -5,7 +5,7 @@ import type { IDisciple } from "../../../../domain/game/models/disciple.types.ts
 import type { IMusic } from "../../../../domain/game/models/music.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
-import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "../../../../search/constants.ts";
+import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "./constants.ts";
 
 export function getDiscipleBaseStatsTable(disciple: Pick<IDisciple, "getHp" | "getAtk">): (string | number)[][] {
     const relevantLevels = Array.from(

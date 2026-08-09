@@ -1,7 +1,9 @@
 import type { TCommandAutocompleteHandlers } from "../commands/types.ts";
-import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT, SEARCH_TERMS_OPTION_NAME } from "../../../search/constants.ts";
 import type { TGetSearchIndexEntries } from "../../../search/infra.types.ts";
+import { SEARCH_TERMS_OPTION_NAME } from "../commands/search/constants.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
+
+const SEARCH_AUTOCOMPLETE_RESULTS_LIMIT = 5;
 
 export function getSearchAutocomplete(arg: { getSearchIndexEntries: TGetSearchIndexEntries }) {
     return {

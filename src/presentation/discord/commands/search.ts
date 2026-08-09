@@ -1,8 +1,8 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import type { TCommandRunHandlers } from "../commands/types.ts";
-import { SEARCH_TERMS_OPTION_NAME } from "../../../search/constants.ts";
 import type { TSearchFeatureReturn } from "../../../search/types.ts";
 import type { MaybePromise } from "../../../utils/types.ts";
+import { SEARCH_TERMS_OPTION_NAME } from "./search/constants.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
 import mapSearchFeatureReturnToMessages from "../mappers/search.ts";
 

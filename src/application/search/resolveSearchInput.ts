@@ -2,6 +2,7 @@ import type { TGetEntityByKindAndId } from "../../game/feature.types.ts";
 import type { TGetBestSearchIndexEntry } from "../../search/infra.types.ts";
 import type { TSearchFeatureReturn } from "../../search/types.ts";
 import { ESearchFeatureReturnKind } from "../../search/types.ts";
+import { SEARCH_MAX_INPUT_LENGTH } from "./constants.ts";
 
 export async function resolveSearchInput(
     deps: {
@@ -10,6 +11,10 @@ export async function resolveSearchInput(
     },
     input: string,
 ): Promise<TSearchFeatureReturn> {
+    if (input.length > SEARCH_MAX_INPUT_LENGTH) {
+        return { kind: ESearchFeatureReturnKind.INPUT_TOO_LONG };
+    }
+
     const searchItem = await deps.getBestSearchIndexEntry(input);
 
     if (!searchItem) {

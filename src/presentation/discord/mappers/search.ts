@@ -1,17 +1,8 @@
 import type { APIEmbed, BaseMessageOptions } from "discord.js";
+import { SEARCH_MAX_INPUT_LENGTH } from "../../../application/search/constants.ts";
 import type { resolveSearchInput } from "../../../application/search/resolveSearchInput.ts";
 import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../message.ts";
 import type { ISingleEmbedMessageOptions } from "../message.types.ts";
-import {
-    SEARCH_ALIASES_FOOTER_PREFIX,
-    SEARCH_ENTITY_KIND_FIELD_NAME,
-    SEARCH_ID_FIELD_NAME,
-    SEARCH_INPUT_TITLE,
-    SEARCH_INPUT_TOO_LONG_DESCRIPTION,
-    SEARCH_INVALID_INPUT_TITLE,
-    SEARCH_MISSING_DATABASE_RESULT_TITLE,
-    SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-} from "../../../search/constants.ts";
 import mapDiscipleToMessage from "./search/disciple.ts";
 import mapMusicToMessage from "./search/music.ts";
 import mapSpellToMessage from "./search/spell.ts";
@@ -39,7 +30,7 @@ export function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>
         // Showing aliases when there is only one is redundant.
         value.searchItem.aliases.length > 1
             ? {
-                  text: `${SEARCH_ALIASES_FOOTER_PREFIX} ${value.searchItem.aliases.join(", ")}`,
+                  text: `Search aliases: ${value.searchItem.aliases.join(", ")}`,
               }
             : undefined;
 
@@ -60,8 +51,7 @@ function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof reso
             return {
                 reply: createNegativeMessage({
                     embed: {
-                        title: SEARCH_INVALID_INPUT_TITLE,
-                        description: SEARCH_INPUT_TOO_LONG_DESCRIPTION,
+                        description: `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`,
                     },
                 }),
             };
@@ -69,8 +59,7 @@ function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof reso
             return {
                 reply: createNegativeMessage({
                     embed: {
-                        title: SEARCH_INPUT_TITLE,
-                        description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
+                        description: "Search yielded no result",
                     },
                 }),
             };
@@ -78,10 +67,10 @@ function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof reso
             return {
                 reply: createErrorMessage({
                     embed: {
-                        title: SEARCH_MISSING_DATABASE_RESULT_TITLE,
+                        description: "Result found in search engine but not in database",
                         fields: [
-                            { name: SEARCH_ENTITY_KIND_FIELD_NAME, value: result.value.kind, inline: true },
-                            { name: SEARCH_ID_FIELD_NAME, value: result.value.id, inline: true },
+                            { name: "Entity kind", value: result.value.kind, inline: true },
+                            { name: "Id", value: result.value.id, inline: true },
                         ],
                     },
                 }),
