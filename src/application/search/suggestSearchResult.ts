@@ -1,4 +1,4 @@
-import type { TGetSearchIndexEntries } from "../../search/infra.types.ts";
+import type { TGetSearchIndexEntries } from "./ports.ts";
 
 export async function suggestSearchResult(
     getSearchIndexEntries: TGetSearchIndexEntries,

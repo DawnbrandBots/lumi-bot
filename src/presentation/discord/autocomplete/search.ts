@@ -1,5 +1,5 @@
 import type { TCommandAutocompleteHandlers } from "../commands/types.ts";
-import type { TGetSearchIndexEntries } from "../../../search/infra.types.ts";
+import type { TGetSearchIndexEntries } from "../../../application/search/ports.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../commands/search/constants.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
 

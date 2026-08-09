@@ -33,7 +33,7 @@ import type { THandleCommandInteraction } from "./presentation/discord/eventHand
 import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
 import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.types.ts";
 import { FuseSearchEngine } from "./infrastructure/search/engine.ts";
-import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "./search/infra.types.ts";
+import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "./application/search/ports.ts";
 import type { TSearchKind } from "./search/types.ts";
 
 const log = debug("index.ts");

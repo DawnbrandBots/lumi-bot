@@ -1,5 +1,5 @@
 import type { TGetEntityByKindAndId } from "../../game/feature.types.ts";
-import type { TGetBestSearchIndexEntry } from "../../search/infra.types.ts";
+import type { TGetBestSearchIndexEntry } from "./ports.ts";
 import type { TSearchFeatureReturn } from "../../search/types.ts";
 import { ESearchFeatureReturnKind } from "../../search/types.ts";
 import { SEARCH_MAX_INPUT_LENGTH } from "./constants.ts";
