@@ -1,8 +1,8 @@
-import { default as disciple } from "../search/handlers/disciple.ts";
-import { default as music } from "../search/handlers/music.ts";
-import { default as spell } from "../search/handlers/spell.ts";
-import { default as weapon } from "../search/handlers/weapon.ts";
-import { default as weaponSkill } from "../search/handlers/weaponSkill.ts";
+import { default as disciple } from "../infrastructure/search/configs/disciple.ts";
+import { default as music } from "../infrastructure/search/configs/music.ts";
+import { default as spell } from "../infrastructure/search/configs/spell.ts";
+import { default as weapon } from "../infrastructure/search/configs/weapon.ts";
+import { default as weaponSkill } from "../infrastructure/search/configs/weaponSkill.ts";
 
 const SEARCH_CONFIGS = {
     disciple,
