@@ -5,7 +5,7 @@ import { SEARCH_TERMS_OPTION_NAME } from "../../../src/bot/constants.ts";
 import SEARCH_CONFIGS from "../../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../../src/loaders/searchItems.ts";
 import { getSearchCommand } from "../../../src/search/command/handlers.ts";
-import { FuseSearchEngine } from "../../../src/search/engine.ts";
+import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import type { ISearchEngine, TSearchIndexEntry } from "../../../src/search/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 

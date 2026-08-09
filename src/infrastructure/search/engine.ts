@@ -1,7 +1,7 @@
 import { distance } from "fastest-levenshtein";
 import Fuse, { type FuseSortFunctionArg } from "fuse.js";
-import removeDiacritics from "../utils/removeDiacritics.ts";
-import type { ISearchEngine, ISearchIndexEntry } from "./types.ts";
+import type { ISearchEngine, ISearchIndexEntry } from "../../search/types.ts";
+import removeDiacritics from "../../utils/removeDiacritics.ts";
 
 /** Alias match type provided by Fuse to custom sort functions. */
 type TAliasMatch = NonNullable<FuseSortFunctionArg["matches"]>[number];

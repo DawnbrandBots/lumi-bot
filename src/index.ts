@@ -32,7 +32,7 @@ import { handleCommandInteraction } from "./presentation/discord/eventHandlers/i
 import type { THandleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.types.ts";
 import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
 import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.types.ts";
-import { FuseSearchEngine } from "./search/engine.ts";
+import { FuseSearchEngine } from "./infrastructure/search/engine.ts";
 import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "./search/infra.types.ts";
 import type { TSearchKind } from "./search/types.ts";
 
