@@ -1,6 +1,6 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TLfgPlayerRemovalResult } from "../../lfg/types.ts";
-import { ELfgPlayerRemovalKind } from "../../lfg/types.ts";
+import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemoval.types.ts";
+import { ELfgPlayerRemovalKind } from "../../domain/lfg/models/playerRemoval.types.ts";
 import type { LfgRoom } from "./models/room.ts";
 import type { LfgRoomPlayer } from "./models/roomPlayer.ts";
 

@@ -1,5 +1,5 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
-import { ELfgFeatureReturnKind } from "../../../../lfg/types.ts";
+import { ELfgFeatureReturnKind } from "../../../../application/lfg/types.ts";
 import { runFeatureSubcommand } from "./runFeatureSubcommand.ts";
 import { runWithGuild } from "./runWithGuild.ts";
 import type { TLfgCommandArgs } from "./types.ts";

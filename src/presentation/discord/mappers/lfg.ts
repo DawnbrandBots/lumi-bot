@@ -18,13 +18,13 @@ import {
     FRIEND_BATTLE_CODE_MAXIMUM_LENGTH,
     FRIEND_BATTLE_CODE_MINIMUM_LENGTH,
 } from "../../../domain/game/constants.ts";
-import type { TLfgFeatureReturnOfKind } from "../../../lfg/types.ts";
+import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
+import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
+import type { TLfgFeatureReturnOfKind } from "../../../application/lfg/types.ts";
 import {
     ELfgFeatureReturnKind,
-    ELfgPlayerRemovalKind,
-    type IRoom,
     type TLfgFeatureReturn,
-} from "../../../lfg/types.ts";
+} from "../../../application/lfg/types.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,

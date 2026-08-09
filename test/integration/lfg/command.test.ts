@@ -3,6 +3,7 @@ import { channelMention, ChannelType, MessageFlags, roleMention, userMention } f
 import { describe, expect, test, vi } from "vitest";
 import type { AdminFeature } from "../../../src/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
+import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../src/application/lfg/types.ts";
 import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
 import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
 import type { lfgCommandCommandRegistrationData } from "../../../src/lfg/command/commandRegistrationData.ts";
@@ -19,8 +20,6 @@ import {
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
 } from "../../../src/lfg/constants.ts";
 import type { LfgFeature } from "../../../src/lfg/feature.ts";
-import type { TLfgFeatureReturn } from "../../../src/lfg/types.ts";
-import { ELfgFeatureReturnKind } from "../../../src/lfg/types.ts";
 
 const GUILD_ID = "guild-1";
 const USER_ID = "user-1";

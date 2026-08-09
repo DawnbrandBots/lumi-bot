@@ -1,5 +1,5 @@
 import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../domain/game/constants.ts";
-import { ELfgFeatureReturnKind } from "../../lfg/types.ts";
+import { ELfgFeatureReturnKind } from "./types.ts";
 import type { TFindLfgRoomByCode, TFindLfgRoomByUser, TLfgFeature, TMoveUserToLfgRoom } from "./types.ts";
 
 export async function move(

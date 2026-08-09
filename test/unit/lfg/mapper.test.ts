@@ -11,11 +11,12 @@ import {
 } from "discord.js";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { EMessageKind } from "../../../src/bot/types.ts";
+import { ELfgFeatureReturnKind } from "../../../src/application/lfg/types.ts";
 import * as constants from "../../../src/domain/game/constants.ts";
+import type { IRoom } from "../../../src/domain/lfg/models/room.types.ts";
+import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
 import * as LfgConstants from "../../../src/lfg/constants.ts";
 import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../../src/lfg/mapper.ts";
-import type { IRoom } from "../../../src/lfg/types.ts";
-import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind } from "../../../src/lfg/types.ts";
 
 const ROOM: IRoom = {
     code: "alpha",

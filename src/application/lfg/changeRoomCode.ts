@@ -1,4 +1,4 @@
-import { ELfgFeatureReturnKind } from "../../lfg/types.ts";
+import { ELfgFeatureReturnKind } from "./types.ts";
 import { changeRoomCodeInRoom } from "./changeRoomCodeInRoom.ts";
 import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TLfgFeature } from "./types.ts";
 

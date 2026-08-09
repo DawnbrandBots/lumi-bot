@@ -1,10 +1,11 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import { ELfgFeatureReturnKind } from "../../../src/application/lfg/types.ts";
 import { FRIEND_BATTLE_CODE_MAXIMUM_LENGTH } from "../../../src/domain/game/constants.ts";
+import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
+import type { IUser } from "../../../src/domain/lfg/models/user.types.ts";
 import { LfgFeature } from "../../../src/lfg/feature.ts";
 import { LfgRoom } from "../../../src/lfg/models/room.ts";
-import type { IUser } from "../../../src/lfg/types.ts";
-import { ELfgFeatureReturnKind, ELfgPlayerRemovalKind } from "../../../src/lfg/types.ts";
 import { migrationMikroOrmConfig } from "../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../utils/getSameConfigInMemory.ts";
 

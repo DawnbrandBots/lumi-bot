@@ -1,4 +1,4 @@
-import { ELfgFeatureReturnKind } from "../../lfg/types.ts";
+import { ELfgFeatureReturnKind } from "./types.ts";
 import type { TListLfgRooms, TLfgFeature } from "./types.ts";
 
 export async function status(

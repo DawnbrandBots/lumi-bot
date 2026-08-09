@@ -1,4 +1,4 @@
-import { ELfgFeatureReturnKind } from "../../lfg/types.ts";
+import { ELfgFeatureReturnKind } from "./types.ts";
 import { getOwnedRoom } from "./getOwnedRoom.ts";
 import { kickFromRoom } from "./kickFromRoom.ts";
 import type { TFindLfgRoomByUser, TKickUserFromLfgRoom, TLfgFeature } from "./types.ts";

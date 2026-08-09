@@ -1,5 +1,5 @@
-import type { IUser } from "../../lfg/types.ts";
-import { ELfgFeatureReturnKind } from "../../lfg/types.ts";
+import type { IUser } from "../../domain/lfg/models/user.types.ts";
+import { ELfgFeatureReturnKind } from "./types.ts";
 import type { TFindLfgRoomByUser, TKickUserFromLfgRoom, TLfgRoom } from "./types.ts";
 
 export async function kickFromRoom(
