@@ -1,4 +1,4 @@
-import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "../../admin/types.ts";
+import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "./types.ts";
 import type { TAdminPersistence } from "./types.ts";
 
 export async function getLfgRoleConfig(

@@ -2,7 +2,7 @@ import type { ChatInputCommandInteraction, InteractionResponse } from "discord.j
 import { channelMention, ChannelType, MessageFlags, roleMention, userMention } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
 import type { AdminFeature } from "../../../src/admin/feature.ts";
-import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
+import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
 import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
 import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
 import type { lfgCommandCommandRegistrationData } from "../../../src/lfg/command/commandRegistrationData.ts";

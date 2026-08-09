@@ -26,8 +26,8 @@ import {
 } from "../commands/admin/constants.ts";
 import { LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME } from "../commands/lfg/constants.ts";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
-import type { TAdminFeatureReturn } from "../../../admin/types.ts";
-import { EAdminFeatureReturnKind } from "../../../admin/types.ts";
+import type { TAdminFeatureReturn } from "../../../application/admin/types.ts";
+import { EAdminFeatureReturnKind } from "../../../application/admin/types.ts";
 
 function formatChannel(channel: string | null | undefined): string {
     return channel ? channelMention(channel) : ADMIN_LFG_CHANNEL_NO_VALUE;

@@ -6,7 +6,7 @@ import {
     type InteractionResponse,
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { EAdminFeatureReturnKind } from "../../../src/admin/types.ts";
+import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
 import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
 import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
 import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../../src/lfg/constants.ts";

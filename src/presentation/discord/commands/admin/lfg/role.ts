@@ -7,7 +7,7 @@ import {
     ADMIN_ROLE_OPTION_NAME,
 } from "../constants.ts";
 import { createErrorMessage } from "../../../message.ts";
-import { EAdminFeatureReturnKind } from "../../../../../admin/types.ts";
+import { EAdminFeatureReturnKind } from "../../../../../application/admin/types.ts";
 import mapAdminFeatureReturnToMessage from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
