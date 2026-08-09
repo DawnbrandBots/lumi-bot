@@ -2,10 +2,13 @@ import debug from "debug";
 import { Events } from "discord.js";
 import { getAdminFeature } from "./application/admin/feature.ts";
 import { getLfgFeature } from "./application/lfg/feature.ts";
-import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "./application/search/ports.ts";
+import type {
+    TGetBestSearchIndexEntry,
+    TGetEntityByKindAndId,
+    TGetSearchIndexEntries,
+} from "./application/search/ports.ts";
 import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
 import type { TSearchKind } from "./domain/search/types.ts";
-import type { TGetEntityByKindAndId } from "./game/feature.types.ts";
 import { getAdminPersistence } from "./infrastructure/admin/persistence.ts";
 import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
 import { getLfgPersistence } from "./infrastructure/lfg/persistence.ts";
