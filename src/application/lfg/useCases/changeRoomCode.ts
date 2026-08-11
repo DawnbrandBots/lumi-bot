@@ -1,10 +1,9 @@
 import { ELfgFeatureReturnKind } from "../types.ts";
-import { changeRoomCodeInRoom } from "../services/changeRoomCodeInRoom.ts";
-import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TLfgFeature } from "../types.ts";
+import type { TChangeLfgRoomCodeInRoom, TFindLfgRoomByCode, TLfgFeature } from "../types.ts";
 
 export async function changeRoomCode(
     deps: {
-        readonly changeRoomCode: TChangeLfgRoomCode;
+        readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
         readonly findRoomByCode: TFindLfgRoomByCode;
     },
     { guildId, code, newCode }: Parameters<TLfgFeature["changeRoomCode"]>[0],
@@ -13,5 +12,5 @@ export async function changeRoomCode(
     if (!room) {
         return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
-    return changeRoomCodeInRoom(deps, { guildId, room, newCode });
+    return deps.changeRoomCodeInRoom({ guildId, room, newCode });
 }

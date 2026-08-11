@@ -198,7 +198,65 @@ export type TLfgPersistence = {
     readonly setRoomOwner: TSetLfgRoomOwner;
 };
 
-export type TLfgUseCase<Arg, Return> = (persistence: TLfgPersistence, arg: Arg) => MaybePromise<Return>;
+type TOwnedRoomFailure = TLfgFeatureReturnOfKind<
+    ELfgFeatureReturnKind.NOT_IN_A_ROOM | ELfgFeatureReturnKind.NOT_ROOM_OWNER
+>;
+
+export type TGetOwnedLfgRoomResult =
+    | {
+          readonly success: true;
+          readonly value: { readonly room: TLfgRoom };
+      }
+    | {
+          readonly success: false;
+          readonly value: TOwnedRoomFailure;
+      };
+
+export type TGetOwnedLfgRoom = (arg: {
+    readonly guildId: string;
+    readonly owner: IUser;
+}) => MaybePromise<TGetOwnedLfgRoomResult>;
+
+export type TChangeLfgRoomCodeInRoom = (arg: {
+    readonly guildId: string;
+    readonly room: TLfgRoom;
+    readonly newCode: string;
+}) => MaybePromise<
+    TLfgFeatureReturnOfKind<
+        | ELfgFeatureReturnKind.ROOM_CODE_CHANGED
+        | ELfgFeatureReturnKind.INVALID_ROOM_CODE
+        | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
+    >
+>;
+
+export type TKickFromLfgRoom = (arg: {
+    readonly guildId: string;
+    readonly room: TLfgRoom;
+    readonly target: IUser;
+}) => MaybePromise<
+    TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.PLAYER_KICKED | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM>
+>;
+
+export type TTransferLfgRoom = (arg: {
+    readonly guildId: string;
+    readonly room: TLfgRoom;
+    readonly target: IUser;
+}) => MaybePromise<
+    TLfgFeatureReturnOfKind<
+        | ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
+        | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
+        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
+    >
+>;
+
+export type TLfgApplicationDependencies = TLfgPersistence & {
+    readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
+    readonly getOwnedRoom: TGetOwnedLfgRoom;
+    readonly kickFromRoom: TKickFromLfgRoom;
+    readonly transferRoom: TTransferLfgRoom;
+};
+
+export type TLfgUseCase<Arg, Return> = (dependencies: TLfgApplicationDependencies, arg: Arg) => MaybePromise<Return>;
 
 export type TWithLfgUnitOfWork = <Arg, Return>(
     useCase: TLfgUseCase<Arg, Return>,

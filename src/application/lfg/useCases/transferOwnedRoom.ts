@@ -1,17 +1,15 @@
-import { getOwnedRoom } from "../services/getOwnedRoom.ts";
-import { transferRoom } from "../services/transferRoom.ts";
-import type { TFindLfgRoomByUser, TLfgFeature, TSetLfgRoomOwner } from "../types.ts";
+import type { TGetOwnedLfgRoom, TLfgFeature, TTransferLfgRoom } from "../types.ts";
 
 export async function transferOwnedRoom(
     deps: {
-        readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly setRoomOwner: TSetLfgRoomOwner;
+        readonly getOwnedRoom: TGetOwnedLfgRoom;
+        readonly transferRoom: TTransferLfgRoom;
     },
     { guildId, owner, target }: Parameters<TLfgFeature["transferOwnedRoom"]>[0],
 ) {
-    const result = await getOwnedRoom(deps, { guildId, owner });
+    const result = await deps.getOwnedRoom({ guildId, owner });
     if (!result.success) {
         return result.value;
     }
-    return transferRoom(deps, { guildId, room: result.value.room, target });
+    return deps.transferRoom({ guildId, room: result.value.room, target });
 }

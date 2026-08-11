@@ -1,12 +1,10 @@
 import { ELfgFeatureReturnKind } from "../types.ts";
-import { transferRoom } from "../services/transferRoom.ts";
-import type { TFindLfgRoomByCode, TFindLfgRoomByUser, TLfgFeature, TSetLfgRoomOwner } from "../types.ts";
+import type { TFindLfgRoomByCode, TLfgFeature, TTransferLfgRoom } from "../types.ts";
 
 export async function transfer(
     deps: {
         readonly findRoomByCode: TFindLfgRoomByCode;
-        readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly setRoomOwner: TSetLfgRoomOwner;
+        readonly transferRoom: TTransferLfgRoom;
     },
     { guildId, code, target }: Parameters<TLfgFeature["transfer"]>[0],
 ) {
@@ -14,5 +12,5 @@ export async function transfer(
     if (!room) {
         return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
-    return transferRoom(deps, { guildId, room, target });
+    return deps.transferRoom({ guildId, room, target });
 }

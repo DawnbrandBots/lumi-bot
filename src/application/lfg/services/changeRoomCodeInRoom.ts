@@ -1,6 +1,6 @@
 import { ELfgFeatureReturnKind } from "../types.ts";
 import { isInvalidRoomCode } from "./isInvalidRoomCode.ts";
-import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TLfgRoom } from "../types.ts";
+import type { TChangeLfgRoomCode, TChangeLfgRoomCodeInRoom, TFindLfgRoomByCode, TLfgRoom } from "../types.ts";
 
 export async function changeRoomCodeInRoom(
     {
@@ -11,7 +11,7 @@ export async function changeRoomCodeInRoom(
         readonly findRoomByCode: TFindLfgRoomByCode;
     },
     { guildId, room, newCode }: { readonly guildId: string; readonly room: TLfgRoom; readonly newCode: string },
-) {
+): Promise<Awaited<ReturnType<TChangeLfgRoomCodeInRoom>>> {
     if (isInvalidRoomCode(newCode)) {
         return { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;
     }

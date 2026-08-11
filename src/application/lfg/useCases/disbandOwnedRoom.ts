@@ -1,15 +1,14 @@
 import { ELfgFeatureReturnKind } from "../types.ts";
-import { getOwnedRoom } from "../services/getOwnedRoom.ts";
-import type { TFindLfgRoomByUser, TLfgFeature, TRemoveLfgRoom } from "../types.ts";
+import type { TGetOwnedLfgRoom, TLfgFeature, TRemoveLfgRoom } from "../types.ts";
 
 export async function disbandOwnedRoom(
     deps: {
-        readonly findRoomByUser: TFindLfgRoomByUser;
+        readonly getOwnedRoom: TGetOwnedLfgRoom;
         readonly removeRoom: TRemoveLfgRoom;
     },
     { guildId, owner }: Parameters<TLfgFeature["disbandOwnedRoom"]>[0],
 ) {
-    const result = await getOwnedRoom(deps, { guildId, owner });
+    const result = await deps.getOwnedRoom({ guildId, owner });
     if (!result.success) {
         return result.value;
     }

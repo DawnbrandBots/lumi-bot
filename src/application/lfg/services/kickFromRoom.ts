@@ -2,7 +2,14 @@ import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.
 import type { IUser } from "../../../domain/lfg/models/user.types.ts";
 import { ELfgFeatureReturnKind } from "../types.ts";
 import { removePlayerFromRoom } from "./removePlayerFromRoom.ts";
-import type { TFindLfgRoomByUser, TLfgRoom, TRemoveLfgRoom, TRemoveLfgRoomPlayer, TSetLfgRoomOwner } from "../types.ts";
+import type {
+    TFindLfgRoomByUser,
+    TKickFromLfgRoom,
+    TLfgRoom,
+    TRemoveLfgRoom,
+    TRemoveLfgRoomPlayer,
+    TSetLfgRoomOwner,
+} from "../types.ts";
 
 function applyPlayerRemoval(room: TLfgRoom, userId: string, removalResult: Awaited<ReturnType<typeof removePlayerFromRoom>>): TLfgRoom {
     return {
@@ -26,7 +33,7 @@ export async function kickFromRoom(
         readonly setRoomOwner: TSetLfgRoomOwner;
     },
     { guildId, room, target }: { readonly guildId: string; readonly room: TLfgRoom; readonly target: IUser },
-) {
+): Promise<Awaited<ReturnType<TKickFromLfgRoom>>> {
     const targetRoom = await findRoomByUser({ guildId, userId: target.id });
     if (targetRoom?.id !== room.id) {
         return {

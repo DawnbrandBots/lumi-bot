@@ -1,6 +1,6 @@
 import type { IUser } from "../../../domain/lfg/models/user.types.ts";
 import { ELfgFeatureReturnKind } from "../types.ts";
-import type { TFindLfgRoomByUser, TLfgRoom, TSetLfgRoomOwner } from "../types.ts";
+import type { TFindLfgRoomByUser, TLfgRoom, TSetLfgRoomOwner, TTransferLfgRoom } from "../types.ts";
 
 export async function transferRoom(
     {
@@ -11,7 +11,7 @@ export async function transferRoom(
         readonly setRoomOwner: TSetLfgRoomOwner;
     },
     { guildId, room, target }: { readonly guildId: string; readonly room: TLfgRoom; readonly target: IUser },
-) {
+): Promise<Awaited<ReturnType<TTransferLfgRoom>>> {
     const previousOwnerId = room.ownerId;
     if (previousOwnerId === target.id) {
         return {
