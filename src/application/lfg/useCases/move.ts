@@ -1,6 +1,6 @@
-import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../domain/game/constants.ts";
-import { ELfgFeatureReturnKind } from "./types.ts";
-import { removePlayerFromRoom } from "./removePlayerFromRoom.ts";
+import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../../domain/game/constants.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
+import { removePlayerFromRoom } from "../services/removePlayerFromRoom.ts";
 import type {
     TFindLfgRoomByCode,
     TFindLfgRoomByUser,
@@ -9,7 +9,7 @@ import type {
     TRemoveLfgRoom,
     TRemoveLfgRoomPlayer,
     TSetLfgRoomOwner,
-} from "./types.ts";
+} from "../types.ts";
 
 export async function move(
     {

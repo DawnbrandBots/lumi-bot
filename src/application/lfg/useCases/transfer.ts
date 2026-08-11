@@ -1,6 +1,6 @@
-import { ELfgFeatureReturnKind } from "./types.ts";
-import { transferRoom } from "./transferRoom.ts";
-import type { TFindLfgRoomByCode, TFindLfgRoomByUser, TLfgFeature, TSetLfgRoomOwner } from "./types.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
+import { transferRoom } from "../services/transferRoom.ts";
+import type { TFindLfgRoomByCode, TFindLfgRoomByUser, TLfgFeature, TSetLfgRoomOwner } from "../types.ts";
 
 export async function transfer(
     deps: {

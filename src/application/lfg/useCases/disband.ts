@@ -1,5 +1,5 @@
-import { ELfgFeatureReturnKind } from "./types.ts";
-import type { TFindLfgRoomByCode, TLfgFeature, TRemoveLfgRoom } from "./types.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
+import type { TFindLfgRoomByCode, TLfgFeature, TRemoveLfgRoom } from "../types.ts";
 
 export async function disband(
     {

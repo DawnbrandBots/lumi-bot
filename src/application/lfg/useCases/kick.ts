@@ -1,5 +1,5 @@
-import { ELfgFeatureReturnKind } from "./types.ts";
-import { kickFromRoom } from "./kickFromRoom.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
+import { kickFromRoom } from "../services/kickFromRoom.ts";
 import type {
     TFindLfgRoomByCode,
     TFindLfgRoomByUser,
@@ -7,7 +7,7 @@ import type {
     TRemoveLfgRoom,
     TRemoveLfgRoomPlayer,
     TSetLfgRoomOwner,
-} from "./types.ts";
+} from "../types.ts";
 
 export async function kick(
     deps: {

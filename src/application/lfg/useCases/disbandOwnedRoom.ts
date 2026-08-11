@@ -1,6 +1,6 @@
-import { ELfgFeatureReturnKind } from "./types.ts";
-import { getOwnedRoom } from "./getOwnedRoom.ts";
-import type { TFindLfgRoomByUser, TLfgFeature, TRemoveLfgRoom } from "./types.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
+import { getOwnedRoom } from "../services/getOwnedRoom.ts";
+import type { TFindLfgRoomByUser, TLfgFeature, TRemoveLfgRoom } from "../types.ts";
 
 export async function disbandOwnedRoom(
     deps: {

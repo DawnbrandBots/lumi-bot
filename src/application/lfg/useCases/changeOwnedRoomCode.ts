@@ -1,6 +1,6 @@
-import { changeRoomCodeInRoom } from "./changeRoomCodeInRoom.ts";
-import { getOwnedRoom } from "./getOwnedRoom.ts";
-import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TFindLfgRoomByUser, TLfgFeature } from "./types.ts";
+import { changeRoomCodeInRoom } from "../services/changeRoomCodeInRoom.ts";
+import { getOwnedRoom } from "../services/getOwnedRoom.ts";
+import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TFindLfgRoomByUser, TLfgFeature } from "../types.ts";
 
 export async function changeOwnedRoomCode(
     deps: {

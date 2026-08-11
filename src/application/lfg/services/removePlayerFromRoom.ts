@@ -1,6 +1,6 @@
-import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemoval.types.ts";
-import { ELfgPlayerRemovalKind } from "../../domain/lfg/models/playerRemoval.types.ts";
-import type { TLfgRoom, TRemoveLfgRoom, TRemoveLfgRoomPlayer, TSetLfgRoomOwner } from "./types.ts";
+import type { TLfgPlayerRemovalResult } from "../../../domain/lfg/models/playerRemoval.types.ts";
+import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
+import type { TLfgRoom, TRemoveLfgRoom, TRemoveLfgRoomPlayer, TSetLfgRoomOwner } from "../types.ts";
 
 export async function removePlayerFromRoom(
     {

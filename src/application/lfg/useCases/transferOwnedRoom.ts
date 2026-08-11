@@ -1,6 +1,6 @@
-import { getOwnedRoom } from "./getOwnedRoom.ts";
-import { transferRoom } from "./transferRoom.ts";
-import type { TFindLfgRoomByUser, TLfgFeature, TSetLfgRoomOwner } from "./types.ts";
+import { getOwnedRoom } from "../services/getOwnedRoom.ts";
+import { transferRoom } from "../services/transferRoom.ts";
+import type { TFindLfgRoomByUser, TLfgFeature, TSetLfgRoomOwner } from "../types.ts";
 
 export async function transferOwnedRoom(
     deps: {

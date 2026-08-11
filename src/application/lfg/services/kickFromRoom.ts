@@ -1,8 +1,8 @@
-import { ELfgPlayerRemovalKind } from "../../domain/lfg/models/playerRemoval.types.ts";
-import type { IUser } from "../../domain/lfg/models/user.types.ts";
-import { ELfgFeatureReturnKind } from "./types.ts";
+import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
+import type { IUser } from "../../../domain/lfg/models/user.types.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
 import { removePlayerFromRoom } from "./removePlayerFromRoom.ts";
-import type { TFindLfgRoomByUser, TLfgRoom, TRemoveLfgRoom, TRemoveLfgRoomPlayer, TSetLfgRoomOwner } from "./types.ts";
+import type { TFindLfgRoomByUser, TLfgRoom, TRemoveLfgRoom, TRemoveLfgRoomPlayer, TSetLfgRoomOwner } from "../types.ts";
 
 function applyPlayerRemoval(room: TLfgRoom, userId: string, removalResult: Awaited<ReturnType<typeof removePlayerFromRoom>>): TLfgRoom {
     return {

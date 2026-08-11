@@ -1,6 +1,6 @@
-import { ELfgFeatureReturnKind } from "./types.ts";
-import { changeRoomCodeInRoom } from "./changeRoomCodeInRoom.ts";
-import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TLfgFeature } from "./types.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
+import { changeRoomCodeInRoom } from "../services/changeRoomCodeInRoom.ts";
+import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TLfgFeature } from "../types.ts";
 
 export async function changeRoomCode(
     deps: {

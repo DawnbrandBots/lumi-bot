@@ -1,6 +1,6 @@
-import { ELfgFeatureReturnKind } from "./types.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
 import { isInvalidRoomCode } from "./isInvalidRoomCode.ts";
-import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TLfgRoom } from "./types.ts";
+import type { TChangeLfgRoomCode, TFindLfgRoomByCode, TLfgRoom } from "../types.ts";
 
 export async function changeRoomCodeInRoom(
     {

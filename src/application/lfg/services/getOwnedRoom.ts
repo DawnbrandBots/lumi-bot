@@ -1,7 +1,7 @@
-import type { TLfgRoom, TFindLfgRoomByUser } from "./types.ts";
-import type { IUser } from "../../domain/lfg/models/user.types.ts";
-import type { TLfgFeatureReturnOfKind } from "./types.ts";
-import { ELfgFeatureReturnKind } from "./types.ts";
+import type { TLfgRoom, TFindLfgRoomByUser } from "../types.ts";
+import type { IUser } from "../../../domain/lfg/models/user.types.ts";
+import type { TLfgFeatureReturnOfKind } from "../types.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
 
 type TOwnedRoomFailure = TLfgFeatureReturnOfKind<
     ELfgFeatureReturnKind.NOT_IN_A_ROOM | ELfgFeatureReturnKind.NOT_ROOM_OWNER

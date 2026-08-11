@@ -1,6 +1,6 @@
-import { ELfgFeatureReturnKind } from "./types.ts";
-import { removePlayerFromRoom } from "./removePlayerFromRoom.ts";
-import type { TFindLfgRoomByUser, TLfgFeature, TRemoveLfgRoom, TRemoveLfgRoomPlayer, TSetLfgRoomOwner } from "./types.ts";
+import { ELfgFeatureReturnKind } from "../types.ts";
+import { removePlayerFromRoom } from "../services/removePlayerFromRoom.ts";
+import type { TFindLfgRoomByUser, TLfgFeature, TRemoveLfgRoom, TRemoveLfgRoomPlayer, TSetLfgRoomOwner } from "../types.ts";
 
 export async function leave(
     {
