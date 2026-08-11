@@ -1,7 +1,7 @@
-import { LfgRoom } from "./models/room.ts";
 import type { TLfgPersistence } from "../../application/lfg/types.ts";
-import type { TLfgPersistenceFunction } from "./types.ts";
+import { LfgRoom } from "./models/room.ts";
 import { toLfgRoom } from "./toLfgRoom.ts";
+import type { TLfgPersistenceFunction } from "./types.ts";
 
 export const findRoomByCode: TLfgPersistenceFunction<TLfgPersistence["findRoomByCode"]> = async (
     { em },

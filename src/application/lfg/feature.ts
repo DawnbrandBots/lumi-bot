@@ -10,21 +10,21 @@ import { move } from "./move.ts";
 import { status } from "./status.ts";
 import { transfer } from "./transfer.ts";
 import { transferOwnedRoom } from "./transferOwnedRoom.ts";
-import type { TLfgFeature, TLfgPersistence } from "./types.ts";
+import type { TLfgFeature, TWithLfgUnitOfWork } from "./types.ts";
 
-export function getLfgFeature(persistence: TLfgPersistence): TLfgFeature {
+export function getLfgFeature(withLfgUnitOfWork: TWithLfgUnitOfWork): TLfgFeature {
     return {
-        changeOwnedRoomCode: (arg) => changeOwnedRoomCode(persistence, arg),
-        changeRoomCode: (arg) => changeRoomCode(persistence, arg),
-        create: (arg) => create(persistence, arg),
-        disband: (arg) => disband(persistence, arg),
-        disbandOwnedRoom: (arg) => disbandOwnedRoom(persistence, arg),
-        kick: (arg) => kick(persistence, arg),
-        kickFromOwnedRoom: (arg) => kickFromOwnedRoom(persistence, arg),
-        leave: (arg) => leave(persistence, arg),
-        move: (arg) => move(persistence, arg),
-        status: (arg) => status(persistence, arg),
-        transfer: (arg) => transfer(persistence, arg),
-        transferOwnedRoom: (arg) => transferOwnedRoom(persistence, arg),
+        changeOwnedRoomCode: withLfgUnitOfWork(changeOwnedRoomCode),
+        changeRoomCode: withLfgUnitOfWork(changeRoomCode),
+        create: withLfgUnitOfWork(create),
+        disband: withLfgUnitOfWork(disband),
+        disbandOwnedRoom: withLfgUnitOfWork(disbandOwnedRoom),
+        kick: withLfgUnitOfWork(kick),
+        kickFromOwnedRoom: withLfgUnitOfWork(kickFromOwnedRoom),
+        leave: withLfgUnitOfWork(leave),
+        move: withLfgUnitOfWork(move),
+        status: withLfgUnitOfWork(status),
+        transfer: withLfgUnitOfWork(transfer),
+        transferOwnedRoom: withLfgUnitOfWork(transferOwnedRoom),
     };
 }

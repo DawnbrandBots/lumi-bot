@@ -5,7 +5,7 @@ import { LfgRoomPlayer } from "./models/roomPlayer.ts";
 import type { TLfgPersistenceFunction } from "./types.ts";
 import { toLfgRoom } from "./toLfgRoom.ts";
 
-export const createRoom: TLfgPersistenceFunction<TLfgPersistence["createRoom"]> = async (
+export const createRoom: TLfgPersistenceFunction<TLfgPersistence["createRoom"]> = (
     { em },
     { guildId, ownerId, code },
 ) => {
@@ -21,6 +21,5 @@ export const createRoom: TLfgPersistenceFunction<TLfgPersistence["createRoom"]> 
         room,
     });
     room.players.add(player);
-    await em.flush();
     return toLfgRoom(room);
 };

@@ -3,12 +3,11 @@ import { getRoomEntityById } from "./getRoomEntityById.ts";
 import type { TLfgPersistenceFunction } from "./types.ts";
 import { toLfgRoom } from "./toLfgRoom.ts";
 
-export const transferRoom: TLfgPersistenceFunction<TLfgPersistence["transferRoom"]> = async (
+export const setRoomOwner: TLfgPersistenceFunction<TLfgPersistence["setRoomOwner"]> = async (
     { em },
-    { roomId, targetId },
+    { roomId, ownerId },
 ) => {
     const room = await getRoomEntityById({ em }, { roomId });
-    room.ownerId = targetId;
-    await em.flush();
+    room.ownerId = ownerId;
     return toLfgRoom(room);
 };

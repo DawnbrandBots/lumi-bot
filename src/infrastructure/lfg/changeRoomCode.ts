@@ -9,6 +9,5 @@ export const changeRoomCode: TLfgPersistenceFunction<TLfgPersistence["changeRoom
     const room = await getRoomEntityById({ em }, { roomId });
     const oldCode = room.code;
     room.code = newCode;
-    await em.flush();
     return { oldCode, newCode };
 };

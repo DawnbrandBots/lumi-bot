@@ -1,14 +1,14 @@
 import type { IUser } from "../../domain/lfg/models/user.types.ts";
 import { ELfgFeatureReturnKind } from "./types.ts";
-import type { TFindLfgRoomByUser, TLfgRoom, TTransferLfgRoom } from "./types.ts";
+import type { TFindLfgRoomByUser, TLfgRoom, TSetLfgRoomOwner } from "./types.ts";
 
 export async function transferRoom(
     {
         findRoomByUser,
-        transferRoom: transferRoomInPersistence,
+        setRoomOwner,
     }: {
         readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly transferRoom: TTransferLfgRoom;
+        readonly setRoomOwner: TSetLfgRoomOwner;
     },
     { guildId, room, target }: { readonly guildId: string; readonly room: TLfgRoom; readonly target: IUser },
 ) {
@@ -28,7 +28,7 @@ export async function transferRoom(
         } as const;
     }
 
-    const updatedRoom = await transferRoomInPersistence({ roomId: room.id, targetId: target.id });
+    const updatedRoom = await setRoomOwner({ roomId: room.id, ownerId: target.id });
     return {
         kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
         value: { userId: previousOwnerId, targetId: target.id, room: updatedRoom },

@@ -11,9 +11,9 @@ import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
 import type { TSearchKind } from "./domain/search/types.ts";
 import { getAdminPersistence } from "./infrastructure/admin/persistence.ts";
 import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
-import { getLfgPersistence } from "./infrastructure/lfg/persistence.ts";
 import { FuseSearchEngine } from "./infrastructure/search/engine.ts";
 import getBot from "./loaders/bot.ts";
+import { getWithLfgUnitOfWork } from "./loaders/lfgUnitOfWork.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
 import getSearchItems from "./loaders/searchItems.ts";
@@ -49,7 +49,7 @@ const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const adminFeature = getAdminFeature(getAdminPersistence({ em }));
-const lfgFeature = getLfgFeature(getLfgPersistence({ em }));
+const lfgFeature = getLfgFeature(getWithLfgUnitOfWork(em));
 
 const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
 const getSearchIndexEntries: TGetSearchIndexEntries = (arg) => searchEngine.search(arg.input, arg.limit);

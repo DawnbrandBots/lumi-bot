@@ -162,39 +162,21 @@ export type TCreateLfgRoom = (arg: {
 }) => MaybePromise<TLfgRoom>;
 
 export type TMoveUserToLfgRoom = (arg: {
-    readonly guildId: string;
+    readonly roomId: string;
     readonly userId: string;
-    readonly roomId: string;
-}) => MaybePromise<{
-    readonly room: TLfgRoom;
-    readonly leftRoomCode?: string;
-    readonly removalResult?: TLfgPlayerRemovalResult;
-}>;
-
-export type TTransferLfgRoom = (arg: {
-    readonly roomId: string;
-    readonly targetId: string;
 }) => MaybePromise<TLfgRoom>;
 
-export type TKickUserFromLfgRoom = (arg: {
+export type TSetLfgRoomOwner = (arg: {
     readonly roomId: string;
-    readonly targetId: string;
-}) => MaybePromise<{
-    readonly room: TLfgRoom;
-    readonly removalResult: TLfgPlayerRemovalResult;
-}>;
+    readonly ownerId: string;
+}) => MaybePromise<TLfgRoom>;
 
-export type TLeaveLfgRoom = (arg: {
-    readonly guildId: string;
+export type TRemoveLfgRoomPlayer = (arg: {
+    readonly roomId: string;
     readonly userId: string;
-}) => MaybePromise<{
-    readonly code: string;
-} & TLfgPlayerRemovalResult>;
+}) => MaybePromise<void>;
 
-export type TDisbandLfgRoom = (arg: { readonly roomId: string }) => MaybePromise<{
-    readonly userId: string;
-    readonly code: string;
-}>;
+export type TRemoveLfgRoom = (arg: { readonly roomId: string }) => MaybePromise<void>;
 
 export type TChangeLfgRoomCode = (arg: {
     readonly roomId: string;
@@ -207,15 +189,20 @@ export type TChangeLfgRoomCode = (arg: {
 export type TLfgPersistence = {
     readonly changeRoomCode: TChangeLfgRoomCode;
     readonly createRoom: TCreateLfgRoom;
-    readonly disbandRoom: TDisbandLfgRoom;
     readonly findRoomByCode: TFindLfgRoomByCode;
     readonly findRoomByUser: TFindLfgRoomByUser;
-    readonly kickUserFromRoom: TKickUserFromLfgRoom;
-    readonly leaveRoom: TLeaveLfgRoom;
     readonly listRooms: TListLfgRooms;
+    readonly removeRoom: TRemoveLfgRoom;
+    readonly removeRoomPlayer: TRemoveLfgRoomPlayer;
     readonly moveUserToRoom: TMoveUserToLfgRoom;
-    readonly transferRoom: TTransferLfgRoom;
+    readonly setRoomOwner: TSetLfgRoomOwner;
 };
+
+export type TLfgUseCase<Arg, Return> = (persistence: TLfgPersistence, arg: Arg) => MaybePromise<Return>;
+
+export type TWithLfgUnitOfWork = <Arg, Return>(
+    useCase: TLfgUseCase<Arg, Return>,
+) => (arg: Arg) => Promise<Return>;
 
 export interface TLfgFeature {
     status(arg: { readonly guildId: string }): MaybePromise<TLfgFeatureReturnTypes["status"]>;

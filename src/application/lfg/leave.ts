@@ -1,13 +1,18 @@
 import { ELfgFeatureReturnKind } from "./types.ts";
-import type { TFindLfgRoomByUser, TLeaveLfgRoom, TLfgFeature } from "./types.ts";
+import { removePlayerFromRoom } from "./removePlayerFromRoom.ts";
+import type { TFindLfgRoomByUser, TLfgFeature, TRemoveLfgRoom, TRemoveLfgRoomPlayer, TSetLfgRoomOwner } from "./types.ts";
 
 export async function leave(
     {
         findRoomByUser,
-        leaveRoom,
+        removeRoom,
+        removeRoomPlayer,
+        setRoomOwner,
     }: {
         readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly leaveRoom: TLeaveLfgRoom;
+        readonly removeRoom: TRemoveLfgRoom;
+        readonly removeRoomPlayer: TRemoveLfgRoomPlayer;
+        readonly setRoomOwner: TSetLfgRoomOwner;
     },
     { guildId, user }: Parameters<TLfgFeature["leave"]>[0],
 ) {
@@ -16,6 +21,9 @@ export async function leave(
         return { kind: ELfgFeatureReturnKind.NOT_IN_A_ROOM } as const;
     }
 
-    const leaveResult = await leaveRoom({ guildId, userId: user.id });
-    return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { ...leaveResult, userId: user.id } } as const;
+    const removalResult = await removePlayerFromRoom(
+        { removeRoom, removeRoomPlayer, setRoomOwner },
+        { room, userId: user.id },
+    );
+    return { kind: ELfgFeatureReturnKind.ROOM_LEFT, value: { ...removalResult, code: room.code, userId: user.id } } as const;
 }

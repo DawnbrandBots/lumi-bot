@@ -1,12 +1,20 @@
 import { ELfgFeatureReturnKind } from "./types.ts";
 import { getOwnedRoom } from "./getOwnedRoom.ts";
 import { kickFromRoom } from "./kickFromRoom.ts";
-import type { TFindLfgRoomByUser, TKickUserFromLfgRoom, TLfgFeature } from "./types.ts";
+import type {
+    TFindLfgRoomByUser,
+    TLfgFeature,
+    TRemoveLfgRoom,
+    TRemoveLfgRoomPlayer,
+    TSetLfgRoomOwner,
+} from "./types.ts";
 
 export async function kickFromOwnedRoom(
     deps: {
         readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly kickUserFromRoom: TKickUserFromLfgRoom;
+        readonly removeRoom: TRemoveLfgRoom;
+        readonly removeRoomPlayer: TRemoveLfgRoomPlayer;
+        readonly setRoomOwner: TSetLfgRoomOwner;
     },
     { guildId, owner, target }: Parameters<TLfgFeature["kickFromOwnedRoom"]>[0],
 ) {
