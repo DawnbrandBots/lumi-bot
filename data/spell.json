@@ -2967,6 +2967,7 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 50,
+          "scalesWithLevel": false,
           "unit": {
             "kind": "PERCENT",
             "stat": "ATK"
