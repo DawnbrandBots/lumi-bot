@@ -1,5 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { ISpellEffectValue } from "../types.ts";
+import { SpellEffectScalingStrategy } from "./spellEffectScalingStrategy.ts";
 import { SpellEffectValueEffectivenessItem } from "./spellEffectValueEffectivenessItem.ts";
 import { SpellEffectValueFixedUnit } from "./spellEffectValueFixedUnit.ts";
 import { SpellEffectValuePercentUnit } from "./spellEffectValuePercentUnit.ts";
@@ -10,6 +11,7 @@ export const SpellEffectValueSchema = defineEntity({
     properties: {
         base: p.integer(),
         scalesWithLevel: p.boolean().default(true),
+        scalingStrategy: () => p.manyToOne(SpellEffectScalingStrategy).nullable(),
         unit: () => p.embedded([SpellEffectValueFixedUnit, SpellEffectValuePercentUnit]).object(),
         effectiveness: () => p.embedded(SpellEffectValueEffectivenessItem).array().nullable(),
     },

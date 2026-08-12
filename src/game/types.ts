@@ -328,6 +328,7 @@ export type TSpellEffectValueUnit = ISpellEffectValueFixedUnit | ISpellEffectVal
 export interface ISpellEffectValueEffectivenessItem {
     readonly kind: string;
     readonly base: number;
+    readonly scalingStrategy?: ISpellEffectScalingStrategy | null;
 }
 
 export const ESpellEffectScalingStrategyKind = {
@@ -373,6 +374,7 @@ export interface ISpellEffectValue {
      */
     readonly base: number;
     readonly scalesWithLevel: boolean;
+    readonly scalingStrategy?: ISpellEffectScalingStrategy | null;
     readonly unit: ISpellEffectValueUnit;
     readonly effectiveness?: ISpellEffectValueEffectivenessItem[] | null;
 }
@@ -399,6 +401,7 @@ export const ESpellEffectTarget = {
 export interface ISummonEffectStatValue {
     readonly base: number;
     readonly scalesWithLevel: boolean;
+    readonly scalingStrategy?: ISpellEffectScalingStrategy | null;
 }
 
 export const ESpellEffectKind = {
