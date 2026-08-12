@@ -225,14 +225,14 @@ function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
  * - "Minor Pull" as argument returns an empty table since it only has one effect that does not scale with the spell's level.
  */
 export function spellEffectsValues(
-    spell: PickDeep<ISpell, "role.kind"> & {
+    spell: Pick<ISpell, "role"> & {
         readonly effects: TSpellEffectValueGetterInput[];
     },
 ): ISpellEffectValueWithToLevel[][] {
     if (
         spell.effects.length === 1 &&
         spell.effects[0]!.kind === "DAMAGE" &&
-        spell.role.kind === ESpellRole.SHADOW &&
+        spell.role === ESpellRole.SHADOW &&
         spell.effects[0]!.amount.unit.kind === ESpellEffectValueUnitKind.PERCENT
     ) {
         return [[new DarkSlashValue(spell.effects[0]!.amount)]];

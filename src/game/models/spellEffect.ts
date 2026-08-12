@@ -1,6 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
+import { ESpellEffectTarget } from "../types.ts";
 import { SpellShape } from "./spellShape.ts";
-import { SpellEffectTargetType } from "./spellEffectTarget.ts";
 
 // TODO: with the current class definitions for spell effects,
 // "kind" will be a property of instances instead of being inherited from the prototype.
@@ -15,7 +15,7 @@ export const SpellEffectSchema = defineEntity({
     properties: {
         kind: p.string(),
         // TODO: it does not make sense for nested effects (STAT, REPEAT and DAMAGE or HEALING when nested) to have a target property
-        target: p.type(SpellEffectTargetType).nullable(),
+        target: p.enum([ESpellEffectTarget.ANY, ESpellEffectTarget.SELF, ESpellEffectTarget.DUAL]).nullable(),
         shapeOverride: () => p.manyToOne(SpellShape).nullable(),
     },
 });

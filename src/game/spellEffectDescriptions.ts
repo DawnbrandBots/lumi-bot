@@ -1,5 +1,6 @@
 import type { PickDeep } from "type-fest";
 import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "./constants.ts";
+import type { EDirection, ESpellEffectTileType, EStat, EStatChange } from "./types.ts";
 import {
     ESpellEffectKind,
     ESpellEffectTarget,
@@ -7,27 +8,56 @@ import {
     type IMovementType,
     type ISpell,
     type ISpellEffect,
-    type ISpellEffectTarget,
     type ISpellEffectValue,
     type ISpellEffectValueEffectivenessItem,
     type ISpellEffectValueFixedUnit,
     type ISpellEffectValuePercentUnit,
     type ISpellEffectValueUnit,
-    type IStat,
     type IStatusEffect,
     type IWeaponType,
     type TSpellEffect,
     type TSpellEffectKindToEffectMap,
 } from "./types.ts";
 
+export const STAT_DESCRIPTION_STRINGS = {
+    HP: "HP",
+    ATK: "Atk",
+    RECEIVED_WEAPON_DAMAGE: "Received Weapon Damage",
+    RECEIVED_SPELL_DAMAGE: "Received Spell Damage",
+    MOVEMENT: "Movement",
+    COLOR_AFFINITY: "Color Affinity",
+    COOLDOWN: "Cooldown",
+} as const satisfies Record<keyof typeof EStat, string>;
+
+export const DIRECTION_DESCRIPTION_STRINGS = {
+    UP: "up",
+    DOWN: "down",
+} as const satisfies Record<keyof typeof EDirection, string>;
+
+export const STAT_CHANGE_DESCRIPTION_STRINGS = {
+    INCREASE: { verb: "Increases", preposition: "by" },
+    DECREASE: { verb: "Decreases", preposition: "by" },
+    LIMIT: { verb: "Limits", preposition: "to" },
+} as const satisfies Record<keyof typeof EStatChange, { readonly verb: string; readonly preposition: string }>;
+
+export const SPELL_EFFECT_TARGET_DESCRIPTION_STRINGS = {
+    ANY: "targets",
+    SELF: "user",
+    DUAL: "user and targets",
+} as const satisfies Record<keyof typeof ESpellEffectTarget, string>;
+
+export const SPELL_EFFECT_TILE_TYPE_DESCRIPTION_STRINGS = {
+    GROUND: "ground",
+    WATER: "water",
+    WALL: "wall",
+} as const satisfies Record<keyof typeof ESpellEffectTileType, string>;
+
 export type TSpellEffectValue = PickDeep<ISpellEffectValue, "base"> & {
     readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "kind" | "base">> | null;
-    unit:
-        | PickDeep<ISpellEffectValueFixedUnit, "kind">
-        | PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat.id" | "stat.name">;
+    unit: PickDeep<ISpellEffectValueFixedUnit, "kind"> | PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat">;
 };
 
-type TSpellEffectTargetInput = PickDeep<ISpellEffectTarget, "kind" | "asString"> | null | undefined;
+type TSpellEffectTargetInput = keyof typeof ESpellEffectTarget | null | undefined;
 
 type TEffectWithAmountInput = {
     readonly amount: TSpellEffectValue;
@@ -42,15 +72,8 @@ type TSpellEffectDescriptionInputMapWithoutKind = {
         TEffectWithAmountInput &
         TEffectWithOptionalTargetInput;
     HEAL: TEffectWithAmountInput & TEffectWithOptionalTargetInput;
-    MOVEMENT: PickDeep<
-        TSpellEffectKindToEffectMap["MOVEMENT"],
-        "target.kind" | "target.asString" | "count" | "direction.noun"
-    >;
-    STAT: PickDeep<
-        TSpellEffectKindToEffectMap["STAT"],
-        "stat.id" | "stat.name" | "statChange.verb" | "statChange.preposition" | "duration"
-    > &
-        TEffectWithAmountInput;
+    MOVEMENT: PickDeep<TSpellEffectKindToEffectMap["MOVEMENT"], "target" | "count" | "direction">;
+    STAT: PickDeep<TSpellEffectKindToEffectMap["STAT"], "stat" | "statChange" | "duration"> & TEffectWithAmountInput;
     REPEAT: PickDeep<TSpellEffectKindToEffectMap["REPEAT"], "interval" | "times"> & {
         readonly effect: TSpellEffectDescriptionInputMap["DAMAGE" | "HEAL"];
     };
@@ -107,24 +130,21 @@ function lowercaseFirstLetter(description: string): string {
 
 function isPercentUnit(
     unit: ISpellEffectValueUnit | TSpellEffectValue["unit"],
-): unit is PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat.id" | "stat.name"> {
+): unit is PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat"> {
     return unit.kind === ESpellEffectValueUnitKind.PERCENT;
 }
 
-function formatSpellEffectValue(
-    amount: ISpellEffectValue | TSpellEffectValue,
-    stat?: PickDeep<IStat, "id" | "name">,
-): string {
+function formatSpellEffectValue(amount: ISpellEffectValue | TSpellEffectValue, stat?: keyof typeof EStat): string {
     if (!isPercentUnit(amount.unit)) {
         return amount.base.toString();
     }
 
     const unit = amount.unit;
-    if (stat?.id === unit.stat.id) {
+    if (stat === unit.stat) {
         return `${amount.base}%`;
     }
 
-    return `(${amount.base}% of ${unit.stat.name})`;
+    return `(${amount.base}% of ${STAT_DESCRIPTION_STRINGS[unit.stat]})`;
 }
 
 function formatEffectiveness(amount: ISpellEffectValue | TSpellEffectValue, preposition: "against" | "for"): string {
@@ -150,7 +170,7 @@ function describeTarget(
         return null;
     }
 
-    if (effect.target.kind === ESpellEffectTarget.SELF && spell.shape.isAoe) {
+    if (effect.target === ESpellEffectTarget.SELF && spell.shape.isAoe) {
         return `targets ${inline ? `on a ${spell.shape.name}` : "in shape"} centered around user`;
     }
 
@@ -158,11 +178,11 @@ function describeTarget(
         return `target tiles${inline ? ` on a ${spell.shape.name}` : ""}`;
     }
 
-    if (effect.target.kind === ESpellEffectTarget.ANY && inline) {
-        return `${effect.target.asString} on a ${spell.shape.name}`;
+    if (effect.target === ESpellEffectTarget.ANY && inline) {
+        return `${SPELL_EFFECT_TARGET_DESCRIPTION_STRINGS[effect.target]} on a ${spell.shape.name}`;
     }
 
-    return effect.target.asString;
+    return SPELL_EFFECT_TARGET_DESCRIPTION_STRINGS[effect.target];
 }
 
 function describeValueEffect(
@@ -206,13 +226,14 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
     MOVEMENT(effect, spell, inline) {
         const plural = effect.count > 1 ? "s" : "";
 
-        return `Moves ${describeTarget(effect, spell, inline)} ${effect.count} tile${plural} ${effect.direction.noun}`;
+        return `Moves ${describeTarget(effect, spell, inline)} ${effect.count} tile${plural} ${DIRECTION_DESCRIPTION_STRINGS[effect.direction]}`;
     },
     STAT(effect) {
         const valueStr = formatSpellEffectValue(effect.amount, effect.stat);
         const effectivenessStr = formatEffectiveness(effect.amount, "for");
+        const statChange = STAT_CHANGE_DESCRIPTION_STRINGS[effect.statChange];
 
-        return `${effect.statChange.verb} ${effect.stat.name} ${effect.statChange.preposition} ${valueStr}${effectivenessStr} (${effect.duration == null ? "permanent" : effect.duration + " turns"})`;
+        return `${statChange.verb} ${STAT_DESCRIPTION_STRINGS[effect.stat]} ${statChange.preposition} ${valueStr}${effectivenessStr} (${effect.duration == null ? "permanent" : effect.duration + " turns"})`;
     },
     STATUS(effect, spell, inline) {
         const description = lowercaseFirstLetter(describeSpellEffect(effect.effect, spell, inline));
@@ -300,7 +321,7 @@ export function describeSpellEffects(
         spell.effects.length > 1 &&
         statusEffects.length === spell.effects.length &&
         firstStatusEffect &&
-        statusEffects.every((effect) => effect.target.kind === firstStatusEffect.target.kind)
+        statusEffects.every((effect) => effect.target === firstStatusEffect.target)
     ) {
         // TODO: target guaranteed to exist for IStatusEffect, but type should be updated to reflect that
         const target = describeTarget(firstStatusEffect, spell, inline)!;

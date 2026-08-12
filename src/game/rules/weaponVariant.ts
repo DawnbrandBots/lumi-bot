@@ -7,7 +7,9 @@ export const WEAPON_VARIANTS = {
     [EWeaponVariant.HP]: { kind: EWeaponVariant.HP, ...WEAPON_VARIANTS_BONUSES.HP },
     [EWeaponVariant.NEUTRAL]: { kind: EWeaponVariant.NEUTRAL, ...WEAPON_VARIANTS_BONUSES.NEUTRAL },
     [EWeaponVariant.ATK]: { kind: EWeaponVariant.ATK, ...WEAPON_VARIANTS_BONUSES.ATK },
-} as const satisfies { [K in keyof typeof EWeaponVariant]: IWeaponVariant & { kind: K } };
+} as const satisfies {
+    [K in keyof typeof EWeaponVariant]: IWeaponVariant & { readonly kind: K };
+};
 
 export function stat(
     arg: {

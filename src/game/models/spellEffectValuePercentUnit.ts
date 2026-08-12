@@ -1,7 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectValueUnitKind, type ISpellEffectValuePercentUnit } from "../types.ts";
+import { ESpellEffectValueUnitKind, EStat, type ISpellEffectValuePercentUnit } from "../types.ts";
 import { SpellEffectValueUnit } from "./spellEffectValueUnit.ts";
-import { StatType } from "./stat.ts";
 
 export const SpellEffectValuePercentUnitSchema = defineEntity({
     name: "SpellEffectValuePercentUnit",
@@ -10,7 +9,15 @@ export const SpellEffectValuePercentUnitSchema = defineEntity({
     discriminatorValue: ESpellEffectValueUnitKind.PERCENT,
     properties: {
         kind: p.enum([ESpellEffectValueUnitKind.PERCENT]),
-        stat: p.type(StatType),
+        stat: p.enum([
+            EStat.HP,
+            EStat.ATK,
+            EStat.RECEIVED_WEAPON_DAMAGE,
+            EStat.RECEIVED_SPELL_DAMAGE,
+            EStat.MOVEMENT,
+            EStat.COLOR_AFFINITY,
+            EStat.COOLDOWN,
+        ]),
     },
 });
 export class SpellEffectValuePercentUnit

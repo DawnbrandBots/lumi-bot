@@ -109,12 +109,12 @@ export interface IWeapon {
      *
      * @returns The value of the modifier for the given variant and stat.
      */
-    getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number;
+    getWeaponVariantStat(args: { variant: keyof typeof EWeaponVariant; stat: "hp" | "atk" }): number;
 }
 
 /** Stat modifier possessed by every weapon (except at level 1) that cannot be changed. */
 export interface IWeaponVariant {
-    readonly kind: "HP" | "NEUTRAL" | "ATK";
+    readonly kind: keyof typeof EWeaponVariant;
     readonly hp: number;
     readonly atk: number;
 }
@@ -195,14 +195,6 @@ export const ESpellRole = {
 } as const;
 
 /**
- * Role by which a spell can be used.
- */
-export interface ISpellRole {
-    readonly kind: keyof typeof ESpellRole;
-    readonly name: string;
-}
-
-/**
  * Tiles that will be affected by a spell when dragged on the grid.
  */
 export interface ISpellShape {
@@ -233,14 +225,6 @@ export const ESpellDraggingMode = {
 } as const;
 
 /**
- * Determines which units are targeted by a spell depending on where it was dragged on the grid.
- */
-export interface ISpellDraggingMode {
-    readonly kind: keyof typeof ESpellDraggingMode;
-    readonly asString: string;
-}
-
-/**
  * Referred to as "magic skill" in Fire Emblem Shadows.
  */
 export interface ISpell {
@@ -253,7 +237,7 @@ export interface ISpell {
      * Some spells, like "Minor" ones, don't have an associated disciple.
      */
     readonly disciple?: IDisciple | null;
-    readonly role: ISpellRole;
+    readonly role: keyof typeof ESpellRole;
     /**
      * Number of times this spell can be used.
      *
@@ -280,7 +264,7 @@ export interface ISpell {
      * Kind of units that this spell can only be used by.
      */
     readonly onlyFor?: IMovementType | IWeaponType | null;
-    readonly draggingMode: ISpellDraggingMode;
+    readonly draggingMode: keyof typeof ESpellDraggingMode;
 }
 
 export const EStat = {
@@ -331,7 +315,7 @@ export interface ISpellEffectValueFixedUnit extends ISpellEffectValueUnit {
 
 export interface ISpellEffectValuePercentUnit extends ISpellEffectValueUnit {
     readonly kind: typeof ESpellEffectValueUnitKind.PERCENT;
-    readonly stat: IStat;
+    readonly stat: keyof typeof EStat;
 }
 
 export type TSpellEffectValueUnit = ISpellEffectValueFixedUnit | ISpellEffectValuePercentUnit;
@@ -361,31 +345,6 @@ export interface ISpellEffectValue {
     readonly effectiveness?: ISpellEffectValueEffectivenessItem[] | null;
 }
 
-/**
- * Describes a unit's stat. Eg. Atk, HP, Movement...
- */
-export interface IStat {
-    readonly id: keyof typeof EStat;
-    readonly name: string;
-}
-
-/**
- * For movement spells. Eg. UP and DOWN.
- */
-export interface IDirection {
-    readonly id: keyof typeof EDirection;
-    readonly noun: string;
-}
-
-/**
- * For stat spell effects. Eg; INCREASE and DECREASE.
- */
-export interface IStatChange {
-    readonly id: keyof typeof EStatChange;
-    readonly verb: string;
-    readonly preposition: string;
-}
-
 export const ESpellEffectTarget = {
     /**
      * Effect targets tile the spell was dragged on.
@@ -400,14 +359,6 @@ export const ESpellEffectTarget = {
      */
     DUAL: "DUAL",
 } as const;
-
-/**
- * Which tiles are targeted by a spell effect.
- */
-export interface ISpellEffectTarget {
-    readonly kind: keyof typeof ESpellEffectTarget;
-    readonly asString: string;
-}
 
 /**
  * For summon effects. Eg. HP and Atk of the summoned unit.
@@ -446,14 +397,6 @@ export const ESpellEffectTileType = {
     WALL: "WALL",
 } as const;
 
-/**
- * Tile type on which a spell effect can apply.
- */
-export interface ISpellEffectTileType {
-    readonly id: keyof typeof ESpellEffectTileType;
-    readonly name: string;
-}
-
 export type TSpellEffectKindToEffectMap = {
     DAMAGE: IDamageEffect;
     HEAL: IHealEffect;
@@ -471,8 +414,8 @@ export type TSpellEffectKindToEffectMap = {
  * Something that occurs on tiles a spell is dragged on, and affects units on these tiles.
  */
 export interface ISpellEffect {
-    readonly kind: (typeof ESpellEffectKind)[keyof typeof ESpellEffectKind];
-    readonly target?: ISpellEffectTarget | null;
+    readonly kind: keyof typeof ESpellEffectKind;
+    readonly target?: keyof typeof ESpellEffectTarget | null;
     /**
      * Most spells' effects share the same shape, which is why "shape" is a property of the spell and not spell effect.
      * There are few exceptions: Crosswind Lock EX was the first spell introduced in an update to break the rule.
@@ -502,9 +445,9 @@ export interface IHealEffect extends ISpellEffect {
  */
 export interface IMovementEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.MOVEMENT;
-    readonly direction: IDirection;
+    readonly direction: keyof typeof EDirection;
     readonly count: number;
-    readonly target: ISpellEffectTarget;
+    readonly target: keyof typeof ESpellEffectTarget;
 }
 
 /**
@@ -512,10 +455,10 @@ export interface IMovementEffect extends ISpellEffect {
  */
 export interface IStatEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.STAT;
-    readonly statChange: IStatChange;
+    readonly statChange: keyof typeof EStatChange;
     readonly amount: ISpellEffectValue;
     readonly duration: number | null | undefined;
-    readonly stat: IStat;
+    readonly stat: keyof typeof EStat;
 }
 
 /**
@@ -524,7 +467,7 @@ export interface IStatEffect extends ISpellEffect {
 export interface IStatusEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.STATUS;
     readonly effect: IStatEffect | IRepeatEffect;
-    readonly target: ISpellEffectTarget;
+    readonly target: keyof typeof ESpellEffectTarget;
 }
 
 /**
@@ -550,7 +493,7 @@ export interface IWarpEffect extends ISpellEffect {
 export interface IObstacleEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.OBSTACLE;
     readonly obstacleType: keyof typeof EObstacleType;
-    readonly onlyOn?: ISpellEffectTileType | null;
+    readonly onlyOn?: keyof typeof ESpellEffectTileType | null;
     readonly hp: ISummonEffectStatValue;
 }
 

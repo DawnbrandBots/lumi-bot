@@ -1,6 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { EObstacleType, ESpellEffectKind, type IObstacleEffect } from "../types.ts";
-import { SpellEffectTileTypeType } from "./spellEffectTileType.ts";
+import { EObstacleType, ESpellEffectKind, ESpellEffectTileType, type IObstacleEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SummonEffectStatValue } from "./summonEffectStat.ts";
 
@@ -12,7 +11,7 @@ export const ObstacleEffectSchema = defineEntity({
     properties: {
         kind: p.enum([ESpellEffectKind.OBSTACLE]),
         obstacleType: p.enum([EObstacleType.ICE, EObstacleType.ROCK]),
-        onlyOn: p.type(SpellEffectTileTypeType).nullable(),
+        onlyOn: p.enum([ESpellEffectTileType.GROUND, ESpellEffectTileType.WATER, ESpellEffectTileType.WALL]).nullable(),
         hp: () => p.embedded(SummonEffectStatValue).object(),
     },
 });

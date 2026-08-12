@@ -26,7 +26,7 @@ export class Weapon extends WeaponSchema.class implements IWeapon {
         return "weapon" as const;
     }
 
-    public getWeaponVariantStat({ stat, variant }: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number {
+    public getWeaponVariantStat({ stat, variant }: Parameters<IWeapon["getWeaponVariantStat"]>[0]): number {
         return WeaponVariantRules.stat({
             weaponData: this,
             weaponVariantData: WEAPON_VARIANTS[variant],
