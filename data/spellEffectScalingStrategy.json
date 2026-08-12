@@ -1,5 +1,13 @@
 [
   {
+    "id": "NONE",
+    "kind": "ADDITIVE_FIXED",
+    "amount": {
+      "kind": "CONSTANT",
+      "value": 0
+    }
+  },
+  {
     "id": "ADDITIVE_BASE_PERCENT_5",
     "kind": "ADDITIVE_BASE_PERCENT",
     "amount": {
