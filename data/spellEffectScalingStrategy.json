@@ -1,7 +1,7 @@
 [
   {
     "id": "NONE",
-    "kind": "ADDITIVE_FIXED",
+    "kind": "NONE",
     "amount": {
       "kind": "CONSTANT",
       "value": 0

@@ -11,7 +11,6 @@ exports[`spellEffectsValues > damage and heal values 1`] = `
         55,
         110,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
@@ -27,7 +26,6 @@ exports[`spellEffectsValues > damage and heal values 1`] = `
         33,
         66,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
@@ -48,7 +46,6 @@ exports[`spellEffectsValues > damage with effectiveness values 1`] = `
         27,
         55,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
@@ -62,7 +59,6 @@ exports[`spellEffectsValues > damage with effectiveness values 1`] = `
         44,
         88,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
@@ -83,7 +79,6 @@ exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
         38,
         77,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
@@ -105,7 +100,6 @@ exports[`spellEffectsValues > non-scaling value 1`] = `
         50,
         50,
       ],
-      "scalesWithLevel": false,
       "scalingStrategy": "NONE",
       "unit": {
         "kind": "FIXED",
@@ -132,7 +126,6 @@ exports[`spellEffectsValues > shadow percent damage 1`] = `
         40,
         95,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "DARK_SLASH",
       "unit": {
         "kind": "PERCENT",
@@ -153,7 +146,6 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
         21,
         32,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
       "unit": {
         "kind": "PERCENT",
@@ -169,7 +161,6 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
         31,
         48,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
       "unit": {
         "kind": "PERCENT",
@@ -183,7 +174,6 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
         0,
         0,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
       "unit": {
         "kind": "PERCENT",
@@ -204,7 +194,6 @@ exports[`spellEffectsValues > summon values 1`] = `
         77,
         154,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
@@ -218,7 +207,6 @@ exports[`spellEffectsValues > summon values 1`] = `
         54,
         135,
       ],
-      "scalesWithLevel": true,
       "scalingStrategy": "MINION_ATK",
       "unit": {
         "kind": "FIXED",

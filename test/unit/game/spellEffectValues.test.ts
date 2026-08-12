@@ -11,7 +11,7 @@ import {
 
 const NO_SCALING_STRATEGY = {
     id: "NONE",
-    kind: ESpellEffectScalingStrategyKind.ADDITIVE_FIXED,
+    kind: ESpellEffectScalingStrategyKind.NONE,
     amount: { kind: ESpellEffectScalingStrategyAmountKind.CONSTANT, value: 0 },
 } satisfies ISpellEffectScalingStrategy;
 
@@ -45,7 +45,6 @@ const MINION_ATK_SCALING_STRATEGY = {
 function fixedValue(base: number, scalingStrategy: ISpellEffectScalingStrategy = FIXED_VALUE_SCALING_STRATEGY) {
     return {
         base,
-        scalesWithLevel: scalingStrategy.id !== NO_SCALING_STRATEGY.id,
         scalingStrategy,
         unit: { kind: ESpellEffectValueUnitKind.FIXED },
     };
@@ -54,7 +53,6 @@ function fixedValue(base: number, scalingStrategy: ISpellEffectScalingStrategy =
 function percentValue(base: number, scalingStrategy: ISpellEffectScalingStrategy = PERCENT_VALUE_SCALING_STRATEGY) {
     return {
         base,
-        scalesWithLevel: scalingStrategy.id !== NO_SCALING_STRATEGY.id,
         scalingStrategy,
         unit: { kind: ESpellEffectValueUnitKind.PERCENT },
     };
@@ -65,7 +63,6 @@ function serializeValues(values: ISpellEffectValueWithToLevel[][]) {
         group.map((value) => ({
             className: value.constructor.name,
             base: value.base,
-            scalesWithLevel: value.scalesWithLevel,
             scalingStrategy: value.scalingStrategy?.id,
             unit: value.unit,
             levelValues: [1, 2, 12].map((level) => value.toLevel(level)),
@@ -137,12 +134,10 @@ describe(spellEffectsValues.name, () => {
                         kind: ESpellEffectKind.SUMMON,
                         hp: {
                             base: 70,
-                            scalesWithLevel: true,
                             scalingStrategy: FIXED_VALUE_SCALING_STRATEGY,
                         },
                         atk: {
                             base: 45,
-                            scalesWithLevel: true,
                             scalingStrategy: MINION_ATK_SCALING_STRATEGY,
                         },
                     },

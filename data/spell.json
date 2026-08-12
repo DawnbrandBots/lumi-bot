@@ -12,7 +12,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 50,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
           },
@@ -36,7 +35,6 @@
         "kind": "HEAL",
         "amount": {
           "base": 50,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
           },
@@ -76,7 +74,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 70,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
           },
@@ -102,12 +99,10 @@
         "weaponType": "SWORD",
         "hp": {
           "base": 80,
-          "scalesWithLevel": false,
           "scalingStrategy": "NONE"
         },
         "atk": {
           "base": 50,
-          "scalesWithLevel": false,
           "scalingStrategy": "NONE"
         },
         "target": "ANY"
@@ -2121,7 +2116,6 @@
           "statChange": "INCREASE",
           "amount": {
             "base": 0,
-            "scalesWithLevel": false,
             "effectiveness": [
               {
                 "kind": "INFANTRY",
@@ -2503,7 +2497,6 @@
           "statChange": "INCREASE",
           "amount": {
             "base": 20,
-            "scalesWithLevel": false,
             "unit": {
               "kind": "PERCENT",
               "stat": "COLOR_AFFINITY"
@@ -2869,7 +2862,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 50,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
           },
@@ -3100,7 +3092,6 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 50,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "PERCENT",
             "stat": "ATK"
@@ -3385,7 +3376,6 @@
           "statChange": "DECREASE",
           "amount": {
             "base": 20,
-            "scalesWithLevel": false,
             "unit": {
               "kind": "PERCENT",
               "stat": "COLOR_AFFINITY"
@@ -3623,7 +3613,6 @@
           "statChange": "LIMIT",
           "amount": {
             "base": 1,
-            "scalesWithLevel": false,
             "unit": {
               "kind": "FIXED"
             },
@@ -3903,7 +3892,6 @@
           "duration": 3,
           "amount": {
             "base": 10,
-            "scalesWithLevel": false,
             "unit": {
               "kind": "PERCENT",
               "stat": "COOLDOWN"

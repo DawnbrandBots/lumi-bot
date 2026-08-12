@@ -36,7 +36,6 @@ export const SPELL = {
             kind: ESpellEffectKind.DAMAGE,
             amount: {
                 base: 60,
-                scalesWithLevel: true,
                 scalingStrategy: FIXED_VALUE_SCALING_STRATEGY,
                 unit: {
                     kind: ESpellEffectValueUnitKind.FIXED,

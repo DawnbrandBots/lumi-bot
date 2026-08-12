@@ -332,6 +332,7 @@ export interface ISpellEffectValueEffectivenessItem {
 }
 
 export const ESpellEffectScalingStrategyKind = {
+    NONE: "NONE",
     ADDITIVE_BASE_PERCENT: "ADDITIVE_BASE_PERCENT",
     ADDITIVE_FIXED: "ADDITIVE_FIXED",
 } as const;
@@ -373,7 +374,6 @@ export interface ISpellEffectValue {
      * Value of spell effect for the spell's level 1.
      */
     readonly base: number;
-    readonly scalesWithLevel: boolean;
     readonly scalingStrategy?: ISpellEffectScalingStrategy | null;
     readonly unit: ISpellEffectValueUnit;
     readonly effectiveness?: ISpellEffectValueEffectivenessItem[] | null;
@@ -397,10 +397,8 @@ export const ESpellEffectTarget = {
 /**
  * For summon effects. Eg. HP and Atk of the summoned unit.
  */
-// TODO: scale property added in later PR
 export interface ISummonEffectStatValue {
     readonly base: number;
-    readonly scalesWithLevel: boolean;
     readonly scalingStrategy?: ISpellEffectScalingStrategy | null;
 }
 

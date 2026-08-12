@@ -10,7 +10,6 @@ export const SpellEffectValueSchema = defineEntity({
     embeddable: true,
     properties: {
         base: p.integer(),
-        scalesWithLevel: p.boolean().default(true),
         scalingStrategy: () => p.manyToOne(SpellEffectScalingStrategy).nullable(),
         unit: () => p.embedded([SpellEffectValueFixedUnit, SpellEffectValuePercentUnit]).object(),
         effectiveness: () => p.embedded(SpellEffectValueEffectivenessItem).array().nullable(),
