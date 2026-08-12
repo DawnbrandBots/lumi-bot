@@ -1,4 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
+import { SpellShape } from "./spellShape.ts";
 import { SpellEffectTargetType } from "./spellEffectTarget.ts";
 
 // TODO: with the current class definitions for spell effects,
@@ -15,6 +16,7 @@ export const SpellEffectSchema = defineEntity({
         kind: p.string(),
         // TODO: it does not make sense for nested effects (STAT, REPEAT and DAMAGE or HEALING when nested) to have a target property
         target: p.type(SpellEffectTargetType).nullable(),
+        shapeOverride: () => p.manyToOne(SpellShape).nullable(),
     },
 });
 export abstract class SpellEffect extends SpellEffectSchema.class {}

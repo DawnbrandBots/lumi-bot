@@ -459,6 +459,11 @@ export type TSpellEffectKindToEffectMap = {
 export interface ISpellEffect {
     readonly kind: (typeof ESpellEffectKind)[keyof typeof ESpellEffectKind];
     readonly target?: ISpellEffectTarget | null;
+    /**
+     * Most spells' effects share the same shape, which is why "shape" is a property of the spell and not spell effect.
+     * There are few exceptions: Crosswind Lock EX was the first spell introduced in an update to break the rule.
+     */
+    readonly shapeOverride?: ISpellShape | null;
 }
 
 /**
