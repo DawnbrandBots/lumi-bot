@@ -105,7 +105,7 @@ function scalingAmount(strategy: ISpellEffectScalingStrategy, level: number): nu
     }
 
     switch (strategy.amount.kind) {
-        case ESpellEffectScalingStrategyAmountKind.BY_LEVEL:
+        case ESpellEffectScalingStrategyAmountKind.BY_LEVEL_UP:
             return strategy.amount.values[level - 2] ?? 0;
         case ESpellEffectScalingStrategyAmountKind.CONSTANT:
             return strategy.amount.value * (level === SPELL_MAXIMUM_LEVEL ? level : level - 1);

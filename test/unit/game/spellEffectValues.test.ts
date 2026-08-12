@@ -37,7 +37,7 @@ const MINION_ATK_SCALING_STRATEGY = {
     id: "MINION_ATK",
     kind: ESpellEffectScalingStrategyKind.ADDITIVE_BASE_PERCENT,
     amount: {
-        kind: ESpellEffectScalingStrategyAmountKind.BY_LEVEL,
+        kind: ESpellEffectScalingStrategyAmountKind.BY_LEVEL_UP,
         values: [20, 40, 60, 80, 100, 120, 140, 160, 170, 180, 200],
     },
 } satisfies ISpellEffectScalingStrategy;

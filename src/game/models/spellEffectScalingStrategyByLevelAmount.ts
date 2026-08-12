@@ -6,9 +6,9 @@ export const SpellEffectScalingStrategyByLevelAmountSchema = defineEntity({
     name: "SpellEffectScalingStrategyByLevelAmount",
     embeddable: true,
     extends: SpellEffectScalingStrategyAmount,
-    discriminatorValue: ESpellEffectScalingStrategyAmountKind.BY_LEVEL,
+    discriminatorValue: ESpellEffectScalingStrategyAmountKind.BY_LEVEL_UP,
     properties: {
-        kind: p.enum([ESpellEffectScalingStrategyAmountKind.BY_LEVEL]),
+        kind: p.enum([ESpellEffectScalingStrategyAmountKind.BY_LEVEL_UP]),
         values: p.json<ISpellEffectScalingStrategyByLevelAmount["values"]>(),
     },
 });

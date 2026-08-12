@@ -338,7 +338,7 @@ export const ESpellEffectScalingStrategyKind = {
 
 export const ESpellEffectScalingStrategyAmountKind = {
     CONSTANT: "CONSTANT",
-    BY_LEVEL: "BY_LEVEL",
+    BY_LEVEL_UP: "BY_LEVEL_UP",
 } as const;
 
 /** Specifies what value is added to the base multiplied by the spell level. */
@@ -349,8 +349,8 @@ export interface ISpellEffectScalingStrategyConstantAmount {
 
 /** Specifies the value that's added to the base for each level specifically. */
 export interface ISpellEffectScalingStrategyByLevelAmount {
-    readonly kind: typeof ESpellEffectScalingStrategyAmountKind.BY_LEVEL;
-    readonly values: readonly number[];
+    readonly kind: typeof ESpellEffectScalingStrategyAmountKind.BY_LEVEL_UP;
+    readonly values: [number, number, number, number, number, number, number, number, number, number, number];
 }
 
 export type TSpellEffectScalingStrategyAmount =

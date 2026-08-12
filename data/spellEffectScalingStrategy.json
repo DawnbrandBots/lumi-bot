@@ -35,7 +35,7 @@
     "id": "MINION_ATK",
     "kind": "ADDITIVE_BASE_PERCENT",
     "amount": {
-      "kind": "BY_LEVEL",
+      "kind": "BY_LEVEL_UP",
       "values": [20, 40, 60, 80, 100, 120, 140, 160, 170, 180, 200]
     }
   }
