@@ -59,7 +59,7 @@ type TSpellEffectDescriptionInputMapWithoutKind = {
         readonly target: NonNullable<TSpellEffectTargetInput>;
     };
     WARP: object;
-    ICE_BLOCK: PickDeep<TSpellEffectKindToEffectMap["ICE_BLOCK"], "hp.base">;
+    OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base">;
     TILE: TEffectWithOptionalTargetInput & {
         readonly repeat: TSpellEffectDescriptionInputMap["REPEAT"];
     };
@@ -226,8 +226,8 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
     WARP() {
         return "Moves user to target tile";
     },
-    ICE_BLOCK(effect) {
-        return `Summons ice blocks with ${effect.hp.base} HP`;
+    OBSTACLE(effect) {
+        return `Summons obstacles with ${effect.hp.base} HP`;
     },
     TILE(effect, spell, inline) {
         return `Grants effect to ${describeTarget(effect, spell, inline)}: ${describeSpellEffect(effect.repeat, spell, inline)}`;

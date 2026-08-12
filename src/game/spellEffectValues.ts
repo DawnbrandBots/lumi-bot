@@ -25,7 +25,7 @@ type TSpellEffectValueGetterInputMapWithoutKind = {
     REPEAT: { readonly effect: TSpellEffectValueGetterInputMap["DAMAGE" | "HEAL"] };
     STATUS: { readonly effect: TSpellEffectValueGetterInputMap["STAT" | "REPEAT"] };
     WARP: object;
-    ICE_BLOCK: PickDeep<TSpellEffectKindToEffectMap["ICE_BLOCK"], "hp.base" | "hp.scalesWithLevel">;
+    OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base" | "hp.scalesWithLevel">;
     TILE: { readonly repeat: TSpellEffectValueGetterInputMap["REPEAT"] };
     SUMMON: PickDeep<
         TSpellEffectKindToEffectMap["SUMMON"],
@@ -180,7 +180,7 @@ const SPELL_EFFECT_VALUE_GETTERS: {
         return valuesForEffect(effect.effect);
     },
     WARP: noValues,
-    ICE_BLOCK(effect) {
+    OBSTACLE(effect) {
         return [
             new NormalValue({
                 base: effect.hp.base,

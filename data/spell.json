@@ -835,7 +835,7 @@
         "target": "ANY"
       },
       {
-        "kind": "ICE_BLOCK",
+        "kind": "OBSTACLE",
         "hp": {
           "base": 60
         },
@@ -2335,7 +2335,7 @@
         "target": "ANY"
       },
       {
-        "kind": "ICE_BLOCK",
+        "kind": "OBSTACLE",
         "hp": {
           "base": 60
         },

@@ -224,12 +224,12 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.WARP.name, () => {
     });
 });
 
-describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.ICE_BLOCK.name, () => {
+describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE.name, () => {
     test("describes the summoned blocks' HP", () => {
         expect(
-            SPELL_EFFECT_DESCRIPTION_FORMATTERS.ICE_BLOCK(
+            SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE(
                 {
-                    kind: ESpellEffectKind.ICE_BLOCK,
+                    kind: ESpellEffectKind.OBSTACLE,
                     hp: { base: 50 },
                 },
                 { shape: SINGLE_TILE_SHAPE },

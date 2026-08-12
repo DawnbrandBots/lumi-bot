@@ -426,7 +426,7 @@ export const ESpellEffectKind = {
     STATUS: "STATUS",
     REPEAT: "REPEAT",
     WARP: "WARP",
-    ICE_BLOCK: "ICE_BLOCK",
+    OBSTACLE: "OBSTACLE",
     TILE: "TILE",
     SUMMON: "SUMMON",
 } as const;
@@ -439,7 +439,7 @@ export type TSpellEffectKindToEffectMap = {
     STATUS: IStatusEffect;
     REPEAT: IRepeatEffect;
     WARP: IWarpEffect;
-    ICE_BLOCK: IIceBlockEffect;
+    OBSTACLE: IObstacleEffect;
     TILE: ITileEffect;
     SUMMON: ISummonEffect;
 };
@@ -517,10 +517,10 @@ export interface IWarpEffect extends ISpellEffect {
 }
 
 /**
- * Effect that summons Ice Blocks on tiles.
+ * Effect that summons obstacles on tiles.
  */
-export interface IIceBlockEffect extends ISpellEffect {
-    readonly kind: typeof ESpellEffectKind.ICE_BLOCK;
+export interface IObstacleEffect extends ISpellEffect {
+    readonly kind: typeof ESpellEffectKind.OBSTACLE;
     readonly hp: ISummonEffectStatValue;
 }
 
@@ -552,7 +552,7 @@ export type TRootSpellEffect =
     | IMovementEffect
     | IStatusEffect
     | IWarpEffect
-    | IIceBlockEffect
+    | IObstacleEffect
     | ITileEffect
     | ISummonEffect;
 

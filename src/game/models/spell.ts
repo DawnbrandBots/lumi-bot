@@ -4,9 +4,9 @@ import type { ISpell, ISpellDraggingMode } from "../types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { Disciple } from "./disciple.ts";
 import { HealEffect } from "./healEffect.ts";
-import { IceBlockEffect } from "./iceBlockEffect.ts";
 import { MovementEffect } from "./movementEffect.ts";
 import { MovementType } from "./movementType.ts";
+import { ObstacleEffect } from "./obstacleEffect.ts";
 import { SPELL_DRAGGING_MODE } from "./spellDraggingMode.ts";
 import { SpellRoleType } from "./spellRole.ts";
 import { SpellShape } from "./spellShape.ts";
@@ -35,7 +35,7 @@ export const SpellSchema = defineEntity({
                     WarpEffect,
                     MovementEffect,
                     TileEffect,
-                    IceBlockEffect,
+                    ObstacleEffect,
                     SummonEffect,
                     StatusEffect,
                 ])

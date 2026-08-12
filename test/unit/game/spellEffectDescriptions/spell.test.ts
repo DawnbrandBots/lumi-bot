@@ -24,7 +24,7 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: SINGLE_TILE_SHAPE,
-            effects: [{ kind: ESpellEffectKind.WARP }, { kind: ESpellEffectKind.ICE_BLOCK, hp: { base: 50 } }],
+            effects: [{ kind: ESpellEffectKind.WARP }, { kind: ESpellEffectKind.OBSTACLE, hp: { base: 50 } }],
         };
 
         expect(describeSpellEffects(spell)).toBe(
