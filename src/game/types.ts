@@ -431,6 +431,15 @@ export const ESpellEffectKind = {
     SUMMON: "SUMMON",
 } as const;
 
+/**
+ * Purely visual characteristic in battle and spell icons as of 1.10, not even mentioned in spell descriptions.
+ * Will this be relevant in later updates?
+ */
+export const EObstacleType = {
+    ICE: "ICE",
+    ROCK: "ROCK",
+} as const;
+
 export type TSpellEffectKindToEffectMap = {
     DAMAGE: IDamageEffect;
     HEAL: IHealEffect;
@@ -521,6 +530,7 @@ export interface IWarpEffect extends ISpellEffect {
  */
 export interface IObstacleEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.OBSTACLE;
+    readonly obstacleType: keyof typeof EObstacleType;
     readonly hp: ISummonEffectStatValue;
 }
 
