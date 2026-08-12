@@ -10,7 +10,7 @@ describe(Spell.draggingModeKind.name, () => {
         [[ESpellEffectTarget.DUAL], ESpellDraggingMode.ANY],
         [[ESpellEffectTarget.SELF, ESpellEffectTarget.ANY], ESpellDraggingMode.ANY],
     ] as const)("targets %o => %s", (targets, expected) => {
-        const effects = targets.map((kind) => ({ target: { kind } }));
+        const effects = targets.map((target) => ({ target }));
 
         expect(Spell.draggingModeKind({ effects })).toBe(expected);
     });

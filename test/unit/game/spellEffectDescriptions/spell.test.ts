@@ -4,17 +4,12 @@
 
 import { describe, expect, test } from "vitest";
 import { describeSpellEffects } from "../../../../src/game/spellEffectDescriptions.ts";
-import { ESpellEffectKind } from "../../../../src/game/types.ts";
+import { ESpellEffectKind, ESpellEffectTarget, EStat, EStatChange } from "../../../../src/game/types.ts";
 import {
-    ANY_TARGET,
     ATK_PERCENT_VALUE_UNIT,
-    ATK_STAT,
     CROSS_SHAPE,
     FIXED_VALUE_UNIT,
     HP_PERCENT_VALUE_UNIT,
-    HP_STAT,
-    INCREASE_STAT_CHANGE,
-    SELF_TARGET,
     SINGLE_TILE_SHAPE,
 } from "./utils.ts";
 
@@ -28,9 +23,11 @@ describe(describeSpellEffects.name, () => {
         };
 
         expect(describeSpellEffects(spell)).toBe(
-            ["1. Moves user to target tile.", "1. Summons ice blocks with 50 HP."].join("\n"),
+            ["1. Moves user to target tile.", "1. Summons obstacles with 50 HP."].join("\n"),
         );
-        expect(describeSpellEffects(spell, true)).toBe("Moves user to target tile, summons ice blocks with 50 HP.");
+        expect(describeSpellEffects(spell, true)).toBe(
+            "Moves user to target tile, summons obstacles on target tiles on a single space with 50 HP.",
+        );
     });
 
     test("prefixes a countdown", () => {
@@ -69,11 +66,11 @@ describe(describeSpellEffects.name, () => {
             effects: [
                 {
                     kind: ESpellEffectKind.STATUS,
-                    target: ANY_TARGET,
+                    target: ESpellEffectTarget.ANY,
                     effect: {
                         kind: ESpellEffectKind.STAT,
-                        stat: HP_STAT,
-                        statChange: INCREASE_STAT_CHANGE,
+                        stat: EStat.HP,
+                        statChange: EStatChange.INCREASE,
                         amount: {
                             base: 20,
                             unit: HP_PERCENT_VALUE_UNIT,
@@ -83,11 +80,11 @@ describe(describeSpellEffects.name, () => {
                 },
                 {
                     kind: ESpellEffectKind.STATUS,
-                    target: ANY_TARGET,
+                    target: ESpellEffectTarget.ANY,
                     effect: {
                         kind: ESpellEffectKind.STAT,
-                        stat: ATK_STAT,
-                        statChange: INCREASE_STAT_CHANGE,
+                        stat: EStat.ATK,
+                        statChange: EStatChange.INCREASE,
                         amount: {
                             base: 30,
                             unit: ATK_PERCENT_VALUE_UNIT,
@@ -118,22 +115,22 @@ describe(describeSpellEffects.name, () => {
             effects: [
                 {
                     kind: ESpellEffectKind.STATUS,
-                    target: ANY_TARGET,
+                    target: ESpellEffectTarget.ANY,
                     effect: {
                         kind: ESpellEffectKind.STAT,
-                        stat: HP_STAT,
-                        statChange: INCREASE_STAT_CHANGE,
+                        stat: EStat.HP,
+                        statChange: EStatChange.INCREASE,
                         amount: { base: 10, unit: FIXED_VALUE_UNIT },
                         duration: null,
                     },
                 },
                 {
                     kind: ESpellEffectKind.STATUS,
-                    target: SELF_TARGET,
+                    target: ESpellEffectTarget.SELF,
                     effect: {
                         kind: ESpellEffectKind.STAT,
-                        stat: ATK_STAT,
-                        statChange: INCREASE_STAT_CHANGE,
+                        stat: EStat.ATK,
+                        statChange: EStatChange.INCREASE,
                         amount: { base: 5, unit: FIXED_VALUE_UNIT },
                         duration: null,
                     },
@@ -145,6 +142,46 @@ describe(describeSpellEffects.name, () => {
             [
                 `1. Grants "increases HP by 10 (permanent)" to targets.`,
                 `1. Grants "increases Atk by 5 (permanent)" to user.`,
+            ].join("\n"),
+        );
+    });
+
+    test("keeps statuses with different shape overrides separate", () => {
+        const spell: Parameters<typeof describeSpellEffects>[0] = {
+            uses: null,
+            cooldown: 5,
+            shape: CROSS_SHAPE,
+            effects: [
+                {
+                    kind: ESpellEffectKind.STATUS,
+                    target: ESpellEffectTarget.ANY,
+                    shapeOverride: SINGLE_TILE_SHAPE,
+                    effect: {
+                        kind: ESpellEffectKind.STAT,
+                        stat: EStat.HP,
+                        statChange: EStatChange.INCREASE,
+                        amount: { base: 10, unit: FIXED_VALUE_UNIT },
+                        duration: null,
+                    },
+                },
+                {
+                    kind: ESpellEffectKind.STATUS,
+                    target: ESpellEffectTarget.ANY,
+                    effect: {
+                        kind: ESpellEffectKind.STAT,
+                        stat: EStat.ATK,
+                        statChange: EStatChange.INCREASE,
+                        amount: { base: 5, unit: FIXED_VALUE_UNIT },
+                        duration: null,
+                    },
+                },
+            ],
+        };
+
+        expect(describeSpellEffects(spell)).toBe(
+            [
+                `1. Grants "increases HP by 10 (permanent)" to targets on a single space.`,
+                `1. Grants "increases Atk by 5 (permanent)" to targets.`,
             ].join("\n"),
         );
     });

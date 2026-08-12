@@ -92,7 +92,7 @@ exports[`mapSpellToMessage > with a disciple and usage restrictions 1`] = `
         {
           "inline": true,
           "name": "Dragging mode",
-          "value": "target tile",
+          "value": "Any tile",
         },
         {
           "inline": true,
@@ -164,7 +164,7 @@ exports[`mapSpellToMessage > without a disciple 1`] = `
         {
           "inline": true,
           "name": "Dragging mode",
-          "value": "target tile",
+          "value": "Any tile",
         },
         {
           "name": "",

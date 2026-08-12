@@ -34,7 +34,7 @@ describe(spellEffectsValues.name, () => {
         [
             "damage and heal values",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.DAMAGE,
@@ -50,7 +50,7 @@ describe(spellEffectsValues.name, () => {
         [
             "stat value and nested effectiveness values",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.STAT,
@@ -72,7 +72,7 @@ describe(spellEffectsValues.name, () => {
         [
             "damage with effectiveness values",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.DAMAGE,
@@ -87,7 +87,7 @@ describe(spellEffectsValues.name, () => {
         [
             "summon values",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.SUMMON,
@@ -100,7 +100,7 @@ describe(spellEffectsValues.name, () => {
         [
             "heal value followed by valueless movement",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.HEAL,
@@ -115,7 +115,7 @@ describe(spellEffectsValues.name, () => {
         [
             "only valueless movement",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.MOVEMENT,
@@ -126,7 +126,7 @@ describe(spellEffectsValues.name, () => {
         [
             "shadow percent damage",
             {
-                role: { kind: ESpellRole.SHADOW },
+                role: ESpellRole.SHADOW,
                 effects: [
                     {
                         kind: ESpellEffectKind.DAMAGE,

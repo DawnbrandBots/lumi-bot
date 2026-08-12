@@ -7,16 +7,11 @@ import {
     ESpellEffectValueUnitKind,
     ESpellRole,
     type ISpell,
-    type ISpellDraggingMode,
-    type ISpellRole,
     type ISpellShape,
 } from "../../../../src/game/types.ts";
 import { RED_COLOR } from "./common.fixtures.ts";
 
-export const SPELL_ROLE = {
-    kind: ESpellRole.EX,
-    name: "EX",
-} satisfies ISpellRole;
+export const SPELL_ROLE = ESpellRole.EX satisfies ISpell["role"];
 
 export const SPELL_SHAPE = {
     id: "SINGLE_TILE",
@@ -25,10 +20,7 @@ export const SPELL_SHAPE = {
     isAoe: false,
 } satisfies ISpellShape;
 
-export const SPELL_DRAGGING_MODE = {
-    kind: ESpellDraggingMode.ANY,
-    asString: "target tile",
-} satisfies ISpellDraggingMode;
+export const SPELL_DRAGGING_MODE = ESpellDraggingMode.ANY satisfies ISpell["draggingMode"];
 
 export const SPELL = {
     kind: "spell",
@@ -50,10 +42,7 @@ export const SPELL = {
                 },
             },
             color: RED_COLOR,
-            target: {
-                kind: ESpellEffectTarget.ANY,
-                asString: "targets",
-            },
+            target: ESpellEffectTarget.ANY,
         },
     ],
     shape: SPELL_SHAPE,

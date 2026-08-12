@@ -893,7 +893,7 @@ Lv |   7   8   9  10  11  12
 }
 `;
 
-exports[`search command messages > returns the complete Tetrathunder Wall EX message (ice blocks) 1`] = `
+exports[`search command messages > returns the complete Tetrathunder Wall EX message (obstacles) 1`] = `
 {
   "embeds": [
     {
@@ -941,7 +941,7 @@ exports[`search command messages > returns the complete Tetrathunder Wall EX mes
           "inline": true,
           "name": "Effects",
           "value": "1. Grants "deals 40 Blue damage every 6 seconds (2 times)" to targets.
-1. Summons ice blocks with 60 HP.",
+1. Summons obstacles with 60 HP.",
         },
         {
           "name": "Values",
