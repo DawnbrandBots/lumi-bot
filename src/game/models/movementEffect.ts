@@ -9,9 +9,9 @@ export const MovementEffectSchema = defineEntity({
     discriminatorValue: ESpellEffectKind.MOVEMENT,
     properties: {
         kind: p.enum([ESpellEffectKind.MOVEMENT]),
-        direction: p.enum([EDirection.UP, EDirection.DOWN]),
+        direction: p.enum(() => EDirection),
         count: p.integer(),
-        target: p.enum([ESpellEffectTarget.ANY, ESpellEffectTarget.SELF, ESpellEffectTarget.DUAL]),
+        target: p.enum(() => ESpellEffectTarget),
     },
 });
 

@@ -10,18 +10,10 @@ export const StatEffectSchema = defineEntity({
     discriminatorValue: ESpellEffectKind.STAT,
     properties: {
         kind: p.enum([ESpellEffectKind.STAT]),
-        statChange: p.enum([EStatChange.INCREASE, EStatChange.DECREASE, EStatChange.LIMIT]),
+        statChange: p.enum(() => EStatChange),
         amount: () => p.embedded(SpellEffectValue).object(),
         duration: p.integer().nullable(),
-        stat: p.enum([
-            EStat.HP,
-            EStat.ATK,
-            EStat.RECEIVED_WEAPON_DAMAGE,
-            EStat.RECEIVED_SPELL_DAMAGE,
-            EStat.MOVEMENT,
-            EStat.COLOR_AFFINITY,
-            EStat.COOLDOWN,
-        ]),
+        stat: p.enum(() => EStat),
     },
 });
 

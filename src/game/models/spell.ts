@@ -21,7 +21,7 @@ export const SpellSchema = defineEntity({
         id: p.string().primary(),
         name: p.string(),
         disciple: () => p.manyToOne(Disciple).inversedBy("spells").nullable(),
-        role: p.enum([ESpellRole.EX, ESpellRole.LIGHT, ESpellRole.SHADOW]),
+        role: p.enum(() => ESpellRole),
         shape: p.manyToOne(SpellShape),
         uses: p.integer().nullable(),
         cooldown: p.integer(),

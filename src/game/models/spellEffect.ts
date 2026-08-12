@@ -1,5 +1,5 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectTarget } from "../types.ts";
+import { ESpellEffectKind, ESpellEffectTarget } from "../types.ts";
 import { SpellShape } from "./spellShape.ts";
 
 // TODO: with the current class definitions for spell effects,
@@ -13,9 +13,9 @@ export const SpellEffectSchema = defineEntity({
     discriminatorColumn: "kind",
     abstract: true,
     properties: {
-        kind: p.string(),
+        kind: p.enum(() => ESpellEffectKind),
         // TODO: it does not make sense for nested effects (STAT, REPEAT and DAMAGE or HEALING when nested) to have a target property
-        target: p.enum([ESpellEffectTarget.ANY, ESpellEffectTarget.SELF, ESpellEffectTarget.DUAL]).nullable(),
+        target: p.enum(() => ESpellEffectTarget).nullable(),
         shapeOverride: () => p.manyToOne(SpellShape).nullable(),
     },
 });

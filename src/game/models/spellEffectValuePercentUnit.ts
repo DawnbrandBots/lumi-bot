@@ -9,15 +9,7 @@ export const SpellEffectValuePercentUnitSchema = defineEntity({
     discriminatorValue: ESpellEffectValueUnitKind.PERCENT,
     properties: {
         kind: p.enum([ESpellEffectValueUnitKind.PERCENT]),
-        stat: p.enum([
-            EStat.HP,
-            EStat.ATK,
-            EStat.RECEIVED_WEAPON_DAMAGE,
-            EStat.RECEIVED_SPELL_DAMAGE,
-            EStat.MOVEMENT,
-            EStat.COLOR_AFFINITY,
-            EStat.COOLDOWN,
-        ]),
+        stat: p.enum(() => EStat),
     },
 });
 export class SpellEffectValuePercentUnit

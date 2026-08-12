@@ -12,7 +12,7 @@ export const StatusEffectSchema = defineEntity({
     properties: {
         kind: p.enum([ESpellEffectKind.STATUS]),
         effect: () => p.embedded([RepeatEffect, StatEffect]).object(),
-        target: p.enum([ESpellEffectTarget.ANY, ESpellEffectTarget.SELF, ESpellEffectTarget.DUAL]),
+        target: p.enum(() => ESpellEffectTarget),
     },
 });
 

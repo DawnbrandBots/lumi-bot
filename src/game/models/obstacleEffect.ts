@@ -10,8 +10,8 @@ export const ObstacleEffectSchema = defineEntity({
     discriminatorValue: ESpellEffectKind.OBSTACLE,
     properties: {
         kind: p.enum([ESpellEffectKind.OBSTACLE]),
-        obstacleType: p.enum([EObstacleType.ICE, EObstacleType.ROCK]),
-        onlyOn: p.enum([ESpellEffectTileType.GROUND, ESpellEffectTileType.WATER, ESpellEffectTileType.WALL]).nullable(),
+        obstacleType: p.enum(() => EObstacleType),
+        onlyOn: p.enum(() => ESpellEffectTileType).nullable(),
         hp: () => p.embedded(SummonEffectStatValue).object(),
     },
 });
