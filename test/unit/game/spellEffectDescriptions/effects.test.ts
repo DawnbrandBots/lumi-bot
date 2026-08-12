@@ -224,7 +224,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.WARP.name, () => {
 });
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE.name, () => {
-    test("describes the summoned obstacles' HP", () => {
+    test("describes a single summoned obstacle's HP", () => {
         expect(
             SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE(
                 {
@@ -234,10 +234,10 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE.name, () => {
                 { shape: SINGLE_TILE_SHAPE },
                 false,
             ),
-        ).toBe("Summons obstacles with 50 HP");
+        ).toBe("Summons an obstacle on a single space with 50 HP");
     });
 
-    test("describes target tile type and overridden shape", () => {
+    test("describes tile condition and overridden shape", () => {
         expect(
             SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE(
                 {
@@ -249,7 +249,21 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE.name, () => {
                 { shape: CROSS_SHAPE },
                 false,
             ),
-        ).toBe("Summons obstacles on target ground tiles on a single space with 50 HP");
+        ).toBe("Summons an obstacle on a single space with 50 HP if tile is ground");
+    });
+
+    test("describes target tile type for an area obstacle effect", () => {
+        expect(
+            SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE(
+                {
+                    kind: ESpellEffectKind.OBSTACLE,
+                    hp: { base: 50 },
+                    onlyOn: ESpellEffectTileType.GROUND,
+                },
+                { shape: CROSS_SHAPE },
+                false,
+            ),
+        ).toBe("Summons obstacles on target ground tiles with 50 HP");
     });
 });
 

@@ -23,10 +23,10 @@ describe(describeSpellEffects.name, () => {
         };
 
         expect(describeSpellEffects(spell)).toBe(
-            ["1. Moves user to target tile.", "1. Summons obstacles with 50 HP."].join("\n"),
+            ["1. Moves user to target tile.", "1. Summons an obstacle on a single space with 50 HP."].join("\n"),
         );
         expect(describeSpellEffects(spell, true)).toBe(
-            "Moves user to target tile, summons obstacles on target tiles on a single space with 50 HP.",
+            "Moves user to target tile, summons an obstacle on a single space with 50 HP.",
         );
     });
 

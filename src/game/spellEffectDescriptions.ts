@@ -190,6 +190,16 @@ function describeTargetTiles(
     return `target${tileType} tiles${shapeStr}`;
 }
 
+function describeTileCondition(effect: { readonly onlyOn?: keyof typeof ESpellEffectTileType | null }): string {
+    if (!effect.onlyOn) {
+        return "";
+    }
+
+    const tileType = SPELL_EFFECT_TILE_TYPE_DESCRIPTION_STRINGS[effect.onlyOn];
+
+    return ` if tile is ${tileType}`;
+}
+
 function haveSameShapeOverride(a: TEffectWithShapeOverrideInput, b: TEffectWithShapeOverrideInput): boolean {
     return a.shapeOverride?.id == b.shapeOverride?.id;
 }
@@ -284,10 +294,16 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
         return "Moves user to target tile";
     },
     OBSTACLE(effect, spell, inline) {
-        const targetTilesStr =
-            effect.onlyOn || effect.shapeOverride || inline ? ` on ${describeTargetTiles(effect, spell, inline)}` : "";
+        const shape = effectShape(effect, spell);
+        const obstaclesStr = shape.isAoe ? "obstacles" : "an obstacle";
+        const placementStr = !shape.isAoe
+            ? ` on a ${shape.name}`
+            : effect.onlyOn || effect.shapeOverride || inline
+              ? ` on ${describeTargetTiles(effect, spell, inline)}`
+              : "";
+        const tileConditionStr = !shape.isAoe ? describeTileCondition(effect) : "";
 
-        return `Summons obstacles${targetTilesStr} with ${effect.hp.base} HP`;
+        return `Summons ${obstaclesStr}${placementStr} with ${effect.hp.base} HP${tileConditionStr}`;
     },
     TILE(effect, spell, inline) {
         return `Grants effect to ${describeTarget(effect, spell, inline)}: ${describeSpellEffect(effect.repeat, spell, inline)}`;
