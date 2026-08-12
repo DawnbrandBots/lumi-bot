@@ -5,8 +5,14 @@ exports[`spellEffectsValues > damage and heal values 1`] = `
   [
     {
       "base": 50,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        50,
+        55,
+        110,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
       },
@@ -15,8 +21,14 @@ exports[`spellEffectsValues > damage and heal values 1`] = `
   [
     {
       "base": 30,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        30,
+        33,
+        66,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
       },
@@ -30,16 +42,28 @@ exports[`spellEffectsValues > damage with effectiveness values 1`] = `
   [
     {
       "base": 25,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        25,
+        27,
+        55,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
       },
     },
     {
       "base": 40,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        40,
+        44,
+        88,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
       },
@@ -53,14 +77,41 @@ exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
   [
     {
       "base": 35,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        35,
+        38,
+        77,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
       },
     },
   ],
   [],
+]
+`;
+
+exports[`spellEffectsValues > non-scaling value 1`] = `
+[
+  [
+    {
+      "base": 50,
+      "className": "ScalingValue",
+      "levelValues": [
+        50,
+        50,
+        50,
+      ],
+      "scalesWithLevel": false,
+      "scalingStrategy": "NONE",
+      "unit": {
+        "kind": "FIXED",
+      },
+    },
+  ],
 ]
 `;
 
@@ -75,8 +126,14 @@ exports[`spellEffectsValues > shadow percent damage 1`] = `
   [
     {
       "base": 35,
-      "className": "DarkSlashValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        35,
+        40,
+        95,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "DARK_SLASH",
       "unit": {
         "kind": "PERCENT",
       },
@@ -90,8 +147,14 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
   [
     {
       "base": 20,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        20,
+        21,
+        32,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
       "unit": {
         "kind": "PERCENT",
       },
@@ -100,16 +163,28 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
   [
     {
       "base": 30,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        30,
+        31,
+        48,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
       "unit": {
         "kind": "PERCENT",
       },
     },
     {
       "base": 0,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        0,
+        0,
+        0,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
       "unit": {
         "kind": "PERCENT",
       },
@@ -123,16 +198,28 @@ exports[`spellEffectsValues > summon values 1`] = `
   [
     {
       "base": 70,
-      "className": "NormalValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        70,
+        77,
+        154,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
       "unit": {
         "kind": "FIXED",
       },
     },
     {
       "base": 45,
-      "className": "MinionAtkValue",
+      "className": "ScalingValue",
+      "levelValues": [
+        45,
+        54,
+        135,
+      ],
       "scalesWithLevel": true,
+      "scalingStrategy": "MINION_ATK",
       "unit": {
         "kind": "FIXED",
       },
