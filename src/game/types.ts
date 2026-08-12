@@ -440,6 +440,20 @@ export const EObstacleType = {
     ROCK: "ROCK",
 } as const;
 
+export const ESpellEffectTileType = {
+    GROUND: "GROUND",
+    WATER: "WATER",
+    WALL: "WALL",
+} as const;
+
+/**
+ * Tile type on which a spell effect can apply.
+ */
+export interface ISpellEffectTileType {
+    readonly id: keyof typeof ESpellEffectTileType;
+    readonly name: string;
+}
+
 export type TSpellEffectKindToEffectMap = {
     DAMAGE: IDamageEffect;
     HEAL: IHealEffect;
@@ -536,6 +550,7 @@ export interface IWarpEffect extends ISpellEffect {
 export interface IObstacleEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.OBSTACLE;
     readonly obstacleType: keyof typeof EObstacleType;
+    readonly onlyOn?: ISpellEffectTileType | null;
     readonly hp: ISummonEffectStatValue;
 }
 
