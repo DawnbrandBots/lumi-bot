@@ -52,6 +52,10 @@ export const SPELL_EFFECT_TILE_TYPE_DESCRIPTION_STRINGS = {
     WALL: "wall",
 } as const satisfies Record<keyof typeof ESpellEffectTileType, string>;
 
+export type TSpellEffectDescriptionContext = PickDeep<ISpell, "shape.id" | "shape.name" | "shape.isAoe">;
+
+type TSpellEffectShapeInput = TSpellEffectDescriptionContext["shape"];
+
 export type TSpellEffectValue = PickDeep<ISpellEffectValue, "base"> & {
     readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "kind" | "base">> | null;
     unit: PickDeep<ISpellEffectValueFixedUnit, "kind"> | PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat">;
@@ -65,6 +69,10 @@ type TEffectWithAmountInput = {
 
 type TEffectWithOptionalTargetInput = {
     readonly target?: TSpellEffectTargetInput;
+};
+
+type TEffectWithShapeOverrideInput = {
+    readonly shapeOverride?: TSpellEffectShapeInput | null;
 };
 
 type TSpellEffectDescriptionInputMapWithoutKind = {
@@ -82,7 +90,7 @@ type TSpellEffectDescriptionInputMapWithoutKind = {
         readonly target: NonNullable<TSpellEffectTargetInput>;
     };
     WARP: object;
-    OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base">;
+    OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base" | "onlyOn">;
     TILE: TEffectWithOptionalTargetInput & {
         readonly repeat: TSpellEffectDescriptionInputMap["REPEAT"];
     };
@@ -94,7 +102,8 @@ type TSpellEffectDescriptionInputMapWithoutKind = {
 
 type TSpellEffectDescriptionInputMap = {
     [K in keyof TSpellEffectDescriptionInputMapWithoutKind]: TSpellEffectDescriptionInputMapWithoutKind[K] &
-        Pick<TSpellEffectKindToEffectMap[K], "kind">;
+        Pick<TSpellEffectKindToEffectMap[K], "kind"> &
+        TEffectWithShapeOverrideInput;
 };
 
 type TRootSpellEffectKind = Exclude<keyof TSpellEffectDescriptionInputMap, "STAT" | "REPEAT">;
@@ -102,8 +111,6 @@ export type TRootSpellEffect = TSpellEffectDescriptionInputMap[TRootSpellEffectK
 
 export type TDescribedSpellEffect =
     TSpellEffect | TSpellEffectDescriptionInputMap[keyof TSpellEffectDescriptionInputMap];
-
-export type TSpellEffectDescriptionContext = PickDeep<ISpell, "shape.name" | "shape.isAoe">;
 
 type TSpellEffectDescriptionOnlyFor =
     PickDeep<IMovementType, "name"> | PickDeep<IWeaponType, "name"> | null | undefined;
@@ -161,8 +168,34 @@ function isStatusEffect(
     return effect.kind === ESpellEffectKind.STATUS;
 }
 
+function effectShape(
+    effect: TEffectWithShapeOverrideInput,
+    spell: TSpellEffectDescriptionContext,
+): TSpellEffectShapeInput {
+    return effect.shapeOverride ?? spell.shape;
+}
+
+function shouldDescribeShape(effect: TEffectWithShapeOverrideInput, inline: boolean): boolean {
+    return inline || !!effect.shapeOverride;
+}
+
+function describeTargetTiles(
+    effect: TEffectWithShapeOverrideInput & { readonly onlyOn?: keyof typeof ESpellEffectTileType | null },
+    spell: TSpellEffectDescriptionContext,
+    inline: boolean,
+): string {
+    const tileType = effect.onlyOn ? ` ${SPELL_EFFECT_TILE_TYPE_DESCRIPTION_STRINGS[effect.onlyOn]}` : "";
+    const shapeStr = shouldDescribeShape(effect, inline) ? ` on a ${effectShape(effect, spell).name}` : "";
+
+    return `target${tileType} tiles${shapeStr}`;
+}
+
+function haveSameShapeOverride(a: TEffectWithShapeOverrideInput, b: TEffectWithShapeOverrideInput): boolean {
+    return a.shapeOverride?.id == b.shapeOverride?.id;
+}
+
 function describeTarget(
-    effect: PickDeep<ISpellEffect, "kind"> & { target?: TSpellEffectTargetInput },
+    effect: PickDeep<ISpellEffect, "kind"> & TEffectWithShapeOverrideInput & { target?: TSpellEffectTargetInput },
     spell: TSpellEffectDescriptionContext,
     inline = false,
 ): string | null {
@@ -170,16 +203,19 @@ function describeTarget(
         return null;
     }
 
-    if (effect.target === ESpellEffectTarget.SELF && spell.shape.isAoe) {
-        return `targets ${inline ? `on a ${spell.shape.name}` : "in shape"} centered around user`;
+    const shape = effectShape(effect, spell);
+    const includeShape = shouldDescribeShape(effect, inline);
+
+    if (effect.target === ESpellEffectTarget.SELF && shape.isAoe) {
+        return `targets ${includeShape ? `on a ${shape.name}` : "in shape"} centered around user`;
     }
 
     if (effect.kind === ESpellEffectKind.TILE) {
-        return `target tiles${inline ? ` on a ${spell.shape.name}` : ""}`;
+        return describeTargetTiles(effect, spell, inline);
     }
 
-    if (effect.target === ESpellEffectTarget.ANY && inline) {
-        return `${SPELL_EFFECT_TARGET_DESCRIPTION_STRINGS[effect.target]} on a ${spell.shape.name}`;
+    if (effect.target === ESpellEffectTarget.ANY && includeShape) {
+        return `${SPELL_EFFECT_TARGET_DESCRIPTION_STRINGS[effect.target]} on a ${shape.name}`;
     }
 
     return SPELL_EFFECT_TARGET_DESCRIPTION_STRINGS[effect.target];
@@ -247,8 +283,11 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
     WARP() {
         return "Moves user to target tile";
     },
-    OBSTACLE(effect) {
-        return `Summons obstacles with ${effect.hp.base} HP`;
+    OBSTACLE(effect, spell, inline) {
+        const targetTilesStr =
+            effect.onlyOn || effect.shapeOverride || inline ? ` on ${describeTargetTiles(effect, spell, inline)}` : "";
+
+        return `Summons obstacles${targetTilesStr} with ${effect.hp.base} HP`;
     },
     TILE(effect, spell, inline) {
         return `Grants effect to ${describeTarget(effect, spell, inline)}: ${describeSpellEffect(effect.repeat, spell, inline)}`;
@@ -321,7 +360,9 @@ export function describeSpellEffects(
         spell.effects.length > 1 &&
         statusEffects.length === spell.effects.length &&
         firstStatusEffect &&
-        statusEffects.every((effect) => effect.target === firstStatusEffect.target)
+        statusEffects.every(
+            (effect) => effect.target === firstStatusEffect.target && haveSameShapeOverride(effect, firstStatusEffect),
+        )
     ) {
         // TODO: target guaranteed to exist for IStatusEffect, but type should be updated to reflect that
         const target = describeTarget(firstStatusEffect, spell, inline)!;
