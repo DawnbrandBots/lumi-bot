@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ADDITIVE_BASE_PERCENT_5",
+    "kind": "ADDITIVE_BASE_PERCENT",
+    "amount": {
+      "kind": "CONSTANT",
+      "value": 5
+    }
+  },
+  {
+    "id": "ADDITIVE_BASE_PERCENT_10",
+    "kind": "ADDITIVE_BASE_PERCENT",
+    "amount": {
+      "kind": "CONSTANT",
+      "value": 10
+    }
+  },
+  {
+    "id": "DARK_SLASH",
+    "kind": "ADDITIVE_FIXED",
+    "amount": {
+      "kind": "CONSTANT",
+      "value": 5
+    }
+  },
+  {
+    "id": "MINION_ATK",
+    "kind": "ADDITIVE_BASE_PERCENT",
+    "amount": {
+      "kind": "BY_LEVEL",
+      "values": [20, 40, 60, 80, 100, 120, 140, 160, 170, 180, 200]
+    }
+  }
+]

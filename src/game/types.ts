@@ -330,6 +330,38 @@ export interface ISpellEffectValueEffectivenessItem {
     readonly base: number;
 }
 
+export const ESpellEffectScalingStrategyKind = {
+    ADDITIVE_BASE_PERCENT: "ADDITIVE_BASE_PERCENT",
+    ADDITIVE_FIXED: "ADDITIVE_FIXED",
+} as const;
+
+export const ESpellEffectScalingStrategyAmountKind = {
+    CONSTANT: "CONSTANT",
+    BY_LEVEL: "BY_LEVEL",
+} as const;
+
+/** Specifies what value is added to the base multiplied by the spell level. */
+export interface ISpellEffectScalingStrategyConstantAmount {
+    readonly kind: typeof ESpellEffectScalingStrategyAmountKind.CONSTANT;
+    readonly value: number;
+}
+
+/** Specifies the value that's added to the base for each level specifically. */
+export interface ISpellEffectScalingStrategyByLevelAmount {
+    readonly kind: typeof ESpellEffectScalingStrategyAmountKind.BY_LEVEL;
+    readonly values: readonly number[];
+}
+
+export type TSpellEffectScalingStrategyAmount =
+    ISpellEffectScalingStrategyConstantAmount | ISpellEffectScalingStrategyByLevelAmount;
+
+/** Represents how spell effect values grow with the spell's level. */
+export interface ISpellEffectScalingStrategy {
+    readonly id: TId;
+    readonly kind: keyof typeof ESpellEffectScalingStrategyKind;
+    readonly amount: TSpellEffectScalingStrategyAmount;
+}
+
 /**
  * Spell effects have values which may vary with level and targeted units.
  *

@@ -13,6 +13,10 @@ import { ObstacleEffect } from "./game/models/obstacleEffect.ts";
 import { RepeatEffect } from "./game/models/repeatEffect.ts";
 import { Spell } from "./game/models/spell.ts";
 import { SpellEffect } from "./game/models/spellEffect.ts";
+import { SpellEffectScalingStrategy } from "./game/models/spellEffectScalingStrategy.ts";
+import { SpellEffectScalingStrategyAmount } from "./game/models/spellEffectScalingStrategyAmount.ts";
+import { SpellEffectScalingStrategyByLevelAmount } from "./game/models/spellEffectScalingStrategyByLevelAmount.ts";
+import { SpellEffectScalingStrategyConstantAmount } from "./game/models/spellEffectScalingStrategyConstantAmount.ts";
 import { SpellEffectValue } from "./game/models/spellEffectValue.ts";
 import { SpellEffectValueEffectivenessItem } from "./game/models/spellEffectValueEffectivenessItem.ts";
 import { SpellEffectValueFixedUnit } from "./game/models/spellEffectValueFixedUnit.ts";
@@ -53,6 +57,10 @@ if (!LUMI_STATE_DB_DIR || !LUMI_STATIC_DB_DIR || !LUMI_STATE_DB_NAME || !LUMI_GA
  */
 export const GAME_DATA_ENTITIES = [
     SpellEffect,
+    SpellEffectScalingStrategy,
+    SpellEffectScalingStrategyAmount,
+    SpellEffectScalingStrategyByLevelAmount,
+    SpellEffectScalingStrategyConstantAmount,
     WeaponSkill,
     WeaponSkillEffect,
     WeaponTypeWeaponSkill,
