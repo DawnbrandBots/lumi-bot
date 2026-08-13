@@ -1,5 +1,6 @@
 import type { PickDeep } from "type-fest";
 import { SPELL_MAXIMUM_LEVEL } from "./constants.ts";
+import { SPELL_EFFECT_SCALING_STRATEGIES } from "./spellEffectScalingStrategies.ts";
 import type {
     ISpell,
     ISpellEffectScalingStrategy,
@@ -8,15 +9,20 @@ import type {
     ISummonEffectStatValue,
     TSpellEffectKindToEffectMap,
 } from "./types.ts";
-import { ESpellEffectScalingStrategyAmountKind, ESpellEffectScalingStrategyKind } from "./types.ts";
+import {
+    ESpellEffectScalingStrategy,
+    ESpellEffectScalingStrategyAmountKind,
+    ESpellEffectScalingStrategyKind,
+    ESpellEffectValueUnitKind,
+} from "./types.ts";
 
 type TEffectWithAmountInput = {
     // Can't just straight up use PickDeep over IDamageEffect and IHealEffect because
     // `amount.effectiveness.${number}.base` removes `null` from `effectiveness`.
     // Not necessarily a bug: https://github.com/sindresorhus/type-fest/issues/880
-    readonly amount: PickDeep<ISpellEffectValue, "base" | "unit.kind" | "scalingStrategy"> & {
+    readonly amount: PickDeep<ISpellEffectValue, "base" | "unit.kind" | "scalingStrategyOverride"> & {
         readonly effectiveness?: ReadonlyArray<
-            PickDeep<ISpellEffectValueEffectivenessItem, "base" | "scalingStrategy">
+            PickDeep<ISpellEffectValueEffectivenessItem, "base" | "scalingStrategyOverride">
         > | null;
     };
 };
@@ -29,11 +35,11 @@ type TSpellEffectValueGetterInputMapWithoutKind = {
     REPEAT: { readonly effect: TSpellEffectValueGetterInputMap["DAMAGE" | "HEAL"] };
     STATUS: { readonly effect: TSpellEffectValueGetterInputMap["STAT" | "REPEAT"] };
     WARP: object;
-    OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base" | "hp.scalingStrategy">;
+    OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base" | "hp.scalingStrategyOverride">;
     TILE: { readonly repeat: TSpellEffectValueGetterInputMap["REPEAT"] };
     SUMMON: PickDeep<
         TSpellEffectKindToEffectMap["SUMMON"],
-        "hp.base" | "hp.scalingStrategy" | "atk.base" | "atk.scalingStrategy"
+        "hp.base" | "hp.scalingStrategyOverride" | "atk.base" | "atk.scalingStrategyOverride"
     >;
 };
 
@@ -46,7 +52,8 @@ type TSpellEffectValueGetterInput = TSpellEffectValueGetterInputMap[keyof TSpell
 // TODO: admittedly, this name sucks. I think I should include something like "DBModel" in db-related models name so I could use "ISpellEffectValue" here for example.
 // Maybe in another PR that refactors data access for this repository.
 // TODO: maybe this weird `Omit<ISpellEffectValue, "effectiveness"> &` construct is a sign I should rethink of effectiveness is represented in ISpellEffectValue.
-export type ISpellEffectValueWithToLevel = Omit<ISpellEffectValue, "effectiveness"> & {
+export type ISpellEffectValueWithToLevel = Omit<ISpellEffectValue, "effectiveness" | "scalingStrategyOverride"> & {
+    readonly scalingStrategy: ISpellEffectScalingStrategy;
     readonly hasLevelProgression: boolean;
     /** Returns the effect's base value for the given level. */
     toLevel(level: number): number;
@@ -61,13 +68,13 @@ export abstract class Value implements ISpellEffectValueWithToLevel {
     }
     public abstract toLevel(level: number): number;
 
-    public constructor(arg: Pick<ISpellEffectValue, "base" | "scalingStrategy">) {
+    public constructor(arg: Pick<ISpellEffectValueWithToLevel, "base" | "scalingStrategy">) {
         this.base = arg.base;
         this.scalingStrategy = arg.scalingStrategy;
     }
 }
 
-type TScalingValueInput = Pick<ISpellEffectValue, "base" | "scalingStrategy" | "unit">;
+type TScalingValueInput = Pick<ISpellEffectValueWithToLevel, "base" | "scalingStrategy" | "unit">;
 
 export class ScalingValue extends Value implements ISpellEffectValueWithToLevel {
     public readonly unit: ISpellEffectValueWithToLevel["unit"];
@@ -112,23 +119,52 @@ function scalingAmount(strategy: ISpellEffectScalingStrategy, level: number): nu
 }
 
 const noValues = () => [];
+
+const DEFAULT_SCALING_STRATEGIES_BY_UNIT = {
+    [ESpellEffectValueUnitKind.FIXED]:
+        SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10],
+    [ESpellEffectValueUnitKind.PERCENT]:
+        SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_5],
+} satisfies Record<keyof typeof ESpellEffectValueUnitKind, ISpellEffectScalingStrategy>;
+
+function strategyFromOverride(
+    override: keyof typeof ESpellEffectScalingStrategy | null | undefined,
+): ISpellEffectScalingStrategy | undefined {
+    return override ? SPELL_EFFECT_SCALING_STRATEGIES[override] : undefined;
+}
+
+function valueScalingStrategy(value: PickDeep<ISpellEffectValue, "unit.kind" | "scalingStrategyOverride">) {
+    return strategyFromOverride(value.scalingStrategyOverride) ?? DEFAULT_SCALING_STRATEGIES_BY_UNIT[value.unit.kind];
+}
+
+function summonStatScalingStrategy(
+    stat: Pick<ISummonEffectStatValue, "scalingStrategyOverride">,
+    defaultScalingStrategy: ISpellEffectScalingStrategy,
+) {
+    return strategyFromOverride(stat.scalingStrategyOverride) ?? defaultScalingStrategy;
+}
+
 const withEffectiveness = (effect: TEffectWithAmountInput) => {
-    return [new ScalingValue(effect.amount)].concat(
+    const scalingStrategy = valueScalingStrategy(effect.amount);
+    return [new ScalingValue({ ...effect.amount, scalingStrategy })].concat(
         effect.amount.effectiveness?.map(
             (eff) =>
                 new ScalingValue({
                     base: eff.base,
-                    scalingStrategy: eff.scalingStrategy ?? effect.amount.scalingStrategy,
+                    scalingStrategy: strategyFromOverride(eff.scalingStrategyOverride) ?? scalingStrategy,
                     unit: effect.amount.unit,
                 }),
         ) ?? [],
     );
 };
 
-function statValue(stat: Pick<ISummonEffectStatValue, "base" | "scalingStrategy">): ScalingValue {
+function statValue(
+    stat: Pick<ISummonEffectStatValue, "base" | "scalingStrategyOverride">,
+    defaultScalingStrategy: ISpellEffectScalingStrategy,
+): ScalingValue {
     return new ScalingValue({
         base: stat.base,
-        scalingStrategy: stat.scalingStrategy,
+        scalingStrategy: summonStatScalingStrategy(stat, defaultScalingStrategy),
         unit: { kind: "FIXED" },
     });
 }
@@ -150,13 +186,18 @@ const SPELL_EFFECT_VALUE_GETTERS: {
     },
     WARP: noValues,
     OBSTACLE(effect) {
-        return [statValue(effect.hp)];
+        return [
+            statValue(effect.hp, SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10]),
+        ];
     },
     TILE(effect) {
         return valuesForEffect(effect.repeat);
     },
     SUMMON(effect) {
-        return [statValue(effect.hp), statValue(effect.atk)];
+        return [
+            statValue(effect.hp, SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10]),
+            statValue(effect.atk, SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.MINION_ATK]),
+        ];
     },
 };
 

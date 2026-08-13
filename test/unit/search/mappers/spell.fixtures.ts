@@ -9,7 +9,7 @@ import {
     type ISpell,
     type ISpellShape,
 } from "../../../../src/game/types.ts";
-import { FIXED_VALUE_SCALING_STRATEGY, RED_COLOR } from "./common.fixtures.ts";
+import { RED_COLOR } from "./common.fixtures.ts";
 
 export const SPELL_ROLE = ESpellRole.EX satisfies ISpell["role"];
 
@@ -36,7 +36,6 @@ export const SPELL = {
             kind: ESpellEffectKind.DAMAGE,
             amount: {
                 base: 60,
-                scalingStrategy: FIXED_VALUE_SCALING_STRATEGY,
                 unit: {
                     kind: ESpellEffectValueUnitKind.FIXED,
                 },

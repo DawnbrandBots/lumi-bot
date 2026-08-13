@@ -328,8 +328,16 @@ export type TSpellEffectValueUnit = ISpellEffectValueFixedUnit | ISpellEffectVal
 export interface ISpellEffectValueEffectivenessItem {
     readonly kind: string;
     readonly base: number;
-    readonly scalingStrategy?: ISpellEffectScalingStrategy | null;
+    readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;
 }
+
+export const ESpellEffectScalingStrategy = {
+    NONE: "NONE",
+    ADDITIVE_BASE_PERCENT_5: "ADDITIVE_BASE_PERCENT_5",
+    ADDITIVE_BASE_PERCENT_10: "ADDITIVE_BASE_PERCENT_10",
+    DARK_SLASH: "DARK_SLASH",
+    MINION_ATK: "MINION_ATK",
+} as const;
 
 export const ESpellEffectScalingStrategyKind = {
     NONE: "NONE",
@@ -359,7 +367,7 @@ export type TSpellEffectScalingStrategyAmount =
 
 /** Represents how spell effect values grow with the spell's level. */
 export interface ISpellEffectScalingStrategy {
-    readonly id: TId;
+    readonly id: keyof typeof ESpellEffectScalingStrategy;
     readonly kind: keyof typeof ESpellEffectScalingStrategyKind;
     readonly amount: TSpellEffectScalingStrategyAmount;
 }
@@ -374,7 +382,7 @@ export interface ISpellEffectValue {
      * Value of spell effect for the spell's level 1.
      */
     readonly base: number;
-    readonly scalingStrategy?: ISpellEffectScalingStrategy | null;
+    readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;
     readonly unit: ISpellEffectValueUnit;
     readonly effectiveness?: ISpellEffectValueEffectivenessItem[] | null;
 }
@@ -399,7 +407,7 @@ export const ESpellEffectTarget = {
  */
 export interface ISummonEffectStatValue {
     readonly base: number;
-    readonly scalingStrategy?: ISpellEffectScalingStrategy | null;
+    readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;
 }
 
 export const ESpellEffectKind = {

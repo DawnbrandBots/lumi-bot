@@ -1,12 +1,12 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { SpellEffectScalingStrategy } from "./spellEffectScalingStrategy.ts";
+import { ESpellEffectScalingStrategy } from "../types.ts";
 
 export const SummonEffectStatValueSchema = defineEntity({
     name: "SummonEffectStatValue",
     embeddable: true,
     properties: {
         base: p.integer(),
-        scalingStrategy: () => p.manyToOne(SpellEffectScalingStrategy).nullable(),
+        scalingStrategyOverride: p.enum(() => ESpellEffectScalingStrategy).nullable(),
     },
 });
 export class SummonEffectStatValue extends SummonEffectStatValueSchema.class {}

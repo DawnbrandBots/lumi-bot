@@ -2,58 +2,23 @@ import { describe, expect, test } from "vitest";
 import { spellEffectsValues, type ISpellEffectValueWithToLevel } from "../../../src/game/spellEffectValues.ts";
 import {
     ESpellEffectKind,
-    ESpellEffectScalingStrategyAmountKind,
-    ESpellEffectScalingStrategyKind,
+    ESpellEffectScalingStrategy,
     ESpellEffectValueUnitKind,
     ESpellRole,
-    type ISpellEffectScalingStrategy,
 } from "../../../src/game/types.ts";
 
-const NO_SCALING_STRATEGY = {
-    id: "NONE",
-    kind: ESpellEffectScalingStrategyKind.NONE,
-    amount: { kind: ESpellEffectScalingStrategyAmountKind.CONSTANT, value: 0 },
-} satisfies ISpellEffectScalingStrategy;
-
-const FIXED_VALUE_SCALING_STRATEGY = {
-    id: "ADDITIVE_BASE_PERCENT_10",
-    kind: ESpellEffectScalingStrategyKind.ADDITIVE_BASE_PERCENT,
-    amount: { kind: ESpellEffectScalingStrategyAmountKind.CONSTANT, value: 10 },
-} satisfies ISpellEffectScalingStrategy;
-
-const PERCENT_VALUE_SCALING_STRATEGY = {
-    id: "ADDITIVE_BASE_PERCENT_5",
-    kind: ESpellEffectScalingStrategyKind.ADDITIVE_BASE_PERCENT,
-    amount: { kind: ESpellEffectScalingStrategyAmountKind.CONSTANT, value: 5 },
-} satisfies ISpellEffectScalingStrategy;
-
-const DARK_SLASH_SCALING_STRATEGY = {
-    id: "DARK_SLASH",
-    kind: ESpellEffectScalingStrategyKind.ADDITIVE_FIXED,
-    amount: { kind: ESpellEffectScalingStrategyAmountKind.CONSTANT, value: 5 },
-} satisfies ISpellEffectScalingStrategy;
-
-const MINION_ATK_SCALING_STRATEGY = {
-    id: "MINION_ATK",
-    kind: ESpellEffectScalingStrategyKind.ADDITIVE_BASE_PERCENT,
-    amount: {
-        kind: ESpellEffectScalingStrategyAmountKind.BY_LEVEL_UP,
-        values: [20, 40, 60, 80, 100, 120, 140, 160, 170, 180, 200],
-    },
-} satisfies ISpellEffectScalingStrategy;
-
-function fixedValue(base: number, scalingStrategy: ISpellEffectScalingStrategy = FIXED_VALUE_SCALING_STRATEGY) {
+function fixedValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
     return {
         base,
-        scalingStrategy,
+        scalingStrategyOverride,
         unit: { kind: ESpellEffectValueUnitKind.FIXED },
     };
 }
 
-function percentValue(base: number, scalingStrategy: ISpellEffectScalingStrategy = PERCENT_VALUE_SCALING_STRATEGY) {
+function percentValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
     return {
         base,
-        scalingStrategy,
+        scalingStrategyOverride,
         unit: { kind: ESpellEffectValueUnitKind.PERCENT },
     };
 }
@@ -134,11 +99,9 @@ describe(spellEffectsValues.name, () => {
                         kind: ESpellEffectKind.SUMMON,
                         hp: {
                             base: 70,
-                            scalingStrategy: FIXED_VALUE_SCALING_STRATEGY,
                         },
                         atk: {
                             base: 45,
-                            scalingStrategy: MINION_ATK_SCALING_STRATEGY,
                         },
                     },
                 ],
@@ -177,7 +140,7 @@ describe(spellEffectsValues.name, () => {
                 effects: [
                     {
                         kind: ESpellEffectKind.DAMAGE,
-                        amount: percentValue(35, DARK_SLASH_SCALING_STRATEGY),
+                        amount: percentValue(35, ESpellEffectScalingStrategy.DARK_SLASH),
                     },
                 ],
             },
@@ -189,7 +152,7 @@ describe(spellEffectsValues.name, () => {
                 effects: [
                     {
                         kind: ESpellEffectKind.DAMAGE,
-                        amount: fixedValue(50, NO_SCALING_STRATEGY),
+                        amount: fixedValue(50, ESpellEffectScalingStrategy.NONE),
                     },
                 ],
             },
