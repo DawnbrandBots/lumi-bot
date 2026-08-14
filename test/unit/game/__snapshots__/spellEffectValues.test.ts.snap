@@ -5,31 +5,23 @@ exports[`spellEffectsValues > damage and heal values 1`] = `
   [
     {
       "base": 50,
-      "className": "ScalingValue",
+      "className": "Percent10ScaleValue",
       "levelValues": [
         50,
         55,
         110,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
-      "unit": {
-        "kind": "FIXED",
-      },
     },
   ],
   [
     {
       "base": 30,
-      "className": "ScalingValue",
+      "className": "Percent10ScaleValue",
       "levelValues": [
         30,
         33,
         66,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
-      "unit": {
-        "kind": "FIXED",
-      },
     },
   ],
 ]
@@ -40,29 +32,21 @@ exports[`spellEffectsValues > damage with effectiveness values 1`] = `
   [
     {
       "base": 25,
-      "className": "ScalingValue",
+      "className": "Percent10ScaleValue",
       "levelValues": [
         25,
         27,
         55,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
-      "unit": {
-        "kind": "FIXED",
-      },
     },
     {
       "base": 40,
-      "className": "ScalingValue",
+      "className": "Percent10ScaleValue",
       "levelValues": [
         40,
         44,
         88,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
-      "unit": {
-        "kind": "FIXED",
-      },
     },
   ],
 ]
@@ -73,16 +57,12 @@ exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
   [
     {
       "base": 35,
-      "className": "ScalingValue",
+      "className": "Percent10ScaleValue",
       "levelValues": [
         35,
         38,
         77,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
-      "unit": {
-        "kind": "FIXED",
-      },
     },
   ],
   [],
@@ -94,16 +74,12 @@ exports[`spellEffectsValues > non-scaling value 1`] = `
   [
     {
       "base": 50,
-      "className": "ScalingValue",
+      "className": "NonScalingValue",
       "levelValues": [
         50,
         50,
         50,
       ],
-      "scalingStrategy": "NONE",
-      "unit": {
-        "kind": "FIXED",
-      },
     },
   ],
 ]
@@ -120,16 +96,12 @@ exports[`spellEffectsValues > shadow percent damage 1`] = `
   [
     {
       "base": 35,
-      "className": "ScalingValue",
+      "className": "DarkSlashValue",
       "levelValues": [
         35,
         40,
         95,
       ],
-      "scalingStrategy": "DARK_SLASH",
-      "unit": {
-        "kind": "PERCENT",
-      },
     },
   ],
 ]
@@ -140,44 +112,32 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
   [
     {
       "base": 20,
-      "className": "ScalingValue",
+      "className": "Percent5ScaleValue",
       "levelValues": [
         20,
         21,
         32,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
-      "unit": {
-        "kind": "PERCENT",
-      },
     },
   ],
   [
     {
       "base": 30,
-      "className": "ScalingValue",
+      "className": "Percent5ScaleValue",
       "levelValues": [
         30,
         31,
         48,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
-      "unit": {
-        "kind": "PERCENT",
-      },
     },
     {
       "base": 0,
-      "className": "ScalingValue",
+      "className": "Percent5ScaleValue",
       "levelValues": [
         0,
         0,
         0,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_5",
-      "unit": {
-        "kind": "PERCENT",
-      },
     },
   ],
 ]
@@ -188,29 +148,21 @@ exports[`spellEffectsValues > summon values 1`] = `
   [
     {
       "base": 70,
-      "className": "ScalingValue",
+      "className": "Percent10ScaleValue",
       "levelValues": [
         70,
         77,
         154,
       ],
-      "scalingStrategy": "ADDITIVE_BASE_PERCENT_10",
-      "unit": {
-        "kind": "FIXED",
-      },
     },
     {
       "base": 45,
-      "className": "ScalingValue",
+      "className": "MinionAtkValue",
       "levelValues": [
         45,
         54,
         135,
       ],
-      "scalingStrategy": "MINION_ATK",
-      "unit": {
-        "kind": "FIXED",
-      },
     },
   ],
 ]
