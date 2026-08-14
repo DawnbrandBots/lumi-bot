@@ -300,6 +300,16 @@
     "uniqueSkill": "STRATEGIC_GENIUS"
   },
   {
+    "id": "HIDDEN_BOW_PLUS",
+    "name": "Hidden Bow +",
+    "weaponType": "BOW",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "FLEET_OF_FOOT"
+  },
+  {
     "id": "SIGHT_STONE_PLUS",
     "name": "Sight Stone +",
     "weaponType": "STONE",
@@ -688,6 +698,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "BATTLE_FERVOR"
+  },
+  {
+    "id": "HIDDEN_BOW",
+    "name": "Hidden Bow",
+    "weaponType": "BOW",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "FLEET_OF_FOOT"
   },
   {
     "id": "SIGHT_STONE",

@@ -4114,5 +4114,118 @@
         "target": "ANY"
       }
     ]
+  },
+  {
+    "id": "CROSSWIND_LOCK_EX",
+    "name": "Crosswind Lock EX",
+    "disciple": "YUYO",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "OBSTACLE",
+        "obstacleType": "ROCK",
+        "shapeOverride": "1_TILE",
+        "onlyOn": "GROUND",
+        "hp": {
+          "base": 180
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "ENNEA_WIND_PLUS_BOW",
+    "name": "Ennea Wind + Bow",
+    "disciple": "YUYO",
+    "role": "LIGHT",
+    "shape": "3X3_SQUARE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["weaponType", "BOW"]
+  },
+  {
+    "id": "FINAL_DARK_TETRAWIND",
+    "name": "Final Dark Tetrawind",
+    "disciple": "YUYO",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "countdown": 2,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 110,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "SELF_WARD_PUSH",
+    "name": "Self Ward Push",
+    "disciple": "YUYO",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "duration": 1,
+          "amount": {
+            "base": 10,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_SPELL_DAMAGE"
+            },
+            "scalingStrategyOverride": "ADDITIVE_BASE_PERCENT_10"
+          },
+          "stat": "RECEIVED_SPELL_DAMAGE"
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 1,
+        "target": "SELF"
+      }
+    ]
   }
 ]
