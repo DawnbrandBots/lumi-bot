@@ -303,7 +303,7 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
               : "";
         const tileConditionStr = !shape.isAoe ? describeTileCondition(effect) : "";
 
-        return `Summons ${obstaclesStr}${placementStr} with ${effect.hp.base} HP${tileConditionStr}`;
+        return `Summons ${obstaclesStr} with ${effect.hp.base} HP${placementStr}${tileConditionStr}`;
     },
     TILE(effect, spell, inline) {
         return `Grants effect to ${describeTarget(effect, spell, inline)}: ${describeSpellEffect(effect.repeat, spell, inline)}`;
