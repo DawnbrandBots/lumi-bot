@@ -1,19 +1,12 @@
 import type { PickDeep } from "type-fest";
-import { SPELL_MAXIMUM_LEVEL } from "./constants.ts";
-import { SPELL_EFFECT_SCALING_STRATEGIES } from "./spellEffectScalingStrategies.ts";
-import type {
-    ISpell,
-    ISpellEffectScalingStrategy,
-    ISpellEffectValue,
-    ISpellEffectValueEffectivenessItem,
-    ISummonEffectStatValue,
-    TSpellEffectKindToEffectMap,
-} from "./types.ts";
+import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "./constants.ts";
 import {
     ESpellEffectScalingStrategy,
-    ESpellEffectScalingStrategyAmountKind,
-    ESpellEffectScalingStrategyKind,
     ESpellEffectValueUnitKind,
+    type ISpell,
+    type ISpellEffectValue,
+    type ISpellEffectValueEffectivenessItem,
+    type TSpellEffectKindToEffectMap,
 } from "./types.ts";
 
 type TEffectWithAmountInput = {
@@ -35,11 +28,11 @@ type TSpellEffectValueGetterInputMapWithoutKind = {
     REPEAT: { readonly effect: TSpellEffectValueGetterInputMap["DAMAGE" | "HEAL"] };
     STATUS: { readonly effect: TSpellEffectValueGetterInputMap["STAT" | "REPEAT"] };
     WARP: object;
-    OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base" | "hp.scalingStrategyOverride">;
+    OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base">;
     TILE: { readonly repeat: TSpellEffectValueGetterInputMap["REPEAT"] };
     SUMMON: PickDeep<
         TSpellEffectKindToEffectMap["SUMMON"],
-        "hp.base" | "hp.scalingStrategyOverride" | "atk.base" | "atk.scalingStrategyOverride"
+        "hp.base" | "atk.base" | "hp.scalingStrategyOverride" | "atk.scalingStrategyOverride"
     >;
 };
 
@@ -52,122 +45,138 @@ type TSpellEffectValueGetterInput = TSpellEffectValueGetterInputMap[keyof TSpell
 // TODO: admittedly, this name sucks. I think I should include something like "DBModel" in db-related models name so I could use "ISpellEffectValue" here for example.
 // Maybe in another PR that refactors data access for this repository.
 // TODO: maybe this weird `Omit<ISpellEffectValue, "effectiveness"> &` construct is a sign I should rethink of effectiveness is represented in ISpellEffectValue.
-export type ISpellEffectValueWithToLevel = Omit<ISpellEffectValue, "effectiveness" | "scalingStrategyOverride"> & {
-    readonly scalingStrategy: ISpellEffectScalingStrategy;
-    readonly hasLevelProgression: boolean;
+export type ISpellEffectValueWithToLevel = Omit<ISpellEffectValue, "effectiveness" | "unit"> & {
     /** Returns the effect's base value for the given level. */
     toLevel(level: number): number;
+    scalesWithLevel: boolean;
+};
+
+/** This exists because minions' Atk stats increases differently for some levels, whereas all other kind of spell effect values grow by 5 or 10% per level. */
+export type ISpellEffectValueWithToLevelAndConsistentScale = ISpellEffectValueWithToLevel & {
+    /** Amount by which an effect's base value increases per level. */
+    scale: number;
 };
 
 export abstract class Value implements ISpellEffectValueWithToLevel {
     public readonly base: ISpellEffectValueWithToLevel["base"];
-    public readonly scalingStrategy: ISpellEffectValueWithToLevel["scalingStrategy"];
-    public abstract readonly unit: ISpellEffectValueWithToLevel["unit"];
-    public get hasLevelProgression(): boolean {
-        return this.scalingStrategy?.kind !== ESpellEffectScalingStrategyKind.NONE;
-    }
+    public abstract readonly scalesWithLevel: ISpellEffectValueWithToLevel["scalesWithLevel"];
     public abstract toLevel(level: number): number;
 
-    public constructor(arg: Pick<ISpellEffectValueWithToLevel, "base" | "scalingStrategy">) {
+    public constructor(arg: Pick<ISpellEffectValue, "base">) {
         this.base = arg.base;
-        this.scalingStrategy = arg.scalingStrategy;
     }
 }
 
-type TScalingValueInput = Pick<ISpellEffectValueWithToLevel, "base" | "scalingStrategy" | "unit">;
-
-export class ScalingValue extends Value implements ISpellEffectValueWithToLevel {
-    public readonly unit: ISpellEffectValueWithToLevel["unit"];
-
-    public constructor(arg: TScalingValueInput) {
-        super(arg);
-        this.unit = arg.unit;
+export class NonScalingValue extends Value implements ISpellEffectValueWithToLevel {
+    public toLevel() {
+        return this.base;
     }
+
+    public get scalesWithLevel() {
+        return false;
+    }
+}
+
+export abstract class ValueWithScale extends Value implements ISpellEffectValueWithToLevelAndConsistentScale {
+    public abstract readonly scale: ISpellEffectValueWithToLevelAndConsistentScale["scale"];
 
     public toLevel(level: number) {
-        const scalingStrategy = this.scalingStrategy;
-        if (!scalingStrategy) {
-            throw new Error("Spell effect value is missing a scaling strategy.");
-        }
+        return Math.floor(this.base + this.scale * (level === SPELL_MAXIMUM_LEVEL ? level : level - 1));
+    }
 
-        switch (scalingStrategy.kind) {
-            case ESpellEffectScalingStrategyKind.NONE:
-                return this.base;
-            case ESpellEffectScalingStrategyKind.ADDITIVE_BASE_PERCENT: {
-                const amount = scalingAmount(scalingStrategy, level);
-                return Math.floor(this.base + (this.base * amount) / 100);
-            }
-            case ESpellEffectScalingStrategyKind.ADDITIVE_FIXED: {
-                const amount = scalingAmount(scalingStrategy, level);
-                return Math.floor(this.base + amount);
-            }
-        }
+    public get scalesWithLevel() {
+        return true;
     }
 }
 
-function scalingAmount(strategy: ISpellEffectScalingStrategy, level: number): number {
-    if (level === 1) {
-        return 0;
-    }
-
-    switch (strategy.amount.kind) {
-        case ESpellEffectScalingStrategyAmountKind.BY_LEVEL_UP:
-            return strategy.amount.values[level - 2] ?? 0;
-        case ESpellEffectScalingStrategyAmountKind.CONSTANT:
-            return strategy.amount.value * (level === SPELL_MAXIMUM_LEVEL ? level : level - 1);
+/** Represents how normal spell effect values grow: 10% per level for fixed values and 5% for percent values. */
+export class Percent5ScaleValue extends ValueWithScale implements ISpellEffectValueWithToLevelAndConsistentScale {
+    public get scale() {
+        return this.base / 20;
     }
 }
+
+/** Represents how normal spell effect values grow: 10% per level for fixed values and 5% for percent values. */
+export class Percent10ScaleValue extends ValueWithScale implements ISpellEffectValueWithToLevelAndConsistentScale {
+    public get scale() {
+        return this.base / 10;
+    }
+}
+
+const MINION_ATK_SCALE_DENOMINATOR_BEFORE_SCALE_CHANGE_LEVEL = 5;
+const MINION_ATK_SCALE_DENOMINATOR_AFTER_SCALE_CHANGE_LEVEL = 10;
+
+export class MinionAtkValue extends Value implements ISpellEffectValueWithToLevel {
+    public get unit() {
+        return { kind: "FIXED" } as const;
+    }
+
+    // Minions' Atk grows by 20% for every level until 9, then 10% until level 11, then finally 20% for level 12.
+    public toLevel(level: number) {
+        const scaleBeforeScaleChangeLevel = this.base / MINION_ATK_SCALE_DENOMINATOR_BEFORE_SCALE_CHANGE_LEVEL;
+        if (level < SPELL_MINION_ATK_SCALE_CHANGE_LEVEL) {
+            return Math.floor(this.base + scaleBeforeScaleChangeLevel * (level - 1));
+        }
+
+        const scaleAfterScaleChangeLevel = this.base / MINION_ATK_SCALE_DENOMINATOR_AFTER_SCALE_CHANGE_LEVEL;
+        return Math.floor(
+            this.base +
+                scaleBeforeScaleChangeLevel * (SPELL_MINION_ATK_SCALE_CHANGE_LEVEL - 2) +
+                scaleAfterScaleChangeLevel *
+                    ((level === SPELL_MAXIMUM_LEVEL ? level + 1 : level) - (SPELL_MINION_ATK_SCALE_CHANGE_LEVEL - 1)),
+        );
+    }
+
+    public get scalesWithLevel() {
+        return true;
+    }
+}
+
+/** Dark Slash-like spells effect value increases by exactly 5 per level. */
+export class DarkSlashValue extends ValueWithScale implements ISpellEffectValueWithToLevelAndConsistentScale {
+    public get unit() {
+        return { kind: "PERCENT" } as const;
+    }
+
+    public get scale() {
+        return 5;
+    }
+
+    public get scalesWithLevel() {
+        return true;
+    }
+}
+
+const SPELL_EFFECT_VALUE_SCALING_STRATEGIES = {
+    NONE: (arg) => new NonScalingValue(arg),
+    ADDITIVE_BASE_PERCENT_10: (arg) => new Percent10ScaleValue(arg),
+    ADDITIVE_BASE_PERCENT_5: (arg) => new Percent5ScaleValue(arg),
+    DARK_SLASH: (arg) => new DarkSlashValue(arg),
+    MINION_ATK: (arg) => new MinionAtkValue(arg),
+} as const satisfies Record<
+    keyof typeof ESpellEffectScalingStrategy,
+    (arg: Pick<ISpellEffectValue, "base">) => ISpellEffectValueWithToLevel
+>;
 
 const noValues = () => [];
-
-const DEFAULT_SCALING_STRATEGIES_BY_UNIT = {
-    [ESpellEffectValueUnitKind.FIXED]:
-        SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10],
-    [ESpellEffectValueUnitKind.PERCENT]:
-        SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_5],
-} satisfies Record<keyof typeof ESpellEffectValueUnitKind, ISpellEffectScalingStrategy>;
-
-function strategyFromOverride(
-    override: keyof typeof ESpellEffectScalingStrategy | null | undefined,
-): ISpellEffectScalingStrategy | undefined {
-    return override ? SPELL_EFFECT_SCALING_STRATEGIES[override] : undefined;
-}
-
-function valueScalingStrategy(value: PickDeep<ISpellEffectValue, "unit.kind" | "scalingStrategyOverride">) {
-    return strategyFromOverride(value.scalingStrategyOverride) ?? DEFAULT_SCALING_STRATEGIES_BY_UNIT[value.unit.kind];
-}
-
-function summonStatScalingStrategy(
-    stat: Pick<ISummonEffectStatValue, "scalingStrategyOverride">,
-    defaultScalingStrategy: ISpellEffectScalingStrategy,
-) {
-    return strategyFromOverride(stat.scalingStrategyOverride) ?? defaultScalingStrategy;
-}
-
 const withEffectiveness = (effect: TEffectWithAmountInput) => {
-    const scalingStrategy = valueScalingStrategy(effect.amount);
-    return [new ScalingValue({ ...effect.amount, scalingStrategy })].concat(
-        effect.amount.effectiveness?.map(
-            (eff) =>
-                new ScalingValue({
-                    base: eff.base,
-                    scalingStrategy: strategyFromOverride(eff.scalingStrategyOverride) ?? scalingStrategy,
-                    unit: effect.amount.unit,
-                }),
+    const strategy =
+        SPELL_EFFECT_VALUE_SCALING_STRATEGIES[
+            effect.amount.scalingStrategyOverride ??
+                (effect.amount.unit.kind === ESpellEffectValueUnitKind.FIXED
+                    ? ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10
+                    : ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_5)
+        ];
+    return [strategy(effect.amount)].concat(
+        effect.amount.effectiveness?.map((effectiveness) =>
+            (effectiveness.scalingStrategyOverride
+                ? SPELL_EFFECT_VALUE_SCALING_STRATEGIES[effectiveness.scalingStrategyOverride]
+                : strategy)({
+                base: effectiveness.base,
+            }),
         ) ?? [],
     );
 };
-
-function statValue(
-    stat: Pick<ISummonEffectStatValue, "base" | "scalingStrategyOverride">,
-    defaultScalingStrategy: ISpellEffectScalingStrategy,
-): ScalingValue {
-    return new ScalingValue({
-        base: stat.base,
-        scalingStrategy: summonStatScalingStrategy(stat, defaultScalingStrategy),
-        unit: { kind: "FIXED" },
-    });
-}
 
 const SPELL_EFFECT_VALUE_GETTERS: {
     [K in TSpellEffectValueGetterInput["kind"]]: (
@@ -187,7 +196,9 @@ const SPELL_EFFECT_VALUE_GETTERS: {
     WARP: noValues,
     OBSTACLE(effect) {
         return [
-            statValue(effect.hp, SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10]),
+            SPELL_EFFECT_VALUE_SCALING_STRATEGIES.ADDITIVE_BASE_PERCENT_10({
+                base: effect.hp.base,
+            }),
         ];
     },
     TILE(effect) {
@@ -195,8 +206,14 @@ const SPELL_EFFECT_VALUE_GETTERS: {
     },
     SUMMON(effect) {
         return [
-            statValue(effect.hp, SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10]),
-            statValue(effect.atk, SPELL_EFFECT_SCALING_STRATEGIES[ESpellEffectScalingStrategy.MINION_ATK]),
+            SPELL_EFFECT_VALUE_SCALING_STRATEGIES[
+                effect.atk.scalingStrategyOverride ?? ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10
+            ]({
+                base: effect.hp.base,
+            }),
+            SPELL_EFFECT_VALUE_SCALING_STRATEGIES[
+                effect.atk.scalingStrategyOverride ?? ESpellEffectScalingStrategy.MINION_ATK
+            ](effect.atk),
         ];
     },
 };

@@ -38,9 +38,7 @@ function formatSpellValues({ spell, values }: { spell: ISpell; values: ISpellEff
         const rows = values.flatMap((values, index) => {
             return values.map((value, valueIndex) => [
                 valueIndex === 0 ? `${index + 1}.` : "",
-                ...levelsRow.map((level, index) =>
-                    !value.hasLevelProgression && index > 0 ? "." : value.toLevel(level),
-                ),
+                ...levelsRow.map((level, index) => (!value.scalesWithLevel && index > 0 ? "." : value.toLevel(level))),
             ]);
         });
         const data = [["Lv", ...levelsRow], ...rows];
