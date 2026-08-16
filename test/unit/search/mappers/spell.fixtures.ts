@@ -6,7 +6,7 @@ import {
     ESpellEffectTarget,
     ESpellEffectValueUnitKind,
     ESpellRole,
-    type ISpell
+    type ISpell,
 } from "../../../../src/game/types.ts";
 import { RED_COLOR } from "./common.fixtures.ts";
 
