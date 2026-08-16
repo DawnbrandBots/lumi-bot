@@ -4,23 +4,22 @@
 
 import { describe, expect, test } from "vitest";
 import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../src/game/spellEffectDescriptions.ts";
-import { ESpellEffectKind } from "../../../../src/game/types.ts";
 import {
-    ANY_TARGET,
+    EDirection,
+    ESpellEffectKind,
+    ESpellEffectTarget,
+    ESpellEffectTileType,
+    EStat,
+    EStatChange,
+} from "../../../../src/game/types.ts";
+import {
     ATK_PERCENT_VALUE_UNIT,
-    ATK_STAT,
     BLUE_COLOR,
     COLORLESS_COLOR,
     CROSS_SHAPE,
-    DECREASE_STAT_CHANGE,
     FIXED_VALUE_UNIT,
-    HP_STAT,
-    INCREASE_STAT_CHANGE,
-    LIMIT_STAT_CHANGE,
     RECEIVED_WEAPON_DAMAGE_PERCENT_VALUE_UNIT,
-    RECEIVED_WEAPON_DAMAGE_STAT,
     RED_COLOR,
-    SELF_TARGET,
     SINGLE_TILE_SHAPE,
 } from "./utils.ts";
 
@@ -34,7 +33,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE.name, () => {
                 effectiveness: [{ base: 90, kind: "Flying" }],
             },
             color: RED_COLOR,
-            target: ANY_TARGET,
+            target: ESpellEffectTarget.ANY,
         };
         const spell: Parameters<typeof SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE>[1] = {
             shape: SINGLE_TILE_SHAPE,
@@ -77,7 +76,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.HEAL.name, () => {
                         unit: FIXED_VALUE_UNIT,
                         effectiveness: [{ base: 70, kind: "Armored" }],
                     },
-                    target: SELF_TARGET,
+                    target: ESpellEffectTarget.SELF,
                 },
                 { shape: SINGLE_TILE_SHAPE },
                 false,
@@ -95,9 +94,9 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.MOVEMENT.name, () => {
             SPELL_EFFECT_DESCRIPTION_FORMATTERS.MOVEMENT(
                 {
                     kind: ESpellEffectKind.MOVEMENT,
-                    direction: { noun: "up" },
+                    direction: EDirection.UP,
                     count,
-                    target: ANY_TARGET,
+                    target: ESpellEffectTarget.ANY,
                 },
                 { shape: CROSS_SHAPE },
                 true,
@@ -112,8 +111,8 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STAT.name, () => {
             SPELL_EFFECT_DESCRIPTION_FORMATTERS.STAT(
                 {
                     kind: ESpellEffectKind.STAT,
-                    stat: ATK_STAT,
-                    statChange: INCREASE_STAT_CHANGE,
+                    stat: EStat.ATK,
+                    statChange: EStatChange.INCREASE,
                     amount: {
                         base: 30,
                         unit: ATK_PERCENT_VALUE_UNIT,
@@ -131,8 +130,8 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STAT.name, () => {
             SPELL_EFFECT_DESCRIPTION_FORMATTERS.STAT(
                 {
                     kind: ESpellEffectKind.STAT,
-                    stat: HP_STAT,
-                    statChange: LIMIT_STAT_CHANGE,
+                    stat: EStat.HP,
+                    statChange: EStatChange.LIMIT,
                     amount: { base: 10, unit: FIXED_VALUE_UNIT },
                     duration: null,
                 },
@@ -147,11 +146,11 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS.name, () => {
     test("describes a self-targeted status over an area", () => {
         const effect: Parameters<typeof SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS>[0] = {
             kind: ESpellEffectKind.STATUS,
-            target: SELF_TARGET,
+            target: ESpellEffectTarget.SELF,
             effect: {
                 kind: ESpellEffectKind.STAT,
-                stat: RECEIVED_WEAPON_DAMAGE_STAT,
-                statChange: DECREASE_STAT_CHANGE,
+                stat: EStat.RECEIVED_WEAPON_DAMAGE,
+                statChange: EStatChange.DECREASE,
                 amount: {
                     base: 30,
                     unit: RECEIVED_WEAPON_DAMAGE_PERCENT_VALUE_UNIT,
@@ -224,18 +223,47 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.WARP.name, () => {
     });
 });
 
-describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.ICE_BLOCK.name, () => {
-    test("describes the summoned blocks' HP", () => {
+describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE.name, () => {
+    test("describes a single summoned obstacle's HP", () => {
         expect(
-            SPELL_EFFECT_DESCRIPTION_FORMATTERS.ICE_BLOCK(
+            SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE(
                 {
-                    kind: ESpellEffectKind.ICE_BLOCK,
+                    kind: ESpellEffectKind.OBSTACLE,
                     hp: { base: 50 },
                 },
                 { shape: SINGLE_TILE_SHAPE },
                 false,
             ),
-        ).toBe("Summons ice blocks with 50 HP");
+        ).toBe("Summons an obstacle with 50 HP on a single space");
+    });
+
+    test("describes tile condition and overridden shape", () => {
+        expect(
+            SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE(
+                {
+                    kind: ESpellEffectKind.OBSTACLE,
+                    hp: { base: 50 },
+                    onlyOn: ESpellEffectTileType.GROUND,
+                    shapeOverride: SINGLE_TILE_SHAPE,
+                },
+                { shape: CROSS_SHAPE },
+                false,
+            ),
+        ).toBe("Summons an obstacle with 50 HP on a single space if it is flat ground");
+    });
+
+    test("describes target tile type for an area obstacle effect", () => {
+        expect(
+            SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE(
+                {
+                    kind: ESpellEffectKind.OBSTACLE,
+                    hp: { base: 50 },
+                    onlyOn: ESpellEffectTileType.GROUND,
+                },
+                { shape: CROSS_SHAPE },
+                false,
+            ),
+        ).toBe("Summons obstacles with 50 HP on target flat ground tiles");
     });
 });
 
@@ -245,7 +273,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.TILE.name, () => {
             SPELL_EFFECT_DESCRIPTION_FORMATTERS.TILE(
                 {
                     kind: ESpellEffectKind.TILE,
-                    target: ANY_TARGET,
+                    target: ESpellEffectTarget.ANY,
                     repeat: {
                         kind: ESpellEffectKind.REPEAT,
                         effect: {

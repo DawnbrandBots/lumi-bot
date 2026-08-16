@@ -31,7 +31,7 @@ type TAliasMusicInput = Pick<Music, "name"> & {
 type TStandaloneAliasSpellInput = Pick<Spell, "name">;
 type TAliasSpellInput = TStandaloneAliasSpellInput & {
     readonly disciple?: TStandaloneAliasDiscipleInput | null;
-    readonly role: Pick<Spell["role"], "kind">;
+    readonly role: Spell["role"];
 };
 
 function* standaloneAliasWeapon(weapon: TStandaloneAliasWeaponInput) {
@@ -132,7 +132,7 @@ function* standaloneAliasSpell(spell: TStandaloneAliasSpellInput): Generator<str
 }
 
 function* relativeAliasSpell(spell: TAliasSpellInput): Generator<string> {
-    if (spell.disciple && spell.role.kind === ESpellRole.EX) {
+    if (spell.disciple && spell.role === ESpellRole.EX) {
         for (const discipleAlias of standaloneAliasDisciple(spell.disciple)) {
             yield `${discipleAlias} EX`;
         }

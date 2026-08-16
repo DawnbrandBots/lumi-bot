@@ -1,14 +1,13 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 import SpellRules from "../rules/spell.ts";
-import type { ISpell, ISpellDraggingMode } from "../types.ts";
+import { ESpellRole } from "../types.ts";
+import type { ISpell } from "../types.ts";
 import { DamageEffect } from "./damageEffect.ts";
 import { Disciple } from "./disciple.ts";
 import { HealEffect } from "./healEffect.ts";
-import { IceBlockEffect } from "./iceBlockEffect.ts";
 import { MovementEffect } from "./movementEffect.ts";
 import { MovementType } from "./movementType.ts";
-import { SPELL_DRAGGING_MODE } from "./spellDraggingMode.ts";
-import { SpellRoleType } from "./spellRole.ts";
+import { ObstacleEffect } from "./obstacleEffect.ts";
 import { SpellShape } from "./spellShape.ts";
 import { StatusEffect } from "./statusEffect.ts";
 import { SummonEffect } from "./summonEffect.ts";
@@ -22,7 +21,7 @@ export const SpellSchema = defineEntity({
         id: p.string().primary(),
         name: p.string(),
         disciple: () => p.manyToOne(Disciple).inversedBy("spells").nullable(),
-        role: p.type(SpellRoleType),
+        role: p.enum(() => ESpellRole),
         shape: p.manyToOne(SpellShape),
         uses: p.integer().nullable(),
         cooldown: p.integer(),
@@ -35,7 +34,7 @@ export const SpellSchema = defineEntity({
                     WarpEffect,
                     MovementEffect,
                     TileEffect,
-                    IceBlockEffect,
+                    ObstacleEffect,
                     SummonEffect,
                     StatusEffect,
                 ])
@@ -56,8 +55,8 @@ export class Spell extends SpellSchema.class implements ISpell {
         return "spell" as const;
     }
 
-    get draggingMode(): ISpellDraggingMode {
-        return SPELL_DRAGGING_MODE[SpellRules.draggingModeKind(this)];
+    get draggingMode(): ISpell["draggingMode"] {
+        return SpellRules.draggingModeKind(this);
     }
 }
 SpellSchema.setClass(Spell);

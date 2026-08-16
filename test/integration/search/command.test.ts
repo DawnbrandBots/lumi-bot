@@ -38,10 +38,11 @@ describe("search command messages", () => {
         ["Dual Invigorate EX", "dual spell"],
         ["Axe Fighter + Infantry", "summon"],
         ["Heal Warp EX", "warp"],
-        ["Tetrathunder Wall EX", "ice blocks"],
+        ["Tetrathunder Wall EX", "obstacles"],
         ["Dark Cross Poison Patch", "tile"],
         ["Slow Self Shield EX", "cooldown increasing spell effect"],
         ["Dark Harm Sword Fighter", "damage-over-time effect dealing damage only once"],
+        ["Crosswind Lock EX", "conditional rock obstacle summon on shape different than damaging effect's"],
     ])("returns the complete %s message (%s)", async (name) => {
         const reply = vi.fn();
         const followUp = vi.fn();

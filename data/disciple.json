@@ -313,5 +313,14 @@
     "weaponType": "TOME",
     "prfWeapon": "PRAYER_TOME_PLUS",
     "shadowMusic": "BETRAYAL_ECHOES_SHADOWS_OF_VALENTIA"
+  },
+  {
+    "id": "YUYO",
+    "name": "Yuyo",
+    "epithet": "Timid Mouse",
+    "movementType": "INFANTRY",
+    "weaponType": "BOW",
+    "prfWeapon": "HIDDEN_BOW_PLUS",
+    "shadowMusic": "BETRAYAL_SOVEREIGN_AXE"
   }
 ]

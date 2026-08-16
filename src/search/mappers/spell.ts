@@ -7,7 +7,7 @@ import {
 import { describeSpellEffects } from "../../game/spellEffectDescriptions.ts";
 import type { ISpellEffectValueWithToLevel } from "../../game/spellEffectValues.ts";
 import { spellEffectsValues } from "../../game/spellEffectValues.ts";
-import type { ISpell, ISpellShape } from "../../game/types.ts";
+import type { ESpellDraggingMode, ESpellRole, ISpell, ISpellShape } from "../../game/types.ts";
 import range from "../../utils/range.ts";
 import { toAsciiTable } from "../../utils/table.ts";
 
@@ -16,6 +16,17 @@ const tileEmojis: Record<string, string> = {
     O: DISCORD_BLUE_SQUARE_EMOJI_CALL,
     ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
 };
+
+export const SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS = {
+    ANY: "Any tile",
+    SELF: "User tile only",
+} as const satisfies Record<keyof typeof ESpellDraggingMode, string>;
+
+export const SPELL_ROLE_DESCRIPTION_STRINGS = {
+    EX: "EX",
+    LIGHT: "Light",
+    SHADOW: "Shadow",
+} as const satisfies Record<keyof typeof ESpellRole, string>;
 
 export function formatSpellShape(shape: Pick<ISpellShape, "tiles">): string {
     return shape.tiles.replaceAll(/(.{5})(?<!$)/g, "$1\n").replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
@@ -71,7 +82,7 @@ export default function mapSpellToMessage(spell: ISpell) {
         },
         {
             name: "Role",
-            value: spell.role.name,
+            value: SPELL_ROLE_DESCRIPTION_STRINGS[spell.role],
             inline: true,
         },
         {
@@ -86,7 +97,7 @@ export default function mapSpellToMessage(spell: ISpell) {
         },
         {
             name: "Dragging mode",
-            value: spell.draggingMode.asString,
+            value: SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[spell.draggingMode],
             inline: true,
         },
         ...(onlyFor ? [onlyFor] : []),

@@ -1,9 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectKind, type IStatEffect } from "../types.ts";
+import { ESpellEffectKind, EStat, EStatChange, type IStatEffect } from "../types.ts";
 import { SpellEffect } from "./spellEffect.ts";
 import { SpellEffectValue } from "./spellEffectValue.ts";
-import { StatType } from "./stat.ts";
-import { StatChangeType } from "./statChange.ts";
 
 export const StatEffectSchema = defineEntity({
     name: "StatEffect",
@@ -12,10 +10,10 @@ export const StatEffectSchema = defineEntity({
     discriminatorValue: ESpellEffectKind.STAT,
     properties: {
         kind: p.enum([ESpellEffectKind.STAT]),
-        statChange: p.type(StatChangeType),
+        statChange: p.enum(() => EStatChange),
         amount: () => p.embedded(SpellEffectValue).object(),
         duration: p.integer().nullable(),
-        stat: p.type(StatType),
+        stat: p.enum(() => EStat),
     },
 });
 

@@ -150,6 +150,11 @@
     "effect": "ON_WEAPON_KILL_RECEIVED_WEAPON_DAMAGE_REDUCTION_90_1T"
   },
   {
+    "id": "FLEET_OF_FOOT",
+    "name": "Fleet of Foot",
+    "effect": "WEAPON_DAMAGE_REDUCTION_FROM_MONSTER_20"
+  },
+  {
     "id": "SHINING_EYE",
     "name": "Shining Eye",
     "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"

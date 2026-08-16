@@ -7,9 +7,9 @@ import { Color } from "./game/models/color.ts";
 import { DamageEffect } from "./game/models/damageEffect.ts";
 import { Disciple } from "./game/models/disciple.ts";
 import { HealEffect } from "./game/models/healEffect.ts";
-import { IceBlockEffect } from "./game/models/iceBlockEffect.ts";
 import { MovementEffect } from "./game/models/movementEffect.ts";
 import { MovementType } from "./game/models/movementType.ts";
+import { ObstacleEffect } from "./game/models/obstacleEffect.ts";
 import { RepeatEffect } from "./game/models/repeatEffect.ts";
 import { Spell } from "./game/models/spell.ts";
 import { SpellEffect } from "./game/models/spellEffect.ts";
@@ -68,7 +68,7 @@ export const GAME_DATA_ENTITIES = [
     RepeatEffect,
     WarpEffect,
     TileEffect,
-    IceBlockEffect,
+    ObstacleEffect,
     SummonEffect,
     Disciple,
     MovementType,

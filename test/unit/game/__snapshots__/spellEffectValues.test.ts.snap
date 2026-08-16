@@ -5,21 +5,13 @@ exports[`spellEffectsValues > damage and heal values 1`] = `
   [
     {
       "base": 50,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "FIXED",
-      },
+      "className": "Percent10ScaleValue",
     },
   ],
   [
     {
       "base": 30,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "FIXED",
-      },
+      "className": "Percent10ScaleValue",
     },
   ],
 ]
@@ -30,19 +22,11 @@ exports[`spellEffectsValues > damage with effectiveness values 1`] = `
   [
     {
       "base": 25,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "FIXED",
-      },
+      "className": "Percent10ScaleValue",
     },
     {
       "base": 40,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "FIXED",
-      },
+      "className": "Percent10ScaleValue",
     },
   ],
 ]
@@ -53,14 +37,21 @@ exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
   [
     {
       "base": 35,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "FIXED",
-      },
+      "className": "Percent10ScaleValue",
     },
   ],
   [],
+]
+`;
+
+exports[`spellEffectsValues > non-scaling value 1`] = `
+[
+  [
+    {
+      "base": 50,
+      "className": "NonScalingValue",
+    },
+  ],
 ]
 `;
 
@@ -76,10 +67,6 @@ exports[`spellEffectsValues > shadow percent damage 1`] = `
     {
       "base": 35,
       "className": "DarkSlashValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "PERCENT",
-      },
     },
   ],
 ]
@@ -90,29 +77,17 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
   [
     {
       "base": 20,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "PERCENT",
-      },
+      "className": "Percent5ScaleValue",
     },
   ],
   [
     {
       "base": 30,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "PERCENT",
-      },
+      "className": "Percent5ScaleValue",
     },
     {
       "base": 0,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "PERCENT",
-      },
+      "className": "Percent5ScaleValue",
     },
   ],
 ]
@@ -123,19 +98,11 @@ exports[`spellEffectsValues > summon values 1`] = `
   [
     {
       "base": 70,
-      "className": "NormalValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "FIXED",
-      },
+      "className": "Percent10ScaleValue",
     },
     {
       "base": 45,
       "className": "MinionAtkValue",
-      "scalesWithLevel": true,
-      "unit": {
-        "kind": "FIXED",
-      },
     },
   ],
 ]
