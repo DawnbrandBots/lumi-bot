@@ -1,5 +1,5 @@
 import type { PickDeep } from "type-fest";
-import { SPELL_MAXIMUM_LEVEL, SPELL_MINION_ATK_SCALE_CHANGE_LEVEL } from "./constants.ts";
+import { SPELL_MAXIMUM_LEVEL } from "./constants.ts";
 import {
     ESpellEffectScalingStrategy,
     ESpellEffectValueUnitKind,
@@ -103,9 +103,6 @@ export class Percent10ScaleValue extends ValueWithScale implements ISpellEffectV
     }
 }
 
-const MINION_ATK_SCALE_DENOMINATOR_BEFORE_SCALE_CHANGE_LEVEL = 5;
-const MINION_ATK_SCALE_DENOMINATOR_AFTER_SCALE_CHANGE_LEVEL = 10;
-
 export class MinionAtkValue extends Value implements ISpellEffectValueWithToLevel {
     public get unit() {
         return { kind: "FIXED" } as const;
@@ -113,23 +110,16 @@ export class MinionAtkValue extends Value implements ISpellEffectValueWithToLeve
 
     // Minions' Atk grows by 20% for every level until 9, then 10% until level 11, then finally 20% for level 12.
     public toLevel(level: number) {
-        const scaleBeforeScaleChangeLevel = this.base / MINION_ATK_SCALE_DENOMINATOR_BEFORE_SCALE_CHANGE_LEVEL;
-        if (level < SPELL_MINION_ATK_SCALE_CHANGE_LEVEL) {
-            return Math.floor(this.base + scaleBeforeScaleChangeLevel * (level - 1));
-        }
-
-        const scaleAfterScaleChangeLevel = this.base / MINION_ATK_SCALE_DENOMINATOR_AFTER_SCALE_CHANGE_LEVEL;
-        return Math.floor(
-            this.base +
-                scaleBeforeScaleChangeLevel * (SPELL_MINION_ATK_SCALE_CHANGE_LEVEL - 2) +
-                scaleAfterScaleChangeLevel *
-                    ((level === SPELL_MAXIMUM_LEVEL ? level + 1 : level) - (SPELL_MINION_ATK_SCALE_CHANGE_LEVEL - 1)),
-        );
+        return level < 2
+            ? this.base
+            : Math.floor(this.base + (this.base * MinionAtkValue.LEVEL_PERCENTS[level - 2]!) / 100);
     }
 
     public get scalesWithLevel() {
         return true;
     }
+
+    private static LEVEL_PERCENTS = [20, 40, 60, 80, 100, 120, 140, 160, 170, 180, 200] as const;
 }
 
 /** Dark Slash-like spells effect value increases by exactly 5 per level. */
