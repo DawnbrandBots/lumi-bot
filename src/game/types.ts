@@ -339,39 +339,6 @@ export const ESpellEffectScalingStrategy = {
     MINION_ATK: "MINION_ATK",
 } as const;
 
-export const ESpellEffectScalingStrategyKind = {
-    NONE: "NONE",
-    ADDITIVE_BASE_PERCENT: "ADDITIVE_BASE_PERCENT",
-    ADDITIVE_FIXED: "ADDITIVE_FIXED",
-} as const;
-
-export const ESpellEffectScalingStrategyAmountKind = {
-    CONSTANT: "CONSTANT",
-    BY_LEVEL_UP: "BY_LEVEL_UP",
-} as const;
-
-/** Specifies what value is added to the base multiplied by the spell level. */
-export interface ISpellEffectScalingStrategyConstantAmount {
-    readonly kind: typeof ESpellEffectScalingStrategyAmountKind.CONSTANT;
-    readonly value: number;
-}
-
-/** Specifies the value that's added to the base for each level specifically. */
-export interface ISpellEffectScalingStrategyByLevelAmount {
-    readonly kind: typeof ESpellEffectScalingStrategyAmountKind.BY_LEVEL_UP;
-    readonly values: [number, number, number, number, number, number, number, number, number, number, number];
-}
-
-export type TSpellEffectScalingStrategyAmount =
-    ISpellEffectScalingStrategyConstantAmount | ISpellEffectScalingStrategyByLevelAmount;
-
-/** Represents how spell effect values grow with the spell's level. */
-export interface ISpellEffectScalingStrategy {
-    readonly id: keyof typeof ESpellEffectScalingStrategy;
-    readonly kind: keyof typeof ESpellEffectScalingStrategyKind;
-    readonly amount: TSpellEffectScalingStrategyAmount;
-}
-
 /**
  * Spell effects have values which may vary with level and targeted units.
  *
