@@ -197,7 +197,7 @@ const SPELL_EFFECT_VALUE_GETTERS: {
     SUMMON(effect) {
         return [
             SPELL_EFFECT_VALUE_SCALING_STRATEGIES[
-                effect.atk.scalingStrategyOverride ?? ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10
+                effect.hp.scalingStrategyOverride ?? ESpellEffectScalingStrategy.ADDITIVE_BASE_PERCENT_10
             ]({
                 base: effect.hp.base,
             }),
