@@ -28,7 +28,6 @@ function serializeValues(values: ISpellEffectValueWithToLevel[][]) {
         group.map((value) => ({
             className: value.constructor.name,
             base: value.base,
-            levelValues: [1, 2, 12].map((level) => value.toLevel(level)),
         })),
     );
 }

@@ -6,22 +6,12 @@ exports[`spellEffectsValues > damage and heal values 1`] = `
     {
       "base": 50,
       "className": "Percent10ScaleValue",
-      "levelValues": [
-        50,
-        55,
-        110,
-      ],
     },
   ],
   [
     {
       "base": 30,
       "className": "Percent10ScaleValue",
-      "levelValues": [
-        30,
-        33,
-        66,
-      ],
     },
   ],
 ]
@@ -33,20 +23,10 @@ exports[`spellEffectsValues > damage with effectiveness values 1`] = `
     {
       "base": 25,
       "className": "Percent10ScaleValue",
-      "levelValues": [
-        25,
-        27,
-        55,
-      ],
     },
     {
       "base": 40,
       "className": "Percent10ScaleValue",
-      "levelValues": [
-        40,
-        44,
-        88,
-      ],
     },
   ],
 ]
@@ -58,11 +38,6 @@ exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
     {
       "base": 35,
       "className": "Percent10ScaleValue",
-      "levelValues": [
-        35,
-        38,
-        77,
-      ],
     },
   ],
   [],
@@ -75,11 +50,6 @@ exports[`spellEffectsValues > non-scaling value 1`] = `
     {
       "base": 50,
       "className": "NonScalingValue",
-      "levelValues": [
-        50,
-        50,
-        50,
-      ],
     },
   ],
 ]
@@ -97,11 +67,6 @@ exports[`spellEffectsValues > shadow percent damage 1`] = `
     {
       "base": 35,
       "className": "DarkSlashValue",
-      "levelValues": [
-        35,
-        40,
-        95,
-      ],
     },
   ],
 ]
@@ -113,31 +78,16 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
     {
       "base": 20,
       "className": "Percent5ScaleValue",
-      "levelValues": [
-        20,
-        21,
-        32,
-      ],
     },
   ],
   [
     {
       "base": 30,
       "className": "Percent5ScaleValue",
-      "levelValues": [
-        30,
-        31,
-        48,
-      ],
     },
     {
       "base": 0,
       "className": "Percent5ScaleValue",
-      "levelValues": [
-        0,
-        0,
-        0,
-      ],
     },
   ],
 ]
@@ -149,20 +99,10 @@ exports[`spellEffectsValues > summon values 1`] = `
     {
       "base": 70,
       "className": "Percent10ScaleValue",
-      "levelValues": [
-        70,
-        77,
-        154,
-      ],
     },
     {
       "base": 45,
       "className": "MinionAtkValue",
-      "levelValues": [
-        45,
-        54,
-        135,
-      ],
     },
   ],
 ]
