@@ -249,7 +249,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE.name, () => {
                 { shape: CROSS_SHAPE },
                 false,
             ),
-        ).toBe("Summons an obstacle with 50 HP on a single space if tile is ground");
+        ).toBe("Summons an obstacle with 50 HP on a single space if it is flat ground");
     });
 
     test("describes target tile type for an area obstacle effect", () => {
@@ -263,7 +263,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE.name, () => {
                 { shape: CROSS_SHAPE },
                 false,
             ),
-        ).toBe("Summons obstacles with 50 HP on target ground tiles");
+        ).toBe("Summons obstacles with 50 HP on target flat ground tiles");
     });
 });
 

@@ -47,7 +47,7 @@ export const SPELL_EFFECT_TARGET_DESCRIPTION_STRINGS = {
 } as const satisfies Record<keyof typeof ESpellEffectTarget, string>;
 
 export const SPELL_EFFECT_TILE_TYPE_DESCRIPTION_STRINGS = {
-    GROUND: "ground",
+    GROUND: "flat ground",
     WATER: "water",
     WALL: "wall",
 } as const satisfies Record<keyof typeof ESpellEffectTileType, string>;
@@ -197,7 +197,7 @@ function describeTileCondition(effect: { readonly onlyOn?: keyof typeof ESpellEf
 
     const tileType = SPELL_EFFECT_TILE_TYPE_DESCRIPTION_STRINGS[effect.onlyOn];
 
-    return ` if tile is ${tileType}`;
+    return ` if it is ${tileType}`;
 }
 
 function haveSameShapeOverride(a: TEffectWithShapeOverrideInput, b: TEffectWithShapeOverrideInput): boolean {

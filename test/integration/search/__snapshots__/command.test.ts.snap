@@ -202,7 +202,7 @@ exports[`search command messages > returns the complete Crosswind Lock EX messag
           "inline": true,
           "name": "Effects",
           "value": "1. Deals 70 Green damage to targets.
-1. Summons an obstacle with 180 HP on a single space if tile is ground.",
+1. Summons an obstacle with 180 HP on a single space if it is flat ground.",
         },
         {
           "name": "Values",
