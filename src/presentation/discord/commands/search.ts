@@ -1,27 +1,27 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
-import type { TSearchFeatureReturn } from "../../../application/search/types.ts";
+import type { TSearchResult } from "../../../application/search/types.ts";
 import type { MaybePromise } from "../../../utils/types.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
 import type { TCommandRunHandlers } from "../commands/types.ts";
-import mapSearchFeatureReturnToMessages from "../mappers/search.ts";
+import mapSearchResultToMessages from "../mappers/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "./search/constants.ts";
 
 export async function run(
     arg: {
-        resolveSearchInput: (input: string) => MaybePromise<TSearchFeatureReturn>;
+        resolveSearchInput: (input: string) => MaybePromise<TSearchResult>;
     },
     interaction: ChatInputCommandInteraction<CacheType>,
 ) {
     const input = interaction.options.getString(SEARCH_TERMS_OPTION_NAME, true);
     const result = await arg.resolveSearchInput(input);
-    const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
+    const { reply, followUps } = mapSearchResultToMessages(result);
     await interaction.reply(reply);
     for (const followUp of followUps ?? []) {
         await interaction.followUp(followUp);
     }
 }
 
-export function getSearchCommand(arg: { resolveSearchInput: (input: string) => MaybePromise<TSearchFeatureReturn> }) {
+export function getSearchCommand(arg: { resolveSearchInput: (input: string) => MaybePromise<TSearchResult> }) {
     return ((interaction) => run(arg, interaction)) satisfies TCommandRunHandlers<
         typeof searchCommandCommandRegistrationData
     >;

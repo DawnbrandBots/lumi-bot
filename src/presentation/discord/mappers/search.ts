@@ -1,8 +1,8 @@
 import type { APIEmbed, BaseMessageOptions } from "discord.js";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../application/search/constants.ts";
 import type { resolveSearchInput } from "../../../application/search/resolveSearchInput.ts";
-import type { TSearchFeatureSuccessValue } from "../../../application/search/types.ts";
-import { ESearchFeatureReturnKind } from "../../../application/search/types.ts";
+import type { TSearchSuccessValue } from "../../../application/search/types.ts";
+import { ESearchResultKind } from "../../../application/search/types.ts";
 import type { TSearchEntity, TSearchKind } from "../../../domain/search/types.ts";
 import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../message.ts";
 import type { ISingleEmbedMessageOptions } from "../message.types.ts";
@@ -24,8 +24,8 @@ const SEARCH_MAPPERS: ISearchMappers = {
     music: mapMusicToMessage,
 };
 
-export function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>(
-    value: TSearchFeatureSuccessValue<Kind>,
+export function mapSearchSuccessValueToMessages<Kind extends TSearchKind>(
+    value: TSearchSuccessValue<Kind>,
 ) {
     const footer: APIEmbed["footer"] =
         // Showing aliases when there is only one is redundant.
@@ -42,13 +42,13 @@ export function mapSearchFeatureSuccessValueToMessages<Kind extends TSearchKind>
     return { reply: { embed: { ...embed, footer }, ...otherReplyProps }, followUps };
 }
 
-function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof resolveSearchInput>>) {
+function mapSearchResultToMessages(result: Awaited<ReturnType<typeof resolveSearchInput>>) {
     switch (result.kind) {
-        case ESearchFeatureReturnKind.SUCCESS: {
-            const { reply, followUps } = mapSearchFeatureSuccessValueToMessages(result.value);
+        case ESearchResultKind.SUCCESS: {
+            const { reply, followUps } = mapSearchSuccessValueToMessages(result.value);
             return { reply: createPositiveMessage(reply), followUps };
         }
-        case ESearchFeatureReturnKind.INPUT_TOO_LONG:
+        case ESearchResultKind.INPUT_TOO_LONG:
             return {
                 reply: createNegativeMessage({
                     embed: {
@@ -56,7 +56,7 @@ function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof reso
                     },
                 }),
             };
-        case ESearchFeatureReturnKind.NO_RESULT:
+        case ESearchResultKind.NO_RESULT:
             return {
                 reply: createNegativeMessage({
                     embed: {
@@ -64,7 +64,7 @@ function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof reso
                     },
                 }),
             };
-        case ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB:
+        case ESearchResultKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB:
             return {
                 reply: createErrorMessage({
                     embed: {
@@ -79,4 +79,4 @@ function mapSearchFeatureReturnToMessages(result: Awaited<ReturnType<typeof reso
     }
 }
 
-export default mapSearchFeatureReturnToMessages;
+export default mapSearchResultToMessages;

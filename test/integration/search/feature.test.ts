@@ -2,7 +2,7 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
 import { resolveSearchInput } from "../../../src/application/search/resolveSearchInput.ts";
-import { ESearchFeatureReturnKind } from "../../../src/application/search/types.ts";
+import { ESearchResultKind } from "../../../src/application/search/types.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { searchItemInDb } from "../../../src/infrastructure/game/persistence/searchItemInDb.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
@@ -37,7 +37,7 @@ describe(resolveSearchInput.name, () => {
         );
 
         expect(result).toEqual({
-            kind: ESearchFeatureReturnKind.NO_RESULT,
+            kind: ESearchResultKind.NO_RESULT,
         });
     });
 
@@ -67,7 +67,7 @@ describe(resolveSearchInput.name, () => {
         );
 
         expect(result).toEqual({
-            kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
+            kind: ESearchResultKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
             value: {
                 kind: missingSearchItem.kind,
                 id: missingSearchItem.id,
@@ -90,7 +90,7 @@ describe(resolveSearchInput.name, () => {
         );
 
         expect(result).toEqual({
-            kind: ESearchFeatureReturnKind.INPUT_TOO_LONG,
+            kind: ESearchResultKind.INPUT_TOO_LONG,
         });
     });
 
@@ -108,7 +108,7 @@ describe(resolveSearchInput.name, () => {
         );
 
         expect(result).toMatchObject({
-            kind: ESearchFeatureReturnKind.SUCCESS,
+            kind: ESearchResultKind.SUCCESS,
             value: {
                 searchItem,
                 entity: {

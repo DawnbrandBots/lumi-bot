@@ -1,12 +1,12 @@
 import { Collection } from "@mikro-orm/sqlite";
 import { describe, expect, test } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
-import type { TSearchFeatureSuccessValue } from "../../../src/application/search/types.ts";
-import { ESearchFeatureReturnKind } from "../../../src/application/search/types.ts";
+import type { TSearchSuccessValue } from "../../../src/application/search/types.ts";
+import { ESearchResultKind } from "../../../src/application/search/types.ts";
 import type { Disciple } from "../../../src/infrastructure/game/models/disciple.ts";
 import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT } from "../../../src/presentation/discord/constants.ts";
-import mapSearchFeatureReturnToMessages, {
-    mapSearchFeatureSuccessValueToMessages,
+import mapSearchResultToMessages, {
+    mapSearchSuccessValueToMessages,
 } from "../../../src/presentation/discord/mappers/search.ts";
 import { EMessageKind } from "../../../src/presentation/discord/message.types.ts";
 
@@ -36,9 +36,9 @@ const MUSIC_SEARCH_SUCCESS_VALUE = {
         name: MUSIC.name,
         aliases: [MUSIC.name],
     },
-} satisfies TSearchFeatureSuccessValue<"music">;
+} satisfies TSearchSuccessValue<"music">;
 
-describe(mapSearchFeatureSuccessValueToMessages.name, () => {
+describe(mapSearchSuccessValueToMessages.name, () => {
     test.each([
         ["without footer when the search item has one alias", MUSIC_SEARCH_SUCCESS_VALUE, undefined],
         [
@@ -55,16 +55,16 @@ describe(mapSearchFeatureSuccessValueToMessages.name, () => {
             },
         ],
     ])("%s", (_, value, expectedFooter) => {
-        expect(mapSearchFeatureSuccessValueToMessages(value).reply.embed.footer).toEqual(expectedFooter);
+        expect(mapSearchSuccessValueToMessages(value).reply.embed.footer).toEqual(expectedFooter);
     });
 });
 
-describe(mapSearchFeatureReturnToMessages.name, () => {
+describe(mapSearchResultToMessages.name, () => {
     test.each([
         [
-            ESearchFeatureReturnKind.SUCCESS,
+            ESearchResultKind.SUCCESS,
             {
-                kind: ESearchFeatureReturnKind.SUCCESS,
+                kind: ESearchResultKind.SUCCESS,
                 value: MUSIC_SEARCH_SUCCESS_VALUE,
             },
             {
@@ -79,9 +79,9 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             },
         ],
         [
-            ESearchFeatureReturnKind.INPUT_TOO_LONG,
+            ESearchResultKind.INPUT_TOO_LONG,
             {
-                kind: ESearchFeatureReturnKind.INPUT_TOO_LONG,
+                kind: ESearchResultKind.INPUT_TOO_LONG,
             },
             {
                 reply: {
@@ -95,9 +95,9 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             },
         ],
         [
-            ESearchFeatureReturnKind.NO_RESULT,
+            ESearchResultKind.NO_RESULT,
             {
-                kind: ESearchFeatureReturnKind.NO_RESULT,
+                kind: ESearchResultKind.NO_RESULT,
             },
             {
                 reply: {
@@ -111,9 +111,9 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             },
         ],
         [
-            ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
+            ESearchResultKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
             {
-                kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
+                kind: ESearchResultKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
                 value: {
                     kind: "weapon",
                     id: "MISSING_WEAPON",
@@ -136,6 +136,6 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
             },
         ],
     ] as const)("%s", (_, result, expected) => {
-        expect(mapSearchFeatureReturnToMessages(result)).toMatchObject(expected);
+        expect(mapSearchResultToMessages(result)).toMatchObject(expected);
     });
 });

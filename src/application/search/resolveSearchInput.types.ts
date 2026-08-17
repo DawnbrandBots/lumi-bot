@@ -1,3 +1,3 @@
-import type { TSearchFeatureReturn } from "./types.ts";
+import type { TSearchResult } from "./types.ts";
 
-export type TResolveSearchInput = (input: string) => Promise<TSearchFeatureReturn>;
+export type TResolveSearchInput = (input: string) => Promise<TSearchResult>;

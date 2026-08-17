@@ -2,7 +2,7 @@ import debug from "debug";
 import { userMention } from "discord.js";
 import type { TResolveSearchInput } from "../../../application/search/resolveSearchInput.types.ts";
 import { helpMessage } from "../commands/help.ts";
-import mapSearchFeatureReturnToMessages from "../mappers/search.ts";
+import mapSearchResultToMessages from "../mappers/search.ts";
 import type { TMessageCreateEventInteraction } from "./messageCreate.types.ts";
 
 const log = debug(handleMessageCreate.name);
@@ -31,7 +31,7 @@ export async function handleMessageCreate(arg: {
     }
     const input = arg.interaction.content.slice(startingBotMentionAndSpaceStr.length);
     const result = await arg.resolveSearchInput(input);
-    const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
+    const { reply, followUps } = mapSearchResultToMessages(result);
     await arg.interaction.reply(reply);
     for (const followUp of followUps ?? []) {
         await arg.interaction.reply(followUp);
