@@ -1,14 +1,11 @@
 import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../../domain/game/constants.ts";
 import { ELfgFeatureReturnKind } from "../types.ts";
-import { removePlayerFromRoom } from "../services/removePlayerFromRoom.ts";
 import type {
     TFindLfgRoomByCode,
     TFindLfgRoomByUser,
     TLfgFeature,
     TMoveUserToLfgRoom,
-    TRemoveLfgRoom,
-    TRemoveLfgRoomPlayer,
-    TSetLfgRoomOwner,
+    TRemovePlayerFromLfgRoom,
 } from "../types.ts";
 
 export async function move(
@@ -16,16 +13,12 @@ export async function move(
         findRoomByCode,
         findRoomByUser,
         moveUserToRoom,
-        removeRoom,
-        removeRoomPlayer,
-        setRoomOwner,
+        removePlayerFromRoom,
     }: {
         readonly findRoomByCode: TFindLfgRoomByCode;
         readonly findRoomByUser: TFindLfgRoomByUser;
         readonly moveUserToRoom: TMoveUserToLfgRoom;
-        readonly removeRoom: TRemoveLfgRoom;
-        readonly removeRoomPlayer: TRemoveLfgRoomPlayer;
-        readonly setRoomOwner: TSetLfgRoomOwner;
+        readonly removePlayerFromRoom: TRemovePlayerFromLfgRoom;
     },
     { guildId, user, code }: Parameters<TLfgFeature["move"]>[0],
 ) {
@@ -48,7 +41,7 @@ export async function move(
 
     const leftRoomCode = currentRoom?.code;
     const removalResult = currentRoom
-        ? await removePlayerFromRoom({ removeRoom, removeRoomPlayer, setRoomOwner }, { room: currentRoom, userId: user.id })
+        ? await removePlayerFromRoom({ room: currentRoom, userId: user.id })
         : undefined;
     const updatedRoom = await moveUserToRoom({ roomId: room.id, userId: user.id });
 

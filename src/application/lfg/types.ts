@@ -237,6 +237,11 @@ export type TKickFromLfgRoom = (arg: {
     TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.PLAYER_KICKED | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM>
 >;
 
+export type TRemovePlayerFromLfgRoom = (arg: {
+    readonly room: TLfgRoom;
+    readonly userId: string;
+}) => MaybePromise<TLfgPlayerRemovalResult>;
+
 export type TTransferLfgRoom = (arg: {
     readonly guildId: string;
     readonly room: TLfgRoom;
@@ -253,6 +258,7 @@ export type TLfgApplicationDependencies = TLfgPersistence & {
     readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
     readonly getOwnedRoom: TGetOwnedLfgRoom;
     readonly kickFromRoom: TKickFromLfgRoom;
+    readonly removePlayerFromRoom: TRemovePlayerFromLfgRoom;
     readonly transferRoom: TTransferLfgRoom;
 };
 

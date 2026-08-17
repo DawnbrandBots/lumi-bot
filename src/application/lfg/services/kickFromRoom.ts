@@ -1,17 +1,9 @@
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
 import type { IUser } from "../../../domain/lfg/models/user.types.ts";
 import { ELfgFeatureReturnKind } from "../types.ts";
-import { removePlayerFromRoom } from "./removePlayerFromRoom.ts";
-import type {
-    TFindLfgRoomByUser,
-    TKickFromLfgRoom,
-    TLfgRoom,
-    TRemoveLfgRoom,
-    TRemoveLfgRoomPlayer,
-    TSetLfgRoomOwner,
-} from "../types.ts";
+import type { TFindLfgRoomByUser, TKickFromLfgRoom, TLfgRoom, TRemovePlayerFromLfgRoom } from "../types.ts";
 
-function applyPlayerRemoval(room: TLfgRoom, userId: string, removalResult: Awaited<ReturnType<typeof removePlayerFromRoom>>): TLfgRoom {
+function applyPlayerRemoval(room: TLfgRoom, userId: string, removalResult: Awaited<ReturnType<TRemovePlayerFromLfgRoom>>): TLfgRoom {
     return {
         ...room,
         ownerId:
@@ -23,14 +15,10 @@ function applyPlayerRemoval(room: TLfgRoom, userId: string, removalResult: Await
 export async function kickFromRoom(
     {
         findRoomByUser,
-        removeRoom,
-        removeRoomPlayer,
-        setRoomOwner,
+        removePlayerFromRoom,
     }: {
         readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly removeRoom: TRemoveLfgRoom;
-        readonly removeRoomPlayer: TRemoveLfgRoomPlayer;
-        readonly setRoomOwner: TSetLfgRoomOwner;
+        readonly removePlayerFromRoom: TRemovePlayerFromLfgRoom;
     },
     { guildId, room, target }: { readonly guildId: string; readonly room: TLfgRoom; readonly target: IUser },
 ): Promise<Awaited<ReturnType<TKickFromLfgRoom>>> {
@@ -42,10 +30,7 @@ export async function kickFromRoom(
         } as const;
     }
 
-    const removalResult = await removePlayerFromRoom(
-        { removeRoom, removeRoomPlayer, setRoomOwner },
-        { room, userId: target.id },
-    );
+    const removalResult = await removePlayerFromRoom({ room, userId: target.id });
     return {
         kind: ELfgFeatureReturnKind.PLAYER_KICKED,
         value: { userId: room.ownerId, targetId: target.id, room: applyPlayerRemoval(room, target.id, removalResult), removalResult },
