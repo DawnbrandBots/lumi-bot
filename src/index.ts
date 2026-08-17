@@ -1,30 +1,18 @@
 import debug from "debug";
 import { Events } from "discord.js";
 import { getAdminFeature } from "./application/admin/feature.ts";
-import { changeOwnedRoomCode } from "./application/lfg/useCases/changeOwnedRoomCode.ts";
-import { changeRoomCode } from "./application/lfg/useCases/changeRoomCode.ts";
-import { create } from "./application/lfg/useCases/create.ts";
-import { disband } from "./application/lfg/useCases/disband.ts";
-import { disbandOwnedRoom } from "./application/lfg/useCases/disbandOwnedRoom.ts";
-import { kick } from "./application/lfg/useCases/kick.ts";
-import { kickFromOwnedRoom } from "./application/lfg/useCases/kickFromOwnedRoom.ts";
-import { leave } from "./application/lfg/useCases/leave.ts";
-import { move } from "./application/lfg/useCases/move.ts";
-import { status } from "./application/lfg/useCases/status.ts";
-import { transfer } from "./application/lfg/useCases/transfer.ts";
-import { transferOwnedRoom } from "./application/lfg/useCases/transferOwnedRoom.ts";
 import type {
     TGetBestSearchIndexEntry,
     TGetEntityByKindAndId,
     TGetSearchIndexEntries,
 } from "./application/search/ports.ts";
 import { resolveSearchInput } from "./application/search/resolveSearchInput.ts";
+import { getLfgUseCases } from "./composition/application/lfg/useCases.ts";
 import type { TSearchKind } from "./domain/search/types.ts";
 import { getAdminPersistence } from "./infrastructure/admin/persistence.ts";
 import { searchItemInDb } from "./infrastructure/game/persistence/searchItemInDb.ts";
 import { FuseSearchEngine } from "./infrastructure/search/engine.ts";
 import getBot from "./loaders/bot.ts";
-import { getWithLfgUnitOfWork } from "./loaders/lfgUnitOfWork.ts";
 import getOrm from "./loaders/orm.ts";
 import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
 import getSearchItems from "./loaders/searchItems.ts";
@@ -60,19 +48,7 @@ const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const adminFeature = getAdminFeature(getAdminPersistence({ em }));
-const withLfgUnitOfWork = getWithLfgUnitOfWork(em);
-const changeOwnedLfgRoomCode = withLfgUnitOfWork(changeOwnedRoomCode);
-const changeLfgRoomCode = withLfgUnitOfWork(changeRoomCode);
-const createLfgRoom = withLfgUnitOfWork(create);
-const disbandLfgRoom = withLfgUnitOfWork(disband);
-const disbandOwnedLfgRoom = withLfgUnitOfWork(disbandOwnedRoom);
-const getLfgStatus = withLfgUnitOfWork(status);
-const kickFromLfgRoom = withLfgUnitOfWork(kick);
-const kickFromOwnedLfgRoom = withLfgUnitOfWork(kickFromOwnedRoom);
-const leaveLfgRoom = withLfgUnitOfWork(leave);
-const moveLfgUser = withLfgUnitOfWork(move);
-const transferLfgRoom = withLfgUnitOfWork(transfer);
-const transferOwnedLfgRoom = withLfgUnitOfWork(transferOwnedRoom);
+const lfgUseCases = getLfgUseCases(em);
 
 const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
 const getSearchIndexEntries: TGetSearchIndexEntries = (arg) => searchEngine.search(arg.input, arg.limit);
@@ -94,28 +70,28 @@ const commands = {
     lfg: {
         run: getLfgCommand({
             adminFeature,
-            changeOwnedLfgRoomCode,
-            createLfgRoom,
-            disbandOwnedLfgRoom,
-            getLfgStatus,
-            kickFromOwnedLfgRoom,
-            leaveLfgRoom,
-            moveLfgUser,
-            transferOwnedLfgRoom,
+            changeOwnedLfgRoomCode: lfgUseCases.changeOwnedLfgRoomCode,
+            createLfgRoom: lfgUseCases.createLfgRoom,
+            disbandOwnedLfgRoom: lfgUseCases.disbandOwnedLfgRoom,
+            getLfgStatus: lfgUseCases.getLfgStatus,
+            kickFromOwnedLfgRoom: lfgUseCases.kickFromOwnedLfgRoom,
+            leaveLfgRoom: lfgUseCases.leaveLfgRoom,
+            moveLfgUser: lfgUseCases.moveLfgUser,
+            transferOwnedLfgRoom: lfgUseCases.transferOwnedLfgRoom,
         }),
-        autocomplete: getLfgAutocomplete({ getLfgStatus }),
+        autocomplete: getLfgAutocomplete({ getLfgStatus: lfgUseCases.getLfgStatus }),
     },
     "lfg-manage": {
         run: getLfgManageCommand({
             adminFeature,
-            changeLfgRoomCode,
-            createLfgRoom,
-            disbandLfgRoom,
-            kickFromLfgRoom,
-            moveLfgUser,
-            transferLfgRoom,
+            changeLfgRoomCode: lfgUseCases.changeLfgRoomCode,
+            createLfgRoom: lfgUseCases.createLfgRoom,
+            disbandLfgRoom: lfgUseCases.disbandLfgRoom,
+            kickFromLfgRoom: lfgUseCases.kickFromLfgRoom,
+            moveLfgUser: lfgUseCases.moveLfgUser,
+            transferLfgRoom: lfgUseCases.transferLfgRoom,
         }),
-        autocomplete: getLfgManageAutocomplete({ getLfgStatus }),
+        autocomplete: getLfgManageAutocomplete({ getLfgStatus: lfgUseCases.getLfgStatus }),
     },
 } satisfies TCommandRegistry<TAllCommandRegistrationData>;
 
