@@ -147,12 +147,89 @@ export type TLfgFeatureReturnTypes = {
     >;
 };
 
+export type TGetLfgStatusArg = { readonly guildId: string };
+export type TCreateLfgRoomArg = {
+    readonly guildId: string;
+    readonly owner: IUser;
+    readonly code: string;
+};
+export type TChangeOwnedLfgRoomCodeArg = {
+    readonly guildId: string;
+    readonly owner: IUser;
+    readonly newCode: string;
+};
+export type TChangeLfgRoomCodeArg = {
+    readonly guildId: string;
+    readonly code: string;
+    readonly newCode: string;
+};
+export type TMoveLfgUserArg = {
+    readonly guildId: string;
+    readonly user: IUser;
+    readonly code: string;
+};
+export type TTransferLfgRoomArg = {
+    readonly guildId: string;
+    readonly code: string;
+    readonly target: IUser;
+};
+export type TTransferOwnedLfgRoomArg = {
+    readonly guildId: string;
+    readonly owner: IUser;
+    readonly target: IUser;
+};
+export type TKickFromLfgRoomByCodeArg = {
+    readonly guildId: string;
+    readonly code: string;
+    readonly target: IUser;
+};
+export type TKickFromOwnedLfgRoomArg = {
+    readonly guildId: string;
+    readonly owner: IUser;
+    readonly target: IUser;
+};
+export type TLeaveLfgRoomArg = { readonly guildId: string; readonly user: IUser };
+export type TDisbandLfgRoomArg = { readonly guildId: string; readonly code: string };
+export type TDisbandOwnedLfgRoomArg = {
+    readonly guildId: string;
+    readonly owner: IUser;
+};
+
+export type TGetLfgStatus = (arg: TGetLfgStatusArg) => MaybePromise<TLfgFeatureReturnTypes["status"]>;
+export type TCreateLfgRoomUseCase = (arg: TCreateLfgRoomArg) => MaybePromise<TLfgFeatureReturnTypes["create"]>;
+export type TChangeOwnedLfgRoomCodeUseCase = (
+    arg: TChangeOwnedLfgRoomCodeArg,
+) => MaybePromise<TLfgFeatureReturnTypes["changeOwnedRoomCode"]>;
+export type TChangeLfgRoomCodeUseCase = (
+    arg: TChangeLfgRoomCodeArg,
+) => MaybePromise<TLfgFeatureReturnTypes["changeRoomCode"]>;
+export type TMoveLfgUser = (arg: TMoveLfgUserArg) => MaybePromise<TLfgFeatureReturnTypes["move"]>;
+export type TTransferLfgRoomUseCase = (arg: TTransferLfgRoomArg) => MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
+export type TTransferOwnedLfgRoomUseCase = (
+    arg: TTransferOwnedLfgRoomArg,
+) => MaybePromise<TLfgFeatureReturnTypes["transferOwnedRoom"]>;
+export type TKickFromLfgRoomByCode = (arg: TKickFromLfgRoomByCodeArg) => MaybePromise<TLfgFeatureReturnTypes["kick"]>;
+export type TKickFromOwnedLfgRoomUseCase = (
+    arg: TKickFromOwnedLfgRoomArg,
+) => MaybePromise<TLfgFeatureReturnTypes["kickFromOwnedRoom"]>;
+export type TLeaveLfgRoom = (arg: TLeaveLfgRoomArg) => MaybePromise<TLfgFeatureReturnTypes["leave"]>;
+export type TDisbandLfgRoomUseCase = (arg: TDisbandLfgRoomArg) => MaybePromise<TLfgFeatureReturnTypes["disband"]>;
+export type TDisbandOwnedLfgRoomUseCase = (
+    arg: TDisbandOwnedLfgRoomArg,
+) => MaybePromise<TLfgFeatureReturnTypes["disbandOwnedRoom"]>;
+
 export type TLfgRoom = IRoom & {
     readonly id: string;
 };
 
-export type TFindLfgRoomByCode = (arg: { readonly guildId: string; readonly code: string }) => MaybePromise<TLfgRoom | null>;
-export type TFindLfgRoomByUser = (arg: { readonly guildId: string; readonly userId: string }) => MaybePromise<TLfgRoom | null>;
+export type TFindLfgRoomByCode = (arg: {
+    readonly guildId: string;
+    readonly code: string;
+}) => MaybePromise<TLfgRoom | null>;
+export type TFindLfgRoomByUser = (arg: {
+    readonly guildId: string;
+    readonly userId: string;
+}) => MaybePromise<TLfgRoom | null>;
 export type TListLfgRooms = (arg: { readonly guildId: string }) => MaybePromise<readonly TLfgRoom[]>;
 
 export type TCreateLfgRoom = (arg: {
@@ -161,27 +238,15 @@ export type TCreateLfgRoom = (arg: {
     readonly code: string;
 }) => MaybePromise<TLfgRoom>;
 
-export type TMoveUserToLfgRoom = (arg: {
-    readonly roomId: string;
-    readonly userId: string;
-}) => MaybePromise<TLfgRoom>;
+export type TMoveUserToLfgRoom = (arg: { readonly roomId: string; readonly userId: string }) => MaybePromise<TLfgRoom>;
 
-export type TSetLfgRoomOwner = (arg: {
-    readonly roomId: string;
-    readonly ownerId: string;
-}) => MaybePromise<TLfgRoom>;
+export type TSetLfgRoomOwner = (arg: { readonly roomId: string; readonly ownerId: string }) => MaybePromise<TLfgRoom>;
 
-export type TRemoveLfgRoomPlayer = (arg: {
-    readonly roomId: string;
-    readonly userId: string;
-}) => MaybePromise<void>;
+export type TRemoveLfgRoomPlayer = (arg: { readonly roomId: string; readonly userId: string }) => MaybePromise<void>;
 
 export type TRemoveLfgRoom = (arg: { readonly roomId: string }) => MaybePromise<void>;
 
-export type TChangeLfgRoomCode = (arg: {
-    readonly roomId: string;
-    readonly newCode: string;
-}) => MaybePromise<{
+export type TChangeLfgRoomCode = (arg: { readonly roomId: string; readonly newCode: string }) => MaybePromise<{
     readonly oldCode: string;
     readonly newCode: string;
 }>;
@@ -264,56 +329,4 @@ export type TLfgApplicationDependencies = TLfgPersistence & {
 
 export type TLfgUseCase<Arg, Return> = (dependencies: TLfgApplicationDependencies, arg: Arg) => MaybePromise<Return>;
 
-export type TWithLfgUnitOfWork = <Arg, Return>(
-    useCase: TLfgUseCase<Arg, Return>,
-) => (arg: Arg) => Promise<Return>;
-
-export interface TLfgFeature {
-    status(arg: { readonly guildId: string }): MaybePromise<TLfgFeatureReturnTypes["status"]>;
-    create(arg: {
-        readonly guildId: string;
-        readonly owner: IUser;
-        readonly code: string;
-    }): MaybePromise<TLfgFeatureReturnTypes["create"]>;
-    changeOwnedRoomCode(arg: {
-        readonly guildId: string;
-        readonly owner: IUser;
-        readonly newCode: string;
-    }): MaybePromise<TLfgFeatureReturnTypes["changeOwnedRoomCode"]>;
-    changeRoomCode(arg: {
-        readonly guildId: string;
-        readonly code: string;
-        readonly newCode: string;
-    }): MaybePromise<TLfgFeatureReturnTypes["changeRoomCode"]>;
-    move(arg: {
-        readonly guildId: string;
-        readonly user: IUser;
-        readonly code: string;
-    }): MaybePromise<TLfgFeatureReturnTypes["move"]>;
-    transfer(arg: {
-        readonly guildId: string;
-        readonly code: string;
-        readonly target: IUser;
-    }): MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
-    transferOwnedRoom(arg: {
-        readonly guildId: string;
-        readonly owner: IUser;
-        readonly target: IUser;
-    }): MaybePromise<TLfgFeatureReturnTypes["transferOwnedRoom"]>;
-    kick(arg: {
-        readonly guildId: string;
-        readonly code: string;
-        readonly target: IUser;
-    }): MaybePromise<TLfgFeatureReturnTypes["kick"]>;
-    kickFromOwnedRoom(arg: {
-        readonly guildId: string;
-        readonly owner: IUser;
-        readonly target: IUser;
-    }): MaybePromise<TLfgFeatureReturnTypes["kickFromOwnedRoom"]>;
-    leave(arg: { readonly guildId: string; readonly user: IUser }): MaybePromise<TLfgFeatureReturnTypes["leave"]>;
-    disband(arg: { readonly guildId: string; readonly code: string }): MaybePromise<TLfgFeatureReturnTypes["disband"]>;
-    disbandOwnedRoom(arg: {
-        readonly guildId: string;
-        readonly owner: IUser;
-    }): MaybePromise<TLfgFeatureReturnTypes["disbandOwnedRoom"]>;
-}
+export type TWithLfgUnitOfWork = <Arg, Return>(useCase: TLfgUseCase<Arg, Return>) => (arg: Arg) => Promise<Return>;

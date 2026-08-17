@@ -8,7 +8,7 @@ export function getLfgChangeCodeHandler(arg: TLfgCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, (guildId) =>
             runFeatureSubcommand(arg, interaction, guildId, () =>
-                arg.lfgFeature.changeOwnedRoomCode({
+                arg.changeOwnedLfgRoomCode({
                     guildId,
                     owner: interaction.user,
                     newCode: interaction.options.getString(LFG_CODE_OPTION_NAME, true),

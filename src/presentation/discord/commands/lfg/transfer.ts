@@ -8,7 +8,7 @@ export function getLfgTransferHandler(arg: TLfgCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, (guildId) =>
             runFeatureSubcommand(arg, interaction, guildId, () =>
-                arg.lfgFeature.transferOwnedRoom({
+                arg.transferOwnedLfgRoom({
                     guildId,
                     owner: interaction.user,
                     target: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),

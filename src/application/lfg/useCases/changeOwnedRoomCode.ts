@@ -1,11 +1,11 @@
-import type { TChangeLfgRoomCodeInRoom, TGetOwnedLfgRoom, TLfgFeature } from "../types.ts";
+import type { TChangeLfgRoomCodeInRoom, TGetOwnedLfgRoom, TChangeOwnedLfgRoomCodeArg } from "../types.ts";
 
 export async function changeOwnedRoomCode(
     deps: {
         readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
         readonly getOwnedRoom: TGetOwnedLfgRoom;
     },
-    { guildId, owner, newCode }: Parameters<TLfgFeature["changeOwnedRoomCode"]>[0],
+    { guildId, owner, newCode }: TChangeOwnedLfgRoomCodeArg,
 ) {
     const result = await deps.getOwnedRoom({ guildId, owner });
     if (!result.success) {

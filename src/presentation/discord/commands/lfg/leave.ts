@@ -7,7 +7,7 @@ export function getLfgLeaveHandler(arg: TLfgCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, (guildId) =>
             runFeatureSubcommand(arg, interaction, guildId, () =>
-                arg.lfgFeature.leave({ guildId, user: interaction.user }),
+                arg.leaveLfgRoom({ guildId, user: interaction.user }),
             ),
         );
 }

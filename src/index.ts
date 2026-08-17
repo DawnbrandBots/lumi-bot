@@ -1,7 +1,18 @@
 import debug from "debug";
 import { Events } from "discord.js";
 import { getAdminFeature } from "./application/admin/feature.ts";
-import { getLfgFeature } from "./application/lfg/feature.ts";
+import { changeOwnedRoomCode } from "./application/lfg/useCases/changeOwnedRoomCode.ts";
+import { changeRoomCode } from "./application/lfg/useCases/changeRoomCode.ts";
+import { create } from "./application/lfg/useCases/create.ts";
+import { disband } from "./application/lfg/useCases/disband.ts";
+import { disbandOwnedRoom } from "./application/lfg/useCases/disbandOwnedRoom.ts";
+import { kick } from "./application/lfg/useCases/kick.ts";
+import { kickFromOwnedRoom } from "./application/lfg/useCases/kickFromOwnedRoom.ts";
+import { leave } from "./application/lfg/useCases/leave.ts";
+import { move } from "./application/lfg/useCases/move.ts";
+import { status } from "./application/lfg/useCases/status.ts";
+import { transfer } from "./application/lfg/useCases/transfer.ts";
+import { transferOwnedRoom } from "./application/lfg/useCases/transferOwnedRoom.ts";
 import type {
     TGetBestSearchIndexEntry,
     TGetEntityByKindAndId,
@@ -49,7 +60,19 @@ const searchEngine = new FuseSearchEngine({ items: searchItems });
 const bot = getBot();
 
 const adminFeature = getAdminFeature(getAdminPersistence({ em }));
-const lfgFeature = getLfgFeature(getWithLfgUnitOfWork(em));
+const withLfgUnitOfWork = getWithLfgUnitOfWork(em);
+const changeOwnedLfgRoomCode = withLfgUnitOfWork(changeOwnedRoomCode);
+const changeLfgRoomCode = withLfgUnitOfWork(changeRoomCode);
+const createLfgRoom = withLfgUnitOfWork(create);
+const disbandLfgRoom = withLfgUnitOfWork(disband);
+const disbandOwnedLfgRoom = withLfgUnitOfWork(disbandOwnedRoom);
+const getLfgStatus = withLfgUnitOfWork(status);
+const kickFromLfgRoom = withLfgUnitOfWork(kick);
+const kickFromOwnedLfgRoom = withLfgUnitOfWork(kickFromOwnedRoom);
+const leaveLfgRoom = withLfgUnitOfWork(leave);
+const moveLfgUser = withLfgUnitOfWork(move);
+const transferLfgRoom = withLfgUnitOfWork(transfer);
+const transferOwnedLfgRoom = withLfgUnitOfWork(transferOwnedRoom);
 
 const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
 const getSearchIndexEntries: TGetSearchIndexEntries = (arg) => searchEngine.search(arg.input, arg.limit);
@@ -69,12 +92,30 @@ const commands = {
     help: { run: getHelpCommand() },
     links: { run: getLinksCommand() },
     lfg: {
-        run: getLfgCommand({ adminFeature, lfgFeature }),
-        autocomplete: getLfgAutocomplete({ lfgFeature }),
+        run: getLfgCommand({
+            adminFeature,
+            changeOwnedLfgRoomCode,
+            createLfgRoom,
+            disbandOwnedLfgRoom,
+            getLfgStatus,
+            kickFromOwnedLfgRoom,
+            leaveLfgRoom,
+            moveLfgUser,
+            transferOwnedLfgRoom,
+        }),
+        autocomplete: getLfgAutocomplete({ getLfgStatus }),
     },
     "lfg-manage": {
-        run: getLfgManageCommand({ adminFeature, lfgFeature }),
-        autocomplete: getLfgManageAutocomplete({ lfgFeature }),
+        run: getLfgManageCommand({
+            adminFeature,
+            changeLfgRoomCode,
+            createLfgRoom,
+            disbandLfgRoom,
+            kickFromLfgRoom,
+            moveLfgUser,
+            transferLfgRoom,
+        }),
+        autocomplete: getLfgManageAutocomplete({ getLfgStatus }),
     },
 } satisfies TCommandRegistry<TAllCommandRegistrationData>;
 

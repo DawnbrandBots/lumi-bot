@@ -1,8 +1,19 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { getLfgFeature } from "../../../src/application/lfg/feature.ts";
 import { ELfgFeatureReturnKind } from "../../../src/application/lfg/types.ts";
+import { changeOwnedRoomCode } from "../../../src/application/lfg/useCases/changeOwnedRoomCode.ts";
+import { changeRoomCode } from "../../../src/application/lfg/useCases/changeRoomCode.ts";
+import { create } from "../../../src/application/lfg/useCases/create.ts";
+import { disband } from "../../../src/application/lfg/useCases/disband.ts";
+import { disbandOwnedRoom } from "../../../src/application/lfg/useCases/disbandOwnedRoom.ts";
+import { kick } from "../../../src/application/lfg/useCases/kick.ts";
+import { kickFromOwnedRoom } from "../../../src/application/lfg/useCases/kickFromOwnedRoom.ts";
+import { leave } from "../../../src/application/lfg/useCases/leave.ts";
+import { move } from "../../../src/application/lfg/useCases/move.ts";
+import { status } from "../../../src/application/lfg/useCases/status.ts";
+import { transfer } from "../../../src/application/lfg/useCases/transfer.ts";
+import { transferOwnedRoom } from "../../../src/application/lfg/useCases/transferOwnedRoom.ts";
 import { FRIEND_BATTLE_CODE_MAXIMUM_LENGTH } from "../../../src/domain/game/constants.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
 import type { IUser } from "../../../src/domain/lfg/models/user.types.ts";
@@ -26,61 +37,111 @@ type TestRoom = {
 };
 
 let orm: MikroORM;
-let feature: LfgFeature;
+let feature: LfgUseCases;
 
-class LfgFeature {
-    private readonly feature;
+class LfgUseCases {
+    private readonly changeOwnedLfgRoomCode;
+    private readonly changeLfgRoomCode;
+    private readonly createLfgRoom;
+    private readonly disbandLfgRoom;
+    private readonly disbandOwnedLfgRoom;
+    private readonly getLfgStatus;
+    private readonly kickFromLfgRoom;
+    private readonly kickFromOwnedLfgRoom;
+    private readonly leaveLfgRoom;
+    private readonly moveLfgUser;
+    private readonly transferLfgRoom;
+    private readonly transferOwnedLfgRoom;
 
     public constructor({ em }: { readonly em: EntityManager }) {
-        this.feature = getLfgFeature(getWithLfgUnitOfWork(em));
+        const withLfgUnitOfWork = getWithLfgUnitOfWork(em);
+        this.changeOwnedLfgRoomCode = withLfgUnitOfWork(changeOwnedRoomCode);
+        this.changeLfgRoomCode = withLfgUnitOfWork(changeRoomCode);
+        this.createLfgRoom = withLfgUnitOfWork(create);
+        this.disbandLfgRoom = withLfgUnitOfWork(disband);
+        this.disbandOwnedLfgRoom = withLfgUnitOfWork(disbandOwnedRoom);
+        this.getLfgStatus = withLfgUnitOfWork(status);
+        this.kickFromLfgRoom = withLfgUnitOfWork(kick);
+        this.kickFromOwnedLfgRoom = withLfgUnitOfWork(kickFromOwnedRoom);
+        this.leaveLfgRoom = withLfgUnitOfWork(leave);
+        this.moveLfgUser = withLfgUnitOfWork(move);
+        this.transferLfgRoom = withLfgUnitOfWork(transfer);
+        this.transferOwnedLfgRoom = withLfgUnitOfWork(transferOwnedRoom);
     }
 
-    public status(guildId: string) {
-        return this.feature.status({ guildId });
+    private toPublicRoom(room: { readonly code: string; readonly ownerId: string; readonly playerIds: readonly string[] }) {
+        return { code: room.code, ownerId: room.ownerId, playerIds: room.playerIds };
     }
 
-    public create(guildId: string, owner: IUser, code: string) {
-        return this.feature.create({ guildId, owner, code });
+    public async status(guildId: string) {
+        const result = await this.getLfgStatus({ guildId });
+        return {
+            ...result,
+            value: { rooms: result.value.rooms.map((room) => this.toPublicRoom(room)) },
+        };
+    }
+
+    public async create(guildId: string, owner: IUser, code: string) {
+        const result = await this.createLfgRoom({ guildId, owner, code });
+        return result.kind === ELfgFeatureReturnKind.ROOM_CREATED
+            ? { ...result, value: { ...result.value, room: this.toPublicRoom(result.value.room) } }
+            : result;
     }
 
     public changeOwnedRoomCode(guildId: string, owner: IUser, newCode: string) {
-        return this.feature.changeOwnedRoomCode({ guildId, owner, newCode });
+        return this.changeOwnedLfgRoomCode({ guildId, owner, newCode });
     }
 
     public changeRoomCode(guildId: string, code: string, newCode: string) {
-        return this.feature.changeRoomCode({ guildId, code, newCode });
+        return this.changeLfgRoomCode({ guildId, code, newCode });
     }
 
-    public move(guildId: string, user: IUser, code: string) {
-        return this.feature.move({ guildId, user, code });
+    public async move(guildId: string, user: IUser, code: string) {
+        const result = await this.moveLfgUser({ guildId, user, code });
+        return result.kind === ELfgFeatureReturnKind.ROOM_JOINED ||
+            result.kind === ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM
+            ? { ...result, value: { ...result.value, room: this.toPublicRoom(result.value.room) } }
+            : result;
     }
 
-    public transferOwnedRoom(guildId: string, owner: IUser, target: IUser) {
-        return this.feature.transferOwnedRoom({ guildId, owner, target });
+    public async transferOwnedRoom(guildId: string, owner: IUser, target: IUser) {
+        const result = await this.transferOwnedLfgRoom({ guildId, owner, target });
+        return result.kind === ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
+            ? { ...result, value: { ...result.value, room: this.toPublicRoom(result.value.room) } }
+            : result;
     }
 
-    public transfer(guildId: string, code: string, target: IUser) {
-        return this.feature.transfer({ guildId, code, target });
+    public async transfer(guildId: string, code: string, target: IUser) {
+        const result = await this.transferLfgRoom({ guildId, code, target });
+        return result.kind === ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
+            ? { ...result, value: { ...result.value, room: this.toPublicRoom(result.value.room) } }
+            : result;
     }
 
-    public kickFromOwnedRoom(guildId: string, owner: IUser, target: IUser) {
-        return this.feature.kickFromOwnedRoom({ guildId, owner, target });
+    public async kickFromOwnedRoom(guildId: string, owner: IUser, target: IUser) {
+        const result = await this.kickFromOwnedLfgRoom({ guildId, owner, target });
+        return result.kind === ELfgFeatureReturnKind.PLAYER_KICKED
+            ? { ...result, value: { ...result.value, room: this.toPublicRoom(result.value.room) } }
+            : result;
     }
 
-    public kick(guildId: string, code: string, target: IUser) {
-        return this.feature.kick({ guildId, code, target });
+    public async kick(guildId: string, code: string, target: IUser) {
+        const result = await this.kickFromLfgRoom({ guildId, code, target });
+        return result.kind === ELfgFeatureReturnKind.PLAYER_KICKED
+            ? { ...result, value: { ...result.value, room: this.toPublicRoom(result.value.room) } }
+            : result;
     }
 
     public leave(guildId: string, user: IUser) {
-        return this.feature.leave({ guildId, user });
+        return this.leaveLfgRoom({ guildId, user });
     }
 
     public disbandOwnedRoom(guildId: string, owner: IUser) {
-        return this.feature.disbandOwnedRoom({ guildId, owner });
+        return this.disbandOwnedLfgRoom({ guildId, owner });
     }
 
     public disband(guildId: string, code: string) {
-        return this.feature.disband({ guildId, code });
+        return this.disbandLfgRoom({ guildId, code });
     }
 }
 
@@ -105,19 +166,19 @@ async function getRooms(guildId: string): Promise<TestRoom[]> {
 const config = getSameConfigInMemory(migrationMikroOrmConfig);
 
 // Tests recreate dbs. Simultaneous recreations cause errors. Therefore `concurrent: false`.
-describe(LfgFeature.name, { concurrent: false }, () => {
+describe(LfgUseCases.name, { concurrent: false }, () => {
     beforeEach(async () => {
         // Runtime entities only
         orm = await MikroORM.init(config);
         await orm.schema.create();
-        feature = new LfgFeature({ em: orm.em.fork() });
+        feature = new LfgUseCases({ em: orm.em.fork() });
     });
 
     afterEach(async () => {
         await orm.close(true);
     });
 
-    describe(LfgFeature.prototype.create.name, () => {
+    describe(LfgUseCases.prototype.create.name, () => {
         test("creates a room with the creator as owner", async () => {
             const response = await feature.create(GUILD_ID, OWNER, "AbC");
 
@@ -167,7 +228,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.changeOwnedRoomCode.name, () => {
+    describe(LfgUseCases.prototype.changeOwnedRoomCode.name, () => {
         test("changes an owned room's code", async () => {
             await feature.create(GUILD_ID, OWNER, "old");
             await feature.move(GUILD_ID, PLAYER_1, "old");
@@ -234,7 +295,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.changeRoomCode.name, () => {
+    describe(LfgUseCases.prototype.changeRoomCode.name, () => {
         test("changes the room code identified by code", async () => {
             await feature.create(GUILD_ID, OWNER, "old");
             await feature.move(GUILD_ID, PLAYER_1, "old");
@@ -292,7 +353,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.move.name, () => {
+    describe(LfgUseCases.prototype.move.name, () => {
         test("joins an existing room", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
 
@@ -406,7 +467,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.transferOwnedRoom.name, () => {
+    describe(LfgUseCases.prototype.transferOwnedRoom.name, () => {
         test("transfers ownership to another room player", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
@@ -449,7 +510,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.transfer.name, () => {
+    describe(LfgUseCases.prototype.transfer.name, () => {
         test("transfers ownership in the room identified by code", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
@@ -498,7 +559,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.kickFromOwnedRoom.name, () => {
+    describe(LfgUseCases.prototype.kickFromOwnedRoom.name, () => {
         test("kicks another room player", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
@@ -546,7 +607,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.kick.name, () => {
+    describe(LfgUseCases.prototype.kick.name, () => {
         test("removes a player from the room identified by code", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
@@ -625,7 +686,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.leave.name, () => {
+    describe(LfgUseCases.prototype.leave.name, () => {
         test("deletes the room when the last player leaves", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
 
@@ -668,7 +729,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.disbandOwnedRoom.name, () => {
+    describe(LfgUseCases.prototype.disbandOwnedRoom.name, () => {
         test("deletes the room when called by the owner", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");
@@ -701,7 +762,7 @@ describe(LfgFeature.name, { concurrent: false }, () => {
         });
     });
 
-    describe(LfgFeature.prototype.disband.name, () => {
+    describe(LfgUseCases.prototype.disband.name, () => {
         test("deletes the room identified by code", async () => {
             await feature.create(GUILD_ID, OWNER, "room");
             await feature.move(GUILD_ID, PLAYER_1, "room");

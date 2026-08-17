@@ -8,7 +8,7 @@ export function getLfgManageMoveHandler(arg: TLfgManageCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, (guildId) =>
             runFeatureSubcommand(arg, interaction, guildId, () =>
-                arg.lfgFeature.move({
+                arg.moveLfgUser({
                     guildId,
                     user: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
                     code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),

@@ -1,6 +1,6 @@
 import { ELfgFeatureReturnKind } from "../types.ts";
 import { isInvalidRoomCode } from "../services/isInvalidRoomCode.ts";
-import type { TCreateLfgRoom, TFindLfgRoomByCode, TFindLfgRoomByUser, TLfgFeature } from "../types.ts";
+import type { TCreateLfgRoom, TFindLfgRoomByCode, TFindLfgRoomByUser, TCreateLfgRoomArg } from "../types.ts";
 
 export async function create(
     {
@@ -12,7 +12,7 @@ export async function create(
         readonly findRoomByCode: TFindLfgRoomByCode;
         readonly findRoomByUser: TFindLfgRoomByUser;
     },
-    { guildId, owner, code }: Parameters<TLfgFeature["create"]>[0],
+    { guildId, owner, code }: TCreateLfgRoomArg,
 ) {
     if (isInvalidRoomCode(code)) {
         return { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;

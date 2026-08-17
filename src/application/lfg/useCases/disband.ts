@@ -1,5 +1,5 @@
 import { ELfgFeatureReturnKind } from "../types.ts";
-import type { TFindLfgRoomByCode, TLfgFeature, TRemoveLfgRoom } from "../types.ts";
+import type { TFindLfgRoomByCode, TDisbandLfgRoomArg, TRemoveLfgRoom } from "../types.ts";
 
 export async function disband(
     {
@@ -9,7 +9,7 @@ export async function disband(
         readonly findRoomByCode: TFindLfgRoomByCode;
         readonly removeRoom: TRemoveLfgRoom;
     },
-    { guildId, code }: Parameters<TLfgFeature["disband"]>[0],
+    { guildId, code }: TDisbandLfgRoomArg,
 ) {
     const room = await findRoomByCode({ guildId, code });
     if (!room) {

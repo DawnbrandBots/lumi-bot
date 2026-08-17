@@ -1,6 +1,6 @@
 import type { TCommandAutocompleteHandlers } from "../commands/types.ts";
 import { LFG_CODE_OPTION_NAME } from "../commands/lfg/constants.ts";
-import type { TLfgFeature as LfgFeature } from "../../../application/lfg/types.ts";
+import type { TGetLfgStatus } from "../../../application/lfg/types.ts";
 import getRoomCodeAutocomplete from "./roomCode.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -12,9 +12,9 @@ import {
 } from "../commands/lfgManage/constants.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../commandRegistrationData/lfgManage.ts";
 
-export function getLfgManageAutocomplete({ lfgFeature }: { readonly lfgFeature: LfgFeature }) {
+export function getLfgManageAutocomplete({ getLfgStatus }: { readonly getLfgStatus: TGetLfgStatus }) {
     const autocompleteCode = getRoomCodeAutocomplete({
-        lfgFeature,
+        getLfgStatus,
         ignoredSubCommands: [LFG_MANAGE_CREATE_SUBCOMMAND_NAME],
     });
 

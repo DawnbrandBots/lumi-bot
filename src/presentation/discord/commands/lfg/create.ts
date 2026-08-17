@@ -8,7 +8,7 @@ export function getLfgCreateHandler(arg: TLfgCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, (guildId) =>
             runFeatureSubcommand(arg, interaction, guildId, () =>
-                arg.lfgFeature.create({
+                arg.createLfgRoom({
                     guildId,
                     owner: interaction.user,
                     code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),

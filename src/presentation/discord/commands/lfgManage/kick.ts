@@ -8,7 +8,7 @@ export function getLfgManageKickHandler(arg: TLfgManageCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, (guildId) =>
             runFeatureSubcommand(arg, interaction, guildId, () =>
-                arg.lfgFeature.kick({
+                arg.kickFromLfgRoom({
                     guildId,
                     code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
                     target: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),

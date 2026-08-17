@@ -3,7 +3,6 @@ import { channelMention, ChannelType, MessageFlags, roleMention, userMention } f
 import { describe, expect, test, vi } from "vitest";
 import type { TAdminFeature as AdminFeature } from "../../../src/application/admin/types.ts";
 import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
-import type { TLfgFeature as LfgFeature } from "../../../src/application/lfg/types.ts";
 import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../src/application/lfg/types.ts";
 import type { lfgCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfg.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
@@ -49,14 +48,20 @@ function getSetLfgRoleLastPingedAtMock() {
     return vi.fn<AdminFeature["setLfgRoleLastPingedAt"]>();
 }
 
-function getLfgFeature(result: TLfgFeatureReturn) {
+function getLfgUseCases(result: TLfgFeatureReturn) {
     return {
-        changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
-        create: vi.fn().mockResolvedValue(result),
+        changeOwnedLfgRoomCode: vi.fn().mockResolvedValue(result),
+        createLfgRoom: vi.fn().mockResolvedValue(result),
+        disbandOwnedLfgRoom: vi.fn().mockResolvedValue(result),
+        getLfgStatus: vi.fn().mockResolvedValue(result),
+        kickFromOwnedLfgRoom: vi.fn().mockResolvedValue(result),
+        leaveLfgRoom: vi.fn().mockResolvedValue(result),
+        moveLfgUser: vi.fn().mockResolvedValue(result),
+        transferOwnedLfgRoom: vi.fn().mockResolvedValue(result),
     };
 }
 
-type LfgFeatureMock = ReturnType<typeof getLfgFeature>;
+type LfgUseCasesMock = ReturnType<typeof getLfgUseCases>;
 
 function getInteractionFixture({
     channelId,
@@ -103,7 +108,7 @@ function getInteractionFixture({
 function getCommand({
     result,
     channel,
-    lfgFeature = getLfgFeature(result),
+    lfgUseCases = getLfgUseCases(result),
     lfgRole = null,
     lfgRoleLastPingedAt = null,
     lfgRolePingCooldownMinutes = undefined,
@@ -111,14 +116,14 @@ function getCommand({
 }: {
     readonly result: TLfgFeatureReturn;
     readonly channel: string | null;
-    readonly lfgFeature?: LfgFeatureMock;
+    readonly lfgUseCases?: LfgUseCasesMock;
     readonly lfgRole?: string | null;
     readonly lfgRoleLastPingedAt?: Date | null;
     readonly lfgRolePingCooldownMinutes?: number;
     readonly setLfgRoleLastPingedAt?: SetLfgRoleLastPingedAtMock;
 }): TCommandRunHandlers<typeof lfgCommandCommandRegistrationData> {
     return getLfgCommand({
-        lfgFeature: lfgFeature as unknown as LfgFeature,
+        ...lfgUseCases,
         adminFeature: {
             getGuildConfig: vi.fn().mockResolvedValue({
                 kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
@@ -187,8 +192,8 @@ describe(getLfgCommand.name, () => {
                 newCode: ROOM_CODE,
             },
         } satisfies TLfgFeatureReturn;
-        const lfgFeature = getLfgFeature(result);
-        const command = getCommand({ result, channel: null, lfgFeature });
+        const lfgUseCases = getLfgUseCases(result);
+        const command = getCommand({ result, channel: null, lfgUseCases });
         const { interaction } = getInteractionFixture({
             channelId: OTHER_CHANNEL_ID,
             subcommand: LFG_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -196,7 +201,11 @@ describe(getLfgCommand.name, () => {
 
         await runCommand(command, interaction);
 
-        expect(lfgFeature.changeOwnedRoomCode).toHaveBeenCalledWith(GUILD_ID, { id: USER_ID }, ROOM_CODE);
+        expect(lfgUseCases.changeOwnedLfgRoomCode).toHaveBeenCalledWith({
+            guildId: GUILD_ID,
+            owner: { id: USER_ID },
+            newCode: ROOM_CODE,
+        });
     });
 
     test("does not mirror error responses", async () => {

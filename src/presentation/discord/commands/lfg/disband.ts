@@ -7,7 +7,7 @@ export function getLfgDisbandHandler(arg: TLfgCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, (guildId) =>
             runFeatureSubcommand(arg, interaction, guildId, () =>
-                arg.lfgFeature.disbandOwnedRoom({ guildId, owner: interaction.user }),
+                arg.disbandOwnedLfgRoom({ guildId, owner: interaction.user }),
             ),
         );
 }

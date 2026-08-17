@@ -1,12 +1,12 @@
 import { ELfgFeatureReturnKind } from "../types.ts";
-import type { TChangeLfgRoomCodeInRoom, TFindLfgRoomByCode, TLfgFeature } from "../types.ts";
+import type { TChangeLfgRoomCodeInRoom, TFindLfgRoomByCode, TChangeLfgRoomCodeArg } from "../types.ts";
 
 export async function changeRoomCode(
     deps: {
         readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
         readonly findRoomByCode: TFindLfgRoomByCode;
     },
-    { guildId, code, newCode }: Parameters<TLfgFeature["changeRoomCode"]>[0],
+    { guildId, code, newCode }: TChangeLfgRoomCodeArg,
 ) {
     const room = await deps.findRoomByCode({ guildId, code });
     if (!room) {

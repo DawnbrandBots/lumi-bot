@@ -3,7 +3,7 @@ import { ELfgFeatureReturnKind } from "../types.ts";
 import type {
     TFindLfgRoomByCode,
     TFindLfgRoomByUser,
-    TLfgFeature,
+    TMoveLfgUserArg,
     TMoveUserToLfgRoom,
     TRemovePlayerFromLfgRoom,
 } from "../types.ts";
@@ -20,7 +20,7 @@ export async function move(
         readonly moveUserToRoom: TMoveUserToLfgRoom;
         readonly removePlayerFromRoom: TRemovePlayerFromLfgRoom;
     },
-    { guildId, user, code }: Parameters<TLfgFeature["move"]>[0],
+    { guildId, user, code }: TMoveLfgUserArg,
 ) {
     const room = await findRoomByCode({ guildId, code });
     if (!room) {
@@ -40,9 +40,7 @@ export async function move(
     }
 
     const leftRoomCode = currentRoom?.code;
-    const removalResult = currentRoom
-        ? await removePlayerFromRoom({ room: currentRoom, userId: user.id })
-        : undefined;
+    const removalResult = currentRoom ? await removePlayerFromRoom({ room: currentRoom, userId: user.id }) : undefined;
     const updatedRoom = await moveUserToRoom({ roomId: room.id, userId: user.id });
 
     return {

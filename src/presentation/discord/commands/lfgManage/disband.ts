@@ -8,7 +8,7 @@ export function getLfgManageDisbandHandler(arg: TLfgManageCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, (guildId) =>
             runFeatureSubcommand(arg, interaction, guildId, () =>
-                arg.lfgFeature.disband({
+                arg.disbandLfgRoom({
                     guildId,
                     code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),
                 }),
