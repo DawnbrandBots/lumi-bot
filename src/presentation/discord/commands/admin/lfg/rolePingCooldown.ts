@@ -13,7 +13,7 @@ import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
 
 async function runLfgRolePingCooldown(
-    { adminFeature }: TAdminCommandArgs,
+    { clearLfgRolePingCooldown, getGuildConfig, setLfgRolePingCooldown }: TAdminCommandArgs,
     interaction: ChatInputCommandInteraction<CacheType>,
     guildId: string,
 ): Promise<InteractionReplyOptions> {
@@ -30,7 +30,7 @@ async function runLfgRolePingCooldown(
     }
 
     if (action === null && minutes === null) {
-        const configResult = await adminFeature.getGuildConfig(guildId);
+        const configResult = await getGuildConfig(guildId);
         return mapAdminFeatureReturnToMessage({
             kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
             value: { minutes: configResult.value?.lfgRolePingCooldownMinutes },
@@ -38,11 +38,11 @@ async function runLfgRolePingCooldown(
     }
 
     if (action === ADMIN_ACTION_SET && minutes !== null) {
-        return mapAdminFeatureReturnToMessage(await adminFeature.setLfgRolePingCooldown(guildId, minutes));
+        return mapAdminFeatureReturnToMessage(await setLfgRolePingCooldown(guildId, minutes));
     }
 
     if (action === ADMIN_ACTION_CLEAR && minutes === null) {
-        return mapAdminFeatureReturnToMessage(await adminFeature.clearLfgRolePingCooldown(guildId));
+        return mapAdminFeatureReturnToMessage(await clearLfgRolePingCooldown(guildId));
     }
 
     if (action === ADMIN_ACTION_SET && minutes === null) {

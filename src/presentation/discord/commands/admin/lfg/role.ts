@@ -13,7 +13,7 @@ import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
 
 async function runLfgRole(
-    { adminFeature }: TAdminCommandArgs,
+    { addLfgRole, getGuildConfig, removeLfgRole }: TAdminCommandArgs,
     interaction: ChatInputCommandInteraction<CacheType>,
     guildId: string,
 ): Promise<InteractionReplyOptions> {
@@ -30,7 +30,7 @@ async function runLfgRole(
     }
 
     if (action === null && !role) {
-        const configResult = await adminFeature.getGuildConfig(guildId);
+        const configResult = await getGuildConfig(guildId);
         return mapAdminFeatureReturnToMessage({
             kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
             value: { roles: configResult.value?.lfgRoles.map((lfgRole) => lfgRole.role) ?? [] },
@@ -38,11 +38,11 @@ async function runLfgRole(
     }
 
     if (action === ADMIN_ACTION_ADD && role) {
-        return mapAdminFeatureReturnToMessage(await adminFeature.addLfgRole(guildId, role.id));
+        return mapAdminFeatureReturnToMessage(await addLfgRole(guildId, role.id));
     }
 
     if (action === ADMIN_ACTION_REMOVE && role) {
-        return mapAdminFeatureReturnToMessage(await adminFeature.removeLfgRole(guildId, role.id));
+        return mapAdminFeatureReturnToMessage(await removeLfgRole(guildId, role.id));
     }
 
     if ((action === ADMIN_ACTION_ADD || action === ADMIN_ACTION_REMOVE) && !role) {

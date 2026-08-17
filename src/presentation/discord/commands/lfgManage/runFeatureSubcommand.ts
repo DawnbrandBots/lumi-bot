@@ -29,13 +29,13 @@ async function sendPublicCopy(
 }
 
 export async function runFeatureSubcommand(
-    { adminFeature }: TLfgManageCommandArgs,
+    { getGuildConfig }: TLfgManageCommandArgs,
     interaction: ChatInputCommandInteraction<CacheType>,
     guildId: string,
     getResult: TLfgFeatureResultGetter,
 ): Promise<void> {
     const result = await getResult();
-    const configResult = await adminFeature.getGuildConfig(guildId);
+    const configResult = await getGuildConfig(guildId);
     const messageBase = mapLfgFeatureReturnToMessageBase({
         result,
         callerId: interaction.user.id,

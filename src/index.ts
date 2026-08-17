@@ -1,5 +1,5 @@
 import debug from "debug";
-import { composeAdminFeature } from "./composition/application/admin/feature.ts";
+import { composeAdminUseCases } from "./composition/application/admin/useCases.ts";
 import { composeLfgUseCases } from "./composition/application/lfg/useCases.ts";
 import { composeSearchUseCases } from "./composition/application/search/useCases.ts";
 import { composeDiscordBot } from "./composition/presentation/discord/bot.ts";
@@ -13,10 +13,10 @@ const log = debug("index.ts");
 const orm = await getOrm(appMikroOrmConfig);
 const em = orm.em.fork();
 
-const adminFeature = composeAdminFeature({ em });
+const adminUseCases = composeAdminUseCases({ em });
 const lfgUseCases = composeLfgUseCases(em);
 const searchUseCases = await composeSearchUseCases({ em });
-const commands = composeDiscordCommands({ adminFeature, lfgUseCases, searchUseCases });
+const commands = composeDiscordCommands({ adminUseCases, lfgUseCases, searchUseCases });
 const eventHandlers = composeDiscordEventHandlers({ commands, searchUseCases });
 const bot = composeDiscordBot({ eventHandlers });
 

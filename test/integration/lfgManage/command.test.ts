@@ -81,17 +81,15 @@ function getCommand({
         transferLfgRoom: vi.fn().mockResolvedValue(result),
         disbandLfgRoom: vi.fn().mockResolvedValue(result),
     };
-    const adminFeature = {
-        getGuildConfig: vi.fn().mockResolvedValue({
-            kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
-            value: channel ? { guild: GUILD_ID, lfgChannel: channel } : null,
-        }),
-    };
+    const getGuildConfig = vi.fn().mockResolvedValue({
+        kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+        value: channel ? { guild: GUILD_ID, lfgChannel: channel } : null,
+    });
 
     return {
-        adminFeature,
+        getGuildConfig,
         command: getLfgManageCommand({
-            adminFeature,
+            getGuildConfig,
             ...lfgUseCases,
         }),
         lfgUseCases,
@@ -111,7 +109,7 @@ async function runCommand(
 
 describe(getLfgManageCommand.name, () => {
     test("rejects non-guild interactions", async () => {
-        const { adminFeature, command, lfgUseCases } = getCommand({
+        const { command, getGuildConfig, lfgUseCases } = getCommand({
             result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
         });
         const { interaction, reply } = getInteractionFixture({ guildId: null });
@@ -124,7 +122,7 @@ describe(getLfgManageCommand.name, () => {
                 embeds: [expect.objectContaining({ title: "LFG management unavailable" })],
             }),
         );
-        expect(adminFeature.getGuildConfig).not.toHaveBeenCalled();
+        expect(getGuildConfig).not.toHaveBeenCalled();
         expect(lfgUseCases.createLfgRoom).not.toHaveBeenCalled();
     });
 

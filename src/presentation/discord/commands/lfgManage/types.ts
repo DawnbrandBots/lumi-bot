@@ -1,4 +1,4 @@
-import type { TAdminFeature as AdminFeature } from "../../../../application/admin/types.ts";
+import type { TGetAdminGuildConfig } from "../../../../application/admin/types.ts";
 import type {
     TChangeLfgRoomCodeUseCase,
     TCreateLfgRoomUseCase,
@@ -9,7 +9,7 @@ import type {
 } from "../../../../application/lfg/types.ts";
 
 export type TLfgManageCommandArgs = {
-    readonly adminFeature: Pick<AdminFeature, "getGuildConfig">;
+    readonly getGuildConfig: TGetAdminGuildConfig;
     readonly changeLfgRoomCode: TChangeLfgRoomCodeUseCase;
     readonly createLfgRoom: TCreateLfgRoomUseCase;
     readonly disbandLfgRoom: TDisbandLfgRoomUseCase;

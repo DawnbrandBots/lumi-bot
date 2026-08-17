@@ -1,11 +1,10 @@
 import { EntityManager, MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { ADMIN_LFG_ROLE_LIMIT } from "../../../src/application/admin/constants.ts";
-import { getAdminFeature } from "../../../src/application/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
+import { composeAdminUseCases, type TAdminUseCases } from "../../../src/composition/application/admin/useCases.ts";
 import { GuildConfig } from "../../../src/infrastructure/admin/models/config.ts";
 import { GuildConfigLfgRole } from "../../../src/infrastructure/admin/models/configLfgRole.ts";
-import { getAdminPersistence } from "../../../src/infrastructure/admin/persistence.ts";
 import { migrationMikroOrmConfig } from "../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../utils/getSameConfigInMemory.ts";
 
@@ -14,40 +13,40 @@ const CHANNEL_ID = "channel-1";
 const ROLE_ID = "role-1";
 
 let orm: MikroORM;
-let feature: AdminFeature;
+let feature: AdminUseCases;
 
-class AdminFeature {
-    private readonly feature;
+class AdminUseCases {
+    private readonly useCases: TAdminUseCases;
 
     public constructor({ em }: { readonly em: EntityManager }) {
-        this.feature = getAdminFeature(getAdminPersistence({ em }));
+        this.useCases = composeAdminUseCases({ em });
     }
 
     public getGuildConfig(guild: string) {
-        return this.feature.getGuildConfig(guild);
+        return this.useCases.getGuildConfig(guild);
     }
 
     public getLfgRoleConfig(guild: string, role: string) {
-        return this.feature.getLfgRoleConfig(guild, role);
+        return this.useCases.getLfgRoleConfig(guild, role);
     }
 
     public setLfgRoleLastPingedAt(guild: string, role: string, date: Date) {
-        return this.feature.setLfgRoleLastPingedAt(guild, role, date);
+        return this.useCases.setLfgRoleLastPingedAt(guild, role, date);
     }
 
     public async lfgChannel(guild: string, action: "set" | "clear" | null, channel: string | null) {
         if (action === null && channel === null) {
-            const configResult = await this.feature.getGuildConfig(guild);
+            const configResult = await this.useCases.getGuildConfig(guild);
             return {
                 kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
                 value: { channel: configResult.value?.lfgChannel },
             };
         }
         if (action === "set" && channel) {
-            return this.feature.setLfgChannel(guild, channel);
+            return this.useCases.setLfgChannel(guild, channel);
         }
         if (action === "clear" && channel === null) {
-            return this.feature.clearLfgChannel(guild);
+            return this.useCases.clearLfgChannel(guild);
         }
         if (action === "set" && channel === null) {
             return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL };
@@ -57,17 +56,17 @@ class AdminFeature {
 
     public async lfgRolePingCooldown(guild: string, action: "set" | "clear" | null, minutes: number | null) {
         if (action === null && minutes === null) {
-            const configResult = await this.feature.getGuildConfig(guild);
+            const configResult = await this.useCases.getGuildConfig(guild);
             return {
                 kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
                 value: { minutes: configResult.value?.lfgRolePingCooldownMinutes },
             };
         }
         if (action === "set" && minutes !== null) {
-            return this.feature.setLfgRolePingCooldown(guild, minutes);
+            return this.useCases.setLfgRolePingCooldown(guild, minutes);
         }
         if (action === "clear" && minutes === null) {
-            return this.feature.clearLfgRolePingCooldown(guild);
+            return this.useCases.clearLfgRolePingCooldown(guild);
         }
         if (action === "set" && minutes === null) {
             return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES };
@@ -77,17 +76,17 @@ class AdminFeature {
 
     public async lfgRole(guild: string, action: "add" | "remove" | null, role: string | null) {
         if (action === null && role === null) {
-            const configResult = await this.feature.getGuildConfig(guild);
+            const configResult = await this.useCases.getGuildConfig(guild);
             return {
                 kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
                 value: { roles: configResult.value?.lfgRoles.map((lfgRole) => lfgRole.role) ?? [] },
             };
         }
         if (action === "add" && role) {
-            return this.feature.addLfgRole(guild, role);
+            return this.useCases.addLfgRole(guild, role);
         }
         if (action === "remove" && role) {
-            return this.feature.removeLfgRole(guild, role);
+            return this.useCases.removeLfgRole(guild, role);
         }
         if ((action === "add" || action === "remove") && role === null) {
             return { kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE };
@@ -106,11 +105,11 @@ async function getStoredRoles(): Promise<GuildConfigLfgRole[]> {
 const config = getSameConfigInMemory(migrationMikroOrmConfig);
 
 // Tests recreate dbs. Simultaneous recreations cause errors. Therefore `concurrent: false`.
-describe(AdminFeature.name, { concurrent: false }, () => {
+describe(AdminUseCases.name, { concurrent: false }, () => {
     beforeEach(async () => {
         orm = await MikroORM.init(config);
         await orm.schema.create();
-        feature = new AdminFeature({ em: orm.em.fork() });
+        feature = new AdminUseCases({ em: orm.em.fork() });
     });
 
     afterEach(async () => {
@@ -168,7 +167,7 @@ describe(AdminFeature.name, { concurrent: false }, () => {
 
         expect(result).toEqual({
             kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
-            value: { channel: null },
+            value: { channel: undefined },
         });
     });
 
@@ -214,7 +213,7 @@ describe(AdminFeature.name, { concurrent: false }, () => {
 
         expect(result).toEqual({
             kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
-            value: { minutes: null },
+            value: { minutes: undefined },
         });
     });
 

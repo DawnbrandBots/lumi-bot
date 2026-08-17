@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction, InteractionResponse } from "discord.js";
 import { channelMention, ChannelType, MessageFlags, roleMention, userMention } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { TAdminFeature as AdminFeature } from "../../../src/application/admin/types.ts";
+import type { TSetAdminLfgRoleLastPingedAt } from "../../../src/application/admin/types.ts";
 import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
 import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../src/application/lfg/types.ts";
 import type { lfgCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfg.ts";
@@ -45,7 +45,7 @@ type ReplyArg = {
 type SetLfgRoleLastPingedAtMock = ReturnType<typeof getSetLfgRoleLastPingedAtMock>;
 
 function getSetLfgRoleLastPingedAtMock() {
-    return vi.fn<AdminFeature["setLfgRoleLastPingedAt"]>();
+    return vi.fn<TSetAdminLfgRoleLastPingedAt>();
 }
 
 function getLfgUseCaseMocks(result: TLfgFeatureReturn) {
@@ -124,17 +124,15 @@ function getCommand({
 }): TCommandRunHandlers<typeof lfgCommandCommandRegistrationData> {
     return getLfgCommand({
         ...lfgUseCases,
-        adminFeature: {
-            getGuildConfig: vi.fn().mockResolvedValue({
-                kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
-                value: channel ? { guild: GUILD_ID, lfgChannel: channel, lfgRolePingCooldownMinutes } : null,
-            }),
-            getLfgRoleConfig: vi.fn().mockResolvedValue({
-                kind: EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG,
-                value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
-            }),
-            setLfgRoleLastPingedAt,
-        },
+        getGuildConfig: vi.fn().mockResolvedValue({
+            kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+            value: channel ? { guild: GUILD_ID, lfgChannel: channel, lfgRolePingCooldownMinutes } : null,
+        }),
+        getLfgRoleConfig: vi.fn().mockResolvedValue({
+            kind: EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG,
+            value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
+        }),
+        setLfgRoleLastPingedAt,
     });
 }
 

@@ -13,7 +13,7 @@ import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
 
 async function runLfgChannel(
-    { adminFeature }: TAdminCommandArgs,
+    { clearLfgChannel, getGuildConfig, setLfgChannel }: TAdminCommandArgs,
     interaction: ChatInputCommandInteraction<CacheType>,
     guildId: string,
 ): Promise<InteractionReplyOptions> {
@@ -39,7 +39,7 @@ async function runLfgChannel(
     }
 
     if (action === null && !channel) {
-        const configResult = await adminFeature.getGuildConfig(guildId);
+        const configResult = await getGuildConfig(guildId);
         return mapAdminFeatureReturnToMessage({
             kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
             value: { channel: configResult.value?.lfgChannel },
@@ -47,11 +47,11 @@ async function runLfgChannel(
     }
 
     if (action === ADMIN_ACTION_SET && channel) {
-        return mapAdminFeatureReturnToMessage(await adminFeature.setLfgChannel(guildId, channel.id));
+        return mapAdminFeatureReturnToMessage(await setLfgChannel(guildId, channel.id));
     }
 
     if (action === ADMIN_ACTION_CLEAR && !channel) {
-        return mapAdminFeatureReturnToMessage(await adminFeature.clearLfgChannel(guildId));
+        return mapAdminFeatureReturnToMessage(await clearLfgChannel(guildId));
     }
 
     if (action === ADMIN_ACTION_SET && !channel) {

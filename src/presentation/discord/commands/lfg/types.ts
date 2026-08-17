@@ -1,4 +1,8 @@
-import type { TAdminFeature as AdminFeature } from "../../../../application/admin/types.ts";
+import type {
+    TGetAdminGuildConfig,
+    TGetAdminLfgRoleConfig,
+    TSetAdminLfgRoleLastPingedAt,
+} from "../../../../application/admin/types.ts";
 import type {
     TChangeOwnedLfgRoomCodeUseCase,
     TCreateLfgRoomUseCase,
@@ -11,7 +15,9 @@ import type {
 } from "../../../../application/lfg/types.ts";
 
 export type TLfgCommandArgs = {
-    readonly adminFeature: Pick<AdminFeature, "getGuildConfig" | "getLfgRoleConfig" | "setLfgRoleLastPingedAt">;
+    readonly getGuildConfig: TGetAdminGuildConfig;
+    readonly getLfgRoleConfig: TGetAdminLfgRoleConfig;
+    readonly setLfgRoleLastPingedAt: TSetAdminLfgRoleLastPingedAt;
     readonly changeOwnedLfgRoomCode: TChangeOwnedLfgRoomCodeUseCase;
     readonly createLfgRoom: TCreateLfgRoomUseCase;
     readonly disbandOwnedLfgRoom: TDisbandOwnedLfgRoomUseCase;

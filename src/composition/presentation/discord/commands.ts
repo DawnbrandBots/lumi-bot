@@ -1,4 +1,4 @@
-import type { TAdminFeature } from "../../../application/admin/types.ts";
+import type { TAdminUseCases } from "../../application/admin/useCases.ts";
 import type { TLfgUseCases } from "../../application/lfg/useCases.ts";
 import type { TSearchUseCases } from "../../application/search/useCases.ts";
 import type { TAllCommandRegistrationData } from "../../../presentation/discord/commandRegistrationData.ts";
@@ -14,12 +14,12 @@ import { getSearchCommand } from "../../../presentation/discord/commands/search.
 import type { TCommandRegistry } from "../../../presentation/discord/commands/types.ts";
 
 export function composeDiscordCommands(arg: {
-    readonly adminFeature: TAdminFeature;
+    readonly adminUseCases: TAdminUseCases;
     readonly lfgUseCases: TLfgUseCases;
     readonly searchUseCases: TSearchUseCases;
 }): TCommandRegistry<TAllCommandRegistrationData> {
     return {
-        admin: { run: getAdminCommand({ adminFeature: arg.adminFeature }) },
+        admin: { run: getAdminCommand(arg.adminUseCases) },
         search: {
             run: getSearchCommand({ resolveSearchInput: arg.searchUseCases.resolveSearchInput }),
             autocomplete: getSearchAutocomplete({ getSearchIndexEntries: arg.searchUseCases.getSearchIndexEntries }),
@@ -28,7 +28,9 @@ export function composeDiscordCommands(arg: {
         links: { run: getLinksCommand() },
         lfg: {
             run: getLfgCommand({
-                adminFeature: arg.adminFeature,
+                getGuildConfig: arg.adminUseCases.getGuildConfig,
+                getLfgRoleConfig: arg.adminUseCases.getLfgRoleConfig,
+                setLfgRoleLastPingedAt: arg.adminUseCases.setLfgRoleLastPingedAt,
                 changeOwnedLfgRoomCode: arg.lfgUseCases.changeOwnedLfgRoomCode,
                 createLfgRoom: arg.lfgUseCases.createLfgRoom,
                 disbandOwnedLfgRoom: arg.lfgUseCases.disbandOwnedLfgRoom,
@@ -42,7 +44,7 @@ export function composeDiscordCommands(arg: {
         },
         "lfg-manage": {
             run: getLfgManageCommand({
-                adminFeature: arg.adminFeature,
+                getGuildConfig: arg.adminUseCases.getGuildConfig,
                 changeLfgRoomCode: arg.lfgUseCases.changeLfgRoomCode,
                 createLfgRoom: arg.lfgUseCases.createLfgRoom,
                 disbandLfgRoom: arg.lfgUseCases.disbandLfgRoom,
