@@ -1,9 +1,8 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectKind } from "../../../domain/game/models/spellEffect.types.ts";
+import { EDirection } from "../../../domain/game/models/direction.types.ts";
 import type { IMovementEffect } from "../../../domain/game/models/spellEffect.types.ts";
-import { DirectionType } from "./direction.ts";
+import { ESpellEffectKind, ESpellEffectTarget } from "../../../domain/game/models/spellEffect.types.ts";
 import { SpellEffect } from "./spellEffect.ts";
-import { SpellEffectTargetType } from "./spellEffectTarget.ts";
 
 export const MovementEffectSchema = defineEntity({
     name: "MovementEffect",
@@ -12,9 +11,9 @@ export const MovementEffectSchema = defineEntity({
     discriminatorValue: ESpellEffectKind.MOVEMENT,
     properties: {
         kind: p.enum([ESpellEffectKind.MOVEMENT]),
-        direction: p.type(DirectionType),
+        direction: p.enum(() => EDirection),
         count: p.integer(),
-        target: p.type(SpellEffectTargetType),
+        target: p.enum(() => ESpellEffectTarget),
     },
 });
 

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import Weapon from "../../../../src/game/rules/weapon.ts";
+import Weapon from "../../../../src/domain/game/rules/weapon.ts";
 import type { IWeaponSkill } from "../../../../src/domain/game/models/weaponSkill.types.ts";
 
 describe(Weapon.weaponTypeSkill.name, () => {

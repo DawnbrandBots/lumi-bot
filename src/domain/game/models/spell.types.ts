@@ -78,7 +78,7 @@ export interface ISpell {
      * Some spells, like "Minor" ones, don't have an associated disciple.
      */
     readonly disciple?: IDisciple | null;
-    readonly role: ISpellRole;
+    readonly role: keyof typeof ESpellRole;
     /**
      * Number of times this spell can be used.
      *
@@ -105,5 +105,5 @@ export interface ISpell {
      * Kind of units that this spell can only be used by.
      */
     readonly onlyFor?: IMovementType | IWeaponType | null;
-    readonly draggingMode: ISpellDraggingMode;
+    readonly draggingMode: keyof typeof ESpellDraggingMode;
 }

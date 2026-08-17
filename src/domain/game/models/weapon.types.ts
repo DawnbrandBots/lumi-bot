@@ -2,6 +2,7 @@ import type { TId } from "./base.types.ts";
 import type { IDisciple } from "./disciple.types.ts";
 import type { IWeaponSkill } from "./weaponSkill.types.ts";
 import type { IWeaponType } from "./weaponType.types.ts";
+import type { EWeaponVariant } from "./weaponVariant.types.ts";
 
 /**
  * A weapon that can be equipped by disciples.
@@ -38,5 +39,5 @@ export interface IWeapon {
      *
      * @returns The value of the modifier for the given variant and stat.
      */
-    getWeaponVariantStat(args: { variant: "HP" | "NEUTRAL" | "ATK"; stat: "hp" | "atk" }): number;
+    getWeaponVariantStat(args: { variant: keyof typeof EWeaponVariant; stat: "hp" | "atk" }): number;
 }

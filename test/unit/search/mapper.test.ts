@@ -1,23 +1,21 @@
 import { Collection } from "@mikro-orm/sqlite";
 import { describe, expect, test } from "vitest";
+import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
 import type { TSearchFeatureSuccessValue } from "../../../src/application/search/types.ts";
 import { ESearchFeatureReturnKind } from "../../../src/application/search/types.ts";
-import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT } from "../../../src/bot/constants.ts";
-import { EMessageKind } from "../../../src/bot/types.ts";
-import type { Disciple } from "../../../src/game/models/disciple.ts";
-import {
-    SEARCH_ALIASES_FOOTER_PREFIX,
-    SEARCH_ENTITY_KIND_FIELD_NAME,
-    SEARCH_ID_FIELD_NAME,
-    SEARCH_INPUT_TITLE,
-    SEARCH_INPUT_TOO_LONG_DESCRIPTION,
-    SEARCH_INVALID_INPUT_TITLE,
-    SEARCH_MISSING_DATABASE_RESULT_TITLE,
-    SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
-} from "../../../src/search/constants.ts";
+import type { Disciple } from "../../../src/infrastructure/game/models/disciple.ts";
+import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT } from "../../../src/presentation/discord/constants.ts";
 import mapSearchFeatureReturnToMessages, {
     mapSearchFeatureSuccessValueToMessages,
-} from "../../../src/search/mapper.ts";
+} from "../../../src/presentation/discord/mappers/search.ts";
+import { EMessageKind } from "../../../src/presentation/discord/message.types.ts";
+
+const SEARCH_ALIASES_FOOTER_PREFIX = "Search aliases:";
+const SEARCH_ENTITY_KIND_FIELD_NAME = "Entity kind";
+const SEARCH_ID_FIELD_NAME = "Id";
+const SEARCH_INPUT_TOO_LONG_DESCRIPTION = `Input too long. Maximum is ${SEARCH_MAX_INPUT_LENGTH} characters.`;
+const SEARCH_YIELDED_NO_RESULT_DESCRIPTION = "Search yielded no result";
+const SEARCH_MISSING_DATABASE_RESULT_DESCRIPTION = "Result found in search engine but not in database";
 
 const MUSIC = {
     kind: "music",
@@ -90,7 +88,6 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                     kind: EMessageKind.NEGATIVE,
                     embeds: [
                         {
-                            title: SEARCH_INVALID_INPUT_TITLE,
                             description: SEARCH_INPUT_TOO_LONG_DESCRIPTION,
                         },
                     ],
@@ -107,7 +104,6 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                     kind: EMessageKind.NEGATIVE,
                     embeds: [
                         {
-                            title: SEARCH_INPUT_TITLE,
                             description: SEARCH_YIELDED_NO_RESULT_DESCRIPTION,
                         },
                     ],
@@ -129,7 +125,7 @@ describe(mapSearchFeatureReturnToMessages.name, () => {
                     content: DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT,
                     embeds: [
                         {
-                            title: SEARCH_MISSING_DATABASE_RESULT_TITLE,
+                            description: SEARCH_MISSING_DATABASE_RESULT_DESCRIPTION,
                             fields: [
                                 { name: SEARCH_ENTITY_KIND_FIELD_NAME, value: "weapon", inline: true },
                                 { name: SEARCH_ID_FIELD_NAME, value: "MISSING_WEAPON", inline: true },

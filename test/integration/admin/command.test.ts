@@ -1,6 +1,9 @@
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { getAdminCommand } from "../../../src/admin/command/handlers.ts";
+import type { TAdminFeature as AdminFeature } from "../../../src/application/admin/types.ts";
+import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
+import type { adminCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/admin.ts";
+import { getAdminCommand } from "../../../src/presentation/discord/commands/admin.ts";
 import {
     ADMIN_ACTION_OPTION_NAME,
     ADMIN_CHANNEL_OPTION_NAME,
@@ -11,12 +14,9 @@ import {
     ADMIN_LFG_SHOW_SUBCOMMAND_NAME,
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
-} from "../../../src/admin/constants.ts";
-import type { AdminFeature } from "../../../src/admin/feature.ts";
-import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
-import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
-import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
-import type { adminCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/admin.ts";
+} from "../../../src/presentation/discord/commands/admin/constants.ts";
+import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
+import type { TCommandRunHandlers } from "../../../src/presentation/discord/commands/types.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
@@ -58,10 +58,10 @@ function getInteractionFixture({
 }
 
 async function runCommand(
-    command: TCommandHandlers<typeof adminCommandCommandRegistrationData>,
+    command: TCommandRunHandlers<typeof adminCommandCommandRegistrationData>,
     interaction: ChatInputCommandInteraction,
 ) {
-    const run = getCommandRunHandler(command, interaction);
+    const run = getCommandRunHandler({ run: command }, interaction);
     if (!run) {
         throw new Error("No run handler found for test interaction.");
     }

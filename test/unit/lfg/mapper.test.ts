@@ -3,6 +3,7 @@ import {
     heading,
     HeadingLevel,
     inlineCode,
+    italic,
     MessageFlags,
     roleMention,
     time,
@@ -10,13 +11,16 @@ import {
     userMention,
 } from "discord.js";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { EMessageKind } from "../../../src/bot/types.ts";
+import { EMessageKind } from "../../../src/presentation/discord/message.types.ts";
 import { ELfgFeatureReturnKind } from "../../../src/application/lfg/types.ts";
 import * as constants from "../../../src/domain/game/constants.ts";
 import type { IRoom } from "../../../src/domain/lfg/models/room.types.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
-import * as LfgConstants from "../../../src/lfg/constants.ts";
-import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../../src/lfg/mapper.ts";
+import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../src/presentation/discord/commands/lfg/constants.ts";
+import {
+    mapLfgFeatureReturnToMessageBase,
+    mapLfgMessageBaseToReply,
+} from "../../../src/presentation/discord/mappers/lfg.ts";
 
 const ROOM: IRoom = {
     code: "alpha",
@@ -31,6 +35,18 @@ const GUILD_CONFIG = {
 };
 const PINGABLE_ROLE_ID = "pingable-role";
 const COOLDOWN_ROLE_ID = "cooldown-role";
+const LfgConstants = {
+    LFG_NOT_CONFIGURED_DESCRIPTION: italic("Not configured"),
+    LFG_EMPTY_ROOM_LIST_DESCRIPTION: "No active rooms. :(",
+    LFG_INVALID_ROOM_CODE_DESCRIPTION: `Room codes must be between ${constants.FRIEND_BATTLE_CODE_MINIMUM_LENGTH} and ${constants.FRIEND_BATTLE_CODE_MAXIMUM_LENGTH} characters.`,
+    LFG_ALREADY_IN_A_ROOM_DESCRIPTION: "Leave your current room before creating a new one.",
+    LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION: "Choose another player in your room.",
+    LFG_NOT_ROOM_OWNER_DESCRIPTION: "Only the room owner can do that.",
+    LFG_CANNOT_KICK_YOURSELF_DESCRIPTION: `Use ${inlineCode("lfg leave")} to leave your room.`,
+    LFG_NOT_IN_A_ROOM_DESCRIPTION: "Join or create a room first.",
+    LFG_INVALID_SUBCOMMAND_DESCRIPTION: "Please specify a valid subcommand.",
+    LFG_SHOW_RESPONSE_OPTION_NAME,
+} as const;
 
 afterEach(() => {
     vi.useRealTimers();

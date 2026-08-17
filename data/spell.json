@@ -12,10 +12,10 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 50,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
-          }
+          },
+          "scalingStrategyOverride": "NONE"
         },
         "color": "RED",
         "target": "ANY"
@@ -35,10 +35,10 @@
         "kind": "HEAL",
         "amount": {
           "base": 50,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
-          }
+          },
+          "scalingStrategyOverride": "NONE"
         },
         "target": "ANY"
       }
@@ -74,10 +74,10 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 70,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
-          }
+          },
+          "scalingStrategyOverride": "NONE"
         },
         "color": "COLORLESS",
         "target": "ANY"
@@ -99,11 +99,11 @@
         "weaponType": "SWORD",
         "hp": {
           "base": 80,
-          "scalesWithLevel": false
+          "scalingStrategyOverride": "NONE"
         },
         "atk": {
           "base": 50,
-          "scalesWithLevel": false
+          "scalingStrategyOverride": "NONE"
         },
         "target": "ANY"
       }
@@ -600,7 +600,8 @@
           "unit": {
             "kind": "PERCENT",
             "stat": "ATK"
-          }
+          },
+          "scalingStrategyOverride": "DARK_SLASH"
         },
         "color": "COLORLESS",
         "target": "ANY"
@@ -835,7 +836,8 @@
         "target": "ANY"
       },
       {
-        "kind": "ICE_BLOCK",
+        "kind": "OBSTACLE",
+        "obstacleType": "ICE",
         "hp": {
           "base": 60
         },
@@ -2033,7 +2035,6 @@
           "statChange": "INCREASE",
           "amount": {
             "base": 0,
-            "scalesWithLevel": false,
             "effectiveness": [
               {
                 "kind": "INFANTRY",
@@ -2042,7 +2043,8 @@
             ],
             "unit": {
               "kind": "FIXED"
-            }
+            },
+            "scalingStrategyOverride": "NONE"
           },
           "stat": "MOVEMENT"
         },
@@ -2335,7 +2337,8 @@
         "target": "ANY"
       },
       {
-        "kind": "ICE_BLOCK",
+        "kind": "OBSTACLE",
+        "obstacleType": "ICE",
         "hp": {
           "base": 60
         },
@@ -2397,11 +2400,11 @@
           "statChange": "INCREASE",
           "amount": {
             "base": 20,
-            "scalesWithLevel": false,
             "unit": {
               "kind": "PERCENT",
               "stat": "COLOR_AFFINITY"
-            }
+            },
+            "scalingStrategyOverride": "NONE"
           },
           "stat": "COLOR_AFFINITY"
         },
@@ -2746,10 +2749,10 @@
         "kind": "DAMAGE",
         "amount": {
           "base": 50,
-          "scalesWithLevel": false,
           "unit": {
             "kind": "FIXED"
-          }
+          },
+          "scalingStrategyOverride": "NONE"
         },
         "color": "RED",
         "target": "ANY"
@@ -2970,7 +2973,8 @@
           "unit": {
             "kind": "PERCENT",
             "stat": "ATK"
-          }
+          },
+          "scalingStrategyOverride": "NONE"
         },
         "color": "GREEN",
         "target": "ANY"
@@ -3239,11 +3243,11 @@
           "statChange": "DECREASE",
           "amount": {
             "base": 20,
-            "scalesWithLevel": false,
             "unit": {
               "kind": "PERCENT",
               "stat": "COLOR_AFFINITY"
-            }
+            },
+            "scalingStrategyOverride": "NONE"
           },
           "stat": "COLOR_AFFINITY"
         },
@@ -3433,7 +3437,8 @@
           "unit": {
             "kind": "PERCENT",
             "stat": "ATK"
-          }
+          },
+          "scalingStrategyOverride": "DARK_SLASH"
         },
         "color": "BLUE",
         "target": "ANY"
@@ -3467,10 +3472,10 @@
           "statChange": "LIMIT",
           "amount": {
             "base": 1,
-            "scalesWithLevel": false,
             "unit": {
               "kind": "FIXED"
-            }
+            },
+            "scalingStrategyOverride": "NONE"
           },
           "stat": "MOVEMENT"
         },
@@ -3737,11 +3742,11 @@
           "duration": 3,
           "amount": {
             "base": 10,
-            "scalesWithLevel": false,
             "unit": {
               "kind": "PERCENT",
               "stat": "COOLDOWN"
-            }
+            },
+            "scalingStrategyOverride": "NONE"
           },
           "stat": "COOLDOWN"
         },
@@ -4107,6 +4112,119 @@
           "base": 85
         },
         "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "CROSSWIND_LOCK_EX",
+    "name": "Crosswind Lock EX",
+    "disciple": "YUYO",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 70,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "OBSTACLE",
+        "obstacleType": "ROCK",
+        "shapeOverride": "1_TILE",
+        "onlyOn": "GROUND",
+        "hp": {
+          "base": 180
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "ENNEA_WIND_PLUS_BOW",
+    "name": "Ennea Wind + Bow",
+    "disciple": "YUYO",
+    "role": "LIGHT",
+    "shape": "3X3_SQUARE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["weaponType", "BOW"]
+  },
+  {
+    "id": "FINAL_DARK_TETRAWIND",
+    "name": "Final Dark Tetrawind",
+    "disciple": "YUYO",
+    "role": "SHADOW",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "countdown": 2,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 110,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "SELF_WARD_PUSH",
+    "name": "Self Ward Push",
+    "disciple": "YUYO",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "duration": 1,
+          "amount": {
+            "base": 10,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_SPELL_DAMAGE"
+            },
+            "scalingStrategyOverride": "ADDITIVE_BASE_PERCENT_10"
+          },
+          "stat": "RECEIVED_SPELL_DAMAGE"
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "UP",
+        "count": 1,
+        "target": "SELF"
       }
     ]
   }

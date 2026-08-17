@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
-import Spell from "../../../../src/game/rules/spell.ts";
 import { ESpellDraggingMode } from "../../../../src/domain/game/models/spell.types.ts";
 import { ESpellEffectTarget } from "../../../../src/domain/game/models/spellEffect.types.ts";
+import Spell from "../../../../src/domain/game/rules/spell.ts";
 
 describe(Spell.draggingModeKind.name, () => {
     test.each([
@@ -11,7 +11,7 @@ describe(Spell.draggingModeKind.name, () => {
         [[ESpellEffectTarget.DUAL], ESpellDraggingMode.ANY],
         [[ESpellEffectTarget.SELF, ESpellEffectTarget.ANY], ESpellDraggingMode.ANY],
     ] as const)("targets %o => %s", (targets, expected) => {
-        const effects = targets.map((kind) => ({ target: { kind } }));
+        const effects = targets.map((target) => ({ target }));
 
         expect(Spell.draggingModeKind({ effects })).toBe(expected);
     });

@@ -1,12 +1,12 @@
 import type { SqlEntityManager } from "@mikro-orm/sqlite";
 import { SPELL_NAME_SUFFIXES } from "../domain/game/constants.ts";
+import { ESpellRole } from "../domain/game/models/spell.types.ts";
+import type { ISearchIndexEntry, TSearchableEntity } from "../domain/search/types.ts";
 import { Disciple } from "../infrastructure/game/models/disciple.ts";
 import { Music } from "../infrastructure/game/models/music.ts";
 import { Spell } from "../infrastructure/game/models/spell.ts";
 import { Weapon } from "../infrastructure/game/models/weapon.ts";
 import { WeaponSkill } from "../infrastructure/game/models/weaponSkill.ts";
-import { ESpellRole } from "../domain/game/models/spell.types.ts";
-import type { ISearchIndexEntry, TSearchableEntity } from "../domain/search/types.ts";
 
 // Standalone aliases are aliases created from an entity's own properties. eg. `Ennea Fire EX` and `EFEX` are based on the spell's name only.
 // Relative aliases are aliases created from an entity's relationship's properties. eg. `Ennea Fire EX disciple` points to `Kurt`,
@@ -31,7 +31,7 @@ type TAliasMusicInput = Pick<Music, "name"> & {
 type TStandaloneAliasSpellInput = Pick<Spell, "name">;
 type TAliasSpellInput = TStandaloneAliasSpellInput & {
     readonly disciple?: TStandaloneAliasDiscipleInput | null;
-    readonly role: Pick<Spell["role"], "kind">;
+    readonly role: Spell["role"];
 };
 
 function* standaloneAliasWeapon(weapon: TStandaloneAliasWeaponInput) {
@@ -132,7 +132,7 @@ function* standaloneAliasSpell(spell: TStandaloneAliasSpellInput): Generator<str
 }
 
 function* relativeAliasSpell(spell: TAliasSpellInput): Generator<string> {
-    if (spell.disciple && spell.role.kind === ESpellRole.EX) {
+    if (spell.disciple && spell.role === ESpellRole.EX) {
         for (const discipleAlias of standaloneAliasDisciple(spell.disciple)) {
             yield `${discipleAlias} EX`;
         }

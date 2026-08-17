@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import mapMusicToMessage from "../../../../src/search/mappers/music.ts";
+import mapMusicToMessage from "../../../../src/presentation/discord/mappers/search/music.ts";
 import { MUSIC } from "./music.fixtures.ts";
 
 describe(mapMusicToMessage.name, () => {

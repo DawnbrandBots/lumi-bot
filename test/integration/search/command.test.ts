@@ -1,13 +1,16 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import { SEARCH_TERMS_OPTION_NAME } from "../../../src/bot/constants.ts";
+import type { TGetBestSearchIndexEntry, TGetEntityByKindAndId } from "../../../src/application/search/ports.ts";
+import { resolveSearchInput } from "../../../src/application/search/resolveSearchInput.ts";
+import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
+import { searchItemInDb } from "../../../src/infrastructure/game/persistence/searchItemInDb.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
+import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import SEARCH_CONFIGS from "../../../src/loaders/searchConfigs.ts";
 import getSearchItems from "../../../src/loaders/searchItems.ts";
-import { getSearchCommand } from "../../../src/search/command/handlers.ts";
-import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
+import { getSearchCommand } from "../../../src/presentation/discord/commands/search.ts";
+import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
@@ -19,7 +22,11 @@ beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
     searchEngine = new FuseSearchEngine<TSearchIndexEntry>({ items: await getSearchItems(em) });
-    searchCommand = getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS });
+    const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
+    const getEntityByKindAndId: TGetEntityByKindAndId = (arg) => searchItemInDb({ configs: SEARCH_CONFIGS, em }, arg);
+    searchCommand = getSearchCommand({
+        resolveSearchInput: (input) => resolveSearchInput({ getBestSearchIndexEntry, getEntityByKindAndId }, input),
+    });
 });
 
 afterAll(async () => {
@@ -39,10 +46,11 @@ describe("search command messages", () => {
         ["Dual Invigorate EX", "dual spell"],
         ["Axe Fighter + Infantry", "summon"],
         ["Heal Warp EX", "warp"],
-        ["Tetrathunder Wall EX", "ice blocks"],
+        ["Tetrathunder Wall EX", "obstacles"],
         ["Dark Cross Poison Patch", "tile"],
         ["Slow Self Shield EX", "cooldown increasing spell effect"],
         ["Dark Harm Sword Fighter", "damage-over-time effect dealing damage only once"],
+        ["Crosswind Lock EX", "conditional rock obstacle summon on shape different than damaging effect's"],
     ])("returns the complete %s message (%s)", async (name) => {
         const reply = vi.fn();
         const followUp = vi.fn();
@@ -54,7 +62,7 @@ describe("search command messages", () => {
             followUp,
         } as unknown as ChatInputCommandInteraction<CacheType>;
 
-        await searchCommand.run(interaction);
+        await searchCommand(interaction);
 
         expect(reply).toHaveBeenCalledOnce();
         expect(followUp).not.toHaveBeenCalled();

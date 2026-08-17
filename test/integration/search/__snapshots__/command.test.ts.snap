@@ -61,7 +61,7 @@ Lv |   1   2   3   4   5   6
 ───┼────────────────────────
 1. |  75  82  90  97 105 112
    |  60  72  84  96 108 120
-                            
+
 Lv |   7   8   9  10  11  12
 ───┼────────────────────────
 1. | 120 127 135 142 150 165
@@ -148,6 +148,81 @@ Lv |   7   8   9  10  11  12
         "text": "Search aliases: Crosswind Grav EX, CWGEX, Claude EX",
       },
       "title": "Crosswind Grav EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`search command messages > returns the complete Crosswind Lock EX message (conditional rock obstacle summon on shape different than damaging effect's) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Yuyo",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "1",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::blue_square::red_square::blue_square::black_large_square:
+:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "1. Deals 70 Green damage to targets.
+1. Summons an obstacle with 180 HP on a single space if it is flat ground.",
+        },
+        {
+          "name": "Values",
+          "value": "\`\`\`
+Lv |   1   2   3   4   5   6
+───┼────────────────────────
+1. |  70  77  84  91  98 105
+2. | 180 198 216 234 252 270
+
+Lv |   7   8   9  10  11  12
+───┼────────────────────────
+1. | 112 119 126 133 140 154
+2. | 288 306 324 342 360 396
+\`\`\`",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Crosswind Lock EX, CWLEX, Yuyo EX",
+      },
+      "title": "Crosswind Lock EX",
     },
   ],
   "kind": "POSITIVE",
@@ -893,7 +968,7 @@ Lv |   7   8   9  10  11  12
 }
 `;
 
-exports[`search command messages > returns the complete Tetrathunder Wall EX message (ice blocks) 1`] = `
+exports[`search command messages > returns the complete Tetrathunder Wall EX message (obstacles) 1`] = `
 {
   "embeds": [
     {
@@ -941,7 +1016,7 @@ exports[`search command messages > returns the complete Tetrathunder Wall EX mes
           "inline": true,
           "name": "Effects",
           "value": "1. Grants "deals 40 Blue damage every 6 seconds (2 times)" to targets.
-1. Summons ice blocks with 60 HP.",
+1. Summons obstacles with 60 HP.",
         },
         {
           "name": "Values",

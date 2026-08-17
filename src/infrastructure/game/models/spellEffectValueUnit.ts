@@ -1,6 +1,6 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
-import { ESpellEffectValueUnitKind } from "../../../domain/game/models/spellEffectValue.types.ts";
 import type { ISpellEffectValueUnit } from "../../../domain/game/models/spellEffectValue.types.ts";
+import { ESpellEffectValueUnitKind } from "../../../domain/game/models/spellEffectValue.types.ts";
 
 export const SpellEffectValueUnitSchema = defineEntity({
     name: "SpellEffectValueUnit",
@@ -8,8 +8,7 @@ export const SpellEffectValueUnitSchema = defineEntity({
     abstract: true,
     discriminatorColumn: "kind",
     properties: {
-        // TODO: do the same for other abstract classes kinds?
-        kind: p.enum([ESpellEffectValueUnitKind.FIXED, ESpellEffectValueUnitKind.PERCENT]),
+        kind: p.enum(() => ESpellEffectValueUnitKind),
     },
 });
 export abstract class SpellEffectValueUnit extends SpellEffectValueUnitSchema.class implements ISpellEffectValueUnit {}

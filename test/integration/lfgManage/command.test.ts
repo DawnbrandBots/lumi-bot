@@ -7,15 +7,19 @@ import {
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
 import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
+import type { TLfgFeature as LfgFeature } from "../../../src/application/lfg/types.ts";
 import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../src/application/lfg/types.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
-import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
-import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
-import { LFG_CODE_OPTION_NAME, LFG_NEW_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../../../src/lfg/constants.ts";
-import type { LfgFeature } from "../../../src/lfg/feature.ts";
-import type { lfgManageCommandCommandRegistrationData } from "../../../src/lfgManage/command/commandRegistrationData.ts";
-import { getLfgManageCommand } from "../../../src/lfgManage/command/handlers.ts";
-import { LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME } from "../../../src/lfgManage/constants.ts";
+import type { lfgManageCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfgManage.ts";
+import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
+import {
+    LFG_CODE_OPTION_NAME,
+    LFG_NEW_CODE_OPTION_NAME,
+    LFG_PLAYER_OPTION_NAME,
+} from "../../../src/presentation/discord/commands/lfg/constants.ts";
+import { getLfgManageCommand } from "../../../src/presentation/discord/commands/lfgManage.ts";
+import { LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME } from "../../../src/presentation/discord/commands/lfgManage/constants.ts";
+import type { TCommandRunHandlers } from "../../../src/presentation/discord/commands/types.ts";
 
 const GUILD_ID = "guild-1";
 const ADMIN_ID = "admin";
@@ -96,10 +100,10 @@ function getCommand({
 }
 
 async function runCommand(
-    command: TCommandHandlers<typeof lfgManageCommandCommandRegistrationData>,
+    command: TCommandRunHandlers<typeof lfgManageCommandCommandRegistrationData>,
     interaction: ChatInputCommandInteraction,
 ) {
-    const run = getCommandRunHandler(command, interaction);
+    const run = getCommandRunHandler({ run: command }, interaction);
     if (!run) {
         throw new Error("No run handler found for test interaction.");
     }

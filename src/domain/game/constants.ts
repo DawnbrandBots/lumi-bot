@@ -15,7 +15,7 @@ export const WEAPON_VARIANTS_BONUSES = {
     [EWeaponVariant.HP]: { hp: 10, atk: 0 },
     [EWeaponVariant.NEUTRAL]: { hp: 5, atk: 10 },
     [EWeaponVariant.ATK]: { hp: 0, atk: 20 },
-} as const satisfies { [K in keyof typeof EWeaponVariant]: { hp: number; atk: number } };
+} as const satisfies Record<keyof typeof EWeaponVariant, { readonly hp: number; readonly atk: number }>;
 
 /**
  * Strings which can be appended to stems (eg. cross, tetra) without being separated by spaces.

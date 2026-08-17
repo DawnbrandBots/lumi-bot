@@ -1,5 +1,7 @@
 import { describe, expect, test } from "vitest";
-import mapDiscipleToMessage, { getDiscipleBaseStatsTable } from "../../../../src/search/mappers/disciple.ts";
+import mapDiscipleToMessage, {
+    getDiscipleBaseStatsTable,
+} from "../../../../src/presentation/discord/mappers/search/disciple.ts";
 import { DISCIPLE } from "./disciple.fixtures.ts";
 
 describe(getDiscipleBaseStatsTable.name, () => {

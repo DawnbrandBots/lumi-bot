@@ -1,10 +1,11 @@
 import type { IColor } from "./color.types.ts";
+import type { EDirection } from "./direction.types.ts";
 import type { IMovementType } from "./movement.types.ts";
-import type { IDirection } from "./direction.types.ts";
-import type { IStat } from "./stat.types.ts";
-import type { IStatChange } from "./statChange.types.ts";
+import type { ISpellShape } from "./spell.types.ts";
+import type { ESpellEffectScalingStrategy, ISpellEffectValue } from "./spellEffectValue.types.ts";
+import type { EStat } from "./stat.types.ts";
+import type { EStatChange } from "./statChange.types.ts";
 import type { IWeaponType } from "./weaponType.types.ts";
-import type { ISpellEffectValue } from "./spellEffectValue.types.ts";
 
 export const ESpellEffectTarget = {
     /**
@@ -35,7 +36,7 @@ export interface ISpellEffectTarget {
 // TODO: scale property added in later PR
 export interface ISummonEffectStatValue {
     readonly base: number;
-    readonly scalesWithLevel: boolean;
+    readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;
 }
 
 export const ESpellEffectKind = {
@@ -46,9 +47,24 @@ export const ESpellEffectKind = {
     STATUS: "STATUS",
     REPEAT: "REPEAT",
     WARP: "WARP",
-    ICE_BLOCK: "ICE_BLOCK",
+    OBSTACLE: "OBSTACLE",
     TILE: "TILE",
     SUMMON: "SUMMON",
+} as const;
+
+/**
+ * Purely visual characteristic in battle and spell icons as of 1.10, not even mentioned in spell descriptions.
+ * Will this be relevant in later updates?
+ */
+export const EObstacleType = {
+    ICE: "ICE",
+    ROCK: "ROCK",
+} as const;
+
+export const ESpellEffectTileType = {
+    GROUND: "GROUND",
+    WATER: "WATER",
+    WALL: "WALL",
 } as const;
 
 export type TSpellEffectKindToEffectMap = {
@@ -59,7 +75,7 @@ export type TSpellEffectKindToEffectMap = {
     STATUS: IStatusEffect;
     REPEAT: IRepeatEffect;
     WARP: IWarpEffect;
-    ICE_BLOCK: IIceBlockEffect;
+    OBSTACLE: IObstacleEffect;
     TILE: ITileEffect;
     SUMMON: ISummonEffect;
 };
@@ -69,7 +85,12 @@ export type TSpellEffectKindToEffectMap = {
  */
 export interface ISpellEffect {
     readonly kind: (typeof ESpellEffectKind)[keyof typeof ESpellEffectKind];
-    readonly target?: ISpellEffectTarget | null;
+    readonly target?: keyof typeof ESpellEffectTarget | null;
+    /**
+     * Most spells' effects share the same shape, which is why "shape" is a property of the spell and not spell effect.
+     * There are few exceptions: Crosswind Lock EX was the first spell introduced in an update to break the rule.
+     */
+    readonly shapeOverride?: ISpellShape | null;
 }
 
 /**
@@ -94,9 +115,9 @@ export interface IHealEffect extends ISpellEffect {
  */
 export interface IMovementEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.MOVEMENT;
-    readonly direction: IDirection;
+    readonly direction: keyof typeof EDirection;
     readonly count: number;
-    readonly target: ISpellEffectTarget;
+    readonly target: keyof typeof ESpellEffectTarget;
 }
 
 /**
@@ -104,10 +125,10 @@ export interface IMovementEffect extends ISpellEffect {
  */
 export interface IStatEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.STAT;
-    readonly statChange: IStatChange;
+    readonly statChange: keyof typeof EStatChange;
     readonly amount: ISpellEffectValue;
     readonly duration: number | null | undefined;
-    readonly stat: IStat;
+    readonly stat: keyof typeof EStat;
 }
 
 /**
@@ -116,7 +137,7 @@ export interface IStatEffect extends ISpellEffect {
 export interface IStatusEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.STATUS;
     readonly effect: IStatEffect | IRepeatEffect;
-    readonly target: ISpellEffectTarget;
+    readonly target: keyof typeof ESpellEffectTarget;
 }
 
 /**
@@ -137,10 +158,12 @@ export interface IWarpEffect extends ISpellEffect {
 }
 
 /**
- * Effect that summons Ice Blocks on tiles.
+ * Effect that summons obstacles on tiles.
  */
-export interface IIceBlockEffect extends ISpellEffect {
-    readonly kind: typeof ESpellEffectKind.ICE_BLOCK;
+export interface IObstacleEffect extends ISpellEffect {
+    readonly kind: typeof ESpellEffectKind.OBSTACLE;
+    readonly obstacleType: keyof typeof EObstacleType;
+    readonly onlyOn?: keyof typeof ESpellEffectTileType | null;
     readonly hp: ISummonEffectStatValue;
 }
 
@@ -172,7 +195,7 @@ export type TRootSpellEffect =
     | IMovementEffect
     | IStatusEffect
     | IWarpEffect
-    | IIceBlockEffect
+    | IObstacleEffect
     | ITileEffect
     | ISummonEffect;
 

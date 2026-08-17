@@ -1,10 +1,11 @@
-import { MikroORM } from "@mikro-orm/sqlite";
+import { EntityManager, MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { ADMIN_LFG_ROLE_LIMIT } from "../../../src/admin/constants.ts";
-import { AdminFeature } from "../../../src/admin/feature.ts";
-import { GuildConfig } from "../../../src/admin/models/config.ts";
-import { GuildConfigLfgRole } from "../../../src/admin/models/configLfgRole.ts";
+import { ADMIN_LFG_ROLE_LIMIT } from "../../../src/application/admin/constants.ts";
+import { getAdminFeature } from "../../../src/application/admin/feature.ts";
 import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
+import { GuildConfig } from "../../../src/infrastructure/admin/models/config.ts";
+import { GuildConfigLfgRole } from "../../../src/infrastructure/admin/models/configLfgRole.ts";
+import { getAdminPersistence } from "../../../src/infrastructure/admin/persistence.ts";
 import { migrationMikroOrmConfig } from "../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../utils/getSameConfigInMemory.ts";
 
@@ -14,6 +15,86 @@ const ROLE_ID = "role-1";
 
 let orm: MikroORM;
 let feature: AdminFeature;
+
+class AdminFeature {
+    private readonly feature;
+
+    public constructor({ em }: { readonly em: EntityManager }) {
+        this.feature = getAdminFeature(getAdminPersistence({ em }));
+    }
+
+    public getGuildConfig(guild: string) {
+        return this.feature.getGuildConfig(guild);
+    }
+
+    public getLfgRoleConfig(guild: string, role: string) {
+        return this.feature.getLfgRoleConfig(guild, role);
+    }
+
+    public setLfgRoleLastPingedAt(guild: string, role: string, date: Date) {
+        return this.feature.setLfgRoleLastPingedAt(guild, role, date);
+    }
+
+    public async lfgChannel(guild: string, action: "set" | "clear" | null, channel: string | null) {
+        if (action === null && channel === null) {
+            const configResult = await this.feature.getGuildConfig(guild);
+            return {
+                kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
+                value: { channel: configResult.value?.lfgChannel },
+            };
+        }
+        if (action === "set" && channel) {
+            return this.feature.setLfgChannel(guild, channel);
+        }
+        if (action === "clear" && channel === null) {
+            return this.feature.clearLfgChannel(guild);
+        }
+        if (action === "set" && channel === null) {
+            return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL };
+        }
+        return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS };
+    }
+
+    public async lfgRolePingCooldown(guild: string, action: "set" | "clear" | null, minutes: number | null) {
+        if (action === null && minutes === null) {
+            const configResult = await this.feature.getGuildConfig(guild);
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+                value: { minutes: configResult.value?.lfgRolePingCooldownMinutes },
+            };
+        }
+        if (action === "set" && minutes !== null) {
+            return this.feature.setLfgRolePingCooldown(guild, minutes);
+        }
+        if (action === "clear" && minutes === null) {
+            return this.feature.clearLfgRolePingCooldown(guild);
+        }
+        if (action === "set" && minutes === null) {
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES };
+        }
+        return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS };
+    }
+
+    public async lfgRole(guild: string, action: "add" | "remove" | null, role: string | null) {
+        if (action === null && role === null) {
+            const configResult = await this.feature.getGuildConfig(guild);
+            return {
+                kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
+                value: { roles: configResult.value?.lfgRoles.map((lfgRole) => lfgRole.role) ?? [] },
+            };
+        }
+        if (action === "add" && role) {
+            return this.feature.addLfgRole(guild, role);
+        }
+        if (action === "remove" && role) {
+            return this.feature.removeLfgRole(guild, role);
+        }
+        if ((action === "add" || action === "remove") && role === null) {
+            return { kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE };
+        }
+        return { kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS };
+    }
+}
 
 function getStoredConfig(): Promise<GuildConfig | null> {
     return orm.em.fork().findOne(GuildConfig, { guild: GUILD_ID });
@@ -56,7 +137,7 @@ describe(AdminFeature.name, { concurrent: false }, () => {
 
         expect(result.kind).toBe(EAdminFeatureReturnKind.LFG_GET_CONFIG);
         expect(result.value?.lfgChannel).toBe(CHANNEL_ID);
-        expect(result.value?.lfgRoles.toArray().map((lfgRole) => lfgRole.role)).toEqual([ROLE_ID]);
+        expect(result.value?.lfgRoles.map((lfgRole) => lfgRole.role)).toEqual([ROLE_ID]);
         expect(roleConfig).toMatchObject({
             kind: EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG,
             value: { role: ROLE_ID, lastPingedAt: "2026-06-16T10:00:00.000Z" },

@@ -1,13 +1,13 @@
 import type { ChatInputCommandInteraction, InteractionResponse } from "discord.js";
 import { channelMention, ChannelType, MessageFlags, roleMention, userMention } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { AdminFeature } from "../../../src/admin/feature.ts";
+import type { TAdminFeature as AdminFeature } from "../../../src/application/admin/types.ts";
 import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
+import type { TLfgFeature as LfgFeature } from "../../../src/application/lfg/types.ts";
 import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../src/application/lfg/types.ts";
-import { getCommandRunHandler } from "../../../src/bot/commands/handlers.ts";
-import type { TCommandHandlers } from "../../../src/bot/commands/types.ts";
-import type { lfgCommandCommandRegistrationData } from "../../../src/lfg/command/commandRegistrationData.ts";
-import { getLfgCommand } from "../../../src/lfg/command/handlers.ts";
+import type { lfgCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfg.ts";
+import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
+import { getLfgCommand } from "../../../src/presentation/discord/commands/lfg.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -18,8 +18,8 @@ import {
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
     LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
-} from "../../../src/lfg/constants.ts";
-import type { LfgFeature } from "../../../src/lfg/feature.ts";
+} from "../../../src/presentation/discord/commands/lfg/constants.ts";
+import type { TCommandRunHandlers } from "../../../src/presentation/discord/commands/types.ts";
 
 const GUILD_ID = "guild-1";
 const USER_ID = "user-1";
@@ -116,7 +116,7 @@ function getCommand({
     readonly lfgRoleLastPingedAt?: Date | null;
     readonly lfgRolePingCooldownMinutes?: number;
     readonly setLfgRoleLastPingedAt?: SetLfgRoleLastPingedAtMock;
-}): TCommandHandlers<typeof lfgCommandCommandRegistrationData> {
+}): TCommandRunHandlers<typeof lfgCommandCommandRegistrationData> {
     return getLfgCommand({
         lfgFeature: lfgFeature as unknown as LfgFeature,
         adminFeature: {
@@ -134,10 +134,10 @@ function getCommand({
 }
 
 async function runCommand(
-    command: TCommandHandlers<typeof lfgCommandCommandRegistrationData>,
+    command: TCommandRunHandlers<typeof lfgCommandCommandRegistrationData>,
     interaction: ChatInputCommandInteraction,
 ) {
-    const run = getCommandRunHandler(command, interaction);
+    const run = getCommandRunHandler({ run: command }, interaction);
     if (!run) {
         throw new Error("No run handler found for test interaction.");
     }

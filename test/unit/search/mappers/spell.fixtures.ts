@@ -1,34 +1,17 @@
 // Disclaimer: AI-generated test fixtures
 
+import type { ISpell } from "../../../../src/domain/game/models/spell.types.ts";
 import { ESpellDraggingMode, ESpellRole } from "../../../../src/domain/game/models/spell.types.ts";
 import { ESpellEffectKind, ESpellEffectTarget } from "../../../../src/domain/game/models/spellEffect.types.ts";
 import { ESpellEffectValueUnitKind } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
-import type { ISpell, ISpellDraggingMode, ISpellRole, ISpellShape } from "../../../../src/domain/game/models/spell.types.ts";
 import { RED_COLOR } from "./common.fixtures.ts";
-
-export const SPELL_ROLE = {
-    kind: ESpellRole.EX,
-    name: "EX",
-} satisfies ISpellRole;
-
-export const SPELL_SHAPE = {
-    id: "SINGLE_TILE",
-    name: "single space",
-    tiles: "............X............",
-    isAoe: false,
-} satisfies ISpellShape;
-
-export const SPELL_DRAGGING_MODE = {
-    kind: ESpellDraggingMode.ANY,
-    asString: "target tile",
-} satisfies ISpellDraggingMode;
 
 export const SPELL = {
     kind: "spell",
     id: "ELFIRE",
     name: "Elfire",
     disciple: null,
-    role: SPELL_ROLE,
+    role: ESpellRole.EX,
     uses: null,
     countdown: null,
     cooldown: 5,
@@ -37,19 +20,20 @@ export const SPELL = {
             kind: ESpellEffectKind.DAMAGE,
             amount: {
                 base: 60,
-                scalesWithLevel: true,
                 unit: {
                     kind: ESpellEffectValueUnitKind.FIXED,
                 },
             },
             color: RED_COLOR,
-            target: {
-                kind: ESpellEffectTarget.ANY,
-                asString: "targets",
-            },
+            target: ESpellEffectTarget.ANY,
         },
     ],
-    shape: SPELL_SHAPE,
+    shape: {
+        id: "SINGLE_TILE",
+        name: "single space",
+        tiles: "............X............",
+        isAoe: false,
+    },
     onlyFor: null,
-    draggingMode: SPELL_DRAGGING_MODE,
+    draggingMode: ESpellDraggingMode.ANY,
 } satisfies ISpell;

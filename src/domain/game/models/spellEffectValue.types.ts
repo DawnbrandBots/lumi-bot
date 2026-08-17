@@ -1,4 +1,4 @@
-import type { IStat } from "./stat.types.ts";
+import type { EStat } from "./stat.types.ts";
 
 export const ESpellEffectValueUnitKind = {
     /**
@@ -11,6 +11,14 @@ export const ESpellEffectValueUnitKind = {
     PERCENT: "PERCENT",
 } as const;
 
+export const ESpellEffectScalingStrategy = {
+    NONE: "NONE",
+    ADDITIVE_BASE_PERCENT_5: "ADDITIVE_BASE_PERCENT_5",
+    ADDITIVE_BASE_PERCENT_10: "ADDITIVE_BASE_PERCENT_10",
+    DARK_SLASH: "DARK_SLASH",
+    MINION_ATK: "MINION_ATK",
+} as const;
+
 export interface ISpellEffectValueUnit {
     readonly kind: keyof typeof ESpellEffectValueUnitKind;
 }
@@ -21,7 +29,7 @@ export interface ISpellEffectValueFixedUnit extends ISpellEffectValueUnit {
 
 export interface ISpellEffectValuePercentUnit extends ISpellEffectValueUnit {
     readonly kind: typeof ESpellEffectValueUnitKind.PERCENT;
-    readonly stat: IStat;
+    readonly stat: keyof typeof EStat;
 }
 
 export type TSpellEffectValueUnit = ISpellEffectValueFixedUnit | ISpellEffectValuePercentUnit;
@@ -34,6 +42,7 @@ export type TSpellEffectValueUnit = ISpellEffectValueFixedUnit | ISpellEffectVal
 export interface ISpellEffectValueEffectivenessItem {
     readonly kind: string;
     readonly base: number;
+    readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;
 }
 
 /**
@@ -46,7 +55,7 @@ export interface ISpellEffectValue {
      * Value of spell effect for the spell's level 1.
      */
     readonly base: number;
-    readonly scalesWithLevel: boolean;
+    readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;
     readonly unit: ISpellEffectValueUnit;
     readonly effectiveness?: ISpellEffectValueEffectivenessItem[] | null;
 }

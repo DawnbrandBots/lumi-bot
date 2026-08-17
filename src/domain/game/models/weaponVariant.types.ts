@@ -6,7 +6,7 @@ export const EWeaponVariant = {
 
 /** Stat modifier possessed by every weapon (except at level 1) that cannot be changed. */
 export interface IWeaponVariant {
-    readonly kind: "HP" | "NEUTRAL" | "ATK";
+    readonly kind: keyof typeof EWeaponVariant;
     readonly hp: number;
     readonly atk: number;
 }

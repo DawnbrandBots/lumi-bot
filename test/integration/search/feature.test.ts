@@ -1,9 +1,10 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import searchFeature from "../../../src/application/search/resolveSearchInput.ts";
+import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
+import { resolveSearchInput } from "../../../src/application/search/resolveSearchInput.ts";
 import { ESearchFeatureReturnKind } from "../../../src/application/search/types.ts";
-import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/bot/constants.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
+import { searchItemInDb } from "../../../src/infrastructure/game/persistence/searchItemInDb.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import SEARCH_CONFIGS from "../../../src/loaders/searchConfigs.ts";
@@ -25,14 +26,15 @@ afterAll(async () => {
     await orm.close();
 });
 
-describe(searchFeature.name, () => {
+describe(resolveSearchInput.name, () => {
     test("no result", async () => {
-        const result = await searchFeature({
-            input: NO_SEARCH_RESULT_INPUT,
-            searchEngine,
-            configs: SEARCH_CONFIGS,
-            em,
-        });
+        const result = await resolveSearchInput(
+            {
+                getBestSearchIndexEntry: searchEngine.searchOne.bind(searchEngine),
+                getEntityByKindAndId: (arg) => searchItemInDb({ configs: SEARCH_CONFIGS, em }, arg),
+            },
+            NO_SEARCH_RESULT_INPUT,
+        );
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.NO_RESULT,
@@ -55,12 +57,14 @@ describe(searchFeature.name, () => {
             findOne,
         } as unknown as EntityManager;
 
-        const result = await searchFeature({
-            input: "Missing Weapon",
-            searchEngine: mockedSearchEngine,
-            configs: SEARCH_CONFIGS,
-            em: mockedEntityManager,
-        });
+        const result = await resolveSearchInput(
+            {
+                getBestSearchIndexEntry: mockedSearchEngine.searchOne,
+                getEntityByKindAndId: (arg) =>
+                    searchItemInDb({ configs: SEARCH_CONFIGS, em: mockedEntityManager }, arg),
+            },
+            "Missing Weapon",
+        );
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.FOUND_BY_ENGINE_BUT_NOT_BY_DB,
@@ -77,12 +81,13 @@ describe(searchFeature.name, () => {
     });
 
     test("input too long", async () => {
-        const result = await searchFeature({
-            input: "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
-            searchEngine,
-            configs: SEARCH_CONFIGS,
-            em,
-        });
+        const result = await resolveSearchInput(
+            {
+                getBestSearchIndexEntry: searchEngine.searchOne.bind(searchEngine),
+                getEntityByKindAndId: (arg) => searchItemInDb({ configs: SEARCH_CONFIGS, em }, arg),
+            },
+            "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
+        );
 
         expect(result).toEqual({
             kind: ESearchFeatureReturnKind.INPUT_TOO_LONG,
@@ -94,12 +99,13 @@ describe(searchFeature.name, () => {
         const searchItem = searchEngine.searchOne(input);
         expect(searchItem).toBeDefined();
 
-        const result = await searchFeature({
+        const result = await resolveSearchInput(
+            {
+                getBestSearchIndexEntry: searchEngine.searchOne.bind(searchEngine),
+                getEntityByKindAndId: (arg) => searchItemInDb({ configs: SEARCH_CONFIGS, em }, arg),
+            },
             input,
-            searchEngine,
-            configs: SEARCH_CONFIGS,
-            em,
-        });
+        );
 
         expect(result).toMatchObject({
             kind: ESearchFeatureReturnKind.SUCCESS,

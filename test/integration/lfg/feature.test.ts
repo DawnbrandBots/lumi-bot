@@ -1,11 +1,13 @@
+import type { EntityManager } from "@mikro-orm/sqlite";
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import { getLfgFeature } from "../../../src/application/lfg/feature.ts";
 import { ELfgFeatureReturnKind } from "../../../src/application/lfg/types.ts";
 import { FRIEND_BATTLE_CODE_MAXIMUM_LENGTH } from "../../../src/domain/game/constants.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
 import type { IUser } from "../../../src/domain/lfg/models/user.types.ts";
-import { LfgFeature } from "../../../src/lfg/feature.ts";
-import { LfgRoom } from "../../../src/lfg/models/room.ts";
+import { LfgRoom } from "../../../src/infrastructure/lfg/models/room.ts";
+import { getWithLfgUnitOfWork } from "../../../src/loaders/lfgUnitOfWork.ts";
 import { migrationMikroOrmConfig } from "../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../utils/getSameConfigInMemory.ts";
 
@@ -25,6 +27,62 @@ type TestRoom = {
 
 let orm: MikroORM;
 let feature: LfgFeature;
+
+class LfgFeature {
+    private readonly feature;
+
+    public constructor({ em }: { readonly em: EntityManager }) {
+        this.feature = getLfgFeature(getWithLfgUnitOfWork(em));
+    }
+
+    public status(guildId: string) {
+        return this.feature.status({ guildId });
+    }
+
+    public create(guildId: string, owner: IUser, code: string) {
+        return this.feature.create({ guildId, owner, code });
+    }
+
+    public changeOwnedRoomCode(guildId: string, owner: IUser, newCode: string) {
+        return this.feature.changeOwnedRoomCode({ guildId, owner, newCode });
+    }
+
+    public changeRoomCode(guildId: string, code: string, newCode: string) {
+        return this.feature.changeRoomCode({ guildId, code, newCode });
+    }
+
+    public move(guildId: string, user: IUser, code: string) {
+        return this.feature.move({ guildId, user, code });
+    }
+
+    public transferOwnedRoom(guildId: string, owner: IUser, target: IUser) {
+        return this.feature.transferOwnedRoom({ guildId, owner, target });
+    }
+
+    public transfer(guildId: string, code: string, target: IUser) {
+        return this.feature.transfer({ guildId, code, target });
+    }
+
+    public kickFromOwnedRoom(guildId: string, owner: IUser, target: IUser) {
+        return this.feature.kickFromOwnedRoom({ guildId, owner, target });
+    }
+
+    public kick(guildId: string, code: string, target: IUser) {
+        return this.feature.kick({ guildId, code, target });
+    }
+
+    public leave(guildId: string, user: IUser) {
+        return this.feature.leave({ guildId, user });
+    }
+
+    public disbandOwnedRoom(guildId: string, owner: IUser) {
+        return this.feature.disbandOwnedRoom({ guildId, owner });
+    }
+
+    public disband(guildId: string, code: string) {
+        return this.feature.disband({ guildId, code });
+    }
+}
 
 function timestamp(value: Date | string): number {
     return value instanceof Date ? value.getTime() : new Date(value).getTime();

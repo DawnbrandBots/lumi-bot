@@ -7,9 +7,9 @@ import { Color } from "./infrastructure/game/models/color.ts";
 import { DamageEffect } from "./infrastructure/game/models/damageEffect.ts";
 import { Disciple } from "./infrastructure/game/models/disciple.ts";
 import { HealEffect } from "./infrastructure/game/models/healEffect.ts";
-import { IceBlockEffect } from "./infrastructure/game/models/iceBlockEffect.ts";
 import { MovementEffect } from "./infrastructure/game/models/movementEffect.ts";
 import { MovementType } from "./infrastructure/game/models/movementType.ts";
+import { ObstacleEffect } from "./infrastructure/game/models/obstacleEffect.ts";
 import { RepeatEffect } from "./infrastructure/game/models/repeatEffect.ts";
 import { Spell } from "./infrastructure/game/models/spell.ts";
 import { SpellEffect } from "./infrastructure/game/models/spellEffect.ts";
@@ -68,7 +68,7 @@ export const GAME_DATA_ENTITIES = [
     RepeatEffect,
     WarpEffect,
     TileEffect,
-    IceBlockEffect,
+    ObstacleEffect,
     SummonEffect,
     Disciple,
     MovementType,

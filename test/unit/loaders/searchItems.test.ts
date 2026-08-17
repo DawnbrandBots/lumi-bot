@@ -124,7 +124,7 @@ describe(aliasSpell.name, () => {
             {
                 name: "Ennea Fire EX",
                 disciple: null,
-                role: { kind: ESpellRole.LIGHT },
+                role: ESpellRole.LIGHT,
             },
             ["Ennea Fire EX", "EFEX"],
         ],
@@ -133,7 +133,7 @@ describe(aliasSpell.name, () => {
             {
                 name: "Dark Crossfire + Tome",
                 disciple: null,
-                role: { kind: ESpellRole.SHADOW },
+                role: ESpellRole.SHADOW,
             },
             ["Dark Crossfire + Tome", "Dark Crossfire Plus Tome", "DCF+T", "DCFPT"],
         ],
@@ -142,7 +142,7 @@ describe(aliasSpell.name, () => {
             {
                 name: "Crosswind Grav EX",
                 disciple: { name: "Claude" },
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
             },
             ["Crosswind Grav EX", "CWGEX", "Claude EX"],
         ],
@@ -151,7 +151,7 @@ describe(aliasSpell.name, () => {
             {
                 name: "Crosswind Grav",
                 disciple: { name: "Claude" },
-                role: { kind: ESpellRole.LIGHT },
+                role: ESpellRole.LIGHT,
             },
             ["Crosswind Grav", "CWG"],
         ],

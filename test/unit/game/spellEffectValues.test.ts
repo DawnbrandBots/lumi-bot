@@ -1,24 +1,27 @@
 import { describe, expect, test } from "vitest";
+import { ESpellRole } from "../../../src/domain/game/models/spell.types.ts";
+import { ESpellEffectKind } from "../../../src/domain/game/models/spellEffect.types.ts";
+import {
+    ESpellEffectScalingStrategy,
+    ESpellEffectValueUnitKind,
+} from "../../../src/domain/game/models/spellEffectValue.types.ts";
 import {
     spellEffectsValues,
     type ISpellEffectValueWithToLevel,
 } from "../../../src/presentation/discord/mappers/search/spellEffectValues.ts";
-import { ESpellEffectKind } from "../../../src/domain/game/models/spellEffect.types.ts";
-import { ESpellEffectValueUnitKind } from "../../../src/domain/game/models/spellEffectValue.types.ts";
-import { ESpellRole } from "../../../src/domain/game/models/spell.types.ts";
 
-function fixedValue(base: number, scalesWithLevel = true) {
+function fixedValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
     return {
         base,
-        scalesWithLevel,
+        scalingStrategyOverride,
         unit: { kind: ESpellEffectValueUnitKind.FIXED },
     };
 }
 
-function percentValue(base: number, scalesWithLevel = true) {
+function percentValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
     return {
         base,
-        scalesWithLevel,
+        scalingStrategyOverride,
         unit: { kind: ESpellEffectValueUnitKind.PERCENT },
     };
 }
@@ -28,8 +31,6 @@ function serializeValues(values: ISpellEffectValueWithToLevel[][]) {
         group.map((value) => ({
             className: value.constructor.name,
             base: value.base,
-            scalesWithLevel: value.scalesWithLevel,
-            unit: value.unit,
         })),
     );
 }
@@ -39,7 +40,7 @@ describe(spellEffectsValues.name, () => {
         [
             "damage and heal values",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.DAMAGE,
@@ -55,7 +56,7 @@ describe(spellEffectsValues.name, () => {
         [
             "stat value and nested effectiveness values",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.STAT,
@@ -77,7 +78,7 @@ describe(spellEffectsValues.name, () => {
         [
             "damage with effectiveness values",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.DAMAGE,
@@ -92,12 +93,16 @@ describe(spellEffectsValues.name, () => {
         [
             "summon values",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.SUMMON,
-                        hp: { base: 70, scalesWithLevel: true },
-                        atk: { base: 45, scalesWithLevel: true },
+                        hp: {
+                            base: 70,
+                        },
+                        atk: {
+                            base: 45,
+                        },
                     },
                 ],
             },
@@ -105,7 +110,7 @@ describe(spellEffectsValues.name, () => {
         [
             "heal value followed by valueless movement",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.HEAL,
@@ -120,7 +125,7 @@ describe(spellEffectsValues.name, () => {
         [
             "only valueless movement",
             {
-                role: { kind: ESpellRole.EX },
+                role: ESpellRole.EX,
                 effects: [
                     {
                         kind: ESpellEffectKind.MOVEMENT,
@@ -131,11 +136,23 @@ describe(spellEffectsValues.name, () => {
         [
             "shadow percent damage",
             {
-                role: { kind: ESpellRole.SHADOW },
+                role: ESpellRole.SHADOW,
                 effects: [
                     {
                         kind: ESpellEffectKind.DAMAGE,
-                        amount: percentValue(35),
+                        amount: percentValue(35, ESpellEffectScalingStrategy.DARK_SLASH),
+                    },
+                ],
+            },
+        ],
+        [
+            "non-scaling value",
+            {
+                role: ESpellRole.EX,
+                effects: [
+                    {
+                        kind: ESpellEffectKind.DAMAGE,
+                        amount: fixedValue(50, ESpellEffectScalingStrategy.NONE),
                     },
                 ],
             },
