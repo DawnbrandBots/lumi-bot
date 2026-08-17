@@ -42,7 +42,7 @@ export type TLfgUseCases = {
     readonly transferOwnedLfgRoom: TTransferOwnedLfgRoomUseCase;
 };
 
-export function getLfgUseCases(em: EntityManager): TLfgUseCases {
+export function composeLfgUseCases(em: EntityManager): TLfgUseCases {
     const withLfgUnitOfWork = getWithLfgUnitOfWork(em);
 
     return {

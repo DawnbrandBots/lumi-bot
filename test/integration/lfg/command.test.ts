@@ -48,7 +48,7 @@ function getSetLfgRoleLastPingedAtMock() {
     return vi.fn<AdminFeature["setLfgRoleLastPingedAt"]>();
 }
 
-function getLfgUseCases(result: TLfgFeatureReturn) {
+function getLfgUseCaseMocks(result: TLfgFeatureReturn) {
     return {
         changeOwnedLfgRoomCode: vi.fn().mockResolvedValue(result),
         createLfgRoom: vi.fn().mockResolvedValue(result),
@@ -61,7 +61,7 @@ function getLfgUseCases(result: TLfgFeatureReturn) {
     };
 }
 
-type LfgUseCasesMock = ReturnType<typeof getLfgUseCases>;
+type LfgUseCasesMock = ReturnType<typeof getLfgUseCaseMocks>;
 
 function getInteractionFixture({
     channelId,
@@ -108,7 +108,7 @@ function getInteractionFixture({
 function getCommand({
     result,
     channel,
-    lfgUseCases = getLfgUseCases(result),
+    lfgUseCases = getLfgUseCaseMocks(result),
     lfgRole = null,
     lfgRoleLastPingedAt = null,
     lfgRolePingCooldownMinutes = undefined,
@@ -192,7 +192,7 @@ describe(getLfgCommand.name, () => {
                 newCode: ROOM_CODE,
             },
         } satisfies TLfgFeatureReturn;
-        const lfgUseCases = getLfgUseCases(result);
+        const lfgUseCases = getLfgUseCaseMocks(result);
         const command = getCommand({ result, channel: null, lfgUseCases });
         const { interaction } = getInteractionFixture({
             channelId: OTHER_CHANNEL_ID,
