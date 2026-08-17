@@ -1,13 +1,13 @@
-import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "./types.ts";
+import { EAdminResultKind, type TAdminResultTypes } from "./types.ts";
 import type { TAdminPersistence } from "./types.ts";
 
 export async function getGuildConfig(
     persistence: TAdminPersistence,
     guild: string,
-): Promise<TAdminFeatureReturnTypes["getGuildConfig"]> {
+): Promise<TAdminResultTypes["getGuildConfig"]> {
     const config = await persistence.getGuildConfig({ guildId: guild });
     return {
-        kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+        kind: EAdminResultKind.LFG_GET_CONFIG,
         value: config,
     };
 }

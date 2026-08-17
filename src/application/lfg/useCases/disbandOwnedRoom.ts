@@ -1,4 +1,4 @@
-import { ELfgFeatureReturnKind } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 import type { TGetOwnedLfgRoom, TDisbandOwnedLfgRoomArg, TRemoveLfgRoom } from "../types.ts";
 
 export async function disbandOwnedRoom(
@@ -14,7 +14,7 @@ export async function disbandOwnedRoom(
     }
     await deps.removeRoom({ roomId: result.value.room.id });
     return {
-        kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
+        kind: ELfgResultKind.ROOM_DISBANDED,
         value: { userId: result.value.room.ownerId, code: result.value.room.code },
     } as const;
 }

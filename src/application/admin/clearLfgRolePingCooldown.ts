@@ -1,10 +1,10 @@
-import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "./types.ts";
+import { EAdminResultKind, type TAdminResultTypes } from "./types.ts";
 import type { TAdminPersistence } from "./types.ts";
 
 export async function clearLfgRolePingCooldown(
     persistence: TAdminPersistence,
     guild: string,
-): Promise<TAdminFeatureReturnTypes["lfgRolePingCooldown"]> {
+): Promise<TAdminResultTypes["lfgRolePingCooldown"]> {
     await persistence.clearLfgRolePingCooldown({ guildId: guild });
-    return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED };
+    return { kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED };
 }

@@ -1,4 +1,4 @@
-import { ELfgFeatureReturnKind } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 import type { TGetOwnedLfgRoom, TKickFromLfgRoom, TKickFromOwnedLfgRoomArg } from "../types.ts";
 
 export async function kickFromOwnedRoom(
@@ -13,7 +13,7 @@ export async function kickFromOwnedRoom(
         return result.value;
     }
     if (owner.id === target.id) {
-        return { kind: ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF } as const;
+        return { kind: ELfgResultKind.CANNOT_KICK_YOURSELF } as const;
     }
     return deps.kickFromRoom({ guildId, room: result.value.room, target });
 }

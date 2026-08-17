@@ -1,6 +1,6 @@
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
+import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import type { adminCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/admin.ts";
 import { getAdminCommand } from "../../../src/presentation/discord/commands/admin.ts";
 import {
@@ -98,7 +98,7 @@ describe(getAdminCommand.name, () => {
 
     test("dispatches lfg channel", async () => {
         const setLfgChannel = vi.fn().mockResolvedValue({
-            kind: EAdminFeatureReturnKind.LFG_CHANNEL_SET,
+            kind: EAdminResultKind.LFG_CHANNEL_SET,
             value: { channel: CHANNEL_ID },
         });
         const command = getAdminCommand(getAdminCommandArgs({ setLfgChannel }));
@@ -125,7 +125,7 @@ describe(getAdminCommand.name, () => {
 
     test("dispatches lfg role", async () => {
         const addLfgRole = vi.fn().mockResolvedValue({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_ADDED,
+            kind: EAdminResultKind.LFG_ROLE_ADDED,
             value: { role: ROLE_ID },
         });
         const command = getAdminCommand(getAdminCommandArgs({ addLfgRole }));
@@ -153,7 +153,7 @@ describe(getAdminCommand.name, () => {
 
     test("dispatches lfg role ping cooldown", async () => {
         const setLfgRolePingCooldown = vi.fn().mockResolvedValue({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+            kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET,
             value: { minutes: 45 },
         });
         const command = getAdminCommand(getAdminCommandArgs({ setLfgRolePingCooldown }));
@@ -181,7 +181,7 @@ describe(getAdminCommand.name, () => {
 
     test("dispatches lfg show", async () => {
         const getGuildConfig = vi.fn().mockResolvedValue({
-            kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+            kind: EAdminResultKind.LFG_GET_CONFIG,
             value: null,
         });
         const command = getAdminCommand(getAdminCommandArgs({ getGuildConfig }));

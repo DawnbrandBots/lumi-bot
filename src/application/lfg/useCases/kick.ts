@@ -1,4 +1,4 @@
-import { ELfgFeatureReturnKind } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 import type { TFindLfgRoomByCode, TKickFromLfgRoom, TKickFromLfgRoomByCodeArg } from "../types.ts";
 
 export async function kick(
@@ -10,7 +10,7 @@ export async function kick(
 ) {
     const room = await deps.findRoomByCode({ guildId, code });
     if (!room) {
-        return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
+        return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
     return deps.kickFromRoom({ guildId, room, target });
 }

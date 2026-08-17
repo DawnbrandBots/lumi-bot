@@ -7,8 +7,8 @@ import {
     ADMIN_CHANNEL_OPTION_NAME,
 } from "../constants.ts";
 import { createErrorMessage } from "../../../message.ts";
-import { EAdminFeatureReturnKind } from "../../../../../application/admin/types.ts";
-import mapAdminFeatureReturnToMessage from "../../../mappers/admin.ts";
+import { EAdminResultKind } from "../../../../../application/admin/types.ts";
+import mapAdminResultToMessage from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
 
@@ -40,25 +40,25 @@ async function runLfgChannel(
 
     if (action === null && !channel) {
         const configResult = await getGuildConfig(guildId);
-        return mapAdminFeatureReturnToMessage({
-            kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
+        return mapAdminResultToMessage({
+            kind: EAdminResultKind.LFG_CHANNEL_HELP,
             value: { channel: configResult.value?.lfgChannel },
         });
     }
 
     if (action === ADMIN_ACTION_SET && channel) {
-        return mapAdminFeatureReturnToMessage(await setLfgChannel(guildId, channel.id));
+        return mapAdminResultToMessage(await setLfgChannel(guildId, channel.id));
     }
 
     if (action === ADMIN_ACTION_CLEAR && !channel) {
-        return mapAdminFeatureReturnToMessage(await clearLfgChannel(guildId));
+        return mapAdminResultToMessage(await clearLfgChannel(guildId));
     }
 
     if (action === ADMIN_ACTION_SET && !channel) {
-        return mapAdminFeatureReturnToMessage({ kind: EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL });
+        return mapAdminResultToMessage({ kind: EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL });
     }
 
-    return mapAdminFeatureReturnToMessage({ kind: EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS });
+    return mapAdminResultToMessage({ kind: EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS });
 }
 
 export function getAdminLfgChannelHandler(arg: TAdminCommandArgs) {

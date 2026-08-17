@@ -2,8 +2,8 @@ import type { ChatInputCommandInteraction, InteractionResponse } from "discord.j
 import { channelMention, ChannelType, MessageFlags, roleMention, userMention } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
 import type { TSetAdminLfgRoleLastPingedAt } from "../../../src/application/admin/types.ts";
-import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
-import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../src/application/lfg/types.ts";
+import { EAdminResultKind } from "../../../src/application/admin/types.ts";
+import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
 import type { lfgCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfg.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import { getLfgCommand } from "../../../src/presentation/discord/commands/lfg.ts";
@@ -29,12 +29,12 @@ const ROLE_ID = "role-1";
 const ROLE_NAME = "Raid";
 const REPLY = {} as InteractionResponse<boolean>;
 const POSITIVE_RESULT = {
-    kind: ELfgFeatureReturnKind.ROOM_CREATED,
+    kind: ELfgResultKind.ROOM_CREATED,
     value: {
         userId: USER_ID,
         room: { code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] },
     },
-} satisfies TLfgFeatureReturn;
+} satisfies TLfgResult;
 
 type ReplyArg = {
     readonly allowedMentions?: unknown;
@@ -48,7 +48,7 @@ function getSetLfgRoleLastPingedAtMock() {
     return vi.fn<TSetAdminLfgRoleLastPingedAt>();
 }
 
-function getLfgUseCaseMocks(result: TLfgFeatureReturn) {
+function getLfgUseCaseMocks(result: TLfgResult) {
     return {
         changeOwnedLfgRoomCode: vi.fn().mockResolvedValue(result),
         createLfgRoom: vi.fn().mockResolvedValue(result),
@@ -114,7 +114,7 @@ function getCommand({
     lfgRolePingCooldownMinutes = undefined,
     setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock(),
 }: {
-    readonly result: TLfgFeatureReturn;
+    readonly result: TLfgResult;
     readonly channel: string | null;
     readonly lfgUseCases?: LfgUseCasesMock;
     readonly lfgRole?: string | null;
@@ -125,11 +125,11 @@ function getCommand({
     return getLfgCommand({
         ...lfgUseCases,
         getGuildConfig: vi.fn().mockResolvedValue({
-            kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+            kind: EAdminResultKind.LFG_GET_CONFIG,
             value: channel ? { guild: GUILD_ID, lfgChannel: channel, lfgRolePingCooldownMinutes } : null,
         }),
         getLfgRoleConfig: vi.fn().mockResolvedValue({
-            kind: EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG,
+            kind: EAdminResultKind.LFG_GET_ROLE_CONFIG,
             value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
         }),
         setLfgRoleLastPingedAt,
@@ -184,12 +184,12 @@ describe(getLfgCommand.name, () => {
 
     test("dispatches lfg change-code", async () => {
         const result = {
-            kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+            kind: ELfgResultKind.ROOM_CODE_CHANGED,
             value: {
                 oldCode: "old",
                 newCode: ROOM_CODE,
             },
-        } satisfies TLfgFeatureReturn;
+        } satisfies TLfgResult;
         const lfgUseCases = getLfgUseCaseMocks(result);
         const command = getCommand({ result, channel: null, lfgUseCases });
         const { interaction } = getInteractionFixture({
@@ -208,7 +208,7 @@ describe(getLfgCommand.name, () => {
 
     test("does not mirror error responses", async () => {
         const command = getCommand({
-            result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
+            result: { kind: ELfgResultKind.INVALID_SUBCOMMAND },
             channel: PUBLIC_CHANNEL_ID,
         });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });
@@ -221,7 +221,7 @@ describe(getLfgCommand.name, () => {
 
     test("does not mirror negative responses", async () => {
         const command = getCommand({
-            result: { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE },
+            result: { kind: ELfgResultKind.INVALID_ROOM_CODE },
             channel: PUBLIC_CHANNEL_ID,
         });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });

@@ -20,10 +20,10 @@ import {
 } from "../../../domain/game/constants.ts";
 import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
-import type { TLfgFeatureReturnOfKind } from "../../../application/lfg/types.ts";
+import type { TLfgResultOfKind } from "../../../application/lfg/types.ts";
 import {
-    ELfgFeatureReturnKind,
-    type TLfgFeatureReturn,
+    ELfgResultKind,
+    type TLfgResult,
 } from "../../../application/lfg/types.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
@@ -183,7 +183,7 @@ function formatRoomJoined(
     userId: string,
     room: IRoom,
     leftRoomCode?: string,
-    removalResult?: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_JOINED>["value"]["removalResult"],
+    removalResult?: TLfgResultOfKind<ELfgResultKind.ROOM_JOINED>["value"]["removalResult"],
 ) {
     if (callerId !== userId) {
         const result = `${userMention(callerId)} moved ${userMention(userId)} to room ${formatRoomCode(room.code)}.`;
@@ -215,7 +215,7 @@ function formatPlayerKicked(
     userId: string,
     targetId: string,
     room: IRoom,
-    removalResult: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.PLAYER_KICKED>["value"]["removalResult"],
+    removalResult: TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED>["value"]["removalResult"],
 ) {
     const result = `${userMention(callerId === userId ? userId : callerId)} kicked ${userMention(targetId)} from ${formatRoomCode(room.code)}.`;
     switch (removalResult.kind) {
@@ -228,7 +228,7 @@ function formatPlayerKicked(
     }
 }
 
-function formatRoomLeft(arg: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT>) {
+function formatRoomLeft(arg: TLfgResultOfKind<ELfgResultKind.ROOM_LEFT>) {
     const res = `${userMention(arg.value.userId)} left ${formatRoomCode(arg.value.code)}.`;
     switch (arg.value.kind) {
         case ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED:
@@ -268,38 +268,38 @@ function formatPlayerNotInRoom(callerId: string, ownerId: string, targetId: stri
     return `${userMention(targetId)} is not in your room.`;
 }
 
-export function mapLfgFeatureReturnToMessageBase({
+export function mapLfgResultToMessageBase({
     result,
     callerId,
     guildConfig,
 }: {
-    result: TLfgFeatureReturn;
+    result: TLfgResult;
     callerId: string;
     guildConfig?: LfgStatusGuildConfig | null;
 }) {
     switch (result.kind) {
-        case ELfgFeatureReturnKind.ROOMS_LISTED: {
+        case ELfgResultKind.ROOMS_LISTED: {
             return createNeutralMessage({
                 embed: { description: formatStatus(result.value.rooms, guildConfig) },
             });
         }
-        case ELfgFeatureReturnKind.HELP:
+        case ELfgResultKind.HELP:
             return createNeutralMessage({
                 embed: { description: LFG_HELP_DESCRIPTION },
             });
-        case ELfgFeatureReturnKind.ROOM_CREATED:
+        case ELfgResultKind.ROOM_CREATED:
             return createPositiveMessage({
                 embed: {
                     description: formatRoomCreated(callerId, result.value.userId, result.value.room),
                 },
             });
-        case ELfgFeatureReturnKind.ROOM_CODE_CHANGED:
+        case ELfgResultKind.ROOM_CODE_CHANGED:
             return createPositiveMessage({
                 embed: {
                     description: formatRoomCodeChanged(callerId, result.value.oldCode, result.value.newCode),
                 },
             });
-        case ELfgFeatureReturnKind.ROOM_JOINED:
+        case ELfgResultKind.ROOM_JOINED:
             return createPositiveMessage({
                 embed: {
                     description: formatRoomJoined(
@@ -311,7 +311,7 @@ export function mapLfgFeatureReturnToMessageBase({
                     ),
                 },
             });
-        case ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED:
+        case ELfgResultKind.OWNERSHIP_TRANSFERRED:
             return createPositiveMessage({
                 embed: {
                     description: formatOwnershipTransferred(
@@ -322,7 +322,7 @@ export function mapLfgFeatureReturnToMessageBase({
                     ),
                 },
             });
-        case ELfgFeatureReturnKind.PLAYER_KICKED:
+        case ELfgResultKind.PLAYER_KICKED:
             return createPositiveMessage({
                 embed: {
                     description: formatPlayerKicked(
@@ -334,61 +334,61 @@ export function mapLfgFeatureReturnToMessageBase({
                     ),
                 },
             });
-        case ELfgFeatureReturnKind.ROOM_LEFT:
+        case ELfgResultKind.ROOM_LEFT:
             return createPositiveMessage({
                 embed: {
                     description: formatRoomLeft(result),
                 },
             });
-        case ELfgFeatureReturnKind.ROOM_DISBANDED:
+        case ELfgResultKind.ROOM_DISBANDED:
             return createPositiveMessage({
                 embed: {
                     description: `${userMention(callerId)} disbanded ${formatRoomCode(result.value.code)}.`,
                 },
             });
-        case ELfgFeatureReturnKind.INVALID_ROOM_CODE:
+        case ELfgResultKind.INVALID_ROOM_CODE:
             return createNegativeMessage({
                 embed: {
                     description: `Room codes must be between ${FRIEND_BATTLE_CODE_MINIMUM_LENGTH} and ${FRIEND_BATTLE_CODE_MAXIMUM_LENGTH} characters.`,
                 },
             });
-        case ELfgFeatureReturnKind.ALREADY_IN_A_ROOM:
+        case ELfgResultKind.ALREADY_IN_A_ROOM:
             return createNegativeMessage({
                 embed: {
                     description: formatAlreadyInRoom(callerId, result.value.userId),
                 },
             });
-        case ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS:
+        case ELfgResultKind.ROOM_ALREADY_EXISTS:
             return createNegativeMessage({
                 embed: {
                     description: `Room ${formatRoomCode(result.value.code)} already exists.`,
                 },
             });
-        case ELfgFeatureReturnKind.ROOM_NOT_FOUND:
+        case ELfgResultKind.ROOM_NOT_FOUND:
             return createNegativeMessage({
                 embed: {
                     description: `Room ${formatRoomCode(result.value.code)} does not exist.`,
                 },
             });
-        case ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM:
+        case ELfgResultKind.ALREADY_IN_TARGET_ROOM:
             return createNegativeMessage({
                 embed: {
                     description: formatAlreadyInTargetRoom(callerId, result.value.userId, result.value.room),
                 },
             });
-        case ELfgFeatureReturnKind.ROOM_IS_FULL:
+        case ELfgResultKind.ROOM_IS_FULL:
             return createNegativeMessage({
                 embed: {
                     description: `Room ${formatRoomCode(result.value.code)} already has ${AMOUNT_OF_PLAYERS_IN_A_BATTLE} players.`,
                 },
             });
-        case ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF:
+        case ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF:
             return createNegativeMessage({
                 embed: {
                     description: formatCannotTransferToCurrentOwner(callerId, result.value.userId, result.value.code),
                 },
             });
-        case ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM:
+        case ELfgResultKind.PLAYER_NOT_IN_ROOM:
             return createNegativeMessage({
                 embed: {
                     description: formatPlayerNotInRoom(
@@ -399,23 +399,23 @@ export function mapLfgFeatureReturnToMessageBase({
                     ),
                 },
             });
-        case ELfgFeatureReturnKind.NOT_ROOM_OWNER:
+        case ELfgResultKind.NOT_ROOM_OWNER:
             return createNegativeMessage({
                 embed: {
                     description: "Only the room owner can do that.",
                 },
             });
-        case ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF:
+        case ELfgResultKind.CANNOT_KICK_YOURSELF:
             return createNegativeMessage({
                 embed: {
                     description: `Use ${inlineCode(`${LFG_COMMAND_NAME} ${LFG_LEAVE_SUBCOMMAND_NAME}`)} to leave your room.`,
                 },
             });
-        case ELfgFeatureReturnKind.NOT_IN_A_ROOM:
+        case ELfgResultKind.NOT_IN_A_ROOM:
             return createNegativeMessage({
                 embed: { description: "Join or create a room first." },
             });
-        case ELfgFeatureReturnKind.INVALID_SUBCOMMAND:
+        case ELfgResultKind.INVALID_SUBCOMMAND:
             return createErrorMessage({
                 embed: {
                     description: "Please specify a valid subcommand.",
@@ -429,7 +429,7 @@ export function mapLfgMessageBaseToReply({
     interaction,
     guildConfig,
 }: {
-    messageBase: ReturnType<typeof mapLfgFeatureReturnToMessageBase>;
+    messageBase: ReturnType<typeof mapLfgResultToMessageBase>;
     // Using Pick before of PickDeep to avoid "type too complex" error
     interaction: PickDeep<
         Pick<ChatInputCommandInteraction, "options" | "channelId">,

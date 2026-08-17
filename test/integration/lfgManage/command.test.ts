@@ -6,8 +6,8 @@ import {
     type InteractionResponse,
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
-import { ELfgFeatureReturnKind, type TLfgFeatureReturn } from "../../../src/application/lfg/types.ts";
+import { EAdminResultKind } from "../../../src/application/admin/types.ts";
+import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfgManage.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
@@ -70,7 +70,7 @@ function getCommand({
     result,
     channel = null,
 }: {
-    readonly result: TLfgFeatureReturn;
+    readonly result: TLfgResult;
     readonly channel?: string | null;
 }) {
     const lfgUseCases = {
@@ -82,7 +82,7 @@ function getCommand({
         disbandLfgRoom: vi.fn().mockResolvedValue(result),
     };
     const getGuildConfig = vi.fn().mockResolvedValue({
-        kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+        kind: EAdminResultKind.LFG_GET_CONFIG,
         value: channel ? { guild: GUILD_ID, lfgChannel: channel } : null,
     });
 
@@ -110,7 +110,7 @@ async function runCommand(
 describe(getLfgManageCommand.name, () => {
     test("rejects non-guild interactions", async () => {
         const { command, getGuildConfig, lfgUseCases } = getCommand({
-            result: { kind: ELfgFeatureReturnKind.INVALID_SUBCOMMAND },
+            result: { kind: ELfgResultKind.INVALID_SUBCOMMAND },
         });
         const { interaction, reply } = getInteractionFixture({ guildId: null });
 
@@ -131,72 +131,72 @@ describe(getLfgManageCommand.name, () => {
             subcommand: "create",
             method: "createLfgRoom",
             result: {
-                kind: ELfgFeatureReturnKind.ROOM_CREATED,
+                kind: ELfgResultKind.ROOM_CREATED,
                 value: {
                     userId: PLAYER_ID,
                     room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
-            } satisfies TLfgFeatureReturn,
+            } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, owner: { id: PLAYER_ID }, code: ROOM_CODE },
         },
         {
             subcommand: "move",
             method: "moveLfgUser",
             result: {
-                kind: ELfgFeatureReturnKind.ROOM_JOINED,
+                kind: ELfgResultKind.ROOM_JOINED,
                 value: {
                     userId: PLAYER_ID,
                     room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
-            } satisfies TLfgFeatureReturn,
+            } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, user: { id: PLAYER_ID }, code: ROOM_CODE },
         },
         {
             subcommand: LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
             method: "changeLfgRoomCode",
             result: {
-                kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+                kind: ELfgResultKind.ROOM_CODE_CHANGED,
                 value: {
                     oldCode: ROOM_CODE,
                     newCode: NEW_ROOM_CODE,
                 },
-            } satisfies TLfgFeatureReturn,
+            } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, newCode: NEW_ROOM_CODE },
         },
         {
             subcommand: "kick",
             method: "kickFromLfgRoom",
             result: {
-                kind: ELfgFeatureReturnKind.PLAYER_KICKED,
+                kind: ELfgResultKind.PLAYER_KICKED,
                 value: {
                     userId: PLAYER_ID,
                     targetId: PLAYER_ID,
                     room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [] },
                     removalResult: { kind: ELfgPlayerRemovalKind.ROOM_DELETED },
                 },
-            } satisfies TLfgFeatureReturn,
+            } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, target: { id: PLAYER_ID } },
         },
         {
             subcommand: "transfer",
             method: "transferLfgRoom",
             result: {
-                kind: ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED,
+                kind: ELfgResultKind.OWNERSHIP_TRANSFERRED,
                 value: {
                     userId: PLAYER_ID,
                     targetId: PLAYER_ID,
                     room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
-            } satisfies TLfgFeatureReturn,
+            } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, target: { id: PLAYER_ID } },
         },
         {
             subcommand: "disband",
             method: "disbandLfgRoom",
             result: {
-                kind: ELfgFeatureReturnKind.ROOM_DISBANDED,
+                kind: ELfgResultKind.ROOM_DISBANDED,
                 value: { userId: PLAYER_ID, code: ROOM_CODE },
-            } satisfies TLfgFeatureReturn,
+            } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE },
         },
     ] as const)("dispatches $subcommand", async ({ expectedArg, method, result, subcommand }) => {
@@ -223,7 +223,7 @@ describe(getLfgManageCommand.name, () => {
         const { command } = getCommand({
             channel: PUBLIC_CHANNEL_ID,
             result: {
-                kind: ELfgFeatureReturnKind.ROOM_CREATED,
+                kind: ELfgResultKind.ROOM_CREATED,
                 value: {
                     userId: PLAYER_ID,
                     room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
@@ -251,7 +251,7 @@ describe(getLfgManageCommand.name, () => {
     test("does not publish negative results", async () => {
         const { command } = getCommand({
             channel: PUBLIC_CHANNEL_ID,
-            result: { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code: ROOM_CODE } },
+            result: { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code: ROOM_CODE } },
         });
         const { channelFetch, interaction, reply } = getInteractionFixture({ subcommand: "disband" });
 

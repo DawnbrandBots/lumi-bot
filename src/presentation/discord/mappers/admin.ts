@@ -26,8 +26,8 @@ import {
 } from "../commands/admin/constants.ts";
 import { LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME } from "../commands/lfg/constants.ts";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
-import type { TAdminFeatureReturn } from "../../../application/admin/types.ts";
-import { EAdminFeatureReturnKind } from "../../../application/admin/types.ts";
+import type { TAdminResult } from "../../../application/admin/types.ts";
+import { EAdminResultKind } from "../../../application/admin/types.ts";
 
 function formatChannel(channel: string | null | undefined): string {
     return channel ? channelMention(channel) : ADMIN_LFG_CHANNEL_NO_VALUE;
@@ -41,9 +41,9 @@ function formatRolePingCooldown(cooldown: TAdminGuildConfig["lfgRolePingCooldown
     return cooldown != null ? `${cooldown} minutes` : LFG_NOT_CONFIGURED_DESCRIPTION;
 }
 
-function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
+function mapAdminResultToMessage(result: TAdminResult) {
     switch (result.kind) {
-        case EAdminFeatureReturnKind.LFG_CHANNEL_HELP:
+        case EAdminResultKind.LFG_CHANNEL_HELP:
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: {
                     description: [
@@ -61,35 +61,35 @@ function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_CHANNEL_SET:
+        case EAdminResultKind.LFG_CHANNEL_SET:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     description: `LFG messages will be posted in ${channelMention(result.value.channel)}.`,
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED:
+        case EAdminResultKind.LFG_CHANNEL_CLEARED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     description: "LFG messages are now only visible by command users.",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL:
+        case EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: "Missing channel",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS:
+        case EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: "Invalid options",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP:
+        case EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP:
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: {
                     description: [
@@ -105,35 +105,35 @@ function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET:
+        case EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     description: `LFG pingable roles can be pinged every ${formatRolePingCooldown(result.value.minutes)}.`,
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED:
+        case EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     description: "LFG role ping cooldown value was cleared.",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES:
+        case EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: "Missing minutes",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS:
+        case EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: "Invalid options",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_HELP:
+        case EAdminResultKind.LFG_ROLE_HELP:
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: {
                     description: [
@@ -149,63 +149,63 @@ function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_ADDED:
+        case EAdminResultKind.LFG_ROLE_ADDED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     description: `${roleMention(result.value.role)} can now be pinged by ${inlineCode(`${LFG_COMMAND_NAME} ${LFG_PING_SUBCOMMAND_NAME}`)}.`,
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_REMOVED:
+        case EAdminResultKind.LFG_ROLE_REMOVED:
             return createPositiveMessage<InteractionReplyOptions>({
                 embed: {
                     description: `${roleMention(result.value.role)} can no longer be pinged by ${codeBlock(`${LFG_COMMAND_NAME} ${LFG_PING_SUBCOMMAND_NAME}`)}.`,
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE:
+        case EAdminResultKind.LFG_ROLE_MISSING_ROLE:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: "Missing role",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS:
+        case EAdminResultKind.LFG_ROLE_INVALID_OPTIONS:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: "Invalid options",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_ALREADY_EXISTS:
+        case EAdminResultKind.LFG_ROLE_ALREADY_EXISTS:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: `${roleMention(result.value.role)} is already a pingable role.`,
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_NOT_FOUND:
+        case EAdminResultKind.LFG_ROLE_NOT_FOUND:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: `${roleMention(result.value.role)} is not a pingable role.`,
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED:
+        case EAdminResultKind.LFG_ROLE_LIMIT_REACHED:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: `Servers can configure up to ${ADMIN_LFG_ROLE_LIMIT} LFG pingable roles.`,
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE:
+        case EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE:
             return createErrorMessage<InteractionReplyOptions>({
                 embed: {
                     description: "`@everyone` cannot be configured as an LFG pingable role.",
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_GET_CONFIG:
+        case EAdminResultKind.LFG_GET_CONFIG:
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: {
                     fields: [
@@ -222,7 +222,7 @@ function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
                 },
                 flags: [MessageFlags.Ephemeral],
             });
-        case EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG:
+        case EAdminResultKind.LFG_GET_ROLE_CONFIG:
             return createNeutralMessage<InteractionReplyOptions>({
                 embed: {
                     description: result.value ? roleMention(result.value.role) : ADMIN_LFG_ROLE_NO_VALUE,
@@ -232,5 +232,5 @@ function mapAdminFeatureReturnToMessage(result: TAdminFeatureReturn) {
     }
 }
 
-export default mapAdminFeatureReturnToMessage;
+export default mapAdminResultToMessage;
 const LFG_NOT_CONFIGURED_DESCRIPTION = "Not configured";

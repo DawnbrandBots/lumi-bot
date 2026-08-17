@@ -7,8 +7,8 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
 } from "../constants.ts";
 import { createErrorMessage } from "../../../message.ts";
-import { EAdminFeatureReturnKind } from "../../../../../application/admin/types.ts";
-import mapAdminFeatureReturnToMessage from "../../../mappers/admin.ts";
+import { EAdminResultKind } from "../../../../../application/admin/types.ts";
+import mapAdminResultToMessage from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
 
@@ -31,27 +31,27 @@ async function runLfgRolePingCooldown(
 
     if (action === null && minutes === null) {
         const configResult = await getGuildConfig(guildId);
-        return mapAdminFeatureReturnToMessage({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+        return mapAdminResultToMessage({
+            kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP,
             value: { minutes: configResult.value?.lfgRolePingCooldownMinutes },
         });
     }
 
     if (action === ADMIN_ACTION_SET && minutes !== null) {
-        return mapAdminFeatureReturnToMessage(await setLfgRolePingCooldown(guildId, minutes));
+        return mapAdminResultToMessage(await setLfgRolePingCooldown(guildId, minutes));
     }
 
     if (action === ADMIN_ACTION_CLEAR && minutes === null) {
-        return mapAdminFeatureReturnToMessage(await clearLfgRolePingCooldown(guildId));
+        return mapAdminResultToMessage(await clearLfgRolePingCooldown(guildId));
     }
 
     if (action === ADMIN_ACTION_SET && minutes === null) {
-        return mapAdminFeatureReturnToMessage({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES,
+        return mapAdminResultToMessage({
+            kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES,
         });
     }
 
-    return mapAdminFeatureReturnToMessage({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
+    return mapAdminResultToMessage({ kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
 }
 
 export function getAdminLfgRolePingCooldownHandler(arg: TAdminCommandArgs) {

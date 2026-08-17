@@ -2,14 +2,14 @@ import debug from "debug";
 import type { TextChannel } from "discord.js";
 import { ChannelType, type CacheType, type ChatInputCommandInteraction } from "discord.js";
 import { EMessageKind } from "../../message.types.ts";
-import type { TLfgFeatureReturn } from "../../../../application/lfg/types.ts";
+import type { TLfgResult } from "../../../../application/lfg/types.ts";
 import type { MaybePromise } from "../../../../utils/types.ts";
-import { mapLfgFeatureReturnToMessageBase, mapLfgMessageBaseToReply } from "../../mappers/lfg.ts";
+import { mapLfgResultToMessageBase, mapLfgMessageBaseToReply } from "../../mappers/lfg.ts";
 import type { TLfgCommandArgs } from "./types.ts";
 
 const log = debug("bot:lfg");
 
-type TLfgFeatureResultGetter = () => MaybePromise<TLfgFeatureReturn>;
+type TLfgResultGetter = () => MaybePromise<TLfgResult>;
 
 async function sendPublicCopy(
     interaction: ChatInputCommandInteraction<CacheType>,
@@ -32,12 +32,12 @@ export async function runFeatureSubcommand(
     { getGuildConfig }: TLfgCommandArgs,
     interaction: ChatInputCommandInteraction<CacheType>,
     guildId: string,
-    getResult: TLfgFeatureResultGetter,
+    getResult: TLfgResultGetter,
 ): Promise<void> {
     const result = await getResult();
     const configResult = await getGuildConfig(guildId);
 
-    const messageBase = mapLfgFeatureReturnToMessageBase({
+    const messageBase = mapLfgResultToMessageBase({
         result,
         callerId: interaction.user.id,
         guildConfig: configResult.value,

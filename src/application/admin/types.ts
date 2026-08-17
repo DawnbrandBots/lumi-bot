@@ -11,7 +11,7 @@ export type TAdminGuildConfig = {
     readonly lfgRoles: readonly TAdminLfgRoleConfig[];
 };
 
-export const enum EAdminFeatureReturnKind {
+export const enum EAdminResultKind {
     LFG_CHANNEL_HELP = "LFG_CHANNEL_HELP",
     LFG_CHANNEL_SET = "LFG_CHANNEL_SET",
     LFG_CHANNEL_CLEARED = "LFG_CHANNEL_CLEARED",
@@ -35,95 +35,95 @@ export const enum EAdminFeatureReturnKind {
     LFG_GET_ROLE_CONFIG = "LFG_GET_ROLE_CONFIG",
 }
 
-type TAdminFeatureReturnValueByKind = {
-    [EAdminFeatureReturnKind.LFG_CHANNEL_HELP]: { readonly channel: string | null | undefined };
-    [EAdminFeatureReturnKind.LFG_CHANNEL_SET]: { readonly channel: string };
-    [EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP]: { readonly minutes: number | null | undefined };
-    [EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET]: { readonly minutes: number };
-    [EAdminFeatureReturnKind.LFG_ROLE_HELP]: { readonly roles: readonly string[] };
-    [EAdminFeatureReturnKind.LFG_ROLE_ADDED]: { readonly role: string };
-    [EAdminFeatureReturnKind.LFG_ROLE_REMOVED]: { readonly role: string };
-    [EAdminFeatureReturnKind.LFG_ROLE_ALREADY_EXISTS]: { readonly role: string };
-    [EAdminFeatureReturnKind.LFG_ROLE_NOT_FOUND]: { readonly role: string };
-    [EAdminFeatureReturnKind.LFG_GET_CONFIG]: TAdminGuildConfig | null;
-    [EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG]: TAdminLfgRoleConfig | null;
+type TAdminResultValueByKind = {
+    [EAdminResultKind.LFG_CHANNEL_HELP]: { readonly channel: string | null | undefined };
+    [EAdminResultKind.LFG_CHANNEL_SET]: { readonly channel: string };
+    [EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP]: { readonly minutes: number | null | undefined };
+    [EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET]: { readonly minutes: number };
+    [EAdminResultKind.LFG_ROLE_HELP]: { readonly roles: readonly string[] };
+    [EAdminResultKind.LFG_ROLE_ADDED]: { readonly role: string };
+    [EAdminResultKind.LFG_ROLE_REMOVED]: { readonly role: string };
+    [EAdminResultKind.LFG_ROLE_ALREADY_EXISTS]: { readonly role: string };
+    [EAdminResultKind.LFG_ROLE_NOT_FOUND]: { readonly role: string };
+    [EAdminResultKind.LFG_GET_CONFIG]: TAdminGuildConfig | null;
+    [EAdminResultKind.LFG_GET_ROLE_CONFIG]: TAdminLfgRoleConfig | null;
 } & {
     [
         _ in
-            | EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
-            | EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL
-            | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS
-            | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED
-            | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
-            | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
-            | EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE
-            | EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS
-            | EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED
-            | EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE
+            | EAdminResultKind.LFG_CHANNEL_CLEARED
+            | EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL
+            | EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS
+            | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED
+            | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
+            | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
+            | EAdminResultKind.LFG_ROLE_MISSING_ROLE
+            | EAdminResultKind.LFG_ROLE_INVALID_OPTIONS
+            | EAdminResultKind.LFG_ROLE_LIMIT_REACHED
+            | EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE
     ]: never;
 };
 
 // TODO: implement a utility type to reuse the following logic which can also be found in lfg/types
-export type TAdminFeatureReturnOfKind<Kind extends EAdminFeatureReturnKind> = Kind extends EAdminFeatureReturnKind
-    ? TAdminFeatureReturnValueByKind[Kind] extends never
+export type TAdminResultOfKind<Kind extends EAdminResultKind> = Kind extends EAdminResultKind
+    ? TAdminResultValueByKind[Kind] extends never
         ? { readonly kind: Kind }
-        : { readonly kind: Kind; readonly value: TAdminFeatureReturnValueByKind[Kind] }
+        : { readonly kind: Kind; readonly value: TAdminResultValueByKind[Kind] }
     : never;
 
-export type TAdminFeatureReturn = {
-    [Kind in EAdminFeatureReturnKind]: TAdminFeatureReturnOfKind<Kind>;
-}[EAdminFeatureReturnKind];
+export type TAdminResult = {
+    [Kind in EAdminResultKind]: TAdminResultOfKind<Kind>;
+}[EAdminResultKind];
 
-export type TAdminFeatureReturnTypes = {
-    lfgChannel: TAdminFeatureReturnOfKind<
-        | EAdminFeatureReturnKind.LFG_CHANNEL_HELP
-        | EAdminFeatureReturnKind.LFG_CHANNEL_SET
-        | EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED
-        | EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL
-        | EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS
+export type TAdminResultTypes = {
+    lfgChannel: TAdminResultOfKind<
+        | EAdminResultKind.LFG_CHANNEL_HELP
+        | EAdminResultKind.LFG_CHANNEL_SET
+        | EAdminResultKind.LFG_CHANNEL_CLEARED
+        | EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL
+        | EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS
     >;
-    lfgRolePingCooldown: TAdminFeatureReturnOfKind<
-        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP
-        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET
-        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED
-        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
-        | EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
+    lfgRolePingCooldown: TAdminResultOfKind<
+        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP
+        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET
+        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED
+        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
+        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
     >;
-    lfgRole: TAdminFeatureReturnOfKind<
-        | EAdminFeatureReturnKind.LFG_ROLE_HELP
-        | EAdminFeatureReturnKind.LFG_ROLE_ADDED
-        | EAdminFeatureReturnKind.LFG_ROLE_REMOVED
-        | EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE
-        | EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS
-        | EAdminFeatureReturnKind.LFG_ROLE_ALREADY_EXISTS
-        | EAdminFeatureReturnKind.LFG_ROLE_NOT_FOUND
-        | EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED
-        | EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE
+    lfgRole: TAdminResultOfKind<
+        | EAdminResultKind.LFG_ROLE_HELP
+        | EAdminResultKind.LFG_ROLE_ADDED
+        | EAdminResultKind.LFG_ROLE_REMOVED
+        | EAdminResultKind.LFG_ROLE_MISSING_ROLE
+        | EAdminResultKind.LFG_ROLE_INVALID_OPTIONS
+        | EAdminResultKind.LFG_ROLE_ALREADY_EXISTS
+        | EAdminResultKind.LFG_ROLE_NOT_FOUND
+        | EAdminResultKind.LFG_ROLE_LIMIT_REACHED
+        | EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE
     >;
-    getGuildConfig: TAdminFeatureReturnOfKind<EAdminFeatureReturnKind.LFG_GET_CONFIG>;
-    getLfgRoleConfig: TAdminFeatureReturnOfKind<EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG>;
+    getGuildConfig: TAdminResultOfKind<EAdminResultKind.LFG_GET_CONFIG>;
+    getLfgRoleConfig: TAdminResultOfKind<EAdminResultKind.LFG_GET_ROLE_CONFIG>;
 };
 
-export type TAddAdminLfgRole = (guild: string, role: string) => Promise<TAdminFeatureReturnTypes["lfgRole"]>;
-export type TClearAdminLfgChannel = (guild: string) => Promise<TAdminFeatureReturnTypes["lfgChannel"]>;
+export type TAddAdminLfgRole = (guild: string, role: string) => Promise<TAdminResultTypes["lfgRole"]>;
+export type TClearAdminLfgChannel = (guild: string) => Promise<TAdminResultTypes["lfgChannel"]>;
 export type TClearAdminLfgRolePingCooldown = (
     guild: string,
-) => Promise<TAdminFeatureReturnTypes["lfgRolePingCooldown"]>;
-export type TGetAdminGuildConfig = (guild: string) => Promise<TAdminFeatureReturnTypes["getGuildConfig"]>;
+) => Promise<TAdminResultTypes["lfgRolePingCooldown"]>;
+export type TGetAdminGuildConfig = (guild: string) => Promise<TAdminResultTypes["getGuildConfig"]>;
 export type TGetAdminLfgRoleConfig = (
     guild: string,
     role: string,
-) => Promise<TAdminFeatureReturnTypes["getLfgRoleConfig"]>;
-export type TRemoveAdminLfgRole = (guild: string, role: string) => Promise<TAdminFeatureReturnTypes["lfgRole"]>;
+) => Promise<TAdminResultTypes["getLfgRoleConfig"]>;
+export type TRemoveAdminLfgRole = (guild: string, role: string) => Promise<TAdminResultTypes["lfgRole"]>;
 export type TSetAdminLfgChannel = (
     guild: string,
     channel: string,
-) => Promise<TAdminFeatureReturnTypes["lfgChannel"]>;
+) => Promise<TAdminResultTypes["lfgChannel"]>;
 export type TSetAdminLfgRoleLastPingedAt = (guild: string, role: string, date: Date) => Promise<void>;
 export type TSetAdminLfgRolePingCooldown = (
     guild: string,
     minutes: number,
-) => Promise<TAdminFeatureReturnTypes["lfgRolePingCooldown"]>;
+) => Promise<TAdminResultTypes["lfgRolePingCooldown"]>;
 
 export type TAdminPersistence = {
     readonly addLfgRole: (arg: { readonly guildId: string; readonly roleId: string }) => MaybePromise<void>;

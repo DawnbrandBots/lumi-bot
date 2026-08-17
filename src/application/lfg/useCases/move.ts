@@ -1,5 +1,5 @@
 import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../../domain/game/constants.ts";
-import { ELfgFeatureReturnKind } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 import type {
     TFindLfgRoomByCode,
     TFindLfgRoomByUser,
@@ -24,19 +24,19 @@ export async function move(
 ) {
     const room = await findRoomByCode({ guildId, code });
     if (!room) {
-        return { kind: ELfgFeatureReturnKind.ROOM_NOT_FOUND, value: { code } } as const;
+        return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
 
     const currentRoom = await findRoomByUser({ guildId, userId: user.id });
     if (currentRoom?.id === room.id) {
         return {
-            kind: ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM,
+            kind: ELfgResultKind.ALREADY_IN_TARGET_ROOM,
             value: { userId: user.id, room },
         } as const;
     }
 
     if (room.playerIds.length >= AMOUNT_OF_PLAYERS_IN_A_BATTLE) {
-        return { kind: ELfgFeatureReturnKind.ROOM_IS_FULL, value: { code } } as const;
+        return { kind: ELfgResultKind.ROOM_IS_FULL, value: { code } } as const;
     }
 
     const leftRoomCode = currentRoom?.code;
@@ -44,7 +44,7 @@ export async function move(
     const updatedRoom = await moveUserToRoom({ roomId: room.id, userId: user.id });
 
     return {
-        kind: ELfgFeatureReturnKind.ROOM_JOINED,
+        kind: ELfgResultKind.ROOM_JOINED,
         value: { userId: user.id, room: updatedRoom, leftRoomCode, removalResult },
     } as const;
 }

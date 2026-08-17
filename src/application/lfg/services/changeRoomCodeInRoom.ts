@@ -1,4 +1,4 @@
-import { ELfgFeatureReturnKind } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 import { isInvalidRoomCode } from "./isInvalidRoomCode.ts";
 import type { TChangeLfgRoomCode, TChangeLfgRoomCodeInRoom, TFindLfgRoomByCode, TLfgRoom } from "../types.ts";
 
@@ -13,16 +13,16 @@ export async function changeRoomCodeInRoom(
     { guildId, room, newCode }: { readonly guildId: string; readonly room: TLfgRoom; readonly newCode: string },
 ): Promise<Awaited<ReturnType<TChangeLfgRoomCodeInRoom>>> {
     if (isInvalidRoomCode(newCode)) {
-        return { kind: ELfgFeatureReturnKind.INVALID_ROOM_CODE } as const;
+        return { kind: ELfgResultKind.INVALID_ROOM_CODE } as const;
     }
 
     const existingRoom = await findRoomByCode({ guildId, code: newCode });
     if (existingRoom) {
-        return { kind: ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS, value: { code: newCode } } as const;
+        return { kind: ELfgResultKind.ROOM_ALREADY_EXISTS, value: { code: newCode } } as const;
     }
 
     return {
-        kind: ELfgFeatureReturnKind.ROOM_CODE_CHANGED,
+        kind: ELfgResultKind.ROOM_CODE_CHANGED,
         value: await changeRoomCode({ roomId: room.id, newCode }),
     } as const;
 }

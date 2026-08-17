@@ -1,26 +1,26 @@
 import { channelMention, MessageFlags, roleMention } from "discord.js";
 import { describe, expect, test } from "vitest";
-import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
-import mapAdminFeatureReturnToMessage from "../../../src/presentation/discord/mappers/admin.ts";
+import { EAdminResultKind } from "../../../src/application/admin/types.ts";
+import mapAdminResultToMessage from "../../../src/presentation/discord/mappers/admin.ts";
 import { EMessageKind } from "../../../src/presentation/discord/message.types.ts";
 
 const CHANNEL_ID = "channel-1";
 const ROLE_ID = "role-1";
 
-function assertMessage(message: ReturnType<typeof mapAdminFeatureReturnToMessage>) {
+function assertMessage(message: ReturnType<typeof mapAdminResultToMessage>) {
     expect(message).toBeDefined();
     return message;
 }
 
-function description(message: NonNullable<ReturnType<typeof mapAdminFeatureReturnToMessage>>): string {
+function description(message: NonNullable<ReturnType<typeof mapAdminResultToMessage>>): string {
     return message.embeds?.[0]?.description ?? "";
 }
 
-describe(mapAdminFeatureReturnToMessage.name, () => {
+describe(mapAdminResultToMessage.name, () => {
     test("maps LFG channel help", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_CHANNEL_HELP,
                 value: { channel: null },
             }),
         );
@@ -33,8 +33,8 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps LFG channel set", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_CHANNEL_SET,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_CHANNEL_SET,
                 value: { channel: CHANNEL_ID },
             }),
         );
@@ -47,7 +47,7 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps LFG channel cleared", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({ kind: EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED }),
+            mapAdminResultToMessage({ kind: EAdminResultKind.LFG_CHANNEL_CLEARED }),
         );
 
         expect(message.kind).toBe(EMessageKind.POSITIVE);
@@ -58,16 +58,13 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps LFG config", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_GET_CONFIG,
                 value: {
-                    guild: "guild-1",
                     lfgChannel: CHANNEL_ID,
                     lfgRolePingCooldownMinutes: 45,
-                    lfgRoles: {
-                        toArray: () => [{ role: ROLE_ID }],
-                    },
-                } as never,
+                    lfgRoles: [{ role: ROLE_ID, lastPingedAt: null }],
+                },
             }),
         );
 
@@ -83,8 +80,8 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps LFG role ping cooldown help", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP,
                 value: { minutes: 45 },
             }),
         );
@@ -97,8 +94,8 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps LFG role ping cooldown set", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET,
                 value: { minutes: 45 },
             }),
         );
@@ -111,8 +108,8 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps LFG role help", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_ROLE_HELP,
                 value: { roles: [] },
             }),
         );
@@ -125,8 +122,8 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps LFG role added", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_ROLE_ADDED,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_ROLE_ADDED,
                 value: { role: ROLE_ID },
             }),
         );
@@ -139,8 +136,8 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps LFG role removed", () => {
         const message = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_ROLE_REMOVED,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_ROLE_REMOVED,
                 value: { role: ROLE_ID },
             }),
         );
@@ -153,28 +150,28 @@ describe(mapAdminFeatureReturnToMessage.name, () => {
 
     test("maps invalid LFG channel options", () => {
         const missingChannel = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL,
             }),
         );
         const invalidOptions = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS,
             }),
         );
         const missingRole = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_ROLE_MISSING_ROLE,
             }),
         );
         const invalidRoleOptions = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_ROLE_INVALID_OPTIONS,
             }),
         );
         const everyoneRole = assertMessage(
-            mapAdminFeatureReturnToMessage({
-                kind: EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE,
+            mapAdminResultToMessage({
+                kind: EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE,
             }),
         );
 

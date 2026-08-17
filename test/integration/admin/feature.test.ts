@@ -1,7 +1,7 @@
 import { EntityManager, MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { ADMIN_LFG_ROLE_LIMIT } from "../../../src/application/admin/constants.ts";
-import { EAdminFeatureReturnKind } from "../../../src/application/admin/types.ts";
+import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { composeAdminUseCases, type TAdminUseCases } from "../../../src/composition/application/admin/useCases.ts";
 import { GuildConfig } from "../../../src/infrastructure/admin/models/config.ts";
 import { GuildConfigLfgRole } from "../../../src/infrastructure/admin/models/configLfgRole.ts";
@@ -38,7 +38,7 @@ class AdminUseCases {
         if (action === null && channel === null) {
             const configResult = await this.useCases.getGuildConfig(guild);
             return {
-                kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
+                kind: EAdminResultKind.LFG_CHANNEL_HELP,
                 value: { channel: configResult.value?.lfgChannel },
             };
         }
@@ -49,16 +49,16 @@ class AdminUseCases {
             return this.useCases.clearLfgChannel(guild);
         }
         if (action === "set" && channel === null) {
-            return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL };
+            return { kind: EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL };
         }
-        return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS };
+        return { kind: EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS };
     }
 
     public async lfgRolePingCooldown(guild: string, action: "set" | "clear" | null, minutes: number | null) {
         if (action === null && minutes === null) {
             const configResult = await this.useCases.getGuildConfig(guild);
             return {
-                kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+                kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP,
                 value: { minutes: configResult.value?.lfgRolePingCooldownMinutes },
             };
         }
@@ -69,16 +69,16 @@ class AdminUseCases {
             return this.useCases.clearLfgRolePingCooldown(guild);
         }
         if (action === "set" && minutes === null) {
-            return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES };
+            return { kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES };
         }
-        return { kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS };
+        return { kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS };
     }
 
     public async lfgRole(guild: string, action: "add" | "remove" | null, role: string | null) {
         if (action === null && role === null) {
             const configResult = await this.useCases.getGuildConfig(guild);
             return {
-                kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
+                kind: EAdminResultKind.LFG_ROLE_HELP,
                 value: { roles: configResult.value?.lfgRoles.map((lfgRole) => lfgRole.role) ?? [] },
             };
         }
@@ -89,9 +89,9 @@ class AdminUseCases {
             return this.useCases.removeLfgRole(guild, role);
         }
         if ((action === "add" || action === "remove") && role === null) {
-            return { kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE };
+            return { kind: EAdminResultKind.LFG_ROLE_MISSING_ROLE };
         }
-        return { kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS };
+        return { kind: EAdminResultKind.LFG_ROLE_INVALID_OPTIONS };
     }
 }
 
@@ -120,7 +120,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
         const result = await feature.getGuildConfig(GUILD_ID);
 
         expect(result).toEqual({
-            kind: EAdminFeatureReturnKind.LFG_GET_CONFIG,
+            kind: EAdminResultKind.LFG_GET_CONFIG,
             value: null,
         });
         expect(await getStoredConfig()).toBeNull();
@@ -134,11 +134,11 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
         const result = await feature.getGuildConfig(GUILD_ID);
         const roleConfig = await feature.getLfgRoleConfig(GUILD_ID, ROLE_ID);
 
-        expect(result.kind).toBe(EAdminFeatureReturnKind.LFG_GET_CONFIG);
+        expect(result.kind).toBe(EAdminResultKind.LFG_GET_CONFIG);
         expect(result.value?.lfgChannel).toBe(CHANNEL_ID);
         expect(result.value?.lfgRoles.map((lfgRole) => lfgRole.role)).toEqual([ROLE_ID]);
         expect(roleConfig).toMatchObject({
-            kind: EAdminFeatureReturnKind.LFG_GET_ROLE_CONFIG,
+            kind: EAdminResultKind.LFG_GET_ROLE_CONFIG,
             value: { role: ROLE_ID, lastPingedAt: "2026-06-16T10:00:00.000Z" },
         });
     });
@@ -147,7 +147,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
         const result = await feature.lfgChannel(GUILD_ID, "set", CHANNEL_ID);
 
         expect(result).toEqual({
-            kind: EAdminFeatureReturnKind.LFG_CHANNEL_SET,
+            kind: EAdminResultKind.LFG_CHANNEL_SET,
             value: { channel: CHANNEL_ID },
         });
         expect((await getStoredConfig())?.lfgChannel).toBe(CHANNEL_ID);
@@ -158,7 +158,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
 
         const result = await feature.lfgChannel(GUILD_ID, "clear", null);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_CHANNEL_CLEARED });
         expect((await getStoredConfig())?.lfgChannel).toBeNull();
     });
 
@@ -166,7 +166,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
         const result = await feature.lfgChannel(GUILD_ID, null, null);
 
         expect(result).toEqual({
-            kind: EAdminFeatureReturnKind.LFG_CHANNEL_HELP,
+            kind: EAdminResultKind.LFG_CHANNEL_HELP,
             value: { channel: undefined },
         });
     });
@@ -174,26 +174,26 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
     test("rejects set without channel", async () => {
         const result = await feature.lfgChannel(GUILD_ID, "set", null);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_CHANNEL_MISSING_CHANNEL });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL });
     });
 
     test("rejects clear with channel", async () => {
         const result = await feature.lfgChannel(GUILD_ID, "clear", CHANNEL_ID);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS });
     });
 
     test("rejects channel without set action", async () => {
         const result = await feature.lfgChannel(GUILD_ID, null, CHANNEL_ID);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_CHANNEL_INVALID_OPTIONS });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS });
     });
 
     test("sets role ping cooldown", async () => {
         const result = await feature.lfgRolePingCooldown(GUILD_ID, "set", 45);
 
         expect(result).toEqual({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+            kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET,
             value: { minutes: 45 },
         });
         expect((await getStoredConfig())?.lfgRolePingCooldownMinutes).toBe(45);
@@ -204,7 +204,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
 
         const result = await feature.lfgRolePingCooldown(GUILD_ID, "clear", null);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_CLEARED });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED });
         expect((await getStoredConfig())?.lfgRolePingCooldownMinutes).toBeNull();
     });
 
@@ -212,7 +212,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
         const result = await feature.lfgRolePingCooldown(GUILD_ID, null, null);
 
         expect(result).toEqual({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_HELP,
+            kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP,
             value: { minutes: undefined },
         });
     });
@@ -220,26 +220,26 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
     test("rejects set role ping cooldown without minutes", async () => {
         const result = await feature.lfgRolePingCooldown(GUILD_ID, "set", null);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES });
     });
 
     test("rejects clear role ping cooldown with minutes", async () => {
         const result = await feature.lfgRolePingCooldown(GUILD_ID, "clear", 45);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
     });
 
     test("rejects role ping cooldown minutes without set action", async () => {
         const result = await feature.lfgRolePingCooldown(GUILD_ID, null, 45);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
     });
 
     test("accepts zero role ping cooldown minutes as no cooldown", async () => {
         const result = await feature.lfgRolePingCooldown(GUILD_ID, "set", 0);
 
         expect(result).toEqual({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_PING_COOLDOWN_SET,
+            kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET,
             value: { minutes: 0 },
         });
         expect((await getStoredConfig())?.lfgRolePingCooldownMinutes).toBe(0);
@@ -249,7 +249,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
         const result = await feature.lfgRole(GUILD_ID, "add", ROLE_ID);
 
         expect(result).toEqual({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_ADDED,
+            kind: EAdminResultKind.LFG_ROLE_ADDED,
             value: { role: ROLE_ID },
         });
         expect((await getStoredRoles()).map((role) => role.role)).toEqual([ROLE_ID]);
@@ -258,7 +258,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
     test("rejects adding everyone role", async () => {
         const result = await feature.lfgRole(GUILD_ID, "add", GUILD_ID);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_CANNOT_BE_EVERYONE });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE });
         expect(await getStoredRoles()).toEqual([]);
     });
 
@@ -267,7 +267,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
 
         const result = await feature.lfgRole(GUILD_ID, "remove", ROLE_ID);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_REMOVED, value: { role: ROLE_ID } });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_REMOVED, value: { role: ROLE_ID } });
         expect(await getStoredRoles()).toEqual([]);
     });
 
@@ -275,7 +275,7 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
         const result = await feature.lfgRole(GUILD_ID, null, null);
 
         expect(result).toEqual({
-            kind: EAdminFeatureReturnKind.LFG_ROLE_HELP,
+            kind: EAdminResultKind.LFG_ROLE_HELP,
             value: { roles: [] },
         });
     });
@@ -283,13 +283,13 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
     test("rejects add without role", async () => {
         const result = await feature.lfgRole(GUILD_ID, "add", null);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_MISSING_ROLE });
     });
 
     test("rejects remove without role", async () => {
         const result = await feature.lfgRole(GUILD_ID, "remove", null);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_MISSING_ROLE });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_MISSING_ROLE });
     });
 
     test("rejects duplicate role", async () => {
@@ -297,13 +297,13 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
 
         const result = await feature.lfgRole(GUILD_ID, "add", ROLE_ID);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_ALREADY_EXISTS, value: { role: ROLE_ID } });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_ALREADY_EXISTS, value: { role: ROLE_ID } });
     });
 
     test("rejects removing role that was not added", async () => {
         const result = await feature.lfgRole(GUILD_ID, "remove", ROLE_ID);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_NOT_FOUND, value: { role: ROLE_ID } });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_NOT_FOUND, value: { role: ROLE_ID } });
     });
 
     test("rejects adding more than five roles", async () => {
@@ -313,13 +313,13 @@ describe(AdminUseCases.name, { concurrent: false }, () => {
 
         const result = await feature.lfgRole(GUILD_ID, "add", "role-extra");
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_LIMIT_REACHED });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_LIMIT_REACHED });
         expect(await getStoredRoles()).toHaveLength(ADMIN_LFG_ROLE_LIMIT);
     });
 
     test("rejects role without add or remove action", async () => {
         const result = await feature.lfgRole(GUILD_ID, null, ROLE_ID);
 
-        expect(result).toEqual({ kind: EAdminFeatureReturnKind.LFG_ROLE_INVALID_OPTIONS });
+        expect(result).toEqual({ kind: EAdminResultKind.LFG_ROLE_INVALID_OPTIONS });
     });
 });

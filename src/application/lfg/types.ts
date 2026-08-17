@@ -3,7 +3,7 @@ import type { IRoom } from "../../domain/lfg/models/room.types.ts";
 import type { IUser } from "../../domain/lfg/models/user.types.ts";
 import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemoval.types.ts";
 
-export const enum ELfgFeatureReturnKind {
+export const enum ELfgResultKind {
     ROOMS_LISTED = "ROOMS_LISTED",
     HELP = "HELP",
     ROOM_CREATED = "ROOM_CREATED",
@@ -27,123 +27,123 @@ export const enum ELfgFeatureReturnKind {
     INVALID_SUBCOMMAND = "INVALID_SUBCOMMAND",
 }
 
-type TLfgFeatureReturnValueByKind = {
-    [ELfgFeatureReturnKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
-    [ELfgFeatureReturnKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
-    [ELfgFeatureReturnKind.ROOM_CODE_CHANGED]: { readonly oldCode: string; readonly newCode: string };
-    [ELfgFeatureReturnKind.ALREADY_IN_A_ROOM]: { readonly userId: string };
-    [ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS]: { readonly code: string };
-    [ELfgFeatureReturnKind.ROOM_JOINED]: {
+type TLfgResultValueByKind = {
+    [ELfgResultKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
+    [ELfgResultKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
+    [ELfgResultKind.ROOM_CODE_CHANGED]: { readonly oldCode: string; readonly newCode: string };
+    [ELfgResultKind.ALREADY_IN_A_ROOM]: { readonly userId: string };
+    [ELfgResultKind.ROOM_ALREADY_EXISTS]: { readonly code: string };
+    [ELfgResultKind.ROOM_JOINED]: {
         readonly userId: string;
         readonly room: IRoom;
         readonly leftRoomCode?: string;
         readonly removalResult?: TLfgPlayerRemovalResult;
     };
-    [ELfgFeatureReturnKind.ROOM_NOT_FOUND]: { readonly code: string };
-    [ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM]: { readonly userId: string; readonly room: IRoom };
-    [ELfgFeatureReturnKind.ROOM_IS_FULL]: { readonly code: string };
-    [ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF]: { readonly userId: string; readonly code: string };
-    [ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED]: {
+    [ELfgResultKind.ROOM_NOT_FOUND]: { readonly code: string };
+    [ELfgResultKind.ALREADY_IN_TARGET_ROOM]: { readonly userId: string; readonly room: IRoom };
+    [ELfgResultKind.ROOM_IS_FULL]: { readonly code: string };
+    [ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF]: { readonly userId: string; readonly code: string };
+    [ELfgResultKind.OWNERSHIP_TRANSFERRED]: {
         readonly userId: string;
         readonly targetId: string;
         readonly room: IRoom;
     };
-    [ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM]: {
+    [ELfgResultKind.PLAYER_NOT_IN_ROOM]: {
         readonly ownerId: string;
         readonly targetId: string;
         readonly code: string;
     };
-    [ELfgFeatureReturnKind.PLAYER_KICKED]: {
+    [ELfgResultKind.PLAYER_KICKED]: {
         readonly userId: string;
         readonly targetId: string;
         readonly room: IRoom;
         readonly removalResult: TLfgPlayerRemovalResult;
     };
-    [ELfgFeatureReturnKind.ROOM_LEFT]: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
-    [ELfgFeatureReturnKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
+    [ELfgResultKind.ROOM_LEFT]: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
+    [ELfgResultKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
 } & {
     [
         _ in
-            | ELfgFeatureReturnKind.HELP
-            | ELfgFeatureReturnKind.INVALID_ROOM_CODE
-            | ELfgFeatureReturnKind.NOT_ROOM_OWNER
-            | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
-            | ELfgFeatureReturnKind.NOT_IN_A_ROOM
-            | ELfgFeatureReturnKind.INVALID_SUBCOMMAND
+            | ELfgResultKind.HELP
+            | ELfgResultKind.INVALID_ROOM_CODE
+            | ELfgResultKind.NOT_ROOM_OWNER
+            | ELfgResultKind.CANNOT_KICK_YOURSELF
+            | ELfgResultKind.NOT_IN_A_ROOM
+            | ELfgResultKind.INVALID_SUBCOMMAND
     ]: never;
 };
 
-export type TLfgFeatureReturnOfKind<Kind extends ELfgFeatureReturnKind> =
+export type TLfgResultOfKind<Kind extends ELfgResultKind> =
     // https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
-    Kind extends ELfgFeatureReturnKind
-        ? TLfgFeatureReturnValueByKind[Kind] extends never
+    Kind extends ELfgResultKind
+        ? TLfgResultValueByKind[Kind] extends never
             ? { readonly kind: Kind }
-            : { readonly kind: Kind; readonly value: TLfgFeatureReturnValueByKind[Kind] }
+            : { readonly kind: Kind; readonly value: TLfgResultValueByKind[Kind] }
         : never;
 
-export type TLfgFeatureReturn = {
-    [Kind in ELfgFeatureReturnKind]: TLfgFeatureReturnOfKind<Kind>;
-}[ELfgFeatureReturnKind];
+export type TLfgResult = {
+    [Kind in ELfgResultKind]: TLfgResultOfKind<Kind>;
+}[ELfgResultKind];
 
-export type TLfgFeatureReturnTypes = {
-    status: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOMS_LISTED>;
-    help: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.HELP>;
-    create: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.ROOM_CREATED
-        | ELfgFeatureReturnKind.INVALID_ROOM_CODE
-        | ELfgFeatureReturnKind.ALREADY_IN_A_ROOM
-        | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
+export type TLfgResultTypes = {
+    status: TLfgResultOfKind<ELfgResultKind.ROOMS_LISTED>;
+    help: TLfgResultOfKind<ELfgResultKind.HELP>;
+    create: TLfgResultOfKind<
+        | ELfgResultKind.ROOM_CREATED
+        | ELfgResultKind.INVALID_ROOM_CODE
+        | ELfgResultKind.ALREADY_IN_A_ROOM
+        | ELfgResultKind.ROOM_ALREADY_EXISTS
     >;
-    changeOwnedRoomCode: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.ROOM_CODE_CHANGED
-        | ELfgFeatureReturnKind.INVALID_ROOM_CODE
-        | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
-        | ELfgFeatureReturnKind.NOT_ROOM_OWNER
-        | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+    changeOwnedRoomCode: TLfgResultOfKind<
+        | ELfgResultKind.ROOM_CODE_CHANGED
+        | ELfgResultKind.INVALID_ROOM_CODE
+        | ELfgResultKind.ROOM_ALREADY_EXISTS
+        | ELfgResultKind.NOT_ROOM_OWNER
+        | ELfgResultKind.NOT_IN_A_ROOM
     >;
-    changeRoomCode: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.ROOM_CODE_CHANGED
-        | ELfgFeatureReturnKind.INVALID_ROOM_CODE
-        | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
-        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    changeRoomCode: TLfgResultOfKind<
+        | ELfgResultKind.ROOM_CODE_CHANGED
+        | ELfgResultKind.INVALID_ROOM_CODE
+        | ELfgResultKind.ROOM_ALREADY_EXISTS
+        | ELfgResultKind.ROOM_NOT_FOUND
     >;
-    move: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.ROOM_JOINED
-        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
-        | ELfgFeatureReturnKind.ALREADY_IN_TARGET_ROOM
-        | ELfgFeatureReturnKind.ROOM_IS_FULL
+    move: TLfgResultOfKind<
+        | ELfgResultKind.ROOM_JOINED
+        | ELfgResultKind.ROOM_NOT_FOUND
+        | ELfgResultKind.ALREADY_IN_TARGET_ROOM
+        | ELfgResultKind.ROOM_IS_FULL
     >;
-    transfer: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
-        | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
-        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
-        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    transfer: TLfgResultOfKind<
+        | ELfgResultKind.OWNERSHIP_TRANSFERRED
+        | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
+        | ELfgResultKind.PLAYER_NOT_IN_ROOM
+        | ELfgResultKind.ROOM_NOT_FOUND
     >;
-    transferOwnedRoom: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
-        | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
-        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
-        | ELfgFeatureReturnKind.NOT_ROOM_OWNER
-        | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+    transferOwnedRoom: TLfgResultOfKind<
+        | ELfgResultKind.OWNERSHIP_TRANSFERRED
+        | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
+        | ELfgResultKind.PLAYER_NOT_IN_ROOM
+        | ELfgResultKind.NOT_ROOM_OWNER
+        | ELfgResultKind.NOT_IN_A_ROOM
     >;
-    kick: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.PLAYER_KICKED
-        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
-        | ELfgFeatureReturnKind.ROOM_NOT_FOUND
+    kick: TLfgResultOfKind<
+        | ELfgResultKind.PLAYER_KICKED
+        | ELfgResultKind.PLAYER_NOT_IN_ROOM
+        | ELfgResultKind.ROOM_NOT_FOUND
     >;
-    kickFromOwnedRoom: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.PLAYER_KICKED
-        | ELfgFeatureReturnKind.CANNOT_KICK_YOURSELF
-        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
-        | ELfgFeatureReturnKind.NOT_ROOM_OWNER
-        | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+    kickFromOwnedRoom: TLfgResultOfKind<
+        | ELfgResultKind.PLAYER_KICKED
+        | ELfgResultKind.CANNOT_KICK_YOURSELF
+        | ELfgResultKind.PLAYER_NOT_IN_ROOM
+        | ELfgResultKind.NOT_ROOM_OWNER
+        | ELfgResultKind.NOT_IN_A_ROOM
     >;
-    leave: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_LEFT | ELfgFeatureReturnKind.NOT_IN_A_ROOM>;
-    disband: TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.ROOM_DISBANDED | ELfgFeatureReturnKind.ROOM_NOT_FOUND>;
-    disbandOwnedRoom: TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.ROOM_DISBANDED
-        | ELfgFeatureReturnKind.NOT_ROOM_OWNER
-        | ELfgFeatureReturnKind.NOT_IN_A_ROOM
+    leave: TLfgResultOfKind<ELfgResultKind.ROOM_LEFT | ELfgResultKind.NOT_IN_A_ROOM>;
+    disband: TLfgResultOfKind<ELfgResultKind.ROOM_DISBANDED | ELfgResultKind.ROOM_NOT_FOUND>;
+    disbandOwnedRoom: TLfgResultOfKind<
+        | ELfgResultKind.ROOM_DISBANDED
+        | ELfgResultKind.NOT_ROOM_OWNER
+        | ELfgResultKind.NOT_IN_A_ROOM
     >;
 };
 
@@ -195,28 +195,28 @@ export type TDisbandOwnedLfgRoomArg = {
     readonly owner: IUser;
 };
 
-export type TGetLfgStatus = (arg: TGetLfgStatusArg) => MaybePromise<TLfgFeatureReturnTypes["status"]>;
-export type TCreateLfgRoomUseCase = (arg: TCreateLfgRoomArg) => MaybePromise<TLfgFeatureReturnTypes["create"]>;
+export type TGetLfgStatus = (arg: TGetLfgStatusArg) => MaybePromise<TLfgResultTypes["status"]>;
+export type TCreateLfgRoomUseCase = (arg: TCreateLfgRoomArg) => MaybePromise<TLfgResultTypes["create"]>;
 export type TChangeOwnedLfgRoomCodeUseCase = (
     arg: TChangeOwnedLfgRoomCodeArg,
-) => MaybePromise<TLfgFeatureReturnTypes["changeOwnedRoomCode"]>;
+) => MaybePromise<TLfgResultTypes["changeOwnedRoomCode"]>;
 export type TChangeLfgRoomCodeUseCase = (
     arg: TChangeLfgRoomCodeArg,
-) => MaybePromise<TLfgFeatureReturnTypes["changeRoomCode"]>;
-export type TMoveLfgUser = (arg: TMoveLfgUserArg) => MaybePromise<TLfgFeatureReturnTypes["move"]>;
-export type TTransferLfgRoomUseCase = (arg: TTransferLfgRoomArg) => MaybePromise<TLfgFeatureReturnTypes["transfer"]>;
+) => MaybePromise<TLfgResultTypes["changeRoomCode"]>;
+export type TMoveLfgUser = (arg: TMoveLfgUserArg) => MaybePromise<TLfgResultTypes["move"]>;
+export type TTransferLfgRoomUseCase = (arg: TTransferLfgRoomArg) => MaybePromise<TLfgResultTypes["transfer"]>;
 export type TTransferOwnedLfgRoomUseCase = (
     arg: TTransferOwnedLfgRoomArg,
-) => MaybePromise<TLfgFeatureReturnTypes["transferOwnedRoom"]>;
-export type TKickFromLfgRoomByCode = (arg: TKickFromLfgRoomByCodeArg) => MaybePromise<TLfgFeatureReturnTypes["kick"]>;
+) => MaybePromise<TLfgResultTypes["transferOwnedRoom"]>;
+export type TKickFromLfgRoomByCode = (arg: TKickFromLfgRoomByCodeArg) => MaybePromise<TLfgResultTypes["kick"]>;
 export type TKickFromOwnedLfgRoomUseCase = (
     arg: TKickFromOwnedLfgRoomArg,
-) => MaybePromise<TLfgFeatureReturnTypes["kickFromOwnedRoom"]>;
-export type TLeaveLfgRoom = (arg: TLeaveLfgRoomArg) => MaybePromise<TLfgFeatureReturnTypes["leave"]>;
-export type TDisbandLfgRoomUseCase = (arg: TDisbandLfgRoomArg) => MaybePromise<TLfgFeatureReturnTypes["disband"]>;
+) => MaybePromise<TLfgResultTypes["kickFromOwnedRoom"]>;
+export type TLeaveLfgRoom = (arg: TLeaveLfgRoomArg) => MaybePromise<TLfgResultTypes["leave"]>;
+export type TDisbandLfgRoomUseCase = (arg: TDisbandLfgRoomArg) => MaybePromise<TLfgResultTypes["disband"]>;
 export type TDisbandOwnedLfgRoomUseCase = (
     arg: TDisbandOwnedLfgRoomArg,
-) => MaybePromise<TLfgFeatureReturnTypes["disbandOwnedRoom"]>;
+) => MaybePromise<TLfgResultTypes["disbandOwnedRoom"]>;
 
 export type TLfgRoom = IRoom & {
     readonly id: string;
@@ -263,8 +263,8 @@ export type TLfgPersistence = {
     readonly setRoomOwner: TSetLfgRoomOwner;
 };
 
-type TOwnedRoomFailure = TLfgFeatureReturnOfKind<
-    ELfgFeatureReturnKind.NOT_IN_A_ROOM | ELfgFeatureReturnKind.NOT_ROOM_OWNER
+type TOwnedRoomFailure = TLfgResultOfKind<
+    ELfgResultKind.NOT_IN_A_ROOM | ELfgResultKind.NOT_ROOM_OWNER
 >;
 
 export type TGetOwnedLfgRoomResult =
@@ -287,10 +287,10 @@ export type TChangeLfgRoomCodeInRoom = (arg: {
     readonly room: TLfgRoom;
     readonly newCode: string;
 }) => MaybePromise<
-    TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.ROOM_CODE_CHANGED
-        | ELfgFeatureReturnKind.INVALID_ROOM_CODE
-        | ELfgFeatureReturnKind.ROOM_ALREADY_EXISTS
+    TLfgResultOfKind<
+        | ELfgResultKind.ROOM_CODE_CHANGED
+        | ELfgResultKind.INVALID_ROOM_CODE
+        | ELfgResultKind.ROOM_ALREADY_EXISTS
     >
 >;
 
@@ -299,7 +299,7 @@ export type TKickFromLfgRoom = (arg: {
     readonly room: TLfgRoom;
     readonly target: IUser;
 }) => MaybePromise<
-    TLfgFeatureReturnOfKind<ELfgFeatureReturnKind.PLAYER_KICKED | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM>
+    TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM>
 >;
 
 export type TRemovePlayerFromLfgRoom = (arg: {
@@ -312,10 +312,10 @@ export type TTransferLfgRoom = (arg: {
     readonly room: TLfgRoom;
     readonly target: IUser;
 }) => MaybePromise<
-    TLfgFeatureReturnOfKind<
-        | ELfgFeatureReturnKind.OWNERSHIP_TRANSFERRED
-        | ELfgFeatureReturnKind.CANNOT_TRANSFER_TO_YOURSELF
-        | ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM
+    TLfgResultOfKind<
+        | ELfgResultKind.OWNERSHIP_TRANSFERRED
+        | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
+        | ELfgResultKind.PLAYER_NOT_IN_ROOM
     >
 >;
 

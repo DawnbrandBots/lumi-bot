@@ -1,10 +1,10 @@
-import { EAdminFeatureReturnKind, type TAdminFeatureReturnTypes } from "./types.ts";
+import { EAdminResultKind, type TAdminResultTypes } from "./types.ts";
 import type { TAdminPersistence } from "./types.ts";
 
 export async function clearLfgChannel(
     persistence: TAdminPersistence,
     guild: string,
-): Promise<TAdminFeatureReturnTypes["lfgChannel"]> {
+): Promise<TAdminResultTypes["lfgChannel"]> {
     await persistence.clearLfgChannel({ guildId: guild });
-    return { kind: EAdminFeatureReturnKind.LFG_CHANNEL_CLEARED };
+    return { kind: EAdminResultKind.LFG_CHANNEL_CLEARED };
 }

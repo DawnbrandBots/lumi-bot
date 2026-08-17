@@ -1,6 +1,6 @@
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
 import type { IUser } from "../../../domain/lfg/models/user.types.ts";
-import { ELfgFeatureReturnKind } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 import type { TFindLfgRoomByUser, TKickFromLfgRoom, TLfgRoom, TRemovePlayerFromLfgRoom } from "../types.ts";
 
 function applyPlayerRemoval(room: TLfgRoom, userId: string, removalResult: Awaited<ReturnType<TRemovePlayerFromLfgRoom>>): TLfgRoom {
@@ -25,14 +25,14 @@ export async function kickFromRoom(
     const targetRoom = await findRoomByUser({ guildId, userId: target.id });
     if (targetRoom?.id !== room.id) {
         return {
-            kind: ELfgFeatureReturnKind.PLAYER_NOT_IN_ROOM,
+            kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
             value: { ownerId: room.ownerId, targetId: target.id, code: room.code },
         } as const;
     }
 
     const removalResult = await removePlayerFromRoom({ room, userId: target.id });
     return {
-        kind: ELfgFeatureReturnKind.PLAYER_KICKED,
+        kind: ELfgResultKind.PLAYER_KICKED,
         value: { userId: room.ownerId, targetId: target.id, room: applyPlayerRemoval(room, target.id, removalResult), removalResult },
     } as const;
 }
