@@ -4,7 +4,7 @@ import type {
     TCommandAutocompleteHandler,
     TCommandHandlers,
     TCommandRunHandler,
-} from "../../../../src/presentation/discord/commands/types.ts";
+} from "../../../../../src/presentation/discord/commands/types.ts";
 
 declare const run: TCommandRunHandler;
 declare const autocomplete: TCommandAutocompleteHandler;

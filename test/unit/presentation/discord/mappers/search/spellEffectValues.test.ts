@@ -1,14 +1,14 @@
 import { describe, expect, test } from "vitest";
-import { ESpellRole } from "../../../src/domain/game/models/spell.types.ts";
-import { ESpellEffectKind } from "../../../src/domain/game/models/spellEffect.types.ts";
+import { ESpellRole } from "../../../../../../src/domain/game/models/spell.types.ts";
+import { ESpellEffectKind } from "../../../../../../src/domain/game/models/spellEffect.types.ts";
 import {
     ESpellEffectScalingStrategy,
     ESpellEffectValueUnitKind,
-} from "../../../src/domain/game/models/spellEffectValue.types.ts";
+} from "../../../../../../src/domain/game/models/spellEffectValue.types.ts";
 import {
     spellEffectsValues,
     type ISpellEffectValueWithToLevel,
-} from "../../../src/presentation/discord/mappers/search/spellEffectValues.ts";
+} from "../../../../../../src/presentation/discord/mappers/search/spellEffectValues.ts";
 
 function fixedValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
     return {

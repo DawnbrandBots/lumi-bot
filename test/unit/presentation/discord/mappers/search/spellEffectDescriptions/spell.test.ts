@@ -3,10 +3,10 @@
  */
 
 import { describe, expect, test } from "vitest";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../../src/domain/game/models/spellEffect.types.ts";
-import { EStat } from "../../../../src/domain/game/models/stat.types.ts";
-import { EStatChange } from "../../../../src/domain/game/models/statChange.types.ts";
-import { describeSpellEffects } from "../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
+import { EStatChange } from "../../../../../../../src/domain/game/models/statChange.types.ts";
+import { describeSpellEffects } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 import {
     ATK_PERCENT_VALUE_UNIT,
     CROSS_SHAPE,

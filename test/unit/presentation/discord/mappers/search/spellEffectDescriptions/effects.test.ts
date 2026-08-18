@@ -3,15 +3,15 @@
  */
 
 import { describe, expect, test } from "vitest";
-import { EDirection } from "../../../../src/domain/game/models/direction.types.ts";
+import { EDirection } from "../../../../../../../src/domain/game/models/direction.types.ts";
 import {
     ESpellEffectKind,
     ESpellEffectTarget,
     ESpellEffectTileType,
-} from "../../../../src/domain/game/models/spellEffect.types.ts";
-import { EStat } from "../../../../src/domain/game/models/stat.types.ts";
-import { EStatChange } from "../../../../src/domain/game/models/statChange.types.ts";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+} from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
+import { EStatChange } from "../../../../../../../src/domain/game/models/statChange.types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 import {
     ATK_PERCENT_VALUE_UNIT,
     BLUE_COLOR,

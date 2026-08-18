@@ -3,12 +3,12 @@ import { describe, expect, test, vi } from "vitest";
 import {
     getCommandAutocompleteHandler,
     getCommandRunHandler,
-} from "../../../../src/presentation/discord/commands/handlers.ts";
+} from "../../../../../src/presentation/discord/commands/handlers.ts";
 import type {
     TCommandAutocompleteHandler,
     TCommandRegistry,
     TCommandRunHandler,
-} from "../../../../src/presentation/discord/commands/types.ts";
+} from "../../../../../src/presentation/discord/commands/types.ts";
 import type {
     nestedCommandCommandRegistrationData,
     plainCommandCommandRegistrationData,
