@@ -1,25 +1,13 @@
-import {
-    channelMention,
-    inlineCode,
-    roleMention,
-    time,
-    userMention,
-} from "discord.js";
+import { inlineCode, userMention } from "discord.js";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { ELfgResultKind } from "../../../../../../src/application/lfg/types.ts";
-import * as constants from "../../../../../../src/domain/game/constants.ts";
 import { ELfgPlayerRemovalKind } from "../../../../../../src/domain/lfg/models/playerRemoval.types.ts";
 import { mapLfgResultToMessageBase } from "../../../../../../src/presentation/discord/mappers/lfg.ts";
-import { EMessageKind } from "../../../../../../src/presentation/discord/message.types.ts";
 import {
     COOLDOWN_ROLE_ID,
     GUILD_CONFIG,
-    LfgConstants,
     PINGABLE_ROLE_ID,
-    PUBLIC_CHANNEL_ID,
     ROOM,
-    roomDescription,
-    statusDescription,
 } from "./fixtures.ts";
 
 afterEach(() => {
@@ -32,37 +20,14 @@ describe(mapLfgResultToMessageBase.name, () => {
     test.each<{
         readonly name: string;
         readonly input: Omit<Input, "callerId"> & { readonly callerId?: Input["callerId"] };
-        readonly expected: Pick<ReturnType<typeof mapLfgResultToMessageBase>, "kind" | "embeds">;
     }>([
         {
             name: "non-empty room list",
             input: { result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [ROOM] } } },
-            expected: {
-                kind: EMessageKind.NEUTRAL,
-                embeds: [
-                    {
-                        description: statusDescription({
-                            roomsDescription: `- ${roomDescription(ROOM)}`,
-                            lfgChannel: LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
-                        }),
-                    },
-                ],
-            },
         },
         {
             name: "empty room list",
             input: { result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [] } } },
-            expected: {
-                kind: EMessageKind.NEUTRAL,
-                embeds: [
-                    {
-                        description: statusDescription({
-                            roomsDescription: LfgConstants.LFG_EMPTY_ROOM_LIST_DESCRIPTION,
-                            lfgChannel: LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
-                        }),
-                    },
-                ],
-            },
         },
         {
             name: "maps status with configured LFG channel",
@@ -70,31 +35,11 @@ describe(mapLfgResultToMessageBase.name, () => {
                 result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
                 guildConfig: GUILD_CONFIG,
             },
-            expected: {
-                kind: EMessageKind.NEUTRAL,
-                embeds: [
-                    {
-                        description: statusDescription({
-                            roomsDescription: `- ${roomDescription(ROOM)}`,
-                            lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
-                            lfgRolePingCooldownMinutes: 45,
-                        }),
-                    },
-                ],
-            },
         },
         {
             name: "room created",
             input: {
                 result: { kind: ELfgResultKind.ROOM_CREATED, value: { userId: "owner", room: ROOM } },
-            },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("owner")} created room ${inlineCode(ROOM.code)}.`,
-                    },
-                ],
             },
         },
         {
@@ -104,14 +49,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                     kind: ELfgResultKind.ROOM_CODE_CHANGED,
                     value: { oldCode: "beta", newCode: ROOM.code },
                 },
-            },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("owner")} changed room ${inlineCode("beta")}'s code to ${inlineCode(ROOM.code)}.`,
-                    },
-                ],
             },
         },
         {
@@ -123,14 +60,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                     value: { userId: "player-1", room: ROOM, leftRoomCode: "beta" },
                 },
             },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("player-1")} joined room ${inlineCode(ROOM.code)}.`,
-                    },
-                ],
-            },
         },
         {
             name: "ownership transferred",
@@ -139,14 +68,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                     kind: ELfgResultKind.OWNERSHIP_TRANSFERRED,
                     value: { userId: "owner", targetId: "player-1", room: ROOM },
                 },
-            },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("owner")} transferred ${inlineCode(ROOM.code)}'s ownership to ${userMention("player-1")}.`,
-                    },
-                ],
             },
         },
         {
@@ -162,14 +83,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                     },
                 },
             },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("owner")} kicked ${userMention("player-1")} from ${inlineCode(ROOM.code)}.`,
-                    },
-                ],
-            },
         },
         {
             name: "room left",
@@ -179,14 +92,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                     value: { kind: ELfgPlayerRemovalKind.LEFT_ROOM_NORMALLY, userId: "player-1", code: ROOM.code },
                 },
             },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("player-1")} left ${inlineCode(ROOM.code)}.`,
-                    },
-                ],
-            },
         },
         {
             name: "room left and deleted",
@@ -195,14 +100,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                     kind: ELfgResultKind.ROOM_LEFT,
                     value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: "owner", code: ROOM.code },
                 },
-            },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("owner")} left ${inlineCode(ROOM.code)}. Room deleted.`,
-                    },
-                ],
             },
         },
         {
@@ -218,78 +115,30 @@ describe(mapLfgResultToMessageBase.name, () => {
                     },
                 },
             },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("owner")} left ${inlineCode(ROOM.code)}. Ownership transferred to ${userMention("player-1")}`,
-                    },
-                ],
-            },
         },
         {
             name: "room disbanded",
             input: {
                 result: { kind: ELfgResultKind.ROOM_DISBANDED, value: { userId: "owner", code: ROOM.code } },
             },
-            expected: {
-                kind: EMessageKind.POSITIVE,
-                embeds: [
-                    {
-                        description: `${userMention("owner")} disbanded ${inlineCode(ROOM.code)}.`,
-                    },
-                ],
-            },
         },
         {
             name: "invalid room code",
             input: { result: { kind: ELfgResultKind.INVALID_ROOM_CODE } },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: LfgConstants.LFG_INVALID_ROOM_CODE_DESCRIPTION,
-                    },
-                ],
-            },
         },
         {
             name: "already in a room",
             input: { result: { kind: ELfgResultKind.ALREADY_IN_A_ROOM, value: { userId: "owner" } } },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: LfgConstants.LFG_ALREADY_IN_A_ROOM_DESCRIPTION,
-                    },
-                ],
-            },
         },
         {
             name: "room already exists",
             input: {
                 result: { kind: ELfgResultKind.ROOM_ALREADY_EXISTS, value: { code: ROOM.code } },
             },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: `Room ${inlineCode(ROOM.code)} already exists.`,
-                    },
-                ],
-            },
         },
         {
             name: "room not found",
             input: { result: { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code: ROOM.code } } },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: `Room ${inlineCode(ROOM.code)} does not exist.`,
-                    },
-                ],
-            },
         },
         {
             name: "already in target room",
@@ -300,22 +149,10 @@ describe(mapLfgResultToMessageBase.name, () => {
                     value: { room: ROOM, userId: "player-1" },
                 },
             },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [{ description: roomDescription(ROOM) }],
-            },
         },
         {
             name: "room full",
             input: { result: { kind: ELfgResultKind.ROOM_IS_FULL, value: { code: ROOM.code } } },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: `Room ${inlineCode(ROOM.code)} already has ${constants.AMOUNT_OF_PLAYERS_IN_A_BATTLE} players.`,
-                    },
-                ],
-            },
         },
         {
             name: "cannot transfer to yourself",
@@ -326,14 +163,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                     value: { code: ROOM.code, userId: "user" },
                 },
             },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: LfgConstants.LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION,
-                    },
-                ],
-            },
         },
         {
             name: "player not in room",
@@ -343,55 +172,24 @@ describe(mapLfgResultToMessageBase.name, () => {
                     value: { ownerId: "owner", targetId: "target", code: ROOM.code },
                 },
             },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: `${userMention("target")} is not in your room.`,
-                    },
-                ],
-            },
         },
         {
             name: "not room owner",
             input: { result: { kind: ELfgResultKind.NOT_ROOM_OWNER } },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: LfgConstants.LFG_NOT_ROOM_OWNER_DESCRIPTION,
-                    },
-                ],
-            },
         },
         {
             name: "cannot kick yourself",
             input: { result: { kind: ELfgResultKind.CANNOT_KICK_YOURSELF } },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: LfgConstants.LFG_CANNOT_KICK_YOURSELF_DESCRIPTION,
-                    },
-                ],
-            },
         },
         {
             name: "not in a room",
             input: { result: { kind: ELfgResultKind.NOT_IN_A_ROOM } },
-            expected: {
-                kind: EMessageKind.NEGATIVE,
-                embeds: [
-                    {
-                        description: LfgConstants.LFG_NOT_IN_A_ROOM_DESCRIPTION,
-                    },
-                ],
-            },
         },
-    ])("maps $name", ({ input, expected }) => {
+    ])("maps $name", ({ input }) => {
         const { callerId = "owner", ...mapperInput } = input;
         const messageBase = mapLfgResultToMessageBase({ ...mapperInput, callerId });
-        expect(messageBase).toMatchObject(expected);
+
+        expect(messageBase).toMatchSnapshot();
     });
 
     test.each([
@@ -543,7 +341,6 @@ describe(mapLfgResultToMessageBase.name, () => {
     test("maps status with configured LFG values", () => {
         const STATUS_NOW = new Date("2026-07-19T10:00:00.000Z");
         const COOLDOWN_ROLE_LAST_PINGED_AT = new Date("2026-07-19T09:30:00.000Z");
-        const COOLDOWN_ROLE_PINGABLE_AT = new Date("2026-07-19T10:15:00.000Z");
 
         vi.useFakeTimers();
         vi.setSystemTime(STATUS_NOW);
@@ -560,21 +357,6 @@ describe(mapLfgResultToMessageBase.name, () => {
             },
         });
 
-        expect(messageBase).toMatchObject({
-            kind: EMessageKind.NEUTRAL,
-            embeds: [
-                {
-                    description: statusDescription({
-                        roomsDescription: `- ${roomDescription(ROOM)}`,
-                        lfgChannel: channelMention(PUBLIC_CHANNEL_ID),
-                        lfgRoles: [
-                            `${roleMention(PINGABLE_ROLE_ID)} (pingable immediately)`,
-                            `${roleMention(COOLDOWN_ROLE_ID)} (pingable on ${time(COOLDOWN_ROLE_PINGABLE_AT)})`,
-                        ],
-                        lfgRolePingCooldownMinutes: 45,
-                    }),
-                },
-            ],
-        });
+        expect(messageBase).toMatchSnapshot();
     });
 });
