@@ -10,7 +10,6 @@ import { generateSearchIndexEntries } from "../../../application/search/searchAl
 import type { TSearchKind } from "../../../domain/search/types.ts";
 import { searchItemInDb } from "../../../infrastructure/game/persistence/searchItemInDb.ts";
 import { FuseSearchEngine } from "../../../infrastructure/search/engine.ts";
-import SEARCH_CONFIGS from "../../../infrastructure/search/configs.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
 
 export type TSearchUseCases = {
@@ -29,7 +28,7 @@ export async function composeSearchUseCases(arg: { readonly em: EntityManager })
     const getEntityByKindAndId: TGetEntityByKindAndId = <Kind extends TSearchKind>(searchArg: {
         kind: Kind;
         id: string;
-    }) => searchItemInDb<Kind>({ configs: SEARCH_CONFIGS, em: arg.em }, searchArg);
+    }) => searchItemInDb<Kind>({ em: arg.em }, searchArg);
 
     return {
         getSearchIndexEntries,
