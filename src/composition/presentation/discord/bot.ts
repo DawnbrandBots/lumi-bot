@@ -1,9 +1,9 @@
 import { Events } from "discord.js";
-import getBot from "../../../loaders/bot.ts";
+import { createDiscordClient } from "../../../presentation/discord/client.ts";
 import type { TDiscordEventHandlers } from "./eventHandlers.ts";
 
 export function composeDiscordBot(arg: { readonly eventHandlers: TDiscordEventHandlers }) {
-    const bot = getBot();
+    const bot = createDiscordClient();
 
     bot.on(Events.ClientReady, arg.eventHandlers.clientReady);
     bot.on(Events.MessageCreate, arg.eventHandlers.messageCreate);

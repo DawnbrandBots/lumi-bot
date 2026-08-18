@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
 
-export default function getBot() {
+export function createDiscordClient() {
     return new Client({
         intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages],
     });
