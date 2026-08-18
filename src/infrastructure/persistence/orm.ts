@@ -1,5 +1,5 @@
 import { MikroORM, type Options } from "@mikro-orm/sqlite";
 
-export default function getOrm(config: Options) {
+export function initOrm(config: Options) {
     return MikroORM.init(config);
 }
