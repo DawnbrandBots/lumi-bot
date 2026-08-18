@@ -32,7 +32,7 @@ beforeAll(async () => {
         items: generateSearchIndexEntries(await getEntitiesForGeneratingSearchAliases({ em })),
     });
     searchAutocomplete = getSearchAutocomplete({
-        getSearchIndexEntries: (arg) => searchEngine.search(arg.input, arg.limit),
+        suggestSearchResults: (arg) => searchEngine.search(arg.input, arg.limit),
     });
 });
 

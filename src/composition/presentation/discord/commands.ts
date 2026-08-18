@@ -22,7 +22,7 @@ export function composeDiscordCommands(arg: {
         admin: { run: getAdminCommand(arg.adminUseCases) },
         search: {
             run: getSearchCommand({ resolveSearchInput: arg.searchUseCases.resolveSearchInput }),
-            autocomplete: getSearchAutocomplete({ getSearchIndexEntries: arg.searchUseCases.getSearchIndexEntries }),
+            autocomplete: getSearchAutocomplete({ suggestSearchResults: arg.searchUseCases.suggestSearchResults }),
         },
         help: { run: getHelpCommand() },
         links: { run: getLinksCommand() },
