@@ -25,7 +25,7 @@ import { move } from "../../../application/lfg/useCases/move.ts";
 import { status } from "../../../application/lfg/useCases/status.ts";
 import { transfer } from "../../../application/lfg/useCases/transfer.ts";
 import { transferOwnedRoom } from "../../../application/lfg/useCases/transferOwnedRoom.ts";
-import { getWithLfgUnitOfWork } from "../../../loaders/lfgUnitOfWork.ts";
+import { getWithLfgUnitOfWork } from "./unitOfWork.ts";
 
 export type TLfgUseCases = {
     readonly changeLfgRoomCode: TChangeLfgRoomCodeUseCase;
