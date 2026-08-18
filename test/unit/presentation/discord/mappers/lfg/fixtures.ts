@@ -10,15 +10,20 @@ export const ROOM: IRoom = {
 };
 
 export const PUBLIC_CHANNEL_ID = "public-channel";
+export const PINGABLE_ROLE_ID = "pingable-role";
+export const COOLDOWN_ROLE_ID = "cooldown-role";
+export const COOLDOWN_ROLE_LAST_PINGED_AT = new Date("2026-07-19T09:30:00.000Z");
+export const STATUS_NOW = new Date("2026-07-19T10:00:00.000Z");
 
 export const GUILD_CONFIG = {
     guild: "guild-1",
     lfgChannel: PUBLIC_CHANNEL_ID,
     lfgRolePingCooldownMinutes: 45,
+    lfgRoles: [
+        { role: PINGABLE_ROLE_ID, lastPingedAt: null },
+        { role: COOLDOWN_ROLE_ID, lastPingedAt: COOLDOWN_ROLE_LAST_PINGED_AT },
+    ],
 };
-
-export const PINGABLE_ROLE_ID = "pingable-role";
-export const COOLDOWN_ROLE_ID = "cooldown-role";
 
 export const LfgConstants = {
     LFG_NOT_CONFIGURED_DESCRIPTION: italic("Not configured"),

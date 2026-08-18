@@ -451,24 +451,9 @@ exports[`mapLfgResultToMessageBase > maps 'status with configured LFG channel' 1
 - \`alpha\`: <@owner> (owner), <@player-1>, <@player-2>
 ### Server config
 - LFG channel: <#public-channel>
-- LFG roles: _Not configured_
-- LFG roles ping cooldown: 45 minutes",
-    },
-  ],
-  "kind": "NEUTRAL",
-}
-`;
-
-exports[`mapLfgResultToMessageBase > maps 'status with configured LFG values' 1`] = `
-{
-  "embeds": [
-    {
-      "color": 12745742,
-      "description": "### Rooms
-- \`alpha\`: <@owner> (owner), <@player-1>, <@player-2>
-### Server config
-- LFG channel: <#public-channel>
-- LFG roles: _Not configured_
+- LFG roles:
+  - <@&pingable-role> (pingable immediately)
+  - <@&cooldown-role> (pingable on <t:1784456100>)
 - LFG roles ping cooldown: 45 minutes",
     },
   ],
