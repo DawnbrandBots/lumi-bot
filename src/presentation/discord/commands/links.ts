@@ -29,7 +29,10 @@ const response = createNeutralMessage({
                     `https://faq.shadows.nintendo.com/hc/requests/new?ticket_form_id=47168499131417`,
                 ),
                 hyperlink(`Feedback`, `https://faq.shadows.nintendo.com/hc/requests/new?ticket_form_id=47168543624985`),
-                hyperlink(`Inquiries`, `https://faq.shadows.nintendo.com/hc/requests/new?ticket_form_id=47169222846745`),
+                hyperlink(
+                    `Inquiries`,
+                    `https://faq.shadows.nintendo.com/hc/requests/new?ticket_form_id=47169222846745`,
+                ),
                 hyperlink(
                     `Reporting errors in text`,
                     `https://faq.shadows.nintendo.com/hc/en-us/requests/new?ticket_form_id=47168506399001`,

@@ -39,9 +39,6 @@ export function useAdminUseCases() {
         },
         getStoredConfig: (): Promise<GuildConfig | null> => orm.em.fork().findOne(GuildConfig, { guild: GUILD_ID }),
         getStoredRoles: (): Promise<GuildConfigLfgRole[]> =>
-            orm
-                .em
-                .fork()
-                .find(GuildConfigLfgRole, { guildConfig: { guild: GUILD_ID } }, { orderBy: { role: "asc" } }),
+            orm.em.fork().find(GuildConfigLfgRole, { guildConfig: { guild: GUILD_ID } }, { orderBy: { role: "asc" } }),
     };
 }

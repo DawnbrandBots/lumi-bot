@@ -1,6 +1,10 @@
 import { codeBlock, type APIEmbed } from "discord.js";
-import type { ISpell, ISpellShape } from "../../../../domain/game/models/spell.types.ts";
-import { ESpellDraggingMode, ESpellRole } from "../../../../domain/game/models/spell.types.ts";
+import type {
+    ESpellDraggingMode,
+    ESpellRole,
+    ISpell,
+    ISpellShape,
+} from "../../../../domain/game/models/spell.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
 import {

@@ -1,4 +1,9 @@
-import { MessageFlags, type CacheType, type ChatInputCommandInteraction, type InteractionReplyOptions } from "discord.js";
+import {
+    MessageFlags,
+    type CacheType,
+    type ChatInputCommandInteraction,
+    type InteractionReplyOptions,
+} from "discord.js";
 import { createErrorMessage } from "../../message.ts";
 
 export async function runWithGuild(

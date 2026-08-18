@@ -42,7 +42,11 @@ function timestamp(value: Date | string): number {
     return value instanceof Date ? value.getTime() : new Date(value).getTime();
 }
 
-function toPublicRoom(room: { readonly code: string; readonly ownerId: string; readonly playerIds: readonly string[] }) {
+function toPublicRoom(room: {
+    readonly code: string;
+    readonly ownerId: string;
+    readonly playerIds: readonly string[];
+}) {
     return { code: room.code, ownerId: room.ownerId, playerIds: room.playerIds };
 }
 
@@ -104,8 +108,7 @@ class LfgUseCases {
 
     public async move(guildId: string, user: IUser, code: string) {
         const result = await this.moveLfgUser({ guildId, user, code });
-        return result.kind === ELfgResultKind.ROOM_JOINED ||
-            result.kind === ELfgResultKind.ALREADY_IN_TARGET_ROOM
+        return result.kind === ELfgResultKind.ROOM_JOINED || result.kind === ELfgResultKind.ALREADY_IN_TARGET_ROOM
             ? { ...result, value: { ...result.value, room: toPublicRoom(result.value.room) } }
             : result;
     }
