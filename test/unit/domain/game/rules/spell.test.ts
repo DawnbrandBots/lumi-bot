@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { ESpellDraggingMode } from "../../../../src/domain/game/models/spell.types.ts";
-import { ESpellEffectTarget } from "../../../../src/domain/game/models/spellEffect.types.ts";
-import Spell from "../../../../src/domain/game/rules/spell.ts";
+import { ESpellDraggingMode } from "../../../../../src/domain/game/models/spell.types.ts";
+import { ESpellEffectTarget } from "../../../../../src/domain/game/models/spellEffect.types.ts";
+import Spell from "../../../../../src/domain/game/rules/spell.ts";
 
 describe(Spell.draggingModeKind.name, () => {
     test.each([

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import Weapon from "../../../../src/domain/game/rules/weapon.ts";
-import type { IWeaponSkill } from "../../../../src/domain/game/models/weaponSkill.types.ts";
+import Weapon from "../../../../../src/domain/game/rules/weapon.ts";
+import type { IWeaponSkill } from "../../../../../src/domain/game/models/weaponSkill.types.ts";
 
 describe(Weapon.weaponTypeSkill.name, () => {
     const skills = [{ id: "rank-1" }, { id: "rank-2" }, { id: "rank-3" }] as IWeaponSkill[];
