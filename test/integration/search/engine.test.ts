@@ -38,8 +38,8 @@ describe(FuseSearchEngine.name, () => {
             });
         }
 
-        test("returns undefined when there is no result", () => {
-            expect(searchEngine.searchOne(NO_SEARCH_RESULT_INPUT)).toBeUndefined();
+        test("returns null when there is no result", () => {
+            expect(searchEngine.searchOne(NO_SEARCH_RESULT_INPUT)).toBeNull();
         });
     });
 
