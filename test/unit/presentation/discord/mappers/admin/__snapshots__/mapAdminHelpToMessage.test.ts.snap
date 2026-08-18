@@ -1,0 +1,69 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`admin help messages > maps LFG channel help 1`] = `
+{
+  "embeds": [
+    {
+      "color": 12745742,
+      "description": "Sets the channel where LFG messages are sent.
+By default, LFG messages are only visible to the command user.
+
+**Valid combinations:**
+- \`/admin lfg channel\`: Show this help and current value.
+- \`/admin lfg channel action:set channel:#channel\`: Set the public channel.
+- \`/admin lfg channel action:clear\`: Clear the public channel.
+
+**Current value:** No channel set",
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "NEUTRAL",
+}
+`;
+
+exports[`admin help messages > maps LFG role help 1`] = `
+{
+  "embeds": [
+    {
+      "color": 12745742,
+      "description": "Sets roles pingable by \`/lfg ping\`.
+
+**Valid combinations:**
+- \`/admin lfg role\`: Show valid options combinations and current pingable roles.
+- \`/admin lfg role action:add role:@role\`: Add a ping role.
+- \`/admin lfg role action:remove role:@role\`: Remove a ping role.
+
+**Current options:**
+No pingable role set",
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "NEUTRAL",
+}
+`;
+
+exports[`admin help messages > maps LFG role ping cooldown help 1`] = `
+{
+  "embeds": [
+    {
+      "color": 12745742,
+      "description": "Sets the time between pings for each LFG pingable role.
+
+**Valid combinations:**
+- \`/admin lfg role-ping-cooldown\`: Show this help and current value.
+- \`/admin lfg role-ping-cooldown action:set minutes:30\`: Set the cooldown.
+- \`/admin lfg role-ping-cooldown action:clear\`: Clear the cooldown value.
+
+**Current value:** 45 minutes",
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "NEUTRAL",
+}
+`;

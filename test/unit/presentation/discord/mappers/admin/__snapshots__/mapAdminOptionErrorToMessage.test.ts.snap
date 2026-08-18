@@ -1,0 +1,71 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`admin option error messages > maps invalid option combinations and missing values 1`] = `
+{
+  "everyoneRole": {
+    "content": "-# Everyone point and laugh at <@1454944471358898209>! <:emoji:1474191899781758976>",
+    "embeds": [
+      {
+        "color": 10038562,
+        "description": "\`@everyone\` cannot be configured as an LFG pingable role.",
+      },
+    ],
+    "flags": [
+      64,
+    ],
+    "kind": "ERROR",
+  },
+  "invalidOptions": {
+    "content": "-# Everyone point and laugh at <@1454944471358898209>! <:emoji:1474191899781758976>",
+    "embeds": [
+      {
+        "color": 10038562,
+        "description": "Invalid options",
+      },
+    ],
+    "flags": [
+      64,
+    ],
+    "kind": "ERROR",
+  },
+  "invalidRoleOptions": {
+    "content": "-# Everyone point and laugh at <@1454944471358898209>! <:emoji:1474191899781758976>",
+    "embeds": [
+      {
+        "color": 10038562,
+        "description": "Invalid options",
+      },
+    ],
+    "flags": [
+      64,
+    ],
+    "kind": "ERROR",
+  },
+  "missingChannel": {
+    "content": "-# Everyone point and laugh at <@1454944471358898209>! <:emoji:1474191899781758976>",
+    "embeds": [
+      {
+        "color": 10038562,
+        "description": "Missing channel",
+      },
+    ],
+    "flags": [
+      64,
+    ],
+    "kind": "ERROR",
+  },
+  "missingRole": {
+    "content": "-# Everyone point and laugh at <@1454944471358898209>! <:emoji:1474191899781758976>",
+    "embeds": [
+      {
+        "color": 10038562,
+        "description": "Missing role",
+      },
+    ],
+    "flags": [
+      64,
+    ],
+    "kind": "ERROR",
+  },
+}
+`;

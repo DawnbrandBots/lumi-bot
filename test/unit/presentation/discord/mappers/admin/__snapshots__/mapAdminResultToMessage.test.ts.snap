@@ -1,0 +1,106 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mapAdminResultToMessage > LFG_CHANNEL_CLEARED 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "LFG messages are now only visible by command users.",
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapAdminResultToMessage > LFG_CHANNEL_SET 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "LFG messages will be posted in <#channel-1>.",
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapAdminResultToMessage > LFG_GET_CONFIG 1`] = `
+{
+  "embeds": [
+    {
+      "color": 12745742,
+      "fields": [
+        {
+          "name": "Channel",
+          "value": "<#channel-1>",
+        },
+        {
+          "name": "Roles",
+          "value": "<@&role-1>",
+        },
+        {
+          "name": "Role ping cooldown",
+          "value": "45 minutes",
+        },
+      ],
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "NEUTRAL",
+}
+`;
+
+exports[`mapAdminResultToMessage > LFG_ROLE_ADDED 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@&role-1> can now be pinged by \`lfg ping\`.",
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapAdminResultToMessage > LFG_ROLE_PING_COOLDOWN_SET 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "LFG pingable roles can be pinged every 45 minutes.",
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapAdminResultToMessage > LFG_ROLE_REMOVED 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@&role-1> can no longer be pinged by \`\`\`
+lfg ping
+\`\`\`.",
+    },
+  ],
+  "flags": [
+    64,
+  ],
+  "kind": "POSITIVE",
+}
+`;
