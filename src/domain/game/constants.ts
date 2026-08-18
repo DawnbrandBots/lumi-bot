@@ -4,9 +4,7 @@ export const AMOUNT_OF_PLAYERS_IN_A_BATTLE = 3;
 export const FRIEND_BATTLE_CODE_MINIMUM_LENGTH = 1;
 export const FRIEND_BATTLE_CODE_MAXIMUM_LENGTH = 8;
 
-/**
- * Level that can be reached by any disciple as F2P a few games after reaching high rank on both sides.
- */
+/** Level that can be reached by any disciple as F2P a few games after reaching high rank on both sides. */
 export const DISCIPLE_MINIMUM_RELEVANT_LEVEL = 8;
 export const DISCIPLE_MAXIXUM_LEVEL = 11;
 
@@ -20,7 +18,7 @@ export const WEAPON_VARIANTS_BONUSES = {
 /**
  * Strings which can be appended to stems (eg. cross, tetra) without being separated by spaces.
  *
- * Eg. Elthunder, Tetrafire, Crossedge
+ * E.g. "thunder" in "Elthunder", "fire" in "Tetrafire", "edge" in "Crossedge"
  */
 export const SPELL_NAME_SUFFIXES = ["Fire", "Thunder", "Wind", "Poison", "Heal", "Shield", "Edge"] as const;
 
