@@ -1,12 +1,12 @@
 import { describe, expect, test } from "vitest";
-import { ESpellRole } from "../../../src/domain/game/models/spell.types.ts";
+import { ESpellRole } from "../../../../src/domain/game/models/spell.types.ts";
 import {
     aliasDisciple,
     aliasMusic,
     aliasSpell,
     aliasWeapon,
     aliasWeaponSkill,
-} from "../../../src/application/search/searchAliases.ts";
+} from "../../../../src/application/search/searchAliases.ts";
 
 describe(aliasWeapon.name, () => {
     test.each([
