@@ -1,14 +1,14 @@
 import { channelMention, MessageFlags, roleMention } from "discord.js";
 import { describe, expect, test } from "vitest";
-import { EAdminResultKind } from "../../../src/application/admin/types.ts";
+import { EAdminResultKind } from "../../../../../src/application/admin/types.ts";
 import mapAdminResultToMessage, {
     mapAdminInvalidOptionsToMessage,
     mapAdminLfgChannelHelpToMessage,
     mapAdminLfgRoleHelpToMessage,
     mapAdminLfgRolePingCooldownHelpToMessage,
     mapAdminMissingValueToMessage,
-} from "../../../src/presentation/discord/mappers/admin.ts";
-import { EMessageKind } from "../../../src/presentation/discord/message.types.ts";
+} from "../../../../../src/presentation/discord/mappers/admin.ts";
+import { EMessageKind } from "../../../../../src/presentation/discord/message.types.ts";
 
 const CHANNEL_ID = "channel-1";
 const ROLE_ID = "role-1";

@@ -11,18 +11,18 @@ import {
     userMention,
 } from "discord.js";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { EMessageKind } from "../../../src/presentation/discord/message.types.ts";
-import { ELfgResultKind } from "../../../src/application/lfg/types.ts";
-import * as constants from "../../../src/domain/game/constants.ts";
-import type { IRoom } from "../../../src/domain/lfg/models/room.types.ts";
-import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
-import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../src/presentation/discord/commands/lfg/constants.ts";
+import { EMessageKind } from "../../../../../src/presentation/discord/message.types.ts";
+import { ELfgResultKind } from "../../../../../src/application/lfg/types.ts";
+import * as constants from "../../../../../src/domain/game/constants.ts";
+import type { IRoom } from "../../../../../src/domain/lfg/models/room.types.ts";
+import { ELfgPlayerRemovalKind } from "../../../../../src/domain/lfg/models/playerRemoval.types.ts";
+import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../../../src/presentation/discord/commands/lfg/constants.ts";
 import {
     createLfgHelpMessageBase,
     createInvalidLfgSubcommandMessageBase,
     mapLfgResultToMessageBase,
     mapLfgMessageBaseToReply,
-} from "../../../src/presentation/discord/mappers/lfg.ts";
+} from "../../../../../src/presentation/discord/mappers/lfg.ts";
 
 const ROOM: IRoom = {
     code: "alpha",
