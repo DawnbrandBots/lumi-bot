@@ -1,9 +1,10 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import getSearchItems from "../../../src/loaders/searchItems.ts";
+import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import type { ISearchIndexEntry } from "../../../src/domain/search/types.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES, SEARCH_RANKING_KNOWN_FAILURE_CASES } from "./constants.ts";
 
@@ -14,7 +15,9 @@ let searchEngine: ISearchEngine<ISearchIndexEntry>;
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<ISearchIndexEntry>({ items: await getSearchItems(em) });
+    searchEngine = new FuseSearchEngine<ISearchIndexEntry>({
+        items: generateSearchIndexEntries(await getEntitiesForGeneratingSearchAliases({ em })),
+    });
 });
 
 afterAll(async () => {

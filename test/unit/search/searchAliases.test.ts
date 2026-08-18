@@ -6,7 +6,7 @@ import {
     aliasSpell,
     aliasWeapon,
     aliasWeaponSkill,
-} from "../../../src/loaders/searchItems.ts";
+} from "../../../src/application/search/searchAliases.ts";
 
 describe(aliasWeapon.name, () => {
     test.each([

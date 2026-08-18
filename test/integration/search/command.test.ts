@@ -3,12 +3,13 @@ import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import type { TGetBestSearchIndexEntry, TGetEntityByKindAndId } from "../../../src/application/search/ports.ts";
 import { resolveSearchInput } from "../../../src/application/search/resolveSearchInput.ts";
+import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { searchItemInDb } from "../../../src/infrastructure/game/persistence/searchItemInDb.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import SEARCH_CONFIGS from "../../../src/infrastructure/search/configs.ts";
-import getSearchItems from "../../../src/loaders/searchItems.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getSearchCommand } from "../../../src/presentation/discord/commands/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
@@ -21,7 +22,9 @@ let searchCommand: ReturnType<typeof getSearchCommand>;
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<TSearchIndexEntry>({ items: await getSearchItems(em) });
+    searchEngine = new FuseSearchEngine<TSearchIndexEntry>({
+        items: generateSearchIndexEntries(await getEntitiesForGeneratingSearchAliases({ em })),
+    });
     const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
     const getEntityByKindAndId: TGetEntityByKindAndId = (arg) => searchItemInDb({ configs: SEARCH_CONFIGS, em }, arg);
     searchCommand = getSearchCommand({

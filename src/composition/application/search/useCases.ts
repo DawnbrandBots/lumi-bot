@@ -1,12 +1,17 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TGetEntityByKindAndId, TGetSearchIndexEntries } from "../../../application/search/ports.ts";
+import type {
+    TGetEntitiesForGeneratingSearchAliases,
+    TGetEntityByKindAndId,
+    TGetSearchIndexEntries,
+} from "../../../application/search/ports.ts";
 import { resolveSearchInput } from "../../../application/search/resolveSearchInput.ts";
 import type { TResolveSearchInput } from "../../../application/search/resolveSearchInput.types.ts";
+import { generateSearchIndexEntries } from "../../../application/search/searchAliases.ts";
 import type { TSearchKind } from "../../../domain/search/types.ts";
 import { searchItemInDb } from "../../../infrastructure/game/persistence/searchItemInDb.ts";
 import { FuseSearchEngine } from "../../../infrastructure/search/engine.ts";
 import SEARCH_CONFIGS from "../../../infrastructure/search/configs.ts";
-import getSearchItems from "../../../loaders/searchItems.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
 
 export type TSearchUseCases = {
     readonly getSearchIndexEntries: TGetSearchIndexEntries;
@@ -14,7 +19,9 @@ export type TSearchUseCases = {
 };
 
 export async function composeSearchUseCases(arg: { readonly em: EntityManager }): Promise<TSearchUseCases> {
-    const searchItems = await getSearchItems(arg.em);
+    const getSearchAliasEntities: TGetEntitiesForGeneratingSearchAliases = () =>
+        getEntitiesForGeneratingSearchAliases({ em: arg.em });
+    const searchItems = generateSearchIndexEntries(await getSearchAliasEntities());
     const searchEngine = new FuseSearchEngine({ items: searchItems });
     const getBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
     const getSearchIndexEntries: TGetSearchIndexEntries = (searchArg) =>
