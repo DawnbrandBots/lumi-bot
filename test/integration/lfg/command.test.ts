@@ -411,7 +411,11 @@ describe(getLfgCommand.name, () => {
         await runCommand(command, interaction);
 
         expect(send).toHaveBeenCalled();
-        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
+        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith({
+            guildId: GUILD_ID,
+            roleId: ROLE_ID,
+            date: expect.any(Date),
+        });
     });
 
     test("lfg ping sends to the LFG channel, replies ephemerally, and records the timestamp", async () => {
@@ -443,7 +447,11 @@ describe(getLfgCommand.name, () => {
         expect(response?.embeds?.[0]?.description).toBe(
             `${roleMention(ROLE_ID)} pinged in ${channelMention(PUBLIC_CHANNEL_ID)}.`,
         );
-        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
+        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith({
+            guildId: GUILD_ID,
+            roleId: ROLE_ID,
+            date: expect.any(Date),
+        });
     });
 
     test("lfg ping replies publicly in the LFG channel and records the timestamp", async () => {
@@ -470,6 +478,10 @@ describe(getLfgCommand.name, () => {
         );
         expect(response?.allowedMentions).toEqual({ roles: [ROLE_ID], users: [USER_ID] });
         expect(response).not.toHaveProperty("flags");
-        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith(GUILD_ID, ROLE_ID, expect.any(Date));
+        expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith({
+            guildId: GUILD_ID,
+            roleId: ROLE_ID,
+            date: expect.any(Date),
+        });
     });
 });

@@ -2,9 +2,7 @@ import type { TAdminPersistence } from "../types.ts";
 
 export async function setLfgRoleLastPingedAt(
     persistence: TAdminPersistence,
-    guild: string,
-    role: string,
-    date: Date,
+    arg: { readonly guildId: string; readonly roleId: string; readonly date: Date },
 ): Promise<void> {
-    await persistence.setLfgRoleLastPingedAt({ guildId: guild, roleId: role, date });
+    await persistence.setLfgRoleLastPingedAt(arg);
 }

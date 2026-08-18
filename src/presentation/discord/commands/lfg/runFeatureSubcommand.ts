@@ -35,7 +35,7 @@ export async function runFeatureSubcommand(
     getResult: TLfgResultGetter,
 ): Promise<void> {
     const result = await getResult();
-    const configResult = await getGuildConfig(guildId);
+    const configResult = await getGuildConfig({ guildId });
 
     const messageBase = mapLfgResultToMessageBase({
         result,

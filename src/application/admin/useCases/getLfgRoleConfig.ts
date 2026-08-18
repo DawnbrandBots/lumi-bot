@@ -3,10 +3,9 @@ import type { TAdminPersistence } from "../types.ts";
 
 export async function getLfgRoleConfig(
     persistence: TAdminPersistence,
-    guild: string,
-    role: string,
+    arg: { readonly guildId: string; readonly roleId: string },
 ): Promise<TAdminResultTypes["getLfgRoleConfig"]> {
-    const lfgRole = await persistence.getLfgRole({ guildId: guild, roleId: role });
+    const lfgRole = await persistence.getLfgRole(arg);
     return {
         kind: EAdminResultKind.LFG_GET_ROLE_CONFIG,
         value: lfgRole,

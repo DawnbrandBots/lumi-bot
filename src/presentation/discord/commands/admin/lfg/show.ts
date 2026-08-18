@@ -6,6 +6,6 @@ import type { TAdminCommandArgs } from "../types.ts";
 export function getAdminLfgShowHandler({ getGuildConfig }: TAdminCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithAdminPermission(interaction, async (guildId) =>
-            mapAdminResultToMessage(await getGuildConfig(guildId)),
+            mapAdminResultToMessage(await getGuildConfig({ guildId })),
         );
 }

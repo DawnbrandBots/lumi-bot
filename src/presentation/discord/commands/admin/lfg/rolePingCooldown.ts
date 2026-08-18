@@ -33,18 +33,18 @@ async function runLfgRolePingCooldown(
     }
 
     if (action === null && minutes === null) {
-        const configResult = await getGuildConfig(guildId);
+        const configResult = await getGuildConfig({ guildId });
         return mapAdminLfgRolePingCooldownHelpToMessage({
             minutes: configResult.value?.lfgRolePingCooldownMinutes,
         });
     }
 
     if (action === ADMIN_ACTION_SET && minutes !== null) {
-        return mapAdminResultToMessage(await setLfgRolePingCooldown(guildId, minutes));
+        return mapAdminResultToMessage(await setLfgRolePingCooldown({ guildId, minutes }));
     }
 
     if (action === ADMIN_ACTION_CLEAR && minutes === null) {
-        return mapAdminResultToMessage(await clearLfgRolePingCooldown(guildId));
+        return mapAdminResultToMessage(await clearLfgRolePingCooldown({ guildId }));
     }
 
     if (action === ADMIN_ACTION_SET && minutes === null) {

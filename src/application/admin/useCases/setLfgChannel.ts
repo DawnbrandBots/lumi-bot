@@ -3,12 +3,11 @@ import type { TAdminPersistence } from "../types.ts";
 
 export async function setLfgChannel(
     persistence: TAdminPersistence,
-    guild: string,
-    channel: string,
+    arg: { readonly guildId: string; readonly channelId: string },
 ): Promise<TAdminResultTypes["lfgChannel"]> {
-    await persistence.setLfgChannel({ guildId: guild, channelId: channel });
+    await persistence.setLfgChannel(arg);
     return {
         kind: EAdminResultKind.LFG_CHANNEL_SET,
-        value: { channel },
+        value: { channel: arg.channelId },
     };
 }

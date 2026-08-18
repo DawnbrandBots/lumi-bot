@@ -6,7 +6,7 @@ import type { TLfgCommandArgs } from "./types.ts";
 export function getLfgHelpHandler(arg: TLfgCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
         runWithGuild(interaction, async (guildId) => {
-            const configResult = await arg.getGuildConfig(guildId);
+            const configResult = await arg.getGuildConfig({ guildId });
             await interaction.reply(
                 mapLfgMessageBaseToReply({
                     messageBase: createLfgHelpMessageBase(),

@@ -109,7 +109,7 @@ describe(getAdminCommand.name, () => {
 
         await runCommand(command, interaction);
 
-        expect(setLfgChannel).toHaveBeenCalledWith(GUILD_ID, CHANNEL_ID);
+        expect(setLfgChannel).toHaveBeenCalledWith({ guildId: GUILD_ID, channelId: CHANNEL_ID });
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
@@ -137,7 +137,7 @@ describe(getAdminCommand.name, () => {
 
         await runCommand(command, interaction);
 
-        expect(addLfgRole).toHaveBeenCalledWith(GUILD_ID, ROLE_ID);
+        expect(addLfgRole).toHaveBeenCalledWith({ guildId: GUILD_ID, roleId: ROLE_ID });
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
@@ -165,7 +165,7 @@ describe(getAdminCommand.name, () => {
 
         await runCommand(command, interaction);
 
-        expect(setLfgRolePingCooldown).toHaveBeenCalledWith(GUILD_ID, 45);
+        expect(setLfgRolePingCooldown).toHaveBeenCalledWith({ guildId: GUILD_ID, minutes: 45 });
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
@@ -189,7 +189,7 @@ describe(getAdminCommand.name, () => {
 
         await runCommand(command, interaction);
 
-        expect(getGuildConfig).toHaveBeenCalledWith(GUILD_ID);
+        expect(getGuildConfig).toHaveBeenCalledWith({ guildId: GUILD_ID });
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],

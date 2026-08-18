@@ -42,16 +42,16 @@ async function runLfgChannel(
     }
 
     if (action === null && !channel) {
-        const configResult = await getGuildConfig(guildId);
+        const configResult = await getGuildConfig({ guildId });
         return mapAdminLfgChannelHelpToMessage({ channel: configResult.value?.lfgChannel });
     }
 
     if (action === ADMIN_ACTION_SET && channel) {
-        return mapAdminResultToMessage(await setLfgChannel(guildId, channel.id));
+        return mapAdminResultToMessage(await setLfgChannel({ guildId, channelId: channel.id }));
     }
 
     if (action === ADMIN_ACTION_CLEAR && !channel) {
-        return mapAdminResultToMessage(await clearLfgChannel(guildId));
+        return mapAdminResultToMessage(await clearLfgChannel({ guildId }));
     }
 
     if (action === ADMIN_ACTION_SET && !channel) {

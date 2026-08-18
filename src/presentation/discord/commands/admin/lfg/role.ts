@@ -33,18 +33,18 @@ async function runLfgRole(
     }
 
     if (action === null && !role) {
-        const configResult = await getGuildConfig(guildId);
+        const configResult = await getGuildConfig({ guildId });
         return mapAdminLfgRoleHelpToMessage({
             roles: configResult.value?.lfgRoles.map((lfgRole) => lfgRole.role) ?? [],
         });
     }
 
     if (action === ADMIN_ACTION_ADD && role) {
-        return mapAdminResultToMessage(await addLfgRole(guildId, role.id));
+        return mapAdminResultToMessage(await addLfgRole({ guildId, roleId: role.id }));
     }
 
     if (action === ADMIN_ACTION_REMOVE && role) {
-        return mapAdminResultToMessage(await removeLfgRole(guildId, role.id));
+        return mapAdminResultToMessage(await removeLfgRole({ guildId, roleId: role.id }));
     }
 
     if ((action === ADMIN_ACTION_ADD || action === ADMIN_ACTION_REMOVE) && !role) {

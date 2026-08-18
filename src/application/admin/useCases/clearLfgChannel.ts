@@ -3,8 +3,8 @@ import type { TAdminPersistence } from "../types.ts";
 
 export async function clearLfgChannel(
     persistence: TAdminPersistence,
-    guild: string,
+    arg: { readonly guildId: string },
 ): Promise<TAdminResultTypes["lfgChannel"]> {
-    await persistence.clearLfgChannel({ guildId: guild });
+    await persistence.clearLfgChannel(arg);
     return { kind: EAdminResultKind.LFG_CHANNEL_CLEARED };
 }

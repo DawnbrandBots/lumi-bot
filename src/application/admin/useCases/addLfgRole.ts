@@ -4,22 +4,21 @@ import type { TAdminPersistence } from "../types.ts";
 
 export async function addLfgRole(
     persistence: TAdminPersistence,
-    guild: string,
-    role: string,
+    arg: { readonly guildId: string; readonly roleId: string },
 ): Promise<TAdminResultTypes["lfgRole"]> {
-    if (role === guild) {
+    if (arg.roleId === arg.guildId) {
         return { kind: EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE };
     }
-    const roles = await persistence.listLfgRoles({ guildId: guild });
-    if (roles.some((lfgRole) => lfgRole.role === role)) {
-        return { kind: EAdminResultKind.LFG_ROLE_ALREADY_EXISTS, value: { role } };
+    const roles = await persistence.listLfgRoles({ guildId: arg.guildId });
+    if (roles.some((lfgRole) => lfgRole.role === arg.roleId)) {
+        return { kind: EAdminResultKind.LFG_ROLE_ALREADY_EXISTS, value: { role: arg.roleId } };
     }
     if (roles.length >= ADMIN_LFG_ROLE_LIMIT) {
         return { kind: EAdminResultKind.LFG_ROLE_LIMIT_REACHED };
     }
-    await persistence.addLfgRole({ guildId: guild, roleId: role });
+    await persistence.addLfgRole(arg);
     return {
         kind: EAdminResultKind.LFG_ROLE_ADDED,
-        value: { role },
+        value: { role: arg.roleId },
     };
 }

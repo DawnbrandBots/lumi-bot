@@ -3,9 +3,9 @@ import type { TAdminPersistence } from "../types.ts";
 
 export async function getGuildConfig(
     persistence: TAdminPersistence,
-    guild: string,
+    arg: { readonly guildId: string },
 ): Promise<TAdminResultTypes["getGuildConfig"]> {
-    const config = await persistence.getGuildConfig({ guildId: guild });
+    const config = await persistence.getGuildConfig(arg);
     return {
         kind: EAdminResultKind.LFG_GET_CONFIG,
         value: config,

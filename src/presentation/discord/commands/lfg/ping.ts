@@ -25,7 +25,7 @@ async function runPing(
     interaction: ChatInputCommandInteraction<CacheType>,
     guildId: string,
 ): Promise<void> {
-    const configResult = await getGuildConfig(guildId);
+    const configResult = await getGuildConfig({ guildId });
     const channelId = configResult.value?.lfgChannel;
     if (!channelId) {
         await interaction.reply(
@@ -59,7 +59,7 @@ async function runPing(
         return;
     }
 
-    const roleConfigResult = await getLfgRoleConfig(guildId, roleId);
+    const roleConfigResult = await getLfgRoleConfig({ guildId, roleId });
     if (!roleConfigResult.value) {
         await interaction.reply(
             createNegativeMessage<InteractionReplyOptions>({
@@ -116,7 +116,7 @@ async function runPing(
         );
     }
 
-    await setLfgRoleLastPingedAt(guildId, roleId, now);
+    await setLfgRoleLastPingedAt({ guildId, roleId, date: now });
 }
 
 export function getLfgPingHandler(arg: TLfgCommandArgs) {

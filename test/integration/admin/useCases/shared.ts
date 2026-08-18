@@ -9,6 +9,13 @@ import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
 export const GUILD_ID = "guild-1";
 export const CHANNEL_ID = "channel-1";
 export const ROLE_ID = "role-1";
+export const ROLE_LAST_PINGED_AT = new Date("2026-06-16T10:00:00.000Z");
+
+export const GUILD_ARG = { guildId: GUILD_ID };
+export const LFG_CHANNEL_ARG = { ...GUILD_ARG, channelId: CHANNEL_ID };
+export const LFG_ROLE_ARG = { ...GUILD_ARG, roleId: ROLE_ID };
+export const LFG_ROLE_LAST_PINGED_AT_ARG = { ...LFG_ROLE_ARG, date: ROLE_LAST_PINGED_AT };
+export const LFG_ROLE_PING_COOLDOWN_ARG = { ...GUILD_ARG, minutes: 45 };
 
 const config = getSameConfigInMemory(migrationMikroOrmConfig);
 
