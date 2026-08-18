@@ -11,8 +11,8 @@ import { suggestSearchResults } from "../../../application/search/suggestSearchR
 import type { TSuggestSearchResults } from "../../../application/search/suggestSearchResults.types.ts";
 import type { TSearchKind } from "../../../domain/search/types.ts";
 import { FuseSearchEngine } from "../../../infrastructure/search/engine.ts";
-import { getGameDataEntityForSearchResult } from "../../../infrastructure/search/getGameDataEntityForSearchResult.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
+import { getGameDataEntityForSearchResult } from "../../../infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 
 export type TSearchUseCases = {
     readonly resolveSearchInput: TResolveSearchInput;

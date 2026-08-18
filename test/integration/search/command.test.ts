@@ -7,8 +7,8 @@ import { generateSearchIndexEntries } from "../../../src/application/search/sear
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/search/getGameDataEntityForSearchResult.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
+import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getSearchCommand } from "../../../src/presentation/discord/commands/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";

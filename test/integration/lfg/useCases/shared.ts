@@ -15,7 +15,7 @@ import { status } from "../../../../src/application/lfg/useCases/status.ts";
 import { transfer } from "../../../../src/application/lfg/useCases/transfer.ts";
 import { transferOwnedRoom } from "../../../../src/application/lfg/useCases/transferOwnedRoom.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";
-import { LfgRoom } from "../../../../src/infrastructure/lfg/models/room.ts";
+import { LfgRoom } from "../../../../src/infrastructure/database/mikroOrm/models/lfg/room.ts";
 import { getWithLfgUnitOfWork } from "../../../../src/composition/application/lfg/unitOfWork.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";

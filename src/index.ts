@@ -5,8 +5,8 @@ import { composeSearchUseCases } from "./composition/application/search/useCases
 import { composeDiscordBot } from "./composition/presentation/discord/bot.ts";
 import { composeDiscordCommands } from "./composition/presentation/discord/commands.ts";
 import { composeDiscordEventHandlers } from "./composition/presentation/discord/eventHandlers.ts";
-import { initOrm } from "./infrastructure/persistence/orm.ts";
-import { appMikroOrmConfig } from "./mikro-orm.config.ts";
+import { appMikroOrmConfig } from "./infrastructure/database/mikroOrm/config.ts";
+import { initOrm } from "./infrastructure/database/mikroOrm/orm.ts";
 
 const log = debug("index.ts");
 

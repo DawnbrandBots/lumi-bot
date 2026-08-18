@@ -5,7 +5,7 @@ import { generateSearchIndexEntries } from "../../../src/application/search/sear
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getSearchAutocomplete } from "../../../src/presentation/discord/autocomplete/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";

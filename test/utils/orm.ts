@@ -1,5 +1,5 @@
 import type { MikroORM } from "@mikro-orm/sqlite";
-import { initOrm } from "../../src/infrastructure/persistence/orm.ts";
+import { initOrm } from "../../src/infrastructure/database/mikroOrm/orm.ts";
 import { appMikroOrmConfig, staticGameDataMikroOrmConfig } from "../mikro-orm.test.config.ts";
 
 export function initTestOrm(): Promise<MikroORM> {

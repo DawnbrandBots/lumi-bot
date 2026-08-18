@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
 import type { TSearchSuccessValue } from "../../../src/application/search/types.ts";
 import { ESearchResultKind } from "../../../src/application/search/types.ts";
-import type { Disciple } from "../../../src/infrastructure/game/models/disciple.ts";
+import type { Disciple } from "../../../src/infrastructure/database/mikroOrm/models/game/disciple.ts";
 import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT } from "../../../src/presentation/discord/constants.ts";
 import mapSearchResultToMessages, {
     mapSearchSuccessValueToMessages,

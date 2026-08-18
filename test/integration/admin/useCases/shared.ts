@@ -1,8 +1,8 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
 import { composeAdminUseCases, type TAdminUseCases } from "../../../../src/composition/application/admin/useCases.ts";
-import { GuildConfig } from "../../../../src/infrastructure/admin/models/config.ts";
-import { GuildConfigLfgRole } from "../../../../src/infrastructure/admin/models/configLfgRole.ts";
+import { GuildConfig } from "../../../../src/infrastructure/database/mikroOrm/models/admin/config.ts";
+import { GuildConfigLfgRole } from "../../../../src/infrastructure/database/mikroOrm/models/admin/configLfgRole.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
 

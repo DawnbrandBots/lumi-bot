@@ -19,7 +19,7 @@ import type {
     TSetAdminLfgRoleLastPingedAt,
     TSetAdminLfgRolePingCooldown,
 } from "../../../application/admin/types.ts";
-import { getAdminPersistence } from "../../../infrastructure/admin/persistence.ts";
+import { getAdminPersistence } from "../../../infrastructure/database/mikroOrm/repositories/admin/persistence.ts";
 import { getWithAdminUnitOfWork } from "./unitOfWork.ts";
 
 export type TAdminUseCases = {
