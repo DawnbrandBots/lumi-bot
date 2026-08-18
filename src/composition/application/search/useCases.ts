@@ -5,7 +5,7 @@ import type { TResolveSearchInput } from "../../../application/search/resolveSea
 import type { TSearchKind } from "../../../domain/search/types.ts";
 import { searchItemInDb } from "../../../infrastructure/game/persistence/searchItemInDb.ts";
 import { FuseSearchEngine } from "../../../infrastructure/search/engine.ts";
-import SEARCH_CONFIGS from "../../../loaders/searchConfigs.ts";
+import SEARCH_CONFIGS from "../../../infrastructure/search/configs.ts";
 import getSearchItems from "../../../loaders/searchItems.ts";
 
 export type TSearchUseCases = {

@@ -7,7 +7,7 @@ import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { searchItemInDb } from "../../../src/infrastructure/game/persistence/searchItemInDb.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import SEARCH_CONFIGS from "../../../src/loaders/searchConfigs.ts";
+import SEARCH_CONFIGS from "../../../src/infrastructure/search/configs.ts";
 import getSearchItems from "../../../src/loaders/searchItems.ts";
 import { getSearchCommand } from "../../../src/presentation/discord/commands/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
