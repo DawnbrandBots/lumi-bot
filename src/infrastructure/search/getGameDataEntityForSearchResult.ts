@@ -1,12 +1,12 @@
 import type { EntityManager, FilterQuery } from "@mikro-orm/sqlite";
-import type { TSearchKind } from "../../../domain/search/types.ts";
-import type { TSearchOrmEntity } from "../../search/types.ts";
-import { Disciple } from "../models/disciple.ts";
-import { Music } from "../models/music.ts";
-import { Spell } from "../models/spell.ts";
-import { Weapon } from "../models/weapon.ts";
-import { WeaponSkill } from "../models/weaponSkill.ts";
-import type { ISearchConfig, ISearchConfigs } from "./searchItemInDb.types.ts";
+import type { TSearchKind } from "../../domain/search/types.ts";
+import { Disciple } from "../game/models/disciple.ts";
+import { Music } from "../game/models/music.ts";
+import { Spell } from "../game/models/spell.ts";
+import { Weapon } from "../game/models/weapon.ts";
+import { WeaponSkill } from "../game/models/weaponSkill.ts";
+import type { ISearchConfig, ISearchConfigs } from "./getGameDataEntityForSearchResult.types.ts";
+import type { TSearchOrmEntity } from "./types.ts";
 
 const spellPopulate = ["*"] as const;
 const weaponPopulate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.effect", "prfDisciple"] as const;
@@ -38,7 +38,7 @@ function getFromEntityManager<Kind extends TSearchKind>(arg: {
     });
 }
 
-export async function searchItemInDb<Kind extends TSearchKind>(
+export async function getGameDataEntityForSearchResult<Kind extends TSearchKind>(
     { em }: { em: EntityManager },
     searchItem: { kind: Kind; id: string },
 ) {

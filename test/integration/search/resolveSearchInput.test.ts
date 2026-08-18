@@ -5,9 +5,9 @@ import { resolveSearchInput } from "../../../src/application/search/resolveSearc
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import { ESearchResultKind } from "../../../src/application/search/types.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
-import { searchItemInDb } from "../../../src/infrastructure/game/persistence/searchItemInDb.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
+import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/search/getGameDataEntityForSearchResult.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
@@ -33,7 +33,7 @@ describe(resolveSearchInput.name, () => {
         const result = await resolveSearchInput(
             {
                 getBestSearchIndexEntry: searchEngine.searchOne.bind(searchEngine),
-                getEntityByKindAndId: (arg) => searchItemInDb({ em }, arg),
+                getEntityByKindAndId: (arg) => getGameDataEntityForSearchResult({ em }, arg),
             },
             NO_SEARCH_RESULT_INPUT,
         );
@@ -62,7 +62,7 @@ describe(resolveSearchInput.name, () => {
         const result = await resolveSearchInput(
             {
                 getBestSearchIndexEntry: (input) => mockedSearchEngine.searchOne(input),
-                getEntityByKindAndId: (arg) => searchItemInDb({ em: mockedEntityManager }, arg),
+                getEntityByKindAndId: (arg) => getGameDataEntityForSearchResult({ em: mockedEntityManager }, arg),
             },
             "Missing Weapon",
         );
@@ -80,7 +80,7 @@ describe(resolveSearchInput.name, () => {
         const result = await resolveSearchInput(
             {
                 getBestSearchIndexEntry: searchEngine.searchOne.bind(searchEngine),
-                getEntityByKindAndId: (arg) => searchItemInDb({ em }, arg),
+                getEntityByKindAndId: (arg) => getGameDataEntityForSearchResult({ em }, arg),
             },
             "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1),
         );
@@ -98,7 +98,7 @@ describe(resolveSearchInput.name, () => {
         const result = await resolveSearchInput(
             {
                 getBestSearchIndexEntry: searchEngine.searchOne.bind(searchEngine),
-                getEntityByKindAndId: (arg) => searchItemInDb({ em }, arg),
+                getEntityByKindAndId: (arg) => getGameDataEntityForSearchResult({ em }, arg),
             },
             input,
         );

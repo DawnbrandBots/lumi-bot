@@ -1,6 +1,6 @@
 import type { EntityName, Populate } from "@mikro-orm/core";
-import type { ISearchableEntity, TSearchKind } from "../../../domain/search/types.ts";
-import type { TSearchOrmEntity } from "../../search/types.ts";
+import type { ISearchableEntity, TSearchKind } from "../../domain/search/types.ts";
+import type { TSearchOrmEntity } from "./types.ts";
 
 /** Defines what ORM entity should be searched for. */
 export interface ISearchConfig<EntityType extends ISearchableEntity, PopulateHint extends string = never> {

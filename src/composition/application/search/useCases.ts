@@ -8,8 +8,8 @@ import { resolveSearchInput } from "../../../application/search/resolveSearchInp
 import type { TResolveSearchInput } from "../../../application/search/resolveSearchInput.types.ts";
 import { generateSearchIndexEntries } from "../../../application/search/searchAliases.ts";
 import type { TSearchKind } from "../../../domain/search/types.ts";
-import { searchItemInDb } from "../../../infrastructure/game/persistence/searchItemInDb.ts";
 import { FuseSearchEngine } from "../../../infrastructure/search/engine.ts";
+import { getGameDataEntityForSearchResult } from "../../../infrastructure/search/getGameDataEntityForSearchResult.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
 
 export type TSearchUseCases = {
@@ -28,7 +28,7 @@ export async function composeSearchUseCases(arg: { readonly em: EntityManager })
     const getEntityByKindAndId: TGetEntityByKindAndId = <Kind extends TSearchKind>(searchArg: {
         kind: Kind;
         id: string;
-    }) => searchItemInDb<Kind>({ em: arg.em }, searchArg);
+    }) => getGameDataEntityForSearchResult<Kind>({ em: arg.em }, searchArg);
 
     return {
         getSearchIndexEntries,

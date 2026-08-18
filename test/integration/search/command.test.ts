@@ -5,9 +5,9 @@ import type { TGetBestSearchIndexEntry, TGetEntityByKindAndId } from "../../../s
 import { resolveSearchInput } from "../../../src/application/search/resolveSearchInput.ts";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
-import { searchItemInDb } from "../../../src/infrastructure/game/persistence/searchItemInDb.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
+import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/search/getGameDataEntityForSearchResult.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getSearchCommand } from "../../../src/presentation/discord/commands/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
@@ -25,7 +25,7 @@ beforeAll(async () => {
         items: generateSearchIndexEntries(await getEntitiesForGeneratingSearchAliases({ em })),
     });
     const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
-    const getEntityByKindAndId: TGetEntityByKindAndId = (arg) => searchItemInDb({ em }, arg);
+    const getEntityByKindAndId: TGetEntityByKindAndId = (arg) => getGameDataEntityForSearchResult({ em }, arg);
     searchCommand = getSearchCommand({
         resolveSearchInput: (input) => resolveSearchInput({ getBestSearchIndexEntry, getEntityByKindAndId }, input),
     });
