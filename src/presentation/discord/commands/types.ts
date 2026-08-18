@@ -5,7 +5,6 @@
  * Most importantly: see {@link TCommandHandlers}'s comment.
  */
 
-import type { MaybePromise } from "@mikro-orm/core";
 import type {
     APIApplicationCommandOption,
     ApplicationCommandOptionChoiceData,
@@ -15,6 +14,7 @@ import type {
     ChatInputCommandInteraction,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "discord.js";
+import type { MaybePromise } from "../../../utils/types.ts";
 
 /**
  * Executes a Discord chat-input command, replies to its interaction and may run other Discrod-related actions like sending additional messages.
