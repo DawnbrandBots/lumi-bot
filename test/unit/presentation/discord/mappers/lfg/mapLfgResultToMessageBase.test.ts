@@ -47,9 +47,7 @@ describe(mapLfgResultToMessageBase.name, () => {
             input: {
                 result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
                 callerId: "owner",
-                guildConfig: {
-                    ...GUILD_CONFIG,
-                },
+                guildConfig: GUILD_CONFIG,
             },
         },
         {
