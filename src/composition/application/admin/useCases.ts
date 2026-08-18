@@ -1,13 +1,13 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import { addLfgRole } from "../../../application/admin/addLfgRole.ts";
-import { clearLfgChannel } from "../../../application/admin/clearLfgChannel.ts";
-import { clearLfgRolePingCooldown } from "../../../application/admin/clearLfgRolePingCooldown.ts";
-import { getGuildConfig } from "../../../application/admin/getGuildConfig.ts";
-import { getLfgRoleConfig } from "../../../application/admin/getLfgRoleConfig.ts";
-import { removeLfgRole } from "../../../application/admin/removeLfgRole.ts";
-import { setLfgChannel } from "../../../application/admin/setLfgChannel.ts";
-import { setLfgRoleLastPingedAt } from "../../../application/admin/setLfgRoleLastPingedAt.ts";
-import { setLfgRolePingCooldown } from "../../../application/admin/setLfgRolePingCooldown.ts";
+import { addLfgRole } from "../../../application/admin/useCases/addLfgRole.ts";
+import { clearLfgChannel } from "../../../application/admin/useCases/clearLfgChannel.ts";
+import { clearLfgRolePingCooldown } from "../../../application/admin/useCases/clearLfgRolePingCooldown.ts";
+import { getGuildConfig } from "../../../application/admin/useCases/getGuildConfig.ts";
+import { getLfgRoleConfig } from "../../../application/admin/useCases/getLfgRoleConfig.ts";
+import { removeLfgRole } from "../../../application/admin/useCases/removeLfgRole.ts";
+import { setLfgChannel } from "../../../application/admin/useCases/setLfgChannel.ts";
+import { setLfgRoleLastPingedAt } from "../../../application/admin/useCases/setLfgRoleLastPingedAt.ts";
+import { setLfgRolePingCooldown } from "../../../application/admin/useCases/setLfgRolePingCooldown.ts";
 import type {
     TAddAdminLfgRole,
     TClearAdminLfgChannel,

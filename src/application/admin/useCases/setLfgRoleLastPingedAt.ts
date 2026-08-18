@@ -1,4 +1,4 @@
-import type { TAdminPersistence } from "./types.ts";
+import type { TAdminPersistence } from "../types.ts";
 
 export async function setLfgRoleLastPingedAt(
     persistence: TAdminPersistence,

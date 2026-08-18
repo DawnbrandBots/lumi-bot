@@ -1,6 +1,6 @@
-import { ADMIN_LFG_ROLE_LIMIT } from "./constants.ts";
-import { EAdminResultKind, type TAdminResultTypes } from "./types.ts";
-import type { TAdminPersistence } from "./types.ts";
+import { ADMIN_LFG_ROLE_LIMIT } from "../constants.ts";
+import { EAdminResultKind, type TAdminResultTypes } from "../types.ts";
+import type { TAdminPersistence } from "../types.ts";
 
 export async function addLfgRole(
     persistence: TAdminPersistence,
