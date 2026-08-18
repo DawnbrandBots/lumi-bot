@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import spellShapes from "../../../../data/spellShape.json" with { type: "json" };
-import mapSpellToMessage, { formatSpellShape } from "../../../../src/presentation/discord/mappers/search/spell.ts";
+import spellShapes from "../../../../../../data/spellShape.json" with { type: "json" };
+import mapSpellToMessage, { formatSpellShape } from "../../../../../../src/presentation/discord/mappers/search/spell.ts";
 import { WEAPON_TYPE } from "./common.fixtures.ts";
 import { DISCIPLE } from "./disciple.fixtures.ts";
 import { SPELL } from "./spell.fixtures.ts";

@@ -1,7 +1,7 @@
 // Disclaimer: AI-generated test fixtures
 
-import type { IDisciple } from "../../../../src/domain/game/models/disciple.types.ts";
-import type { IMusic } from "../../../../src/domain/game/models/music.types.ts";
+import type { IDisciple } from "../../../../../../src/domain/game/models/disciple.types.ts";
+import type { IMusic } from "../../../../../../src/domain/game/models/music.types.ts";
 import { INFANTRY_MOVEMENT_TYPE, WEAPON_TYPE } from "./common.fixtures.ts";
 import { SPELL } from "./spell.fixtures.ts";
 import { WEAPON } from "./weapon.fixtures.ts";

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import mapWeaponSkillToMessage from "../../../../src/presentation/discord/mappers/search/weaponSkill.ts";
+import mapWeaponSkillToMessage from "../../../../../../src/presentation/discord/mappers/search/weaponSkill.ts";
 import { WEAPON_SKILL } from "./weaponSkill.fixtures.ts";
 
 describe(mapWeaponSkillToMessage.name, () => {

@@ -1,14 +1,14 @@
 import { Collection } from "@mikro-orm/sqlite";
 import { describe, expect, test } from "vitest";
-import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
-import type { TSearchSuccessValue } from "../../../src/application/search/types.ts";
-import { ESearchResultKind } from "../../../src/application/search/types.ts";
-import type { Disciple } from "../../../src/infrastructure/database/mikroOrm/models/game/disciple.ts";
-import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT } from "../../../src/presentation/discord/constants.ts";
+import { SEARCH_MAX_INPUT_LENGTH } from "../../../../../src/application/search/constants.ts";
+import type { TSearchSuccessValue } from "../../../../../src/application/search/types.ts";
+import { ESearchResultKind } from "../../../../../src/application/search/types.ts";
+import type { Disciple } from "../../../../../src/infrastructure/database/mikroOrm/models/game/disciple.ts";
+import { DISCORD_ERROR_MESSAGE_DEFAULT_CONTENT } from "../../../../../src/presentation/discord/constants.ts";
 import mapSearchResultToMessages, {
     mapSearchSuccessValueToMessages,
-} from "../../../src/presentation/discord/mappers/search.ts";
-import { EMessageKind } from "../../../src/presentation/discord/message.types.ts";
+} from "../../../../../src/presentation/discord/mappers/search.ts";
+import { EMessageKind } from "../../../../../src/presentation/discord/message.types.ts";
 
 const SEARCH_ALIASES_FOOTER_PREFIX = "Search aliases:";
 const SEARCH_ENTITY_KIND_FIELD_NAME = "Entity kind";

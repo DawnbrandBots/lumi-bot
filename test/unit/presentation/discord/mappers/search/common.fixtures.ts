@@ -1,9 +1,9 @@
 // Disclaimer: AI-generated test fixtures
 
-import type { IColor } from "../../../../src/domain/game/models/color.types.ts";
-import type { IMovementType } from "../../../../src/domain/game/models/movement.types.ts";
-import type { IWeaponSkillEffect } from "../../../../src/domain/game/models/weaponSkillEffect.types.ts";
-import type { IWeaponType } from "../../../../src/domain/game/models/weaponType.types.ts";
+import type { IColor } from "../../../../../../src/domain/game/models/color.types.ts";
+import type { IMovementType } from "../../../../../../src/domain/game/models/movement.types.ts";
+import type { IWeaponSkillEffect } from "../../../../../../src/domain/game/models/weaponSkillEffect.types.ts";
+import type { IWeaponType } from "../../../../../../src/domain/game/models/weaponType.types.ts";
 
 export const RED_COLOR = {
     kind: "color",

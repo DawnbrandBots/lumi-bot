@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import mapWeaponToMessage from "../../../../src/presentation/discord/mappers/search/weapon.ts";
+import mapWeaponToMessage from "../../../../../../src/presentation/discord/mappers/search/weapon.ts";
 import { DISCIPLE } from "./disciple.fixtures.ts";
 import { WEAPON } from "./weapon.fixtures.ts";
 

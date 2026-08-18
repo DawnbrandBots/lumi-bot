@@ -1,9 +1,9 @@
 // Disclaimer: AI-generated test fixtures
 
-import type { ISpell } from "../../../../src/domain/game/models/spell.types.ts";
-import { ESpellDraggingMode, ESpellRole } from "../../../../src/domain/game/models/spell.types.ts";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../../src/domain/game/models/spellEffect.types.ts";
-import { ESpellEffectValueUnitKind } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
+import type { ISpell } from "../../../../../../src/domain/game/models/spell.types.ts";
+import { ESpellDraggingMode, ESpellRole } from "../../../../../../src/domain/game/models/spell.types.ts";
+import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { ESpellEffectValueUnitKind } from "../../../../../../src/domain/game/models/spellEffectValue.types.ts";
 import { RED_COLOR } from "./common.fixtures.ts";
 
 export const SPELL = {
