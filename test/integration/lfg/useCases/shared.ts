@@ -14,9 +14,11 @@ import { move } from "../../../../src/application/lfg/useCases/move.ts";
 import { status } from "../../../../src/application/lfg/useCases/status.ts";
 import { transfer } from "../../../../src/application/lfg/useCases/transfer.ts";
 import { transferOwnedRoom } from "../../../../src/application/lfg/useCases/transferOwnedRoom.ts";
+import { getLfgApplicationDependencies } from "../../../../src/application/lfg/dependencies.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";
 import { LfgRoom } from "../../../../src/infrastructure/database/mikroOrm/models/lfg/room.ts";
-import { getWithLfgUnitOfWork } from "../../../../src/composition/application/lfg/unitOfWork.ts";
+import { getLfgPersistence } from "../../../../src/infrastructure/database/mikroOrm/repositories/lfg/persistence.ts";
+import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
 
@@ -59,7 +61,10 @@ class LfgUseCases {
     private readonly transferOwnedLfgRoom;
 
     public constructor({ em }: { readonly em: EntityManager }) {
-        const withLfgUnitOfWork = getWithLfgUnitOfWork(em);
+        const withLfgUnitOfWork = getWithUnitOfWork({
+            em,
+            getDependencies: (em) => getLfgApplicationDependencies(getLfgPersistence({ em })),
+        });
         this.changeOwnedLfgRoomCode = withLfgUnitOfWork(changeOwnedRoomCode);
         this.changeLfgRoomCode = withLfgUnitOfWork(changeRoomCode);
         this.createLfgRoom = withLfgUnitOfWork(create);

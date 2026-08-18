@@ -20,7 +20,7 @@ import type {
     TSetAdminLfgRolePingCooldown,
 } from "../../../application/admin/types.ts";
 import { getAdminPersistence } from "../../../infrastructure/database/mikroOrm/repositories/admin/persistence.ts";
-import { getWithAdminUnitOfWork } from "./unitOfWork.ts";
+import { getWithUnitOfWork } from "../unitOfWork.ts";
 
 export type TAdminUseCases = {
     readonly addLfgRole: TAddAdminLfgRole;
@@ -36,7 +36,10 @@ export type TAdminUseCases = {
 
 export function composeAdminUseCases(arg: { readonly em: EntityManager }): TAdminUseCases {
     const persistence = getAdminPersistence({ em: arg.em });
-    const withAdminUnitOfWork = getWithAdminUnitOfWork(arg.em);
+    const withAdminUnitOfWork = getWithUnitOfWork({
+        em: arg.em,
+        getDependencies: (em) => getAdminPersistence({ em }),
+    });
 
     return {
         addLfgRole: withAdminUnitOfWork(addLfgRole),

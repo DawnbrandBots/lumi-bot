@@ -311,5 +311,3 @@ export type TLfgApplicationDependencies = TLfgPersistence & {
 };
 
 export type TLfgUseCase<Arg, Return> = (dependencies: TLfgApplicationDependencies, arg: Arg) => MaybePromise<Return>;
-
-export type TWithLfgUnitOfWork = <Arg, Return>(useCase: TLfgUseCase<Arg, Return>) => (arg: Arg) => Promise<Return>;

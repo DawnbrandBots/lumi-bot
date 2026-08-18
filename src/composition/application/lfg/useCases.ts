@@ -13,6 +13,7 @@ import type {
     TTransferLfgRoomUseCase,
     TTransferOwnedLfgRoomUseCase,
 } from "../../../application/lfg/types.ts";
+import { getLfgApplicationDependencies } from "../../../application/lfg/dependencies.ts";
 import { changeOwnedRoomCode } from "../../../application/lfg/useCases/changeOwnedRoomCode.ts";
 import { changeRoomCode } from "../../../application/lfg/useCases/changeRoomCode.ts";
 import { create } from "../../../application/lfg/useCases/create.ts";
@@ -25,7 +26,8 @@ import { move } from "../../../application/lfg/useCases/move.ts";
 import { status } from "../../../application/lfg/useCases/status.ts";
 import { transfer } from "../../../application/lfg/useCases/transfer.ts";
 import { transferOwnedRoom } from "../../../application/lfg/useCases/transferOwnedRoom.ts";
-import { getWithLfgUnitOfWork } from "./unitOfWork.ts";
+import { getLfgPersistence } from "../../../infrastructure/database/mikroOrm/repositories/lfg/persistence.ts";
+import { getWithUnitOfWork } from "../unitOfWork.ts";
 
 export type TLfgUseCases = {
     readonly changeLfgRoomCode: TChangeLfgRoomCodeUseCase;
@@ -43,7 +45,10 @@ export type TLfgUseCases = {
 };
 
 export function composeLfgUseCases(em: EntityManager): TLfgUseCases {
-    const withLfgUnitOfWork = getWithLfgUnitOfWork(em);
+    const withLfgUnitOfWork = getWithUnitOfWork({
+        em,
+        getDependencies: (em) => getLfgApplicationDependencies(getLfgPersistence({ em })),
+    });
 
     return {
         changeLfgRoomCode: withLfgUnitOfWork(changeRoomCode),
