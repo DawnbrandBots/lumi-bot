@@ -9,10 +9,9 @@ import type { TResolveSearchInput } from "../../../application/search/resolveSea
 import { generateSearchIndexEntries } from "../../../application/search/searchAliases.ts";
 import { suggestSearchResults } from "../../../application/search/suggestSearchResults.ts";
 import type { TSuggestSearchResults } from "../../../application/search/suggestSearchResults.types.ts";
-import type { TSearchKind } from "../../../domain/search/types.ts";
-import { FuseSearchEngine } from "../../../infrastructure/search/engine.ts";
 import { getGameDataEntityForSearchResult } from "../../../infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
+import { FuseSearchEngine } from "../../../infrastructure/search/engine.ts";
 
 export type TSearchUseCases = {
     readonly resolveSearchInput: TResolveSearchInput;
@@ -27,10 +26,8 @@ export async function composeSearchUseCases(arg: { readonly em: EntityManager })
     const getBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
     const getSearchIndexEntries: TGetSearchIndexEntries = (searchArg) =>
         searchEngine.search(searchArg.input, searchArg.limit);
-    const getEntityByKindAndId: TGetEntityByKindAndId = <Kind extends TSearchKind>(searchArg: {
-        kind: Kind;
-        id: string;
-    }) => getGameDataEntityForSearchResult<Kind>({ em: arg.em }, searchArg);
+    const getEntityByKindAndId: TGetEntityByKindAndId = (searchArg) =>
+        getGameDataEntityForSearchResult({ em: arg.em }, searchArg);
 
     return {
         resolveSearchInput: (input) => resolveSearchInput({ getBestSearchIndexEntry, getEntityByKindAndId }, input),
