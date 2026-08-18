@@ -2,7 +2,9 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { ELfgResultKind } from "../../../../../../src/application/lfg/types.ts";
 import { ELfgPlayerRemovalKind } from "../../../../../../src/domain/lfg/models/playerRemoval.types.ts";
 import { mapLfgResultToMessageBase } from "../../../../../../src/presentation/discord/mappers/lfg.ts";
-import { GUILD_CONFIG, ROOM, STATUS_NOW } from "./fixtures.ts";
+import { GUILD_CONFIG, ROOM } from "./fixtures.ts";
+
+const STATUS_NOW = new Date("2026-07-19T10:00:00.000Z");
 
 afterEach(() => {
     vi.useRealTimers();
