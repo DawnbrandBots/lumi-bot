@@ -10,5 +10,4 @@ export const setLfgRoleLastPingedAt: TAdminPersistenceMap["setLfgRoleLastPingedA
         return;
     }
     lfgRole.lastPingedAt = arg.date.toISOString();
-    await context.em.flush();
 };

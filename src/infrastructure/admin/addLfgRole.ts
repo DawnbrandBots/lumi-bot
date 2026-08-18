@@ -12,5 +12,4 @@ export const addLfgRole: TAdminPersistenceMap["addLfgRole"] = async (context, ar
         lastPingedAt: null,
     });
     context.em.persist(lfgRole);
-    await context.em.flush();
 };

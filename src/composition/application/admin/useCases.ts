@@ -20,6 +20,7 @@ import type {
     TSetAdminLfgRolePingCooldown,
 } from "../../../application/admin/types.ts";
 import { getAdminPersistence } from "../../../infrastructure/admin/persistence.ts";
+import { getWithAdminUnitOfWork } from "./unitOfWork.ts";
 
 export type TAdminUseCases = {
     readonly addLfgRole: TAddAdminLfgRole;
@@ -35,16 +36,17 @@ export type TAdminUseCases = {
 
 export function composeAdminUseCases(arg: { readonly em: EntityManager }): TAdminUseCases {
     const persistence = getAdminPersistence({ em: arg.em });
+    const withAdminUnitOfWork = getWithAdminUnitOfWork(arg.em);
 
     return {
-        addLfgRole: (guild, role) => addLfgRole(persistence, guild, role),
-        clearLfgChannel: (guild) => clearLfgChannel(persistence, guild),
-        clearLfgRolePingCooldown: (guild) => clearLfgRolePingCooldown(persistence, guild),
+        addLfgRole: withAdminUnitOfWork(addLfgRole),
+        clearLfgChannel: withAdminUnitOfWork(clearLfgChannel),
+        clearLfgRolePingCooldown: withAdminUnitOfWork(clearLfgRolePingCooldown),
         getGuildConfig: (guild) => getGuildConfig(persistence, guild),
         getLfgRoleConfig: (guild, role) => getLfgRoleConfig(persistence, guild, role),
-        removeLfgRole: (guild, role) => removeLfgRole(persistence, guild, role),
-        setLfgChannel: (guild, channel) => setLfgChannel(persistence, guild, channel),
-        setLfgRoleLastPingedAt: (guild, role, date) => setLfgRoleLastPingedAt(persistence, guild, role, date),
-        setLfgRolePingCooldown: (guild, minutes) => setLfgRolePingCooldown(persistence, guild, minutes),
+        removeLfgRole: withAdminUnitOfWork(removeLfgRole),
+        setLfgChannel: withAdminUnitOfWork(setLfgChannel),
+        setLfgRoleLastPingedAt: withAdminUnitOfWork(setLfgRoleLastPingedAt),
+        setLfgRolePingCooldown: withAdminUnitOfWork(setLfgRolePingCooldown),
     };
 }

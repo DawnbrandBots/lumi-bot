@@ -10,5 +10,4 @@ export const removeLfgRole: TAdminPersistenceMap["removeLfgRole"] = async (conte
         return;
     }
     context.em.remove(lfgRole);
-    await context.em.flush();
 };

@@ -19,6 +19,5 @@ export async function getOrCreateGuildConfigEntity(
         lfgRolePingCooldownMinutes: null,
     });
     context.em.persist(newConfig);
-    await context.em.flush();
     return newConfig;
 }
