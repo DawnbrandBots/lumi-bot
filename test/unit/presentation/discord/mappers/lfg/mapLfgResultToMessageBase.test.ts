@@ -1,89 +1,30 @@
 import {
     channelMention,
-    heading,
-    HeadingLevel,
     inlineCode,
-    italic,
-    MessageFlags,
     roleMention,
     time,
-    unorderedList,
     userMention,
 } from "discord.js";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { EMessageKind } from "../../../../../src/presentation/discord/message.types.ts";
-import { ELfgResultKind } from "../../../../../src/application/lfg/types.ts";
-import * as constants from "../../../../../src/domain/game/constants.ts";
-import type { IRoom } from "../../../../../src/domain/lfg/models/room.types.ts";
-import { ELfgPlayerRemovalKind } from "../../../../../src/domain/lfg/models/playerRemoval.types.ts";
-import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../../../src/presentation/discord/commands/lfg/constants.ts";
+import { ELfgResultKind } from "../../../../../../src/application/lfg/types.ts";
+import * as constants from "../../../../../../src/domain/game/constants.ts";
+import { ELfgPlayerRemovalKind } from "../../../../../../src/domain/lfg/models/playerRemoval.types.ts";
+import { mapLfgResultToMessageBase } from "../../../../../../src/presentation/discord/mappers/lfg.ts";
+import { EMessageKind } from "../../../../../../src/presentation/discord/message.types.ts";
 import {
-    createLfgHelpMessageBase,
-    createInvalidLfgSubcommandMessageBase,
-    mapLfgResultToMessageBase,
-    mapLfgMessageBaseToReply,
-} from "../../../../../src/presentation/discord/mappers/lfg.ts";
-
-const ROOM: IRoom = {
-    code: "alpha",
-    ownerId: "owner",
-    playerIds: ["player-1", "owner", "player-2"],
-};
-const PUBLIC_CHANNEL_ID = "public-channel";
-const GUILD_CONFIG = {
-    guild: "guild-1",
-    lfgChannel: PUBLIC_CHANNEL_ID,
-    lfgRolePingCooldownMinutes: 45,
-};
-const PINGABLE_ROLE_ID = "pingable-role";
-const COOLDOWN_ROLE_ID = "cooldown-role";
-const LfgConstants = {
-    LFG_NOT_CONFIGURED_DESCRIPTION: italic("Not configured"),
-    LFG_EMPTY_ROOM_LIST_DESCRIPTION: "No active rooms. :(",
-    LFG_INVALID_ROOM_CODE_DESCRIPTION: `Room codes must be between ${constants.FRIEND_BATTLE_CODE_MINIMUM_LENGTH} and ${constants.FRIEND_BATTLE_CODE_MAXIMUM_LENGTH} characters.`,
-    LFG_ALREADY_IN_A_ROOM_DESCRIPTION: "Leave your current room before creating a new one.",
-    LFG_CANNOT_TRANSFER_TO_YOURSELF_DESCRIPTION: "Choose another player in your room.",
-    LFG_NOT_ROOM_OWNER_DESCRIPTION: "Only the room owner can do that.",
-    LFG_CANNOT_KICK_YOURSELF_DESCRIPTION: `Use ${inlineCode("lfg leave")} to leave your room.`,
-    LFG_NOT_IN_A_ROOM_DESCRIPTION: "Join or create a room first.",
-    LFG_SHOW_RESPONSE_OPTION_NAME,
-} as const;
+    COOLDOWN_ROLE_ID,
+    GUILD_CONFIG,
+    LfgConstants,
+    PINGABLE_ROLE_ID,
+    PUBLIC_CHANNEL_ID,
+    ROOM,
+    roomDescription,
+    statusDescription,
+} from "./fixtures.ts";
 
 afterEach(() => {
     vi.useRealTimers();
 });
-
-function statusDescription({
-    roomsDescription,
-    lfgChannel,
-    lfgRoles = LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION,
-    lfgRolePingCooldownMinutes = null,
-}: {
-    readonly roomsDescription: string;
-    readonly lfgChannel: string;
-    readonly lfgRoles?: string | readonly string[];
-    readonly lfgRolePingCooldownMinutes?: number | null;
-}) {
-    const lfgRolesDescription = typeof lfgRoles === "string" ? [`LFG roles: ${lfgRoles}`] : ["LFG roles:", lfgRoles];
-    return [
-        heading("Rooms", HeadingLevel.Three),
-        roomsDescription,
-        heading("Server config", HeadingLevel.Three),
-        unorderedList([
-            `LFG channel: ${lfgChannel}`,
-            ...lfgRolesDescription,
-            `LFG roles ping cooldown: ${
-                lfgRolePingCooldownMinutes != null
-                    ? `${lfgRolePingCooldownMinutes} minutes`
-                    : LfgConstants.LFG_NOT_CONFIGURED_DESCRIPTION
-            }`,
-        ]),
-    ].join("\n");
-}
-
-function roomDescription(room: IRoom) {
-    return `${inlineCode(room.code)}: ${userMention(room.ownerId)} (owner), ${userMention("player-1")}, ${userMention("player-2")}`;
-}
 
 type Input = Parameters<typeof mapLfgResultToMessageBase>[0];
 
@@ -635,110 +576,5 @@ describe(mapLfgResultToMessageBase.name, () => {
                 },
             ],
         });
-    });
-});
-
-describe("LFG command-only messages", () => {
-    test("creates help message", () => {
-        expect(createLfgHelpMessageBase()).toMatchObject({
-            kind: EMessageKind.NEUTRAL,
-            embeds: [{ description: expect.any(String) }],
-        });
-    });
-
-    test("creates invalid subcommand message", () => {
-        expect(createInvalidLfgSubcommandMessageBase()).toMatchObject({
-            kind: EMessageKind.ERROR,
-            embeds: [{ description: "Please specify a valid subcommand." }],
-        });
-    });
-});
-
-const defaultOptions = { getBoolean: () => false } as const;
-
-describe(mapLfgMessageBaseToReply.name, () => {
-    test("keeps positive messages public in the configured channel", () => {
-        const messageBase = mapLfgResultToMessageBase({
-            result: {
-                kind: ELfgResultKind.ROOM_CREATED,
-                value: { userId: "owner", room: ROOM },
-            },
-            callerId: "owner",
-        });
-
-        const reply = mapLfgMessageBaseToReply({
-            messageBase,
-            interaction: { channelId: PUBLIC_CHANNEL_ID, options: defaultOptions },
-            guildConfig: GUILD_CONFIG,
-        });
-
-        expect(reply).toEqual(messageBase);
-        expect(reply).not.toHaveProperty("flags");
-    });
-
-    test("makes positive messages ephemeral outside the configured channel", () => {
-        const messageBase = mapLfgResultToMessageBase({
-            result: {
-                kind: ELfgResultKind.ROOM_CREATED,
-                value: { userId: "owner", room: ROOM },
-            },
-            callerId: "owner",
-        });
-
-        const reply = mapLfgMessageBaseToReply({
-            messageBase,
-            interaction: { channelId: "other-channel", options: defaultOptions },
-            guildConfig: GUILD_CONFIG,
-        });
-
-        expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
-    });
-
-    test("makes positive messages ephemeral when no channel is configured", () => {
-        const messageBase = mapLfgResultToMessageBase({
-            result: {
-                kind: ELfgResultKind.ROOM_CREATED,
-                value: { userId: "owner", room: ROOM },
-            },
-            callerId: "owner",
-        });
-
-        const reply = mapLfgMessageBaseToReply({
-            messageBase,
-            interaction: { channelId: "other-channel", options: defaultOptions },
-            guildConfig: null,
-        });
-
-        expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
-    });
-
-    test("makes non-positive messages ephemeral in the configured channel", () => {
-        const messageBase = mapLfgResultToMessageBase({
-            result: { kind: ELfgResultKind.INVALID_ROOM_CODE },
-            callerId: "owner",
-        });
-
-        const reply = mapLfgMessageBaseToReply({
-            messageBase,
-            interaction: { channelId: PUBLIC_CHANNEL_ID, options: defaultOptions },
-            guildConfig: GUILD_CONFIG,
-        });
-
-        expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
-    });
-
-    test(`message visible to everyone when ${LfgConstants.LFG_SHOW_RESPONSE_OPTION_NAME} is true`, () => {
-        const messageBase = mapLfgResultToMessageBase({
-            result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
-            callerId: "owner",
-        });
-
-        const reply = mapLfgMessageBaseToReply({
-            messageBase,
-            interaction: { channelId: PUBLIC_CHANNEL_ID, options: { getBoolean: () => true } },
-            guildConfig: GUILD_CONFIG,
-        });
-
-        expect(reply).not.toHaveProperty("flags");
     });
 });
