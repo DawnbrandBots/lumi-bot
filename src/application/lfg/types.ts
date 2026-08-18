@@ -5,7 +5,6 @@ import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemo
 
 export const enum ELfgResultKind {
     ROOMS_LISTED = "ROOMS_LISTED",
-    HELP = "HELP",
     ROOM_CREATED = "ROOM_CREATED",
     ROOM_CODE_CHANGED = "ROOM_CODE_CHANGED",
     INVALID_ROOM_CODE = "INVALID_ROOM_CODE",
@@ -24,7 +23,6 @@ export const enum ELfgResultKind {
     ROOM_LEFT = "ROOM_LEFT",
     NOT_IN_A_ROOM = "NOT_IN_A_ROOM",
     ROOM_DISBANDED = "ROOM_DISBANDED",
-    INVALID_SUBCOMMAND = "INVALID_SUBCOMMAND",
 }
 
 type TLfgResultValueByKind = {
@@ -64,12 +62,10 @@ type TLfgResultValueByKind = {
 } & {
     [
         _ in
-            | ELfgResultKind.HELP
             | ELfgResultKind.INVALID_ROOM_CODE
             | ELfgResultKind.NOT_ROOM_OWNER
             | ELfgResultKind.CANNOT_KICK_YOURSELF
             | ELfgResultKind.NOT_IN_A_ROOM
-            | ELfgResultKind.INVALID_SUBCOMMAND
     ]: never;
 };
 
@@ -87,7 +83,6 @@ export type TLfgResult = {
 
 export type TLfgResultTypes = {
     status: TLfgResultOfKind<ELfgResultKind.ROOMS_LISTED>;
-    help: TLfgResultOfKind<ELfgResultKind.HELP>;
     create: TLfgResultOfKind<
         | ELfgResultKind.ROOM_CREATED
         | ELfgResultKind.INVALID_ROOM_CODE
@@ -127,9 +122,7 @@ export type TLfgResultTypes = {
         | ELfgResultKind.NOT_IN_A_ROOM
     >;
     kick: TLfgResultOfKind<
-        | ELfgResultKind.PLAYER_KICKED
-        | ELfgResultKind.PLAYER_NOT_IN_ROOM
-        | ELfgResultKind.ROOM_NOT_FOUND
+        ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM | ELfgResultKind.ROOM_NOT_FOUND
     >;
     kickFromOwnedRoom: TLfgResultOfKind<
         | ELfgResultKind.PLAYER_KICKED
@@ -141,9 +134,7 @@ export type TLfgResultTypes = {
     leave: TLfgResultOfKind<ELfgResultKind.ROOM_LEFT | ELfgResultKind.NOT_IN_A_ROOM>;
     disband: TLfgResultOfKind<ELfgResultKind.ROOM_DISBANDED | ELfgResultKind.ROOM_NOT_FOUND>;
     disbandOwnedRoom: TLfgResultOfKind<
-        | ELfgResultKind.ROOM_DISBANDED
-        | ELfgResultKind.NOT_ROOM_OWNER
-        | ELfgResultKind.NOT_IN_A_ROOM
+        ELfgResultKind.ROOM_DISBANDED | ELfgResultKind.NOT_ROOM_OWNER | ELfgResultKind.NOT_IN_A_ROOM
     >;
 };
 
@@ -200,9 +191,7 @@ export type TCreateLfgRoomUseCase = (arg: TCreateLfgRoomArg) => MaybePromise<TLf
 export type TChangeOwnedLfgRoomCodeUseCase = (
     arg: TChangeOwnedLfgRoomCodeArg,
 ) => MaybePromise<TLfgResultTypes["changeOwnedRoomCode"]>;
-export type TChangeLfgRoomCodeUseCase = (
-    arg: TChangeLfgRoomCodeArg,
-) => MaybePromise<TLfgResultTypes["changeRoomCode"]>;
+export type TChangeLfgRoomCodeUseCase = (arg: TChangeLfgRoomCodeArg) => MaybePromise<TLfgResultTypes["changeRoomCode"]>;
 export type TMoveLfgUser = (arg: TMoveLfgUserArg) => MaybePromise<TLfgResultTypes["move"]>;
 export type TTransferLfgRoomUseCase = (arg: TTransferLfgRoomArg) => MaybePromise<TLfgResultTypes["transfer"]>;
 export type TTransferOwnedLfgRoomUseCase = (
@@ -263,9 +252,7 @@ export type TLfgPersistence = {
     readonly setRoomOwner: TSetLfgRoomOwner;
 };
 
-type TOwnedRoomFailure = TLfgResultOfKind<
-    ELfgResultKind.NOT_IN_A_ROOM | ELfgResultKind.NOT_ROOM_OWNER
->;
+type TOwnedRoomFailure = TLfgResultOfKind<ELfgResultKind.NOT_IN_A_ROOM | ELfgResultKind.NOT_ROOM_OWNER>;
 
 export type TGetOwnedLfgRoomResult =
     | {
@@ -288,9 +275,7 @@ export type TChangeLfgRoomCodeInRoom = (arg: {
     readonly newCode: string;
 }) => MaybePromise<
     TLfgResultOfKind<
-        | ELfgResultKind.ROOM_CODE_CHANGED
-        | ELfgResultKind.INVALID_ROOM_CODE
-        | ELfgResultKind.ROOM_ALREADY_EXISTS
+        ELfgResultKind.ROOM_CODE_CHANGED | ELfgResultKind.INVALID_ROOM_CODE | ELfgResultKind.ROOM_ALREADY_EXISTS
     >
 >;
 
@@ -298,9 +283,7 @@ export type TKickFromLfgRoom = (arg: {
     readonly guildId: string;
     readonly room: TLfgRoom;
     readonly target: IUser;
-}) => MaybePromise<
-    TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM>
->;
+}) => MaybePromise<TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM>>;
 
 export type TRemovePlayerFromLfgRoom = (arg: {
     readonly room: TLfgRoom;

@@ -66,13 +66,7 @@ function getInteractionFixture({
     return { channelFetch, interaction, reply, send };
 }
 
-function getCommand({
-    result,
-    channel = null,
-}: {
-    readonly result: TLfgResult;
-    readonly channel?: string | null;
-}) {
+function getCommand({ result, channel = null }: { readonly result: TLfgResult; readonly channel?: string | null }) {
     const lfgUseCases = {
         changeLfgRoomCode: vi.fn().mockResolvedValue(result),
         createLfgRoom: vi.fn().mockResolvedValue(result),
@@ -110,7 +104,7 @@ async function runCommand(
 describe(getLfgManageCommand.name, () => {
     test("rejects non-guild interactions", async () => {
         const { command, getGuildConfig, lfgUseCases } = getCommand({
-            result: { kind: ELfgResultKind.INVALID_SUBCOMMAND },
+            result: { kind: ELfgResultKind.INVALID_ROOM_CODE },
         });
         const { interaction, reply } = getInteractionFixture({ guildId: null });
 

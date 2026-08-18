@@ -7,8 +7,11 @@ import {
     ADMIN_ROLE_OPTION_NAME,
 } from "../constants.ts";
 import { createErrorMessage } from "../../../message.ts";
-import { EAdminResultKind } from "../../../../../application/admin/types.ts";
-import mapAdminResultToMessage from "../../../mappers/admin.ts";
+import mapAdminResultToMessage, {
+    mapAdminInvalidOptionsToMessage,
+    mapAdminLfgRoleHelpToMessage,
+    mapAdminMissingValueToMessage,
+} from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
 
@@ -31,9 +34,8 @@ async function runLfgRole(
 
     if (action === null && !role) {
         const configResult = await getGuildConfig(guildId);
-        return mapAdminResultToMessage({
-            kind: EAdminResultKind.LFG_ROLE_HELP,
-            value: { roles: configResult.value?.lfgRoles.map((lfgRole) => lfgRole.role) ?? [] },
+        return mapAdminLfgRoleHelpToMessage({
+            roles: configResult.value?.lfgRoles.map((lfgRole) => lfgRole.role) ?? [],
         });
     }
 
@@ -46,10 +48,10 @@ async function runLfgRole(
     }
 
     if ((action === ADMIN_ACTION_ADD || action === ADMIN_ACTION_REMOVE) && !role) {
-        return mapAdminResultToMessage({ kind: EAdminResultKind.LFG_ROLE_MISSING_ROLE });
+        return mapAdminMissingValueToMessage("Missing role");
     }
 
-    return mapAdminResultToMessage({ kind: EAdminResultKind.LFG_ROLE_INVALID_OPTIONS });
+    return mapAdminInvalidOptionsToMessage();
 }
 
 export function getAdminLfgRoleHandler(arg: TAdminCommandArgs) {

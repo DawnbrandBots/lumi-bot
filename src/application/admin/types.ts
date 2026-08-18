@@ -12,21 +12,12 @@ export type TAdminGuildConfig = {
 };
 
 export const enum EAdminResultKind {
-    LFG_CHANNEL_HELP = "LFG_CHANNEL_HELP",
     LFG_CHANNEL_SET = "LFG_CHANNEL_SET",
     LFG_CHANNEL_CLEARED = "LFG_CHANNEL_CLEARED",
-    LFG_CHANNEL_MISSING_CHANNEL = "LFG_CHANNEL_MISSING_CHANNEL",
-    LFG_CHANNEL_INVALID_OPTIONS = "LFG_CHANNEL_INVALID_OPTIONS",
-    LFG_ROLE_PING_COOLDOWN_HELP = "LFG_ROLE_PING_COOLDOWN_HELP",
     LFG_ROLE_PING_COOLDOWN_SET = "LFG_ROLE_PING_COOLDOWN_SET",
     LFG_ROLE_PING_COOLDOWN_CLEARED = "LFG_ROLE_PING_COOLDOWN_CLEARED",
-    LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES = "LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES",
-    LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS = "LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS",
-    LFG_ROLE_HELP = "LFG_ROLE_HELP",
     LFG_ROLE_ADDED = "LFG_ROLE_ADDED",
     LFG_ROLE_REMOVED = "LFG_ROLE_REMOVED",
-    LFG_ROLE_MISSING_ROLE = "LFG_ROLE_MISSING_ROLE",
-    LFG_ROLE_INVALID_OPTIONS = "LFG_ROLE_INVALID_OPTIONS",
     LFG_ROLE_ALREADY_EXISTS = "LFG_ROLE_ALREADY_EXISTS",
     LFG_ROLE_NOT_FOUND = "LFG_ROLE_NOT_FOUND",
     LFG_ROLE_LIMIT_REACHED = "LFG_ROLE_LIMIT_REACHED",
@@ -36,11 +27,8 @@ export const enum EAdminResultKind {
 }
 
 type TAdminResultValueByKind = {
-    [EAdminResultKind.LFG_CHANNEL_HELP]: { readonly channel: string | null | undefined };
     [EAdminResultKind.LFG_CHANNEL_SET]: { readonly channel: string };
-    [EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP]: { readonly minutes: number | null | undefined };
     [EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET]: { readonly minutes: number };
-    [EAdminResultKind.LFG_ROLE_HELP]: { readonly roles: readonly string[] };
     [EAdminResultKind.LFG_ROLE_ADDED]: { readonly role: string };
     [EAdminResultKind.LFG_ROLE_REMOVED]: { readonly role: string };
     [EAdminResultKind.LFG_ROLE_ALREADY_EXISTS]: { readonly role: string };
@@ -51,13 +39,7 @@ type TAdminResultValueByKind = {
     [
         _ in
             | EAdminResultKind.LFG_CHANNEL_CLEARED
-            | EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL
-            | EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS
             | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED
-            | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
-            | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
-            | EAdminResultKind.LFG_ROLE_MISSING_ROLE
-            | EAdminResultKind.LFG_ROLE_INVALID_OPTIONS
             | EAdminResultKind.LFG_ROLE_LIMIT_REACHED
             | EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE
     ]: never;
@@ -75,26 +57,13 @@ export type TAdminResult = {
 }[EAdminResultKind];
 
 export type TAdminResultTypes = {
-    lfgChannel: TAdminResultOfKind<
-        | EAdminResultKind.LFG_CHANNEL_HELP
-        | EAdminResultKind.LFG_CHANNEL_SET
-        | EAdminResultKind.LFG_CHANNEL_CLEARED
-        | EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL
-        | EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS
-    >;
+    lfgChannel: TAdminResultOfKind<EAdminResultKind.LFG_CHANNEL_SET | EAdminResultKind.LFG_CHANNEL_CLEARED>;
     lfgRolePingCooldown: TAdminResultOfKind<
-        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP
-        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET
-        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED
-        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES
-        | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS
+        EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED
     >;
     lfgRole: TAdminResultOfKind<
-        | EAdminResultKind.LFG_ROLE_HELP
         | EAdminResultKind.LFG_ROLE_ADDED
         | EAdminResultKind.LFG_ROLE_REMOVED
-        | EAdminResultKind.LFG_ROLE_MISSING_ROLE
-        | EAdminResultKind.LFG_ROLE_INVALID_OPTIONS
         | EAdminResultKind.LFG_ROLE_ALREADY_EXISTS
         | EAdminResultKind.LFG_ROLE_NOT_FOUND
         | EAdminResultKind.LFG_ROLE_LIMIT_REACHED
@@ -106,19 +75,11 @@ export type TAdminResultTypes = {
 
 export type TAddAdminLfgRole = (guild: string, role: string) => Promise<TAdminResultTypes["lfgRole"]>;
 export type TClearAdminLfgChannel = (guild: string) => Promise<TAdminResultTypes["lfgChannel"]>;
-export type TClearAdminLfgRolePingCooldown = (
-    guild: string,
-) => Promise<TAdminResultTypes["lfgRolePingCooldown"]>;
+export type TClearAdminLfgRolePingCooldown = (guild: string) => Promise<TAdminResultTypes["lfgRolePingCooldown"]>;
 export type TGetAdminGuildConfig = (guild: string) => Promise<TAdminResultTypes["getGuildConfig"]>;
-export type TGetAdminLfgRoleConfig = (
-    guild: string,
-    role: string,
-) => Promise<TAdminResultTypes["getLfgRoleConfig"]>;
+export type TGetAdminLfgRoleConfig = (guild: string, role: string) => Promise<TAdminResultTypes["getLfgRoleConfig"]>;
 export type TRemoveAdminLfgRole = (guild: string, role: string) => Promise<TAdminResultTypes["lfgRole"]>;
-export type TSetAdminLfgChannel = (
-    guild: string,
-    channel: string,
-) => Promise<TAdminResultTypes["lfgChannel"]>;
+export type TSetAdminLfgChannel = (guild: string, channel: string) => Promise<TAdminResultTypes["lfgChannel"]>;
 export type TSetAdminLfgRoleLastPingedAt = (guild: string, role: string, date: Date) => Promise<void>;
 export type TSetAdminLfgRolePingCooldown = (
     guild: string,
@@ -142,5 +103,8 @@ export type TAdminPersistence = {
         readonly roleId: string;
         readonly date: Date;
     }) => MaybePromise<void>;
-    readonly setLfgRolePingCooldown: (arg: { readonly guildId: string; readonly minutes: number }) => MaybePromise<void>;
+    readonly setLfgRolePingCooldown: (arg: {
+        readonly guildId: string;
+        readonly minutes: number;
+    }) => MaybePromise<void>;
 };

@@ -7,8 +7,11 @@ import {
     ADMIN_CHANNEL_OPTION_NAME,
 } from "../constants.ts";
 import { createErrorMessage } from "../../../message.ts";
-import { EAdminResultKind } from "../../../../../application/admin/types.ts";
-import mapAdminResultToMessage from "../../../mappers/admin.ts";
+import mapAdminResultToMessage, {
+    mapAdminInvalidOptionsToMessage,
+    mapAdminLfgChannelHelpToMessage,
+    mapAdminMissingValueToMessage,
+} from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
 
@@ -40,10 +43,7 @@ async function runLfgChannel(
 
     if (action === null && !channel) {
         const configResult = await getGuildConfig(guildId);
-        return mapAdminResultToMessage({
-            kind: EAdminResultKind.LFG_CHANNEL_HELP,
-            value: { channel: configResult.value?.lfgChannel },
-        });
+        return mapAdminLfgChannelHelpToMessage({ channel: configResult.value?.lfgChannel });
     }
 
     if (action === ADMIN_ACTION_SET && channel) {
@@ -55,10 +55,10 @@ async function runLfgChannel(
     }
 
     if (action === ADMIN_ACTION_SET && !channel) {
-        return mapAdminResultToMessage({ kind: EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL });
+        return mapAdminMissingValueToMessage("Missing channel");
     }
 
-    return mapAdminResultToMessage({ kind: EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS });
+    return mapAdminInvalidOptionsToMessage();
 }
 
 export function getAdminLfgChannelHandler(arg: TAdminCommandArgs) {

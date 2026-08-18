@@ -7,8 +7,11 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
 } from "../constants.ts";
 import { createErrorMessage } from "../../../message.ts";
-import { EAdminResultKind } from "../../../../../application/admin/types.ts";
-import mapAdminResultToMessage from "../../../mappers/admin.ts";
+import mapAdminResultToMessage, {
+    mapAdminInvalidOptionsToMessage,
+    mapAdminLfgRolePingCooldownHelpToMessage,
+    mapAdminMissingValueToMessage,
+} from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
 import type { TAdminCommandArgs } from "../types.ts";
 
@@ -31,9 +34,8 @@ async function runLfgRolePingCooldown(
 
     if (action === null && minutes === null) {
         const configResult = await getGuildConfig(guildId);
-        return mapAdminResultToMessage({
-            kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP,
-            value: { minutes: configResult.value?.lfgRolePingCooldownMinutes },
+        return mapAdminLfgRolePingCooldownHelpToMessage({
+            minutes: configResult.value?.lfgRolePingCooldownMinutes,
         });
     }
 
@@ -46,12 +48,10 @@ async function runLfgRolePingCooldown(
     }
 
     if (action === ADMIN_ACTION_SET && minutes === null) {
-        return mapAdminResultToMessage({
-            kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_MISSING_MINUTES,
-        });
+        return mapAdminMissingValueToMessage("Missing minutes");
     }
 
-    return mapAdminResultToMessage({ kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_INVALID_OPTIONS });
+    return mapAdminInvalidOptionsToMessage();
 }
 
 export function getAdminLfgRolePingCooldownHandler(arg: TAdminCommandArgs) {

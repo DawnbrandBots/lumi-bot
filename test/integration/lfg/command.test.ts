@@ -208,7 +208,7 @@ describe(getLfgCommand.name, () => {
 
     test("does not mirror error responses", async () => {
         const command = getCommand({
-            result: { kind: ELfgResultKind.INVALID_SUBCOMMAND },
+            result: { kind: ELfgResultKind.INVALID_ROOM_CODE },
             channel: PUBLIC_CHANNEL_ID,
         });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });

@@ -18,6 +18,8 @@ import type { IRoom } from "../../../src/domain/lfg/models/room.types.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
 import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../src/presentation/discord/commands/lfg/constants.ts";
 import {
+    createLfgHelpMessageBase,
+    createInvalidLfgSubcommandMessageBase,
     mapLfgResultToMessageBase,
     mapLfgMessageBaseToReply,
 } from "../../../src/presentation/discord/mappers/lfg.ts";
@@ -44,7 +46,6 @@ const LfgConstants = {
     LFG_NOT_ROOM_OWNER_DESCRIPTION: "Only the room owner can do that.",
     LFG_CANNOT_KICK_YOURSELF_DESCRIPTION: `Use ${inlineCode("lfg leave")} to leave your room.`,
     LFG_NOT_IN_A_ROOM_DESCRIPTION: "Join or create a room first.",
-    LFG_INVALID_SUBCOMMAND_DESCRIPTION: "Please specify a valid subcommand.",
     LFG_SHOW_RESPONSE_OPTION_NAME,
 } as const;
 
@@ -139,15 +140,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                         }),
                     },
                 ],
-            },
-        },
-        {
-            name: "help",
-            input: { result: { kind: ELfgResultKind.HELP } },
-            expected: {
-                kind: EMessageKind.NEUTRAL,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                embeds: [{ description: expect.any(String) }],
             },
         },
         {
@@ -455,18 +447,6 @@ describe(mapLfgResultToMessageBase.name, () => {
                 ],
             },
         },
-        {
-            name: "invalid subcommand",
-            input: { result: { kind: ELfgResultKind.INVALID_SUBCOMMAND } },
-            expected: {
-                kind: EMessageKind.ERROR,
-                embeds: [
-                    {
-                        description: LfgConstants.LFG_INVALID_SUBCOMMAND_DESCRIPTION,
-                    },
-                ],
-            },
-        },
     ])("maps $name", ({ input, expected }) => {
         const { callerId = "owner", ...mapperInput } = input;
         const messageBase = mapLfgResultToMessageBase({ ...mapperInput, callerId });
@@ -654,6 +634,22 @@ describe(mapLfgResultToMessageBase.name, () => {
                     }),
                 },
             ],
+        });
+    });
+});
+
+describe("LFG command-only messages", () => {
+    test("creates help message", () => {
+        expect(createLfgHelpMessageBase()).toMatchObject({
+            kind: EMessageKind.NEUTRAL,
+            embeds: [{ description: expect.any(String) }],
+        });
+    });
+
+    test("creates invalid subcommand message", () => {
+        expect(createInvalidLfgSubcommandMessageBase()).toMatchObject({
+            kind: EMessageKind.ERROR,
+            embeds: [{ description: "Please specify a valid subcommand." }],
         });
     });
 });

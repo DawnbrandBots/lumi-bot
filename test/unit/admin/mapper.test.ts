@@ -1,7 +1,13 @@
 import { channelMention, MessageFlags, roleMention } from "discord.js";
 import { describe, expect, test } from "vitest";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
-import mapAdminResultToMessage from "../../../src/presentation/discord/mappers/admin.ts";
+import mapAdminResultToMessage, {
+    mapAdminInvalidOptionsToMessage,
+    mapAdminLfgChannelHelpToMessage,
+    mapAdminLfgRoleHelpToMessage,
+    mapAdminLfgRolePingCooldownHelpToMessage,
+    mapAdminMissingValueToMessage,
+} from "../../../src/presentation/discord/mappers/admin.ts";
 import { EMessageKind } from "../../../src/presentation/discord/message.types.ts";
 
 const CHANNEL_ID = "channel-1";
@@ -18,12 +24,7 @@ function description(message: NonNullable<ReturnType<typeof mapAdminResultToMess
 
 describe(mapAdminResultToMessage.name, () => {
     test("maps LFG channel help", () => {
-        const message = assertMessage(
-            mapAdminResultToMessage({
-                kind: EAdminResultKind.LFG_CHANNEL_HELP,
-                value: { channel: null },
-            }),
-        );
+        const message = mapAdminLfgChannelHelpToMessage({ channel: null });
 
         expect(message.kind).toBe(EMessageKind.NEUTRAL);
         expect(message.flags).toEqual([MessageFlags.Ephemeral]);
@@ -46,9 +47,7 @@ describe(mapAdminResultToMessage.name, () => {
     });
 
     test("maps LFG channel cleared", () => {
-        const message = assertMessage(
-            mapAdminResultToMessage({ kind: EAdminResultKind.LFG_CHANNEL_CLEARED }),
-        );
+        const message = assertMessage(mapAdminResultToMessage({ kind: EAdminResultKind.LFG_CHANNEL_CLEARED }));
 
         expect(message.kind).toBe(EMessageKind.POSITIVE);
         expect(message.embeds?.[0]).toMatchObject({
@@ -79,12 +78,7 @@ describe(mapAdminResultToMessage.name, () => {
     });
 
     test("maps LFG role ping cooldown help", () => {
-        const message = assertMessage(
-            mapAdminResultToMessage({
-                kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_HELP,
-                value: { minutes: 45 },
-            }),
-        );
+        const message = mapAdminLfgRolePingCooldownHelpToMessage({ minutes: 45 });
 
         expect(message.kind).toBe(EMessageKind.NEUTRAL);
         expect(message.flags).toEqual([MessageFlags.Ephemeral]);
@@ -107,12 +101,7 @@ describe(mapAdminResultToMessage.name, () => {
     });
 
     test("maps LFG role help", () => {
-        const message = assertMessage(
-            mapAdminResultToMessage({
-                kind: EAdminResultKind.LFG_ROLE_HELP,
-                value: { roles: [] },
-            }),
-        );
+        const message = mapAdminLfgRoleHelpToMessage({ roles: [] });
 
         expect(message.kind).toBe(EMessageKind.NEUTRAL);
         expect(message.flags).toEqual([MessageFlags.Ephemeral]);
@@ -149,26 +138,10 @@ describe(mapAdminResultToMessage.name, () => {
     });
 
     test("maps invalid LFG channel options", () => {
-        const missingChannel = assertMessage(
-            mapAdminResultToMessage({
-                kind: EAdminResultKind.LFG_CHANNEL_MISSING_CHANNEL,
-            }),
-        );
-        const invalidOptions = assertMessage(
-            mapAdminResultToMessage({
-                kind: EAdminResultKind.LFG_CHANNEL_INVALID_OPTIONS,
-            }),
-        );
-        const missingRole = assertMessage(
-            mapAdminResultToMessage({
-                kind: EAdminResultKind.LFG_ROLE_MISSING_ROLE,
-            }),
-        );
-        const invalidRoleOptions = assertMessage(
-            mapAdminResultToMessage({
-                kind: EAdminResultKind.LFG_ROLE_INVALID_OPTIONS,
-            }),
-        );
+        const missingChannel = mapAdminMissingValueToMessage("Missing channel");
+        const invalidOptions = mapAdminInvalidOptionsToMessage();
+        const missingRole = mapAdminMissingValueToMessage("Missing role");
+        const invalidRoleOptions = mapAdminInvalidOptionsToMessage();
         const everyoneRole = assertMessage(
             mapAdminResultToMessage({
                 kind: EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE,

@@ -21,10 +21,7 @@ import {
 import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
 import type { TLfgResultOfKind } from "../../../application/lfg/types.ts";
-import {
-    ELfgResultKind,
-    type TLfgResult,
-} from "../../../application/lfg/types.ts";
+import { ELfgResultKind, type TLfgResult } from "../../../application/lfg/types.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -85,6 +82,20 @@ ${unorderedList([
 ])}
 
 Have fun!!`;
+
+export function createLfgHelpMessageBase() {
+    return createNeutralMessage({
+        embed: { description: LFG_HELP_DESCRIPTION },
+    });
+}
+
+export function createInvalidLfgSubcommandMessageBase() {
+    return createErrorMessage({
+        embed: {
+            description: "Please specify a valid subcommand.",
+        },
+    });
+}
 
 /** Role config fields needed to render one pingable role's status. */
 type LfgRoleStatus = {
@@ -283,10 +294,6 @@ export function mapLfgResultToMessageBase({
                 embed: { description: formatStatus(result.value.rooms, guildConfig) },
             });
         }
-        case ELfgResultKind.HELP:
-            return createNeutralMessage({
-                embed: { description: LFG_HELP_DESCRIPTION },
-            });
         case ELfgResultKind.ROOM_CREATED:
             return createPositiveMessage({
                 embed: {
@@ -414,12 +421,6 @@ export function mapLfgResultToMessageBase({
         case ELfgResultKind.NOT_IN_A_ROOM:
             return createNegativeMessage({
                 embed: { description: "Join or create a room first." },
-            });
-        case ELfgResultKind.INVALID_SUBCOMMAND:
-            return createErrorMessage({
-                embed: {
-                    description: "Please specify a valid subcommand.",
-                },
             });
     }
 }
