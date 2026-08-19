@@ -1,0 +1,60 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LFG command-only messages > creates help message 1`] = `
+{
+  "embeds": [
+    {
+      "color": 12745742,
+      "description": "\`/lfg\` groups subcommands for managing **rooms** for Friend Battles.
+
+Rooms:
+- are groups of up to 3 players,
+- have a code which should be used in Friend Battles,
+- have an **owner** with additional privileges within the group.
+
+Want to play? First check \`/lfg status\` for vacant spots in existing rooms. Ask active players whether you can join them!
+
+Use \`/lfg join\` to join a room, or \`/lfg create\` to create one as the owner.
+
+Still missing players? Use \`/lfg ping\` to ping users who have a role dedicated to LFG.
+\`/lfg ping\` enters a cooldown period for the pinged role after use.
+
+When you are done playing, use \`/lfg leave\` so other players can see that you are not playing anymore.
+
+In general, please encourage each other to ensure that \`/lfg status\`'s output is always up-to-date.
+
+A room owner may also use the following commands:
+- \`/lfg disband\`: Delete their room.
+- \`/lfg change-code\`: Change their room's code.
+- \`/lfg kick\`: Kick a player from their room.
+- \`/lfg transfer\`: Transfer ownership to another player in their room.
+
+Ownership is automatically transferred when the owner leaves the room.
+Rooms are deleted when all players leave.
+
+\`/lfg\` subcommands may be used in any channel without fear of spamming as all responses are visible to the user only.
+
+\`/lfg status\` also displays the server's config for the LFG feature as set by admins:
+- **LFG channel**: channel to which will be sent a public copy of all responses returned by \`/lfg\` subcommands following successful execution.
+- **LFG roles**: roles which may be pinged by \`/lfg ping\`.
+- **LFG roles ping cooldown**: time between pings for each role.
+
+Have fun!!",
+    },
+  ],
+  "kind": "NEUTRAL",
+}
+`;
+
+exports[`LFG command-only messages > creates invalid subcommand message 1`] = `
+{
+  "content": "-# Everyone point and laugh at <@1454944471358898209>! <:emoji:1474191899781758976>",
+  "embeds": [
+    {
+      "color": 10038562,
+      "description": "Please specify a valid subcommand.",
+    },
+  ],
+  "kind": "ERROR",
+}
+`;
