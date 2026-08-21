@@ -1,6 +1,6 @@
 import type { TLfgPersistence } from "../../../../../application/lfg/types.ts";
+import { mapToLfgRoomDomainModel } from "../../mappers/mapToLfgRoomDomainModel.ts";
 import { LfgRoom } from "../../models/lfg/room.ts";
-import { toLfgRoom } from "./toLfgRoom.ts";
 import type { TLfgPersistenceFunction } from "./types.ts";
 
 export const findRoomByCode: TLfgPersistenceFunction<TLfgPersistence["findRoomByCode"]> = async (
@@ -8,5 +8,5 @@ export const findRoomByCode: TLfgPersistenceFunction<TLfgPersistence["findRoomBy
     { guildId, code },
 ) => {
     const room = await em.findOne(LfgRoom, { guildId, code }, { populate: ["players"] });
-    return room ? toLfgRoom(room) : null;
+    return room ? mapToLfgRoomDomainModel(room) : null;
 };
