@@ -214,7 +214,7 @@
           "amount": {
             "base": 45,
             "unit": {
-              "kind": "FIXED"
+              "kind": "PERCENT"
             }
           },
           "stat": "RECEIVED_WEAPON_DAMAGE"
