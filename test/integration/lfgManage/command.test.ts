@@ -132,7 +132,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: MessageFlags.Ephemeral,
-                embeds: [expect.objectContaining({ title: "LFG management unavailable" })],
+                embeds: [expect.objectContaining({ description: "LFG management is only available in servers." })],
             }),
         );
         expect(getGuildConfig).not.toHaveBeenCalled();

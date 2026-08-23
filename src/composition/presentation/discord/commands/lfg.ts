@@ -22,7 +22,6 @@ import { kick as kickFromOwnedLfgRoom } from "../../../../presentation/discord/c
 import { leave as leaveLfgRoom } from "../../../../presentation/discord/commands/lfg/leave.ts";
 import { ping as pingLfgRole } from "../../../../presentation/discord/commands/lfg/ping.ts";
 import { runFeatureSubcommand as runLfgFeatureSubcommand } from "../../../../presentation/discord/commands/lfg/runFeatureSubcommand.ts";
-import { runWithGuild as runLfgWithGuild } from "../../../../presentation/discord/commands/lfg/runWithGuild.ts";
 import { status as getLfgStatus } from "../../../../presentation/discord/commands/lfg/status.ts";
 import { transfer as transferOwnedLfgRoom } from "../../../../presentation/discord/commands/lfg/transfer.ts";
 import type { TLfgCommandArgs } from "../../../../presentation/discord/commands/lfg/types.ts";
@@ -32,6 +31,7 @@ import type {
     TCommandRunHandlers,
     TGuildCommandInteraction,
 } from "../../../../presentation/discord/commands/types.ts";
+import { runWithGuild, type TRunWithGuildArg } from "../../../../presentation/discord/utils/runWithGuild.ts";
 import type { MaybePromise } from "../../../../utils/types.ts";
 import type { TAdminUseCases } from "../../../application/admin/useCases.ts";
 import type { TLfgUseCases } from "../../../application/lfg/useCases.ts";
@@ -45,24 +45,36 @@ type TLfgReplyCommand = (
     interaction: TGuildCommandInteraction,
 ) => MaybePromise<Parameters<TGuildCommandInteraction["reply"]>[0]>;
 
+function runLfgWithGuild(arg: Omit<TRunWithGuildArg, "notInGuildMessageEmbeddescription">) {
+    return runWithGuild({ ...arg, notInGuildMessageEmbeddescription: "LFG is only available in servers." });
+}
+
 function composeLfgFeatureHandler(arg: TLfgCommandArgs, command: TLfgFeatureCommand): TCommandRunHandler {
     return (interaction) =>
-        runLfgWithGuild(interaction, (guildInteraction) =>
-            runLfgFeatureSubcommand(arg, guildInteraction, () => command(arg, guildInteraction)),
-        );
+        runLfgWithGuild({
+            interaction,
+            run: (guildInteraction) =>
+                runLfgFeatureSubcommand(arg, guildInteraction, () => command(arg, guildInteraction)),
+        });
 }
 
 function composeLfgReplyHandler(arg: TLfgCommandArgs, command: TLfgReplyCommand): TCommandRunHandler {
     return (interaction) =>
-        runLfgWithGuild(interaction, async (guildInteraction) => {
-            await guildInteraction.reply(await command(arg, guildInteraction));
+        runLfgWithGuild({
+            interaction,
+            run: async (guildInteraction) => {
+                await guildInteraction.reply(await command(arg, guildInteraction));
+            },
         });
 }
 
 function composeLfgVoidHandler(arg: TLfgCommandArgs, command: TLfgVoidCommand): TCommandRunHandler {
     return (interaction) =>
-        runLfgWithGuild(interaction, async (guildInteraction) => {
-            await command(arg, guildInteraction);
+        runLfgWithGuild({
+            interaction,
+            run: async (guildInteraction) => {
+                await command(arg, guildInteraction);
+            },
         });
 }
 

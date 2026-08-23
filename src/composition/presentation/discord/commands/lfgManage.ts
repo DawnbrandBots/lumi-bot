@@ -15,7 +15,6 @@ import { disband as disbandManagedLfgRoom } from "../../../../presentation/disco
 import { kick as kickFromManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/kick.ts";
 import { move as moveLfgUser } from "../../../../presentation/discord/commands/lfgManage/move.ts";
 import { runFeatureSubcommand as runLfgManageFeatureSubcommand } from "../../../../presentation/discord/commands/lfgManage/runFeatureSubcommand.ts";
-import { runWithGuild as runLfgManageWithGuild } from "../../../../presentation/discord/commands/lfgManage/runWithGuild.ts";
 import { transfer as transferManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/transfer.ts";
 import type { TLfgManageCommandArgs } from "../../../../presentation/discord/commands/lfgManage/types.ts";
 import type {
@@ -24,6 +23,7 @@ import type {
     TCommandRunHandlers,
     TGuildCommandInteraction,
 } from "../../../../presentation/discord/commands/types.ts";
+import { runWithGuild, type TRunWithGuildArg } from "../../../../presentation/discord/utils/runWithGuild.ts";
 import type { MaybePromise } from "../../../../utils/types.ts";
 import type { TAdminUseCases } from "../../../application/admin/useCases.ts";
 import type { TLfgUseCases } from "../../../application/lfg/useCases.ts";
@@ -33,14 +33,20 @@ type TLfgManageFeatureCommand = (
     interaction: TGuildCommandInteraction,
 ) => MaybePromise<TLfgResult>;
 
+function runLfgManageWithGuild(arg: Omit<TRunWithGuildArg, "notInGuildMessageEmbeddescription">) {
+    return runWithGuild({ ...arg, notInGuildMessageEmbeddescription: "LFG management is only available in servers." });
+}
+
 function composeLfgManageFeatureHandler(
     arg: TLfgManageCommandArgs,
     command: TLfgManageFeatureCommand,
 ): TCommandRunHandler {
     return (interaction) =>
-        runLfgManageWithGuild(interaction, (guildInteraction) =>
-            runLfgManageFeatureSubcommand(arg, guildInteraction, () => command(arg, guildInteraction)),
-        );
+        runLfgManageWithGuild({
+            interaction,
+            run: (guildInteraction) =>
+                runLfgManageFeatureSubcommand(arg, guildInteraction, () => command(arg, guildInteraction)),
+        });
 }
 
 function composeLfgManageRunHandlers(arg: TLfgManageCommandArgs) {
