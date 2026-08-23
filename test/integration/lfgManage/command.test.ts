@@ -8,6 +8,7 @@ import {
 import { describe, expect, test, vi } from "vitest";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
+import { composeDiscordCommands } from "../../../src/composition/presentation/discord/commands.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfgManage.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
@@ -16,7 +17,6 @@ import {
     LFG_NEW_CODE_OPTION_NAME,
     LFG_PLAYER_OPTION_NAME,
 } from "../../../src/presentation/discord/commands/lfg/constants.ts";
-import { getLfgManageCommand } from "../../../src/presentation/discord/commands/lfgManage.ts";
 import { LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME } from "../../../src/presentation/discord/commands/lfgManage/constants.ts";
 import type { TCommandRunHandlers } from "../../../src/presentation/discord/commands/types.ts";
 
@@ -44,6 +44,7 @@ function getInteractionFixture({
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
         guildId,
+        inGuild: vi.fn().mockReturnValue(guildId !== null),
         channelId,
         user: { id: ADMIN_ID },
         guild: {
@@ -69,23 +70,41 @@ function getInteractionFixture({
 function getCommand({ result, channel = null }: { readonly result: TLfgResult; readonly channel?: string | null }) {
     const lfgUseCases = {
         changeLfgRoomCode: vi.fn().mockResolvedValue(result),
+        changeOwnedLfgRoomCode: vi.fn().mockResolvedValue(result),
         createLfgRoom: vi.fn().mockResolvedValue(result),
+        disbandOwnedLfgRoom: vi.fn().mockResolvedValue(result),
         moveLfgUser: vi.fn().mockResolvedValue(result),
+        getLfgStatus: vi.fn().mockResolvedValue(result),
         kickFromLfgRoom: vi.fn().mockResolvedValue(result),
+        kickFromOwnedLfgRoom: vi.fn().mockResolvedValue(result),
+        leaveLfgRoom: vi.fn().mockResolvedValue(result),
         transferLfgRoom: vi.fn().mockResolvedValue(result),
+        transferOwnedLfgRoom: vi.fn().mockResolvedValue(result),
         disbandLfgRoom: vi.fn().mockResolvedValue(result),
     };
     const getGuildConfig = vi.fn().mockResolvedValue({
         kind: EAdminResultKind.LFG_GET_CONFIG,
         value: channel ? { guild: GUILD_ID, lfgChannel: channel } : null,
     });
+    const adminUseCases = {
+        addLfgRole: vi.fn(),
+        clearLfgChannel: vi.fn(),
+        clearLfgRolePingCooldown: vi.fn(),
+        getGuildConfig,
+        getLfgRoleConfig: vi.fn(),
+        removeLfgRole: vi.fn(),
+        setLfgChannel: vi.fn(),
+        setLfgRoleLastPingedAt: vi.fn(),
+        setLfgRolePingCooldown: vi.fn(),
+    };
+    const searchUseCases = {
+        resolveSearchInput: vi.fn(),
+        suggestSearchResults: vi.fn().mockResolvedValue([]),
+    };
 
     return {
         getGuildConfig,
-        command: getLfgManageCommand({
-            getGuildConfig,
-            ...lfgUseCases,
-        }),
+        command: composeDiscordCommands({ adminUseCases, lfgUseCases, searchUseCases })["lfg-manage"].run,
         lfgUseCases,
     };
 }
@@ -101,7 +120,7 @@ async function runCommand(
     await run(interaction);
 }
 
-describe(getLfgManageCommand.name, () => {
+describe("composeDiscordCommands lfg-manage", () => {
     test("rejects non-guild interactions", async () => {
         const { command, getGuildConfig, lfgUseCases } = getCommand({
             result: { kind: ELfgResultKind.INVALID_ROOM_CODE },

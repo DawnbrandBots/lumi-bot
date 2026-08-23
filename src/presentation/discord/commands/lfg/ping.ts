@@ -5,11 +5,10 @@ import {
     roleMention,
     time,
     userMention,
-    type CacheType,
-    type ChatInputCommandInteraction,
     type InteractionReplyOptions,
 } from "discord.js";
 import { createNegativeMessage, createPositiveMessage } from "../../message.ts";
+import type { TGuildCommandInteraction } from "../types.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
@@ -17,14 +16,14 @@ import {
     LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
 } from "./constants.ts";
-import { runWithGuild } from "./runWithGuild.ts";
 import type { TLfgCommandArgs } from "./types.ts";
 
-async function runPing(
+export async function ping(
     { getGuildConfig, getLfgRoleConfig, setLfgRoleLastPingedAt }: TLfgCommandArgs,
-    interaction: ChatInputCommandInteraction<CacheType>,
-    guildId: string,
+    interaction: TGuildCommandInteraction,
 ): Promise<void> {
+    const guildId = interaction.guildId;
+
     const configResult = await getGuildConfig({ guildId });
     const channelId = configResult.value?.lfgChannel;
     if (!channelId) {
@@ -117,9 +116,4 @@ async function runPing(
     }
 
     await setLfgRoleLastPingedAt({ guildId, roleId, date: now });
-}
-
-export function getLfgPingHandler(arg: TLfgCommandArgs) {
-    return (interaction: ChatInputCommandInteraction<CacheType>) =>
-        runWithGuild(interaction, (guildId) => runPing(arg, interaction, guildId));
 }

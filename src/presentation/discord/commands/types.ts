@@ -14,8 +14,9 @@ import type {
     ChatInputCommandInteraction,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "discord.js";
-import type { MaybePromise } from "../../../utils/types.ts";
+import type { MaybePromise, ThisGuardType } from "../../../utils/types.ts";
 
+export type TGuildCommandInteraction = ThisGuardType<ChatInputCommandInteraction["inGuild"]>;
 /**
  * Executes a Discord chat-input command, replies to its interaction and may run other Discrod-related actions like sending additional messages.
  */

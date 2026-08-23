@@ -5,13 +5,13 @@ import {
     type InteractionReplyOptions,
 } from "discord.js";
 import { createErrorMessage } from "../../message.ts";
+import type { TGuildCommandInteraction } from "../types.ts";
 
 export async function runWithGuild(
     interaction: ChatInputCommandInteraction<CacheType>,
-    run: (guildId: string) => Promise<void>,
+    run: (interaction: TGuildCommandInteraction) => Promise<void>,
 ): Promise<void> {
-    const guildId = interaction.guildId;
-    if (!guildId) {
+    if (!interaction.inGuild()) {
         await interaction.reply(
             createErrorMessage<InteractionReplyOptions>({
                 embed: {
@@ -24,5 +24,5 @@ export async function runWithGuild(
         return;
     }
 
-    await run(guildId);
+    await run(interaction);
 }

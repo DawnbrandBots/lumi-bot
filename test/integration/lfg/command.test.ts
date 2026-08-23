@@ -4,9 +4,9 @@ import { describe, expect, test, vi } from "vitest";
 import type { TSetAdminLfgRoleLastPingedAt } from "../../../src/application/admin/types.ts";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
+import { composeDiscordCommands } from "../../../src/composition/presentation/discord/commands.ts";
 import type { lfgCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfg.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
-import { getLfgCommand } from "../../../src/presentation/discord/commands/lfg.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -28,6 +28,7 @@ const OTHER_CHANNEL_ID = "other-channel";
 const ROLE_ID = "role-1";
 const ROLE_NAME = "Raid";
 const REPLY = {} as InteractionResponse<boolean>;
+const ANY_DATE: unknown = expect.any(Date);
 const POSITIVE_RESULT = {
     kind: ELfgResultKind.ROOM_CREATED,
     value: {
@@ -50,13 +51,17 @@ function getSetLfgRoleLastPingedAtMock() {
 
 function getLfgUseCaseMocks(result: TLfgResult) {
     return {
+        changeLfgRoomCode: vi.fn().mockResolvedValue(result),
         changeOwnedLfgRoomCode: vi.fn().mockResolvedValue(result),
         createLfgRoom: vi.fn().mockResolvedValue(result),
+        disbandLfgRoom: vi.fn().mockResolvedValue(result),
         disbandOwnedLfgRoom: vi.fn().mockResolvedValue(result),
         getLfgStatus: vi.fn().mockResolvedValue(result),
+        kickFromLfgRoom: vi.fn().mockResolvedValue(result),
         kickFromOwnedLfgRoom: vi.fn().mockResolvedValue(result),
         leaveLfgRoom: vi.fn().mockResolvedValue(result),
         moveLfgUser: vi.fn().mockResolvedValue(result),
+        transferLfgRoom: vi.fn().mockResolvedValue(result),
         transferOwnedLfgRoom: vi.fn().mockResolvedValue(result),
     };
 }
@@ -83,6 +88,7 @@ function getInteractionFixture({
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
         guildId: GUILD_ID,
+        inGuild: vi.fn().mockReturnValue(true),
         channelId,
         user: { id: USER_ID },
         guild: {
@@ -122,18 +128,32 @@ function getCommand({
     readonly lfgRolePingCooldownMinutes?: number;
     readonly setLfgRoleLastPingedAt?: SetLfgRoleLastPingedAtMock;
 }): TCommandRunHandlers<typeof lfgCommandCommandRegistrationData> {
-    return getLfgCommand({
-        ...lfgUseCases,
-        getGuildConfig: vi.fn().mockResolvedValue({
-            kind: EAdminResultKind.LFG_GET_CONFIG,
-            value: channel ? { guild: GUILD_ID, lfgChannel: channel, lfgRolePingCooldownMinutes } : null,
-        }),
-        getLfgRoleConfig: vi.fn().mockResolvedValue({
-            kind: EAdminResultKind.LFG_GET_ROLE_CONFIG,
-            value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
-        }),
-        setLfgRoleLastPingedAt,
+    const getGuildConfig = vi.fn().mockResolvedValue({
+        kind: EAdminResultKind.LFG_GET_CONFIG,
+        value: channel ? { guild: GUILD_ID, lfgChannel: channel, lfgRolePingCooldownMinutes } : null,
     });
+    const getLfgRoleConfig = vi.fn().mockResolvedValue({
+        kind: EAdminResultKind.LFG_GET_ROLE_CONFIG,
+        value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
+    });
+    return composeDiscordCommands({
+        adminUseCases: {
+            addLfgRole: vi.fn(),
+            clearLfgChannel: vi.fn(),
+            clearLfgRolePingCooldown: vi.fn(),
+            getGuildConfig,
+            getLfgRoleConfig,
+            removeLfgRole: vi.fn(),
+            setLfgChannel: vi.fn(),
+            setLfgRoleLastPingedAt,
+            setLfgRolePingCooldown: vi.fn(),
+        },
+        lfgUseCases,
+        searchUseCases: {
+            resolveSearchInput: vi.fn(),
+            suggestSearchResults: vi.fn().mockResolvedValue([]),
+        },
+    }).lfg.run;
 }
 
 async function runCommand(
@@ -147,7 +167,7 @@ async function runCommand(
     await run(interaction);
 }
 
-describe(getLfgCommand.name, () => {
+describe("composeDiscordCommands lfg", () => {
     test("replies ephemerally when no channel is configured", async () => {
         const command = getCommand({ result: POSITIVE_RESULT, channel: null });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });
@@ -157,7 +177,6 @@ describe(getLfgCommand.name, () => {
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).not.toHaveBeenCalled();
     });
-
     test("replies ephemerally and sends a public copy outside configured channel", async () => {
         const command = getCommand({ result: POSITIVE_RESULT, channel: PUBLIC_CHANNEL_ID });
         const send = vi.fn().mockResolvedValue({});
@@ -414,7 +433,7 @@ describe(getLfgCommand.name, () => {
         expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith({
             guildId: GUILD_ID,
             roleId: ROLE_ID,
-            date: expect.any(Date),
+            date: ANY_DATE,
         });
     });
 
@@ -450,7 +469,7 @@ describe(getLfgCommand.name, () => {
         expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith({
             guildId: GUILD_ID,
             roleId: ROLE_ID,
-            date: expect.any(Date),
+            date: ANY_DATE,
         });
     });
 
@@ -481,7 +500,7 @@ describe(getLfgCommand.name, () => {
         expect(setLfgRoleLastPingedAt).toHaveBeenCalledWith({
             guildId: GUILD_ID,
             roleId: ROLE_ID,
-            date: expect.any(Date),
+            date: ANY_DATE,
         });
     });
 });
