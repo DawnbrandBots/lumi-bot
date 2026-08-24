@@ -17,30 +17,18 @@ export type {
 } from "./persistence.types.ts";
 export type {
     TChangeLfgRoomCodeArg,
-    TChangeLfgRoomCodeUseCase,
     TChangeOwnedLfgRoomCodeArg,
-    TChangeOwnedLfgRoomCodeUseCase,
     TCreateLfgRoomArg,
-    TCreateLfgRoomUseCase,
     TDisbandLfgRoomArg,
-    TDisbandLfgRoomUseCase,
     TDisbandOwnedLfgRoomArg,
-    TDisbandOwnedLfgRoomUseCase,
-    TGetLfgStatus,
     TGetLfgStatusArg,
-    TKickFromLfgRoomByCode,
     TKickFromLfgRoomByCodeArg,
     TKickFromOwnedLfgRoomArg,
-    TKickFromOwnedLfgRoomUseCase,
-    TLeaveLfgRoom,
     TLeaveLfgRoomArg,
     TLfgUseCases,
-    TMoveLfgUser,
     TMoveLfgUserArg,
     TTransferLfgRoomArg,
-    TTransferLfgRoomUseCase,
     TTransferOwnedLfgRoomArg,
-    TTransferOwnedLfgRoomUseCase,
 } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {

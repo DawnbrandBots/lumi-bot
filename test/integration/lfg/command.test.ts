@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction, InteractionResponse } from "discord.js";
 import { channelMention, ChannelType, MessageFlags, roleMention, userMention } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { TSetAdminLfgRoleLastPingedAt } from "../../../src/application/admin/types.ts";
+import type { TAdminUseCases } from "../../../src/application/admin/types.ts";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
 import { composeDiscordCommands } from "../../../src/composition/presentation/discord/commands.ts";
@@ -46,7 +46,7 @@ type ReplyArg = {
 type SetLfgRoleLastPingedAtMock = ReturnType<typeof getSetLfgRoleLastPingedAtMock>;
 
 function getSetLfgRoleLastPingedAtMock() {
-    return vi.fn<TSetAdminLfgRoleLastPingedAt>();
+    return vi.fn<TAdminUseCases["setLfgRoleLastPingedAt"]>();
 }
 
 function getLfgUseCaseMocks(result: TLfgResult) {

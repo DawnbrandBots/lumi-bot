@@ -1,9 +1,9 @@
 import type { AutocompleteInteraction } from "discord.js";
 import { DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT } from "../constants.ts";
 import { LFG_CODE_OPTION_NAME } from "../commands/lfg/constants.ts";
-import type { TGetLfgStatus } from "../../../application/lfg/types.ts";
+import type { TLfgUseCases } from "../../../application/lfg/types.ts";
 
-const getRoomCodeAutocomplete = (arg: { getLfgStatus: TGetLfgStatus; ignoredSubCommands: string[] }) =>
+const getRoomCodeAutocomplete = (arg: { getLfgStatus: TLfgUseCases["getLfgStatus"]; ignoredSubCommands: string[] }) =>
     async function (interaction: AutocompleteInteraction) {
         if (!interaction.guildId) {
             return [];

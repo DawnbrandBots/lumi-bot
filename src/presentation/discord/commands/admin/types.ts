@@ -1,19 +1,12 @@
-import type {
-    TAddAdminLfgRole,
-    TClearAdminLfgChannel,
-    TClearAdminLfgRolePingCooldown,
-    TGetAdminGuildConfig,
-    TRemoveAdminLfgRole,
-    TSetAdminLfgChannel,
-    TSetAdminLfgRolePingCooldown,
-} from "../../../../application/admin/types.ts";
+import type { TAdminUseCases } from "../../../../application/admin/types.ts";
 
-export type TAdminCommandArgs = {
-    readonly addLfgRole: TAddAdminLfgRole;
-    readonly clearLfgChannel: TClearAdminLfgChannel;
-    readonly clearLfgRolePingCooldown: TClearAdminLfgRolePingCooldown;
-    readonly getGuildConfig: TGetAdminGuildConfig;
-    readonly removeLfgRole: TRemoveAdminLfgRole;
-    readonly setLfgChannel: TSetAdminLfgChannel;
-    readonly setLfgRolePingCooldown: TSetAdminLfgRolePingCooldown;
-};
+export type TAdminCommandArgs = Pick<
+    TAdminUseCases,
+    | "addLfgRole"
+    | "clearLfgChannel"
+    | "clearLfgRolePingCooldown"
+    | "getGuildConfig"
+    | "removeLfgRole"
+    | "setLfgChannel"
+    | "setLfgRolePingCooldown"
+>;

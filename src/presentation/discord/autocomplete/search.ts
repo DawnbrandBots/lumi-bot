@@ -1,11 +1,11 @@
 import type { TCommandAutocompleteHandlers } from "../commands/types.ts";
-import type { TSuggestSearchResults } from "../../../application/search/useCases.types.ts";
+import type { TSearchUseCases } from "../../../application/search/useCases.types.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../commands/search/constants.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
 
 const SEARCH_AUTOCOMPLETE_RESULTS_LIMIT = 5;
 
-export function getSearchAutocomplete(arg: { suggestSearchResults: TSuggestSearchResults }) {
+export function getSearchAutocomplete(arg: { suggestSearchResults: TSearchUseCases["suggestSearchResults"] }) {
     return {
         [SEARCH_TERMS_OPTION_NAME]: async (interaction) => {
             const input = interaction.options.getFocused();

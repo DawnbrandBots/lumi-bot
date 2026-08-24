@@ -50,40 +50,25 @@ export type TDisbandOwnedLfgRoomArg = {
     readonly owner: IUser;
 };
 
-export type TGetLfgStatus = (arg: TGetLfgStatusArg) => MaybePromise<TLfgResultTypes["status"]>;
-export type TCreateLfgRoomUseCase = (arg: TCreateLfgRoomArg) => MaybePromise<TLfgResultTypes["create"]>;
-export type TChangeOwnedLfgRoomCodeUseCase = (
-    arg: TChangeOwnedLfgRoomCodeArg,
-) => MaybePromise<TLfgResultTypes["changeOwnedRoomCode"]>;
-export type TChangeLfgRoomCodeUseCase = (arg: TChangeLfgRoomCodeArg) => MaybePromise<TLfgResultTypes["changeRoomCode"]>;
-export type TMoveLfgUser = (arg: TMoveLfgUserArg) => MaybePromise<TLfgResultTypes["move"]>;
-export type TTransferLfgRoomUseCase = (arg: TTransferLfgRoomArg) => MaybePromise<TLfgResultTypes["transfer"]>;
-export type TTransferOwnedLfgRoomUseCase = (
-    arg: TTransferOwnedLfgRoomArg,
-) => MaybePromise<TLfgResultTypes["transferOwnedRoom"]>;
-export type TKickFromLfgRoomByCode = (arg: TKickFromLfgRoomByCodeArg) => MaybePromise<TLfgResultTypes["kick"]>;
-export type TKickFromOwnedLfgRoomUseCase = (
-    arg: TKickFromOwnedLfgRoomArg,
-) => MaybePromise<TLfgResultTypes["kickFromOwnedRoom"]>;
-export type TLeaveLfgRoom = (arg: TLeaveLfgRoomArg) => MaybePromise<TLfgResultTypes["leave"]>;
-export type TDisbandLfgRoomUseCase = (arg: TDisbandLfgRoomArg) => MaybePromise<TLfgResultTypes["disband"]>;
-export type TDisbandOwnedLfgRoomUseCase = (
-    arg: TDisbandOwnedLfgRoomArg,
-) => MaybePromise<TLfgResultTypes["disbandOwnedRoom"]>;
-
 export type TLfgUseCases = {
-    readonly changeLfgRoomCode: TChangeLfgRoomCodeUseCase;
-    readonly changeOwnedLfgRoomCode: TChangeOwnedLfgRoomCodeUseCase;
-    readonly createLfgRoom: TCreateLfgRoomUseCase;
-    readonly disbandLfgRoom: TDisbandLfgRoomUseCase;
-    readonly disbandOwnedLfgRoom: TDisbandOwnedLfgRoomUseCase;
-    readonly getLfgStatus: TGetLfgStatus;
-    readonly kickFromLfgRoom: TKickFromLfgRoomByCode;
-    readonly kickFromOwnedLfgRoom: TKickFromOwnedLfgRoomUseCase;
-    readonly leaveLfgRoom: TLeaveLfgRoom;
-    readonly moveLfgUser: TMoveLfgUser;
-    readonly transferLfgRoom: TTransferLfgRoomUseCase;
-    readonly transferOwnedLfgRoom: TTransferOwnedLfgRoomUseCase;
+    readonly changeLfgRoomCode: (arg: TChangeLfgRoomCodeArg) => MaybePromise<TLfgResultTypes["changeRoomCode"]>;
+    readonly changeOwnedLfgRoomCode: (
+        arg: TChangeOwnedLfgRoomCodeArg,
+    ) => MaybePromise<TLfgResultTypes["changeOwnedRoomCode"]>;
+    readonly createLfgRoom: (arg: TCreateLfgRoomArg) => MaybePromise<TLfgResultTypes["create"]>;
+    readonly disbandLfgRoom: (arg: TDisbandLfgRoomArg) => MaybePromise<TLfgResultTypes["disband"]>;
+    readonly disbandOwnedLfgRoom: (arg: TDisbandOwnedLfgRoomArg) => MaybePromise<TLfgResultTypes["disbandOwnedRoom"]>;
+    readonly getLfgStatus: (arg: TGetLfgStatusArg) => MaybePromise<TLfgResultTypes["status"]>;
+    readonly kickFromLfgRoom: (arg: TKickFromLfgRoomByCodeArg) => MaybePromise<TLfgResultTypes["kick"]>;
+    readonly kickFromOwnedLfgRoom: (
+        arg: TKickFromOwnedLfgRoomArg,
+    ) => MaybePromise<TLfgResultTypes["kickFromOwnedRoom"]>;
+    readonly leaveLfgRoom: (arg: TLeaveLfgRoomArg) => MaybePromise<TLfgResultTypes["leave"]>;
+    readonly moveLfgUser: (arg: TMoveLfgUserArg) => MaybePromise<TLfgResultTypes["move"]>;
+    readonly transferLfgRoom: (arg: TTransferLfgRoomArg) => MaybePromise<TLfgResultTypes["transfer"]>;
+    readonly transferOwnedLfgRoom: (
+        arg: TTransferOwnedLfgRoomArg,
+    ) => MaybePromise<TLfgResultTypes["transferOwnedRoom"]>;
 };
 
 export default TLfgUseCases;

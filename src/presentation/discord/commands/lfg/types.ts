@@ -1,29 +1,16 @@
-import type {
-    TGetAdminGuildConfig,
-    TGetAdminLfgRoleConfig,
-    TSetAdminLfgRoleLastPingedAt,
-} from "../../../../application/admin/types.ts";
-import type {
-    TChangeOwnedLfgRoomCodeUseCase,
-    TCreateLfgRoomUseCase,
-    TDisbandOwnedLfgRoomUseCase,
-    TGetLfgStatus,
-    TKickFromOwnedLfgRoomUseCase,
-    TLeaveLfgRoom,
-    TMoveLfgUser,
-    TTransferOwnedLfgRoomUseCase,
-} from "../../../../application/lfg/types.ts";
+import type { TAdminUseCases } from "../../../../application/admin/types.ts";
+import type { TLfgUseCases } from "../../../../application/lfg/types.ts";
 
 export type TLfgCommandArgs = {
-    readonly getGuildConfig: TGetAdminGuildConfig;
-    readonly getLfgRoleConfig: TGetAdminLfgRoleConfig;
-    readonly setLfgRoleLastPingedAt: TSetAdminLfgRoleLastPingedAt;
-    readonly changeOwnedLfgRoomCode: TChangeOwnedLfgRoomCodeUseCase;
-    readonly createLfgRoom: TCreateLfgRoomUseCase;
-    readonly disbandOwnedLfgRoom: TDisbandOwnedLfgRoomUseCase;
-    readonly getLfgStatus: TGetLfgStatus;
-    readonly kickFromOwnedLfgRoom: TKickFromOwnedLfgRoomUseCase;
-    readonly leaveLfgRoom: TLeaveLfgRoom;
-    readonly moveLfgUser: TMoveLfgUser;
-    readonly transferOwnedLfgRoom: TTransferOwnedLfgRoomUseCase;
+    readonly getGuildConfig: TAdminUseCases["getGuildConfig"];
+    readonly getLfgRoleConfig: TAdminUseCases["getLfgRoleConfig"];
+    readonly setLfgRoleLastPingedAt: TAdminUseCases["setLfgRoleLastPingedAt"];
+    readonly changeOwnedLfgRoomCode: TLfgUseCases["changeOwnedLfgRoomCode"];
+    readonly createLfgRoom: TLfgUseCases["createLfgRoom"];
+    readonly disbandOwnedLfgRoom: TLfgUseCases["disbandOwnedLfgRoom"];
+    readonly getLfgStatus: TLfgUseCases["getLfgStatus"];
+    readonly kickFromOwnedLfgRoom: TLfgUseCases["kickFromOwnedLfgRoom"];
+    readonly leaveLfgRoom: TLfgUseCases["leaveLfgRoom"];
+    readonly moveLfgUser: TLfgUseCases["moveLfgUser"];
+    readonly transferOwnedLfgRoom: TLfgUseCases["transferOwnedLfgRoom"];
 };
