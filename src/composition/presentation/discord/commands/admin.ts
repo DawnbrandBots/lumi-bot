@@ -5,6 +5,6 @@ import type { TAdminUseCases } from "../../../../application/admin/useCases.type
 
 export function composeAdminCommand(adminUseCases: TAdminUseCases) {
     return {
-        run: getAdminCommand(adminUseCases),
+        run: getAdminCommand({ useCases: adminUseCases }),
     } satisfies TCommandHandlers<typeof adminCommandCommandRegistrationData>;
 }

@@ -16,15 +16,14 @@ import {
     LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
 } from "./constants.ts";
-import type { TLfgCommandArgs } from "./types.ts";
+import type { TLfgVoidCommandBase } from "./types.ts";
 
-export async function ping(
-    { getGuildConfig, getLfgRoleConfig, setLfgRoleLastPingedAt }: TLfgCommandArgs,
-    interaction: TGuildCommandInteraction,
-): Promise<void> {
+export const ping: TLfgVoidCommandBase<
+    "useCases.admin.getGuildConfig" | "useCases.admin.getLfgRoleConfig" | "useCases.admin.setLfgRoleLastPingedAt"
+> = async function (arg, interaction: TGuildCommandInteraction): Promise<void> {
     const guildId = interaction.guildId;
 
-    const configResult = await getGuildConfig({ guildId });
+    const configResult = await arg.useCases.admin.getGuildConfig({ guildId });
     const channelId = configResult.value?.lfgChannel;
     if (!channelId) {
         await interaction.reply(
@@ -58,7 +57,7 @@ export async function ping(
         return;
     }
 
-    const roleConfigResult = await getLfgRoleConfig({ guildId, roleId });
+    const roleConfigResult = await arg.useCases.admin.getLfgRoleConfig({ guildId, roleId });
     if (!roleConfigResult.value) {
         await interaction.reply(
             createNegativeMessage<InteractionReplyOptions>({
@@ -115,5 +114,5 @@ export async function ping(
         );
     }
 
-    await setLfgRoleLastPingedAt({ guildId, roleId, date: now });
-}
+    await arg.useCases.admin.setLfgRoleLastPingedAt({ guildId, roleId, date: now });
+};

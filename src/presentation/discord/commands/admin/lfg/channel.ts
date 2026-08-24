@@ -1,25 +1,23 @@
 import type { InteractionReplyOptions } from "discord.js";
 import { ChannelType, MessageFlags, type CacheType, type ChatInputCommandInteraction } from "discord.js";
-import type { TGuildCommandInteraction } from "../../types.ts";
+import mapAdminResultToMessage, {
+    mapAdminInvalidOptionsToMessage,
+    mapAdminLfgChannelHelpToMessage,
+    mapAdminMissingValueToMessage,
+} from "../../../mappers/admin.ts";
+import { createErrorMessage } from "../../../message.ts";
 import {
     ADMIN_ACTION_CLEAR,
     ADMIN_ACTION_OPTION_NAME,
     ADMIN_ACTION_SET,
     ADMIN_CHANNEL_OPTION_NAME,
 } from "../constants.ts";
-import { createErrorMessage } from "../../../message.ts";
-import mapAdminResultToMessage, {
-    mapAdminInvalidOptionsToMessage,
-    mapAdminLfgChannelHelpToMessage,
-    mapAdminMissingValueToMessage,
-} from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
-import type { TAdminCommandArgs } from "../types.ts";
+import type { TAdminCommandArgs, TAdminCommandBase } from "../types.ts";
 
-async function runLfgChannel(
-    { clearLfgChannel, getGuildConfig, setLfgChannel }: TAdminCommandArgs,
-    interaction: TGuildCommandInteraction,
-): Promise<InteractionReplyOptions> {
+const runLfgChannel: TAdminCommandBase<
+    "useCases.clearLfgChannel" | "useCases.getGuildConfig" | "useCases.setLfgChannel"
+> = async function (arg, interaction): Promise<InteractionReplyOptions> {
     const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
     const channel = interaction.options.getChannel(ADMIN_CHANNEL_OPTION_NAME, false);
 
@@ -42,16 +40,18 @@ async function runLfgChannel(
     }
 
     if (action === null && !channel) {
-        const configResult = await getGuildConfig({ guildId: interaction.guildId });
+        const configResult = await arg.useCases.getGuildConfig({ guildId: interaction.guildId });
         return mapAdminLfgChannelHelpToMessage({ channel: configResult.value?.lfgChannel });
     }
 
     if (action === ADMIN_ACTION_SET && channel) {
-        return mapAdminResultToMessage(await setLfgChannel({ guildId: interaction.guildId, channelId: channel.id }));
+        return mapAdminResultToMessage(
+            await arg.useCases.setLfgChannel({ guildId: interaction.guildId, channelId: channel.id }),
+        );
     }
 
     if (action === ADMIN_ACTION_CLEAR && !channel) {
-        return mapAdminResultToMessage(await clearLfgChannel({ guildId: interaction.guildId }));
+        return mapAdminResultToMessage(await arg.useCases.clearLfgChannel({ guildId: interaction.guildId }));
     }
 
     if (action === ADMIN_ACTION_SET && !channel) {
@@ -59,7 +59,7 @@ async function runLfgChannel(
     }
 
     return mapAdminInvalidOptionsToMessage();
-}
+};
 
 export function getAdminLfgChannelHandler(arg: TAdminCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>

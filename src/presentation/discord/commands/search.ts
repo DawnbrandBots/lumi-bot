@@ -1,27 +1,24 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
-import type { TSearchResult } from "../../../application/search/types.ts";
-import type { MaybePromise } from "../../../utils/types.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
 import type { TCommandRunHandlers } from "../commands/types.ts";
 import mapSearchResultToMessages from "../mappers/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "./search/constants.ts";
+import type { TSearchCommandArgs, TSearchCommandBase } from "./search/types.ts";
 
-export async function run(
-    arg: {
-        resolveSearchInput: (input: string) => MaybePromise<TSearchResult>;
-    },
+export const run: TSearchCommandBase<"useCases.resolveSearchInput"> = async function (
+    arg,
     interaction: ChatInputCommandInteraction<CacheType>,
-) {
+): Promise<void> {
     const input = interaction.options.getString(SEARCH_TERMS_OPTION_NAME, true);
-    const result = await arg.resolveSearchInput(input);
+    const result = await arg.useCases.resolveSearchInput(input);
     const { reply, followUps } = mapSearchResultToMessages(result);
     await interaction.reply(reply);
     for (const followUp of followUps ?? []) {
         await interaction.followUp(followUp);
     }
-}
+};
 
-export function getSearchCommand(arg: { resolveSearchInput: (input: string) => MaybePromise<TSearchResult> }) {
+export function getSearchCommand(arg: TSearchCommandArgs) {
     return ((interaction) => run(arg, interaction)) satisfies TCommandRunHandlers<
         typeof searchCommandCommandRegistrationData
     >;

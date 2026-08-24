@@ -14,12 +14,11 @@ import mapAdminResultToMessage, {
     mapAdminMissingValueToMessage,
 } from "../../../mappers/admin.ts";
 import { runWithAdminPermission } from "../runWithAdminPermission.ts";
-import type { TAdminCommandArgs } from "../types.ts";
+import type { TAdminCommandArgs, TAdminCommandBase } from "../types.ts";
 
-async function runLfgRolePingCooldown(
-    { clearLfgRolePingCooldown, getGuildConfig, setLfgRolePingCooldown }: TAdminCommandArgs,
-    interaction: TGuildCommandInteraction,
-): Promise<InteractionReplyOptions> {
+const runLfgRolePingCooldown: TAdminCommandBase<
+    "useCases.clearLfgRolePingCooldown" | "useCases.getGuildConfig" | "useCases.setLfgRolePingCooldown"
+> = async function (arg, interaction): Promise<InteractionReplyOptions> {
     const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
     const minutes = interaction.options.getInteger(ADMIN_MINUTES_OPTION_NAME, false);
 
@@ -33,18 +32,20 @@ async function runLfgRolePingCooldown(
     }
 
     if (action === null && minutes === null) {
-        const configResult = await getGuildConfig({ guildId: interaction.guildId });
+        const configResult = await arg.useCases.getGuildConfig({ guildId: interaction.guildId });
         return mapAdminLfgRolePingCooldownHelpToMessage({
             minutes: configResult.value?.lfgRolePingCooldownMinutes,
         });
     }
 
     if (action === ADMIN_ACTION_SET && minutes !== null) {
-        return mapAdminResultToMessage(await setLfgRolePingCooldown({ guildId: interaction.guildId, minutes }));
+        return mapAdminResultToMessage(
+            await arg.useCases.setLfgRolePingCooldown({ guildId: interaction.guildId, minutes }),
+        );
     }
 
     if (action === ADMIN_ACTION_CLEAR && minutes === null) {
-        return mapAdminResultToMessage(await clearLfgRolePingCooldown({ guildId: interaction.guildId }));
+        return mapAdminResultToMessage(await arg.useCases.clearLfgRolePingCooldown({ guildId: interaction.guildId }));
     }
 
     if (action === ADMIN_ACTION_SET && minutes === null) {
@@ -52,7 +53,7 @@ async function runLfgRolePingCooldown(
     }
 
     return mapAdminInvalidOptionsToMessage();
-}
+};
 
 export function getAdminLfgRolePingCooldownHandler(arg: TAdminCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>

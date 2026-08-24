@@ -6,7 +6,7 @@ import type { TSearchUseCases } from "../../../../application/search/useCases.ty
 
 export function composeSearchCommand(searchUseCases: TSearchUseCases) {
     return {
-        run: getSearchCommand({ resolveSearchInput: searchUseCases.resolveSearchInput }),
+        run: getSearchCommand({ useCases: { resolveSearchInput: searchUseCases.resolveSearchInput } }),
         autocomplete: getSearchAutocomplete({ suggestSearchResults: searchUseCases.suggestSearchResults }),
     } satisfies TCommandHandlers<typeof searchCommandCommandRegistrationData>;
 }

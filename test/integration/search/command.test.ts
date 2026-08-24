@@ -41,7 +41,9 @@ beforeAll(async () => {
     const dependencies: TSearchUseCaseDependencies = { persistence };
 
     searchCommand = getSearchCommand({
-        resolveSearchInput: (input) => resolveSearchInput(dependencies, input),
+        useCases: {
+            resolveSearchInput: (input) => resolveSearchInput(dependencies, input),
+        },
     });
 });
 

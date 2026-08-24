@@ -1,6 +1,9 @@
 import type { TGuildCommandInteraction } from "../types.ts";
-import type { TLfgCommandArgs } from "./types.ts";
+import type { TLfgCommandBase } from "./types.ts";
 
-export function status(arg: TLfgCommandArgs, interaction: TGuildCommandInteraction) {
-    return arg.getLfgStatus({ guildId: interaction.guildId });
-}
+export const status: TLfgCommandBase<"useCases.lfg.getLfgStatus"> = function (
+    arg,
+    interaction: TGuildCommandInteraction,
+) {
+    return arg.useCases.lfg.getLfgStatus({ guildId: interaction.guildId });
+};

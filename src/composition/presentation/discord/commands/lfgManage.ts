@@ -65,13 +65,19 @@ export function composeLfgManageCommand(arg: {
     readonly lfgUseCases: TLfgUseCases;
 }) {
     const lfgManageCommandArgs = {
-        getGuildConfig: arg.adminUseCases.getGuildConfig,
-        changeRoomCode: arg.lfgUseCases.changeRoomCode,
-        createRoom: arg.lfgUseCases.createRoom,
-        disbandRoom: arg.lfgUseCases.disbandRoom,
-        kickPlayerFromRoom: arg.lfgUseCases.kickPlayerFromRoom,
-        movePlayerToRoom: arg.lfgUseCases.movePlayerToRoom,
-        transferRoomToPlayer: arg.lfgUseCases.transferRoomToPlayer,
+        useCases: {
+            admin: {
+                getGuildConfig: arg.adminUseCases.getGuildConfig,
+            },
+            lfg: {
+                changeRoomCode: arg.lfgUseCases.changeRoomCode,
+                createRoom: arg.lfgUseCases.createRoom,
+                disbandRoom: arg.lfgUseCases.disbandRoom,
+                kickPlayerFromRoom: arg.lfgUseCases.kickPlayerFromRoom,
+                movePlayerToRoom: arg.lfgUseCases.movePlayerToRoom,
+                transferRoomToPlayer: arg.lfgUseCases.transferRoomToPlayer,
+            },
+        },
     } satisfies TLfgManageCommandArgs;
 
     return {

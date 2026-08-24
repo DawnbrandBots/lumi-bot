@@ -71,16 +71,18 @@ async function runCommand(
     await run(interaction);
 }
 
-function getAdminCommandArgs(arg: Partial<TAdminCommandArgs> = {}): TAdminCommandArgs {
+function getAdminCommandArgs(arg: Partial<TAdminCommandArgs["useCases"]> = {}): TAdminCommandArgs {
     return {
-        addLfgRole: vi.fn(),
-        clearLfgChannel: vi.fn(),
-        clearLfgRolePingCooldown: vi.fn(),
-        getGuildConfig: vi.fn(),
-        removeLfgRole: vi.fn(),
-        setLfgChannel: vi.fn(),
-        setLfgRolePingCooldown: vi.fn(),
-        ...arg,
+        useCases: {
+            addLfgRole: vi.fn(),
+            clearLfgChannel: vi.fn(),
+            clearLfgRolePingCooldown: vi.fn(),
+            getGuildConfig: vi.fn(),
+            removeLfgRole: vi.fn(),
+            setLfgChannel: vi.fn(),
+            setLfgRolePingCooldown: vi.fn(),
+            ...arg,
+        },
     };
 }
 

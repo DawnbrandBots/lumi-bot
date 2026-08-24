@@ -95,17 +95,23 @@ function composeLfgRunHandlers(arg: TLfgCommandArgs) {
 
 export function composeLfgCommand(arg: { readonly adminUseCases: TAdminUseCases; readonly lfgUseCases: TLfgUseCases }) {
     const lfgCommandArgs = {
-        getGuildConfig: arg.adminUseCases.getGuildConfig,
-        getLfgRoleConfig: arg.adminUseCases.getLfgRoleConfig,
-        setLfgRoleLastPingedAt: arg.adminUseCases.setLfgRoleLastPingedAt,
-        changeOwnedRoomCode: arg.lfgUseCases.changeOwnedRoomCode,
-        createRoom: arg.lfgUseCases.createRoom,
-        disbandOwnedRoom: arg.lfgUseCases.disbandOwnedRoom,
-        getLfgStatus: arg.lfgUseCases.getLfgStatus,
-        kickPlayerFromOwnedRoom: arg.lfgUseCases.kickPlayerFromOwnedRoom,
-        leaveRoom: arg.lfgUseCases.leaveRoom,
-        movePlayerToRoom: arg.lfgUseCases.movePlayerToRoom,
-        transferOwnedRoomToPlayer: arg.lfgUseCases.transferOwnedRoomToPlayer,
+        useCases: {
+            admin: {
+                getGuildConfig: arg.adminUseCases.getGuildConfig,
+                getLfgRoleConfig: arg.adminUseCases.getLfgRoleConfig,
+                setLfgRoleLastPingedAt: arg.adminUseCases.setLfgRoleLastPingedAt,
+            },
+            lfg: {
+                changeOwnedRoomCode: arg.lfgUseCases.changeOwnedRoomCode,
+                createRoom: arg.lfgUseCases.createRoom,
+                disbandOwnedRoom: arg.lfgUseCases.disbandOwnedRoom,
+                getLfgStatus: arg.lfgUseCases.getLfgStatus,
+                kickPlayerFromOwnedRoom: arg.lfgUseCases.kickPlayerFromOwnedRoom,
+                leaveRoom: arg.lfgUseCases.leaveRoom,
+                movePlayerToRoom: arg.lfgUseCases.movePlayerToRoom,
+                transferOwnedRoomToPlayer: arg.lfgUseCases.transferOwnedRoomToPlayer,
+            },
+        },
     } satisfies TLfgCommandArgs;
 
     return {

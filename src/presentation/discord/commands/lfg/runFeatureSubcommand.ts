@@ -30,13 +30,13 @@ async function sendPublicCopy(
 }
 
 export async function runFeatureSubcommand(
-    { getGuildConfig }: TLfgCommandArgs,
+    arg: Pick<TLfgCommandArgs, "useCases">,
     interaction: TGuildCommandInteraction,
     getResult: TLfgResultGetter,
 ): Promise<void> {
     const result = await getResult();
     const guildId = interaction.guildId;
-    const configResult = await getGuildConfig({ guildId });
+    const configResult = await arg.useCases.admin.getGuildConfig({ guildId });
 
     const messageBase = mapLfgResultToMessageBase({
         result,

@@ -1,6 +1,9 @@
 import type { TGuildCommandInteraction } from "../types.ts";
-import type { TLfgCommandArgs } from "./types.ts";
+import type { TLfgCommandBase } from "./types.ts";
 
-export function disband(arg: TLfgCommandArgs, interaction: TGuildCommandInteraction) {
-    return arg.disbandOwnedRoom({ guildId: interaction.guildId, owner: interaction.user });
-}
+export const disband: TLfgCommandBase<"useCases.lfg.disbandOwnedRoom"> = function (
+    arg,
+    interaction: TGuildCommandInteraction,
+) {
+    return arg.useCases.lfg.disbandOwnedRoom({ guildId: interaction.guildId, owner: interaction.user });
+};
