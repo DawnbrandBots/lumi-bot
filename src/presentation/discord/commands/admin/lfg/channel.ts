@@ -1,5 +1,6 @@
 import type { InteractionReplyOptions } from "discord.js";
 import { ChannelType, MessageFlags, type CacheType, type ChatInputCommandInteraction } from "discord.js";
+import type { TGuildCommandInteraction } from "../../types.ts";
 import {
     ADMIN_ACTION_CLEAR,
     ADMIN_ACTION_OPTION_NAME,
@@ -17,8 +18,7 @@ import type { TAdminCommandArgs } from "../types.ts";
 
 async function runLfgChannel(
     { clearLfgChannel, getGuildConfig, setLfgChannel }: TAdminCommandArgs,
-    interaction: ChatInputCommandInteraction<CacheType>,
-    guildId: string,
+    interaction: TGuildCommandInteraction,
 ): Promise<InteractionReplyOptions> {
     const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
     const channel = interaction.options.getChannel(ADMIN_CHANNEL_OPTION_NAME, false);
@@ -42,16 +42,16 @@ async function runLfgChannel(
     }
 
     if (action === null && !channel) {
-        const configResult = await getGuildConfig({ guildId });
+        const configResult = await getGuildConfig({ guildId: interaction.guildId });
         return mapAdminLfgChannelHelpToMessage({ channel: configResult.value?.lfgChannel });
     }
 
     if (action === ADMIN_ACTION_SET && channel) {
-        return mapAdminResultToMessage(await setLfgChannel({ guildId, channelId: channel.id }));
+        return mapAdminResultToMessage(await setLfgChannel({ guildId: interaction.guildId, channelId: channel.id }));
     }
 
     if (action === ADMIN_ACTION_CLEAR && !channel) {
-        return mapAdminResultToMessage(await clearLfgChannel({ guildId }));
+        return mapAdminResultToMessage(await clearLfgChannel({ guildId: interaction.guildId }));
     }
 
     if (action === ADMIN_ACTION_SET && !channel) {
@@ -63,5 +63,5 @@ async function runLfgChannel(
 
 export function getAdminLfgChannelHandler(arg: TAdminCommandArgs) {
     return (interaction: ChatInputCommandInteraction<CacheType>) =>
-        runWithAdminPermission(interaction, (guildId) => runLfgChannel(arg, interaction, guildId));
+        runWithAdminPermission(interaction, (interaction) => runLfgChannel(arg, interaction));
 }

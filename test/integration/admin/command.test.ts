@@ -25,6 +25,7 @@ const REPLY = {};
 
 function getInteractionFixture({
     canManageGuild = true,
+    inGuild = true,
     subcommand = ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     action = null,
     channel = null,
@@ -32,6 +33,7 @@ function getInteractionFixture({
     role = null,
 }: {
     readonly canManageGuild?: boolean;
+    readonly inGuild?: boolean;
     readonly subcommand?: string;
     readonly action?: string | null;
     readonly channel?: { id: string; type: ChannelType } | null;
@@ -41,6 +43,7 @@ function getInteractionFixture({
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
         guildId: GUILD_ID,
+        inGuild: vi.fn().mockReturnValue(inGuild),
         memberPermissions: {
             has: vi.fn((permission) => permission === PermissionFlagsBits.ManageGuild && canManageGuild),
         },
@@ -82,6 +85,20 @@ function getAdminCommandArgs(arg: Partial<TAdminCommandArgs> = {}): TAdminComman
 }
 
 describe(getAdminCommand.name, () => {
+    test("rejects interactions outside guilds", async () => {
+        const command = getAdminCommand(getAdminCommandArgs());
+        const { interaction, reply } = getInteractionFixture({ inGuild: false });
+
+        await runCommand(command, interaction);
+
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: MessageFlags.Ephemeral,
+                embeds: [expect.objectContaining({ title: "Admin unavailable" })],
+            }),
+        );
+    });
+
     test("rejects users without ManageGuild", async () => {
         const command = getAdminCommand(getAdminCommandArgs());
         const { interaction, reply } = getInteractionFixture({ canManageGuild: false });

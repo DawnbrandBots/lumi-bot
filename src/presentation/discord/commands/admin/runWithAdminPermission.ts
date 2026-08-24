@@ -1,13 +1,13 @@
 import type { InteractionReplyOptions } from "discord.js";
 import { MessageFlags, PermissionFlagsBits, type CacheType, type ChatInputCommandInteraction } from "discord.js";
+import type { TGuildCommandInteraction } from "../types.ts";
 import { createErrorMessage } from "../../message.ts";
 
 export async function runWithAdminPermission(
     interaction: ChatInputCommandInteraction<CacheType>,
-    run: (guildId: string) => Promise<InteractionReplyOptions>,
+    run: (interaction: TGuildCommandInteraction) => Promise<InteractionReplyOptions>,
 ): Promise<void> {
-    const guildId = interaction.guildId;
-    if (!guildId) {
+    if (!interaction.inGuild()) {
         await interaction.reply(
             createErrorMessage<InteractionReplyOptions>({
                 embed: {
@@ -33,5 +33,5 @@ export async function runWithAdminPermission(
         return;
     }
 
-    await interaction.reply(await run(guildId));
+    await interaction.reply(await run(interaction));
 }
