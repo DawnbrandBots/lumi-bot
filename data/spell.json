@@ -2740,7 +2740,8 @@
             "unit": {
               "kind": "PERCENT",
               "stat": "HP"
-            }
+            },
+            "scalingStrategyOverride": "NONE"
           },
           "stat": "HP"
         },
@@ -2752,8 +2753,7 @@
           "base": 50,
           "unit": {
             "kind": "FIXED"
-          },
-          "scalingStrategyOverride": "NONE"
+          }
         },
         "color": "RED",
         "target": "ANY"
