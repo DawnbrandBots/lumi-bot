@@ -1,5 +1,5 @@
 import type { MaybePromise } from "../../utils/types.ts";
-import type { TLfgRoom } from "./types.ts";
+import type { TLfgRoom, TLfgStatusGuildConfig } from "./types.ts";
 
 export type TFindLfgRoomByCode = (arg: {
     readonly guildId: string;
@@ -10,6 +10,7 @@ export type TFindLfgRoomByUser = (arg: {
     readonly userId: string;
 }) => MaybePromise<TLfgRoom | null>;
 export type TListLfgRooms = (arg: { readonly guildId: string }) => MaybePromise<readonly TLfgRoom[]>;
+export type TGetLfgGuildConfig = (arg: { readonly guildId: string }) => MaybePromise<TLfgStatusGuildConfig | null>;
 
 export type TCreateLfgRoom = (arg: {
     readonly guildId: string;
@@ -35,6 +36,7 @@ export type TLfgPersistence = {
     readonly createRoom: TCreateLfgRoom;
     readonly findRoomByCode: TFindLfgRoomByCode;
     readonly findRoomByUser: TFindLfgRoomByUser;
+    readonly getGuildConfig: TGetLfgGuildConfig;
     readonly listRooms: TListLfgRooms;
     readonly removeRoom: TRemoveLfgRoom;
     readonly removeRoomPlayer: TRemoveLfgRoomPlayer;

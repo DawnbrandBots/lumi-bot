@@ -12,16 +12,15 @@ import {
     userMention,
 } from "discord.js";
 import type { PickDeep } from "type-fest";
-import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
+import type { TLfgResultOfKind, TLfgStatusGuildConfig } from "../../../application/lfg/types.ts";
+import { ELfgResultKind, type TLfgResult } from "../../../application/lfg/types.ts";
 import {
     AMOUNT_OF_PLAYERS_IN_A_BATTLE,
     FRIEND_BATTLE_CODE_MAXIMUM_LENGTH,
     FRIEND_BATTLE_CODE_MINIMUM_LENGTH,
 } from "../../../domain/game/constants.ts";
-import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
-import type { TLfgResultOfKind } from "../../../application/lfg/types.ts";
-import { ELfgResultKind, type TLfgResult } from "../../../application/lfg/types.ts";
+import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
@@ -106,12 +105,14 @@ type LfgRoleStatus = {
 };
 
 /** Guild config fields needed to render the LFG status output. */
-type LfgStatusGuildConfig = Pick<TAdminGuildConfig, "lfgChannel" | "lfgRolePingCooldownMinutes"> & {
+type LfgStatusGuildConfig = Pick<TLfgStatusGuildConfig, "lfgChannel" | "lfgRolePingCooldownMinutes"> & {
     readonly lfgRoles?: Iterable<LfgRoleStatus>;
 };
 
 /** Guild config fields needed to decide whether an LFG reply should be public. */
-type LfgReplyGuildConfig = Pick<TAdminGuildConfig, "lfgChannel">;
+type LfgReplyGuildConfig = {
+    readonly lfgChannel: string | null;
+};
 
 function formatList(rooms: readonly IRoom[]) {
     if (rooms.length === 0) {
@@ -279,19 +280,11 @@ function formatPlayerNotInRoom(callerId: string, ownerId: string, targetId: stri
     return `${userMention(targetId)} is not in your room.`;
 }
 
-export function mapLfgResultToMessageBase({
-    result,
-    callerId,
-    guildConfig,
-}: {
-    result: TLfgResult;
-    callerId: string;
-    guildConfig?: LfgStatusGuildConfig | null;
-}) {
+export function mapLfgResultToMessageBase({ result, callerId }: { result: TLfgResult; callerId: string }) {
     switch (result.kind) {
         case ELfgResultKind.ROOMS_LISTED: {
             return createNeutralMessage({
-                embed: { description: formatStatus(result.value.rooms, guildConfig) },
+                embed: { description: formatStatus(result.value.rooms, result.value.guildConfig) },
             });
         }
         case ELfgResultKind.ROOM_CREATED:

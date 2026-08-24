@@ -14,7 +14,7 @@ describe(getLfgStatus.name, { concurrent: false }, () => {
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOMS_LISTED,
-            value: { rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }] },
+            value: { guildConfig: null, rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }] },
         });
     });
 });

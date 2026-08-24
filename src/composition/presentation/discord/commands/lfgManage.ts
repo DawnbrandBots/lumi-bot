@@ -44,8 +44,14 @@ function composeLfgManageFeatureHandler(
     return (interaction) =>
         runLfgManageWithGuild({
             interaction,
-            run: (guildInteraction) =>
-                runLfgManageFeatureSubcommand(arg, guildInteraction, () => command(arg, guildInteraction)),
+            run: async (guildInteraction) => {
+                const configResult = await arg.useCases.admin.getGuildConfig({ guildId: guildInteraction.guildId });
+                await runLfgManageFeatureSubcommand({
+                    getResult: () => command(arg, guildInteraction),
+                    guildConfig: configResult.value,
+                    interaction: guildInteraction,
+                });
+            },
         });
 }
 

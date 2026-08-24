@@ -19,23 +19,22 @@ describe(mapLfgResultToMessageBase.name, () => {
         {
             name: "non-empty room list",
             input: {
-                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: null, rooms: [ROOM] } },
                 callerId: "owner",
             },
         },
         {
             name: "empty room list",
             input: {
-                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [] } },
+                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: null, rooms: [] } },
                 callerId: "owner",
             },
         },
         {
             name: "status with configured LFG channel",
             input: {
-                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: GUILD_CONFIG, rooms: [ROOM] } },
                 callerId: "owner",
-                guildConfig: GUILD_CONFIG,
             },
             setup: () => {
                 vi.useFakeTimers();
@@ -369,9 +368,9 @@ describe(mapLfgResultToMessageBase.name, () => {
             name: "not in a room",
             input: { result: { kind: ELfgResultKind.NOT_IN_A_ROOM }, callerId: "owner" },
         },
-    ])("maps $name", ({ input, setup }) => {
-        setup?.();
+    ])("maps $name", (testCase) => {
+        testCase.setup?.();
 
-        expect(mapLfgResultToMessageBase(input)).toMatchSnapshot();
+        expect(mapLfgResultToMessageBase(testCase.input)).toMatchSnapshot();
     });
 });

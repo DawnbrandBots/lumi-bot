@@ -1,6 +1,7 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
+import type { TAdminPersistence } from "../../../../src/application/admin/persistence.types.ts";
 import type { TLfgPersistence } from "../../../../src/application/lfg/persistence.types.ts";
 import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
 import LFG_USE_CASES from "../../../../src/application/lfg/useCases.ts";
@@ -13,6 +14,7 @@ import {
 } from "../../../../src/composition/application/useCases.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";
 import { LfgRoom } from "../../../../src/infrastructure/database/mikroOrm/models/lfg/room.ts";
+import ADMIN_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
 import LFG_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
@@ -63,10 +65,20 @@ class LfgUseCases {
         const withLfgUnitOfWork = getWithUnitOfWork({
             em,
             getDependencies: (em) => {
-                const persistence = getPersistenceWithContext<TLfgPersistence>({
+                // TODO: most likely a sign that persistence should be organized by aggregate/entity rather than feature
+                // we definitely want both admin and lfg to be able to access guild config without extra steps
+                const lfgPersistence = getPersistenceWithContext<Omit<TLfgPersistence, "getGuildConfig">>({
                     em,
                     repositories: LFG_REPOSITORIES,
                 });
+                const adminPersistence = getPersistenceWithContext<Pick<TAdminPersistence, "getGuildConfig">>({
+                    em,
+                    repositories: ADMIN_REPOSITORIES,
+                });
+                const persistence: TLfgPersistence = {
+                    ...lfgPersistence,
+                    getGuildConfig: adminPersistence.getGuildConfig,
+                };
                 const services = composeLfgServices(persistence);
                 return { persistence, services };
             },
@@ -93,7 +105,7 @@ class LfgUseCases {
         const result = await this.getLfgStatusUseCase({ guildId });
         return {
             ...result,
-            value: { rooms: result.value.rooms.map((room) => toPublicRoom(room)) },
+            value: { ...result.value, rooms: result.value.rooms.map((room) => toPublicRoom(room)) },
         };
     }
 

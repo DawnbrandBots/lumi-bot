@@ -47,10 +47,19 @@ const adminUseCases = getUseCasesWithUnitOfWork<TAdminUseCases>({
 const withLfgUnitOfWork = getWithUnitOfWork({
     em,
     getDependencies: (em) => {
-        const persistence = getPersistenceWithContext<TLfgPersistence>({
+        // TODO: kinda weird looking to have multiple persistences redefined here
+        const lfgPersistence = getPersistenceWithContext<Omit<TLfgPersistence, "getGuildConfig">>({
             em,
             repositories: LFG_REPOSITORIES,
         });
+        const adminPersistence = getPersistenceWithContext<Pick<TAdminPersistence, "getGuildConfig">>({
+            em,
+            repositories: ADMIN_REPOSITORIES,
+        });
+        const persistence: TLfgPersistence = {
+            ...lfgPersistence,
+            getGuildConfig: adminPersistence.getGuildConfig,
+        };
         const services = composeLfgServices(persistence);
         return { persistence, services };
     },

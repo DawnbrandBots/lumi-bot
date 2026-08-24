@@ -9,6 +9,7 @@ export type {
     TCreateLfgRoom,
     TFindLfgRoomByCode,
     TFindLfgRoomByUser,
+    TGetLfgGuildConfig,
     TLfgPersistence,
     TListLfgRooms,
     TMoveUserToLfgRoom,
@@ -42,7 +43,10 @@ export const enum ELfgResultKind {
 }
 
 type TLfgResultValueByKind = {
-    [ELfgResultKind.ROOMS_LISTED]: { readonly rooms: readonly IRoom[] };
+    [ELfgResultKind.ROOMS_LISTED]: {
+        readonly guildConfig: TLfgStatusGuildConfig | null;
+        readonly rooms: readonly IRoom[];
+    };
     [ELfgResultKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
     [ELfgResultKind.ROOM_CODE_CHANGED]: { readonly oldCode: string; readonly newCode: string };
     [ELfgResultKind.ALREADY_IN_A_ROOM]: { readonly userId: string };
@@ -156,6 +160,15 @@ export type TLfgResultTypes = {
 
 export type TLfgRoom = IRoom & {
     readonly id: string;
+};
+
+export type TLfgStatusGuildConfig = {
+    readonly lfgChannel: string | null;
+    readonly lfgRolePingCooldownMinutes: number | null;
+    readonly lfgRoles: readonly {
+        readonly lastPingedAt: Date | string | null;
+        readonly role: string;
+    }[];
 };
 
 type TOwnedRoomFailure = TLfgResultOfKind<ELfgResultKind.NOT_IN_A_ROOM | ELfgResultKind.NOT_ROOM_OWNER>;

@@ -6,11 +6,13 @@ import type { TLfgResult } from "../../../../application/lfg/types.ts";
 import type { MaybePromise } from "../../../../utils/types.ts";
 import { mapLfgResultToMessageBase, mapLfgMessageBaseToReply } from "../../mappers/lfg.ts";
 import type { TGuildCommandInteraction } from "../types.ts";
-import type { TLfgCommandArgs } from "./types.ts";
 
 const log = debug("bot:lfg");
 
 type TLfgResultGetter = () => MaybePromise<TLfgResult>;
+type TLfgReplyGuildConfig = {
+    readonly lfgChannel: string | null;
+};
 
 async function sendPublicCopy(
     interaction: TGuildCommandInteraction,
@@ -29,28 +31,29 @@ async function sendPublicCopy(
     }
 }
 
-export async function runFeatureSubcommand(
-    arg: Pick<TLfgCommandArgs, "useCases">,
-    interaction: TGuildCommandInteraction,
-    getResult: TLfgResultGetter,
-): Promise<void> {
+export async function runFeatureSubcommand({
+    getResult,
+    guildConfig,
+    interaction,
+}: {
+    readonly getResult: TLfgResultGetter;
+    readonly guildConfig: TLfgReplyGuildConfig | null;
+    readonly interaction: TGuildCommandInteraction;
+}): Promise<void> {
     const result = await getResult();
-    const guildId = interaction.guildId;
-    const configResult = await arg.useCases.admin.getGuildConfig({ guildId });
 
     const messageBase = mapLfgResultToMessageBase({
         result,
         callerId: interaction.user.id,
-        guildConfig: configResult.value,
     });
-    const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig: configResult.value });
+    const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig });
 
     await interaction.reply(message);
     if (
         messageBase.kind === EMessageKind.POSITIVE &&
-        configResult.value?.lfgChannel &&
-        interaction.channelId !== configResult.value.lfgChannel
+        guildConfig?.lfgChannel &&
+        interaction.channelId !== guildConfig.lfgChannel
     ) {
-        await sendPublicCopy(interaction, configResult.value.lfgChannel, messageBase);
+        await sendPublicCopy(interaction, guildConfig.lfgChannel, messageBase);
     }
 }

@@ -82,7 +82,7 @@ describe(mapLfgMessageBaseToReply.name, () => {
 
     test(`message visible to everyone when ${LfgConstants.LFG_SHOW_RESPONSE_OPTION_NAME} is true`, () => {
         const messageBase = mapLfgResultToMessageBase({
-            result: { kind: ELfgResultKind.ROOMS_LISTED, value: { rooms: [ROOM] } },
+            result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: null, rooms: [ROOM] } },
             callerId: "owner",
         });
 

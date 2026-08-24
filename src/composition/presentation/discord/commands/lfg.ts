@@ -53,8 +53,14 @@ function composeLfgFeatureHandler(arg: TLfgCommandArgs, command: TLfgFeatureComm
     return (interaction) =>
         runLfgWithGuild({
             interaction,
-            run: (guildInteraction) =>
-                runLfgFeatureSubcommand(arg, guildInteraction, () => command(arg, guildInteraction)),
+            run: async (guildInteraction) => {
+                const configResult = await arg.useCases.admin.getGuildConfig({ guildId: guildInteraction.guildId });
+                await runLfgFeatureSubcommand({
+                    getResult: () => command(arg, guildInteraction),
+                    guildConfig: configResult.value,
+                    interaction: guildInteraction,
+                });
+            },
         });
 }
 
