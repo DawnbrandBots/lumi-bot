@@ -9,7 +9,7 @@ import { handleMessageCreate } from "../../../presentation/discord/eventHandlers
 import type { THandleMessageCreate } from "../../../presentation/discord/eventHandlers/messageCreate.types.ts";
 import type { TCommandRegistry } from "../../../presentation/discord/commands/types.ts";
 import type { TAllCommandRegistrationData } from "../../../presentation/discord/commandRegistrationData.ts";
-import type { TSearchUseCases } from "../../application/search/useCases.ts";
+import type { TSearchUseCases } from "../../../application/search/useCases.types.ts";
 
 export type TDiscordEventHandlers = {
     readonly clientReady: typeof handleClientReady;

@@ -1,5 +1,5 @@
 import type { TCommandAutocompleteHandlers } from "../commands/types.ts";
-import type { TSuggestSearchResults } from "../../../application/search/suggestSearchResults.types.ts";
+import type { TSuggestSearchResults } from "../../../application/search/useCases.types.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../commands/search/constants.ts";
 import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
 

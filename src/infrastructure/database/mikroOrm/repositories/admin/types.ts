@@ -1,5 +1,5 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TAdminPersistence } from "../../../../../application/admin/types.ts";
+import type { TAdminPersistence } from "../../../../../application/admin/persistence.types.ts";
 
 export type TAdminPersistenceContext = {
     readonly em: EntityManager;

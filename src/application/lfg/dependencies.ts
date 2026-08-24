@@ -3,7 +3,8 @@ import { getOwnedRoom } from "./services/getOwnedRoom.ts";
 import { kickFromRoom } from "./services/kickFromRoom.ts";
 import { removePlayerFromRoom } from "./services/removePlayerFromRoom.ts";
 import { transferRoom } from "./services/transferRoom.ts";
-import type { TLfgApplicationDependencies, TLfgPersistence } from "./types.ts";
+import type { TLfgPersistence } from "./persistence.types.ts";
+import type { TLfgApplicationDependencies } from "./types.ts";
 
 export function getLfgApplicationDependencies(persistence: TLfgPersistence): TLfgApplicationDependencies {
     return {

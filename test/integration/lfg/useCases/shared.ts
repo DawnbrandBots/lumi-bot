@@ -1,24 +1,19 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
-import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
-import { changeOwnedRoomCode } from "../../../../src/application/lfg/useCases/changeOwnedRoomCode.ts";
-import { changeRoomCode } from "../../../../src/application/lfg/useCases/changeRoomCode.ts";
-import { create } from "../../../../src/application/lfg/useCases/create.ts";
-import { disband } from "../../../../src/application/lfg/useCases/disband.ts";
-import { disbandOwnedRoom } from "../../../../src/application/lfg/useCases/disbandOwnedRoom.ts";
-import { kick } from "../../../../src/application/lfg/useCases/kick.ts";
-import { kickFromOwnedRoom } from "../../../../src/application/lfg/useCases/kickFromOwnedRoom.ts";
-import { leave } from "../../../../src/application/lfg/useCases/leave.ts";
-import { move } from "../../../../src/application/lfg/useCases/move.ts";
-import { status } from "../../../../src/application/lfg/useCases/status.ts";
-import { transfer } from "../../../../src/application/lfg/useCases/transfer.ts";
-import { transferOwnedRoom } from "../../../../src/application/lfg/useCases/transferOwnedRoom.ts";
 import { getLfgApplicationDependencies } from "../../../../src/application/lfg/dependencies.ts";
+import type { TLfgPersistence } from "../../../../src/application/lfg/persistence.types.ts";
+import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
+import LFG_USE_CASES from "../../../../src/application/lfg/useCases.ts";
+import type { TLfgUseCases } from "../../../../src/application/lfg/useCases.types.ts";
+import {
+    getPersistenceWithContext,
+    getUseCasesWithUnitOfWork,
+} from "../../../../src/composition/application/useCases.ts";
+import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";
 import { LfgRoom } from "../../../../src/infrastructure/database/mikroOrm/models/lfg/room.ts";
-import { getLfgPersistence } from "../../../../src/infrastructure/database/mikroOrm/repositories/lfg/persistence.ts";
-import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
+import LFG_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
 
@@ -67,20 +62,30 @@ class LfgUseCases {
     public constructor({ em }: { readonly em: EntityManager }) {
         const withLfgUnitOfWork = getWithUnitOfWork({
             em,
-            getDependencies: (em) => getLfgApplicationDependencies(getLfgPersistence({ em })),
+            getDependencies: (em) =>
+                getLfgApplicationDependencies(
+                    getPersistenceWithContext<TLfgPersistence>({
+                        em,
+                        repositories: LFG_REPOSITORIES,
+                    }),
+                ),
         });
-        this.changeOwnedLfgRoomCode = withLfgUnitOfWork(changeOwnedRoomCode);
-        this.changeLfgRoomCode = withLfgUnitOfWork(changeRoomCode);
-        this.createLfgRoom = withLfgUnitOfWork(create);
-        this.disbandLfgRoom = withLfgUnitOfWork(disband);
-        this.disbandOwnedLfgRoom = withLfgUnitOfWork(disbandOwnedRoom);
-        this.getLfgStatus = withLfgUnitOfWork(status);
-        this.kickFromLfgRoom = withLfgUnitOfWork(kick);
-        this.kickFromOwnedLfgRoom = withLfgUnitOfWork(kickFromOwnedRoom);
-        this.leaveLfgRoom = withLfgUnitOfWork(leave);
-        this.moveLfgUser = withLfgUnitOfWork(move);
-        this.transferLfgRoom = withLfgUnitOfWork(transfer);
-        this.transferOwnedLfgRoom = withLfgUnitOfWork(transferOwnedRoom);
+        const useCases = getUseCasesWithUnitOfWork<TLfgUseCases>({
+            useCases: LFG_USE_CASES,
+            withUnitOfWork: withLfgUnitOfWork,
+        });
+        this.changeOwnedLfgRoomCode = useCases.changeOwnedLfgRoomCode;
+        this.changeLfgRoomCode = useCases.changeLfgRoomCode;
+        this.createLfgRoom = useCases.createLfgRoom;
+        this.disbandLfgRoom = useCases.disbandLfgRoom;
+        this.disbandOwnedLfgRoom = useCases.disbandOwnedLfgRoom;
+        this.getLfgStatus = useCases.getLfgStatus;
+        this.kickFromLfgRoom = useCases.kickFromLfgRoom;
+        this.kickFromOwnedLfgRoom = useCases.kickFromOwnedLfgRoom;
+        this.leaveLfgRoom = useCases.leaveLfgRoom;
+        this.moveLfgUser = useCases.moveLfgUser;
+        this.transferLfgRoom = useCases.transferLfgRoom;
+        this.transferOwnedLfgRoom = useCases.transferOwnedLfgRoom;
     }
 
     public async status(guildId: string) {

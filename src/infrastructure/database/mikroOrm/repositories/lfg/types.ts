@@ -1,5 +1,5 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TLfgPersistence } from "../../../../../application/lfg/types.ts";
+import type { TLfgPersistence } from "../../../../../application/lfg/persistence.types.ts";
 import type { LfgRoom } from "../../models/lfg/room.ts";
 
 export type TLfgPersistenceContext = {

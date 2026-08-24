@@ -1,13 +1,10 @@
-import { SEARCH_MAX_INPUT_LENGTH } from "./constants.ts";
-import type { TGetBestSearchIndexEntry, TGetEntityByKindAndId } from "./ports.ts";
-import type { TSearchResult } from "./types.ts";
-import { ESearchResultKind } from "./types.ts";
+import { SEARCH_MAX_INPUT_LENGTH } from "../constants.ts";
+import type { TSearchPersistence } from "../persistence.types.ts";
+import type { TSearchResult } from "../types.ts";
+import { ESearchResultKind } from "../types.ts";
 
-export async function resolveSearchInput(
-    deps: {
-        getBestSearchIndexEntry: TGetBestSearchIndexEntry;
-        getEntityByKindAndId: TGetEntityByKindAndId;
-    },
+export default async function resolveSearchInput(
+    deps: Pick<TSearchPersistence, "getBestSearchIndexEntry" | "getEntityByKindAndId">,
     input: string,
 ): Promise<TSearchResult> {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {

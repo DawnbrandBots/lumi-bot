@@ -1,8 +1,16 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
-import { composeAdminUseCases, type TAdminUseCases } from "../../../../src/composition/application/admin/useCases.ts";
+import type { TAdminPersistence } from "../../../../src/application/admin/persistence.types.ts";
+import ADMIN_USE_CASES from "../../../../src/application/admin/useCases.ts";
+import type { TAdminUseCases } from "../../../../src/application/admin/useCases.types.ts";
+import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
+import {
+    getPersistenceWithContext,
+    getUseCasesWithUnitOfWork,
+} from "../../../../src/composition/application/useCases.ts";
 import { GuildConfig } from "../../../../src/infrastructure/database/mikroOrm/models/admin/config.ts";
 import { GuildConfigLfgRole } from "../../../../src/infrastructure/database/mikroOrm/models/admin/configLfgRole.ts";
+import ADMIN_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
 
@@ -26,7 +34,19 @@ export function useAdminUseCases() {
     beforeEach(async () => {
         orm = await MikroORM.init(config);
         await orm.schema.create();
-        useCases = composeAdminUseCases({ em: orm.em.fork() });
+        const em = orm.em.fork();
+        const withAdminUnitOfWork = getWithUnitOfWork({
+            em,
+            getDependencies: (em) =>
+                getPersistenceWithContext<TAdminPersistence>({
+                    em,
+                    repositories: ADMIN_REPOSITORIES,
+                }),
+        });
+        useCases = getUseCasesWithUnitOfWork<TAdminUseCases>({
+            useCases: ADMIN_USE_CASES,
+            withUnitOfWork: withAdminUnitOfWork,
+        });
     });
 
     afterEach(async () => {

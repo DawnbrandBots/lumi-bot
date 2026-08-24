@@ -1,14 +1,14 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
-import { resolveSearchInput } from "../../../src/application/search/resolveSearchInput.ts";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import { ESearchResultKind } from "../../../src/application/search/types.ts";
+import resolveSearchInput from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
+import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 

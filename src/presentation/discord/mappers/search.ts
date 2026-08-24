@@ -1,8 +1,8 @@
 import type { APIEmbed, BaseMessageOptions } from "discord.js";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../application/search/constants.ts";
-import type { resolveSearchInput } from "../../../application/search/resolveSearchInput.ts";
 import type { TSearchSuccessValue } from "../../../application/search/types.ts";
 import { ESearchResultKind } from "../../../application/search/types.ts";
+import type { TResolveSearchInput } from "../../../application/search/useCases.types.ts";
 import type { TSearchEntity, TSearchKind } from "../../../domain/search/types.ts";
 import { createErrorMessage, createNegativeMessage, createPositiveMessage } from "../message.ts";
 import type { ISingleEmbedMessageOptions } from "../message.types.ts";
@@ -40,7 +40,7 @@ export function mapSearchSuccessValueToMessages<Kind extends TSearchKind>(value:
     return { reply: { embed: { ...embed, footer }, ...otherReplyProps }, followUps };
 }
 
-function mapSearchResultToMessages(result: Awaited<ReturnType<typeof resolveSearchInput>>) {
+function mapSearchResultToMessages(result: Awaited<ReturnType<TResolveSearchInput>>) {
     switch (result.kind) {
         case ESearchResultKind.SUCCESS: {
             const { reply, followUps } = mapSearchSuccessValueToMessages(result.value);

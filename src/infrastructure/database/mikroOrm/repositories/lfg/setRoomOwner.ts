@@ -1,4 +1,4 @@
-import type { TLfgPersistence } from "../../../../../application/lfg/types.ts";
+import type { TLfgPersistence } from "../../../../../application/lfg/persistence.types.ts";
 import { mapToLfgRoomDomainModel } from "../../mappers/mapToLfgRoomDomainModel.ts";
 import { getRoomEntityById } from "./getRoomEntityById.ts";
 import type { TLfgPersistenceFunction } from "./types.ts";

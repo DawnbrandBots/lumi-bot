@@ -25,8 +25,8 @@ import type {
 } from "../../../../presentation/discord/commands/types.ts";
 import { runWithGuild, type TRunWithGuildArg } from "../../../../presentation/discord/utils/runWithGuild.ts";
 import type { MaybePromise } from "../../../../utils/types.ts";
-import type { TAdminUseCases } from "../../../application/admin/useCases.ts";
-import type { TLfgUseCases } from "../../../application/lfg/useCases.ts";
+import type { TAdminUseCases } from "../../../../application/admin/useCases.types.ts";
+import type { TLfgUseCases } from "../../../../application/lfg/useCases.types.ts";
 
 type TLfgManageFeatureCommand = (
     arg: TLfgManageCommandArgs,

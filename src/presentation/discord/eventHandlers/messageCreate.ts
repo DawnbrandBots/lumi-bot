@@ -1,6 +1,6 @@
 import debug from "debug";
 import { userMention } from "discord.js";
-import type { TResolveSearchInput } from "../../../application/search/resolveSearchInput.types.ts";
+import type { TResolveSearchInput } from "../../../application/search/useCases.types.ts";
 import { helpMessage } from "../commands/help.ts";
 import mapSearchResultToMessages from "../mappers/search.ts";
 import type { TMessageCreateEventInteraction } from "./messageCreate.types.ts";

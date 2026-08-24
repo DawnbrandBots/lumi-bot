@@ -1,7 +1,46 @@
-import type { MaybePromise } from "../../utils/types.ts";
+import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemoval.types.ts";
 import type { IRoom } from "../../domain/lfg/models/room.types.ts";
 import type { IUser } from "../../domain/lfg/models/user.types.ts";
-import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemoval.types.ts";
+import type { MaybePromise } from "../../utils/types.ts";
+import type {
+    TLfgPersistence
+} from "./persistence.types.ts";
+export type {
+    TChangeLfgRoomCode,
+    TCreateLfgRoom,
+    TFindLfgRoomByCode,
+    TFindLfgRoomByUser, TLfgPersistence, TListLfgRooms, TMoveUserToLfgRoom,
+    TRemoveLfgRoom,
+    TRemoveLfgRoomPlayer,
+    TSetLfgRoomOwner
+} from "./persistence.types.ts";
+export type {
+    TChangeLfgRoomCodeArg,
+    TChangeLfgRoomCodeUseCase,
+    TChangeOwnedLfgRoomCodeArg,
+    TChangeOwnedLfgRoomCodeUseCase,
+    TCreateLfgRoomArg,
+    TCreateLfgRoomUseCase,
+    TDisbandLfgRoomArg,
+    TDisbandLfgRoomUseCase,
+    TDisbandOwnedLfgRoomArg,
+    TDisbandOwnedLfgRoomUseCase,
+    TGetLfgStatus,
+    TGetLfgStatusArg,
+    TKickFromLfgRoomByCode,
+    TKickFromLfgRoomByCodeArg,
+    TKickFromOwnedLfgRoomArg,
+    TKickFromOwnedLfgRoomUseCase,
+    TLeaveLfgRoom,
+    TLeaveLfgRoomArg,
+    TLfgUseCases,
+    TMoveLfgUser,
+    TMoveLfgUserArg,
+    TTransferLfgRoomArg,
+    TTransferLfgRoomUseCase,
+    TTransferOwnedLfgRoomArg,
+    TTransferOwnedLfgRoomUseCase
+} from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
     ROOMS_LISTED = "ROOMS_LISTED",
@@ -138,118 +177,8 @@ export type TLfgResultTypes = {
     >;
 };
 
-export type TGetLfgStatusArg = { readonly guildId: string };
-export type TCreateLfgRoomArg = {
-    readonly guildId: string;
-    readonly owner: IUser;
-    readonly code: string;
-};
-export type TChangeOwnedLfgRoomCodeArg = {
-    readonly guildId: string;
-    readonly owner: IUser;
-    readonly newCode: string;
-};
-export type TChangeLfgRoomCodeArg = {
-    readonly guildId: string;
-    readonly code: string;
-    readonly newCode: string;
-};
-export type TMoveLfgUserArg = {
-    readonly guildId: string;
-    readonly user: IUser;
-    readonly code: string;
-};
-export type TTransferLfgRoomArg = {
-    readonly guildId: string;
-    readonly code: string;
-    readonly target: IUser;
-};
-export type TTransferOwnedLfgRoomArg = {
-    readonly guildId: string;
-    readonly owner: IUser;
-    readonly target: IUser;
-};
-export type TKickFromLfgRoomByCodeArg = {
-    readonly guildId: string;
-    readonly code: string;
-    readonly target: IUser;
-};
-export type TKickFromOwnedLfgRoomArg = {
-    readonly guildId: string;
-    readonly owner: IUser;
-    readonly target: IUser;
-};
-export type TLeaveLfgRoomArg = { readonly guildId: string; readonly user: IUser };
-export type TDisbandLfgRoomArg = { readonly guildId: string; readonly code: string };
-export type TDisbandOwnedLfgRoomArg = {
-    readonly guildId: string;
-    readonly owner: IUser;
-};
-
-export type TGetLfgStatus = (arg: TGetLfgStatusArg) => MaybePromise<TLfgResultTypes["status"]>;
-export type TCreateLfgRoomUseCase = (arg: TCreateLfgRoomArg) => MaybePromise<TLfgResultTypes["create"]>;
-export type TChangeOwnedLfgRoomCodeUseCase = (
-    arg: TChangeOwnedLfgRoomCodeArg,
-) => MaybePromise<TLfgResultTypes["changeOwnedRoomCode"]>;
-export type TChangeLfgRoomCodeUseCase = (arg: TChangeLfgRoomCodeArg) => MaybePromise<TLfgResultTypes["changeRoomCode"]>;
-export type TMoveLfgUser = (arg: TMoveLfgUserArg) => MaybePromise<TLfgResultTypes["move"]>;
-export type TTransferLfgRoomUseCase = (arg: TTransferLfgRoomArg) => MaybePromise<TLfgResultTypes["transfer"]>;
-export type TTransferOwnedLfgRoomUseCase = (
-    arg: TTransferOwnedLfgRoomArg,
-) => MaybePromise<TLfgResultTypes["transferOwnedRoom"]>;
-export type TKickFromLfgRoomByCode = (arg: TKickFromLfgRoomByCodeArg) => MaybePromise<TLfgResultTypes["kick"]>;
-export type TKickFromOwnedLfgRoomUseCase = (
-    arg: TKickFromOwnedLfgRoomArg,
-) => MaybePromise<TLfgResultTypes["kickFromOwnedRoom"]>;
-export type TLeaveLfgRoom = (arg: TLeaveLfgRoomArg) => MaybePromise<TLfgResultTypes["leave"]>;
-export type TDisbandLfgRoomUseCase = (arg: TDisbandLfgRoomArg) => MaybePromise<TLfgResultTypes["disband"]>;
-export type TDisbandOwnedLfgRoomUseCase = (
-    arg: TDisbandOwnedLfgRoomArg,
-) => MaybePromise<TLfgResultTypes["disbandOwnedRoom"]>;
-
 export type TLfgRoom = IRoom & {
     readonly id: string;
-};
-
-export type TFindLfgRoomByCode = (arg: {
-    readonly guildId: string;
-    readonly code: string;
-}) => MaybePromise<TLfgRoom | null>;
-export type TFindLfgRoomByUser = (arg: {
-    readonly guildId: string;
-    readonly userId: string;
-}) => MaybePromise<TLfgRoom | null>;
-export type TListLfgRooms = (arg: { readonly guildId: string }) => MaybePromise<readonly TLfgRoom[]>;
-
-export type TCreateLfgRoom = (arg: {
-    readonly guildId: string;
-    readonly ownerId: string;
-    readonly code: string;
-}) => MaybePromise<TLfgRoom>;
-
-export type TMoveUserToLfgRoom = (arg: { readonly roomId: string; readonly userId: string }) => MaybePromise<TLfgRoom>;
-
-export type TSetLfgRoomOwner = (arg: { readonly roomId: string; readonly ownerId: string }) => MaybePromise<TLfgRoom>;
-
-export type TRemoveLfgRoomPlayer = (arg: { readonly roomId: string; readonly userId: string }) => MaybePromise<void>;
-
-export type TRemoveLfgRoom = (arg: { readonly roomId: string }) => MaybePromise<void>;
-
-export type TChangeLfgRoomCode = (arg: { readonly roomId: string; readonly newCode: string }) => MaybePromise<{
-    readonly oldCode: string;
-    readonly newCode: string;
-}>;
-
-export type TLfgPersistence = {
-    readonly changeRoomCode: TChangeLfgRoomCode;
-    readonly createRoom: TCreateLfgRoom;
-    readonly findRoomByCode: TFindLfgRoomByCode;
-    readonly findRoomByUser: TFindLfgRoomByUser;
-    readonly listRooms: TListLfgRooms;
-    readonly removeRoom: TRemoveLfgRoom;
-    readonly removeRoomPlayer: TRemoveLfgRoomPlayer;
-    readonly moveUserToRoom: TMoveUserToLfgRoom;
-    readonly setRoomOwner: TSetLfgRoomOwner;
 };
 
 type TOwnedRoomFailure = TLfgResultOfKind<ELfgResultKind.NOT_IN_A_ROOM | ELfgResultKind.NOT_ROOM_OWNER>;

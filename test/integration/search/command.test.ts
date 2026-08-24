@@ -1,14 +1,17 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import type { TGetBestSearchIndexEntry, TGetEntityByKindAndId } from "../../../src/application/search/ports.ts";
-import { resolveSearchInput } from "../../../src/application/search/resolveSearchInput.ts";
+import type {
+    TGetBestSearchIndexEntry,
+    TGetEntityByKindAndId,
+} from "../../../src/application/search/persistence.types.ts";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
+import resolveSearchInput from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
+import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getSearchCommand } from "../../../src/presentation/discord/commands/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
