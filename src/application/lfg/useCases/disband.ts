@@ -1,7 +1,7 @@
 import { ELfgResultKind } from "../types.ts";
-import type { TDisbandLfgRoomArg, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
-export async function disband(dependencies: TLfgUseCaseDependencies, { guildId, code }: TDisbandLfgRoomArg) {
+export async function disband(dependencies: TLfgUseCaseDependencies, { guildId, code }: TLfgUseCaseArgs["disband"]) {
     const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;

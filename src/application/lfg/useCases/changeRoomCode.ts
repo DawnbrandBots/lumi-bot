@@ -1,9 +1,9 @@
 import { ELfgResultKind } from "../types.ts";
-import type { TChangeLfgRoomCodeArg, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
 export async function changeRoomCode(
     dependencies: TLfgUseCaseDependencies,
-    { guildId, code, newCode }: TChangeLfgRoomCodeArg,
+    { guildId, code, newCode }: TLfgUseCaseArgs["changeRoomCode"],
 ) {
     const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {

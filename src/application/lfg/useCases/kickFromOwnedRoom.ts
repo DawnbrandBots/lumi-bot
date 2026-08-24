@@ -1,9 +1,9 @@
 import { ELfgResultKind } from "../types.ts";
-import type { TKickFromOwnedLfgRoomArg, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
 export async function kickFromOwnedRoom(
     dependencies: TLfgUseCaseDependencies,
-    { guildId, owner, target }: TKickFromOwnedLfgRoomArg,
+    { guildId, owner, target }: TLfgUseCaseArgs["kickFromOwnedRoom"],
 ) {
     const result = await dependencies.services.getOwnedRoom({ guildId, owner });
     if (!result.success) {

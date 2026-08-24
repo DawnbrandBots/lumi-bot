@@ -1,9 +1,9 @@
 import { ELfgResultKind } from "../types.ts";
-import type { TDisbandOwnedLfgRoomArg, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
 export async function disbandOwnedRoom(
     dependencies: TLfgUseCaseDependencies,
-    { guildId, owner }: TDisbandOwnedLfgRoomArg,
+    { guildId, owner }: TLfgUseCaseArgs["disbandOwnedRoom"],
 ) {
     const result = await dependencies.services.getOwnedRoom({ guildId, owner });
     if (!result.success) {

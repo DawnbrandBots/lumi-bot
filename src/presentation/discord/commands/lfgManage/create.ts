@@ -3,7 +3,7 @@ import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../lfg/constants.t
 import type { TLfgManageCommandArgs } from "./types.ts";
 
 export function create(arg: TLfgManageCommandArgs, interaction: TGuildCommandInteraction) {
-    return arg.createLfgRoom({
+    return arg.create({
         guildId: interaction.guildId,
         owner: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
         code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),

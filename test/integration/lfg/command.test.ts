@@ -51,18 +51,18 @@ function getSetLfgRoleLastPingedAtMock() {
 
 function getLfgUseCaseMocks(result: TLfgResult) {
     return {
-        changeLfgRoomCode: vi.fn().mockResolvedValue(result),
-        changeOwnedLfgRoomCode: vi.fn().mockResolvedValue(result),
-        createLfgRoom: vi.fn().mockResolvedValue(result),
-        disbandLfgRoom: vi.fn().mockResolvedValue(result),
-        disbandOwnedLfgRoom: vi.fn().mockResolvedValue(result),
-        getLfgStatus: vi.fn().mockResolvedValue(result),
-        kickFromLfgRoom: vi.fn().mockResolvedValue(result),
-        kickFromOwnedLfgRoom: vi.fn().mockResolvedValue(result),
-        leaveLfgRoom: vi.fn().mockResolvedValue(result),
-        moveLfgUser: vi.fn().mockResolvedValue(result),
-        transferLfgRoom: vi.fn().mockResolvedValue(result),
-        transferOwnedLfgRoom: vi.fn().mockResolvedValue(result),
+        changeRoomCode: vi.fn().mockResolvedValue(result),
+        changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
+        create: vi.fn().mockResolvedValue(result),
+        disband: vi.fn().mockResolvedValue(result),
+        disbandOwnedRoom: vi.fn().mockResolvedValue(result),
+        status: vi.fn().mockResolvedValue(result),
+        kick: vi.fn().mockResolvedValue(result),
+        kickFromOwnedRoom: vi.fn().mockResolvedValue(result),
+        leave: vi.fn().mockResolvedValue(result),
+        move: vi.fn().mockResolvedValue(result),
+        transfer: vi.fn().mockResolvedValue(result),
+        transferOwnedRoom: vi.fn().mockResolvedValue(result),
     };
 }
 
@@ -218,7 +218,7 @@ describe("composeDiscordCommands lfg", () => {
 
         await runCommand(command, interaction);
 
-        expect(lfgUseCases.changeOwnedLfgRoomCode).toHaveBeenCalledWith({
+        expect(lfgUseCases.changeOwnedRoomCode).toHaveBeenCalledWith({
             guildId: GUILD_ID,
             owner: { id: USER_ID },
             newCode: ROOM_CODE,

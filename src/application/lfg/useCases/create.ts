@@ -1,8 +1,11 @@
 import { ELfgResultKind } from "../types.ts";
 import { isInvalidRoomCode } from "../services/isInvalidRoomCode.ts";
-import type { TCreateLfgRoomArg, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
-export async function create(dependencies: TLfgUseCaseDependencies, { guildId, owner, code }: TCreateLfgRoomArg) {
+export async function create(
+    dependencies: TLfgUseCaseDependencies,
+    { guildId, owner, code }: TLfgUseCaseArgs["create"],
+) {
     if (isInvalidRoomCode(code)) {
         return { kind: ELfgResultKind.INVALID_ROOM_CODE } as const;
     }

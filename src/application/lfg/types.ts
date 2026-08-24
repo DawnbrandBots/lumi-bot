@@ -15,21 +15,7 @@ export type {
     TRemoveLfgRoomPlayer,
     TSetLfgRoomOwner,
 } from "./persistence.types.ts";
-export type {
-    TChangeLfgRoomCodeArg,
-    TChangeOwnedLfgRoomCodeArg,
-    TCreateLfgRoomArg,
-    TDisbandLfgRoomArg,
-    TDisbandOwnedLfgRoomArg,
-    TGetLfgStatusArg,
-    TKickFromLfgRoomByCodeArg,
-    TKickFromOwnedLfgRoomArg,
-    TLeaveLfgRoomArg,
-    TLfgUseCases,
-    TMoveLfgUserArg,
-    TTransferLfgRoomArg,
-    TTransferOwnedLfgRoomArg,
-} from "./useCases.types.ts";
+export type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
     ROOMS_LISTED = "ROOMS_LISTED",

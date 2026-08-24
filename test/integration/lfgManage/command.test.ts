@@ -69,18 +69,18 @@ function getInteractionFixture({
 
 function getCommand({ result, channel = null }: { readonly result: TLfgResult; readonly channel?: string | null }) {
     const lfgUseCases = {
-        changeLfgRoomCode: vi.fn().mockResolvedValue(result),
-        changeOwnedLfgRoomCode: vi.fn().mockResolvedValue(result),
-        createLfgRoom: vi.fn().mockResolvedValue(result),
-        disbandOwnedLfgRoom: vi.fn().mockResolvedValue(result),
-        moveLfgUser: vi.fn().mockResolvedValue(result),
-        getLfgStatus: vi.fn().mockResolvedValue(result),
-        kickFromLfgRoom: vi.fn().mockResolvedValue(result),
-        kickFromOwnedLfgRoom: vi.fn().mockResolvedValue(result),
-        leaveLfgRoom: vi.fn().mockResolvedValue(result),
-        transferLfgRoom: vi.fn().mockResolvedValue(result),
-        transferOwnedLfgRoom: vi.fn().mockResolvedValue(result),
-        disbandLfgRoom: vi.fn().mockResolvedValue(result),
+        changeRoomCode: vi.fn().mockResolvedValue(result),
+        changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
+        create: vi.fn().mockResolvedValue(result),
+        disbandOwnedRoom: vi.fn().mockResolvedValue(result),
+        move: vi.fn().mockResolvedValue(result),
+        status: vi.fn().mockResolvedValue(result),
+        kick: vi.fn().mockResolvedValue(result),
+        kickFromOwnedRoom: vi.fn().mockResolvedValue(result),
+        leave: vi.fn().mockResolvedValue(result),
+        transfer: vi.fn().mockResolvedValue(result),
+        transferOwnedRoom: vi.fn().mockResolvedValue(result),
+        disband: vi.fn().mockResolvedValue(result),
     };
     const getGuildConfig = vi.fn().mockResolvedValue({
         kind: EAdminResultKind.LFG_GET_CONFIG,
@@ -136,13 +136,13 @@ describe("composeDiscordCommands lfg-manage", () => {
             }),
         );
         expect(getGuildConfig).not.toHaveBeenCalled();
-        expect(lfgUseCases.createLfgRoom).not.toHaveBeenCalled();
+        expect(lfgUseCases.create).not.toHaveBeenCalled();
     });
 
     test.each([
         {
             subcommand: "create",
-            method: "createLfgRoom",
+            method: "create",
             result: {
                 kind: ELfgResultKind.ROOM_CREATED,
                 value: {
@@ -154,7 +154,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: "move",
-            method: "moveLfgUser",
+            method: "move",
             result: {
                 kind: ELfgResultKind.ROOM_JOINED,
                 value: {
@@ -166,7 +166,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
-            method: "changeLfgRoomCode",
+            method: "changeRoomCode",
             result: {
                 kind: ELfgResultKind.ROOM_CODE_CHANGED,
                 value: {
@@ -178,7 +178,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: "kick",
-            method: "kickFromLfgRoom",
+            method: "kick",
             result: {
                 kind: ELfgResultKind.PLAYER_KICKED,
                 value: {
@@ -192,7 +192,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: "transfer",
-            method: "transferLfgRoom",
+            method: "transfer",
             result: {
                 kind: ELfgResultKind.OWNERSHIP_TRANSFERRED,
                 value: {
@@ -205,7 +205,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: "disband",
-            method: "disbandLfgRoom",
+            method: "disband",
             result: {
                 kind: ELfgResultKind.ROOM_DISBANDED,
                 value: { userId: PLAYER_ID, code: ROOM_CODE },

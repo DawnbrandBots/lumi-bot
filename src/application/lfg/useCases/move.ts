@@ -1,8 +1,8 @@
 import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../../domain/game/constants.ts";
 import { ELfgResultKind } from "../types.ts";
-import type { TMoveLfgUserArg, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
-export async function move(dependencies: TLfgUseCaseDependencies, { guildId, user, code }: TMoveLfgUserArg) {
+export async function move(dependencies: TLfgUseCaseDependencies, { guildId, user, code }: TLfgUseCaseArgs["move"]) {
     const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;

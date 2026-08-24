@@ -3,7 +3,7 @@ import { LFG_CODE_OPTION_NAME, LFG_PLAYER_OPTION_NAME } from "../lfg/constants.t
 import type { TLfgManageCommandArgs } from "./types.ts";
 
 export function move(arg: TLfgManageCommandArgs, interaction: TGuildCommandInteraction) {
-    return arg.moveLfgUser({
+    return arg.move({
         guildId: interaction.guildId,
         user: interaction.options.getUser(LFG_PLAYER_OPTION_NAME, true),
         code: interaction.options.getString(LFG_CODE_OPTION_NAME, true),

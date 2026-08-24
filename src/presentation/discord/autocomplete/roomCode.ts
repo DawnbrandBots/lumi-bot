@@ -3,7 +3,7 @@ import { DISCORD_COMMAND_OPTION_AUTOCOMPLETE_MAX_CHOICE_COUNT } from "../constan
 import { LFG_CODE_OPTION_NAME } from "../commands/lfg/constants.ts";
 import type { TLfgUseCases } from "../../../application/lfg/types.ts";
 
-const getRoomCodeAutocomplete = (arg: { getLfgStatus: TLfgUseCases["getLfgStatus"]; ignoredSubCommands: string[] }) =>
+const getRoomCodeAutocomplete = (arg: { status: TLfgUseCases["status"]; ignoredSubCommands: string[] }) =>
     async function (interaction: AutocompleteInteraction) {
         if (!interaction.guildId) {
             return [];
@@ -21,7 +21,7 @@ const getRoomCodeAutocomplete = (arg: { getLfgStatus: TLfgUseCases["getLfgStatus
             return [];
         }
 
-        const status = await arg.getLfgStatus({ guildId: interaction.guildId });
+        const status = await arg.status({ guildId: interaction.guildId });
         return (
             status.value.rooms
                 .filter((room) => room.code.includes(focusedOption.value))

@@ -1,7 +1,7 @@
 import type { TLfgResult } from "../../../../application/lfg/types.ts";
 import { getLfgManageAutocomplete } from "../../../../presentation/discord/autocomplete/lfgManage.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../../../../presentation/discord/commandRegistrationData/lfgManage.ts";
-import { changeCode as changeLfgRoomCode } from "../../../../presentation/discord/commands/lfgManage/changeCode.ts";
+import { changeCode as changeRoomCode } from "../../../../presentation/discord/commands/lfgManage/changeCode.ts";
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_CREATE_SUBCOMMAND_NAME,
@@ -13,7 +13,7 @@ import {
 import { create as createManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/create.ts";
 import { disband as disbandManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/disband.ts";
 import { kick as kickFromManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/kick.ts";
-import { move as moveLfgUser } from "../../../../presentation/discord/commands/lfgManage/move.ts";
+import { move as move } from "../../../../presentation/discord/commands/lfgManage/move.ts";
 import { runFeatureSubcommand as runLfgManageFeatureSubcommand } from "../../../../presentation/discord/commands/lfgManage/runFeatureSubcommand.ts";
 import { transfer as transferManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/transfer.ts";
 import type { TLfgManageCommandArgs } from "../../../../presentation/discord/commands/lfgManage/types.ts";
@@ -52,8 +52,8 @@ function composeLfgManageFeatureHandler(
 function composeLfgManageRunHandlers(arg: TLfgManageCommandArgs) {
     return {
         [LFG_MANAGE_CREATE_SUBCOMMAND_NAME]: composeLfgManageFeatureHandler(arg, createManagedLfgRoom),
-        [LFG_MANAGE_MOVE_SUBCOMMAND_NAME]: composeLfgManageFeatureHandler(arg, moveLfgUser),
-        [LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME]: composeLfgManageFeatureHandler(arg, changeLfgRoomCode),
+        [LFG_MANAGE_MOVE_SUBCOMMAND_NAME]: composeLfgManageFeatureHandler(arg, move),
+        [LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME]: composeLfgManageFeatureHandler(arg, changeRoomCode),
         [LFG_MANAGE_KICK_SUBCOMMAND_NAME]: composeLfgManageFeatureHandler(arg, kickFromManagedLfgRoom),
         [LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME]: composeLfgManageFeatureHandler(arg, transferManagedLfgRoom),
         [LFG_MANAGE_DISBAND_SUBCOMMAND_NAME]: composeLfgManageFeatureHandler(arg, disbandManagedLfgRoom),
@@ -66,16 +66,16 @@ export function composeLfgManageCommand(arg: {
 }) {
     const lfgManageCommandArgs = {
         getGuildConfig: arg.adminUseCases.getGuildConfig,
-        changeLfgRoomCode: arg.lfgUseCases.changeLfgRoomCode,
-        createLfgRoom: arg.lfgUseCases.createLfgRoom,
-        disbandLfgRoom: arg.lfgUseCases.disbandLfgRoom,
-        kickFromLfgRoom: arg.lfgUseCases.kickFromLfgRoom,
-        moveLfgUser: arg.lfgUseCases.moveLfgUser,
-        transferLfgRoom: arg.lfgUseCases.transferLfgRoom,
+        changeRoomCode: arg.lfgUseCases.changeRoomCode,
+        create: arg.lfgUseCases.create,
+        disband: arg.lfgUseCases.disband,
+        kick: arg.lfgUseCases.kick,
+        move: arg.lfgUseCases.move,
+        transfer: arg.lfgUseCases.transfer,
     } satisfies TLfgManageCommandArgs;
 
     return {
         run: composeLfgManageRunHandlers(lfgManageCommandArgs),
-        autocomplete: getLfgManageAutocomplete({ getLfgStatus: arg.lfgUseCases.getLfgStatus }),
+        autocomplete: getLfgManageAutocomplete({ status: arg.lfgUseCases.status }),
     } satisfies TCommandHandlers<typeof lfgManageCommandCommandRegistrationData>;
 }

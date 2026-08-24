@@ -13,17 +13,17 @@ import { transferOwnedRoom } from "./useCases/transferOwnedRoom.ts";
 export type { TLfgUseCases } from "./useCases.types.ts";
 
 const USE_CASES = {
-    changeLfgRoomCode: changeRoomCode,
-    changeOwnedLfgRoomCode: changeOwnedRoomCode,
-    createLfgRoom: create,
-    disbandLfgRoom: disband,
-    disbandOwnedLfgRoom: disbandOwnedRoom,
-    getLfgStatus: status,
-    kickFromLfgRoom: kick,
-    kickFromOwnedLfgRoom: kickFromOwnedRoom,
-    leaveLfgRoom: leave,
-    moveLfgUser: move,
-    transferLfgRoom: transfer,
-    transferOwnedLfgRoom: transferOwnedRoom,
+    changeRoomCode: changeRoomCode,
+    changeOwnedRoomCode: changeOwnedRoomCode,
+    create: create,
+    disband: disband,
+    disbandOwnedRoom: disbandOwnedRoom,
+    status: status,
+    kick: kick,
+    kickFromOwnedRoom: kickFromOwnedRoom,
+    leave: leave,
+    move: move,
+    transfer: transfer,
+    transferOwnedRoom: transferOwnedRoom,
 };
 export default USE_CASES;

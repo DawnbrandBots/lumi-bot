@@ -46,18 +46,18 @@ function toPublicRoom(room: {
 }
 
 class LfgUseCases {
-    private readonly changeOwnedLfgRoomCode;
-    private readonly changeLfgRoomCode;
-    private readonly createLfgRoom;
-    private readonly disbandLfgRoom;
-    private readonly disbandOwnedLfgRoom;
-    private readonly getLfgStatus;
-    private readonly kickFromLfgRoom;
-    private readonly kickFromOwnedLfgRoom;
-    private readonly leaveLfgRoom;
-    private readonly moveLfgUser;
-    private readonly transferLfgRoom;
-    private readonly transferOwnedLfgRoom;
+    private readonly changeOwnedRoomCodeUseCase;
+    private readonly changeRoomCodeUseCase;
+    private readonly createUseCase;
+    private readonly disbandUseCase;
+    private readonly disbandOwnedRoomUseCase;
+    private readonly statusUseCase;
+    private readonly kickUseCase;
+    private readonly kickFromOwnedRoomUseCase;
+    private readonly leaveUseCase;
+    private readonly moveUseCase;
+    private readonly transferUseCase;
+    private readonly transferOwnedRoomUseCase;
 
     public constructor({ em }: { readonly em: EntityManager }) {
         const withLfgUnitOfWork = getWithUnitOfWork({
@@ -74,22 +74,22 @@ class LfgUseCases {
             useCases: LFG_USE_CASES,
             withUnitOfWork: withLfgUnitOfWork,
         });
-        this.changeOwnedLfgRoomCode = useCases.changeOwnedLfgRoomCode;
-        this.changeLfgRoomCode = useCases.changeLfgRoomCode;
-        this.createLfgRoom = useCases.createLfgRoom;
-        this.disbandLfgRoom = useCases.disbandLfgRoom;
-        this.disbandOwnedLfgRoom = useCases.disbandOwnedLfgRoom;
-        this.getLfgStatus = useCases.getLfgStatus;
-        this.kickFromLfgRoom = useCases.kickFromLfgRoom;
-        this.kickFromOwnedLfgRoom = useCases.kickFromOwnedLfgRoom;
-        this.leaveLfgRoom = useCases.leaveLfgRoom;
-        this.moveLfgUser = useCases.moveLfgUser;
-        this.transferLfgRoom = useCases.transferLfgRoom;
-        this.transferOwnedLfgRoom = useCases.transferOwnedLfgRoom;
+        this.changeOwnedRoomCodeUseCase = useCases.changeOwnedRoomCode;
+        this.changeRoomCodeUseCase = useCases.changeRoomCode;
+        this.createUseCase = useCases.create;
+        this.disbandUseCase = useCases.disband;
+        this.disbandOwnedRoomUseCase = useCases.disbandOwnedRoom;
+        this.statusUseCase = useCases.status;
+        this.kickUseCase = useCases.kick;
+        this.kickFromOwnedRoomUseCase = useCases.kickFromOwnedRoom;
+        this.leaveUseCase = useCases.leave;
+        this.moveUseCase = useCases.move;
+        this.transferUseCase = useCases.transfer;
+        this.transferOwnedRoomUseCase = useCases.transferOwnedRoom;
     }
 
     public async status(guildId: string) {
-        const result = await this.getLfgStatus({ guildId });
+        const result = await this.statusUseCase({ guildId });
         return {
             ...result,
             value: { rooms: result.value.rooms.map((room) => toPublicRoom(room)) },
@@ -97,65 +97,65 @@ class LfgUseCases {
     }
 
     public async create(guildId: string, owner: IUser, code: string) {
-        const result = await this.createLfgRoom({ guildId, owner, code });
+        const result = await this.createUseCase({ guildId, owner, code });
         return result.kind === ELfgResultKind.ROOM_CREATED
             ? { ...result, value: { ...result.value, room: toPublicRoom(result.value.room) } }
             : result;
     }
 
     public changeOwnedRoomCode(guildId: string, owner: IUser, newCode: string) {
-        return this.changeOwnedLfgRoomCode({ guildId, owner, newCode });
+        return this.changeOwnedRoomCodeUseCase({ guildId, owner, newCode });
     }
 
     public changeRoomCode(guildId: string, code: string, newCode: string) {
-        return this.changeLfgRoomCode({ guildId, code, newCode });
+        return this.changeRoomCodeUseCase({ guildId, code, newCode });
     }
 
     public async move(guildId: string, user: IUser, code: string) {
-        const result = await this.moveLfgUser({ guildId, user, code });
+        const result = await this.moveUseCase({ guildId, user, code });
         return result.kind === ELfgResultKind.ROOM_JOINED || result.kind === ELfgResultKind.ALREADY_IN_TARGET_ROOM
             ? { ...result, value: { ...result.value, room: toPublicRoom(result.value.room) } }
             : result;
     }
 
     public async transferOwnedRoom(guildId: string, owner: IUser, target: IUser) {
-        const result = await this.transferOwnedLfgRoom({ guildId, owner, target });
+        const result = await this.transferOwnedRoomUseCase({ guildId, owner, target });
         return result.kind === ELfgResultKind.OWNERSHIP_TRANSFERRED
             ? { ...result, value: { ...result.value, room: toPublicRoom(result.value.room) } }
             : result;
     }
 
     public async transfer(guildId: string, code: string, target: IUser) {
-        const result = await this.transferLfgRoom({ guildId, code, target });
+        const result = await this.transferUseCase({ guildId, code, target });
         return result.kind === ELfgResultKind.OWNERSHIP_TRANSFERRED
             ? { ...result, value: { ...result.value, room: toPublicRoom(result.value.room) } }
             : result;
     }
 
     public async kickFromOwnedRoom(guildId: string, owner: IUser, target: IUser) {
-        const result = await this.kickFromOwnedLfgRoom({ guildId, owner, target });
+        const result = await this.kickFromOwnedRoomUseCase({ guildId, owner, target });
         return result.kind === ELfgResultKind.PLAYER_KICKED
             ? { ...result, value: { ...result.value, room: toPublicRoom(result.value.room) } }
             : result;
     }
 
     public async kick(guildId: string, code: string, target: IUser) {
-        const result = await this.kickFromLfgRoom({ guildId, code, target });
+        const result = await this.kickUseCase({ guildId, code, target });
         return result.kind === ELfgResultKind.PLAYER_KICKED
             ? { ...result, value: { ...result.value, room: toPublicRoom(result.value.room) } }
             : result;
     }
 
     public leave(guildId: string, user: IUser) {
-        return this.leaveLfgRoom({ guildId, user });
+        return this.leaveUseCase({ guildId, user });
     }
 
     public disbandOwnedRoom(guildId: string, owner: IUser) {
-        return this.disbandOwnedLfgRoom({ guildId, owner });
+        return this.disbandOwnedRoomUseCase({ guildId, owner });
     }
 
     public disband(guildId: string, code: string) {
-        return this.disbandLfgRoom({ guildId, code });
+        return this.disbandUseCase({ guildId, code });
     }
 }
 
