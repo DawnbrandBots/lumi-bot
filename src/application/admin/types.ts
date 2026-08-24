@@ -58,18 +58,18 @@ export type TAdminResult = {
 }[EAdminResultKind];
 
 export type TAdminResultTypes = {
-    lfgChannel: TAdminResultOfKind<EAdminResultKind.LFG_CHANNEL_SET | EAdminResultKind.LFG_CHANNEL_CLEARED>;
-    lfgRolePingCooldown: TAdminResultOfKind<
-        EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET | EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED
-    >;
-    lfgRole: TAdminResultOfKind<
+    addLfgRole: TAdminResultOfKind<
         | EAdminResultKind.LFG_ROLE_ADDED
-        | EAdminResultKind.LFG_ROLE_REMOVED
         | EAdminResultKind.LFG_ROLE_ALREADY_EXISTS
-        | EAdminResultKind.LFG_ROLE_NOT_FOUND
         | EAdminResultKind.LFG_ROLE_LIMIT_REACHED
         | EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE
     >;
+    clearLfgChannel: TAdminResultOfKind<EAdminResultKind.LFG_CHANNEL_CLEARED>;
+    clearLfgRolePingCooldown: TAdminResultOfKind<EAdminResultKind.LFG_ROLE_PING_COOLDOWN_CLEARED>;
     getGuildConfig: TAdminResultOfKind<EAdminResultKind.LFG_GET_CONFIG>;
     getLfgRoleConfig: TAdminResultOfKind<EAdminResultKind.LFG_GET_ROLE_CONFIG>;
+    removeLfgRole: TAdminResultOfKind<EAdminResultKind.LFG_ROLE_REMOVED | EAdminResultKind.LFG_ROLE_NOT_FOUND>;
+    setLfgChannel: TAdminResultOfKind<EAdminResultKind.LFG_CHANNEL_SET>;
+    setLfgRoleLastPingedAt: void;
+    setLfgRolePingCooldown: TAdminResultOfKind<EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET>;
 };

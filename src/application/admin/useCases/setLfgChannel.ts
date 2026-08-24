@@ -4,7 +4,7 @@ import type { TAdminUseCaseDependencies } from "../useCases.types.ts";
 export async function setLfgChannel(
     dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string; readonly channelId: string },
-): Promise<TAdminResultTypes["lfgChannel"]> {
+): Promise<TAdminResultTypes["setLfgChannel"]> {
     await dependencies.persistence.setLfgChannel(arg);
     return {
         kind: EAdminResultKind.LFG_CHANNEL_SET,

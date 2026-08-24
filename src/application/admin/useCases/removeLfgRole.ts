@@ -4,7 +4,7 @@ import type { TAdminUseCaseDependencies } from "../useCases.types.ts";
 export async function removeLfgRole(
     dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string; readonly roleId: string },
-): Promise<TAdminResultTypes["lfgRole"]> {
+): Promise<TAdminResultTypes["removeLfgRole"]> {
     const lfgRole = await dependencies.persistence.getLfgRole(arg);
     if (!lfgRole) {
         return { kind: EAdminResultKind.LFG_ROLE_NOT_FOUND, value: { role: arg.roleId } };

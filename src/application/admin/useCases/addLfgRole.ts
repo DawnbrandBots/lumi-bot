@@ -5,7 +5,7 @@ import type { TAdminUseCaseDependencies } from "../useCases.types.ts";
 export async function addLfgRole(
     dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string; readonly roleId: string },
-): Promise<TAdminResultTypes["lfgRole"]> {
+): Promise<TAdminResultTypes["addLfgRole"]> {
     if (arg.roleId === arg.guildId) {
         return { kind: EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE };
     }
