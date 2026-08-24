@@ -1,33 +1,14 @@
 import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../../domain/game/constants.ts";
 import { ELfgResultKind } from "../types.ts";
-import type {
-    TFindLfgRoomByCode,
-    TFindLfgRoomByUser,
-    TMoveLfgUserArg,
-    TMoveUserToLfgRoom,
-    TRemovePlayerFromLfgRoom,
-} from "../types.ts";
+import type { TMoveLfgUserArg, TLfgUseCaseDependencies } from "../types.ts";
 
-export async function move(
-    {
-        findRoomByCode,
-        findRoomByUser,
-        moveUserToRoom,
-        removePlayerFromRoom,
-    }: {
-        readonly findRoomByCode: TFindLfgRoomByCode;
-        readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly moveUserToRoom: TMoveUserToLfgRoom;
-        readonly removePlayerFromRoom: TRemovePlayerFromLfgRoom;
-    },
-    { guildId, user, code }: TMoveLfgUserArg,
-) {
-    const room = await findRoomByCode({ guildId, code });
+export async function move(dependencies: TLfgUseCaseDependencies, { guildId, user, code }: TMoveLfgUserArg) {
+    const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
 
-    const currentRoom = await findRoomByUser({ guildId, userId: user.id });
+    const currentRoom = await dependencies.persistence.findRoomByUser({ guildId, userId: user.id });
     if (currentRoom?.id === room.id) {
         return {
             kind: ELfgResultKind.ALREADY_IN_TARGET_ROOM,
@@ -40,8 +21,10 @@ export async function move(
     }
 
     const leftRoomCode = currentRoom?.code;
-    const removalResult = currentRoom ? await removePlayerFromRoom({ room: currentRoom, userId: user.id }) : undefined;
-    const updatedRoom = await moveUserToRoom({ roomId: room.id, userId: user.id });
+    const removalResult = currentRoom
+        ? await dependencies.services.removePlayerFromRoom({ room: currentRoom, userId: user.id })
+        : undefined;
+    const updatedRoom = await dependencies.persistence.moveUserToRoom({ roomId: room.id, userId: user.id });
 
     return {
         kind: ELfgResultKind.ROOM_JOINED,

@@ -1,7 +1,11 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TGetEntityByKindAndId, TGetSearchIndexEntries } from "../../../application/search/persistence.types.ts";
+import type {
+    TGetEntityByKindAndId,
+    TGetSearchIndexEntries,
+    TSearchPersistence,
+} from "../../../application/search/persistence.types.ts";
 import { generateSearchIndexEntries } from "../../../application/search/searchAliases.ts";
-import type { TSearchUseCases } from "../../../application/search/useCases.types.ts";
+import type { TSearchUseCaseDependencies, TSearchUseCases } from "../../../application/search/useCases.types.ts";
 import resolveSearchInput from "../../../application/search/useCases/resolveSearchInput.ts";
 import suggestSearchResults from "../../../application/search/useCases/suggestSearchResults.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
@@ -17,9 +21,15 @@ export async function composeSearchUseCases(arg: { readonly em: EntityManager })
         searchEngine.search(searchArg.input, searchArg.limit);
     const getEntityByKindAndId: TGetEntityByKindAndId = (searchArg) =>
         getGameDataEntityForSearchResult({ em: arg.em }, searchArg);
+    const persistence: TSearchPersistence = {
+        getBestSearchIndexEntry,
+        getEntityByKindAndId,
+        getSearchIndexEntries,
+    };
+    const dependencies: TSearchUseCaseDependencies = { persistence };
 
     return {
-        resolveSearchInput: (input) => resolveSearchInput({ getBestSearchIndexEntry, getEntityByKindAndId }, input),
-        suggestSearchResults: (searchArg) => suggestSearchResults({ getSearchIndexEntries }, searchArg),
+        resolveSearchInput: (input) => resolveSearchInput(dependencies, input),
+        suggestSearchResults: (searchArg) => suggestSearchResults(dependencies, searchArg),
     };
 }

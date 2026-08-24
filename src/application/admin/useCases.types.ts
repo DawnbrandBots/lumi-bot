@@ -1,4 +1,9 @@
+import type { TAdminPersistence } from "./persistence.types.ts";
 import type { TAdminResultTypes } from "./types.ts";
+
+export type TAdminUseCaseDependencies = {
+    readonly persistence: TAdminPersistence;
+};
 
 export type TAddAdminLfgRole = (arg: {
     readonly guildId: string;

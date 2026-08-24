@@ -1,18 +1,15 @@
 import { ELfgResultKind } from "../types.ts";
-import type { TGetOwnedLfgRoom, TDisbandOwnedLfgRoomArg, TRemoveLfgRoom } from "../types.ts";
+import type { TDisbandOwnedLfgRoomArg, TLfgUseCaseDependencies } from "../types.ts";
 
 export async function disbandOwnedRoom(
-    deps: {
-        readonly getOwnedRoom: TGetOwnedLfgRoom;
-        readonly removeRoom: TRemoveLfgRoom;
-    },
+    dependencies: TLfgUseCaseDependencies,
     { guildId, owner }: TDisbandOwnedLfgRoomArg,
 ) {
-    const result = await deps.getOwnedRoom({ guildId, owner });
+    const result = await dependencies.services.getOwnedRoom({ guildId, owner });
     if (!result.success) {
         return result.value;
     }
-    await deps.removeRoom({ roomId: result.value.room.id });
+    await dependencies.persistence.removeRoom({ roomId: result.value.room.id });
     return {
         kind: ELfgResultKind.ROOM_DISBANDED,
         value: { userId: result.value.room.ownerId, code: result.value.room.code },

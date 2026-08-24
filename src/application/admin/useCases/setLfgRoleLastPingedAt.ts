@@ -1,8 +1,8 @@
-import type { TAdminPersistence } from "../types.ts";
+import type { TAdminUseCaseDependencies } from "../useCases.types.ts";
 
 export async function setLfgRoleLastPingedAt(
-    persistence: TAdminPersistence,
+    dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string; readonly roleId: string; readonly date: Date },
 ): Promise<void> {
-    await persistence.setLfgRoleLastPingedAt(arg);
+    await dependencies.persistence.setLfgRoleLastPingedAt(arg);
 }

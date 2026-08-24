@@ -4,9 +4,11 @@ import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import type {
     TGetBestSearchIndexEntry,
     TGetEntityByKindAndId,
+    TSearchPersistence,
 } from "../../../src/application/search/persistence.types.ts";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import resolveSearchInput from "../../../src/application/search/useCases/resolveSearchInput.ts";
+import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
@@ -29,8 +31,17 @@ beforeAll(async () => {
     });
     const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
     const getEntityByKindAndId: TGetEntityByKindAndId = (arg) => getGameDataEntityForSearchResult({ em }, arg);
+    const getSearchIndexEntries = (arg: { readonly input: string; readonly limit?: number }) =>
+        searchEngine.search(arg.input, arg.limit);
+    const persistence: TSearchPersistence = {
+        getBestSearchIndexEntry,
+        getEntityByKindAndId,
+        getSearchIndexEntries,
+    };
+    const dependencies: TSearchUseCaseDependencies = { persistence };
+
     searchCommand = getSearchCommand({
-        resolveSearchInput: (input) => resolveSearchInput({ getBestSearchIndexEntry, getEntityByKindAndId }, input),
+        resolveSearchInput: (input) => resolveSearchInput(dependencies, input),
     });
 });
 

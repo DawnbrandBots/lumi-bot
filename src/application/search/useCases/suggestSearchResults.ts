@@ -1,9 +1,8 @@
-import type { TSearchPersistence } from "../persistence.types.ts";
-import type { TSuggestSearchResults } from "../useCases.types.ts";
+import type { TSearchUseCaseDependencies, TSuggestSearchResults } from "../useCases.types.ts";
 
 export default function suggestSearchResults(
-    deps: Pick<TSearchPersistence, "getSearchIndexEntries">,
+    dependencies: TSearchUseCaseDependencies,
     { input, limit }: Parameters<TSuggestSearchResults>[0],
-): ReturnType<TSearchPersistence["getSearchIndexEntries"]> {
-    return deps.getSearchIndexEntries({ input, limit });
+): ReturnType<TSearchUseCaseDependencies["persistence"]["getSearchIndexEntries"]> {
+    return dependencies.persistence.getSearchIndexEntries({ input, limit });
 }

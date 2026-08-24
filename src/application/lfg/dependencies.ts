@@ -8,18 +8,20 @@ import type { TLfgApplicationDependencies } from "./types.ts";
 
 export function getLfgApplicationDependencies(persistence: TLfgPersistence): TLfgApplicationDependencies {
     return {
-        ...persistence,
-        changeRoomCodeInRoom: (arg) => changeRoomCodeInRoom(persistence, arg),
-        getOwnedRoom: (arg) => getOwnedRoom(persistence, arg),
-        kickFromRoom: (arg) =>
-            kickFromRoom(
-                {
-                    findRoomByUser: persistence.findRoomByUser,
-                    removePlayerFromRoom: (removePlayerArg) => removePlayerFromRoom(persistence, removePlayerArg),
-                },
-                arg,
-            ),
-        removePlayerFromRoom: (arg) => removePlayerFromRoom(persistence, arg),
-        transferRoom: (arg) => transferRoom(persistence, arg),
+        persistence,
+        services: {
+            changeRoomCodeInRoom: (arg) => changeRoomCodeInRoom(persistence, arg),
+            getOwnedRoom: (arg) => getOwnedRoom(persistence, arg),
+            kickFromRoom: (arg) =>
+                kickFromRoom(
+                    {
+                        findRoomByUser: persistence.findRoomByUser,
+                        removePlayerFromRoom: (removePlayerArg) => removePlayerFromRoom(persistence, removePlayerArg),
+                    },
+                    arg,
+                ),
+            removePlayerFromRoom: (arg) => removePlayerFromRoom(persistence, arg),
+            transferRoom: (arg) => transferRoom(persistence, arg),
+        },
     };
 }

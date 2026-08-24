@@ -1,7 +1,7 @@
 import debug from "debug";
 import type { TAdminPersistence } from "./application/admin/persistence.types.ts";
 import ADMIN_USE_CASES from "./application/admin/useCases.ts";
-import type { TAdminUseCases } from "./application/admin/useCases.types.ts";
+import type { TAdminUseCaseDependencies, TAdminUseCases } from "./application/admin/useCases.types.ts";
 import { getLfgApplicationDependencies } from "./application/lfg/dependencies.ts";
 import type { TLfgPersistence } from "./application/lfg/persistence.types.ts";
 import LFG_USE_CASES from "./application/lfg/useCases.ts";
@@ -24,11 +24,12 @@ const em = orm.em.fork();
 
 const withAdminUnitOfWork = getWithUnitOfWork({
     em,
-    getDependencies: (em) =>
-        getPersistenceWithContext<TAdminPersistence>({
+    getDependencies: (em): TAdminUseCaseDependencies => ({
+        persistence: getPersistenceWithContext<TAdminPersistence>({
             em,
             repositories: ADMIN_REPOSITORIES,
         }),
+    }),
 });
 const adminUseCases = getUseCasesWithUnitOfWork<TAdminUseCases>({
     useCases: ADMIN_USE_CASES,

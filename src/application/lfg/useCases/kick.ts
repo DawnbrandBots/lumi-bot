@@ -1,16 +1,13 @@
 import { ELfgResultKind } from "../types.ts";
-import type { TFindLfgRoomByCode, TKickFromLfgRoom, TKickFromLfgRoomByCodeArg } from "../types.ts";
+import type { TKickFromLfgRoomByCodeArg, TLfgUseCaseDependencies } from "../types.ts";
 
 export async function kick(
-    deps: {
-        readonly findRoomByCode: TFindLfgRoomByCode;
-        readonly kickFromRoom: TKickFromLfgRoom;
-    },
+    dependencies: TLfgUseCaseDependencies,
     { guildId, code, target }: TKickFromLfgRoomByCodeArg,
 ) {
-    const room = await deps.findRoomByCode({ guildId, code });
+    const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
-    return deps.kickFromRoom({ guildId, room, target });
+    return dependencies.services.kickFromRoom({ guildId, room, target });
 }

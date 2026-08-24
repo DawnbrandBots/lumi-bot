@@ -2,7 +2,7 @@ import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
 import type { TAdminPersistence } from "../../../../src/application/admin/persistence.types.ts";
 import ADMIN_USE_CASES from "../../../../src/application/admin/useCases.ts";
-import type { TAdminUseCases } from "../../../../src/application/admin/useCases.types.ts";
+import type { TAdminUseCaseDependencies, TAdminUseCases } from "../../../../src/application/admin/useCases.types.ts";
 import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
 import {
     getPersistenceWithContext,
@@ -37,11 +37,12 @@ export function useAdminUseCases() {
         const em = orm.em.fork();
         const withAdminUnitOfWork = getWithUnitOfWork({
             em,
-            getDependencies: (em) =>
-                getPersistenceWithContext<TAdminPersistence>({
+            getDependencies: (em): TAdminUseCaseDependencies => ({
+                persistence: getPersistenceWithContext<TAdminPersistence>({
                     em,
                     repositories: ADMIN_REPOSITORIES,
                 }),
+            }),
         });
         useCases = getUseCasesWithUnitOfWork<TAdminUseCases>({
             useCases: ADMIN_USE_CASES,

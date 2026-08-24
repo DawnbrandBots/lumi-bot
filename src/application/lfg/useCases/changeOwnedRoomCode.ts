@@ -1,15 +1,12 @@
-import type { TChangeLfgRoomCodeInRoom, TGetOwnedLfgRoom, TChangeOwnedLfgRoomCodeArg } from "../types.ts";
+import type { TChangeOwnedLfgRoomCodeArg, TLfgUseCaseDependencies } from "../types.ts";
 
 export async function changeOwnedRoomCode(
-    deps: {
-        readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
-        readonly getOwnedRoom: TGetOwnedLfgRoom;
-    },
+    dependencies: TLfgUseCaseDependencies,
     { guildId, owner, newCode }: TChangeOwnedLfgRoomCodeArg,
 ) {
-    const result = await deps.getOwnedRoom({ guildId, owner });
+    const result = await dependencies.services.getOwnedRoom({ guildId, owner });
     if (!result.success) {
         return result.value;
     }
-    return deps.changeRoomCodeInRoom({ guildId, room: result.value.room, newCode });
+    return dependencies.services.changeRoomCodeInRoom({ guildId, room: result.value.room, newCode });
 }

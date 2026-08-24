@@ -2,17 +2,18 @@ import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemo
 import type { IRoom } from "../../domain/lfg/models/room.types.ts";
 import type { IUser } from "../../domain/lfg/models/user.types.ts";
 import type { MaybePromise } from "../../utils/types.ts";
-import type {
-    TLfgPersistence
-} from "./persistence.types.ts";
+import type { TLfgPersistence } from "./persistence.types.ts";
 export type {
     TChangeLfgRoomCode,
     TCreateLfgRoom,
     TFindLfgRoomByCode,
-    TFindLfgRoomByUser, TLfgPersistence, TListLfgRooms, TMoveUserToLfgRoom,
+    TFindLfgRoomByUser,
+    TLfgPersistence,
+    TListLfgRooms,
+    TMoveUserToLfgRoom,
     TRemoveLfgRoom,
     TRemoveLfgRoomPlayer,
-    TSetLfgRoomOwner
+    TSetLfgRoomOwner,
 } from "./persistence.types.ts";
 export type {
     TChangeLfgRoomCodeArg,
@@ -39,7 +40,7 @@ export type {
     TTransferLfgRoomArg,
     TTransferLfgRoomUseCase,
     TTransferOwnedLfgRoomArg,
-    TTransferOwnedLfgRoomUseCase
+    TTransferOwnedLfgRoomUseCase,
 } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
@@ -231,7 +232,7 @@ export type TTransferLfgRoom = (arg: {
     >
 >;
 
-export type TLfgApplicationDependencies = TLfgPersistence & {
+export type TLfgServices = {
     readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
     readonly getOwnedRoom: TGetOwnedLfgRoom;
     readonly kickFromRoom: TKickFromLfgRoom;
@@ -239,4 +240,11 @@ export type TLfgApplicationDependencies = TLfgPersistence & {
     readonly transferRoom: TTransferLfgRoom;
 };
 
-export type TLfgUseCase<Arg, Return> = (dependencies: TLfgApplicationDependencies, arg: Arg) => MaybePromise<Return>;
+export type TLfgUseCaseDependencies = {
+    readonly persistence: TLfgPersistence;
+    readonly services: TLfgServices;
+};
+
+export type TLfgApplicationDependencies = TLfgUseCaseDependencies;
+
+export type TLfgUseCase<Arg, Return> = (dependencies: TLfgUseCaseDependencies, arg: Arg) => MaybePromise<Return>;

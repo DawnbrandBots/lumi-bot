@@ -1,16 +1,13 @@
 import { ELfgResultKind } from "../types.ts";
-import type { TChangeLfgRoomCodeInRoom, TFindLfgRoomByCode, TChangeLfgRoomCodeArg } from "../types.ts";
+import type { TChangeLfgRoomCodeArg, TLfgUseCaseDependencies } from "../types.ts";
 
 export async function changeRoomCode(
-    deps: {
-        readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
-        readonly findRoomByCode: TFindLfgRoomByCode;
-    },
+    dependencies: TLfgUseCaseDependencies,
     { guildId, code, newCode }: TChangeLfgRoomCodeArg,
 ) {
-    const room = await deps.findRoomByCode({ guildId, code });
+    const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
-    return deps.changeRoomCodeInRoom({ guildId, room, newCode });
+    return dependencies.services.changeRoomCodeInRoom({ guildId, room, newCode });
 }

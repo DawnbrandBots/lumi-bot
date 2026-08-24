@@ -1,10 +1,10 @@
 import { EAdminResultKind, type TAdminResultTypes } from "../types.ts";
-import type { TAdminPersistence } from "../types.ts";
+import type { TAdminUseCaseDependencies } from "../useCases.types.ts";
 
 export async function clearLfgChannel(
-    persistence: TAdminPersistence,
+    dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string },
 ): Promise<TAdminResultTypes["lfgChannel"]> {
-    await persistence.clearLfgChannel(arg);
+    await dependencies.persistence.clearLfgChannel(arg);
     return { kind: EAdminResultKind.LFG_CHANNEL_CLEARED };
 }
