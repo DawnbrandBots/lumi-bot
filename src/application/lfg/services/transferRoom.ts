@@ -1,36 +1,27 @@
-import type { IUser } from "../../../domain/lfg/models/user.types.ts";
 import { ELfgResultKind } from "../types.ts";
-import type { TFindLfgRoomByUser, TLfgRoom, TSetLfgRoomOwner, TTransferLfgRoom } from "../types.ts";
+import type { TLfgServiceBase } from "../types.ts";
 
-export async function transferRoom(
-    {
-        findRoomByUser,
-        setRoomOwner,
-    }: {
-        readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly setRoomOwner: TSetLfgRoomOwner;
-    },
-    { guildId, room, target }: { readonly guildId: string; readonly room: TLfgRoom; readonly target: IUser },
-): Promise<Awaited<ReturnType<TTransferLfgRoom>>> {
-    const previousOwnerId = room.ownerId;
-    if (previousOwnerId === target.id) {
+export const transferRoom: TLfgServiceBase<"transferRoom", "persistence.findRoomByUser" | "persistence.setRoomOwner"> =
+    async function (dependencies, { guildId, room, target }) {
+        const previousOwnerId = room.ownerId;
+        if (previousOwnerId === target.id) {
+            return {
+                kind: ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF,
+                value: { userId: previousOwnerId, code: room.code },
+            } as const;
+        }
+
+        const targetRoom = await dependencies.persistence.findRoomByUser({ guildId, userId: target.id });
+        if (targetRoom?.id !== room.id) {
+            return {
+                kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
+                value: { ownerId: previousOwnerId, targetId: target.id, code: room.code },
+            } as const;
+        }
+
+        const updatedRoom = await dependencies.persistence.setRoomOwner({ roomId: room.id, ownerId: target.id });
         return {
-            kind: ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF,
-            value: { userId: previousOwnerId, code: room.code },
+            kind: ELfgResultKind.OWNERSHIP_TRANSFERRED,
+            value: { userId: previousOwnerId, targetId: target.id, room: updatedRoom },
         } as const;
-    }
-
-    const targetRoom = await findRoomByUser({ guildId, userId: target.id });
-    if (targetRoom?.id !== room.id) {
-        return {
-            kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
-            value: { ownerId: previousOwnerId, targetId: target.id, code: room.code },
-        } as const;
-    }
-
-    const updatedRoom = await setRoomOwner({ roomId: room.id, ownerId: target.id });
-    return {
-        kind: ELfgResultKind.OWNERSHIP_TRANSFERRED,
-        value: { userId: previousOwnerId, targetId: target.id, room: updatedRoom },
-    } as const;
-}
+    };

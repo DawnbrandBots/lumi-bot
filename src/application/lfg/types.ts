@@ -216,16 +216,21 @@ export type TLfgServices = {
     readonly transferRoom: TTransferLfgRoom;
 };
 
-export type TLfgUseCaseDependencies = {
+export type TLfgDependencies = {
     readonly persistence: TLfgPersistence;
     readonly services: TLfgServices;
 };
 
-export type TLfgApplicationDependencies = TLfgUseCaseDependencies;
+export type TLfgUseCaseDependencies = TLfgDependencies;
 
 export type TLfgUseCase<Arg, Return> = (dependencies: TLfgUseCaseDependencies, arg: Arg) => MaybePromise<Return>;
 
-export type TLfgUseCaseBase<Name extends keyof TLfgUseCases, DependencyPaths extends Paths<TLfgUseCaseDependencies>> = (
-    dependencies: PickDeep<TLfgUseCaseDependencies, DependencyPaths>,
+export type TLfgUseCaseBase<Name extends keyof TLfgUseCases, DependencyPaths extends Paths<TLfgDependencies>> = (
+    dependencies: PickDeep<TLfgDependencies, DependencyPaths>,
     arg: TLfgUseCaseArgs[Name],
 ) => ReturnType<TLfgUseCases[Name]>;
+
+export type TLfgServiceBase<Name extends keyof TLfgServices, DependencyPaths extends Paths<TLfgDependencies>> = (
+    dependencies: PickDeep<TLfgDependencies, DependencyPaths>,
+    arg: Parameters<TLfgServices[Name]>[0],
+) => ReturnType<TLfgServices[Name]>;

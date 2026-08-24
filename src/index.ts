@@ -2,10 +2,10 @@ import debug from "debug";
 import type { TAdminPersistence } from "./application/admin/persistence.types.ts";
 import ADMIN_USE_CASES from "./application/admin/useCases.ts";
 import type { TAdminUseCaseDependencies, TAdminUseCases } from "./application/admin/useCases.types.ts";
-import { getLfgApplicationDependencies } from "./application/lfg/dependencies.ts";
 import type { TLfgPersistence } from "./application/lfg/persistence.types.ts";
 import LFG_USE_CASES from "./application/lfg/useCases.ts";
 import type { TLfgUseCases } from "./application/lfg/useCases.types.ts";
+import { composeLfgServices } from "./composition/application/lfg/services.ts";
 import { composeSearchUseCases } from "./composition/application/search/useCases.ts";
 import { getWithUnitOfWork } from "./composition/application/unitOfWork.ts";
 import { getPersistenceWithContext, getUseCasesWithUnitOfWork } from "./composition/application/useCases.ts";
@@ -38,13 +38,14 @@ const adminUseCases = getUseCasesWithUnitOfWork<TAdminUseCases>({
 
 const withLfgUnitOfWork = getWithUnitOfWork({
     em,
-    getDependencies: (em) =>
-        getLfgApplicationDependencies(
-            getPersistenceWithContext<TLfgPersistence>({
-                em,
-                repositories: LFG_REPOSITORIES,
-            }),
-        ),
+    getDependencies: (em) => {
+        const persistence = getPersistenceWithContext<TLfgPersistence>({
+            em,
+            repositories: LFG_REPOSITORIES,
+        });
+        const services = composeLfgServices(persistence);
+        return { persistence, services };
+    },
 });
 const lfgUseCases = getUseCasesWithUnitOfWork<TLfgUseCases>({
     useCases: LFG_USE_CASES,

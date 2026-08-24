@@ -1,16 +1,16 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
-import { getLfgApplicationDependencies } from "../../../../src/application/lfg/dependencies.ts";
 import type { TLfgPersistence } from "../../../../src/application/lfg/persistence.types.ts";
 import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
 import LFG_USE_CASES from "../../../../src/application/lfg/useCases.ts";
 import type { TLfgUseCases } from "../../../../src/application/lfg/useCases.types.ts";
+import { composeLfgServices } from "../../../../src/composition/application/lfg/services.ts";
+import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
 import {
     getPersistenceWithContext,
     getUseCasesWithUnitOfWork,
 } from "../../../../src/composition/application/useCases.ts";
-import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";
 import { LfgRoom } from "../../../../src/infrastructure/database/mikroOrm/models/lfg/room.ts";
 import LFG_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
@@ -62,13 +62,14 @@ class LfgUseCases {
     public constructor({ em }: { readonly em: EntityManager }) {
         const withLfgUnitOfWork = getWithUnitOfWork({
             em,
-            getDependencies: (em) =>
-                getLfgApplicationDependencies(
-                    getPersistenceWithContext<TLfgPersistence>({
-                        em,
-                        repositories: LFG_REPOSITORIES,
-                    }),
-                ),
+            getDependencies: (em) => {
+                const persistence = getPersistenceWithContext<TLfgPersistence>({
+                    em,
+                    repositories: LFG_REPOSITORIES,
+                });
+                const services = composeLfgServices(persistence);
+                return { persistence, services };
+            },
         });
         const useCases = getUseCasesWithUnitOfWork<TLfgUseCases>({
             useCases: LFG_USE_CASES,

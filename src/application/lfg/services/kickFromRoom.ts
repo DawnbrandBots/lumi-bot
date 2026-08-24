@@ -1,7 +1,6 @@
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
-import type { IUser } from "../../../domain/lfg/models/user.types.ts";
 import { ELfgResultKind } from "../types.ts";
-import type { TFindLfgRoomByUser, TKickFromLfgRoom, TLfgRoom, TRemovePlayerFromLfgRoom } from "../types.ts";
+import type { TLfgRoom, TRemovePlayerFromLfgRoom, TLfgServiceBase } from "../types.ts";
 
 function applyPlayerRemoval(
     room: TLfgRoom,
@@ -18,17 +17,11 @@ function applyPlayerRemoval(
     };
 }
 
-export async function kickFromRoom(
-    {
-        findRoomByUser,
-        removePlayerFromRoom,
-    }: {
-        readonly findRoomByUser: TFindLfgRoomByUser;
-        readonly removePlayerFromRoom: TRemovePlayerFromLfgRoom;
-    },
-    { guildId, room, target }: { readonly guildId: string; readonly room: TLfgRoom; readonly target: IUser },
-): Promise<Awaited<ReturnType<TKickFromLfgRoom>>> {
-    const targetRoom = await findRoomByUser({ guildId, userId: target.id });
+export const kickFromRoom: TLfgServiceBase<
+    "kickFromRoom",
+    "persistence.findRoomByUser" | "services.removePlayerFromRoom"
+> = async function (dependencies, { guildId, room, target }) {
+    const targetRoom = await dependencies.persistence.findRoomByUser({ guildId, userId: target.id });
     if (targetRoom?.id !== room.id) {
         return {
             kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
@@ -36,7 +29,7 @@ export async function kickFromRoom(
         } as const;
     }
 
-    const removalResult = await removePlayerFromRoom({ room, userId: target.id });
+    const removalResult = await dependencies.services.removePlayerFromRoom({ room, userId: target.id });
     return {
         kind: ELfgResultKind.PLAYER_KICKED,
         value: {
@@ -46,4 +39,4 @@ export async function kickFromRoom(
             removalResult,
         },
     } as const;
-}
+};

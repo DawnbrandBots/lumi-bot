@@ -1,12 +1,11 @@
-import type { TFindLfgRoomByUser, TGetOwnedLfgRoom } from "../types.ts";
-import type { IUser } from "../../../domain/lfg/models/user.types.ts";
 import { ELfgResultKind } from "../types.ts";
+import type { TLfgServiceBase } from "../types.ts";
 
-export async function getOwnedRoom(
-    { findRoomByUser }: { readonly findRoomByUser: TFindLfgRoomByUser },
-    { guildId, owner }: { readonly guildId: string; readonly owner: IUser },
-): Promise<Awaited<ReturnType<TGetOwnedLfgRoom>>> {
-    const room = await findRoomByUser({ guildId, userId: owner.id });
+export const getOwnedRoom: TLfgServiceBase<"getOwnedRoom", "persistence.findRoomByUser"> = async function (
+    dependencies,
+    { guildId, owner },
+) {
+    const room = await dependencies.persistence.findRoomByUser({ guildId, userId: owner.id });
     if (!room) {
         return { success: false, value: { kind: ELfgResultKind.NOT_IN_A_ROOM } };
     }
@@ -14,4 +13,4 @@ export async function getOwnedRoom(
         return { success: false, value: { kind: ELfgResultKind.NOT_ROOM_OWNER } };
     }
     return { success: true, value: { room } };
-}
+};
