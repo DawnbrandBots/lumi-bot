@@ -1,3 +1,4 @@
+import type { Paths, PickDeep } from "type-fest";
 import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemoval.types.ts";
 import type { IRoom } from "../../domain/lfg/models/room.types.ts";
 import type { IUser } from "../../domain/lfg/models/user.types.ts";
@@ -15,6 +16,7 @@ export type {
     TRemoveLfgRoomPlayer,
     TSetLfgRoomOwner,
 } from "./persistence.types.ts";
+import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 export type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
@@ -222,3 +224,8 @@ export type TLfgUseCaseDependencies = {
 export type TLfgApplicationDependencies = TLfgUseCaseDependencies;
 
 export type TLfgUseCase<Arg, Return> = (dependencies: TLfgUseCaseDependencies, arg: Arg) => MaybePromise<Return>;
+
+export type TLfgUseCaseBase<Name extends keyof TLfgUseCases, DependencyPaths extends Paths<TLfgUseCaseDependencies>> = (
+    dependencies: PickDeep<TLfgUseCaseDependencies, DependencyPaths>,
+    arg: TLfgUseCaseArgs[Name],
+) => ReturnType<TLfgUseCases[Name]>;

@@ -1,11 +1,11 @@
 import { ELfgResultKind } from "../types.ts";
 import { isInvalidRoomCode } from "../services/isInvalidRoomCode.ts";
-import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseBase } from "../types.ts";
 
-export async function createRoom(
-    dependencies: TLfgUseCaseDependencies,
-    { guildId, owner, code }: TLfgUseCaseArgs["createRoom"],
-) {
+export const createRoom: TLfgUseCaseBase<
+    "createRoom",
+    "persistence.findRoomByUser" | "persistence.findRoomByCode" | "persistence.createRoom"
+> = async function (dependencies, { guildId, owner, code }) {
     if (isInvalidRoomCode(code)) {
         return { kind: ELfgResultKind.INVALID_ROOM_CODE } as const;
     }
@@ -25,4 +25,4 @@ export async function createRoom(
         kind: ELfgResultKind.ROOM_CREATED,
         value: { userId: owner.id, room },
     } as const;
-}
+};

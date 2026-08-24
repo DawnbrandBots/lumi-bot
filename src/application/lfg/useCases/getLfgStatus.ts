@@ -1,12 +1,12 @@
 import { ELfgResultKind } from "../types.ts";
-import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseBase } from "../types.ts";
 
-export async function getLfgStatus(
-    dependencies: TLfgUseCaseDependencies,
-    { guildId }: TLfgUseCaseArgs["getLfgStatus"],
+export const getLfgStatus: TLfgUseCaseBase<"getLfgStatus", "persistence.listRooms"> = async function (
+    dependencies,
+    { guildId },
 ) {
     return {
         kind: ELfgResultKind.ROOMS_LISTED,
         value: { rooms: await dependencies.persistence.listRooms({ guildId }) },
     } as const;
-}
+};

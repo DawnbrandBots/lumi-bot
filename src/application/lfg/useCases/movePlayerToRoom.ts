@@ -1,11 +1,14 @@
 import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../../domain/game/constants.ts";
 import { ELfgResultKind } from "../types.ts";
-import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
+import type { TLfgUseCaseBase } from "../types.ts";
 
-export async function movePlayerToRoom(
-    dependencies: TLfgUseCaseDependencies,
-    { guildId, user, code }: TLfgUseCaseArgs["movePlayerToRoom"],
-) {
+export const movePlayerToRoom: TLfgUseCaseBase<
+    "movePlayerToRoom",
+    | "persistence.findRoomByCode"
+    | "persistence.findRoomByUser"
+    | "persistence.moveUserToRoom"
+    | "services.removePlayerFromRoom"
+> = async function (dependencies, { guildId, user, code }) {
     const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
@@ -33,4 +36,4 @@ export async function movePlayerToRoom(
         kind: ELfgResultKind.ROOM_JOINED,
         value: { userId: user.id, room: updatedRoom, leftRoomCode, removalResult },
     } as const;
-}
+};
