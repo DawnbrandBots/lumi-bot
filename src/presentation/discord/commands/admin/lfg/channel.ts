@@ -1,5 +1,5 @@
 import type { InteractionReplyOptions } from "discord.js";
-import { ChannelType, MessageFlags, type CacheType, type ChatInputCommandInteraction } from "discord.js";
+import { ChannelType, MessageFlags } from "discord.js";
 import mapAdminResultToMessage, {
     mapAdminInvalidOptionsToMessage,
     mapAdminLfgChannelHelpToMessage,
@@ -12,10 +12,9 @@ import {
     ADMIN_ACTION_SET,
     ADMIN_CHANNEL_OPTION_NAME,
 } from "../constants.ts";
-import { runWithAdminPermission } from "../runWithAdminPermission.ts";
-import type { TAdminCommandArgs, TAdminCommandBase } from "../types.ts";
+import type { TAdminCommandBase } from "../types.ts";
 
-const runLfgChannel: TAdminCommandBase<
+export const lfgChannel: TAdminCommandBase<
     "useCases.clearLfgChannel" | "useCases.getGuildConfig" | "useCases.setLfgChannel"
 > = async function (arg, interaction): Promise<InteractionReplyOptions> {
     const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
@@ -60,8 +59,3 @@ const runLfgChannel: TAdminCommandBase<
 
     return mapAdminInvalidOptionsToMessage();
 };
-
-export function getAdminLfgChannelHandler(arg: TAdminCommandArgs) {
-    return (interaction: ChatInputCommandInteraction<CacheType>) =>
-        runWithAdminPermission(interaction, (interaction) => runLfgChannel(arg, interaction));
-}

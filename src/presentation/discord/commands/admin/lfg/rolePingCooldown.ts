@@ -1,22 +1,20 @@
 import type { InteractionReplyOptions } from "discord.js";
-import { MessageFlags, type CacheType, type ChatInputCommandInteraction } from "discord.js";
-import type { TGuildCommandInteraction } from "../../types.ts";
+import { MessageFlags } from "discord.js";
+import mapAdminResultToMessage, {
+    mapAdminInvalidOptionsToMessage,
+    mapAdminLfgRolePingCooldownHelpToMessage,
+    mapAdminMissingValueToMessage,
+} from "../../../mappers/admin.ts";
+import { createErrorMessage } from "../../../message.ts";
 import {
     ADMIN_ACTION_CLEAR,
     ADMIN_ACTION_OPTION_NAME,
     ADMIN_ACTION_SET,
     ADMIN_MINUTES_OPTION_NAME,
 } from "../constants.ts";
-import { createErrorMessage } from "../../../message.ts";
-import mapAdminResultToMessage, {
-    mapAdminInvalidOptionsToMessage,
-    mapAdminLfgRolePingCooldownHelpToMessage,
-    mapAdminMissingValueToMessage,
-} from "../../../mappers/admin.ts";
-import { runWithAdminPermission } from "../runWithAdminPermission.ts";
-import type { TAdminCommandArgs, TAdminCommandBase } from "../types.ts";
+import type { TAdminCommandBase } from "../types.ts";
 
-const runLfgRolePingCooldown: TAdminCommandBase<
+export const lfgRolePingCooldown: TAdminCommandBase<
     "useCases.clearLfgRolePingCooldown" | "useCases.getGuildConfig" | "useCases.setLfgRolePingCooldown"
 > = async function (arg, interaction): Promise<InteractionReplyOptions> {
     const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
@@ -54,8 +52,3 @@ const runLfgRolePingCooldown: TAdminCommandBase<
 
     return mapAdminInvalidOptionsToMessage();
 };
-
-export function getAdminLfgRolePingCooldownHandler(arg: TAdminCommandArgs) {
-    return (interaction: ChatInputCommandInteraction<CacheType>) =>
-        runWithAdminPermission(interaction, (interaction) => runLfgRolePingCooldown(arg, interaction));
-}

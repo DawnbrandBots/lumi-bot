@@ -1,5 +1,5 @@
 import type { InteractionReplyOptions } from "discord.js";
-import { MessageFlags, type CacheType, type ChatInputCommandInteraction } from "discord.js";
+import { MessageFlags } from "discord.js";
 import mapAdminResultToMessage, {
     mapAdminInvalidOptionsToMessage,
     mapAdminLfgRoleHelpToMessage,
@@ -12,10 +12,9 @@ import {
     ADMIN_ACTION_REMOVE,
     ADMIN_ROLE_OPTION_NAME,
 } from "../constants.ts";
-import { runWithAdminPermission } from "../runWithAdminPermission.ts";
-import type { TAdminCommandArgs, TAdminCommandBase } from "../types.ts";
+import type { TAdminCommandBase } from "../types.ts";
 
-const runLfgRole: TAdminCommandBase<"useCases.addLfgRole" | "useCases.getGuildConfig" | "useCases.removeLfgRole"> =
+export const lfgRole: TAdminCommandBase<"useCases.addLfgRole" | "useCases.getGuildConfig" | "useCases.removeLfgRole"> =
     async function (arg, interaction): Promise<InteractionReplyOptions> {
         const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
         const role = interaction.options.getRole(ADMIN_ROLE_OPTION_NAME, false);
@@ -54,8 +53,3 @@ const runLfgRole: TAdminCommandBase<"useCases.addLfgRole" | "useCases.getGuildCo
 
         return mapAdminInvalidOptionsToMessage();
     };
-
-export function getAdminLfgRoleHandler(arg: TAdminCommandArgs) {
-    return (interaction: ChatInputCommandInteraction<CacheType>) =>
-        runWithAdminPermission(interaction, (interaction) => runLfgRole(arg, interaction));
-}
