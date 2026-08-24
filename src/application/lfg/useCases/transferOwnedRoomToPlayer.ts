@@ -1,8 +1,8 @@
 import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
-export async function transferOwnedRoom(
+export async function transferOwnedRoomToPlayer(
     dependencies: TLfgUseCaseDependencies,
-    { guildId, owner, target }: TLfgUseCaseArgs["transferOwnedRoom"],
+    { guildId, owner, target }: TLfgUseCaseArgs["transferOwnedRoomToPlayer"],
 ) {
     const result = await dependencies.services.getOwnedRoom({ guildId, owner });
     if (!result.success) {

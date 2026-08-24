@@ -4,9 +4,9 @@ import type { TLfgUseCases } from "../../../../application/lfg/types.ts";
 export type TLfgManageCommandArgs = {
     readonly getGuildConfig: TAdminUseCases["getGuildConfig"];
     readonly changeRoomCode: TLfgUseCases["changeRoomCode"];
-    readonly create: TLfgUseCases["create"];
-    readonly disband: TLfgUseCases["disband"];
-    readonly kick: TLfgUseCases["kick"];
-    readonly move: TLfgUseCases["move"];
-    readonly transfer: TLfgUseCases["transfer"];
+    readonly createRoom: TLfgUseCases["createRoom"];
+    readonly disbandRoom: TLfgUseCases["disbandRoom"];
+    readonly kickPlayerFromRoom: TLfgUseCases["kickPlayerFromRoom"];
+    readonly movePlayerToRoom: TLfgUseCases["movePlayerToRoom"];
+    readonly transferRoomToPlayer: TLfgUseCases["transferRoomToPlayer"];
 };

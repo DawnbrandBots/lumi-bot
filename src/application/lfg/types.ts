@@ -96,8 +96,8 @@ export type TLfgResult = {
 }[ELfgResultKind];
 
 export type TLfgResultTypes = {
-    status: TLfgResultOfKind<ELfgResultKind.ROOMS_LISTED>;
-    create: TLfgResultOfKind<
+    getLfgStatus: TLfgResultOfKind<ELfgResultKind.ROOMS_LISTED>;
+    createRoom: TLfgResultOfKind<
         | ELfgResultKind.ROOM_CREATED
         | ELfgResultKind.INVALID_ROOM_CODE
         | ELfgResultKind.ALREADY_IN_A_ROOM
@@ -116,37 +116,37 @@ export type TLfgResultTypes = {
         | ELfgResultKind.ROOM_ALREADY_EXISTS
         | ELfgResultKind.ROOM_NOT_FOUND
     >;
-    move: TLfgResultOfKind<
+    movePlayerToRoom: TLfgResultOfKind<
         | ELfgResultKind.ROOM_JOINED
         | ELfgResultKind.ROOM_NOT_FOUND
         | ELfgResultKind.ALREADY_IN_TARGET_ROOM
         | ELfgResultKind.ROOM_IS_FULL
     >;
-    transfer: TLfgResultOfKind<
+    transferRoomToPlayer: TLfgResultOfKind<
         | ELfgResultKind.OWNERSHIP_TRANSFERRED
         | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
         | ELfgResultKind.PLAYER_NOT_IN_ROOM
         | ELfgResultKind.ROOM_NOT_FOUND
     >;
-    transferOwnedRoom: TLfgResultOfKind<
+    transferOwnedRoomToPlayer: TLfgResultOfKind<
         | ELfgResultKind.OWNERSHIP_TRANSFERRED
         | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
         | ELfgResultKind.PLAYER_NOT_IN_ROOM
         | ELfgResultKind.NOT_ROOM_OWNER
         | ELfgResultKind.NOT_IN_A_ROOM
     >;
-    kick: TLfgResultOfKind<
+    kickPlayerFromRoom: TLfgResultOfKind<
         ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM | ELfgResultKind.ROOM_NOT_FOUND
     >;
-    kickFromOwnedRoom: TLfgResultOfKind<
+    kickPlayerFromOwnedRoom: TLfgResultOfKind<
         | ELfgResultKind.PLAYER_KICKED
         | ELfgResultKind.CANNOT_KICK_YOURSELF
         | ELfgResultKind.PLAYER_NOT_IN_ROOM
         | ELfgResultKind.NOT_ROOM_OWNER
         | ELfgResultKind.NOT_IN_A_ROOM
     >;
-    leave: TLfgResultOfKind<ELfgResultKind.ROOM_LEFT | ELfgResultKind.NOT_IN_A_ROOM>;
-    disband: TLfgResultOfKind<ELfgResultKind.ROOM_DISBANDED | ELfgResultKind.ROOM_NOT_FOUND>;
+    leaveRoom: TLfgResultOfKind<ELfgResultKind.ROOM_LEFT | ELfgResultKind.NOT_IN_A_ROOM>;
+    disbandRoom: TLfgResultOfKind<ELfgResultKind.ROOM_DISBANDED | ELfgResultKind.ROOM_NOT_FOUND>;
     disbandOwnedRoom: TLfgResultOfKind<
         ELfgResultKind.ROOM_DISBANDED | ELfgResultKind.NOT_ROOM_OWNER | ELfgResultKind.NOT_IN_A_ROOM
     >;

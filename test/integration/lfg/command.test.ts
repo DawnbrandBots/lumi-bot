@@ -53,16 +53,16 @@ function getLfgUseCaseMocks(result: TLfgResult) {
     return {
         changeRoomCode: vi.fn().mockResolvedValue(result),
         changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
-        create: vi.fn().mockResolvedValue(result),
-        disband: vi.fn().mockResolvedValue(result),
+        createRoom: vi.fn().mockResolvedValue(result),
+        disbandRoom: vi.fn().mockResolvedValue(result),
         disbandOwnedRoom: vi.fn().mockResolvedValue(result),
-        status: vi.fn().mockResolvedValue(result),
-        kick: vi.fn().mockResolvedValue(result),
-        kickFromOwnedRoom: vi.fn().mockResolvedValue(result),
-        leave: vi.fn().mockResolvedValue(result),
-        move: vi.fn().mockResolvedValue(result),
-        transfer: vi.fn().mockResolvedValue(result),
-        transferOwnedRoom: vi.fn().mockResolvedValue(result),
+        getLfgStatus: vi.fn().mockResolvedValue(result),
+        kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
+        kickPlayerFromOwnedRoom: vi.fn().mockResolvedValue(result),
+        leaveRoom: vi.fn().mockResolvedValue(result),
+        movePlayerToRoom: vi.fn().mockResolvedValue(result),
+        transferRoomToPlayer: vi.fn().mockResolvedValue(result),
+        transferOwnedRoomToPlayer: vi.fn().mockResolvedValue(result),
     };
 }
 

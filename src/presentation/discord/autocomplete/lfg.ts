@@ -8,11 +8,11 @@ import type { TLfgUseCases } from "../../../application/lfg/types.ts";
 import getRoomCodeAutocomplete from "./roomCode.ts";
 import type { lfgCommandCommandRegistrationData } from "../commandRegistrationData/lfg.ts";
 
-export function getLfgAutocomplete({ status }: { readonly status: TLfgUseCases["status"] }) {
+export function getLfgAutocomplete({ getLfgStatus }: { readonly getLfgStatus: TLfgUseCases["getLfgStatus"] }) {
     return {
         [LFG_JOIN_SUBCOMMAND_NAME]: {
             [LFG_CODE_OPTION_NAME]: getRoomCodeAutocomplete({
-                status,
+                getLfgStatus,
                 ignoredSubCommands: [LFG_CREATE_SUBCOMMAND_NAME],
             }),
         },

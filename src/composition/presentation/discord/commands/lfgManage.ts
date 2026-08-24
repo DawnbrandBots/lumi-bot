@@ -67,15 +67,15 @@ export function composeLfgManageCommand(arg: {
     const lfgManageCommandArgs = {
         getGuildConfig: arg.adminUseCases.getGuildConfig,
         changeRoomCode: arg.lfgUseCases.changeRoomCode,
-        create: arg.lfgUseCases.create,
-        disband: arg.lfgUseCases.disband,
-        kick: arg.lfgUseCases.kick,
-        move: arg.lfgUseCases.move,
-        transfer: arg.lfgUseCases.transfer,
+        createRoom: arg.lfgUseCases.createRoom,
+        disbandRoom: arg.lfgUseCases.disbandRoom,
+        kickPlayerFromRoom: arg.lfgUseCases.kickPlayerFromRoom,
+        movePlayerToRoom: arg.lfgUseCases.movePlayerToRoom,
+        transferRoomToPlayer: arg.lfgUseCases.transferRoomToPlayer,
     } satisfies TLfgManageCommandArgs;
 
     return {
         run: composeLfgManageRunHandlers(lfgManageCommandArgs),
-        autocomplete: getLfgManageAutocomplete({ status: arg.lfgUseCases.status }),
+        autocomplete: getLfgManageAutocomplete({ getLfgStatus: arg.lfgUseCases.getLfgStatus }),
     } satisfies TCommandHandlers<typeof lfgManageCommandCommandRegistrationData>;
 }

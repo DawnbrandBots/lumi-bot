@@ -8,8 +8,8 @@ describe(changeOwnedRoomCode.name, { concurrent: false }, () => {
     const lfg = useLfgUseCases();
 
     test("changes an owned room's code", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "old");
-        await lfg.useCases.move(GUILD_ID, PLAYER_1, "old");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "old");
+        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "old");
 
         const response = await lfg.useCases.changeOwnedRoomCode(GUILD_ID, OWNER, NEW_ROOM_CODE);
 
@@ -26,7 +26,7 @@ describe(changeOwnedRoomCode.name, { concurrent: false }, () => {
     });
 
     test("rejects invalid room code length", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "old");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "old");
 
         const response = await lfg.useCases.changeOwnedRoomCode(
             GUILD_ID,
@@ -39,8 +39,8 @@ describe(changeOwnedRoomCode.name, { concurrent: false }, () => {
     });
 
     test("rejects duplicate room codes in the same guild", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "old");
-        await lfg.useCases.create(GUILD_ID, PLAYER_1, NEW_ROOM_CODE);
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "old");
+        await lfg.useCases.createRoom(GUILD_ID, PLAYER_1, NEW_ROOM_CODE);
 
         const response = await lfg.useCases.changeOwnedRoomCode(GUILD_ID, OWNER, NEW_ROOM_CODE);
 
@@ -55,8 +55,8 @@ describe(changeOwnedRoomCode.name, { concurrent: false }, () => {
     });
 
     test("rejects non-owners", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "old");
-        await lfg.useCases.move(GUILD_ID, PLAYER_1, "old");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "old");
+        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "old");
 
         const response = await lfg.useCases.changeOwnedRoomCode(GUILD_ID, PLAYER_1, NEW_ROOM_CODE);
 

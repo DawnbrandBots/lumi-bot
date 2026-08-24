@@ -1,13 +1,14 @@
 import { ELfgResultKind } from "../types.ts";
 import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
-export async function transfer(
+export async function disbandRoom(
     dependencies: TLfgUseCaseDependencies,
-    { guildId, code, target }: TLfgUseCaseArgs["transfer"],
+    { guildId, code }: TLfgUseCaseArgs["disbandRoom"],
 ) {
     const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
-    return dependencies.services.transferRoom({ guildId, room, target });
+    await dependencies.persistence.removeRoom({ roomId: room.id });
+    return { kind: ELfgResultKind.ROOM_DISBANDED, value: { userId: room.ownerId, code: room.code } } as const;
 }

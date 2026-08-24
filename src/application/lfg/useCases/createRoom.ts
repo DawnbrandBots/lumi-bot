@@ -2,9 +2,9 @@ import { ELfgResultKind } from "../types.ts";
 import { isInvalidRoomCode } from "../services/isInvalidRoomCode.ts";
 import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
-export async function create(
+export async function createRoom(
     dependencies: TLfgUseCaseDependencies,
-    { guildId, owner, code }: TLfgUseCaseArgs["create"],
+    { guildId, owner, code }: TLfgUseCaseArgs["createRoom"],
 ) {
     if (isInvalidRoomCode(code)) {
         return { kind: ELfgResultKind.INVALID_ROOM_CODE } as const;

@@ -12,9 +12,9 @@ import {
 } from "../commands/lfgManage/constants.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../commandRegistrationData/lfgManage.ts";
 
-export function getLfgManageAutocomplete({ status }: { readonly status: TLfgUseCases["status"] }) {
+export function getLfgManageAutocomplete({ getLfgStatus }: { readonly getLfgStatus: TLfgUseCases["getLfgStatus"] }) {
     const autocompleteCode = getRoomCodeAutocomplete({
-        status,
+        getLfgStatus,
         ignoredSubCommands: [LFG_MANAGE_CREATE_SUBCOMMAND_NAME],
     });
 

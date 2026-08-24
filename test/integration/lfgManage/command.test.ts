@@ -71,16 +71,16 @@ function getCommand({ result, channel = null }: { readonly result: TLfgResult; r
     const lfgUseCases = {
         changeRoomCode: vi.fn().mockResolvedValue(result),
         changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
-        create: vi.fn().mockResolvedValue(result),
+        createRoom: vi.fn().mockResolvedValue(result),
         disbandOwnedRoom: vi.fn().mockResolvedValue(result),
-        move: vi.fn().mockResolvedValue(result),
-        status: vi.fn().mockResolvedValue(result),
-        kick: vi.fn().mockResolvedValue(result),
-        kickFromOwnedRoom: vi.fn().mockResolvedValue(result),
-        leave: vi.fn().mockResolvedValue(result),
-        transfer: vi.fn().mockResolvedValue(result),
-        transferOwnedRoom: vi.fn().mockResolvedValue(result),
-        disband: vi.fn().mockResolvedValue(result),
+        movePlayerToRoom: vi.fn().mockResolvedValue(result),
+        getLfgStatus: vi.fn().mockResolvedValue(result),
+        kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
+        kickPlayerFromOwnedRoom: vi.fn().mockResolvedValue(result),
+        leaveRoom: vi.fn().mockResolvedValue(result),
+        transferRoomToPlayer: vi.fn().mockResolvedValue(result),
+        transferOwnedRoomToPlayer: vi.fn().mockResolvedValue(result),
+        disbandRoom: vi.fn().mockResolvedValue(result),
     };
     const getGuildConfig = vi.fn().mockResolvedValue({
         kind: EAdminResultKind.LFG_GET_CONFIG,
@@ -136,13 +136,13 @@ describe("composeDiscordCommands lfg-manage", () => {
             }),
         );
         expect(getGuildConfig).not.toHaveBeenCalled();
-        expect(lfgUseCases.create).not.toHaveBeenCalled();
+        expect(lfgUseCases.createRoom).not.toHaveBeenCalled();
     });
 
     test.each([
         {
             subcommand: "create",
-            method: "create",
+            method: "createRoom",
             result: {
                 kind: ELfgResultKind.ROOM_CREATED,
                 value: {
@@ -154,7 +154,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: "move",
-            method: "move",
+            method: "movePlayerToRoom",
             result: {
                 kind: ELfgResultKind.ROOM_JOINED,
                 value: {
@@ -178,7 +178,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: "kick",
-            method: "kick",
+            method: "kickPlayerFromRoom",
             result: {
                 kind: ELfgResultKind.PLAYER_KICKED,
                 value: {
@@ -192,7 +192,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: "transfer",
-            method: "transfer",
+            method: "transferRoomToPlayer",
             result: {
                 kind: ELfgResultKind.OWNERSHIP_TRANSFERRED,
                 value: {
@@ -205,7 +205,7 @@ describe("composeDiscordCommands lfg-manage", () => {
         },
         {
             subcommand: "disband",
-            method: "disband",
+            method: "disbandRoom",
             result: {
                 kind: ELfgResultKind.ROOM_DISBANDED,
                 value: { userId: PLAYER_ID, code: ROOM_CODE },

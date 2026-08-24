@@ -13,12 +13,12 @@ export type TLfgUseCaseArgs = {
         readonly owner: IUser;
         readonly newCode: string;
     };
-    readonly create: {
+    readonly createRoom: {
         readonly guildId: string;
         readonly owner: IUser;
         readonly code: string;
     };
-    readonly disband: {
+    readonly disbandRoom: {
         readonly guildId: string;
         readonly code: string;
     };
@@ -26,34 +26,34 @@ export type TLfgUseCaseArgs = {
         readonly guildId: string;
         readonly owner: IUser;
     };
-    readonly status: {
+    readonly getLfgStatus: {
         readonly guildId: string;
     };
-    readonly kick: {
+    readonly kickPlayerFromRoom: {
         readonly guildId: string;
         readonly code: string;
         readonly target: IUser;
     };
-    readonly kickFromOwnedRoom: {
+    readonly kickPlayerFromOwnedRoom: {
         readonly guildId: string;
         readonly owner: IUser;
         readonly target: IUser;
     };
-    readonly leave: {
+    readonly leaveRoom: {
         readonly guildId: string;
         readonly user: IUser;
     };
-    readonly move: {
+    readonly movePlayerToRoom: {
         readonly guildId: string;
         readonly user: IUser;
         readonly code: string;
     };
-    readonly transfer: {
+    readonly transferRoomToPlayer: {
         readonly guildId: string;
         readonly code: string;
         readonly target: IUser;
     };
-    readonly transferOwnedRoom: {
+    readonly transferOwnedRoomToPlayer: {
         readonly guildId: string;
         readonly owner: IUser;
         readonly target: IUser;

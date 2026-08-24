@@ -6,11 +6,11 @@ export type TLfgCommandArgs = {
     readonly getLfgRoleConfig: TAdminUseCases["getLfgRoleConfig"];
     readonly setLfgRoleLastPingedAt: TAdminUseCases["setLfgRoleLastPingedAt"];
     readonly changeOwnedRoomCode: TLfgUseCases["changeOwnedRoomCode"];
-    readonly create: TLfgUseCases["create"];
+    readonly createRoom: TLfgUseCases["createRoom"];
     readonly disbandOwnedRoom: TLfgUseCases["disbandOwnedRoom"];
-    readonly status: TLfgUseCases["status"];
-    readonly kickFromOwnedRoom: TLfgUseCases["kickFromOwnedRoom"];
-    readonly leave: TLfgUseCases["leave"];
-    readonly move: TLfgUseCases["move"];
-    readonly transferOwnedRoom: TLfgUseCases["transferOwnedRoom"];
+    readonly getLfgStatus: TLfgUseCases["getLfgStatus"];
+    readonly kickPlayerFromOwnedRoom: TLfgUseCases["kickPlayerFromOwnedRoom"];
+    readonly leaveRoom: TLfgUseCases["leaveRoom"];
+    readonly movePlayerToRoom: TLfgUseCases["movePlayerToRoom"];
+    readonly transferOwnedRoomToPlayer: TLfgUseCases["transferOwnedRoomToPlayer"];
 };

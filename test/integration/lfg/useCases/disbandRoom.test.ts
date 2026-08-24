@@ -1,16 +1,16 @@
 import { describe, expect, test } from "vitest";
 import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
-import { disband } from "../../../../src/application/lfg/useCases/disband.ts";
+import { disbandRoom } from "../../../../src/application/lfg/useCases/disbandRoom.ts";
 import { GUILD_ID, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
 
-describe(disband.name, { concurrent: false }, () => {
+describe(disbandRoom.name, { concurrent: false }, () => {
     const lfg = useLfgUseCases();
 
     test("deletes the room identified by code", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "room");
-        await lfg.useCases.move(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
 
-        const response = await lfg.useCases.disband(GUILD_ID, "room");
+        const response = await lfg.useCases.disbandRoom(GUILD_ID, "room");
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_DISBANDED,
@@ -20,7 +20,7 @@ describe(disband.name, { concurrent: false }, () => {
     });
 
     test("rejects missing rooms", async () => {
-        const response = await lfg.useCases.disband(GUILD_ID, "missing");
+        const response = await lfg.useCases.disbandRoom(GUILD_ID, "missing");
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_NOT_FOUND,

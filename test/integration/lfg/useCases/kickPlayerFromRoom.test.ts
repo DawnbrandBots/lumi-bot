@@ -1,17 +1,17 @@
 import { describe, expect, test } from "vitest";
 import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
-import { kick } from "../../../../src/application/lfg/useCases/kick.ts";
+import { kickPlayerFromRoom } from "../../../../src/application/lfg/useCases/kickPlayerFromRoom.ts";
 import { ELfgPlayerRemovalKind } from "../../../../src/domain/lfg/models/playerRemoval.types.ts";
 import { GUILD_ID, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
 
-describe(kick.name, { concurrent: false }, () => {
+describe(kickPlayerFromRoom.name, { concurrent: false }, () => {
     const lfg = useLfgUseCases();
 
     test("removes a player from the room identified by code", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "room");
-        await lfg.useCases.move(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
 
-        const response = await lfg.useCases.kick(GUILD_ID, "room", PLAYER_1);
+        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "room", PLAYER_1);
 
         expect(response).toEqual({
             kind: ELfgResultKind.PLAYER_KICKED,
@@ -25,10 +25,10 @@ describe(kick.name, { concurrent: false }, () => {
     });
 
     test("removes the owner and transfers ownership", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "room");
-        await lfg.useCases.move(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
 
-        const response = await lfg.useCases.kick(GUILD_ID, "room", OWNER);
+        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "room", OWNER);
 
         expect(response).toEqual({
             kind: ELfgResultKind.PLAYER_KICKED,
@@ -48,9 +48,9 @@ describe(kick.name, { concurrent: false }, () => {
     });
 
     test("removes the last player and deletes the room", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
 
-        const response = await lfg.useCases.kick(GUILD_ID, "room", OWNER);
+        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "room", OWNER);
 
         expect(response).toEqual({
             kind: ELfgResultKind.PLAYER_KICKED,
@@ -65,7 +65,7 @@ describe(kick.name, { concurrent: false }, () => {
     });
 
     test("rejects missing rooms", async () => {
-        const response = await lfg.useCases.kick(GUILD_ID, "missing", PLAYER_1);
+        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "missing", PLAYER_1);
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_NOT_FOUND,
@@ -74,9 +74,9 @@ describe(kick.name, { concurrent: false }, () => {
     });
 
     test("rejects targets outside the room", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
 
-        const response = await lfg.useCases.kick(GUILD_ID, "room", PLAYER_1);
+        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "room", PLAYER_1);
 
         expect(response).toEqual({
             kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,

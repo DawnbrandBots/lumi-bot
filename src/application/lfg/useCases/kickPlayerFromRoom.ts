@@ -1,11 +1,13 @@
 import { ELfgResultKind } from "../types.ts";
 import type { TLfgUseCaseArgs, TLfgUseCaseDependencies } from "../types.ts";
 
-export async function disband(dependencies: TLfgUseCaseDependencies, { guildId, code }: TLfgUseCaseArgs["disband"]) {
+export async function kickPlayerFromRoom(
+    dependencies: TLfgUseCaseDependencies,
+    { guildId, code, target }: TLfgUseCaseArgs["kickPlayerFromRoom"],
+) {
     const room = await dependencies.persistence.findRoomByCode({ guildId, code });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
     }
-    await dependencies.persistence.removeRoom({ roomId: room.id });
-    return { kind: ELfgResultKind.ROOM_DISBANDED, value: { userId: room.ownerId, code: room.code } } as const;
+    return dependencies.services.kickFromRoom({ guildId, room, target });
 }

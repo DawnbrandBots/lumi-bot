@@ -99,17 +99,17 @@ export function composeLfgCommand(arg: { readonly adminUseCases: TAdminUseCases;
         getLfgRoleConfig: arg.adminUseCases.getLfgRoleConfig,
         setLfgRoleLastPingedAt: arg.adminUseCases.setLfgRoleLastPingedAt,
         changeOwnedRoomCode: arg.lfgUseCases.changeOwnedRoomCode,
-        create: arg.lfgUseCases.create,
+        createRoom: arg.lfgUseCases.createRoom,
         disbandOwnedRoom: arg.lfgUseCases.disbandOwnedRoom,
-        status: arg.lfgUseCases.status,
-        kickFromOwnedRoom: arg.lfgUseCases.kickFromOwnedRoom,
-        leave: arg.lfgUseCases.leave,
-        move: arg.lfgUseCases.move,
-        transferOwnedRoom: arg.lfgUseCases.transferOwnedRoom,
+        getLfgStatus: arg.lfgUseCases.getLfgStatus,
+        kickPlayerFromOwnedRoom: arg.lfgUseCases.kickPlayerFromOwnedRoom,
+        leaveRoom: arg.lfgUseCases.leaveRoom,
+        movePlayerToRoom: arg.lfgUseCases.movePlayerToRoom,
+        transferOwnedRoomToPlayer: arg.lfgUseCases.transferOwnedRoomToPlayer,
     } satisfies TLfgCommandArgs;
 
     return {
         run: composeLfgRunHandlers(lfgCommandArgs),
-        autocomplete: getLfgAutocomplete({ status: arg.lfgUseCases.status }),
+        autocomplete: getLfgAutocomplete({ getLfgStatus: arg.lfgUseCases.getLfgStatus }),
     } satisfies TCommandHandlers<typeof lfgCommandCommandRegistrationData>;
 }

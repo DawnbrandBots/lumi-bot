@@ -7,8 +7,8 @@ describe(disbandOwnedRoom.name, { concurrent: false }, () => {
     const lfg = useLfgUseCases();
 
     test("deletes the room when called by the owner", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "room");
-        await lfg.useCases.move(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
 
         const response = await lfg.useCases.disbandOwnedRoom(GUILD_ID, OWNER);
 
@@ -20,8 +20,8 @@ describe(disbandOwnedRoom.name, { concurrent: false }, () => {
     });
 
     test("rejects non-owners", async () => {
-        await lfg.useCases.create(GUILD_ID, OWNER, "room");
-        await lfg.useCases.move(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
 
         const response = await lfg.useCases.disbandOwnedRoom(GUILD_ID, PLAYER_1);
 
