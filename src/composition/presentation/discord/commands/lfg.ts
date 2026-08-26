@@ -1,4 +1,6 @@
+import type { TAdminUseCases } from "../../../../application/admin/useCases.types.ts";
 import type { TLfgResult } from "../../../../application/lfg/types.ts";
+import type { TLfgUseCases } from "../../../../application/lfg/useCases.types.ts";
 import { getLfgAutocomplete } from "../../../../presentation/discord/autocomplete/lfg.ts";
 import type { lfgCommandCommandRegistrationData } from "../../../../presentation/discord/commandRegistrationData/lfg.ts";
 import { changeCode as changeOwnedRoomCode } from "../../../../presentation/discord/commands/lfg/changeCode.ts";
@@ -19,12 +21,12 @@ import { disband as disbandOwnedRoom } from "../../../../presentation/discord/co
 import { help as lfgHelp } from "../../../../presentation/discord/commands/lfg/help.ts";
 import { join as joinLfgRoom } from "../../../../presentation/discord/commands/lfg/join.ts";
 import { kick as kickFromOwnedRoom } from "../../../../presentation/discord/commands/lfg/kick.ts";
-import { leave as leave } from "../../../../presentation/discord/commands/lfg/leave.ts";
+import { leave } from "../../../../presentation/discord/commands/lfg/leave.ts";
 import { ping as pingLfgRole } from "../../../../presentation/discord/commands/lfg/ping.ts";
-import { runFeatureSubcommand as runLfgFeatureSubcommand } from "../../../../presentation/discord/commands/lfg/runFeatureSubcommand.ts";
-import { status as status } from "../../../../presentation/discord/commands/lfg/status.ts";
+import { status } from "../../../../presentation/discord/commands/lfg/status.ts";
 import { transfer as transferOwnedRoom } from "../../../../presentation/discord/commands/lfg/transfer.ts";
 import type { TLfgCommandArgs } from "../../../../presentation/discord/commands/lfg/types.ts";
+import { runFeatureSubcommand } from "../../../../presentation/discord/commands/runLfgSubcommand.ts";
 import type {
     TCommandHandlers,
     TCommandRunHandler,
@@ -33,8 +35,6 @@ import type {
 } from "../../../../presentation/discord/commands/types.ts";
 import { runWithGuild, type TRunWithGuildArg } from "../../../../presentation/discord/utils/runWithGuild.ts";
 import type { MaybePromise } from "../../../../utils/types.ts";
-import type { TAdminUseCases } from "../../../../application/admin/useCases.types.ts";
-import type { TLfgUseCases } from "../../../../application/lfg/useCases.types.ts";
 
 type TLfgFeatureCommand = (arg: TLfgCommandArgs, interaction: TGuildCommandInteraction) => MaybePromise<TLfgResult>;
 
@@ -55,10 +55,10 @@ function composeLfgFeatureHandler(arg: TLfgCommandArgs, command: TLfgFeatureComm
             interaction,
             run: async (guildInteraction) => {
                 const configResult = await arg.useCases.admin.getGuildConfig({ guildId: guildInteraction.guildId });
-                await runLfgFeatureSubcommand({
-                    getResult: () => command(arg, guildInteraction),
+                await runFeatureSubcommand({
                     guildConfig: configResult.value,
                     interaction: guildInteraction,
+                    result: await command(arg, guildInteraction),
                 });
             },
         });

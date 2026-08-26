@@ -1,4 +1,6 @@
+import type { TAdminUseCases } from "../../../../application/admin/useCases.types.ts";
 import type { TLfgResult } from "../../../../application/lfg/types.ts";
+import type { TLfgUseCases } from "../../../../application/lfg/useCases.types.ts";
 import { getLfgManageAutocomplete } from "../../../../presentation/discord/autocomplete/lfgManage.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../../../../presentation/discord/commandRegistrationData/lfgManage.ts";
 import { changeCode as changeRoomCode } from "../../../../presentation/discord/commands/lfgManage/changeCode.ts";
@@ -13,10 +15,10 @@ import {
 import { create as createManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/create.ts";
 import { disband as disbandManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/disband.ts";
 import { kick as kickFromManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/kick.ts";
-import { move as move } from "../../../../presentation/discord/commands/lfgManage/move.ts";
-import { runFeatureSubcommand as runLfgManageFeatureSubcommand } from "../../../../presentation/discord/commands/lfgManage/runFeatureSubcommand.ts";
+import { move } from "../../../../presentation/discord/commands/lfgManage/move.ts";
 import { transfer as transferManagedLfgRoom } from "../../../../presentation/discord/commands/lfgManage/transfer.ts";
 import type { TLfgManageCommandArgs } from "../../../../presentation/discord/commands/lfgManage/types.ts";
+import { runLfgSubcommand } from "../../../../presentation/discord/commands/runLfgSubcommand.ts";
 import type {
     TCommandHandlers,
     TCommandRunHandler,
@@ -25,8 +27,6 @@ import type {
 } from "../../../../presentation/discord/commands/types.ts";
 import { runWithGuild, type TRunWithGuildArg } from "../../../../presentation/discord/utils/runWithGuild.ts";
 import type { MaybePromise } from "../../../../utils/types.ts";
-import type { TAdminUseCases } from "../../../../application/admin/useCases.types.ts";
-import type { TLfgUseCases } from "../../../../application/lfg/useCases.types.ts";
 
 type TLfgManageFeatureCommand = (
     arg: TLfgManageCommandArgs,
@@ -46,10 +46,10 @@ function composeLfgManageFeatureHandler(
             interaction,
             run: async (guildInteraction) => {
                 const configResult = await arg.useCases.admin.getGuildConfig({ guildId: guildInteraction.guildId });
-                await runLfgManageFeatureSubcommand({
-                    getResult: () => command(arg, guildInteraction),
+                await runLfgSubcommand({
                     guildConfig: configResult.value,
                     interaction: guildInteraction,
+                    result: await command(arg, guildInteraction),
                 });
             },
         });

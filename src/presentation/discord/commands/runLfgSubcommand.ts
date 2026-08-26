@@ -1,15 +1,13 @@
 import debug from "debug";
 import type { TextChannel } from "discord.js";
 import { ChannelType } from "discord.js";
-import type { TLfgResult } from "../../../../application/lfg/types.ts";
-import type { MaybePromise } from "../../../../utils/types.ts";
-import { mapLfgMessageBaseToReply, mapLfgResultToMessageBase } from "../../mappers/lfg.ts";
-import { EMessageKind } from "../../message.types.ts";
-import type { TGuildCommandInteraction } from "../types.ts";
+import type { TLfgResult } from "../../../application/lfg/types.ts";
+import { mapLfgMessageBaseToReply, mapLfgResultToMessageBase } from "../mappers/lfg.ts";
+import { EMessageKind } from "../message.types.ts";
+import type { TGuildCommandInteraction } from "./types.ts";
 
-const log = debug("bot:lfg-manage");
+const log = debug("bot:lfg");
 
-type TLfgResultGetter = () => MaybePromise<TLfgResult>;
 type TLfgReplyGuildConfig = {
     readonly lfgChannel: string | null;
 };
@@ -31,26 +29,20 @@ async function sendPublicCopy(
     }
 }
 
-export async function runFeatureSubcommand({
-    getResult,
+export async function runLfgSubcommand({
     guildConfig,
     interaction,
+    result,
 }: {
-    readonly getResult: TLfgResultGetter;
     readonly guildConfig: TLfgReplyGuildConfig | null;
     readonly interaction: TGuildCommandInteraction;
+    readonly result: TLfgResult;
 }): Promise<void> {
-    const result = await getResult();
-
     const messageBase = mapLfgResultToMessageBase({
         result,
         callerId: interaction.user.id,
     });
-    const message = mapLfgMessageBaseToReply({
-        guildConfig,
-        messageBase,
-        interaction,
-    });
+    const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig });
 
     await interaction.reply(message);
     if (
