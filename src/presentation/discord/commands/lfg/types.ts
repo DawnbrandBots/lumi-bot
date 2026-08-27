@@ -1,4 +1,3 @@
-import type { InteractionReplyOptions } from "discord.js";
 import type { Paths, PickDeep } from "type-fest";
 import type { TAdminUseCases } from "../../../../application/admin/types.ts";
 import type { TLfgResult, TLfgUseCases } from "../../../../application/lfg/types.ts";
@@ -27,13 +26,3 @@ export type TLfgCommandBase<ArgPaths extends Paths<TLfgCommandArgs>, Return = Ma
     arg: PickDeep<TLfgCommandArgs, ArgPaths>,
     interaction: TGuildCommandInteraction,
 ) => Return;
-
-export type TLfgReplyCommandBase<ArgPaths extends Paths<TLfgCommandArgs>> = TLfgCommandBase<
-    ArgPaths,
-    MaybePromise<InteractionReplyOptions>
->;
-
-export type TLfgVoidCommandBase<ArgPaths extends Paths<TLfgCommandArgs>> = TLfgCommandBase<
-    ArgPaths,
-    MaybePromise<void>
->;

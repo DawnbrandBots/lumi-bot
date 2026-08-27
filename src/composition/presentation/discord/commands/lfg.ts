@@ -26,7 +26,7 @@ import { ping as pingLfgRole } from "../../../../presentation/discord/commands/l
 import { status } from "../../../../presentation/discord/commands/lfg/status.ts";
 import { transfer as transferOwnedRoom } from "../../../../presentation/discord/commands/lfg/transfer.ts";
 import type { TLfgCommandArgs } from "../../../../presentation/discord/commands/lfg/types.ts";
-import { runFeatureSubcommand } from "../../../../presentation/discord/commands/runLfgSubcommand.ts";
+import { runLfgSubcommand } from "../../../../presentation/discord/commands/runLfgSubcommand.ts";
 import type {
     TCommandHandlers,
     TCommandRunHandler,
@@ -38,13 +38,6 @@ import type { MaybePromise } from "../../../../utils/types.ts";
 
 type TLfgFeatureCommand = (arg: TLfgCommandArgs, interaction: TGuildCommandInteraction) => MaybePromise<TLfgResult>;
 
-type TLfgVoidCommand = (arg: TLfgCommandArgs, interaction: TGuildCommandInteraction) => MaybePromise<void>;
-
-type TLfgReplyCommand = (
-    arg: TLfgCommandArgs,
-    interaction: TGuildCommandInteraction,
-) => MaybePromise<Parameters<TGuildCommandInteraction["reply"]>[0]>;
-
 function runLfgWithGuild(arg: Omit<TRunWithGuildArg, "notInGuildMessageEmbeddescription">) {
     return runWithGuild({ ...arg, notInGuildMessageEmbeddescription: "LFG is only available in servers." });
 }
@@ -55,31 +48,11 @@ function composeLfgFeatureHandler(arg: TLfgCommandArgs, command: TLfgFeatureComm
             interaction,
             run: async (guildInteraction) => {
                 const configResult = await arg.useCases.admin.getGuildConfig({ guildId: guildInteraction.guildId });
-                await runFeatureSubcommand({
+                await runLfgSubcommand({
                     guildConfig: configResult.value,
                     interaction: guildInteraction,
                     result: await command(arg, guildInteraction),
                 });
-            },
-        });
-}
-
-function composeLfgReplyHandler(arg: TLfgCommandArgs, command: TLfgReplyCommand): TCommandRunHandler {
-    return (interaction) =>
-        runLfgWithGuild({
-            interaction,
-            run: async (guildInteraction) => {
-                await guildInteraction.reply(await command(arg, guildInteraction));
-            },
-        });
-}
-
-function composeLfgVoidHandler(arg: TLfgCommandArgs, command: TLfgVoidCommand): TCommandRunHandler {
-    return (interaction) =>
-        runLfgWithGuild({
-            interaction,
-            run: async (guildInteraction) => {
-                await command(arg, guildInteraction);
             },
         });
 }
@@ -94,8 +67,8 @@ function composeLfgRunHandlers(arg: TLfgCommandArgs) {
         [LFG_LEAVE_SUBCOMMAND_NAME]: composeLfgFeatureHandler(arg, leave),
         [LFG_DISBAND_SUBCOMMAND_NAME]: composeLfgFeatureHandler(arg, disbandOwnedRoom),
         [LFG_STATUS_SUBCOMMAND_NAME]: composeLfgFeatureHandler(arg, status),
-        [LFG_HELP_SUBCOMMAND_NAME]: composeLfgReplyHandler(arg, lfgHelp),
-        [LFG_PING_SUBCOMMAND_NAME]: composeLfgVoidHandler(arg, pingLfgRole),
+        [LFG_HELP_SUBCOMMAND_NAME]: composeLfgFeatureHandler(arg, lfgHelp),
+        [LFG_PING_SUBCOMMAND_NAME]: composeLfgFeatureHandler(arg, pingLfgRole),
     } satisfies TCommandRunHandlers<typeof lfgCommandCommandRegistrationData>;
 }
 

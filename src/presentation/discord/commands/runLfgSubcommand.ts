@@ -1,8 +1,9 @@
 import debug from "debug";
-import type { TextChannel } from "discord.js";
-import { ChannelType } from "discord.js";
-import type { TLfgResult } from "../../../application/lfg/types.ts";
+import type { InteractionReplyOptions, TextChannel } from "discord.js";
+import { ChannelType, MessageFlags, channelMention, roleMention } from "discord.js";
+import { ELfgResultKind, type TLfgResult } from "../../../application/lfg/types.ts";
 import { mapLfgMessageBaseToReply, mapLfgResultToMessageBase } from "../mappers/lfg.ts";
+import { createPositiveMessage } from "../message.ts";
 import { EMessageKind } from "../message.types.ts";
 import type { TGuildCommandInteraction } from "./types.ts";
 
@@ -11,6 +12,20 @@ const log = debug("bot:lfg");
 type TLfgReplyGuildConfig = {
     readonly lfgChannel: string | null;
 };
+
+// TODO: convoluted, to remove
+function isLfgPingFailureResult(result: TLfgResult): boolean {
+    switch (result.kind) {
+        case ELfgResultKind.LFG_CHANNEL_NOT_FOUND:
+        case ELfgResultKind.LFG_ROLE_CANNOT_BE_EVERYONE:
+        case ELfgResultKind.LFG_ROLE_NOT_CONFIGURED:
+        case ELfgResultKind.LFG_ROLE_NOT_FOUND:
+        case ELfgResultKind.LFG_ROLE_ON_COOLDOWN:
+            return true;
+        default:
+            return false;
+    }
+}
 
 async function sendPublicCopy(
     interaction: TGuildCommandInteraction,
@@ -42,6 +57,27 @@ export async function runLfgSubcommand({
         result,
         callerId: interaction.user.id,
     });
+
+    // TODO: convoluted, to remove
+    if (result.kind === ELfgResultKind.LFG_ROLE_PINGED && interaction.channelId !== result.value.channelId) {
+        await sendPublicCopy(interaction, result.value.channelId, messageBase);
+        await interaction.reply(
+            createPositiveMessage<InteractionReplyOptions>({
+                embed: {
+                    description: `${roleMention(result.value.roleId)} pinged in ${channelMention(result.value.channelId)}.`,
+                },
+                flags: [MessageFlags.Ephemeral],
+            }),
+        );
+        return;
+    }
+
+    // TODO: convoluted, to remove
+    if (isLfgPingFailureResult(result)) {
+        await interaction.reply({ ...messageBase, flags: [MessageFlags.Ephemeral] });
+        return;
+    }
+
     const message = mapLfgMessageBaseToReply({ messageBase, interaction, guildConfig });
 
     await interaction.reply(message);

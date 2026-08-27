@@ -24,13 +24,17 @@ import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
+    LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_COMMAND_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_DISBAND_SUBCOMMAND_NAME,
     LFG_JOIN_SUBCOMMAND_NAME,
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
+    LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
+    LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
+    LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
     LFG_SHOW_RESPONSE_OPTION_NAME,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
@@ -346,6 +350,14 @@ export function mapLfgResultToMessageBase({ result, callerId }: { result: TLfgRe
                     description: `${userMention(callerId)} disbanded ${formatRoomCode(result.value.code)}.`,
                 },
             });
+        case ELfgResultKind.HELP_REQUESTED:
+            return createLfgHelpMessageBase();
+        case ELfgResultKind.LFG_ROLE_PINGED:
+            return createPositiveMessage({
+                content: `${roleMention(result.value.roleId)} people, ${userMention(result.value.userId)} is looking for a room!`,
+                allowedMentions: { roles: [result.value.roleId], users: [result.value.userId] },
+                embed: { description: `${userMention(result.value.userId)} is looking for a room!` },
+            });
         case ELfgResultKind.INVALID_ROOM_CODE:
             return createNegativeMessage({
                 embed: {
@@ -414,6 +426,28 @@ export function mapLfgResultToMessageBase({ result, callerId }: { result: TLfgRe
         case ELfgResultKind.NOT_IN_A_ROOM:
             return createNegativeMessage({
                 embed: { description: "Join or create a room first." },
+            });
+        case ELfgResultKind.LFG_CHANNEL_NOT_FOUND:
+            return createNegativeMessage({
+                embed: { description: LFG_NO_CHANNEL_TO_PING_DESCRIPTION },
+            });
+        case ELfgResultKind.LFG_ROLE_CANNOT_BE_EVERYONE:
+            return createNegativeMessage({
+                embed: { description: LFG_CANNOT_PING_EVERYONE_DESCRIPTION },
+            });
+        case ELfgResultKind.LFG_ROLE_NOT_CONFIGURED:
+            return createNegativeMessage({
+                embed: { description: LFG_ROLE_NOT_CONFIGURED_DESCRIPTION },
+            });
+        case ELfgResultKind.LFG_ROLE_NOT_FOUND:
+            return createNegativeMessage({
+                embed: { description: LFG_ROLE_TO_PING_DELETED_DESCRIPTION },
+            });
+        case ELfgResultKind.LFG_ROLE_ON_COOLDOWN:
+            return createNegativeMessage({
+                embed: {
+                    description: `${roleMention(result.value.roleId)} can be pinged again on ${time(result.value.nextPingAt)}.`,
+                },
             });
     }
 }

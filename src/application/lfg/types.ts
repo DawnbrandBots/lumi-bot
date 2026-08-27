@@ -4,6 +4,7 @@ import type { IRoom } from "../../domain/lfg/models/room.types.ts";
 import type { IUser } from "../../domain/lfg/models/user.types.ts";
 import type { MaybePromise } from "../../utils/types.ts";
 import type { TLfgPersistence } from "./persistence.types.ts";
+import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 export type {
     TChangeLfgRoomCode,
     TCreateLfgRoom,
@@ -15,9 +16,8 @@ export type {
     TMoveUserToLfgRoom,
     TRemoveLfgRoom,
     TRemoveLfgRoomPlayer,
-    TSetLfgRoomOwner,
+    TSetLfgRoomOwner
 } from "./persistence.types.ts";
-import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 export type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
@@ -40,6 +40,16 @@ export const enum ELfgResultKind {
     ROOM_LEFT = "ROOM_LEFT",
     NOT_IN_A_ROOM = "NOT_IN_A_ROOM",
     ROOM_DISBANDED = "ROOM_DISBANDED",
+    // TODO: one one hand, HELP_REQUESTED could be removed
+    // on the other, maybe this is a sign some kinds (or all?)
+    // actually belong at the presentation level rather than application
+    HELP_REQUESTED = "HELP_REQUESTED",
+    LFG_CHANNEL_NOT_FOUND = "LFG_CHANNEL_NOT_FOUND",
+    LFG_ROLE_CANNOT_BE_EVERYONE = "LFG_ROLE_CANNOT_BE_EVERYONE",
+    LFG_ROLE_NOT_CONFIGURED = "LFG_ROLE_NOT_CONFIGURED",
+    LFG_ROLE_NOT_FOUND = "LFG_ROLE_NOT_FOUND",
+    LFG_ROLE_ON_COOLDOWN = "LFG_ROLE_ON_COOLDOWN",
+    LFG_ROLE_PINGED = "LFG_ROLE_PINGED",
 }
 
 type TLfgResultValueByKind = {
@@ -79,6 +89,12 @@ type TLfgResultValueByKind = {
     };
     [ELfgResultKind.ROOM_LEFT]: { readonly userId: string; readonly code: string } & TLfgPlayerRemovalResult;
     [ELfgResultKind.ROOM_DISBANDED]: { readonly userId: string; readonly code: string };
+    [ELfgResultKind.LFG_ROLE_ON_COOLDOWN]: { readonly roleId: string; readonly nextPingAt: Date };
+    [ELfgResultKind.LFG_ROLE_PINGED]: {
+        readonly channelId: string;
+        readonly roleId: string;
+        readonly userId: string;
+    };
 } & {
     [
         _ in
@@ -86,6 +102,11 @@ type TLfgResultValueByKind = {
             | ELfgResultKind.NOT_ROOM_OWNER
             | ELfgResultKind.CANNOT_KICK_YOURSELF
             | ELfgResultKind.NOT_IN_A_ROOM
+            | ELfgResultKind.HELP_REQUESTED
+            | ELfgResultKind.LFG_CHANNEL_NOT_FOUND
+            | ELfgResultKind.LFG_ROLE_CANNOT_BE_EVERYONE
+            | ELfgResultKind.LFG_ROLE_NOT_CONFIGURED
+            | ELfgResultKind.LFG_ROLE_NOT_FOUND
     ]: never;
 };
 
