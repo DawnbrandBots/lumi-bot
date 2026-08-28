@@ -1,5 +1,6 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import debug from "debug";
+import { Client, Events, GatewayIntentBits } from "discord.js";
 import type { TAdminPersistence } from "./application/admin/persistence.types.ts";
 import ADMIN_USE_CASES from "./application/admin/useCases.ts";
 import type { TAdminUseCaseDependencies, TAdminUseCases } from "./application/admin/useCases.types.ts";
@@ -13,7 +14,6 @@ import type { TSearchUseCaseDependencies, TSearchUseCases } from "./application/
 import { composeLfgServices } from "./composition/application/lfg/services.ts";
 import { getWithUnitOfWork } from "./composition/application/unitOfWork.ts";
 import { getPersistenceWithContext, getUseCasesWithUnitOfWork } from "./composition/application/useCases.ts";
-import { composeDiscordBot } from "./composition/presentation/discord/bot.ts";
 import { composeDiscordCommands } from "./composition/presentation/discord/commands.ts";
 import { composeDiscordEventHandlers } from "./composition/presentation/discord/eventHandlers.ts";
 import { appMikroOrmConfig } from "./infrastructure/database/mikroOrm/config.ts";
@@ -97,8 +97,12 @@ const searchUseCases = getUseCasesWithUnitOfWork<TSearchUseCases>({
 });
 const commands = composeDiscordCommands({ adminUseCases, lfgUseCases, searchUseCases });
 const eventHandlers = composeDiscordEventHandlers({ commands, searchUseCases });
-const bot = composeDiscordBot({ eventHandlers });
 
+const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
+const bot = new Client({ intents });
+bot.on(Events.ClientReady, eventHandlers.clientReady);
+bot.on(Events.MessageCreate, eventHandlers.messageCreate);
+bot.on(Events.InteractionCreate, eventHandlers.interactionCreate);
 // Implicitly use DISCORD_TOKEN
 await bot.login();
 
