@@ -196,5 +196,13 @@
   {
     "id": "BETRAYAL_GAIDEN_ECHOES_RESULTS_SCREEN",
     "name": "Betrayal – Gaiden/Echoes (Results screen)"
+  },
+  {
+    "id": "BETRAYAL_BINDING_BLADE",
+    "name": "Betrayal – Binding Blade"
+  },
+  {
+    "id": "BETRAYAL_BINDING_BLADE_RESULTS_SCREEN",
+    "name": "Betrayal – Binding Blade (Results screen)"
   }
 ]
