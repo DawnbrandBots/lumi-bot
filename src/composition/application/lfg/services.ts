@@ -1,9 +1,9 @@
+import type { TLfgPersistence } from "../../../application/lfg/persistence.types.ts";
 import { changeRoomCodeInRoom } from "../../../application/lfg/services/changeRoomCodeInRoom.ts";
 import { getOwnedRoom } from "../../../application/lfg/services/getOwnedRoom.ts";
 import { kickFromRoom } from "../../../application/lfg/services/kickFromRoom.ts";
 import { removePlayerFromRoom } from "../../../application/lfg/services/removePlayerFromRoom.ts";
 import { transferRoom } from "../../../application/lfg/services/transferRoom.ts";
-import type { TLfgPersistence } from "../../../application/lfg/persistence.types.ts";
 import type { TLfgDependencies, TLfgServices } from "../../../application/lfg/types.ts";
 
 export function composeLfgServices(persistence: TLfgPersistence): TLfgServices {
