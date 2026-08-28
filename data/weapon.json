@@ -995,6 +995,15 @@
     "uniqueSkill": "SPIRITED_ATTACK"
   },
   {
+    "id": "MOONLIT_CLAWS",
+    "name": "Moonlit Claws",
+    "weaponType": "CLAWS",
+    "level": 5,
+    "hp": 5,
+    "atk": 25,
+    "freeSkillSlots": 2
+  },
+  {
     "id": "SILVER_TOME",
     "name": "Silver Tome",
     "weaponType": "TOME",
