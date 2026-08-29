@@ -37,7 +37,12 @@ export type TBuiltCommandRunHandler = (interaction: ChatInputCommandInteraction<
 /**
  * Produces choices for an option focused by a Discord autocomplete interaction.
  */
-export type TCommandAutocompleteHandler = (
+export type TCommandAutocompleteHandler<Dependencies = never> = (
+    dependencies: Dependencies,
+    interaction: AutocompleteInteraction<CacheType>,
+) => MaybePromise<ApplicationCommandOptionChoiceData[]>;
+
+export type TBuiltCommandAutocompleteHandler = (
     interaction: AutocompleteInteraction<CacheType>,
 ) => MaybePromise<ApplicationCommandOptionChoiceData[]>;
 
@@ -102,29 +107,42 @@ type TRunHandlersForOptions<Options extends readonly APIApplicationCommandOption
 /**
  * Maps each directly declared autocomplete option name to its handler.
  */
-type TBasicAutocompleteHandlers<Options extends readonly APIApplicationCommandOption[]> = {
-    readonly [Option in TAutocompletableOption<Options> as Option["name"]]: TCommandAutocompleteHandler;
+type TAutocompleteHandler = (...args: never[]) => unknown;
+
+type TBasicAutocompleteHandlers<
+    Options extends readonly APIApplicationCommandOption[],
+    Handler extends TAutocompleteHandler,
+> = {
+    readonly [Option in TAutocompletableOption<Options> as Option["name"]]: Handler;
 };
 
 /**
  * Derives autocomplete handlers beneath one subcommand or subcommand group.
  */
-type TAutocompleteHandlersForSubcommandRoute<Option extends TSubcommandRoute<readonly APIApplicationCommandOption[]>> =
-    Option extends {
-        readonly type: ApplicationCommandOptionType.SubcommandGroup;
-    }
-        ? TSubcommandAutocompleteHandlers<TOptionsOf<Option>>
-        : TBasicAutocompleteHandlers<TOptionsOf<Option>>;
+type TAutocompleteHandlersForSubcommandRoute<
+    Option extends TSubcommandRoute<readonly APIApplicationCommandOption[]>,
+    Handler extends TAutocompleteHandler,
+> = Option extends {
+    readonly type: ApplicationCommandOptionType.SubcommandGroup;
+}
+    ? TSubcommandAutocompleteHandlers<TOptionsOf<Option>, Handler>
+    : TBasicAutocompleteHandlers<TOptionsOf<Option>, Handler>;
 
 /**
  * Maps only subcommand routes containing autocomplete options to their nested handler maps.
  */
-type TSubcommandAutocompleteHandlers<Options extends readonly APIApplicationCommandOption[]> = {
+type TSubcommandAutocompleteHandlers<
+    Options extends readonly APIApplicationCommandOption[],
+    Handler extends TAutocompleteHandler,
+> = {
     readonly [
-        Option in TSubcommandRoute<Options> as keyof TAutocompleteHandlersForSubcommandRoute<Option> extends never
+        Option in TSubcommandRoute<Options> as keyof TAutocompleteHandlersForSubcommandRoute<
+            Option,
+            Handler
+        > extends never
             ? never
             : Option["name"]
-    ]: TAutocompleteHandlersForSubcommandRoute<Option>;
+    ]: TAutocompleteHandlersForSubcommandRoute<Option, Handler>;
 };
 
 /**
@@ -148,19 +166,23 @@ export type TCommandRunRegistry<CommandCommandRegistrationData extends ICommandC
 /**
  * Autocomplete handlers required by the options declaring `autocomplete: true`.
  */
-export type TCommandAutocompleteHandlers<CommandRegistrationData extends ICommandCommandRegistrationData> = [
-    TSubcommandRoute<TOptionsOf<CommandRegistrationData>>,
-] extends [never]
-    ? TBasicAutocompleteHandlers<TOptionsOf<CommandRegistrationData>>
-    : TSubcommandAutocompleteHandlers<TOptionsOf<CommandRegistrationData>>;
+export type TCommandAutocompleteHandlers<
+    CommandRegistrationData extends ICommandCommandRegistrationData,
+    Handler extends TAutocompleteHandler = TCommandAutocompleteHandler,
+> = [TSubcommandRoute<TOptionsOf<CommandRegistrationData>>] extends [never]
+    ? TBasicAutocompleteHandlers<TOptionsOf<CommandRegistrationData>, Handler>
+    : TSubcommandAutocompleteHandlers<TOptionsOf<CommandRegistrationData>, Handler>;
 
 /**
  * Turns command registration data into a command-name to autocomplete-handler map.
  */
-export type TCommandAutocompleteRegistry<CommandCommandRegistrationData extends ICommandCommandRegistrationData> = {
-    readonly [CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]]: {
-        readonly autocomplete?: TCommandAutocompleteHandlers<CommandRegistrationData>;
-    };
+export type TCommandAutocompleteRegistry<
+    CommandCommandRegistrationData extends ICommandCommandRegistrationData,
+    Handler extends TAutocompleteHandler = TCommandAutocompleteHandler,
+> = {
+    readonly [
+        CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]
+    ]: TCommandAutocompleteHandlers<CommandRegistrationData, Handler>;
 };
 
 /**

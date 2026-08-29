@@ -1,7 +1,7 @@
 import debug from "debug";
+import type { TInteractionCreateEventInteraction } from "./interactionCreate.types.ts";
 import type { THandleAutocompleteInteraction } from "./interactions/autocomplete.types.ts";
 import type { THandleCommandInteraction } from "./interactions/command.types.ts";
-import type { TInteractionCreateEventInteraction } from "./interactionCreate.types.ts";
 
 const log = debug(handleInteractionCreate.name);
 

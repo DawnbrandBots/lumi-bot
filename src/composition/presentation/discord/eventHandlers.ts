@@ -1,19 +1,21 @@
 import type { TApplicationUseCases } from "../../../application/useCases.types.ts";
-import { getLfgAutocomplete } from "../../../presentation/discord/autocomplete/lfg.ts";
-import { getLfgManageAutocomplete } from "../../../presentation/discord/autocomplete/lfgManage.ts";
-import { getSearchAutocomplete } from "../../../presentation/discord/autocomplete/search.ts";
-import type { TAllCommandRegistrationData } from "../../../presentation/discord/commandRegistrationData.ts";
+import { AUTOCOMPLETE } from "../../../presentation/discord/autocomplete.ts";
+import { getAutocompleteHandler as getRawAutocompleteHandlerFromHandlers } from "../../../presentation/discord/autocomplete/handlers.ts";
 import { COMMANDS } from "../../../presentation/discord/commands.ts";
 import {
     getCommandRunHandler as getRawCommandRunHandlerFromCommands,
     type TBuiltCommandRunHandlerGetter,
 } from "../../../presentation/discord/commands/handlers.ts";
-import type { TCommandAutocompleteRegistry } from "../../../presentation/discord/commands/types.ts";
+import type {
+    TBuiltCommandAutocompleteHandler,
+    TCommandAutocompleteHandler,
+} from "../../../presentation/discord/commands/types.ts";
 import { handleClientReady } from "../../../presentation/discord/eventHandlers/clientReady.ts";
 import { handleInteractionCreate } from "../../../presentation/discord/eventHandlers/interactionCreate.ts";
 import type { THandleInteractionCreate } from "../../../presentation/discord/eventHandlers/interactionCreate.types.ts";
 import { handleAutocompleteInteraction } from "../../../presentation/discord/eventHandlers/interactions/autocomplete.ts";
 import type { THandleAutocompleteInteraction } from "../../../presentation/discord/eventHandlers/interactions/autocomplete.types.ts";
+import type { TAutocompleteHandlerGetter } from "../../../presentation/discord/autocomplete/handlers.ts";
 import { handleCommandInteraction } from "../../../presentation/discord/eventHandlers/interactions/command.ts";
 import type { THandleCommandInteraction } from "../../../presentation/discord/eventHandlers/interactions/command.types.ts";
 import { handleMessageCreate } from "../../../presentation/discord/eventHandlers/messageCreate.ts";
@@ -35,24 +37,15 @@ export function composeDiscordEventHandlers(arg: { readonly useCases: TApplicati
         const command = getRawCommandRunHandler(interaction);
         return command ? build({ useCases: arg.useCases }, { command }).command : undefined;
     };
-    const autocompleteHandlers = {
-        admin: {},
-        help: {},
-        links: {},
-        lfg: {
-            autocomplete: getLfgAutocomplete({ getLfgStatus: arg.useCases.lfg.getLfgStatus }),
-        },
-        "lfg-manage": {
-            autocomplete: getLfgManageAutocomplete({ getLfgStatus: arg.useCases.lfg.getLfgStatus }),
-        },
-        search: {
-            autocomplete: getSearchAutocomplete({ suggestSearchResults: arg.useCases.search.suggestSearchResults }),
-        },
-    } satisfies TCommandAutocompleteRegistry<TAllCommandRegistrationData>;
+    const getRawAutocompleteHandler = getRawAutocompleteHandlerFromHandlers<TCommandAutocompleteHandler>(AUTOCOMPLETE);
+    const getAutocompleteHandler: TAutocompleteHandlerGetter<TBuiltCommandAutocompleteHandler> = (interaction) => {
+        const autocomplete = getRawAutocompleteHandler(interaction);
+        return autocomplete ? build({ useCases: arg.useCases }, { autocomplete }).autocomplete : undefined;
+    };
     const commandInteraction: THandleCommandInteraction = (interaction) =>
         handleCommandInteraction({ getCommandRunHandler, interaction });
     const autocompleteInteraction: THandleAutocompleteInteraction = (interaction) =>
-        handleAutocompleteInteraction({ autocompleteHandlers, interaction });
+        handleAutocompleteInteraction({ getAutocompleteHandler, interaction });
     const interactionCreate: THandleInteractionCreate = (interaction) =>
         handleInteractionCreate({
             handleAutocompleteInteraction: autocompleteInteraction,

@@ -94,7 +94,9 @@ const builtUseCases = {
 };
 
 // TODO: the command handler should probably be built here though?
-const eventHandlers = composeDiscordEventHandlers({ useCases: builtUseCases });
+const eventHandlers = composeDiscordEventHandlers({
+    useCases: builtUseCases,
+});
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
 const bot = new Client({ intents });

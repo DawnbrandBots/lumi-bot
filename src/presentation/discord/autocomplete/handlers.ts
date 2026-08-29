@@ -1,6 +1,5 @@
-import type { CacheType, ChatInputCommandInteraction } from "discord.js";
+import type { AutocompleteInteraction, CacheType } from "discord.js";
 import isKeyOfExactObject from "../../../utils/isKeyOfExactObject.ts";
-import type { TBuiltCommandRunHandler, TCommandRunHandler } from "./types.ts";
 
 type THandler = (...args: never[]) => unknown;
 type THandlerTree<Handler extends THandler> = Handler | IHandlerMap<Handler>;
@@ -9,13 +8,13 @@ interface IHandlerMap<Handler extends THandler> {
     readonly [name: string]: THandlerTree<Handler>;
 }
 
-function getSubcommandRoute(interaction: ChatInputCommandInteraction<CacheType>): string[] {
+function getSubcommandRoute(interaction: AutocompleteInteraction<CacheType>): string[] {
     const subcommandGroup = interaction.options.getSubcommandGroup(false);
     const subcommand = interaction.options.getSubcommand(false);
 
     return [subcommandGroup, subcommand].filter((part) => part !== null);
 }
-// TODO: funky business to review
+
 function isHandlerMap<Handler extends THandler>(
     value: THandlerTree<Handler> | undefined,
 ): value is IHandlerMap<Handler> {
@@ -37,28 +36,25 @@ function getHandlerAtRoute<Handler extends THandler>(
 
     return typeof current === "function" ? current : undefined;
 }
-// TODO: funky business to review
-export type TCommandRunHandlerGetter = (
-    interaction: ChatInputCommandInteraction<CacheType>,
-) => TCommandRunHandler | undefined;
 
-export type TBuiltCommandRunHandlerGetter = (
-    interaction: ChatInputCommandInteraction<CacheType>,
-) => TBuiltCommandRunHandler | undefined;
+export type TAutocompleteHandlerGetter<Handler extends THandler> = (
+    interaction: AutocompleteInteraction<CacheType>,
+) => Handler | undefined;
 
-// TODO: funky business to review
-/**
- * Creates a getter for the raw run handler matching an interaction's command and subcommand route.
- */
-export function getCommandRunHandler(
-    commands: Record<string, THandlerTree<TCommandRunHandler>>,
-): TCommandRunHandlerGetter {
+export function getAutocompleteHandler<Handler extends THandler>(
+    autocompleteHandlers: Record<string, THandlerTree<Handler>>,
+): TAutocompleteHandlerGetter<Handler> {
     return (interaction) => {
-        if (!isKeyOfExactObject(commands, interaction.commandName)) {
+        if (!isKeyOfExactObject(autocompleteHandlers, interaction.commandName)) {
             return undefined;
         }
 
-        const command = commands[interaction.commandName];
-        return command ? getHandlerAtRoute<TCommandRunHandler>(command, getSubcommandRoute(interaction)) : undefined;
+        const command = autocompleteHandlers[interaction.commandName];
+        if (!command) {
+            return undefined;
+        }
+
+        const focusedOption = interaction.options.getFocused(true);
+        return getHandlerAtRoute(command, [...getSubcommandRoute(interaction), focusedOption.name]);
     };
 }

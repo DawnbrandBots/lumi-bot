@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getCommandAutocompleteHandler } from "../../../../../../src/presentation/discord/commands/handlers.ts";
+import { getAutocompleteHandler } from "../../../../../../src/presentation/discord/autocomplete/handlers.ts";
 import {
     autocompleteHandlers,
     findAutocomplete,
@@ -8,7 +8,7 @@ import {
     rootAutocomplete,
 } from "./fixtures.ts";
 
-describe(getCommandAutocompleteHandler.name, () => {
+describe(getAutocompleteHandler.name, () => {
     test.each([
         ["root option", { commandName: "search", focusedOption: "query" }, rootAutocomplete],
         [
@@ -31,6 +31,6 @@ describe(getCommandAutocompleteHandler.name, () => {
     ] as const)("%s", (_name, interactionOptions, expected) => {
         const interaction = getMockAutocompleteInteraction(interactionOptions);
 
-        expect(getCommandAutocompleteHandler(autocompleteHandlers, interaction)).toBe(expected);
+        expect(getAutocompleteHandler(autocompleteHandlers)(interaction)).toBe(expected);
     });
 });

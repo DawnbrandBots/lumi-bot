@@ -45,19 +45,15 @@ export const commandHandlers = {
 
 export const autocompleteHandlers = {
     search: {
-        autocomplete: {
-            query: rootAutocomplete,
-        },
+        query: rootAutocomplete,
     },
     rooms: {
-        autocomplete: {
-            find: {
-                query: findAutocomplete,
-            },
-            admin: {
-                move: {
-                    destination: moveAutocomplete,
-                },
+        find: {
+            query: findAutocomplete,
+        },
+        admin: {
+            move: {
+                destination: moveAutocomplete,
             },
         },
     },
