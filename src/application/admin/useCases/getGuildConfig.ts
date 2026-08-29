@@ -1,13 +1,12 @@
-import { EAdminResultKind, type TAdminResultTypes } from "../types.ts";
-import type { TAdminUseCaseDependencies } from "../useCases.types.ts";
+import { EAdminResultKind, type TAdminUseCaseBase } from "../types.ts";
 
-export async function getGuildConfig(
-    dependencies: TAdminUseCaseDependencies,
-    arg: { readonly guildId: string },
-): Promise<TAdminResultTypes["getGuildConfig"]> {
+export const getGuildConfig: TAdminUseCaseBase<"getGuildConfig", "persistence.admin.getGuildConfig"> = async function (
+    dependencies,
+    arg,
+) {
     const config = await dependencies.persistence.admin.getGuildConfig(arg);
     return {
         kind: EAdminResultKind.LFG_GET_CONFIG,
         value: config,
     };
-}
+};

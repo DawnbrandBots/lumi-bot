@@ -1,11 +1,10 @@
 import { ADMIN_LFG_ROLE_LIMIT } from "../constants.ts";
-import { EAdminResultKind, type TAdminResultTypes } from "../types.ts";
-import type { TAdminUseCaseDependencies } from "../useCases.types.ts";
+import { EAdminResultKind, type TAdminUseCaseBase } from "../types.ts";
 
-export async function addLfgRole(
-    dependencies: TAdminUseCaseDependencies,
-    arg: { readonly guildId: string; readonly roleId: string },
-): Promise<TAdminResultTypes["addLfgRole"]> {
+export const addLfgRole: TAdminUseCaseBase<
+    "addLfgRole",
+    "persistence.admin.listLfgRoles" | "persistence.admin.addLfgRole"
+> = async function (dependencies, arg) {
     if (arg.roleId === arg.guildId) {
         return { kind: EAdminResultKind.LFG_ROLE_CANNOT_BE_EVERYONE };
     }
@@ -21,4 +20,4 @@ export async function addLfgRole(
         kind: EAdminResultKind.LFG_ROLE_ADDED,
         value: { role: arg.roleId },
     };
-}
+};

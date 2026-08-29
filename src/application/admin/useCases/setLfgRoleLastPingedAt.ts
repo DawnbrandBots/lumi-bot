@@ -1,8 +1,9 @@
-import type { TAdminUseCaseDependencies } from "../useCases.types.ts";
+import type { TAdminUseCaseBase } from "../types.ts";
 
-export async function setLfgRoleLastPingedAt(
-    dependencies: TAdminUseCaseDependencies,
-    arg: { readonly guildId: string; readonly roleId: string; readonly date: Date },
-): Promise<void> {
+// TODO: should this really not be returning anything?
+export const setLfgRoleLastPingedAt: TAdminUseCaseBase<
+    "setLfgRoleLastPingedAt",
+    "persistence.admin.setLfgRoleLastPingedAt"
+> = async function (dependencies, arg) {
     await dependencies.persistence.admin.setLfgRoleLastPingedAt(arg);
-}
+};

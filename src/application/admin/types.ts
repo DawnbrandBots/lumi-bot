@@ -1,5 +1,12 @@
+import type { Paths, PickDeep } from "type-fest";
+import type { TApplicationPersistence } from "../persistence.types.ts";
+import type { TAdminUseCaseArgs, TAdminUseCases } from "./useCases.types.ts";
 export type { TAdminPersistence } from "./persistence.types.ts";
-export type { TAdminUseCases } from "./useCases.types.ts";
+export type { TAdminUseCaseArgs, TAdminUseCases } from "./useCases.types.ts";
+
+export type TAdminUseCaseDependencies = {
+    readonly persistence: TApplicationPersistence;
+};
 
 export type TAdminLfgRoleConfig = {
     readonly lastPingedAt: string | null;
@@ -73,3 +80,11 @@ export type TAdminResultTypes = {
     setLfgRoleLastPingedAt: void;
     setLfgRolePingCooldown: TAdminResultOfKind<EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET>;
 };
+
+export type TAdminUseCaseBase<
+    Name extends keyof TAdminUseCases,
+    DependencyPaths extends Paths<TAdminUseCaseDependencies>,
+> = (
+    dependencies: PickDeep<TAdminUseCaseDependencies, DependencyPaths>,
+    arg: TAdminUseCaseArgs[Name],
+) => ReturnType<TAdminUseCases[Name]>;
