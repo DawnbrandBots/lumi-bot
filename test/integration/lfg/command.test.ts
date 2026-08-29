@@ -4,13 +4,15 @@ import { describe, expect, test, vi } from "vitest";
 import type { TAdminUseCases } from "../../../src/application/admin/types.ts";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
-import { composeDiscordCommands } from "../../../src/composition/presentation/discord/commands.ts";
-import type { lfgCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfg.ts";
+import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
+import { build } from "../../../src/composition/utils/proxify.ts";
+import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_CODE_OPTION_NAME,
+    LFG_COMMAND_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
     LFG_PING_SUBCOMMAND_NAME,
@@ -18,7 +20,6 @@ import {
     LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
 } from "../../../src/presentation/discord/commands/lfg/constants.ts";
-import type { TCommandRunHandlers } from "../../../src/presentation/discord/commands/types.ts";
 
 const GUILD_ID = "guild-1";
 const USER_ID = "user-1";
@@ -87,6 +88,7 @@ function getInteractionFixture({
     const roleFetch = vi.fn().mockResolvedValue(roleExists ? { id: roleId, name: ROLE_NAME } : null);
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
+        commandName: LFG_COMMAND_NAME,
         guildId: GUILD_ID,
         inGuild: vi.fn().mockReturnValue(true),
         channelId,
@@ -127,7 +129,7 @@ function getCommand({
     readonly lfgRoleLastPingedAt?: Date | null;
     readonly lfgRolePingCooldownMinutes?: number;
     readonly setLfgRoleLastPingedAt?: SetLfgRoleLastPingedAtMock;
-}): TCommandRunHandlers<typeof lfgCommandCommandRegistrationData> {
+}): TApplicationUseCases {
     const getGuildConfig = vi.fn().mockResolvedValue({
         kind: EAdminResultKind.LFG_GET_CONFIG,
         value: channel ? { guild: GUILD_ID, lfgChannel: channel, lfgRolePingCooldownMinutes } : null,
@@ -136,40 +138,35 @@ function getCommand({
         kind: EAdminResultKind.LFG_GET_ROLE_CONFIG,
         value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
     });
-    return composeDiscordCommands({
-        useCases: {
-            admin: {
-                addLfgRole: vi.fn(),
-                clearLfgChannel: vi.fn(),
-                clearLfgRolePingCooldown: vi.fn(),
-                getGuildConfig,
-                getLfgRoleConfig,
-                removeLfgRole: vi.fn(),
-                setLfgChannel: vi.fn(),
-                setLfgRoleLastPingedAt,
-                setLfgRolePingCooldown: vi.fn(),
-            },
-            lfg: lfgUseCases,
-            search: {
-                resolveSearchInput: vi.fn(),
-                suggestSearchResults: vi.fn().mockResolvedValue([]),
-            },
+    return {
+        admin: {
+            addLfgRole: vi.fn(),
+            clearLfgChannel: vi.fn(),
+            clearLfgRolePingCooldown: vi.fn(),
+            getGuildConfig,
+            getLfgRoleConfig,
+            removeLfgRole: vi.fn(),
+            setLfgChannel: vi.fn(),
+            setLfgRoleLastPingedAt,
+            setLfgRolePingCooldown: vi.fn(),
         },
-    }).lfg.run;
+        lfg: lfgUseCases,
+        search: {
+            resolveSearchInput: vi.fn(),
+            suggestSearchResults: vi.fn().mockResolvedValue([]),
+        },
+    };
 }
 
-async function runCommand(
-    command: TCommandRunHandlers<typeof lfgCommandCommandRegistrationData>,
-    interaction: ChatInputCommandInteraction,
-) {
-    const run = getCommandRunHandler({ run: command }, interaction);
-    if (!run) {
+async function runCommand(useCases: TApplicationUseCases, interaction: ChatInputCommandInteraction) {
+    const command = getCommandRunHandler(COMMANDS)(interaction);
+    if (!command) {
         throw new Error("No run handler found for test interaction.");
     }
-    await run(interaction);
+    await build({ useCases }, { command }).command(interaction);
 }
 
-describe("composeDiscordCommands lfg", () => {
+describe("lfg command", () => {
     test("replies ephemerally when no channel is configured", async () => {
         const command = getCommand({ result: POSITIVE_RESULT, channel: null });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });

@@ -1,7 +1,6 @@
 import { heading, hyperlink, unorderedList } from "discord.js";
-import type { TCommandRunHandlers } from "../commands/types.ts";
+import type { TCommandRunHandler } from "../commands/types.ts";
 import { createNeutralMessage } from "../message.ts";
-import type { linksCommandCommandRegistrationData } from "../commandRegistrationData/links.ts";
 
 const response = createNeutralMessage({
     embed: {
@@ -51,8 +50,6 @@ const response = createNeutralMessage({
     },
 });
 
-export function getLinksCommand() {
-    return async function (interaction) {
-        await interaction.reply(response);
-    } satisfies TCommandRunHandlers<typeof linksCommandCommandRegistrationData>;
-}
+export const links: TCommandRunHandler = async function (_dependencies, interaction) {
+    await interaction.reply(response);
+};

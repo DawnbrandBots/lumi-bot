@@ -8,17 +8,20 @@ import {
 import { describe, expect, test, vi } from "vitest";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
-import { composeDiscordCommands } from "../../../src/composition/presentation/discord/commands.ts";
+import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
+import { build } from "../../../src/composition/utils/proxify.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
-import type { lfgManageCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfgManage.ts";
+import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import {
     LFG_CODE_OPTION_NAME,
     LFG_NEW_CODE_OPTION_NAME,
     LFG_PLAYER_OPTION_NAME,
 } from "../../../src/presentation/discord/commands/lfg/constants.ts";
-import { LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME } from "../../../src/presentation/discord/commands/lfgManage/constants.ts";
-import type { TCommandRunHandlers } from "../../../src/presentation/discord/commands/types.ts";
+import {
+    LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
+    LFG_MANAGE_COMMAND_NAME,
+} from "../../../src/presentation/discord/commands/lfgManage/constants.ts";
 
 const GUILD_ID = "guild-1";
 const ADMIN_ID = "admin";
@@ -43,6 +46,7 @@ function getInteractionFixture({
     const channelFetch = vi.fn().mockResolvedValue({ type: ChannelType.GuildText, send });
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
+        commandName: LFG_MANAGE_COMMAND_NAME,
         guildId,
         inGuild: vi.fn().mockReturnValue(guildId !== null),
         channelId,
@@ -104,29 +108,24 @@ function getCommand({ result, channel = null }: { readonly result: TLfgResult; r
 
     return {
         getGuildConfig,
-        command: composeDiscordCommands({
-            useCases: {
-                admin: adminUseCases,
-                lfg: lfgUseCases,
-                search: searchUseCases,
-            },
-        })["lfg-manage"].run,
+        command: {
+            admin: adminUseCases,
+            lfg: lfgUseCases,
+            search: searchUseCases,
+        } satisfies TApplicationUseCases,
         lfgUseCases,
     };
 }
 
-async function runCommand(
-    command: TCommandRunHandlers<typeof lfgManageCommandCommandRegistrationData>,
-    interaction: ChatInputCommandInteraction,
-) {
-    const run = getCommandRunHandler({ run: command }, interaction);
-    if (!run) {
+async function runCommand(useCases: TApplicationUseCases, interaction: ChatInputCommandInteraction) {
+    const command = getCommandRunHandler(COMMANDS)(interaction);
+    if (!command) {
         throw new Error("No run handler found for test interaction.");
     }
-    await run(interaction);
+    await build({ useCases }, { command }).command(interaction);
 }
 
-describe("composeDiscordCommands lfg-manage", () => {
+describe("lfg-manage command", () => {
     test("rejects non-guild interactions", async () => {
         const { command, getGuildConfig, lfgUseCases } = getCommand({
             result: { kind: ELfgResultKind.INVALID_ROOM_CODE },

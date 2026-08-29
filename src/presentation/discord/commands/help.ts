@@ -1,12 +1,11 @@
 import { heading, inlineCode, unorderedList } from "discord.js";
-import type { TCommandRunHandlers } from "../commands/types.ts";
-import { createNeutralMessage } from "../message.ts";
-import type { helpCommandCommandRegistrationData } from "../commandRegistrationData/help.ts";
+import type { TCommandRunHandler } from "../commands/types.ts";
 import {
     DISCORD_BOT_DEVELOPMENT_FULL_MARKDOWN_SUPPORT,
     DISCORD_BOT_INTRODUCTION,
     DISCORD_BOT_NAME,
 } from "../constants.ts";
+import { createNeutralMessage } from "../message.ts";
 import allCommandRuntimeInfo from "../runtimeInfo.ts";
 
 const commandsStr = unorderedList(
@@ -31,8 +30,6 @@ export const helpMessage = createNeutralMessage({
     },
 });
 
-export function getHelpCommand() {
-    return async function (interaction) {
-        await interaction.reply(helpMessage);
-    } satisfies TCommandRunHandlers<typeof helpCommandCommandRegistrationData>;
-}
+export const help: TCommandRunHandler = async function (_dependencies, interaction) {
+    await interaction.reply(helpMessage);
+};

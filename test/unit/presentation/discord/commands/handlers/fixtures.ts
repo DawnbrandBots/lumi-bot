@@ -2,8 +2,9 @@ import type { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } 
 import { vi } from "vitest";
 import type {
     TCommandAutocompleteHandler,
-    TCommandRegistry,
+    TCommandAutocompleteRegistry,
     TCommandRunHandler,
+    TCommandRunRegistry,
 } from "../../../../../../src/presentation/discord/commands/types.ts";
 import type {
     nestedCommandCommandRegistrationData,
@@ -30,21 +31,25 @@ type TAllCommandCommandRegistrationData =
  * Fake command handlers tree tests attempt to retrieve handlers from.
  */
 export const commandHandlers = {
+    search: rootRun,
+    rooms: {
+        list: listRun,
+        find: findRun,
+        admin: {
+            move: moveRun,
+            remove: removeRun,
+        },
+    },
+    plain: plainRun,
+} satisfies TCommandRunRegistry<TAllCommandCommandRegistrationData>;
+
+export const autocompleteHandlers = {
     search: {
-        run: rootRun,
         autocomplete: {
             query: rootAutocomplete,
         },
     },
     rooms: {
-        run: {
-            list: listRun,
-            find: findRun,
-            admin: {
-                move: moveRun,
-                remove: removeRun,
-            },
-        },
         autocomplete: {
             find: {
                 query: findAutocomplete,
@@ -56,10 +61,9 @@ export const commandHandlers = {
             },
         },
     },
-    plain: {
-        run: plainRun,
-    },
-} satisfies TCommandRegistry<TAllCommandCommandRegistrationData>;
+    // TODO: can we simply NOT require specifying the property at all?
+    plain: {},
+} satisfies TCommandAutocompleteRegistry<TAllCommandCommandRegistrationData>;
 
 export function getMockChatInputInteraction({
     commandName,

@@ -9,7 +9,6 @@ import { transferRoom } from "./application/lfg/services/transferRoom.ts";
 import LFG_USE_CASES from "./application/lfg/useCases.ts";
 import { generateSearchIndexEntries } from "./application/search/searchAliases.ts";
 import SEARCH_USE_CASES from "./application/search/useCases.ts";
-import { composeDiscordCommands } from "./composition/presentation/discord/commands.ts";
 import { composeDiscordEventHandlers } from "./composition/presentation/discord/eventHandlers.ts";
 import { build } from "./composition/utils/proxify.ts";
 import type { TSearchIndexEntry } from "./domain/search/types.ts";
@@ -94,13 +93,8 @@ const builtUseCases = {
     search: build(useCasesDependencies, USE_CASES.search),
 };
 
-// TODO: ALL commands should be passed as argument to build here as well, even if they technically do not need to be built every time
-// ...which makes me wonder whether some commands should be handled specially
-// also remember that commands can have multiple layers vs fixed layers for repositories/services/use cases
-const commands = composeDiscordCommands({
-    useCases: builtUseCases,
-});
-const eventHandlers = composeDiscordEventHandlers({ commands, useCases: { search: builtUseCases.search } });
+// TODO: the command handler should probably be built here though?
+const eventHandlers = composeDiscordEventHandlers({ useCases: builtUseCases });
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
 const bot = new Client({ intents });

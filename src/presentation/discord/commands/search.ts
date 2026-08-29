@@ -1,11 +1,9 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
-import type { searchCommandCommandRegistrationData } from "../commandRegistrationData/search.ts";
-import type { TCommandRunHandlers } from "../commands/types.ts";
 import mapSearchResultToMessages from "../mappers/search.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "./search/constants.ts";
-import type { TSearchCommandArgs, TSearchCommandBase } from "./search/types.ts";
+import type { TSearchCommandBase } from "./search/types.ts";
 
-export const run: TSearchCommandBase<"useCases.search.resolveSearchInput"> = async function (
+export const search: TSearchCommandBase<"useCases.search.resolveSearchInput"> = async function (
     arg,
     interaction: ChatInputCommandInteraction<CacheType>,
 ): Promise<void> {
@@ -17,9 +15,3 @@ export const run: TSearchCommandBase<"useCases.search.resolveSearchInput"> = asy
         await interaction.followUp(followUp);
     }
 };
-
-export function getSearchCommand(arg: TSearchCommandArgs) {
-    return ((interaction) => run(arg, interaction)) satisfies TCommandRunHandlers<
-        typeof searchCommandCommandRegistrationData
-    >;
-}

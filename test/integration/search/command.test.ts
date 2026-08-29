@@ -13,6 +13,7 @@ import type { TApplicationUseCases } from "../../../src/application/useCases.typ
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import resolveSearchInput from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
+import { build } from "../../../src/composition/utils/proxify.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
@@ -21,14 +22,16 @@ import ADMIN_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/re
 import LFG_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import { getSearchCommand } from "../../../src/presentation/discord/commands/search.ts";
+import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
+import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
+import type { TBuiltCommandRunHandler } from "../../../src/presentation/discord/commands/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 
 let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
 let searchEngine: ISearchEngine<TSearchIndexEntry>;
-let searchCommand: ReturnType<typeof getSearchCommand>;
+let searchCommand: TBuiltCommandRunHandler;
 
 beforeAll(async () => {
     orm = await initTestGameOrm();
@@ -83,7 +86,14 @@ beforeAll(async () => {
             suggestSearchResults: vi.fn().mockResolvedValue([]),
         },
     };
-    searchCommand = getSearchCommand({ useCases });
+    const getRawCommandRunHandler = getCommandRunHandler(COMMANDS);
+    searchCommand = (interaction) => {
+        const command = getRawCommandRunHandler(interaction);
+        if (!command) {
+            throw new Error("No run handler found for test interaction.");
+        }
+        return build({ useCases }, { command }).command(interaction);
+    };
 });
 
 afterAll(async () => {
@@ -112,7 +122,10 @@ describe("search command messages", () => {
         const reply = vi.fn();
         const followUp = vi.fn();
         const interaction = {
+            commandName: "search",
             options: {
+                getSubcommandGroup: () => null,
+                getSubcommand: () => null,
                 getString: (optionName: string) => (optionName === SEARCH_TERMS_OPTION_NAME ? name : null),
             },
             reply,

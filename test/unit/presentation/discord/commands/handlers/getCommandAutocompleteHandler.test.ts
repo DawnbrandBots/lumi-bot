@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { getCommandAutocompleteHandler } from "../../../../../../src/presentation/discord/commands/handlers.ts";
 import {
-    commandHandlers,
+    autocompleteHandlers,
     findAutocomplete,
     getMockAutocompleteInteraction,
     moveAutocomplete,
@@ -10,16 +10,14 @@ import {
 
 describe(getCommandAutocompleteHandler.name, () => {
     test.each([
-        ["root option", commandHandlers.search, { commandName: "search", focusedOption: "query" }, rootAutocomplete],
+        ["root option", { commandName: "search", focusedOption: "query" }, rootAutocomplete],
         [
             "direct subcommand option",
-            commandHandlers.rooms,
             { commandName: "rooms", focusedOption: "query", subcommand: "find" },
             findAutocomplete,
         ],
         [
             "grouped subcommand option",
-            commandHandlers.rooms,
             {
                 commandName: "rooms",
                 focusedOption: "destination",
@@ -28,21 +26,11 @@ describe(getCommandAutocompleteHandler.name, () => {
             },
             moveAutocomplete,
         ],
-        [
-            "command without autocomplete",
-            commandHandlers.plain,
-            { commandName: "plain", focusedOption: "query" },
-            undefined,
-        ],
-        [
-            "unknown option",
-            commandHandlers.rooms,
-            { commandName: "rooms", focusedOption: "unknown", subcommand: "find" },
-            undefined,
-        ],
-    ] as const)("%s", (_name, command, interactionOptions, expected) => {
+        ["command without autocomplete", { commandName: "plain", focusedOption: "query" }, undefined],
+        ["unknown option", { commandName: "rooms", focusedOption: "unknown", subcommand: "find" }, undefined],
+    ] as const)("%s", (_name, interactionOptions, expected) => {
         const interaction = getMockAutocompleteInteraction(interactionOptions);
 
-        expect(getCommandAutocompleteHandler(command, interaction)).toBe(expected);
+        expect(getCommandAutocompleteHandler(autocompleteHandlers, interaction)).toBe(expected);
     });
 });

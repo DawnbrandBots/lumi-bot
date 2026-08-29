@@ -1,11 +1,13 @@
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
 import { EAdminResultKind, type TAdminUseCases } from "../../../src/application/admin/types.ts";
-import type { adminCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/admin.ts";
-import { getAdminCommand } from "../../../src/presentation/discord/commands/admin.ts";
+import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
+import { build } from "../../../src/composition/utils/proxify.ts";
+import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import {
     ADMIN_ACTION_OPTION_NAME,
     ADMIN_CHANNEL_OPTION_NAME,
+    ADMIN_COMMAND_NAME,
     ADMIN_LFG_CHANNEL_SUBCOMMAND_NAME,
     ADMIN_LFG_GROUP_NAME,
     ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME,
@@ -16,7 +18,6 @@ import {
 } from "../../../src/presentation/discord/commands/admin/constants.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import type { TAdminCommandArgs } from "../../../src/presentation/discord/commands/admin/types.ts";
-import type { TCommandRunHandlers } from "../../../src/presentation/discord/commands/types.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
@@ -42,6 +43,7 @@ function getInteractionFixture({
 } = {}) {
     const reply = vi.fn().mockResolvedValue(REPLY);
     const interaction = {
+        commandName: ADMIN_COMMAND_NAME,
         guildId: GUILD_ID,
         inGuild: vi.fn().mockReturnValue(inGuild),
         memberPermissions: {
@@ -60,15 +62,12 @@ function getInteractionFixture({
     return { interaction, reply };
 }
 
-async function runCommand(
-    command: TCommandRunHandlers<typeof adminCommandCommandRegistrationData>,
-    interaction: ChatInputCommandInteraction,
-) {
-    const run = getCommandRunHandler({ run: command }, interaction);
-    if (!run) {
+async function runCommand(useCases: TApplicationUseCases, interaction: ChatInputCommandInteraction) {
+    const command = getCommandRunHandler(COMMANDS)(interaction);
+    if (!command) {
         throw new Error("No run handler found for test interaction.");
     }
-    await run(interaction);
+    await build({ useCases }, { command }).command(interaction);
 }
 
 function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandArgs {
@@ -108,12 +107,12 @@ function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandAr
     };
 }
 
-describe(getAdminCommand.name, () => {
+describe("admin command", () => {
     test("rejects interactions outside guilds", async () => {
-        const command = getAdminCommand(getAdminCommandArgs());
+        const { useCases } = getAdminCommandArgs();
         const { interaction, reply } = getInteractionFixture({ inGuild: false });
 
-        await runCommand(command, interaction);
+        await runCommand(useCases, interaction);
 
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -124,10 +123,10 @@ describe(getAdminCommand.name, () => {
     });
 
     test("rejects users without ManageGuild", async () => {
-        const command = getAdminCommand(getAdminCommandArgs());
+        const { useCases } = getAdminCommandArgs();
         const { interaction, reply } = getInteractionFixture({ canManageGuild: false });
 
-        await runCommand(command, interaction);
+        await runCommand(useCases, interaction);
 
         expect(reply).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -142,13 +141,13 @@ describe(getAdminCommand.name, () => {
             kind: EAdminResultKind.LFG_CHANNEL_SET,
             value: { channel: CHANNEL_ID },
         });
-        const command = getAdminCommand(getAdminCommandArgs({ setLfgChannel }));
+        const { useCases } = getAdminCommandArgs({ setLfgChannel });
         const { interaction, reply } = getInteractionFixture({
             action: "set",
             channel: { id: CHANNEL_ID, type: ChannelType.GuildText },
         });
 
-        await runCommand(command, interaction);
+        await runCommand(useCases, interaction);
 
         expect(setLfgChannel).toHaveBeenCalledWith({ guildId: GUILD_ID, channelId: CHANNEL_ID });
         expect(reply).toHaveBeenCalledWith(
@@ -169,14 +168,14 @@ describe(getAdminCommand.name, () => {
             kind: EAdminResultKind.LFG_ROLE_ADDED,
             value: { role: ROLE_ID },
         });
-        const command = getAdminCommand(getAdminCommandArgs({ addLfgRole }));
+        const { useCases } = getAdminCommandArgs({ addLfgRole });
         const { interaction, reply } = getInteractionFixture({
             subcommand: ADMIN_LFG_ROLE_SUBCOMMAND_NAME,
             action: "add",
             role: { id: ROLE_ID },
         });
 
-        await runCommand(command, interaction);
+        await runCommand(useCases, interaction);
 
         expect(addLfgRole).toHaveBeenCalledWith({ guildId: GUILD_ID, roleId: ROLE_ID });
         expect(reply).toHaveBeenCalledWith(
@@ -197,14 +196,14 @@ describe(getAdminCommand.name, () => {
             kind: EAdminResultKind.LFG_ROLE_PING_COOLDOWN_SET,
             value: { minutes: 45 },
         });
-        const command = getAdminCommand(getAdminCommandArgs({ setLfgRolePingCooldown }));
+        const { useCases } = getAdminCommandArgs({ setLfgRolePingCooldown });
         const { interaction, reply } = getInteractionFixture({
             subcommand: ADMIN_LFG_ROLE_PING_COOLDOWN_SUBCOMMAND_NAME,
             action: "set",
             minutes: 45,
         });
 
-        await runCommand(command, interaction);
+        await runCommand(useCases, interaction);
 
         expect(setLfgRolePingCooldown).toHaveBeenCalledWith({ guildId: GUILD_ID, minutes: 45 });
         expect(reply).toHaveBeenCalledWith(
@@ -225,10 +224,10 @@ describe(getAdminCommand.name, () => {
             kind: EAdminResultKind.LFG_GET_CONFIG,
             value: null,
         });
-        const command = getAdminCommand(getAdminCommandArgs({ getGuildConfig }));
+        const { useCases } = getAdminCommandArgs({ getGuildConfig });
         const { interaction, reply } = getInteractionFixture({ subcommand: ADMIN_LFG_SHOW_SUBCOMMAND_NAME });
 
-        await runCommand(command, interaction);
+        await runCommand(useCases, interaction);
 
         expect(getGuildConfig).toHaveBeenCalledWith({ guildId: GUILD_ID });
         expect(reply).toHaveBeenCalledWith(

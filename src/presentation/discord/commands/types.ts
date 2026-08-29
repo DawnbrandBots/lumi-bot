@@ -22,11 +22,18 @@ export type TGuildCommandInteraction = ThisGuardType<ChatInputCommandInteraction
 export type TCommandArgs = {
     readonly useCases: TApplicationUseCases;
 };
+
+export type TCommandDependencies = TCommandArgs;
+
+export type TCommandRunHandler = (
+    dependencies: TCommandDependencies,
+    interaction: ChatInputCommandInteraction<CacheType>,
+) => MaybePromise<void>;
+
+export type TBuiltCommandRunHandler = (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<void>;
 /**
  * Executes a Discord chat-input command, replies to its interaction and may run other Discrod-related actions like sending additional messages.
  */
-export type TCommandRunHandler = (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<void>;
-
 /**
  * Produces choices for an option focused by a Discord autocomplete interaction.
  */
@@ -130,6 +137,15 @@ export type TCommandRunHandlers<CommandRegistrationData extends ICommandCommandR
     TRunHandlersForOptions<TOptionsOf<CommandRegistrationData>>;
 
 /**
+ * Turns command registration data into a command-name to raw run-handler map.
+ */
+export type TCommandRunRegistry<CommandCommandRegistrationData extends ICommandCommandRegistrationData> = {
+    readonly [
+        CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]
+    ]: TCommandRunHandlers<CommandRegistrationData>;
+};
+
+/**
  * Autocomplete handlers required by the options declaring `autocomplete: true`.
  */
 export type TCommandAutocompleteHandlers<CommandRegistrationData extends ICommandCommandRegistrationData> = [
@@ -137,6 +153,15 @@ export type TCommandAutocompleteHandlers<CommandRegistrationData extends IComman
 ] extends [never]
     ? TBasicAutocompleteHandlers<TOptionsOf<CommandRegistrationData>>
     : TSubcommandAutocompleteHandlers<TOptionsOf<CommandRegistrationData>>;
+
+/**
+ * Turns command registration data into a command-name to autocomplete-handler map.
+ */
+export type TCommandAutocompleteRegistry<CommandCommandRegistrationData extends ICommandCommandRegistrationData> = {
+    readonly [CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]]: {
+        readonly autocomplete?: TCommandAutocompleteHandlers<CommandRegistrationData>;
+    };
+};
 
 /**
  * Object with two trees `run` and `autocomplete` containing functions that will be executed for a specific command/command option when receiving a command/autocomplete interaction.
