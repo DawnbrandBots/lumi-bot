@@ -15,7 +15,7 @@ import {
 import type { TAdminCommandBase } from "../types.ts";
 
 export const lfgChannel: TAdminCommandBase<
-    "useCases.clearLfgChannel" | "useCases.getGuildConfig" | "useCases.setLfgChannel"
+    "useCases.admin.clearLfgChannel" | "useCases.admin.getGuildConfig" | "useCases.admin.setLfgChannel"
 > = async function (arg, interaction): Promise<InteractionReplyOptions> {
     const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
     const channel = interaction.options.getChannel(ADMIN_CHANNEL_OPTION_NAME, false);
@@ -39,18 +39,18 @@ export const lfgChannel: TAdminCommandBase<
     }
 
     if (action === null && !channel) {
-        const configResult = await arg.useCases.getGuildConfig({ guildId: interaction.guildId });
+        const configResult = await arg.useCases.admin.getGuildConfig({ guildId: interaction.guildId });
         return mapAdminLfgChannelHelpToMessage({ channel: configResult.value?.lfgChannel });
     }
 
     if (action === ADMIN_ACTION_SET && channel) {
         return mapAdminResultToMessage(
-            await arg.useCases.setLfgChannel({ guildId: interaction.guildId, channelId: channel.id }),
+            await arg.useCases.admin.setLfgChannel({ guildId: interaction.guildId, channelId: channel.id }),
         );
     }
 
     if (action === ADMIN_ACTION_CLEAR && !channel) {
-        return mapAdminResultToMessage(await arg.useCases.clearLfgChannel({ guildId: interaction.guildId }));
+        return mapAdminResultToMessage(await arg.useCases.admin.clearLfgChannel({ guildId: interaction.guildId }));
     }
 
     if (action === ADMIN_ACTION_SET && !channel) {

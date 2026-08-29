@@ -1,6 +1,6 @@
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { EAdminResultKind } from "../../../src/application/admin/types.ts";
+import { EAdminResultKind, type TAdminUseCases } from "../../../src/application/admin/types.ts";
 import type { adminCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/admin.ts";
 import { getAdminCommand } from "../../../src/presentation/discord/commands/admin.ts";
 import {
@@ -71,17 +71,39 @@ async function runCommand(
     await run(interaction);
 }
 
-function getAdminCommandArgs(arg: Partial<TAdminCommandArgs["useCases"]> = {}): TAdminCommandArgs {
+function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandArgs {
     return {
         useCases: {
-            addLfgRole: vi.fn(),
-            clearLfgChannel: vi.fn(),
-            clearLfgRolePingCooldown: vi.fn(),
-            getGuildConfig: vi.fn(),
-            removeLfgRole: vi.fn(),
-            setLfgChannel: vi.fn(),
-            setLfgRolePingCooldown: vi.fn(),
-            ...arg,
+            admin: {
+                addLfgRole: vi.fn(),
+                clearLfgChannel: vi.fn(),
+                clearLfgRolePingCooldown: vi.fn(),
+                getGuildConfig: vi.fn(),
+                getLfgRoleConfig: vi.fn(),
+                removeLfgRole: vi.fn(),
+                setLfgChannel: vi.fn(),
+                setLfgRoleLastPingedAt: vi.fn(),
+                setLfgRolePingCooldown: vi.fn(),
+                ...arg,
+            },
+            lfg: {
+                changeRoomCode: vi.fn(),
+                changeOwnedRoomCode: vi.fn(),
+                createRoom: vi.fn(),
+                disbandRoom: vi.fn(),
+                disbandOwnedRoom: vi.fn(),
+                getLfgStatus: vi.fn(),
+                kickPlayerFromRoom: vi.fn(),
+                kickPlayerFromOwnedRoom: vi.fn(),
+                leaveRoom: vi.fn(),
+                movePlayerToRoom: vi.fn(),
+                transferRoomToPlayer: vi.fn(),
+                transferOwnedRoomToPlayer: vi.fn(),
+            },
+            search: {
+                resolveSearchInput: vi.fn(),
+                suggestSearchResults: vi.fn(),
+            },
         },
     };
 }

@@ -15,7 +15,9 @@ import {
 import type { TAdminCommandBase } from "../types.ts";
 
 export const lfgRolePingCooldown: TAdminCommandBase<
-    "useCases.clearLfgRolePingCooldown" | "useCases.getGuildConfig" | "useCases.setLfgRolePingCooldown"
+    | "useCases.admin.clearLfgRolePingCooldown"
+    | "useCases.admin.getGuildConfig"
+    | "useCases.admin.setLfgRolePingCooldown"
 > = async function (arg, interaction): Promise<InteractionReplyOptions> {
     const action = interaction.options.getString(ADMIN_ACTION_OPTION_NAME, false);
     const minutes = interaction.options.getInteger(ADMIN_MINUTES_OPTION_NAME, false);
@@ -30,7 +32,7 @@ export const lfgRolePingCooldown: TAdminCommandBase<
     }
 
     if (action === null && minutes === null) {
-        const configResult = await arg.useCases.getGuildConfig({ guildId: interaction.guildId });
+        const configResult = await arg.useCases.admin.getGuildConfig({ guildId: interaction.guildId });
         return mapAdminLfgRolePingCooldownHelpToMessage({
             minutes: configResult.value?.lfgRolePingCooldownMinutes,
         });
@@ -38,12 +40,14 @@ export const lfgRolePingCooldown: TAdminCommandBase<
 
     if (action === ADMIN_ACTION_SET && minutes !== null) {
         return mapAdminResultToMessage(
-            await arg.useCases.setLfgRolePingCooldown({ guildId: interaction.guildId, minutes }),
+            await arg.useCases.admin.setLfgRolePingCooldown({ guildId: interaction.guildId, minutes }),
         );
     }
 
     if (action === ADMIN_ACTION_CLEAR && minutes === null) {
-        return mapAdminResultToMessage(await arg.useCases.clearLfgRolePingCooldown({ guildId: interaction.guildId }));
+        return mapAdminResultToMessage(
+            await arg.useCases.admin.clearLfgRolePingCooldown({ guildId: interaction.guildId }),
+        );
     }
 
     if (action === ADMIN_ACTION_SET && minutes === null) {

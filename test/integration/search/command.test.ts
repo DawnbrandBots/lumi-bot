@@ -9,6 +9,7 @@ import type {
 import type { TAdminPersistence } from "../../../src/application/admin/persistence.types.ts";
 import type { TLfgPersistence } from "../../../src/application/lfg/persistence.types.ts";
 import type { TApplicationPersistence } from "../../../src/application/persistence.types.ts";
+import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import resolveSearchInput from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
@@ -51,11 +52,38 @@ beforeAll(async () => {
     };
     const dependencies: TSearchUseCaseDependencies = { persistence: applicationPersistence };
 
-    searchCommand = getSearchCommand({
-        useCases: {
-            resolveSearchInput: (input) => resolveSearchInput(dependencies, input),
+    const useCases: TApplicationUseCases = {
+        admin: {
+            addLfgRole: vi.fn(),
+            clearLfgChannel: vi.fn(),
+            clearLfgRolePingCooldown: vi.fn(),
+            getGuildConfig: vi.fn(),
+            getLfgRoleConfig: vi.fn(),
+            removeLfgRole: vi.fn(),
+            setLfgChannel: vi.fn(),
+            setLfgRoleLastPingedAt: vi.fn(),
+            setLfgRolePingCooldown: vi.fn(),
         },
-    });
+        lfg: {
+            changeRoomCode: vi.fn(),
+            changeOwnedRoomCode: vi.fn(),
+            createRoom: vi.fn(),
+            disbandRoom: vi.fn(),
+            disbandOwnedRoom: vi.fn(),
+            getLfgStatus: vi.fn(),
+            kickPlayerFromRoom: vi.fn(),
+            kickPlayerFromOwnedRoom: vi.fn(),
+            leaveRoom: vi.fn(),
+            movePlayerToRoom: vi.fn(),
+            transferRoomToPlayer: vi.fn(),
+            transferOwnedRoomToPlayer: vi.fn(),
+        },
+        search: {
+            resolveSearchInput: (input) => resolveSearchInput(dependencies, input),
+            suggestSearchResults: vi.fn().mockResolvedValue([]),
+        },
+    };
+    searchCommand = getSearchCommand({ useCases });
 });
 
 afterAll(async () => {

@@ -1,6 +1,5 @@
-import type { TAdminUseCases } from "../../../../application/admin/useCases.types.ts";
+import type { TApplicationUseCases } from "../../../../application/useCases.types.ts";
 import type { TLfgResult } from "../../../../application/lfg/types.ts";
-import type { TLfgUseCases } from "../../../../application/lfg/useCases.types.ts";
 import { getLfgAutocomplete } from "../../../../presentation/discord/autocomplete/lfg.ts";
 import type { lfgCommandCommandRegistrationData } from "../../../../presentation/discord/commandRegistrationData/lfg.ts";
 import { changeCode as changeOwnedRoomCode } from "../../../../presentation/discord/commands/lfg/changeCode.ts";
@@ -72,29 +71,11 @@ function composeLfgRunHandlers(arg: TLfgCommandArgs) {
     } satisfies TCommandRunHandlers<typeof lfgCommandCommandRegistrationData>;
 }
 
-export function composeLfgCommand(arg: { readonly adminUseCases: TAdminUseCases; readonly lfgUseCases: TLfgUseCases }) {
-    const lfgCommandArgs = {
-        useCases: {
-            admin: {
-                getGuildConfig: arg.adminUseCases.getGuildConfig,
-                getLfgRoleConfig: arg.adminUseCases.getLfgRoleConfig,
-                setLfgRoleLastPingedAt: arg.adminUseCases.setLfgRoleLastPingedAt,
-            },
-            lfg: {
-                changeOwnedRoomCode: arg.lfgUseCases.changeOwnedRoomCode,
-                createRoom: arg.lfgUseCases.createRoom,
-                disbandOwnedRoom: arg.lfgUseCases.disbandOwnedRoom,
-                getLfgStatus: arg.lfgUseCases.getLfgStatus,
-                kickPlayerFromOwnedRoom: arg.lfgUseCases.kickPlayerFromOwnedRoom,
-                leaveRoom: arg.lfgUseCases.leaveRoom,
-                movePlayerToRoom: arg.lfgUseCases.movePlayerToRoom,
-                transferOwnedRoomToPlayer: arg.lfgUseCases.transferOwnedRoomToPlayer,
-            },
-        },
-    } satisfies TLfgCommandArgs;
+export function composeLfgCommand(arg: { readonly useCases: TApplicationUseCases }) {
+    const lfgCommandArgs = { useCases: arg.useCases } satisfies TLfgCommandArgs;
 
     return {
         run: composeLfgRunHandlers(lfgCommandArgs),
-        autocomplete: getLfgAutocomplete({ getLfgStatus: arg.lfgUseCases.getLfgStatus }),
+        autocomplete: getLfgAutocomplete({ getLfgStatus: arg.useCases.lfg.getLfgStatus }),
     } satisfies TCommandHandlers<typeof lfgCommandCommandRegistrationData>;
 }

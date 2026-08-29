@@ -104,7 +104,13 @@ function getCommand({ result, channel = null }: { readonly result: TLfgResult; r
 
     return {
         getGuildConfig,
-        command: composeDiscordCommands({ adminUseCases, lfgUseCases, searchUseCases })["lfg-manage"].run,
+        command: composeDiscordCommands({
+            useCases: {
+                admin: adminUseCases,
+                lfg: lfgUseCases,
+                search: searchUseCases,
+            },
+        })["lfg-manage"].run,
         lfgUseCases,
     };
 }

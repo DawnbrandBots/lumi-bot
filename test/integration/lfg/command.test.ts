@@ -137,21 +137,23 @@ function getCommand({
         value: lfgRole ? { role: lfgRole, lastPingedAt: lfgRoleLastPingedAt } : null,
     });
     return composeDiscordCommands({
-        adminUseCases: {
-            addLfgRole: vi.fn(),
-            clearLfgChannel: vi.fn(),
-            clearLfgRolePingCooldown: vi.fn(),
-            getGuildConfig,
-            getLfgRoleConfig,
-            removeLfgRole: vi.fn(),
-            setLfgChannel: vi.fn(),
-            setLfgRoleLastPingedAt,
-            setLfgRolePingCooldown: vi.fn(),
-        },
-        lfgUseCases,
-        searchUseCases: {
-            resolveSearchInput: vi.fn(),
-            suggestSearchResults: vi.fn().mockResolvedValue([]),
+        useCases: {
+            admin: {
+                addLfgRole: vi.fn(),
+                clearLfgChannel: vi.fn(),
+                clearLfgRolePingCooldown: vi.fn(),
+                getGuildConfig,
+                getLfgRoleConfig,
+                removeLfgRole: vi.fn(),
+                setLfgChannel: vi.fn(),
+                setLfgRoleLastPingedAt,
+                setLfgRolePingCooldown: vi.fn(),
+            },
+            lfg: lfgUseCases,
+            search: {
+                resolveSearchInput: vi.fn(),
+                suggestSearchResults: vi.fn().mockResolvedValue([]),
+            },
         },
     }).lfg.run;
 }

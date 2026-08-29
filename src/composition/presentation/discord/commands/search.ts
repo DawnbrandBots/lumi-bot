@@ -2,11 +2,11 @@ import { getSearchAutocomplete } from "../../../../presentation/discord/autocomp
 import type { searchCommandCommandRegistrationData } from "../../../../presentation/discord/commandRegistrationData/search.ts";
 import { getSearchCommand } from "../../../../presentation/discord/commands/search.ts";
 import type { TCommandHandlers } from "../../../../presentation/discord/commands/types.ts";
-import type { TSearchUseCases } from "../../../../application/search/useCases.types.ts";
+import type { TApplicationUseCases } from "../../../../application/useCases.types.ts";
 
-export function composeSearchCommand(searchUseCases: TSearchUseCases) {
+export function composeSearchCommand(useCases: TApplicationUseCases) {
     return {
-        run: getSearchCommand({ useCases: { resolveSearchInput: searchUseCases.resolveSearchInput } }),
-        autocomplete: getSearchAutocomplete({ suggestSearchResults: searchUseCases.suggestSearchResults }),
+        run: getSearchCommand({ useCases }),
+        autocomplete: getSearchAutocomplete({ suggestSearchResults: useCases.search.suggestSearchResults }),
     } satisfies TCommandHandlers<typeof searchCommandCommandRegistrationData>;
 }

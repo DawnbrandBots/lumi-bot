@@ -98,9 +98,7 @@ const builtUseCases = {
 // ...which makes me wonder whether some commands should be handled specially
 // also remember that commands can have multiple layers vs fixed layers for repositories/services/use cases
 const commands = composeDiscordCommands({
-    adminUseCases: builtUseCases.admin,
-    lfgUseCases: builtUseCases.lfg,
-    searchUseCases: builtUseCases.search,
+    useCases: builtUseCases,
 });
 const eventHandlers = composeDiscordEventHandlers({ commands, useCases: { search: builtUseCases.search } });
 
