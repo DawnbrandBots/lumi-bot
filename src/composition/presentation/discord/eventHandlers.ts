@@ -19,10 +19,12 @@ export type TDiscordEventHandlers = {
 
 export function composeDiscordEventHandlers(arg: {
     readonly commands: TCommandRegistry<TAllCommandRegistrationData>;
-    readonly searchUseCases: TSearchUseCases;
+    readonly useCases: {
+        readonly search: Pick<TSearchUseCases, "resolveSearchInput">;
+    };
 }): TDiscordEventHandlers {
     const messageCreate: THandleMessageCreate = (interaction) =>
-        handleMessageCreate({ interaction, resolveSearchInput: arg.searchUseCases.resolveSearchInput });
+        handleMessageCreate({ interaction, resolveSearchInput: arg.useCases.search.resolveSearchInput });
     const commandInteraction: THandleCommandInteraction = (interaction) =>
         handleCommandInteraction({ commands: arg.commands, interaction });
     const autocompleteInteraction: THandleAutocompleteInteraction = (interaction) =>

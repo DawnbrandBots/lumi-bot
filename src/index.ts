@@ -101,7 +101,7 @@ const commands = composeDiscordCommands({
     lfgUseCases: builtUseCases.lfg,
     searchUseCases: builtUseCases.search,
 });
-const eventHandlers = composeDiscordEventHandlers({ commands, searchUseCases: builtUseCases.search });
+const eventHandlers = composeDiscordEventHandlers({ commands, useCases: { search: builtUseCases.search } });
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
 const bot = new Client({ intents });
