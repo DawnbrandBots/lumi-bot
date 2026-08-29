@@ -1,8 +1,8 @@
-import type { TAdminPersistence } from "./persistence.types.ts";
+import type { TApplicationPersistence } from "../persistence.types.ts";
 import type { TAdminResultTypes } from "./types.ts";
 
 export type TAdminUseCaseDependencies = {
-    readonly persistence: TAdminPersistence;
+    readonly persistence: TApplicationPersistence;
 };
 
 export type TAdminUseCaseArgs = {

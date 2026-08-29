@@ -5,7 +5,7 @@ export async function getGuildConfig(
     dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string },
 ): Promise<TAdminResultTypes["getGuildConfig"]> {
-    const config = await dependencies.persistence.getGuildConfig(arg);
+    const config = await dependencies.persistence.admin.getGuildConfig(arg);
     return {
         kind: EAdminResultKind.LFG_GET_CONFIG,
         value: config,

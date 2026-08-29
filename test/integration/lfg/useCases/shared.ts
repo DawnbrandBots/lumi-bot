@@ -6,6 +6,8 @@ import type { TLfgPersistence } from "../../../../src/application/lfg/persistenc
 import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
 import LFG_USE_CASES from "../../../../src/application/lfg/useCases.ts";
 import type { TLfgUseCases } from "../../../../src/application/lfg/useCases.types.ts";
+import type { TApplicationPersistence } from "../../../../src/application/persistence.types.ts";
+import type { TSearchPersistence } from "../../../../src/application/search/persistence.types.ts";
 import { composeLfgServices } from "../../../../src/composition/application/lfg/services.ts";
 import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
 import {
@@ -34,6 +36,12 @@ type TestRoom = {
 };
 
 const config = getSameConfigInMemory(migrationMikroOrmConfig);
+
+const SEARCH_PERSISTENCE: TSearchPersistence = {
+    getBestSearchIndexEntry: () => null,
+    getEntityByKindAndId: () => null,
+    getSearchIndexEntries: () => [],
+};
 
 function timestamp(value: Date | string): number {
     return value instanceof Date ? value.getTime() : new Date(value).getTime();
@@ -65,19 +73,18 @@ class LfgUseCases {
         const withLfgUnitOfWork = getWithUnitOfWork({
             em,
             getDependencies: (em) => {
-                // TODO: most likely a sign that persistence should be organized by aggregate/entity rather than feature
-                // we definitely want both admin and lfg to be able to access guild config without extra steps
-                const lfgPersistence = getPersistenceWithContext<Omit<TLfgPersistence, "getGuildConfig">>({
+                const lfgPersistence = getPersistenceWithContext<TLfgPersistence>({
                     em,
                     repositories: LFG_REPOSITORIES,
                 });
-                const adminPersistence = getPersistenceWithContext<Pick<TAdminPersistence, "getGuildConfig">>({
+                const adminPersistence = getPersistenceWithContext<TAdminPersistence>({
                     em,
                     repositories: ADMIN_REPOSITORIES,
                 });
-                const persistence: TLfgPersistence = {
-                    ...lfgPersistence,
-                    getGuildConfig: adminPersistence.getGuildConfig,
+                const persistence: TApplicationPersistence = {
+                    admin: adminPersistence,
+                    lfg: lfgPersistence,
+                    search: SEARCH_PERSISTENCE,
                 };
                 const services = composeLfgServices(persistence);
                 return { persistence, services };

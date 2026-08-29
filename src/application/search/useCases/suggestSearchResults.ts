@@ -3,6 +3,6 @@ import type { TSearchUseCaseDependencies, TSearchUseCases } from "../useCases.ty
 export default function suggestSearchResults(
     dependencies: TSearchUseCaseDependencies,
     { input, limit }: Parameters<TSearchUseCases["suggestSearchResults"]>[0],
-): ReturnType<TSearchUseCaseDependencies["persistence"]["getSearchIndexEntries"]> {
-    return dependencies.persistence.getSearchIndexEntries({ input, limit });
+): ReturnType<TSearchUseCaseDependencies["persistence"]["search"]["getSearchIndexEntries"]> {
+    return dependencies.persistence.search.getSearchIndexEntries({ input, limit });
 }

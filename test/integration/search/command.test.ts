@@ -6,12 +6,18 @@ import type {
     TGetEntityByKindAndId,
     TSearchPersistence,
 } from "../../../src/application/search/persistence.types.ts";
+import type { TAdminPersistence } from "../../../src/application/admin/persistence.types.ts";
+import type { TLfgPersistence } from "../../../src/application/lfg/persistence.types.ts";
+import type { TApplicationPersistence } from "../../../src/application/persistence.types.ts";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import resolveSearchInput from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
+import { getPersistenceWithContext } from "../../../src/composition/application/useCases.ts";
+import ADMIN_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
+import LFG_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { getSearchCommand } from "../../../src/presentation/discord/commands/search.ts";
@@ -38,7 +44,12 @@ beforeAll(async () => {
         getEntityByKindAndId,
         getSearchIndexEntries,
     };
-    const dependencies: TSearchUseCaseDependencies = { persistence };
+    const applicationPersistence: TApplicationPersistence = {
+        admin: getPersistenceWithContext<TAdminPersistence>({ em, repositories: ADMIN_REPOSITORIES }),
+        lfg: getPersistenceWithContext<TLfgPersistence>({ em, repositories: LFG_REPOSITORIES }),
+        search: persistence,
+    };
+    const dependencies: TSearchUseCaseDependencies = { persistence: applicationPersistence };
 
     searchCommand = getSearchCommand({
         useCases: {

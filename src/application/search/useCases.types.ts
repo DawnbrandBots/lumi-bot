@@ -1,10 +1,10 @@
 import type { MaybePromise } from "../../utils/types.ts";
 import type { TSearchIndexEntry } from "../../domain/search/types.ts";
-import type { TSearchPersistence } from "./persistence.types.ts";
+import type { TApplicationPersistence } from "../persistence.types.ts";
 import type { TSearchResult } from "./types.ts";
 
 export type TSearchUseCaseDependencies = {
-    readonly persistence: TSearchPersistence;
+    readonly persistence: TApplicationPersistence;
 };
 
 export type TSearchUseCases = {

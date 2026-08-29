@@ -5,10 +5,10 @@ export async function removeLfgRole(
     dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string; readonly roleId: string },
 ): Promise<TAdminResultTypes["removeLfgRole"]> {
-    const lfgRole = await dependencies.persistence.getLfgRole(arg);
+    const lfgRole = await dependencies.persistence.admin.getLfgRole(arg);
     if (!lfgRole) {
         return { kind: EAdminResultKind.LFG_ROLE_NOT_FOUND, value: { role: arg.roleId } };
     }
-    await dependencies.persistence.removeLfgRole(arg);
+    await dependencies.persistence.admin.removeLfgRole(arg);
     return { kind: EAdminResultKind.LFG_ROLE_REMOVED, value: { role: arg.roleId } };
 }

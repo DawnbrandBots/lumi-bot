@@ -3,20 +3,19 @@ import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemo
 import type { IRoom } from "../../domain/lfg/models/room.types.ts";
 import type { IUser } from "../../domain/lfg/models/user.types.ts";
 import type { MaybePromise } from "../../utils/types.ts";
-import type { TLfgPersistence } from "./persistence.types.ts";
+import type { TApplicationPersistence } from "../persistence.types.ts";
 import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 export type {
     TChangeLfgRoomCode,
     TCreateLfgRoom,
     TFindLfgRoomByCode,
     TFindLfgRoomByUser,
-    TGetLfgGuildConfig,
     TLfgPersistence,
     TListLfgRooms,
     TMoveUserToLfgRoom,
     TRemoveLfgRoom,
     TRemoveLfgRoomPlayer,
-    TSetLfgRoomOwner
+    TSetLfgRoomOwner,
 } from "./persistence.types.ts";
 export type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
@@ -251,7 +250,7 @@ export type TLfgServices = {
 };
 
 export type TLfgDependencies = {
-    readonly persistence: TLfgPersistence;
+    readonly persistence: TApplicationPersistence;
     readonly services: TLfgServices;
 };
 

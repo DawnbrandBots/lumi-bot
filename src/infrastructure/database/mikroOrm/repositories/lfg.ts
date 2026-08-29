@@ -10,9 +10,7 @@ import { removeRoomPlayer } from "./lfg/removeRoomPlayer.ts";
 import { setRoomOwner } from "./lfg/setRoomOwner.ts";
 import type { TLfgPersistenceFunction } from "./lfg/types.ts";
 
-type TLfgRoomPersistence = Omit<TLfgPersistence, "getGuildConfig">;
-
-const LFG: { [K in keyof TLfgRoomPersistence]: TLfgPersistenceFunction<TLfgRoomPersistence[K]> } = {
+const LFG: { [K in keyof TLfgPersistence]: TLfgPersistenceFunction<TLfgPersistence[K]> } = {
     changeRoomCode,
     createRoom,
     findRoomByCode,

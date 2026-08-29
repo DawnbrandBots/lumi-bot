@@ -47,9 +47,9 @@ const searchRepositories = {
 };
 
 const REPOSITORIES = {
+    // TODO: might be better if repositories are organized by aggregate instead of "feature"
     admin: ADMIN_REPOSITORIES,
-    // TODO: this is a sign repositories should be organized another way
-    lfg: { ...LFG_REPOSITORIES, getGuildConfig: ADMIN_REPOSITORIES.getGuildConfig },
+    lfg: LFG_REPOSITORIES,
     search: searchRepositories,
 } as const;
 
@@ -77,7 +77,7 @@ const builtRepositories = {
 };
 
 const servicesDependencies = {
-    persistence: builtRepositories.lfg,
+    persistence: builtRepositories,
     get services() {
         return builtLfgServices;
     },
@@ -86,11 +86,12 @@ const builtLfgServices = build(servicesDependencies, APPLICATION_SERVICES.lfg);
 const builtServices = { lfg: builtLfgServices };
 
 // TODO: ultimately, there should be a function that takes a record of record of useCases and builds all at once.
+const useCasesDependencies = { persistence: builtRepositories };
 // TODO: should composed types be introduced for objects like builtUseCases?
 const builtUseCases = {
-    admin: build({ persistence: builtRepositories.admin }, USE_CASES.admin),
-    lfg: build({ persistence: builtRepositories.lfg, services: builtServices.lfg }, USE_CASES.lfg),
-    search: build({ persistence: builtRepositories.search }, USE_CASES.search),
+    admin: build(useCasesDependencies, USE_CASES.admin),
+    lfg: build({ persistence: builtRepositories, services: builtServices.lfg }, USE_CASES.lfg),
+    search: build(useCasesDependencies, USE_CASES.search),
 };
 
 // TODO: ALL commands should be passed as argument to build here as well, even if they technically do not need to be built every time

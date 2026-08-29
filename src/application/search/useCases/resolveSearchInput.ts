@@ -11,13 +11,13 @@ export default async function resolveSearchInput(
         return { kind: ESearchResultKind.INPUT_TOO_LONG };
     }
 
-    const searchItem = await dependencies.persistence.getBestSearchIndexEntry(input);
+    const searchItem = await dependencies.persistence.search.getBestSearchIndexEntry(input);
 
     if (!searchItem) {
         return { kind: ESearchResultKind.NO_RESULT };
     }
 
-    const entity = await dependencies.persistence.getEntityByKindAndId(searchItem);
+    const entity = await dependencies.persistence.search.getEntityByKindAndId(searchItem);
 
     if (!entity) {
         return {

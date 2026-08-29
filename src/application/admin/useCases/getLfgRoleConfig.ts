@@ -5,7 +5,7 @@ export async function getLfgRoleConfig(
     dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string; readonly roleId: string },
 ): Promise<TAdminResultTypes["getLfgRoleConfig"]> {
-    const lfgRole = await dependencies.persistence.getLfgRole(arg);
+    const lfgRole = await dependencies.persistence.admin.getLfgRole(arg);
     return {
         kind: EAdminResultKind.LFG_GET_ROLE_CONFIG,
         value: lfgRole,

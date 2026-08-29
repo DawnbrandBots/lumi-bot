@@ -4,5 +4,5 @@ export async function setLfgRoleLastPingedAt(
     dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string; readonly roleId: string; readonly date: Date },
 ): Promise<void> {
-    await dependencies.persistence.setLfgRoleLastPingedAt(arg);
+    await dependencies.persistence.admin.setLfgRoleLastPingedAt(arg);
 }

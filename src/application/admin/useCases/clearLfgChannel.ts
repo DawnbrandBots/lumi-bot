@@ -5,6 +5,6 @@ export async function clearLfgChannel(
     dependencies: TAdminUseCaseDependencies,
     arg: { readonly guildId: string },
 ): Promise<TAdminResultTypes["clearLfgChannel"]> {
-    await dependencies.persistence.clearLfgChannel(arg);
+    await dependencies.persistence.admin.clearLfgChannel(arg);
     return { kind: EAdminResultKind.LFG_CHANNEL_CLEARED };
 }
