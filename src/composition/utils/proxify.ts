@@ -4,6 +4,7 @@ const err = () => {
     );
 };
 
+// TODO: basic proxify logic and caching should be separate functions
 const proxify = <T extends Record<PropertyKey, unknown>>(f: <K extends keyof T>(key: K) => T[K]): T => {
     const cache = new Map<PropertyKey, unknown>();
 
@@ -46,11 +47,18 @@ function bindFunction<Dependencies, Function extends TBuildableFunction>(
         Reflect.apply(functionToBind, undefined, [dependencies, ...args]) as ReturnType<Function>;
 }
 
+export function buildFunction<Dependencies, Function extends TBuildableFunction>(
+    dependencies: Dependencies,
+    functionToBuild: Function,
+): TBuiltFunction<Function> {
+    return bindFunction(dependencies, functionToBuild);
+}
+
 export function build<Dependencies, Functions extends TBuildableFunctions>(
     dependencies: Dependencies,
     functions: Functions,
 ): TBuiltFunctions<Functions> {
-    return proxify<TBuiltFunctions<Functions>>((key) => bindFunction(dependencies, functions[key]));
+    return proxify<TBuiltFunctions<Functions>>((key) => buildFunction(dependencies, functions[key]));
 }
 
 export default proxify;

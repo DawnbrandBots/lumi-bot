@@ -6,8 +6,9 @@ import {
     roleMention,
     type InteractionReplyOptions,
 } from "discord.js";
-import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 import { ADMIN_LFG_ROLE_LIMIT } from "../../../application/admin/constants.ts";
+import type { TAdminGuildConfig, TAdminResult } from "../../../application/admin/types.ts";
+import { EAdminResultKind } from "../../../application/admin/types.ts";
 import {
     ADMIN_ACTION_ADD,
     ADMIN_ACTION_CLEAR,
@@ -25,9 +26,7 @@ import {
     ADMIN_ROLE_OPTION_NAME,
 } from "../commands/admin/constants.ts";
 import { LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME } from "../commands/lfg/constants.ts";
-import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
-import type { TAdminResult } from "../../../application/admin/types.ts";
-import { EAdminResultKind } from "../../../application/admin/types.ts";
+import { createErrorMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 
 function formatChannel(channel: string | null | undefined): string {
     return channel ? channelMention(channel) : ADMIN_LFG_CHANNEL_NO_VALUE;
@@ -211,4 +210,5 @@ function mapAdminResultToMessage(result: TAdminResult) {
 }
 
 export default mapAdminResultToMessage;
+// TODO: shouldn't this be elsewhere???
 const LFG_NOT_CONFIGURED_DESCRIPTION = "Not configured";

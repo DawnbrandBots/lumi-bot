@@ -1,5 +1,4 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TSearchPersistence } from "../../../../../application/search/persistence.types.ts";
 import type { TSearchKind } from "../../../../../domain/search/types.ts";
 import type { Disciple } from "../../models/game/disciple.ts";
 import type { Music } from "../../models/game/music.ts";

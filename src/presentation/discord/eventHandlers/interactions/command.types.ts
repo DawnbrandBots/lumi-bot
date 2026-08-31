@@ -1,4 +1,4 @@
-import type { CacheType, ChatInputCommandInteraction } from "discord.js";
+import type { CacheType, ChatInputCommandInteraction, CommandInteraction } from "discord.js";
 
 export type TCommandInteraction = ChatInputCommandInteraction<CacheType>;
-export type THandleCommandInteraction = (interaction: TCommandInteraction) => Promise<void>;
+export type THandleCommandInteraction = (interaction: CommandInteraction<CacheType>) => Promise<void>;

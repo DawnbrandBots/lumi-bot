@@ -1,5 +1,5 @@
-import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import isKeyOfExactObject from "../../../utils/isKeyOfExactObject.ts";
+import type { TCommandInteraction } from "../eventHandlers/interactions/command.types.ts";
 import type { TBuiltCommandRunHandler, TCommandRunHandler } from "./types.ts";
 
 type THandler = (...args: never[]) => unknown;
@@ -9,7 +9,7 @@ interface IHandlerMap<Handler extends THandler> {
     readonly [name: string]: THandlerTree<Handler>;
 }
 
-function getSubcommandRoute(interaction: ChatInputCommandInteraction<CacheType>): string[] {
+function getSubcommandRoute(interaction: TCommandInteraction): string[] {
     const subcommandGroup = interaction.options.getSubcommandGroup(false);
     const subcommand = interaction.options.getSubcommand(false);
 
@@ -38,13 +38,9 @@ function getHandlerAtRoute<Handler extends THandler>(
     return typeof current === "function" ? current : undefined;
 }
 // TODO: funky business to review
-export type TCommandRunHandlerGetter = (
-    interaction: ChatInputCommandInteraction<CacheType>,
-) => TCommandRunHandler | undefined;
+export type TCommandRunHandlerGetter = (interaction: TCommandInteraction) => TCommandRunHandler | undefined;
 
-export type TBuiltCommandRunHandlerGetter = (
-    interaction: ChatInputCommandInteraction<CacheType>,
-) => TBuiltCommandRunHandler | undefined;
+export type TBuiltCommandRunHandlerGetter = (interaction: TCommandInteraction) => TBuiltCommandRunHandler | undefined;
 
 // TODO: funky business to review
 /**
