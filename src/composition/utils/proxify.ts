@@ -49,20 +49,23 @@ type TBuiltFunctions<Functions extends TBuildableFunctions> = {
 export function buildFunction<Dependencies, Function extends TBuildableFunction>(
     dependencies: Dependencies,
     functionToBind: Function,
-    middleware?: TBuildableFunctionMiddleware,
 ): TBuiltFunction<Function> {
-    const functionToBuild = middleware?.(functionToBind) ?? functionToBind;
-
     return (...args: TRemainingArguments<Function>) =>
-        Reflect.apply(functionToBuild, undefined, [dependencies, ...args]) as ReturnType<Function>;
+        Reflect.apply(functionToBind, undefined, [dependencies, ...args]) as ReturnType<Function>;
 }
 
 export function build<Dependencies, Functions extends TBuildableFunctions>(
     dependencies: Dependencies,
     functions: Functions,
+    // TODO: instead of requiring a middleware, update the caller to build and provide a Record with middleware'd functions?
     middleware?: TBuildableFunctionMiddleware,
 ): TBuiltFunctions<Functions> {
-    return proxify<TBuiltFunctions<Functions>>((key) => buildFunction(dependencies, functions[key], middleware));
+    return proxify<TBuiltFunctions<Functions>>((key) =>
+        // TODO: is there a TS bug or something I don't understand here?
+        // - With `buildFunction(dependencies, functions[key])`, functions[key] is never undefined.
+        // - But with the following line, ! must be appended to both access to functions
+        buildFunction(dependencies, middleware?.(functions[key]!) ?? functions[key]!),
+    );
 }
 
 export default proxify;
