@@ -49,15 +49,15 @@ export type TBuiltCommandAutocompleteHandler = (
 /**
  * The Discord API representation of a chat-input command.
  *
- * Concrete command registration data should use `as const satisfies {@link ICommandCommandRegistrationData}` so command,
+ * Concrete command registration data should use `as const satisfies {@link ICommandRegistrationData}` so command,
  * subcommand and option names remain available as literal types.
  */
-export type ICommandCommandRegistrationData = RESTPostAPIChatInputApplicationCommandsJSONBody;
+export type ICommandRegistrationData = RESTPostAPIChatInputApplicationCommandsJSONBody;
 
 /**
  * Combines a Discord command registration data with application-only help metadata.
  */
-export type ICommandRuntimeInfo<CommandRegistrationData extends ICommandCommandRegistrationData> = {
+export type ICommandRuntimeInfo<CommandRegistrationData extends ICommandRegistrationData> = {
     readonly commandRegistrationData: CommandRegistrationData;
     readonly pingEquivalent?: string;
 };
@@ -151,13 +151,14 @@ type TSubcommandAutocompleteHandlers<
  * A command without subcommands resolves to one handler. Commands with
  * subcommands resolve to an object mirroring their subcommand-group structure.
  */
-export type TCommandRunHandlers<CommandRegistrationData extends ICommandCommandRegistrationData> =
-    TRunHandlersForOptions<TOptionsOf<CommandRegistrationData>>;
+export type TCommandRunHandlers<CommandRegistrationData extends ICommandRegistrationData> = TRunHandlersForOptions<
+    TOptionsOf<CommandRegistrationData>
+>;
 
 /**
  * Turns command registration data into a command-name to raw run-handler map.
  */
-export type TCommandRunRegistry<CommandCommandRegistrationData extends ICommandCommandRegistrationData> = {
+export type TCommandRunRegistry<CommandCommandRegistrationData extends ICommandRegistrationData> = {
     readonly [
         CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]
     ]: TCommandRunHandlers<CommandRegistrationData>;
@@ -167,7 +168,7 @@ export type TCommandRunRegistry<CommandCommandRegistrationData extends ICommandC
  * Autocomplete handlers required by the options declaring `autocomplete: true`.
  */
 export type TCommandAutocompleteHandlers<
-    CommandRegistrationData extends ICommandCommandRegistrationData,
+    CommandRegistrationData extends ICommandRegistrationData,
     Handler extends TAutocompleteHandler = TCommandAutocompleteHandler,
 > = [TSubcommandRoute<TOptionsOf<CommandRegistrationData>>] extends [never]
     ? TBasicAutocompleteHandlers<TOptionsOf<CommandRegistrationData>, Handler>
@@ -177,7 +178,7 @@ export type TCommandAutocompleteHandlers<
  * Turns command registration data into a command-name to autocomplete-handler map.
  */
 export type TCommandAutocompleteRegistry<
-    CommandCommandRegistrationData extends ICommandCommandRegistrationData,
+    CommandCommandRegistrationData extends ICommandRegistrationData,
     Handler extends TAutocompleteHandler = TCommandAutocompleteHandler,
 > = {
     readonly [
@@ -216,16 +217,16 @@ export type TCommandAutocompleteRegistry<
  * }
  * ```
  */
-export type TCommandHandlers<CommandRegistrationData extends ICommandCommandRegistrationData> = {
+export type TCommandHandlers<CommandRegistrationData extends ICommandRegistrationData> = {
     readonly run: TCommandRunHandlers<CommandRegistrationData>;
 } & (keyof TCommandAutocompleteHandlers<CommandRegistrationData> extends never
     ? { readonly autocomplete?: never }
     : { readonly autocomplete: TCommandAutocompleteHandlers<CommandRegistrationData> });
 
 /**
- * Turns a {@link ICommandCommandRegistrationData} union into a ({@link ICommandCommandRegistrationData.name} to {@link TCommandHandlers})-map.
+ * Turns a {@link ICommandRegistrationData} union into a ({@link ICommandRegistrationData.name} to {@link TCommandHandlers})-map.
  */
-export type TCommandRegistry<CommandCommandRegistrationData extends ICommandCommandRegistrationData> = {
+export type TCommandRegistry<CommandCommandRegistrationData extends ICommandRegistrationData> = {
     readonly [
         CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]
     ]: TCommandHandlers<CommandRegistrationData>;

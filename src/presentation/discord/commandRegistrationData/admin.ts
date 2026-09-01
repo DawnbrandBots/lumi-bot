@@ -23,7 +23,7 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
 } from "../commands/admin/constants.ts";
-import type { ICommandCommandRegistrationData } from "../commands/types.ts";
+import type { ICommandRegistrationData } from "../commands/types.ts";
 
 const setOrClearActionOption = {
     type: ApplicationCommandOptionType.String,
@@ -109,4 +109,4 @@ export const adminCommandCommandRegistrationData = {
             ],
         },
     ],
-} as const satisfies ICommandCommandRegistrationData;
+} as const satisfies ICommandRegistrationData;

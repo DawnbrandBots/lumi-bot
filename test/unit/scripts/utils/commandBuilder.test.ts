@@ -8,7 +8,7 @@ import {
 } from "discord.js";
 import { describe, expect, test } from "vitest";
 import { getSlashCommandBuilder } from "../../../../scripts/utils/commandBuilder.ts";
-import type { ICommandCommandRegistrationData } from "../../../../src/presentation/discord/commands/types.ts";
+import type { ICommandRegistrationData } from "../../../../src/presentation/discord/commands/types.ts";
 import allCommandRuntimeInfo from "../../../../src/presentation/discord/runtimeInfo.ts";
 
 const commandWithBasicOptions = {
@@ -88,7 +88,7 @@ const commandWithBasicOptions = {
             description: "Attachment option.",
         },
     ],
-} as const satisfies ICommandCommandRegistrationData;
+} as const satisfies ICommandRegistrationData;
 
 const commandWithSubcommands = {
     name: "rooms",
@@ -128,9 +128,9 @@ const commandWithSubcommands = {
             ],
         },
     ],
-} as const satisfies ICommandCommandRegistrationData;
+} as const satisfies ICommandRegistrationData;
 
-const tooManyOptions: ICommandCommandRegistrationData = {
+const tooManyOptions: ICommandRegistrationData = {
     name: "options",
     description: "Has too many options.",
     options: Array.from({ length: 26 }, (_, index) => ({
@@ -140,12 +140,12 @@ const tooManyOptions: ICommandCommandRegistrationData = {
     })),
 };
 
-const invalidCommandName: ICommandCommandRegistrationData = {
+const invalidCommandName: ICommandRegistrationData = {
     name: "INVALID",
     description: "Invalid name.",
 };
 
-const invalidOptionName: ICommandCommandRegistrationData = {
+const invalidOptionName: ICommandRegistrationData = {
     name: "invalid-option",
     description: "Has an invalid option.",
     options: [
@@ -157,7 +157,7 @@ const invalidOptionName: ICommandCommandRegistrationData = {
     ],
 };
 
-const tooManyChoices: ICommandCommandRegistrationData = {
+const tooManyChoices: ICommandRegistrationData = {
     name: "choices",
     description: "Has too many choices.",
     options: [

@@ -30,7 +30,7 @@ import {
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfg/constants.ts";
-import type { ICommandCommandRegistrationData } from "../commands/types.ts";
+import type { ICommandRegistrationData } from "../commands/types.ts";
 
 const roomCodeOption = {
     type: ApplicationCommandOptionType.String,
@@ -125,4 +125,4 @@ export const lfgCommandCommandRegistrationData = {
             ],
         },
     ],
-} as const satisfies ICommandCommandRegistrationData;
+} as const satisfies ICommandRegistrationData;

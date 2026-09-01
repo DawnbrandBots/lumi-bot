@@ -18,7 +18,7 @@ import {
     LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
     LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfgManage/constants.ts";
-import type { ICommandCommandRegistrationData } from "../commands/types.ts";
+import type { ICommandRegistrationData } from "../commands/types.ts";
 
 const playerOption = {
     type: ApplicationCommandOptionType.User,
@@ -91,4 +91,4 @@ export const lfgManageCommandCommandRegistrationData = {
             options: [autocompletedRoomCodeOption],
         },
     ],
-} as const satisfies ICommandCommandRegistrationData;
+} as const satisfies ICommandRegistrationData;

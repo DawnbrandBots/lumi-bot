@@ -31,12 +31,13 @@ import type {
     SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 import { ApplicationCommandOptionType, SlashCommandBuilder } from "discord.js";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- referred to in file comment above
+
+import type { ICommandRegistrationData } from "../../src/presentation/discord/commands/types.ts";
+// TODO: disable eslint error for next line (due to variable only referred to in comments)? How is eslint ignoring this in CI anyway?
 import type allCommandRuntimeInfo from "../../src/presentation/discord/runtimeInfo.ts";
-import type { ICommandCommandRegistrationData } from "../../src/presentation/discord/commands/types.ts";
 
 type TNameAndDescriptionData = Pick<
-    ICommandCommandRegistrationData,
+    ICommandRegistrationData,
     "name" | "name_localizations" | "description" | "description_localizations"
 >;
 
@@ -179,11 +180,11 @@ function setSubcommandGroupData(
 }
 
 /**
- * Builds a {@link SlashCommandBuilder} instance from a {@link ICommandCommandRegistrationData}-shaped object.
+ * Builds a {@link SlashCommandBuilder} instance from a {@link ICommandRegistrationData}-shaped object.
  *
  * Unless the returned builder is updated, calling {@link SlashCommandBuilder.toJSON} should return an object equal to the one provided to {@link getSlashCommandBuilder}.
  */
-export function getSlashCommandBuilder(commandRegistrationData: ICommandCommandRegistrationData): SlashCommandBuilder {
+export function getSlashCommandBuilder(commandRegistrationData: ICommandRegistrationData): SlashCommandBuilder {
     const builder = setNameAndDescription(new SlashCommandBuilder(), commandRegistrationData);
 
     if (commandRegistrationData.contexts !== undefined) {
