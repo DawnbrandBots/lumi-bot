@@ -125,11 +125,11 @@ function withinTransaction<Dependencies, Argument, Return>(
 }
 
 // TODO: ultimately, there should be a function that takes a record of record of useCases and builds all at once.
-const useCasesDependencies = { persistence: builtRepositories };
+const useCasesDependencies = { persistence: builtRepositories, services: builtServices };
 // TODO: should composed types be introduced for objects like builtUseCases?
 const builtUseCases = {
     admin: build(useCasesDependencies, USE_CASES.admin, withinTransaction),
-    lfg: build({ persistence: builtRepositories, services: builtServices.lfg }, USE_CASES.lfg, withinTransaction),
+    lfg: build(useCasesDependencies, USE_CASES.lfg, withinTransaction),
     search: build(useCasesDependencies, USE_CASES.search, withinTransaction),
 };
 
