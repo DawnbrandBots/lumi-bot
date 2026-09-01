@@ -1,5 +1,20 @@
+import type { Paths, PickDeep } from "type-fest";
 import type { TId } from "../../domain/game/models/base.types.ts";
 import type { TSearchEntity, TSearchIndexEntry, TSearchKind } from "../../domain/search/types.ts";
+import type { TApplicationPersistence } from "../persistence.types.ts";
+import type { TSearchUseCaseArgs, TSearchUseCases } from "./useCases.types.ts";
+
+export type TSearchUseCaseDependencies = {
+    readonly persistence: TApplicationPersistence;
+};
+
+export type TSearchUseCaseBase<
+    Name extends keyof TSearchUseCases,
+    DependencyPaths extends Paths<TSearchUseCaseDependencies>,
+> = (
+    dependencies: PickDeep<TSearchUseCaseDependencies, DependencyPaths>,
+    arg: TSearchUseCaseArgs[Name],
+) => ReturnType<TSearchUseCases[Name]>;
 
 export const enum ESearchResultKind {
     SUCCESS = "SUCCESS",

@@ -1,12 +1,10 @@
 import { SEARCH_MAX_INPUT_LENGTH } from "../constants.ts";
-import type { TSearchResult } from "../types.ts";
-import { ESearchResultKind } from "../types.ts";
-import type { TSearchUseCaseDependencies } from "../useCases.types.ts";
+import { ESearchResultKind, type TSearchUseCaseBase } from "../types.ts";
 
-export default async function resolveSearchInput(
-    dependencies: TSearchUseCaseDependencies,
-    input: string,
-): Promise<TSearchResult> {
+export const resolveSearchInput: TSearchUseCaseBase<
+    "resolveSearchInput",
+    "persistence.search.getBestSearchIndexEntry" | "persistence.search.getEntityByKindAndId"
+> = async function (dependencies, input) {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
         return { kind: ESearchResultKind.INPUT_TOO_LONG };
     }
@@ -30,4 +28,4 @@ export default async function resolveSearchInput(
         kind: ESearchResultKind.SUCCESS,
         value: { kind: searchItem.kind, entity, searchItem },
     };
-}
+};
