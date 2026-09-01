@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { EAdminResultKind } from "../../../../src/application/admin/types.ts";
 import { GUILD_ARG, LFG_ROLE_PING_COOLDOWN_ARG, useAdminUseCases } from "./shared.ts";
 
-describe("clearLfgRolePingCooldown", { concurrent: false }, () => {
+describe("clearLfgRolePingCooldown", () => {
     const admin = useAdminUseCases();
 
     test("clears role ping cooldown", async () => {

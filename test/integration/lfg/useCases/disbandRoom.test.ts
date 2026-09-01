@@ -3,7 +3,7 @@ import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
 import { disbandRoom } from "../../../../src/application/lfg/useCases/disbandRoom.ts";
 import { GUILD_ID, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
 
-describe(disbandRoom.name, { concurrent: false }, () => {
+describe(disbandRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("deletes the room identified by code", async () => {

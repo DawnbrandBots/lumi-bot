@@ -4,7 +4,7 @@ import { leaveRoom } from "../../../../src/application/lfg/useCases/leaveRoom.ts
 import { ELfgPlayerRemovalKind } from "../../../../src/domain/lfg/models/playerRemoval.types.ts";
 import { GUILD_ID, OWNER, PLAYER_1, PLAYER_2, useLfgUseCases } from "./shared.ts";
 
-describe(leaveRoom.name, { concurrent: false }, () => {
+describe(leaveRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("deletes the room when the last player leaves", async () => {

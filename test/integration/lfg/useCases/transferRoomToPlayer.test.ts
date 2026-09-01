@@ -3,7 +3,7 @@ import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
 import { transferRoomToPlayer } from "../../../../src/application/lfg/useCases/transferRoomToPlayer.ts";
 import { GUILD_ID, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
 
-describe(transferRoomToPlayer.name, { concurrent: false }, () => {
+describe(transferRoomToPlayer.name, () => {
     const lfg = useLfgUseCases();
 
     test("transfers ownership in the room identified by code", async () => {

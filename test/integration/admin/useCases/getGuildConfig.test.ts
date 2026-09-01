@@ -10,7 +10,7 @@ import {
     useAdminUseCases,
 } from "./shared.ts";
 
-describe("getGuildConfig", { concurrent: false }, () => {
+describe("getGuildConfig", () => {
     const admin = useAdminUseCases();
 
     test("returns null when config is missing", async () => {

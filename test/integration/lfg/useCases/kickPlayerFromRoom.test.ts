@@ -4,7 +4,7 @@ import { kickPlayerFromRoom } from "../../../../src/application/lfg/useCases/kic
 import { ELfgPlayerRemovalKind } from "../../../../src/domain/lfg/models/playerRemoval.types.ts";
 import { GUILD_ID, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
 
-describe(kickPlayerFromRoom.name, { concurrent: false }, () => {
+describe(kickPlayerFromRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("removes a player from the room identified by code", async () => {

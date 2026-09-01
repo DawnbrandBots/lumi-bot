@@ -4,7 +4,7 @@ import { changeRoomCode } from "../../../../src/application/lfg/useCases/changeR
 import { FRIEND_BATTLE_CODE_MAXIMUM_LENGTH } from "../../../../src/domain/game/constants.ts";
 import { GUILD_ID, NEW_ROOM_CODE, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
 
-describe(changeRoomCode.name, { concurrent: false }, () => {
+describe(changeRoomCode.name, () => {
     const lfg = useLfgUseCases();
 
     test("changes the room code identified by code", async () => {

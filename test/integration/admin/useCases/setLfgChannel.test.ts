@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { EAdminResultKind } from "../../../../src/application/admin/types.ts";
 import { CHANNEL_ID, LFG_CHANNEL_ARG, useAdminUseCases } from "./shared.ts";
 
-describe("setLfgChannel", { concurrent: false }, () => {
+describe("setLfgChannel", () => {
     const admin = useAdminUseCases();
 
     test("sets channel", async () => {

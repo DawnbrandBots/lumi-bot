@@ -3,7 +3,7 @@ import { ADMIN_LFG_ROLE_LIMIT } from "../../../../src/application/admin/constant
 import { EAdminResultKind } from "../../../../src/application/admin/types.ts";
 import { GUILD_ARG, GUILD_ID, LFG_ROLE_ARG, ROLE_ID, useAdminUseCases } from "./shared.ts";
 
-describe("addLfgRole", { concurrent: false }, () => {
+describe("addLfgRole", () => {
     const admin = useAdminUseCases();
 
     test("adds role", async () => {

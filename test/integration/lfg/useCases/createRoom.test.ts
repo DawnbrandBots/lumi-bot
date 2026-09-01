@@ -4,7 +4,7 @@ import { createRoom } from "../../../../src/application/lfg/useCases/createRoom.
 import { FRIEND_BATTLE_CODE_MAXIMUM_LENGTH } from "../../../../src/domain/game/constants.ts";
 import { GUILD_ID, OTHER_GUILD_ID, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
 
-describe(createRoom.name, { concurrent: false }, () => {
+describe(createRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("creates a room with the creator as owner", async () => {

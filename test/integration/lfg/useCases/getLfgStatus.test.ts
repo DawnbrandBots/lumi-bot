@@ -3,7 +3,7 @@ import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
 import { getLfgStatus } from "../../../../src/application/lfg/useCases/getLfgStatus.ts";
 import { GUILD_ID, OTHER_GUILD_ID, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
 
-describe(getLfgStatus.name, { concurrent: false }, () => {
+describe(getLfgStatus.name, () => {
     const lfg = useLfgUseCases();
 
     test("only displays rooms from the requested guild", async () => {

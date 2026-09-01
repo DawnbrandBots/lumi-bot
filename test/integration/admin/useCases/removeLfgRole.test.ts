@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { EAdminResultKind } from "../../../../src/application/admin/types.ts";
 import { LFG_ROLE_ARG, ROLE_ID, useAdminUseCases } from "./shared.ts";
 
-describe("removeLfgRole", { concurrent: false }, () => {
+describe("removeLfgRole", () => {
     const admin = useAdminUseCases();
 
     test("removes role", async () => {

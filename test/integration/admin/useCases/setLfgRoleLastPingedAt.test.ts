@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { EAdminResultKind } from "../../../../src/application/admin/types.ts";
 import { LFG_ROLE_ARG, LFG_ROLE_LAST_PINGED_AT_ARG, ROLE_ID, useAdminUseCases } from "./shared.ts";
 
-describe("setLfgRoleLastPingedAt", { concurrent: false }, () => {
+describe("setLfgRoleLastPingedAt", () => {
     const admin = useAdminUseCases();
 
     test("sets role last ping date", async () => {

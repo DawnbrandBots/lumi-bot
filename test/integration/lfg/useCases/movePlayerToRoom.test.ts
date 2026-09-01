@@ -4,7 +4,7 @@ import { movePlayerToRoom } from "../../../../src/application/lfg/useCases/moveP
 import { ELfgPlayerRemovalKind } from "../../../../src/domain/lfg/models/playerRemoval.types.ts";
 import { GUILD_ID, OWNER, PLAYER_1, PLAYER_2, PLAYER_3, useLfgUseCases } from "./shared.ts";
 
-describe(movePlayerToRoom.name, { concurrent: false }, () => {
+describe(movePlayerToRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("joins an existing room", async () => {

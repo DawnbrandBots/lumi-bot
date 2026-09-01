@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { EAdminResultKind } from "../../../../src/application/admin/types.ts";
 import { LFG_ROLE_ARG, LFG_ROLE_LAST_PINGED_AT_ARG, ROLE_ID, useAdminUseCases } from "./shared.ts";
 
-describe("getLfgRoleConfig", { concurrent: false }, () => {
+describe("getLfgRoleConfig", () => {
     const admin = useAdminUseCases();
 
     test("returns null when role config is missing", async () => {
