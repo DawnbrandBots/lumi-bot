@@ -31,7 +31,7 @@ const proxify = <T extends Record<PropertyKey, unknown>>(f: <K extends keyof T>(
 export type TBuildableFunction = (dependencies: never, arg: never) => MaybePromise<unknown>;
 type TBuildableFunctions = Record<PropertyKey, TBuildableFunction>;
 // TODO: allow middleware to change return type?
-type TBuildableFunctionMiddleware = <Dependencies, Argument, Return>(
+export type TBuildableFunctionMiddleware = <Dependencies, Argument, Return>(
     functionToBind: (dependencies: Dependencies, arg: Argument) => MaybePromise<Return>,
 ) => (dependencies: Dependencies, arg: Argument) => MaybePromise<Return>;
 

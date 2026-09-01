@@ -9,6 +9,7 @@ import { transferRoom } from "./application/lfg/services/transferRoom.ts";
 import LFG_USE_CASES from "./application/lfg/useCases.ts";
 import { generateSearchIndexEntries } from "./application/search/searchAliases.ts";
 import SEARCH_USE_CASES from "./application/search/useCases.ts";
+import getWithinTransaction from "./composition/infrastructure/withinTransaction.ts";
 import { build, buildFunction } from "./composition/utils/proxify.ts";
 import type { TSearchIndexEntry } from "./domain/search/types.ts";
 import { appMikroOrmConfig } from "./infrastructure/database/mikroOrm/config.ts";
@@ -40,11 +41,8 @@ import type { THandleCommandInteraction } from "./presentation/discord/eventHand
 import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
 import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.types.ts";
 import { createErrorMessage } from "./presentation/discord/message.ts";
-import type { MaybePromise } from "./utils/types.ts";
 
 const log = debug("index.ts");
-// TODO: proper use of logger?
-const transaclog = debug("transaction");
 
 const orm = await initOrm(appMikroOrmConfig);
 // TODO: if not using RequestContext, useContext still necessary?
@@ -109,20 +107,7 @@ const servicesDependencies = {
 const builtLfgServices = build(servicesDependencies, APPLICATION_SERVICES.lfg);
 const builtServices = { lfg: builtLfgServices };
 
-// TODO: move in dedicated files, remove "unit of work functions" in both src and tests I guess
-function withinTransaction<Dependencies, Argument, Return>(
-    f: (dependencies: Dependencies, arg: Argument) => MaybePromise<Return>,
-): (dependencies: Dependencies, arg: Argument) => MaybePromise<Return> {
-    return async (dependencies, arg) => {
-        // TODO: proper logging?
-        transaclog("Transaction start");
-        // clear: true so the internally forked transactional em does not share its parent's identity map
-        // https://mikro-orm.io/docs/transactions#context-propagation
-        const result = await orm.em.transactional(async () => await f(dependencies, arg), { clear: true });
-        transaclog("Transaction end");
-        return result;
-    };
-}
+const withinTransaction = getWithinTransaction(em);
 
 // TODO: ultimately, there should be a function that takes a record of record of useCases and builds all at once.
 const useCasesDependencies = { persistence: builtRepositories, services: builtServices };
