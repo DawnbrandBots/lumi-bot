@@ -1,24 +1,14 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import type { TApplicationPersistence } from "../../../src/application/persistence.types.ts";
-import type {
-    TGetBestSearchIndexEntry,
-    TGetEntityByKindAndId,
-    TSearchPersistence,
-} from "../../../src/application/search/persistence.types.ts";
-import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
 import { resolveSearchInput } from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
+import { composePersistence } from "../../../src/composition/infrastructure/persistence.ts";
+import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
 import { build } from "../../../src/composition/utils/proxify.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
-import ADMIN_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
-import LFG_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
-import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
@@ -33,23 +23,8 @@ let searchCommand: TBuiltCommandRunHandler;
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<TSearchIndexEntry>({
-        items: generateSearchIndexEntries(await getEntitiesForGeneratingSearchAliases({ em })),
-    });
-    const getBestSearchIndexEntry: TGetBestSearchIndexEntry = searchEngine.searchOne.bind(searchEngine);
-    const getEntityByKindAndId: TGetEntityByKindAndId = (arg) => getGameDataEntityForSearchResult({ em }, arg);
-    const getSearchIndexEntries = (arg: { readonly input: string; readonly limit?: number }) =>
-        searchEngine.search(arg.input, arg.limit);
-    const persistence: TSearchPersistence = {
-        getBestSearchIndexEntry,
-        getEntityByKindAndId,
-        getSearchIndexEntries,
-    };
-    const applicationPersistence: TApplicationPersistence = {
-        admin: build({ em }, ADMIN_REPOSITORIES),
-        lfg: build({ em }, LFG_REPOSITORIES),
-        search: persistence,
-    };
+    searchEngine = await createSearchEngine({ em });
+    const applicationPersistence = composePersistence({ em, searchEngine });
     const dependencies: TSearchUseCaseDependencies = { persistence: applicationPersistence };
 
     const useCases: TApplicationUseCases = {

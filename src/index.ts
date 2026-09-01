@@ -7,19 +7,12 @@ import { kickFromRoom } from "./application/lfg/services/kickFromRoom.ts";
 import { removePlayerFromRoom } from "./application/lfg/services/removePlayerFromRoom.ts";
 import { transferRoom } from "./application/lfg/services/transferRoom.ts";
 import LFG_USE_CASES from "./application/lfg/useCases.ts";
-import { generateSearchIndexEntries } from "./application/search/searchAliases.ts";
 import SEARCH_USE_CASES from "./application/search/useCases.ts";
-import getWithinTransaction from "./composition/infrastructure/withinTransaction.ts";
+import { composeInfrastructure } from "./composition/infrastructure.ts";
+import { createSearchEngine } from "./composition/infrastructure/search.ts";
 import { build, buildFunction } from "./composition/utils/proxify.ts";
-import type { TSearchIndexEntry } from "./domain/search/types.ts";
 import { appMikroOrmConfig } from "./infrastructure/database/mikroOrm/config.ts";
 import { initOrm } from "./infrastructure/database/mikroOrm/orm.ts";
-import ADMIN_REPOSITORIES from "./infrastructure/database/mikroOrm/repositories/admin.ts";
-import LFG_REPOSITORIES from "./infrastructure/database/mikroOrm/repositories/lfg.ts";
-import SEARCH_REPOSITORIES, {
-    SEARCH_ALIAS_REPOSITORIES,
-} from "./infrastructure/database/mikroOrm/repositories/search.ts";
-import { FuseSearchEngine, type SearchEngine } from "./infrastructure/search/engine.ts";
 import { AUTOCOMPLETE } from "./presentation/discord/autocomplete.ts";
 import type { TAutocompleteHandlerGetter } from "./presentation/discord/autocomplete/handlers.ts";
 import { getAutocompleteHandler as getRawAutocompleteHandlerFromHandlers } from "./presentation/discord/autocomplete/handlers.ts";
@@ -47,33 +40,8 @@ const log = debug("index.ts");
 const orm = await initOrm(appMikroOrmConfig);
 // TODO: if not using RequestContext, useContext still necessary?
 const em = orm.em.fork({ useContext: true });
-
-// TODO: should be moved to a new infrastructure/database/mikroOrm/queries/ directory
-const entitiesForGeneratingSearchAliases = await SEARCH_ALIAS_REPOSITORIES.getEntitiesForGeneratingSearchAliases({
-    em,
-});
-const searchItems = generateSearchIndexEntries(entitiesForGeneratingSearchAliases);
-const searchEngine = new FuseSearchEngine({ items: searchItems });
-
-// TODO: some funky business going on for this repository
-const searchRepositories = {
-    ...SEARCH_REPOSITORIES,
-    getBestSearchIndexEntry: (
-        { searchEngine }: { readonly searchEngine: SearchEngine<TSearchIndexEntry> },
-        input: string,
-    ) => searchEngine.searchOne(input),
-    getSearchIndexEntries: (
-        { searchEngine }: { readonly searchEngine: SearchEngine<TSearchIndexEntry> },
-        { input, limit }: { readonly input: string; readonly limit?: number },
-    ) => searchEngine.search(input, limit),
-};
-
-const REPOSITORIES = {
-    // TODO: might be better if repositories are organized by aggregate instead of "feature"
-    admin: ADMIN_REPOSITORIES,
-    lfg: LFG_REPOSITORIES,
-    search: searchRepositories,
-} as const;
+const searchEngine = await createSearchEngine({ em });
+const { persistence: builtRepositories, withinTransaction } = composeInfrastructure({ em, searchEngine });
 
 const APPLICATION_SERVICES = {
     lfg: {
@@ -91,13 +59,6 @@ const USE_CASES = {
     search: SEARCH_USE_CASES,
 } as const;
 
-const repositoriesDependencies = { em, searchEngine };
-const builtRepositories = {
-    admin: build(repositoriesDependencies, REPOSITORIES.admin),
-    lfg: build(repositoriesDependencies, REPOSITORIES.lfg),
-    search: build(repositoriesDependencies, REPOSITORIES.search),
-};
-
 const servicesDependencies = {
     persistence: builtRepositories,
     get services() {
@@ -106,8 +67,6 @@ const servicesDependencies = {
 };
 const builtLfgServices = build(servicesDependencies, APPLICATION_SERVICES.lfg);
 const builtServices = { lfg: builtLfgServices };
-
-const withinTransaction = getWithinTransaction(em);
 
 // TODO: ultimately, there should be a function that takes a record of record of useCases and builds all at once.
 const useCasesDependencies = { persistence: builtRepositories, services: builtServices };

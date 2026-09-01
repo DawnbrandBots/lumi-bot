@@ -2,16 +2,13 @@ import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
 import ADMIN_USE_CASES from "../../../../src/application/admin/useCases.ts";
 import type { TAdminUseCases } from "../../../../src/application/admin/useCases.types.ts";
-import type { TApplicationPersistence } from "../../../../src/application/persistence.types.ts";
-import type { TSearchPersistence } from "../../../../src/application/search/persistence.types.ts";
-import getWithinTransaction from "../../../../src/composition/infrastructure/withinTransaction.ts";
+import { composeInfrastructure } from "../../../../src/composition/infrastructure.ts";
 import { build } from "../../../../src/composition/utils/proxify.ts";
 import { GuildConfig } from "../../../../src/infrastructure/database/mikroOrm/models/admin/config.ts";
 import { GuildConfigLfgRole } from "../../../../src/infrastructure/database/mikroOrm/models/admin/configLfgRole.ts";
-import ADMIN_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
-import LFG_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
+import { EMPTY_SEARCH_ENGINE } from "../../../utils/searchEngine.ts";
 
 export const GUILD_ID = "guild-1";
 export const CHANNEL_ID = "channel-1";
@@ -26,12 +23,6 @@ export const LFG_ROLE_PING_COOLDOWN_ARG = { ...GUILD_ARG, minutes: 45 };
 
 const config = getSameConfigInMemory(migrationMikroOrmConfig);
 
-const SEARCH_PERSISTENCE: TSearchPersistence = {
-    getBestSearchIndexEntry: () => null,
-    getEntityByKindAndId: () => null,
-    getSearchIndexEntries: () => [],
-};
-
 export function useAdminUseCases() {
     let orm: MikroORM;
     let useCases: TAdminUseCases;
@@ -40,12 +31,8 @@ export function useAdminUseCases() {
         orm = await MikroORM.init(config);
         await orm.schema.create();
         const em = orm.em.fork({ useContext: true });
-        const persistence: TApplicationPersistence = {
-            admin: build({ em }, ADMIN_REPOSITORIES),
-            lfg: build({ em }, LFG_REPOSITORIES),
-            search: SEARCH_PERSISTENCE,
-        };
-        useCases = build({ persistence }, ADMIN_USE_CASES, getWithinTransaction(em));
+        const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine: EMPTY_SEARCH_ENGINE });
+        useCases = build({ persistence }, ADMIN_USE_CASES, withinTransaction);
     });
 
     afterEach(async () => {

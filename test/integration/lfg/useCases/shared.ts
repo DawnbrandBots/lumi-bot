@@ -6,16 +6,13 @@ import { kickFromRoom } from "../../../../src/application/lfg/services/kickFromR
 import { removePlayerFromRoom } from "../../../../src/application/lfg/services/removePlayerFromRoom.ts";
 import { transferRoom } from "../../../../src/application/lfg/services/transferRoom.ts";
 import LFG_USE_CASES, { type TLfgUseCases } from "../../../../src/application/lfg/useCases.ts";
-import type { TApplicationPersistence } from "../../../../src/application/persistence.types.ts";
-import type { TSearchPersistence } from "../../../../src/application/search/persistence.types.ts";
-import getWithinTransaction from "../../../../src/composition/infrastructure/withinTransaction.ts";
+import { composeInfrastructure } from "../../../../src/composition/infrastructure.ts";
 import { build } from "../../../../src/composition/utils/proxify.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";
 import { LfgRoom } from "../../../../src/infrastructure/database/mikroOrm/models/lfg/room.ts";
-import ADMIN_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
-import LFG_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
+import { EMPTY_SEARCH_ENGINE } from "../../../utils/searchEngine.ts";
 
 export const GUILD_ID = "guild-1";
 export const OTHER_GUILD_ID = "guild-2";
@@ -32,12 +29,6 @@ type TestRoom = {
 };
 
 const config = getSameConfigInMemory(migrationMikroOrmConfig);
-
-const SEARCH_PERSISTENCE: TSearchPersistence = {
-    getBestSearchIndexEntry: () => null,
-    getEntityByKindAndId: () => null,
-    getSearchIndexEntries: () => [],
-};
 
 const APPLICATION_SERVICES = {
     changeRoomCodeInRoom,
@@ -59,11 +50,7 @@ export function useLfgUseCases() {
         orm = await MikroORM.init(config);
         await orm.schema.create();
         const em = orm.em.fork({ useContext: true });
-        const persistence: TApplicationPersistence = {
-            admin: build({ em }, ADMIN_REPOSITORIES),
-            lfg: build({ em }, LFG_REPOSITORIES),
-            search: SEARCH_PERSISTENCE,
-        };
+        const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine: EMPTY_SEARCH_ENGINE });
         const servicesDependencies = {
             persistence,
             get services() {
@@ -71,7 +58,7 @@ export function useLfgUseCases() {
             },
         };
         const builtLfgServices = build(servicesDependencies, APPLICATION_SERVICES);
-        useCases = build({ persistence, services: builtLfgServices }, LFG_USE_CASES, getWithinTransaction(em));
+        useCases = build({ persistence, services: builtLfgServices }, LFG_USE_CASES, withinTransaction);
     });
 
     afterEach(async () => {

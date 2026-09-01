@@ -2,19 +2,14 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
 import type { TSearchPersistence } from "../../../src/application/search/persistence.types.ts";
-import type { TApplicationPersistence } from "../../../src/application/persistence.types.ts";
-import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import { ESearchResultKind } from "../../../src/application/search/types.ts";
 import { resolveSearchInput } from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
+import { composePersistence } from "../../../src/composition/infrastructure/persistence.ts";
+import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
 import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
-import { build } from "../../../src/composition/utils/proxify.ts";
-import ADMIN_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
-import LFG_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 
@@ -26,30 +21,22 @@ function getSearchPersistence(arg: {
     readonly getBestSearchIndexEntry?: TSearchPersistence["getBestSearchIndexEntry"];
     readonly getEntityByKindAndId?: TSearchPersistence["getEntityByKindAndId"];
 }): TSearchUseCaseDependencies {
+    const applicationPersistence = composePersistence({ em, searchEngine });
     const persistence: TSearchPersistence = {
-        getBestSearchIndexEntry: arg.getBestSearchIndexEntry ?? searchEngine.searchOne.bind(searchEngine),
-        getEntityByKindAndId:
-            arg.getEntityByKindAndId ?? ((searchItem) => getGameDataEntityForSearchResult({ em }, searchItem)),
-        getSearchIndexEntries: (searchArg) => searchEngine.search(searchArg.input, searchArg.limit),
-    };
-
-    const applicationPersistence: TApplicationPersistence = {
-        admin: build({ em }, ADMIN_REPOSITORIES),
-        lfg: build({ em }, LFG_REPOSITORIES),
-        search: persistence,
+        getBestSearchIndexEntry: arg.getBestSearchIndexEntry ?? applicationPersistence.search.getBestSearchIndexEntry,
+        getEntityByKindAndId: arg.getEntityByKindAndId ?? applicationPersistence.search.getEntityByKindAndId,
+        getSearchIndexEntries: applicationPersistence.search.getSearchIndexEntries,
     };
 
     return {
-        persistence: applicationPersistence,
+        persistence: { ...applicationPersistence, search: persistence },
     };
 }
 
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<TSearchIndexEntry>({
-        items: generateSearchIndexEntries(await getEntitiesForGeneratingSearchAliases({ em })),
-    });
+    searchEngine = await createSearchEngine({ em });
 });
 
 afterAll(async () => {
