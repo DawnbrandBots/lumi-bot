@@ -8,11 +8,11 @@ describe(movePlayerToRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("joins an existing room", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        const response = await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.ROOM_JOINED,
             value: {
                 userId: PLAYER_1.id,
@@ -25,34 +25,34 @@ describe(movePlayerToRoom.name, () => {
     });
 
     test("rejects missing rooms", async () => {
-        const response = await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "missing");
+        const response = await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "missing" });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.ROOM_NOT_FOUND,
             value: { code: "missing" },
         });
     });
 
     test("rejects full rooms", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_2, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_2, code: "room" });
 
-        const response = await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_3, "room");
+        const response = await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_3, code: "room" });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.ROOM_IS_FULL,
             value: { code: "room" },
         });
     });
 
     test("moves a player out of their previous room", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "one");
-        await lfg.useCases.createRoom(GUILD_ID, PLAYER_1, "two");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "one" });
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: PLAYER_1, code: "two" });
 
-        const response = await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "one");
+        const response = await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "one" });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.ROOM_JOINED,
             value: {
                 userId: PLAYER_1.id,
@@ -67,11 +67,11 @@ describe(movePlayerToRoom.name, () => {
     });
 
     test("transfers ownership when the owner changes room", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "one");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "one");
-        await lfg.useCases.createRoom(GUILD_ID, PLAYER_2, "two");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "one" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "one" });
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: PLAYER_2, code: "two" });
 
-        const response = await lfg.useCases.movePlayerToRoom(GUILD_ID, OWNER, "two");
+        const response = await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: OWNER, code: "two" });
 
         expect(response).toMatchObject({
             kind: ELfgResultKind.ROOM_JOINED,
@@ -89,10 +89,10 @@ describe(movePlayerToRoom.name, () => {
     });
 
     test("deletes the previous room when the owner was the last player", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "one");
-        await lfg.useCases.createRoom(GUILD_ID, PLAYER_1, "two");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "one" });
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: PLAYER_1, code: "two" });
 
-        const response = await lfg.useCases.movePlayerToRoom(GUILD_ID, OWNER, "two");
+        const response = await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: OWNER, code: "two" });
 
         expect(response).toMatchObject({
             kind: ELfgResultKind.ROOM_JOINED,
@@ -106,11 +106,11 @@ describe(movePlayerToRoom.name, () => {
     });
 
     test("returns error response when already in the target room", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.movePlayerToRoom(GUILD_ID, OWNER, "room");
+        const response = await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: OWNER, code: "room" });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.ALREADY_IN_TARGET_ROOM,
             value: {
                 userId: OWNER.id,

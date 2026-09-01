@@ -8,10 +8,10 @@ describe(changeRoomCode.name, () => {
     const lfg = useLfgUseCases();
 
     test("changes the room code identified by code", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "old");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "old");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "old" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "old" });
 
-        const response = await lfg.useCases.changeRoomCode(GUILD_ID, "old", NEW_ROOM_CODE);
+        const response = await lfg.useCases.changeRoomCode({ guildId: GUILD_ID, code: "old", newCode: NEW_ROOM_CODE });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_CODE_CHANGED,
@@ -26,7 +26,11 @@ describe(changeRoomCode.name, () => {
     });
 
     test("rejects missing rooms", async () => {
-        const response = await lfg.useCases.changeRoomCode(GUILD_ID, "missing", NEW_ROOM_CODE);
+        const response = await lfg.useCases.changeRoomCode({
+            guildId: GUILD_ID,
+            code: "missing",
+            newCode: NEW_ROOM_CODE,
+        });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_NOT_FOUND,
@@ -35,23 +39,23 @@ describe(changeRoomCode.name, () => {
     });
 
     test("rejects invalid room code length", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "old");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "old" });
 
-        const response = await lfg.useCases.changeRoomCode(
-            GUILD_ID,
-            "old",
-            "x".repeat(FRIEND_BATTLE_CODE_MAXIMUM_LENGTH + 1),
-        );
+        const response = await lfg.useCases.changeRoomCode({
+            guildId: GUILD_ID,
+            code: "old",
+            newCode: "x".repeat(FRIEND_BATTLE_CODE_MAXIMUM_LENGTH + 1),
+        });
 
         expect(response).toEqual({ kind: ELfgResultKind.INVALID_ROOM_CODE });
         expect(await lfg.getRooms(GUILD_ID)).toEqual([{ code: "old", ownerId: OWNER.id, playerIds: [OWNER.id] }]);
     });
 
     test("rejects duplicate room codes in the same guild", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "old");
-        await lfg.useCases.createRoom(GUILD_ID, PLAYER_1, NEW_ROOM_CODE);
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "old" });
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: PLAYER_1, code: NEW_ROOM_CODE });
 
-        const response = await lfg.useCases.changeRoomCode(GUILD_ID, "old", NEW_ROOM_CODE);
+        const response = await lfg.useCases.changeRoomCode({ guildId: GUILD_ID, code: "old", newCode: NEW_ROOM_CODE });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_ALREADY_EXISTS,

@@ -7,10 +7,10 @@ describe(disbandRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("deletes the room identified by code", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        const response = await lfg.useCases.disbandRoom(GUILD_ID, "room");
+        const response = await lfg.useCases.disbandRoom({ guildId: GUILD_ID, code: "room" });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_DISBANDED,
@@ -20,7 +20,7 @@ describe(disbandRoom.name, () => {
     });
 
     test("rejects missing rooms", async () => {
-        const response = await lfg.useCases.disbandRoom(GUILD_ID, "missing");
+        const response = await lfg.useCases.disbandRoom({ guildId: GUILD_ID, code: "missing" });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_NOT_FOUND,

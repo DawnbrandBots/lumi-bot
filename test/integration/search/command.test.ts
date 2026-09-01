@@ -1,25 +1,22 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
+import type { TApplicationPersistence } from "../../../src/application/persistence.types.ts";
 import type {
     TGetBestSearchIndexEntry,
     TGetEntityByKindAndId,
     TSearchPersistence,
 } from "../../../src/application/search/persistence.types.ts";
-import type { TAdminPersistence } from "../../../src/application/admin/persistence.types.ts";
-import type { TLfgPersistence } from "../../../src/application/lfg/persistence.types.ts";
-import type { TApplicationPersistence } from "../../../src/application/persistence.types.ts";
-import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
-import resolveSearchInput from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
+import { resolveSearchInput } from "../../../src/application/search/useCases/resolveSearchInput.ts";
+import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { build } from "../../../src/composition/utils/proxify.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
-import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
-import { getPersistenceWithContext } from "../../../src/composition/application/useCases.ts";
 import ADMIN_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
 import LFG_REPOSITORIES from "../../../src/infrastructure/database/mikroOrm/repositories/lfg.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
+import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
@@ -49,8 +46,8 @@ beforeAll(async () => {
         getSearchIndexEntries,
     };
     const applicationPersistence: TApplicationPersistence = {
-        admin: getPersistenceWithContext<TAdminPersistence>({ em, repositories: ADMIN_REPOSITORIES }),
-        lfg: getPersistenceWithContext<TLfgPersistence>({ em, repositories: LFG_REPOSITORIES }),
+        admin: build({ em }, ADMIN_REPOSITORIES),
+        lfg: build({ em }, LFG_REPOSITORIES),
         search: persistence,
     };
     const dependencies: TSearchUseCaseDependencies = { persistence: applicationPersistence };
@@ -100,6 +97,7 @@ afterAll(async () => {
     await orm.close();
 });
 
+// TODO: all that setup just to test some spells' descriptions feels wrong now
 describe("search command messages", () => {
     test.each([
         ["Elfire", "plain damage"],

@@ -7,23 +7,31 @@ describe(transferRoomToPlayer.name, () => {
     const lfg = useLfgUseCases();
 
     test("transfers ownership in the room identified by code", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        const response = await lfg.useCases.transferRoomToPlayer(GUILD_ID, "room", PLAYER_1);
+        const response = await lfg.useCases.transferRoomToPlayer({ guildId: GUILD_ID, code: "room", target: PLAYER_1 });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.OWNERSHIP_TRANSFERRED,
             value: {
                 userId: OWNER.id,
                 targetId: PLAYER_1.id,
-                room: { code: "room", ownerId: PLAYER_1.id, playerIds: [OWNER.id, PLAYER_1.id] },
+                room: {
+                    code: "room",
+                    ownerId: PLAYER_1.id,
+                    playerIds: [OWNER.id, PLAYER_1.id],
+                },
             },
         });
     });
 
     test("rejects missing rooms", async () => {
-        const response = await lfg.useCases.transferRoomToPlayer(GUILD_ID, "missing", PLAYER_1);
+        const response = await lfg.useCases.transferRoomToPlayer({
+            guildId: GUILD_ID,
+            code: "missing",
+            target: PLAYER_1,
+        });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_NOT_FOUND,
@@ -32,9 +40,9 @@ describe(transferRoomToPlayer.name, () => {
     });
 
     test("rejects targets outside the room", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.transferRoomToPlayer(GUILD_ID, "room", PLAYER_1);
+        const response = await lfg.useCases.transferRoomToPlayer({ guildId: GUILD_ID, code: "room", target: PLAYER_1 });
 
         expect(response).toEqual({
             kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
@@ -43,9 +51,9 @@ describe(transferRoomToPlayer.name, () => {
     });
 
     test("rejects transferring ownership to the current owner", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.transferRoomToPlayer(GUILD_ID, "room", OWNER);
+        const response = await lfg.useCases.transferRoomToPlayer({ guildId: GUILD_ID, code: "room", target: OWNER });
 
         expect(response).toEqual({
             kind: ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF,

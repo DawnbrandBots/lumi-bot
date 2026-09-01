@@ -8,9 +8,9 @@ describe(leaveRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("deletes the room when the last player leaves", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.leaveRoom(GUILD_ID, OWNER);
+        const response = await lfg.useCases.leaveRoom({ guildId: GUILD_ID, user: OWNER });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_LEFT,
@@ -20,11 +20,11 @@ describe(leaveRoom.name, () => {
     });
 
     test("transfers ownership to the earliest remaining player", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_2, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_2, code: "room" });
 
-        const response = await lfg.useCases.leaveRoom(GUILD_ID, OWNER);
+        const response = await lfg.useCases.leaveRoom({ guildId: GUILD_ID, user: OWNER });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_LEFT,
@@ -43,7 +43,7 @@ describe(leaveRoom.name, () => {
     });
 
     test("rejects users who are not in a room", async () => {
-        const response = await lfg.useCases.leaveRoom(GUILD_ID, OWNER);
+        const response = await lfg.useCases.leaveRoom({ guildId: GUILD_ID, user: OWNER });
 
         expect(response).toEqual({ kind: ELfgResultKind.NOT_IN_A_ROOM });
     });

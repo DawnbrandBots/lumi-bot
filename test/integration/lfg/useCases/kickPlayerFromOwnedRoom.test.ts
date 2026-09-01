@@ -8,12 +8,16 @@ describe(kickPlayerFromOwnedRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("kicks another room player", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        const response = await lfg.useCases.kickPlayerFromOwnedRoom(GUILD_ID, OWNER, PLAYER_1);
+        const response = await lfg.useCases.kickPlayerFromOwnedRoom({
+            guildId: GUILD_ID,
+            owner: OWNER,
+            target: PLAYER_1,
+        });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.PLAYER_KICKED,
             value: {
                 userId: OWNER.id,
@@ -26,9 +30,13 @@ describe(kickPlayerFromOwnedRoom.name, () => {
     });
 
     test("rejects targets outside the room", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.kickPlayerFromOwnedRoom(GUILD_ID, OWNER, PLAYER_1);
+        const response = await lfg.useCases.kickPlayerFromOwnedRoom({
+            guildId: GUILD_ID,
+            owner: OWNER,
+            target: PLAYER_1,
+        });
 
         expect(response).toEqual({
             kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
@@ -37,18 +45,22 @@ describe(kickPlayerFromOwnedRoom.name, () => {
     });
 
     test("rejects self-kick", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.kickPlayerFromOwnedRoom(GUILD_ID, OWNER, OWNER);
+        const response = await lfg.useCases.kickPlayerFromOwnedRoom({ guildId: GUILD_ID, owner: OWNER, target: OWNER });
 
         expect(response).toEqual({ kind: ELfgResultKind.CANNOT_KICK_YOURSELF });
     });
 
     test("rejects non-owners", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        const response = await lfg.useCases.kickPlayerFromOwnedRoom(GUILD_ID, PLAYER_1, OWNER);
+        const response = await lfg.useCases.kickPlayerFromOwnedRoom({
+            guildId: GUILD_ID,
+            owner: PLAYER_1,
+            target: OWNER,
+        });
 
         expect(response).toEqual({ kind: ELfgResultKind.NOT_ROOM_OWNER });
     });

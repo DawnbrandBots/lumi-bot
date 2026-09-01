@@ -7,10 +7,10 @@ describe(disbandOwnedRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("deletes the room when called by the owner", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        const response = await lfg.useCases.disbandOwnedRoom(GUILD_ID, OWNER);
+        const response = await lfg.useCases.disbandOwnedRoom({ guildId: GUILD_ID, owner: OWNER });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_DISBANDED,
@@ -20,10 +20,10 @@ describe(disbandOwnedRoom.name, () => {
     });
 
     test("rejects non-owners", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        const response = await lfg.useCases.disbandOwnedRoom(GUILD_ID, PLAYER_1);
+        const response = await lfg.useCases.disbandOwnedRoom({ guildId: GUILD_ID, owner: PLAYER_1 });
 
         expect(response).toEqual({ kind: ELfgResultKind.NOT_ROOM_OWNER });
         expect(await lfg.getRooms(GUILD_ID)).toEqual([
@@ -32,7 +32,7 @@ describe(disbandOwnedRoom.name, () => {
     });
 
     test("rejects users who are not in a room", async () => {
-        const response = await lfg.useCases.disbandOwnedRoom(GUILD_ID, OWNER);
+        const response = await lfg.useCases.disbandOwnedRoom({ guildId: GUILD_ID, owner: OWNER });
 
         expect(response).toEqual({ kind: ELfgResultKind.NOT_IN_A_ROOM });
     });

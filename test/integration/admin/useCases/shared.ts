@@ -1,16 +1,11 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
-import type { TAdminPersistence } from "../../../../src/application/admin/persistence.types.ts";
 import ADMIN_USE_CASES from "../../../../src/application/admin/useCases.ts";
-import type { TAdminUseCaseDependencies, TAdminUseCases } from "../../../../src/application/admin/useCases.types.ts";
+import type { TAdminUseCases } from "../../../../src/application/admin/useCases.types.ts";
 import type { TApplicationPersistence } from "../../../../src/application/persistence.types.ts";
-import type { TLfgPersistence } from "../../../../src/application/lfg/persistence.types.ts";
 import type { TSearchPersistence } from "../../../../src/application/search/persistence.types.ts";
-import { getWithUnitOfWork } from "../../../../src/composition/application/unitOfWork.ts";
-import {
-    getPersistenceWithContext,
-    getUseCasesWithUnitOfWork,
-} from "../../../../src/composition/application/useCases.ts";
+import getWithinTransaction from "../../../../src/composition/infrastructure/withinTransaction.ts";
+import { build } from "../../../../src/composition/utils/proxify.ts";
 import { GuildConfig } from "../../../../src/infrastructure/database/mikroOrm/models/admin/config.ts";
 import { GuildConfigLfgRole } from "../../../../src/infrastructure/database/mikroOrm/models/admin/configLfgRole.ts";
 import ADMIN_REPOSITORIES from "../../../../src/infrastructure/database/mikroOrm/repositories/admin.ts";
@@ -44,28 +39,13 @@ export function useAdminUseCases() {
     beforeEach(async () => {
         orm = await MikroORM.init(config);
         await orm.schema.create();
-        const em = orm.em.fork();
-        const withAdminUnitOfWork = getWithUnitOfWork({
-            em,
-            getDependencies: (em): TAdminUseCaseDependencies => {
-                const persistence: TApplicationPersistence = {
-                    admin: getPersistenceWithContext<TAdminPersistence>({
-                        em,
-                        repositories: ADMIN_REPOSITORIES,
-                    }),
-                    lfg: getPersistenceWithContext<TLfgPersistence>({
-                        em,
-                        repositories: LFG_REPOSITORIES,
-                    }),
-                    search: SEARCH_PERSISTENCE,
-                };
-                return { persistence };
-            },
-        });
-        useCases = getUseCasesWithUnitOfWork<TAdminUseCases>({
-            useCases: ADMIN_USE_CASES,
-            withUnitOfWork: withAdminUnitOfWork,
-        });
+        const em = orm.em.fork({ useContext: true });
+        const persistence: TApplicationPersistence = {
+            admin: build({ em }, ADMIN_REPOSITORIES),
+            lfg: build({ em }, LFG_REPOSITORIES),
+            search: SEARCH_PERSISTENCE,
+        };
+        useCases = build({ persistence }, ADMIN_USE_CASES, getWithinTransaction(em));
     });
 
     afterEach(async () => {

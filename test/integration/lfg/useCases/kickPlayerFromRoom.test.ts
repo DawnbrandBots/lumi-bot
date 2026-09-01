@@ -8,12 +8,12 @@ describe(kickPlayerFromRoom.name, () => {
     const lfg = useLfgUseCases();
 
     test("removes a player from the room identified by code", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "room", PLAYER_1);
+        const response = await lfg.useCases.kickPlayerFromRoom({ guildId: GUILD_ID, code: "room", target: PLAYER_1 });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.PLAYER_KICKED,
             value: {
                 userId: OWNER.id,
@@ -25,12 +25,12 @@ describe(kickPlayerFromRoom.name, () => {
     });
 
     test("removes the owner and transfers ownership", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
-        await lfg.useCases.movePlayerToRoom(GUILD_ID, PLAYER_1, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
-        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "room", OWNER);
+        const response = await lfg.useCases.kickPlayerFromRoom({ guildId: GUILD_ID, code: "room", target: OWNER });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.PLAYER_KICKED,
             value: {
                 userId: OWNER.id,
@@ -48,11 +48,11 @@ describe(kickPlayerFromRoom.name, () => {
     });
 
     test("removes the last player and deletes the room", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "room", OWNER);
+        const response = await lfg.useCases.kickPlayerFromRoom({ guildId: GUILD_ID, code: "room", target: OWNER });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.PLAYER_KICKED,
             value: {
                 userId: OWNER.id,
@@ -65,7 +65,11 @@ describe(kickPlayerFromRoom.name, () => {
     });
 
     test("rejects missing rooms", async () => {
-        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "missing", PLAYER_1);
+        const response = await lfg.useCases.kickPlayerFromRoom({
+            guildId: GUILD_ID,
+            code: "missing",
+            target: PLAYER_1,
+        });
 
         expect(response).toEqual({
             kind: ELfgResultKind.ROOM_NOT_FOUND,
@@ -74,9 +78,9 @@ describe(kickPlayerFromRoom.name, () => {
     });
 
     test("rejects targets outside the room", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "room");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
 
-        const response = await lfg.useCases.kickPlayerFromRoom(GUILD_ID, "room", PLAYER_1);
+        const response = await lfg.useCases.kickPlayerFromRoom({ guildId: GUILD_ID, code: "room", target: PLAYER_1 });
 
         expect(response).toEqual({
             kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,

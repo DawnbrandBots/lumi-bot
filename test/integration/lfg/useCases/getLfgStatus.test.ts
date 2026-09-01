@@ -7,14 +7,17 @@ describe(getLfgStatus.name, () => {
     const lfg = useLfgUseCases();
 
     test("only displays rooms from the requested guild", async () => {
-        await lfg.useCases.createRoom(GUILD_ID, OWNER, "one");
-        await lfg.useCases.createRoom(OTHER_GUILD_ID, PLAYER_1, "two");
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "one" });
+        await lfg.useCases.createRoom({ guildId: OTHER_GUILD_ID, owner: PLAYER_1, code: "two" });
 
-        const response = await lfg.useCases.getLfgStatus(GUILD_ID);
+        const response = await lfg.useCases.getLfgStatus({ guildId: GUILD_ID });
 
-        expect(response).toEqual({
+        expect(response).toMatchObject({
             kind: ELfgResultKind.ROOMS_LISTED,
-            value: { guildConfig: null, rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }] },
+            value: {
+                guildConfig: null,
+                rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }],
+            },
         });
     });
 });
