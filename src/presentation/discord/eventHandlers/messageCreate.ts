@@ -5,6 +5,8 @@ import { helpMessage } from "../commands/help.ts";
 import mapSearchResultToMessages from "../mappers/search.ts";
 import type { TMessageCreateEventInteraction } from "./messageCreate.types.ts";
 
+// TODO: instead of logging every single message, log only when one handler is called
+// also, only log a subset of the info displayed when printing the interaction object
 const log = debug(handleMessageCreate.name);
 
 export async function handleMessageCreate(arg: {

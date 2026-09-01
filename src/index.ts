@@ -40,11 +40,15 @@ import type { THandleCommandInteraction } from "./presentation/discord/eventHand
 import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
 import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.types.ts";
 import { createErrorMessage } from "./presentation/discord/message.ts";
+import type { MaybePromise } from "./utils/types.ts";
 
 const log = debug("index.ts");
+// TODO: proper use of logger?
+const transaclog = debug("transaction");
 
 const orm = await initOrm(appMikroOrmConfig);
-const em = orm.em.fork();
+// TODO: if not using RequestContext, useContext still necessary?
+const em = orm.em.fork({ useContext: true });
 
 // TODO: should be moved to a new infrastructure/database/mikroOrm/queries/ directory
 const entitiesForGeneratingSearchAliases = await SEARCH_ALIAS_REPOSITORIES.getEntitiesForGeneratingSearchAliases({
@@ -105,13 +109,28 @@ const servicesDependencies = {
 const builtLfgServices = build(servicesDependencies, APPLICATION_SERVICES.lfg);
 const builtServices = { lfg: builtLfgServices };
 
+// TODO: move in dedicated files, remove "unit of work functions" in both src and tests I guess
+function withinTransaction<Dependencies, Argument, Return>(
+    f: (dependencies: Dependencies, arg: Argument) => MaybePromise<Return>,
+): (dependencies: Dependencies, arg: Argument) => MaybePromise<Return> {
+    return async (dependencies, arg) => {
+        // TODO: proper logging?
+        transaclog("Transaction start");
+        // clear: true so the internally forked transactional em does not share its parent's identity map
+        // https://mikro-orm.io/docs/transactions#context-propagation
+        const result = await orm.em.transactional(async () => await f(dependencies, arg), { clear: true });
+        transaclog("Transaction end");
+        return result;
+    };
+}
+
 // TODO: ultimately, there should be a function that takes a record of record of useCases and builds all at once.
 const useCasesDependencies = { persistence: builtRepositories };
 // TODO: should composed types be introduced for objects like builtUseCases?
 const builtUseCases = {
-    admin: build(useCasesDependencies, USE_CASES.admin),
-    lfg: build({ persistence: builtRepositories, services: builtServices.lfg }, USE_CASES.lfg),
-    search: build(useCasesDependencies, USE_CASES.search),
+    admin: build(useCasesDependencies, USE_CASES.admin, withinTransaction),
+    lfg: build({ persistence: builtRepositories, services: builtServices.lfg }, USE_CASES.lfg, withinTransaction),
+    search: build(useCasesDependencies, USE_CASES.search, withinTransaction),
 };
 
 const presentationDependencies = { useCases: builtUseCases };
