@@ -214,7 +214,8 @@
           "amount": {
             "base": 45,
             "unit": {
-              "kind": "FIXED"
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
             }
           },
           "stat": "RECEIVED_WEAPON_DAMAGE"
@@ -2739,7 +2740,8 @@
             "unit": {
               "kind": "PERCENT",
               "stat": "HP"
-            }
+            },
+            "scalingStrategyOverride": "NONE"
           },
           "stat": "HP"
         },
@@ -2751,8 +2753,7 @@
           "base": 50,
           "unit": {
             "kind": "FIXED"
-          },
-          "scalingStrategyOverride": "NONE"
+          }
         },
         "color": "RED",
         "target": "ANY"
@@ -3443,7 +3444,8 @@
         "color": "BLUE",
         "target": "ANY"
       }
-    ]
+    ],
+    "onlyFor": ["weaponType", "LANCE"]
   },
   {
     "id": "CROSSWIND_GRAV_EX",
@@ -4227,5 +4229,137 @@
         "target": "SELF"
       }
     ]
+  },
+  {
+    "id": "TETRAFIRE_BURN_EX",
+    "name": "Tetrafire Burn EX",
+    "disciple": "ROY",
+    "role": "EX",
+    "shape": "2X2_SQUARE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "RED"
+          },
+          "times": 3,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_EDGE_BREAK_HEAL",
+    "name": "Dark Edge Break Heal",
+    "disciple": "ROY",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 35,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 200,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "SELF"
+      }
+    ]
+  },
+  {
+    "id": "DISTANT_FIRE",
+    "name": "Distant Fire",
+    "disciple": "ROY",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "effectiveness": [
+            {
+              "kind": "RANGED",
+              "base": 70
+            }
+          ],
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_FIRE_SLASH_PLUS_SWORD",
+    "name": "Dark Fire Slash + Sword",
+    "disciple": "ROY",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "countdown": 2,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 170,
+          "unit": {
+            "kind": "PERCENT",
+            "stat": "ATK"
+          },
+          "scalingStrategyOverride": "DARK_SLASH"
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["weaponType", "SWORD"]
   }
 ]

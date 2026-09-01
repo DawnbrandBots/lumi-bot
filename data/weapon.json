@@ -50,6 +50,16 @@
     "uniqueSkill": "RECKLESS_LOYALTY"
   },
   {
+    "id": "BINDING_BLADE_PLUS",
+    "name": "Binding Blade +",
+    "weaponType": "SWORD",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "HEIR_OF_FLAME"
+  },
+  {
     "id": "SHIELD_LANCE_PLUS",
     "name": "Shield Lance +",
     "weaponType": "LANCE",
@@ -410,6 +420,26 @@
     "uniqueSkill": "RECKLESS_LOYALTY"
   },
   {
+    "id": "BINDING_BLADE",
+    "name": "Binding Blade",
+    "weaponType": "SWORD",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "HEIR_OF_FLAME"
+  },
+  {
+    "id": "RESOLUTE_SWORD",
+    "name": "Resolute Sword",
+    "weaponType": "SWORD",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
+  },
+  {
     "id": "SHIELD_LANCE",
     "name": "Shield Lance",
     "weaponType": "LANCE",
@@ -620,16 +650,6 @@
     "uniqueSkill": "FOX_S_SUNBURST"
   },
   {
-    "id": "RESOLUTE_STAFF",
-    "name": "Resolute Staff",
-    "weaponType": "STAFF",
-    "level": 7,
-    "hp": 6,
-    "atk": 30,
-    "freeSkillSlots": 3,
-    "uniqueSkill": "BATTLE_FERVOR"
-  },
-  {
     "id": "ANCESTRAL_STAFF",
     "name": "Ancestral Staff",
     "weaponType": "STAFF",
@@ -648,6 +668,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "THIRST_FOR_LIFE"
+  },
+  {
+    "id": "RESOLUTE_STAFF",
+    "name": "Resolute Staff",
+    "weaponType": "STAFF",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
   },
   {
     "id": "MULAGIR",
@@ -690,16 +720,6 @@
     "uniqueSkill": "STRATEGIC_GENIUS"
   },
   {
-    "id": "RESOLUTE_BOW",
-    "name": "Resolute Bow",
-    "weaponType": "BOW",
-    "level": 7,
-    "hp": 6,
-    "atk": 30,
-    "freeSkillSlots": 3,
-    "uniqueSkill": "BATTLE_FERVOR"
-  },
-  {
     "id": "HIDDEN_BOW",
     "name": "Hidden Bow",
     "weaponType": "BOW",
@@ -708,6 +728,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "FLEET_OF_FOOT"
+  },
+  {
+    "id": "RESOLUTE_BOW",
+    "name": "Resolute Bow",
+    "weaponType": "BOW",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
   },
   {
     "id": "SIGHT_STONE",
@@ -963,6 +993,15 @@
     "atk": 20,
     "freeSkillSlots": 2,
     "uniqueSkill": "SPIRITED_ATTACK"
+  },
+  {
+    "id": "MOONLIT_CLAWS",
+    "name": "Moonlit Claws",
+    "weaponType": "CLAWS",
+    "level": 5,
+    "hp": 5,
+    "atk": 25,
+    "freeSkillSlots": 2
   },
   {
     "id": "SILVER_TOME",

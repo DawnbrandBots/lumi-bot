@@ -312,7 +312,7 @@
     "movementType": "INFANTRY",
     "weaponType": "TOME",
     "prfWeapon": "PRAYER_TOME_PLUS",
-    "shadowMusic": "BETRAYAL_ECHOES_SHADOWS_OF_VALENTIA"
+    "shadowMusic": "BETRAYAL_GAIDEN_ECHOES"
   },
   {
     "id": "YUYO",
@@ -322,5 +322,14 @@
     "weaponType": "BOW",
     "prfWeapon": "HIDDEN_BOW_PLUS",
     "shadowMusic": "BETRAYAL_SOVEREIGN_AXE"
+  },
+  {
+    "id": "ROY",
+    "name": "Roy",
+    "epithet": "Young Lion",
+    "movementType": "INFANTRY",
+    "weaponType": "SWORD",
+    "prfWeapon": "BINDING_BLADE_PLUS",
+    "shadowMusic": "BETRAYAL_BINDING_BLADE"
   }
 ]

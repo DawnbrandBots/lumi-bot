@@ -162,7 +162,7 @@
   },
   {
     "id": "BETRAYAL_ENGAGE",
-    "url": "https://www.youtube.com/watch?v=ecKZMGwOyBw",
+    "url": "https://www.youtube.com/watch?v=NQIqB4D_cME",
     "name": "Betrayal – Engage"
   },
   {
@@ -189,11 +189,20 @@
     "name": "Betrayal – Mystery of the Emblem (Results screen)"
   },
   {
-    "id": "BETRAYAL_ECHOES_SHADOWS_OF_VALENTIA",
-    "name": "Betrayal – Echoes: Shadows of Valentia"
+    "id": "BETRAYAL_GAIDEN_ECHOES",
+    "name": "Betrayal – Gaiden/Echoes",
+    "url": "https://www.youtube.com/watch?v=k1EwLmX7xIU"
   },
   {
-    "id": "BETRAYAL_ECHOES_SHADOWS_OF_VALENTIA_RESULTS_SCREEN",
-    "name": "Betrayal – Echoes: Shadows of Valentia (Results screen)"
+    "id": "BETRAYAL_GAIDEN_ECHOES_RESULTS_SCREEN",
+    "name": "Betrayal – Gaiden/Echoes (Results screen)"
+  },
+  {
+    "id": "BETRAYAL_BINDING_BLADE",
+    "name": "Betrayal – Binding Blade"
+  },
+  {
+    "id": "BETRAYAL_BINDING_BLADE_RESULTS_SCREEN",
+    "name": "Betrayal – Binding Blade (Results screen)"
   }
 ]
