@@ -1,13 +1,8 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
-import { changeRoomCodeInRoom } from "../../../../src/application/lfg/services/changeRoomCodeInRoom.ts";
-import { getOwnedRoom } from "../../../../src/application/lfg/services/getOwnedRoom.ts";
-import { kickFromRoom } from "../../../../src/application/lfg/services/kickFromRoom.ts";
-import { removePlayerFromRoom } from "../../../../src/application/lfg/services/removePlayerFromRoom.ts";
-import { transferRoom } from "../../../../src/application/lfg/services/transferRoom.ts";
-import LFG_USE_CASES, { type TLfgUseCases } from "../../../../src/application/lfg/useCases.ts";
+import type { TLfgUseCases } from "../../../../src/application/lfg/useCases.ts";
+import { composeApplication } from "../../../../src/composition/application.ts";
 import { composeInfrastructure } from "../../../../src/composition/infrastructure.ts";
-import { build } from "../../../../src/composition/utils/proxify.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";
 import { LfgRoom } from "../../../../src/infrastructure/database/mikroOrm/models/lfg/room.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
@@ -30,14 +25,6 @@ type TestRoom = {
 
 const config = getSameConfigInMemory(migrationMikroOrmConfig);
 
-const APPLICATION_SERVICES = {
-    changeRoomCodeInRoom,
-    getOwnedRoom,
-    kickFromRoom,
-    removePlayerFromRoom,
-    transferRoom,
-} as const;
-
 function timestamp(value: Date | string): number {
     return value instanceof Date ? value.getTime() : new Date(value).getTime();
 }
@@ -51,14 +38,7 @@ export function useLfgUseCases() {
         await orm.schema.create();
         const em = orm.em.fork({ useContext: true });
         const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine: EMPTY_SEARCH_ENGINE });
-        const servicesDependencies = {
-            persistence,
-            get services() {
-                return builtLfgServices;
-            },
-        };
-        const builtLfgServices = build(servicesDependencies, APPLICATION_SERVICES);
-        useCases = build({ persistence, services: builtLfgServices }, LFG_USE_CASES, withinTransaction);
+        useCases = composeApplication({ persistence, useCaseMiddleware: withinTransaction }).useCases.lfg;
     });
 
     afterEach(async () => {

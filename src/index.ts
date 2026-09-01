@@ -1,16 +1,9 @@
 import debug from "debug";
 import { Client, Events, GatewayIntentBits, InteractionType } from "discord.js";
-import ADMIN_USE_CASES from "./application/admin/useCases.ts";
-import { changeRoomCodeInRoom } from "./application/lfg/services/changeRoomCodeInRoom.ts";
-import { getOwnedRoom } from "./application/lfg/services/getOwnedRoom.ts";
-import { kickFromRoom } from "./application/lfg/services/kickFromRoom.ts";
-import { removePlayerFromRoom } from "./application/lfg/services/removePlayerFromRoom.ts";
-import { transferRoom } from "./application/lfg/services/transferRoom.ts";
-import LFG_USE_CASES from "./application/lfg/useCases.ts";
-import SEARCH_USE_CASES from "./application/search/useCases.ts";
+import { composeApplication } from "./composition/application.ts";
 import { composeInfrastructure } from "./composition/infrastructure.ts";
 import { createSearchEngine } from "./composition/infrastructure/search.ts";
-import { build, buildFunction } from "./composition/utils/proxify.ts";
+import { buildFunction } from "./composition/utils/proxify.ts";
 import { appMikroOrmConfig } from "./infrastructure/database/mikroOrm/config.ts";
 import { initOrm } from "./infrastructure/database/mikroOrm/orm.ts";
 import { AUTOCOMPLETE } from "./presentation/discord/autocomplete.ts";
@@ -41,41 +34,11 @@ const orm = await initOrm(appMikroOrmConfig);
 // TODO: if not using RequestContext, useContext still necessary?
 const em = orm.em.fork({ useContext: true });
 const searchEngine = await createSearchEngine({ em });
-const { persistence: builtRepositories, withinTransaction } = composeInfrastructure({ em, searchEngine });
-
-const APPLICATION_SERVICES = {
-    lfg: {
-        changeRoomCodeInRoom,
-        getOwnedRoom,
-        kickFromRoom,
-        removePlayerFromRoom,
-        transferRoom,
-    },
-} as const;
-
-const USE_CASES = {
-    admin: ADMIN_USE_CASES,
-    lfg: LFG_USE_CASES,
-    search: SEARCH_USE_CASES,
-} as const;
-
-const servicesDependencies = {
-    persistence: builtRepositories,
-    get services() {
-        return builtLfgServices;
-    },
-};
-const builtLfgServices = build(servicesDependencies, APPLICATION_SERVICES.lfg);
-const builtServices = { lfg: builtLfgServices };
-
-// TODO: ultimately, there should be a function that takes a record of record of useCases and builds all at once.
-const useCasesDependencies = { persistence: builtRepositories, services: builtServices };
-// TODO: should composed types be introduced for objects like builtUseCases?
-const builtUseCases = {
-    admin: build(useCasesDependencies, USE_CASES.admin, withinTransaction),
-    lfg: build(useCasesDependencies, USE_CASES.lfg, withinTransaction),
-    search: build(useCasesDependencies, USE_CASES.search, withinTransaction),
-};
+const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine });
+const { useCases: builtUseCases } = composeApplication({
+    persistence,
+    useCaseMiddleware: withinTransaction,
+});
 
 const presentationDependencies = { useCases: builtUseCases };
 

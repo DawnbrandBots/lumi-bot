@@ -1,10 +1,8 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
-import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
-import { resolveSearchInput } from "../../../src/application/search/useCases/resolveSearchInput.ts";
-import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
-import { composePersistence } from "../../../src/composition/infrastructure/persistence.ts";
+import { composeApplication } from "../../../src/composition/application.ts";
+import { composeInfrastructure } from "../../../src/composition/infrastructure.ts";
 import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
 import { build } from "../../../src/composition/utils/proxify.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
@@ -22,42 +20,10 @@ let searchCommand: TBuiltCommandRunHandler;
 
 beforeAll(async () => {
     orm = await initTestGameOrm();
-    em = orm.em.fork();
+    em = orm.em.fork({ useContext: true });
     searchEngine = await createSearchEngine({ em });
-    const applicationPersistence = composePersistence({ em, searchEngine });
-    const dependencies: TSearchUseCaseDependencies = { persistence: applicationPersistence };
-
-    const useCases: TApplicationUseCases = {
-        admin: {
-            addLfgRole: vi.fn(),
-            clearLfgChannel: vi.fn(),
-            clearLfgRolePingCooldown: vi.fn(),
-            getGuildConfig: vi.fn(),
-            getLfgRoleConfig: vi.fn(),
-            removeLfgRole: vi.fn(),
-            setLfgChannel: vi.fn(),
-            setLfgRoleLastPingedAt: vi.fn(),
-            setLfgRolePingCooldown: vi.fn(),
-        },
-        lfg: {
-            changeRoomCode: vi.fn(),
-            changeOwnedRoomCode: vi.fn(),
-            createRoom: vi.fn(),
-            disbandRoom: vi.fn(),
-            disbandOwnedRoom: vi.fn(),
-            getLfgStatus: vi.fn(),
-            kickPlayerFromRoom: vi.fn(),
-            kickPlayerFromOwnedRoom: vi.fn(),
-            leaveRoom: vi.fn(),
-            movePlayerToRoom: vi.fn(),
-            transferRoomToPlayer: vi.fn(),
-            transferOwnedRoomToPlayer: vi.fn(),
-        },
-        search: {
-            resolveSearchInput: (input) => resolveSearchInput(dependencies, input),
-            suggestSearchResults: vi.fn().mockResolvedValue([]),
-        },
-    };
+    const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine });
+    const { useCases } = composeApplication({ persistence, useCaseMiddleware: withinTransaction });
     const getRawCommandRunHandler = getCommandRunHandler(COMMANDS);
     searchCommand = (interaction) => {
         const command = getRawCommandRunHandler(interaction);

@@ -1,9 +1,8 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
-import ADMIN_USE_CASES from "../../../../src/application/admin/useCases.ts";
 import type { TAdminUseCases } from "../../../../src/application/admin/useCases.types.ts";
+import { composeApplication } from "../../../../src/composition/application.ts";
 import { composeInfrastructure } from "../../../../src/composition/infrastructure.ts";
-import { build } from "../../../../src/composition/utils/proxify.ts";
 import { GuildConfig } from "../../../../src/infrastructure/database/mikroOrm/models/admin/config.ts";
 import { GuildConfigLfgRole } from "../../../../src/infrastructure/database/mikroOrm/models/admin/configLfgRole.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
@@ -32,7 +31,7 @@ export function useAdminUseCases() {
         await orm.schema.create();
         const em = orm.em.fork({ useContext: true });
         const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine: EMPTY_SEARCH_ENGINE });
-        useCases = build({ persistence }, ADMIN_USE_CASES, withinTransaction);
+        useCases = composeApplication({ persistence, useCaseMiddleware: withinTransaction }).useCases.admin;
     });
 
     afterEach(async () => {
