@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { TLfgRepository } from "../../../../../application/lfg/repositories.types.ts";
-import { mapToLfgRoomDomainModel } from "../../mappers/mapToLfgRoomDomainModel.ts";
+import { toLfgRoom } from "../../mappers/toLfgRoom.ts";
 import { LfgRoomPlayer } from "../../models/lfg/roomPlayer.ts";
 import { getRoomEntityById } from "./getRoomEntityById.ts";
 import type { TLfgRepositoryFunction } from "./types.ts";
@@ -16,5 +16,5 @@ export const moveUserToRoom: TLfgRepositoryFunction<TLfgRepository["moveUserToRo
         room,
     });
     room.players.add(player);
-    return mapToLfgRoomDomainModel(room);
+    return toLfgRoom(room);
 };

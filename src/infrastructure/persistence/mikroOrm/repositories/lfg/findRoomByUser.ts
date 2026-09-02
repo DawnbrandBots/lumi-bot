@@ -1,5 +1,5 @@
 import type { TLfgRepository } from "../../../../../application/lfg/repositories.types.ts";
-import { mapToLfgRoomDomainModel } from "../../mappers/mapToLfgRoomDomainModel.ts";
+import { toLfgRoom } from "../../mappers/toLfgRoom.ts";
 import { LfgRoomPlayer } from "../../models/lfg/roomPlayer.ts";
 import type { TLfgRepositoryFunction } from "./types.ts";
 
@@ -8,5 +8,5 @@ export const findRoomByUser: TLfgRepositoryFunction<TLfgRepository["findRoomByUs
     { guildId, userId },
 ) => {
     const player = await em.findOne(LfgRoomPlayer, { userId, room: { guildId } }, { populate: ["room.players"] });
-    return player ? mapToLfgRoomDomainModel(player.room) : null;
+    return player ? toLfgRoom(player.room) : null;
 };
