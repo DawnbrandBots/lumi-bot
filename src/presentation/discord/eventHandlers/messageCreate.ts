@@ -23,6 +23,7 @@ export async function handleMessageCreate(arg: {
         return;
     }
     const botMention = userMention(arg.interaction.client.user.id);
+    // TODO: trim message content?
     if (arg.interaction.content === botMention) {
         await arg.interaction.reply(helpMessage);
         return;

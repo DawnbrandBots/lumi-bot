@@ -2,14 +2,14 @@ import { MessageFlags } from "discord.js";
 import { describe, expect, test } from "vitest";
 import { ELfgResultKind } from "../../../../../../src/application/lfg/types.ts";
 import {
-    mapLfgMessageBaseToReply,
+    mapLfgMessageBaseToInteractionReply,
     mapLfgResultToMessageBase,
 } from "../../../../../../src/presentation/discord/mappers/lfg.ts";
 import { GUILD_CONFIG, LfgConstants, PUBLIC_CHANNEL_ID, ROOM } from "./fixtures.ts";
 
 const defaultOptions = { getBoolean: () => false } as const;
 
-describe(mapLfgMessageBaseToReply.name, () => {
+describe(mapLfgMessageBaseToInteractionReply.name, () => {
     test("keeps positive messages public in the configured channel", () => {
         const messageBase = mapLfgResultToMessageBase({
             result: {
@@ -19,7 +19,7 @@ describe(mapLfgMessageBaseToReply.name, () => {
             callerId: "owner",
         });
 
-        const reply = mapLfgMessageBaseToReply({
+        const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
             interaction: { channelId: PUBLIC_CHANNEL_ID, options: defaultOptions },
             guildConfig: GUILD_CONFIG,
@@ -38,7 +38,7 @@ describe(mapLfgMessageBaseToReply.name, () => {
             callerId: "owner",
         });
 
-        const reply = mapLfgMessageBaseToReply({
+        const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
             interaction: { channelId: "other-channel", options: defaultOptions },
             guildConfig: GUILD_CONFIG,
@@ -56,7 +56,7 @@ describe(mapLfgMessageBaseToReply.name, () => {
             callerId: "owner",
         });
 
-        const reply = mapLfgMessageBaseToReply({
+        const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
             interaction: { channelId: "other-channel", options: defaultOptions },
             guildConfig: null,
@@ -71,7 +71,7 @@ describe(mapLfgMessageBaseToReply.name, () => {
             callerId: "owner",
         });
 
-        const reply = mapLfgMessageBaseToReply({
+        const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
             interaction: { channelId: PUBLIC_CHANNEL_ID, options: defaultOptions },
             guildConfig: GUILD_CONFIG,
@@ -86,7 +86,7 @@ describe(mapLfgMessageBaseToReply.name, () => {
             callerId: "owner",
         });
 
-        const reply = mapLfgMessageBaseToReply({
+        const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
             interaction: { channelId: PUBLIC_CHANNEL_ID, options: { getBoolean: () => true } },
             guildConfig: GUILD_CONFIG,

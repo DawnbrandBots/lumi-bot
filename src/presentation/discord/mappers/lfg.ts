@@ -1,4 +1,4 @@
-import type { ChatInputCommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction, InteractionReplyOptions } from "discord.js";
 import {
     bold,
     channelMention,
@@ -23,8 +23,8 @@ import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.
 import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
-    LFG_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
+    LFG_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_COMMAND_NAME,
     LFG_CREATE_SUBCOMMAND_NAME,
     LFG_DISBAND_SUBCOMMAND_NAME,
@@ -284,7 +284,15 @@ function formatPlayerNotInRoom(callerId: string, ownerId: string, targetId: stri
     return `${userMention(targetId)} is not in your room.`;
 }
 
-export function mapLfgResultToMessageBase({ result, callerId }: { result: TLfgResult; callerId: string }) {
+export function mapLfgResultToMessageBase({
+    result,
+    callerId,
+    isPublic,
+}: {
+    result: TLfgResult;
+    callerId: string;
+    isPublic?: boolean;
+}) {
     switch (result.kind) {
         case ELfgResultKind.ROOMS_LISTED: {
             return createNeutralMessage({
@@ -353,11 +361,20 @@ export function mapLfgResultToMessageBase({ result, callerId }: { result: TLfgRe
         case ELfgResultKind.HELP_REQUESTED:
             return createLfgHelpMessageBase();
         case ELfgResultKind.LFG_ROLE_PINGED:
-            return createPositiveMessage({
-                content: `${roleMention(result.value.roleId)} people, ${userMention(result.value.userId)} is looking for a room!`,
-                allowedMentions: { roles: [result.value.roleId], users: [result.value.userId] },
-                embed: { description: `${userMention(result.value.userId)} is looking for a room!` },
-            });
+            if (isPublic) {
+                return {
+                    // TODO: may have to move the "kind" property elsewhere
+                    kind: EMessageKind.POSITIVE,
+                    content: `${roleMention(result.value.roleId)} people, ${userMention(result.value.userId)} is looking for a room!`,
+                    allowedMentions: { roles: [result.value.roleId], users: [result.value.userId] },
+                };
+            } else {
+                return createPositiveMessage<InteractionReplyOptions>({
+                    embed: {
+                        description: `${roleMention(result.value.roleId)} pinged in ${channelMention(result.value.channelId)}.`,
+                    },
+                });
+            }
         case ELfgResultKind.INVALID_ROOM_CODE:
             return createNegativeMessage({
                 embed: {
@@ -452,7 +469,7 @@ export function mapLfgResultToMessageBase({ result, callerId }: { result: TLfgRe
     }
 }
 
-export function mapLfgMessageBaseToReply({
+export function mapLfgMessageBaseToInteractionReply({
     messageBase,
     interaction,
     guildConfig,
