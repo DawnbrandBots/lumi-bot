@@ -3,13 +3,13 @@ import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
 import type { TSearchPersistence } from "../../../src/application/search/persistence.types.ts";
 import { ESearchResultKind } from "../../../src/application/search/types.ts";
-import { resolveSearchInput } from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
+import { resolveSearchInput } from "../../../src/application/search/useCases/resolveSearchInput.ts";
 import { composePersistence } from "../../../src/composition/infrastructure/persistence.ts";
 import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
-import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/engine.types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 

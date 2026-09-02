@@ -2,7 +2,8 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { generateSearchIndexEntries } from "../../application/search/searchAliases.ts";
 import type { TSearchIndexEntry } from "../../domain/search/types.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
-import { FuseSearchEngine, type ISearchEngine } from "../../infrastructure/search/engine.ts";
+import type { ISearchEngine } from "../../infrastructure/search/engine.types.ts";
+import { FuseSearchEngine } from "../../infrastructure/search/fuse/engine.ts";
 
 export async function createSearchEngine({
     em,

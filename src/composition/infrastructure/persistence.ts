@@ -5,7 +5,7 @@ import type { TSearchIndexEntry } from "../../domain/search/types.ts";
 import ADMIN_REPOSITORIES from "../../infrastructure/database/mikroOrm/repositories/admin.ts";
 import LFG_REPOSITORIES from "../../infrastructure/database/mikroOrm/repositories/lfg.ts";
 import { getGameDataEntityForSearchResult } from "../../infrastructure/database/mikroOrm/repositories/search/getGameDataEntityForSearchResult.ts";
-import type { ISearchEngine } from "../../infrastructure/search/engine.ts";
+import type { ISearchEngine } from "../../infrastructure/search/engine.types.ts";
 import { SEARCH_ENGINE_PERSISTENCE } from "../../infrastructure/search/persistence.ts";
 import { build } from "../utils/proxify.ts";
 
@@ -23,8 +23,7 @@ const REPOSITORIES = {
 // TODO: some funky business going on for this repository
 function composeSearchPersistence(dependencies: TComposePersistenceArgument): TSearchPersistence {
     return {
-        getBestSearchIndexEntry: (input) =>
-            SEARCH_ENGINE_PERSISTENCE.getBestSearchIndexEntry(dependencies, input),
+        getBestSearchIndexEntry: (input) => SEARCH_ENGINE_PERSISTENCE.getBestSearchIndexEntry(dependencies, input),
         getEntityByKindAndId: (arg) => getGameDataEntityForSearchResult(dependencies, arg),
         getSearchIndexEntries: (arg) => SEARCH_ENGINE_PERSISTENCE.getSearchIndexEntries(dependencies, arg),
     };

@@ -5,9 +5,9 @@ import { generateSearchIndexEntries } from "../../../src/application/search/sear
 import type { TSearchUseCases } from "../../../src/application/search/useCases.types.ts";
 import { build } from "../../../src/composition/utils/proxify.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
-import type { ISearchEngine } from "../../../src/infrastructure/search/engine.ts";
-import { FuseSearchEngine } from "../../../src/infrastructure/search/engine.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/engine.types.ts";
+import { FuseSearchEngine } from "../../../src/infrastructure/search/fuse/engine.ts";
 import { AUTOCOMPLETE } from "../../../src/presentation/discord/autocomplete.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
 import type { TBuiltCommandAutocompleteHandler } from "../../../src/presentation/discord/commands/types.ts";

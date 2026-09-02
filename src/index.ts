@@ -70,9 +70,6 @@ const BUILT_INTERACTION_CREATE_INTERACTION_TYPE_HANDLERS: {
     [InteractionType.ApplicationCommand]: commandInteraction,
     [InteractionType.ApplicationCommandAutocomplete]: autocompleteInteraction,
 };
-// const getInteractionCreateInteractionTypeHandler = <K extends TInteractionCreateEventInteraction["type"]>(
-//     interaction: Extract<TInteractionCreateEventInteraction, { type: K }>,
-// ) => a[interaction.type];
 
 const ACTION_WHEN_INTERACTION_HANDLER_NOT_FOUND: {
     [K in TInteractionCreateEventInteraction["type"]]?: (

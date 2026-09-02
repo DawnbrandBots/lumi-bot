@@ -1,6 +1,6 @@
 import type { TGetBestSearchIndexEntry, TGetSearchIndexEntries } from "../../application/search/persistence.types.ts";
 import type { TSearchIndexEntry } from "../../domain/search/types.ts";
-import type { ISearchEngine } from "./engine.ts";
+import type { ISearchEngine } from "./engine.types.ts";
 
 export type TSearchEnginePersistenceDependencies = {
     readonly searchEngine: ISearchEngine<TSearchIndexEntry>;

@@ -1,4 +1,5 @@
-import { ESpellEffectValueUnitKind, EStat } from "../../../../src/game/types.ts";
+import { ESpellEffectValueUnitKind } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
+import { EStat } from "../../../../src/domain/game/models/stat.types.ts";
 import type { TSpellEffectDescriptionsInput } from "../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 
 type TRootSpellEffect = TSpellEffectDescriptionsInput["effects"][number];
