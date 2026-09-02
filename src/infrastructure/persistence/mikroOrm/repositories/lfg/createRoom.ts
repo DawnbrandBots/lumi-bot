@@ -1,11 +1,11 @@
 import { randomUUID } from "node:crypto";
-import type { TLfgPersistence } from "../../../../../application/lfg/persistence.types.ts";
+import type { TLfgRepository } from "../../../../../application/lfg/repositories.types.ts";
 import { mapToLfgRoomDomainModel } from "../../mappers/mapToLfgRoomDomainModel.ts";
 import { LfgRoom } from "../../models/lfg/room.ts";
 import { LfgRoomPlayer } from "../../models/lfg/roomPlayer.ts";
-import type { TLfgPersistenceFunction } from "./types.ts";
+import type { TLfgRepositoryFunction } from "./types.ts";
 
-export const createRoom: TLfgPersistenceFunction<TLfgPersistence["createRoom"]> = (
+export const createRoom: TLfgRepositoryFunction<TLfgRepository["createRoom"]> = (
     { em },
     { guildId, ownerId, code },
 ) => {

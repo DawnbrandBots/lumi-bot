@@ -1,11 +1,11 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { SEARCH_MAX_INPUT_LENGTH } from "../../../src/application/search/constants.ts";
-import type { TSearchPersistence } from "../../../src/application/search/persistence.types.ts";
+import type { TSearchQueries } from "../../../src/application/search/queries.types.ts";
 import { ESearchResultKind } from "../../../src/application/search/types.ts";
 import type { TSearchUseCaseDependencies } from "../../../src/application/search/useCases.types.ts";
 import { resolveSearchInput } from "../../../src/application/search/useCases/resolveSearchInput.ts";
-import { composePersistence } from "../../../src/composition/infrastructure/persistence.ts";
+import { composeQueries } from "../../../src/composition/infrastructure/queries.ts";
 import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/persistence/mikroOrm/queries/getGameDataEntityForSearchResult.ts";
@@ -17,19 +17,19 @@ let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
 let searchEngine: ISearchEngine<TSearchIndexEntry>;
 
-function getSearchPersistence(arg: {
-    readonly getBestSearchIndexEntry?: TSearchPersistence["getBestSearchIndexEntry"];
-    readonly getEntityByKindAndId?: TSearchPersistence["getEntityByKindAndId"];
+function getSearchQueries(arg: {
+    readonly getBestSearchIndexEntry?: TSearchQueries["getBestSearchIndexEntry"];
+    readonly getEntityByKindAndId?: TSearchQueries["getEntityByKindAndId"];
 }): TSearchUseCaseDependencies {
-    const applicationPersistence = composePersistence({ em, searchEngine });
-    const persistence: TSearchPersistence = {
-        getBestSearchIndexEntry: arg.getBestSearchIndexEntry ?? applicationPersistence.search.getBestSearchIndexEntry,
-        getEntityByKindAndId: arg.getEntityByKindAndId ?? applicationPersistence.search.getEntityByKindAndId,
-        getSearchIndexEntries: applicationPersistence.search.getSearchIndexEntries,
+    const applicationQueries = composeQueries({ em, searchEngine });
+    const searchQueries: TSearchQueries = {
+        getBestSearchIndexEntry: arg.getBestSearchIndexEntry ?? applicationQueries.search.getBestSearchIndexEntry,
+        getEntityByKindAndId: arg.getEntityByKindAndId ?? applicationQueries.search.getEntityByKindAndId,
+        getSearchIndexEntries: applicationQueries.search.getSearchIndexEntries,
     };
 
     return {
-        persistence: { ...applicationPersistence, search: persistence },
+        queries: { ...applicationQueries, search: searchQueries },
     };
 }
 
@@ -45,7 +45,7 @@ afterAll(async () => {
 
 describe(resolveSearchInput.name, () => {
     test("no result", async () => {
-        const result = await resolveSearchInput(getSearchPersistence({}), NO_SEARCH_RESULT_INPUT);
+        const result = await resolveSearchInput(getSearchQueries({}), NO_SEARCH_RESULT_INPUT);
 
         expect(result).toEqual({
             kind: ESearchResultKind.NO_RESULT,
@@ -69,7 +69,7 @@ describe(resolveSearchInput.name, () => {
         } as unknown as EntityManager;
 
         const result = await resolveSearchInput(
-            getSearchPersistence({
+            getSearchQueries({
                 getBestSearchIndexEntry: (input) => mockedSearchEngine.searchOne(input),
                 getEntityByKindAndId: (arg) => getGameDataEntityForSearchResult({ em: mockedEntityManager }, arg),
             }),
@@ -86,7 +86,7 @@ describe(resolveSearchInput.name, () => {
     });
 
     test("input too long", async () => {
-        const result = await resolveSearchInput(getSearchPersistence({}), "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1));
+        const result = await resolveSearchInput(getSearchQueries({}), "x".repeat(SEARCH_MAX_INPUT_LENGTH + 1));
 
         expect(result).toEqual({
             kind: ESearchResultKind.INPUT_TOO_LONG,
@@ -98,7 +98,7 @@ describe(resolveSearchInput.name, () => {
         const searchItem = searchEngine.searchOne(input);
         expect(searchItem).toBeDefined();
 
-        const result = await resolveSearchInput(getSearchPersistence({}), input);
+        const result = await resolveSearchInput(getSearchQueries({}), input);
 
         expect(result).toMatchObject({
             kind: ESearchResultKind.SUCCESS,

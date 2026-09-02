@@ -34,9 +34,10 @@ const orm = await initOrm(appMikroOrmConfig);
 // TODO: if not using RequestContext, useContext still necessary?
 const em = orm.em.fork({ useContext: true });
 const searchEngine = await createSearchEngine({ em });
-const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine });
+const { queries, repositories, withinTransaction } = composeInfrastructure({ em, searchEngine });
 const { useCases: builtUseCases } = composeApplication({
-    persistence,
+    queries,
+    repositories,
     useCaseMiddleware: withinTransaction,
 });
 

@@ -3,20 +3,20 @@ import type { TLfgPlayerRemovalResult } from "../../domain/lfg/models/playerRemo
 import type { IRoom } from "../../domain/lfg/models/room.types.ts";
 import type { IUser } from "../../domain/lfg/models/user.types.ts";
 import type { MaybePromise } from "../../utils/types.ts";
-import type { TApplicationPersistence } from "../persistence.types.ts";
+import type { TApplicationRepositories } from "../repositories.types.ts";
 import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 export type {
     TChangeLfgRoomCode,
     TCreateLfgRoom,
     TFindLfgRoomByCode,
     TFindLfgRoomByUser,
-    TLfgPersistence,
+    TLfgRepository,
     TListLfgRooms,
     TMoveUserToLfgRoom,
     TRemoveLfgRoom,
     TRemoveLfgRoomPlayer,
     TSetLfgRoomOwner,
-} from "./persistence.types.ts";
+} from "./repositories.types.ts";
 export type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
@@ -250,7 +250,7 @@ export type TLfgServices = {
 };
 
 export type TLfgDependencies = {
-    readonly persistence: TApplicationPersistence;
+    readonly repositories: TApplicationRepositories;
     readonly services: TLfgServices;
 };
 

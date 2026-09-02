@@ -19,9 +19,9 @@ function applyPlayerRemoval(
 
 export const kickFromRoom: TLfgServiceBase<
     "kickFromRoom",
-    "persistence.lfg.findRoomByUser" | "services.removePlayerFromRoom"
+    "repositories.lfg.findRoomByUser" | "services.removePlayerFromRoom"
 > = async function (dependencies, { guildId, room, target }) {
-    const targetRoom = await dependencies.persistence.lfg.findRoomByUser({ guildId, userId: target.id });
+    const targetRoom = await dependencies.repositories.lfg.findRoomByUser({ guildId, userId: target.id });
     if (targetRoom?.id !== room.id) {
         return {
             kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,

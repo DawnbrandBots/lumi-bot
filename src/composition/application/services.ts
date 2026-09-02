@@ -4,7 +4,7 @@ import { kickFromRoom } from "../../application/lfg/services/kickFromRoom.ts";
 import { removePlayerFromRoom } from "../../application/lfg/services/removePlayerFromRoom.ts";
 import { transferRoom } from "../../application/lfg/services/transferRoom.ts";
 import type { TLfgServices } from "../../application/lfg/types.ts";
-import type { TApplicationPersistence } from "../../application/persistence.types.ts";
+import type { TApplicationRepositories } from "../../application/repositories.types.ts";
 import { build } from "../utils/proxify.ts";
 
 const SERVICES = {
@@ -22,12 +22,12 @@ export type TApplicationServices = {
 };
 
 export function composeServices({
-    persistence,
+    repositories,
 }: {
-    readonly persistence: TApplicationPersistence;
+    readonly repositories: TApplicationRepositories;
 }): TApplicationServices {
     const dependencies = {
-        persistence,
+        repositories,
         get services() {
             return lfgServices;
         },

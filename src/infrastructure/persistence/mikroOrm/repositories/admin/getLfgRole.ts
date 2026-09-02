@@ -1,8 +1,8 @@
 import { toAdminLfgRoleConfig } from "../../mappers/toAdminLfgRoleConfig.ts";
 import { GuildConfigLfgRole } from "../../models/admin/configLfgRole.ts";
-import type { TAdminPersistenceMap } from "./types.ts";
+import type { TAdminRepositoryMap } from "./types.ts";
 
-export const getLfgRole: TAdminPersistenceMap["getLfgRole"] = async (context, arg) => {
+export const getLfgRole: TAdminRepositoryMap["getLfgRole"] = async (context, arg) => {
     const lfgRole = await context.em.findOne(GuildConfigLfgRole, {
         guildConfig: { guild: arg.guildId },
         role: arg.roleId,

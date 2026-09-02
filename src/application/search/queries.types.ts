@@ -8,10 +8,10 @@ export type TGetEntityByKindAndId = <Kind extends TSearchKind>(arg: {
     id: string;
 }) => MaybePromise<TSearchEntity<Kind> | null>;
 
-export type TSearchPersistence = {
+export type TSearchQueries = {
     getBestSearchIndexEntry: TGetBestSearchIndexEntry;
     getEntityByKindAndId: TGetEntityByKindAndId;
     getSearchIndexEntries: TGetSearchIndexEntries;
 };
 
-export default TSearchPersistence;
+export default TSearchQueries;

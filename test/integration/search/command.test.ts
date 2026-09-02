@@ -22,8 +22,8 @@ beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork({ useContext: true });
     searchEngine = await createSearchEngine({ em });
-    const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine });
-    const { useCases } = composeApplication({ persistence, useCaseMiddleware: withinTransaction });
+    const { queries, repositories, withinTransaction } = composeInfrastructure({ em, searchEngine });
+    const { useCases } = composeApplication({ queries, repositories, useCaseMiddleware: withinTransaction });
     const getRawCommandRunHandler = getCommandRunHandler(COMMANDS);
     searchCommand = (interaction) => {
         const command = getRawCommandRunHandler(interaction);

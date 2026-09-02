@@ -3,13 +3,13 @@ import type { TLfgUseCaseBase } from "../types.ts";
 
 export const disbandOwnedRoom: TLfgUseCaseBase<
     "disbandOwnedRoom",
-    "services.getOwnedRoom" | "persistence.lfg.removeRoom"
+    "services.getOwnedRoom" | "repositories.lfg.removeRoom"
 > = async function (dependencies, { guildId, owner }) {
     const result = await dependencies.services.getOwnedRoom({ guildId, owner });
     if (!result.success) {
         return result.value;
     }
-    await dependencies.persistence.lfg.removeRoom({ roomId: result.value.room.id });
+    await dependencies.repositories.lfg.removeRoom({ roomId: result.value.room.id });
     return {
         kind: ELfgResultKind.ROOM_DISBANDED,
         value: { userId: result.value.room.ownerId, code: result.value.room.code },

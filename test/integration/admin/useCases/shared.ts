@@ -30,8 +30,11 @@ export function useAdminUseCases() {
         orm = await MikroORM.init(config);
         await orm.schema.create();
         const em = orm.em.fork({ useContext: true });
-        const { persistence, withinTransaction } = composeInfrastructure({ em, searchEngine: EMPTY_SEARCH_ENGINE });
-        useCases = composeApplication({ persistence, useCaseMiddleware: withinTransaction }).useCases.admin;
+        const { queries, repositories, withinTransaction } = composeInfrastructure({
+            em,
+            searchEngine: EMPTY_SEARCH_ENGINE,
+        });
+        useCases = composeApplication({ queries, repositories, useCaseMiddleware: withinTransaction }).useCases.admin;
     });
 
     afterEach(async () => {

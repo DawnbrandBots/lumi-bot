@@ -1,11 +1,11 @@
 import type { Paths, PickDeep } from "type-fest";
-import type { TApplicationPersistence } from "../persistence.types.ts";
+import type { TApplicationRepositories } from "../repositories.types.ts";
 import type { TAdminUseCaseArgs, TAdminUseCases } from "./useCases.types.ts";
-export type { TAdminPersistence } from "./persistence.types.ts";
+export type { TAdminRepository } from "./repositories.types.ts";
 export type { TAdminUseCaseArgs, TAdminUseCases } from "./useCases.types.ts";
 
 export type TAdminUseCaseDependencies = {
-    readonly persistence: TApplicationPersistence;
+    readonly repositories: TApplicationRepositories;
 };
 
 export type TAdminLfgRoleConfig = {

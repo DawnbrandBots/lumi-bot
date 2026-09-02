@@ -1,4 +1,4 @@
-import type { TLfgPersistence } from "../../../../application/lfg/persistence.types.ts";
+import type { TLfgRepository } from "../../../../application/lfg/repositories.types.ts";
 import { changeRoomCode } from "./lfg/changeRoomCode.ts";
 import { createRoom } from "./lfg/createRoom.ts";
 import { findRoomByCode } from "./lfg/findRoomByCode.ts";
@@ -8,9 +8,9 @@ import { moveUserToRoom } from "./lfg/moveUserToRoom.ts";
 import { removeRoom } from "./lfg/removeRoom.ts";
 import { removeRoomPlayer } from "./lfg/removeRoomPlayer.ts";
 import { setRoomOwner } from "./lfg/setRoomOwner.ts";
-import type { TLfgPersistenceFunction } from "./lfg/types.ts";
+import type { TLfgRepositoryFunction } from "./lfg/types.ts";
 
-const LFG: { [K in keyof TLfgPersistence]: TLfgPersistenceFunction<TLfgPersistence[K]> } = {
+const LFG: { [K in keyof TLfgRepository]: TLfgRepositoryFunction<TLfgRepository[K]> } = {
     changeRoomCode,
     createRoom,
     findRoomByCode,

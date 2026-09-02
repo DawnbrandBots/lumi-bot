@@ -1,15 +1,15 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TAdminPersistence } from "../../../../../application/admin/persistence.types.ts";
+import type { TAdminRepository } from "../../../../../application/admin/repositories.types.ts";
 
-export type TAdminPersistenceContext = {
+export type TAdminRepositoryContext = {
     readonly em: EntityManager;
 };
 
-export type TAdminPersistenceFunction<Function extends (...args: never[]) => unknown> = (
-    context: TAdminPersistenceContext,
+export type TAdminRepositoryFunction<Function extends (...args: never[]) => unknown> = (
+    context: TAdminRepositoryContext,
     arg: Parameters<Function>[0],
 ) => ReturnType<Function>;
 
-export type TAdminPersistenceMap = {
-    readonly [Key in keyof TAdminPersistence]: TAdminPersistenceFunction<TAdminPersistence[Key]>;
+export type TAdminRepositoryMap = {
+    readonly [Key in keyof TAdminRepository]: TAdminRepositoryFunction<TAdminRepository[Key]>;
 };

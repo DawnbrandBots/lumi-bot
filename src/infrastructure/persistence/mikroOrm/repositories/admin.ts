@@ -1,4 +1,4 @@
-import type { TAdminPersistence } from "../../../../application/admin/persistence.types.ts";
+import type { TAdminRepository } from "../../../../application/admin/repositories.types.ts";
 import { addLfgRole } from "./admin/addLfgRole.ts";
 import { clearLfgChannel } from "./admin/clearLfgChannel.ts";
 import { clearLfgRolePingCooldown } from "./admin/clearLfgRolePingCooldown.ts";
@@ -9,9 +9,9 @@ import { removeLfgRole } from "./admin/removeLfgRole.ts";
 import { setLfgChannel } from "./admin/setLfgChannel.ts";
 import { setLfgRoleLastPingedAt } from "./admin/setLfgRoleLastPingedAt.ts";
 import { setLfgRolePingCooldown } from "./admin/setLfgRolePingCooldown.ts";
-import type { TAdminPersistenceFunction } from "./admin/types.ts";
+import type { TAdminRepositoryFunction } from "./admin/types.ts";
 
-const ADMIN: { [K in keyof TAdminPersistence]: TAdminPersistenceFunction<TAdminPersistence[K]> } = {
+const ADMIN: { [K in keyof TAdminRepository]: TAdminRepositoryFunction<TAdminRepository[K]> } = {
     addLfgRole,
     clearLfgChannel,
     clearLfgRolePingCooldown,

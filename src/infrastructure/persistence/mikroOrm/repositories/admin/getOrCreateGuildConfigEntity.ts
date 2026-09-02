@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
 import { GuildConfig } from "../../models/admin/config.ts";
-import type { TAdminPersistenceContext } from "./types.ts";
+import type { TAdminRepositoryContext } from "./types.ts";
 import { getGuildConfigEntity } from "./getGuildConfigEntity.ts";
 
 export async function getOrCreateGuildConfigEntity(
-    context: TAdminPersistenceContext,
+    context: TAdminRepositoryContext,
     guildId: string,
 ): Promise<GuildConfig> {
     const config = await getGuildConfigEntity(context, guildId);

@@ -1,7 +1,7 @@
-import type { TGetBestSearchIndexEntry } from "../../../application/search/persistence.types.ts";
-import type { TSearchEnginePersistenceFunction } from "./types.ts";
+import type { TGetBestSearchIndexEntry } from "../../../application/search/queries.types.ts";
+import type { TSearchEngineQueryFunction } from "./types.ts";
 
-export const getBestSearchIndexEntry: TSearchEnginePersistenceFunction<TGetBestSearchIndexEntry> = (
+export const getBestSearchIndexEntry: TSearchEngineQueryFunction<TGetBestSearchIndexEntry> = (
     { searchEngine },
     input,
 ) => searchEngine.searchOne(input);

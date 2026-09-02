@@ -1,7 +1,7 @@
 import type { MaybePromise } from "../../utils/types.ts";
 import type { TAdminGuildConfig, TAdminLfgRoleConfig } from "./types.ts";
 
-export type TAdminPersistence = {
+export type TAdminRepository = {
     readonly addLfgRole: (arg: { readonly guildId: string; readonly roleId: string }) => MaybePromise<void>;
     readonly clearLfgChannel: (arg: { readonly guildId: string }) => MaybePromise<void>;
     readonly clearLfgRolePingCooldown: (arg: { readonly guildId: string }) => MaybePromise<void>;

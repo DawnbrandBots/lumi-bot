@@ -3,9 +3,9 @@ import type { TLfgUseCaseBase } from "../types.ts";
 
 export const leaveRoom: TLfgUseCaseBase<
     "leaveRoom",
-    "persistence.lfg.findRoomByUser" | "services.removePlayerFromRoom"
+    "repositories.lfg.findRoomByUser" | "services.removePlayerFromRoom"
 > = async function (dependencies, { guildId, user }) {
-    const room = await dependencies.persistence.lfg.findRoomByUser({ guildId, userId: user.id });
+    const room = await dependencies.repositories.lfg.findRoomByUser({ guildId, userId: user.id });
     if (!room) {
         return { kind: ELfgResultKind.NOT_IN_A_ROOM } as const;
     }

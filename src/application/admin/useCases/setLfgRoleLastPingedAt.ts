@@ -3,7 +3,7 @@ import type { TAdminUseCaseBase } from "../types.ts";
 // TODO: should this really not be returning anything?
 export const setLfgRoleLastPingedAt: TAdminUseCaseBase<
     "setLfgRoleLastPingedAt",
-    "persistence.admin.setLfgRoleLastPingedAt"
+    "repositories.admin.setLfgRoleLastPingedAt"
 > = async function (dependencies, arg) {
-    await dependencies.persistence.admin.setLfgRoleLastPingedAt(arg);
+    await dependencies.repositories.admin.setLfgRoleLastPingedAt(arg);
 };

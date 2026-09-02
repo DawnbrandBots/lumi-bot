@@ -3,7 +3,7 @@ import type { TLfgServiceBase } from "../types.ts";
 
 export const transferRoom: TLfgServiceBase<
     "transferRoom",
-    "persistence.lfg.findRoomByUser" | "persistence.lfg.setRoomOwner"
+    "repositories.lfg.findRoomByUser" | "repositories.lfg.setRoomOwner"
 > = async function (dependencies, { guildId, room, target }) {
     const previousOwnerId = room.ownerId;
     if (previousOwnerId === target.id) {
@@ -13,7 +13,7 @@ export const transferRoom: TLfgServiceBase<
         } as const;
     }
 
-    const targetRoom = await dependencies.persistence.lfg.findRoomByUser({ guildId, userId: target.id });
+    const targetRoom = await dependencies.repositories.lfg.findRoomByUser({ guildId, userId: target.id });
     if (targetRoom?.id !== room.id) {
         return {
             kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
@@ -21,7 +21,7 @@ export const transferRoom: TLfgServiceBase<
         } as const;
     }
 
-    const updatedRoom = await dependencies.persistence.lfg.setRoomOwner({ roomId: room.id, ownerId: target.id });
+    const updatedRoom = await dependencies.repositories.lfg.setRoomOwner({ roomId: room.id, ownerId: target.id });
     return {
         kind: ELfgResultKind.OWNERSHIP_TRANSFERRED,
         value: { userId: previousOwnerId, targetId: target.id, room: updatedRoom },

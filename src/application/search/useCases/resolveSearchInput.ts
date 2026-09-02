@@ -3,19 +3,19 @@ import { ESearchResultKind, type TSearchUseCaseBase } from "../types.ts";
 
 export const resolveSearchInput: TSearchUseCaseBase<
     "resolveSearchInput",
-    "persistence.search.getBestSearchIndexEntry" | "persistence.search.getEntityByKindAndId"
+    "queries.search.getBestSearchIndexEntry" | "queries.search.getEntityByKindAndId"
 > = async function (dependencies, input) {
     if (input.length > SEARCH_MAX_INPUT_LENGTH) {
         return { kind: ESearchResultKind.INPUT_TOO_LONG };
     }
 
-    const searchItem = await dependencies.persistence.search.getBestSearchIndexEntry(input);
+    const searchItem = await dependencies.queries.search.getBestSearchIndexEntry(input);
 
     if (!searchItem) {
         return { kind: ESearchResultKind.NO_RESULT };
     }
 
-    const entity = await dependencies.persistence.search.getEntityByKindAndId(searchItem);
+    const entity = await dependencies.queries.search.getEntityByKindAndId(searchItem);
 
     if (!entity) {
         return {

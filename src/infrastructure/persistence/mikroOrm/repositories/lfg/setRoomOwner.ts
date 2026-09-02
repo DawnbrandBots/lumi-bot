@@ -1,9 +1,9 @@
-import type { TLfgPersistence } from "../../../../../application/lfg/persistence.types.ts";
+import type { TLfgRepository } from "../../../../../application/lfg/repositories.types.ts";
 import { mapToLfgRoomDomainModel } from "../../mappers/mapToLfgRoomDomainModel.ts";
 import { getRoomEntityById } from "./getRoomEntityById.ts";
-import type { TLfgPersistenceFunction } from "./types.ts";
+import type { TLfgRepositoryFunction } from "./types.ts";
 
-export const setRoomOwner: TLfgPersistenceFunction<TLfgPersistence["setRoomOwner"]> = async (
+export const setRoomOwner: TLfgRepositoryFunction<TLfgRepository["setRoomOwner"]> = async (
     { em },
     { roomId, ownerId },
 ) => {

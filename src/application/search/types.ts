@@ -1,11 +1,11 @@
 import type { Paths, PickDeep } from "type-fest";
 import type { TId } from "../../domain/game/models/base.types.ts";
 import type { TSearchEntity, TSearchIndexEntry, TSearchKind } from "../../domain/search/types.ts";
-import type { TApplicationPersistence } from "../persistence.types.ts";
+import type { TApplicationQueries } from "../queries.types.ts";
 import type { TSearchUseCaseArgs, TSearchUseCases } from "./useCases.types.ts";
 
 export type TSearchUseCaseDependencies = {
-    readonly persistence: TApplicationPersistence;
+    readonly queries: TApplicationQueries;
 };
 
 export type TSearchUseCaseBase<

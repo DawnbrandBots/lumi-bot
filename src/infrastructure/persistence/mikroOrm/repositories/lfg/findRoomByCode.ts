@@ -1,9 +1,9 @@
-import type { TLfgPersistence } from "../../../../../application/lfg/persistence.types.ts";
+import type { TLfgRepository } from "../../../../../application/lfg/repositories.types.ts";
 import { mapToLfgRoomDomainModel } from "../../mappers/mapToLfgRoomDomainModel.ts";
 import { LfgRoom } from "../../models/lfg/room.ts";
-import type { TLfgPersistenceFunction } from "./types.ts";
+import type { TLfgRepositoryFunction } from "./types.ts";
 
-export const findRoomByCode: TLfgPersistenceFunction<TLfgPersistence["findRoomByCode"]> = async (
+export const findRoomByCode: TLfgRepositoryFunction<TLfgRepository["findRoomByCode"]> = async (
     { em },
     { guildId, code },
 ) => {

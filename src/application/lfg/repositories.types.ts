@@ -29,7 +29,7 @@ export type TChangeLfgRoomCode = (arg: { readonly roomId: string; readonly newCo
     readonly newCode: string;
 }>;
 
-export type TLfgPersistence = {
+export type TLfgRepository = {
     readonly changeRoomCode: TChangeLfgRoomCode;
     readonly createRoom: TCreateLfgRoom;
     readonly findRoomByCode: TFindLfgRoomByCode;
