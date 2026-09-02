@@ -1,9 +1,11 @@
 import debug from "debug";
-import { userMention } from "discord.js";
+import { userMention, type ClientEvents, type Events } from "discord.js";
 import type { TSearchUseCases } from "../../../application/search/useCases.types.ts";
 import { helpMessage } from "../commands/help.ts";
 import mapSearchResultToMessages from "../mappers/search.ts";
-import type { TMessageCreateEventInteraction } from "./messageCreate.types.ts";
+
+export type TMessageCreateEventInteraction = ClientEvents[Events.MessageCreate][0];
+export type THandleMessageCreate = (interaction: TMessageCreateEventInteraction) => Promise<void>;
 
 // TODO: instead of logging every single message, log only when one handler is called
 // also, only log a subset of the info displayed when printing the interaction object

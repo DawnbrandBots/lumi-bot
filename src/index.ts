@@ -19,13 +19,13 @@ import type {
     TCommandAutocompleteHandler,
 } from "./presentation/discord/commands/types.ts";
 import { handleClientReady as clientReadyHandler } from "./presentation/discord/eventHandlers/clientReady.ts";
-import type { TInteractionCreateEventInteraction } from "./presentation/discord/eventHandlers/interactionCreate.types.ts";
+import type { TInteractionCreateEventInteraction } from "./presentation/discord/eventHandlers/interactionCreate.ts";
 import { handleAutocompleteInteraction } from "./presentation/discord/eventHandlers/interactions/autocomplete.ts";
 import type { THandleAutocompleteInteraction } from "./presentation/discord/eventHandlers/interactions/autocomplete.types.ts";
 import { handleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.ts";
 import type { THandleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.types.ts";
+import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
 import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
-import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.types.ts";
 import { createErrorMessage } from "./presentation/discord/message.ts";
 
 const log = debug("index.ts");

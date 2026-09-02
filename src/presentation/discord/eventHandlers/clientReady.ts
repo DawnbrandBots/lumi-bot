@@ -1,7 +1,10 @@
 import debug from "debug";
-import type { Client } from "discord.js";
+import type { Client, ClientEvents, Events } from "discord.js";
 import { ActivityType } from "discord.js";
 import { DISCORD_BOT_ACTIVITY } from "../constants.ts";
+
+export type TClientReadyEvent = ClientEvents[Events.ClientReady][0];
+export type THandleClientReady = (client: TClientReadyEvent) => Promise<void>;
 
 const log = debug(handleClientReady.name);
 

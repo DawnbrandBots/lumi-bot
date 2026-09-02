@@ -1,7 +1,10 @@
 import debug from "debug";
-import type { TInteractionCreateEventInteraction } from "./interactionCreate.types.ts";
+import type { ClientEvents, Events } from "discord.js";
 import type { THandleAutocompleteInteraction } from "./interactions/autocomplete.types.ts";
 import type { THandleCommandInteraction } from "./interactions/command.types.ts";
+
+export type TInteractionCreateEventInteraction = ClientEvents[Events.InteractionCreate][0];
+export type THandleInteractionCreate = (interaction: TInteractionCreateEventInteraction) => Promise<void>;
 
 const log = debug(handleInteractionCreate.name);
 
