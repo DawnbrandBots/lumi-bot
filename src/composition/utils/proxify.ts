@@ -1,4 +1,5 @@
 import type { MaybePromise } from "../../utils/types.ts";
+import memoizeUnary from "./memoizeUnary.ts";
 
 const err = () => {
     throw new Error(
@@ -6,7 +7,6 @@ const err = () => {
     );
 };
 
-// TODO: basic proxify logic and caching should be separate functions
 /**
  * Given a function that returns a value of a specific type for each possible {@link PropertyKey}-compatible input value,
  * returns a proxy object typed as having keys of the same type as the input function's keys and values of the same type as the input function's return type.
@@ -27,20 +27,7 @@ const err = () => {
  * ```
  */
 const proxify = <T extends Record<PropertyKey, unknown>>(f: <K extends keyof T>(key: K) => T[K]): T => {
-    const cache = new Map<PropertyKey, unknown>();
-
-    return new Proxy(
-        {},
-        {
-            get: (_, property) => {
-                if (!cache.has(property)) {
-                    cache.set(property, f(property as keyof T));
-                }
-                return cache.get(property);
-            },
-            ownKeys: err,
-        },
-    ) as T;
+    return new Proxy({}, { get: (_, property) => f(property as keyof T), ownKeys: err }) as T;
 };
 
 // TODO: I'm leaving additions below now but they look all a bit too funky to me.
@@ -79,12 +66,11 @@ export function build<Dependencies, Functions extends TBuildableFunctions>(
     // TODO: instead of requiring a middleware, update the caller to build and provide a Record with middleware'd functions?
     middleware?: TBuildableFunctionMiddleware,
 ): TBuiltFunctions<Functions> {
-    return proxify<TBuiltFunctions<Functions>>((key) =>
-        // TODO: is there a TS bug or something I don't understand here?
-        // - With `buildFunction(dependencies, functions[key])`, functions[key] is never undefined.
-        // - But with the following line, ! must be appended to both access to functions
-        buildFunction(dependencies, middleware?.(functions[key]!) ?? functions[key]!),
-    );
+    // TODO: I don't understand:
+    // - With `buildFunction(dependencies, functions[key])`, functions[key] is never undefined.
+    // - But with the following line, ! must be appended to both access to functions
+    const f = (key: keyof Functions) => buildFunction(dependencies, middleware?.(functions[key]!) ?? functions[key]!);
+    return proxify<TBuiltFunctions<Functions>>(memoizeUnary(f));
 }
 
 export default proxify;
