@@ -1,6 +1,6 @@
 import { Collection } from "@mikro-orm/sqlite";
 import type { TSearchSuccessValue } from "../../../../../../src/application/search/types.ts";
-import type { Disciple } from "../../../../../../src/infrastructure/database/mikroOrm/models/game/disciple.ts";
+import type { Disciple } from "../../../../../../src/infrastructure/wrappers/orm/mikroOrm/models/game/disciple.ts";
 
 export const MUSIC = {
     kind: "music",

@@ -1,11 +1,11 @@
 import type { EntityManager, EntityName, FilterQuery, Populate } from "@mikro-orm/sqlite";
 import type { ISearchableEntity, TSearchKind } from "../../domain/search/types.ts";
-import { Disciple } from "../database/mikroOrm/models/game/disciple.ts";
-import { Music } from "../database/mikroOrm/models/game/music.ts";
-import { Spell } from "../database/mikroOrm/models/game/spell.ts";
-import { Weapon } from "../database/mikroOrm/models/game/weapon.ts";
-import { WeaponSkill } from "../database/mikroOrm/models/game/weaponSkill.ts";
-import type { TSearchOrmEntity } from "../database/mikroOrm/repositories/search/types.ts";
+import type { TSearchOrmEntity } from "../repositories/search/types.ts";
+import { Disciple } from "../wrappers/orm/mikroOrm/models/game/disciple.ts";
+import { Music } from "../wrappers/orm/mikroOrm/models/game/music.ts";
+import { Spell } from "../wrappers/orm/mikroOrm/models/game/spell.ts";
+import { Weapon } from "../wrappers/orm/mikroOrm/models/game/weapon.ts";
+import { WeaponSkill } from "../wrappers/orm/mikroOrm/models/game/weaponSkill.ts";
 
 /** Defines what ORM entity should be searched for. */
 export interface ISearchConfig<EntityType extends ISearchableEntity, PopulateHint extends string = never> {

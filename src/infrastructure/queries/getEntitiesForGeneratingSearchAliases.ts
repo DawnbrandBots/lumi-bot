@@ -1,10 +1,10 @@
 import type { SqlEntityManager } from "@mikro-orm/sqlite";
 import type { TSearchAliasEntities } from "../../application/search/searchAliases.types.ts";
-import { Disciple } from "../database/mikroOrm/models/game/disciple.ts";
-import { Music } from "../database/mikroOrm/models/game/music.ts";
-import { Spell } from "../database/mikroOrm/models/game/spell.ts";
-import { Weapon } from "../database/mikroOrm/models/game/weapon.ts";
-import { WeaponSkill } from "../database/mikroOrm/models/game/weaponSkill.ts";
+import { Disciple } from "../wrappers/orm/mikroOrm/models/game/disciple.ts";
+import { Music } from "../wrappers/orm/mikroOrm/models/game/music.ts";
+import { Spell } from "../wrappers/orm/mikroOrm/models/game/spell.ts";
+import { Weapon } from "../wrappers/orm/mikroOrm/models/game/weapon.ts";
+import { WeaponSkill } from "../wrappers/orm/mikroOrm/models/game/weaponSkill.ts";
 
 export async function getEntitiesForGeneratingSearchAliases({
     em,

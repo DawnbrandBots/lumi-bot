@@ -1,2 +1,2 @@
 // Could change later. Re-export for now. Test files should import this one.
-export * from "../src/infrastructure/database/mikroOrm/config.ts";
+export * from "../src/infrastructure/wrappers/orm/mikroOrm/config.ts";
