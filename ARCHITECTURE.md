@@ -1,26 +1,32 @@
 # Architecture
 
-## `src/`
+Describes this repository's architecture. See [MAINTAINER_NOTES.md](/MAINTAINER_NOTES.md) for remarks about the repository's current shortcomings regarding architecture and code cleanliness.
 
-Contains source code for the bot's runtime. `src/`'s direct subdirectories represent DDD layers.
+## File structure
 
-### DDD Layers
+### `src/`
 
-#### `domain/`
+Contains source code for the bot's runtime. `src/`'s represent layers, each containing code with specific responsibilites.
+
+Some parts of the source code may apply some concepts from [Domain Driven Design](https://redis.io/glossary/domain-driven-design-ddd/), though the whole repository does not strictly to this approach (...yet?).
+
+#### Layers
+
+##### `domain/`
 
 Contains the code representing _business_ concepts and rules that the bot's features manipulate.
 
 `domain/` code has no reference to code outside of itself.
 
-#### `presentation/`
+##### `presentation/`
 
 Contains code for handling platform-specific requests sent to the bot. The bot currently only handles requests coming from Discord clients, which is why `presentation/`'s only direct subdirectory is `discord/`. The bot may later offer other ways to interact with it, such as a REST API of its own.
 
 Each `presentation/`'s subdirectory contains code for handling the multiple ways a platform's clients may send requests to the bot. In the case of `discord/`, Lumi may reply to requests sent in the form of regular messages or [interactions](https://docs.discord.com/developers/interactions/overview) (e.g. slash commands, message components, autocomplete).
 
-Following DDD principles, the only other layer which API `presentation/` may interact with is `application/`.
+The only other layer which API `presentation/` may interact with is `application/`.
 
-#### `application/`
+##### `application/`
 
 Contains the core logic for the bot. Its code enforces that received input respects `domain/` rules then may run tasks involving `domain/` models by calling upon `infrastructure/`'s API.
 
@@ -30,19 +36,19 @@ Each `application/` subdirectory contains code for individual features of the bo
 
 Each feature directory has a `useCases/` subdirectory containing the API that may be called by the `presentation/` layer. Each feature directory may also have a `services/` subdirectory containing shared code not meant to be accessed by `presentation/`.
 
-Following DDD principles, the only other layers which API `application/` may interact with are `application/` and `domain/`.
+The only other layers which API `application/` may interact with are `application/` and `domain/`.
 
-#### `composition/`
+##### `composition/`
 
-The **composition root** is responsible for creating module instances and linking them together.
+Contains code responsible for linking code from all other layers into something that can actually run.
 
-### Concepts seen in multiple layers
+#### Concepts seen in multiple layers
 
-#### Mappers
+##### Mappers
 
 `domain/` and `application/` do not contain references to other layers. `infrastructure/` and `presentation/` must provide/return instances of `application/` models to interact with it, and may also have to translate `application/` models intances to another model that a client or another API understands.
 
-Mappers are functions which only purpose is creating an object which conforms to a layer's interface from another object conforming to an interface from another layer.
+Mappers are functions which only purpose is creating an object which conforms to a certain layer's interface from another object.
 
 For example, Lumi may reply to the `/search` command sent from Discord with data about Kurt.
 
@@ -73,10 +79,19 @@ function mapDiscipleDataToDiscordSlashCommandReply(data: IDiscipleData): IDiscor
 }
 ```
 
-## `data/`
+### `data/`
 
 Contains Fire Emblem Shadows game data in the form of JSON files.
 
-## `scripts/`
+### `scripts/`
 
 Contains files meant to be run from the CLI. Each script should have at least one `package.json` `scripts` entry pointing at it.
+
+### `test/`
+
+The application's tests.
+
+#### Test types
+
+- `unit/` tests: Each `*.test.ts` file contains test cases for a single function. Dependencies are always mocked.
+- `integration/` tests: They ensure that code in at least two adjacent layers work correctly in some scenarios that can happen at runtime. Some dependencies from deeper layers may be mocked.
