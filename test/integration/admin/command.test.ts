@@ -2,7 +2,7 @@ import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandIn
 import { describe, expect, test, vi } from "vitest";
 import { EAdminResultKind, type TAdminUseCases } from "../../../src/application/admin/types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
-import { build } from "../../../src/composition/utils/proxify.ts";
+import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import {
     ADMIN_ACTION_OPTION_NAME,
@@ -16,8 +16,8 @@ import {
     ADMIN_MINUTES_OPTION_NAME,
     ADMIN_ROLE_OPTION_NAME,
 } from "../../../src/presentation/discord/commands/admin/constants.ts";
-import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import type { TAdminCommandArgs } from "../../../src/presentation/discord/commands/admin/types.ts";
+import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";
@@ -67,7 +67,7 @@ async function runCommand(useCases: TApplicationUseCases, interaction: ChatInput
     if (!command) {
         throw new Error("No run handler found for test interaction.");
     }
-    await build({ useCases }, { command }).command(interaction);
+    await buildDependentFunctionsRecord({ useCases }, { command }).command(interaction);
 }
 
 function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandArgs {

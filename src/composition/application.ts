@@ -1,9 +1,9 @@
 import type { TApplicationQueries } from "../application/queries.types.ts";
 import type { TApplicationRepositories } from "../application/repositories.types.ts";
 import type { TApplicationUseCases } from "../application/useCases.types.ts";
-import type { TBuildableFunctionMiddleware } from "./utils/proxify.ts";
 import { composeServices } from "./application/services.ts";
 import { composeUseCases } from "./application/useCases.ts";
+import type { TBuildableFunctionMiddleware } from "./utils/buildDependentFunctionsRecord.ts";
 
 export function composeApplication({
     queries,

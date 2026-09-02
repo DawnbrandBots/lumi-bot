@@ -1,5 +1,5 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
-import type { TBuildableFunctionMiddleware } from "../../utils/proxify.ts";
+import type { TBuildableFunctionMiddleware } from "../../utils/buildDependentFunctionsRecord.ts";
 
 const getWithinTransaction: (em: EntityManager) => TBuildableFunctionMiddleware =
     // clear: true so the internally forked transactional em does not share its parent's identity map

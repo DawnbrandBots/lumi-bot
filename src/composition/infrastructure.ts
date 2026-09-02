@@ -4,7 +4,7 @@ import type { ISearchEngine } from "../infrastructure/search/types.ts";
 import getWithinTransaction from "./infrastructure/mikroOrm/withinTransaction.ts";
 import { composeQueries } from "./infrastructure/queries.ts";
 import { composeRepositories } from "./infrastructure/repositories.ts";
-import type { TBuildableFunctionMiddleware } from "./utils/proxify.ts";
+import type { TBuildableFunctionMiddleware } from "./utils/buildDependentFunctionsRecord.ts";
 
 export function composeInfrastructure({
     em,

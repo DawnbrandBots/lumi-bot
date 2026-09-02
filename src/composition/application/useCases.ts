@@ -4,7 +4,10 @@ import type { TApplicationQueries } from "../../application/queries.types.ts";
 import type { TApplicationRepositories } from "../../application/repositories.types.ts";
 import SEARCH_USE_CASES from "../../application/search/useCases.ts";
 import type { TApplicationUseCases } from "../../application/useCases.types.ts";
-import { build, type TBuildableFunctionMiddleware } from "../utils/proxify.ts";
+import {
+    buildDependentFunctionsRecord,
+    type TBuildableFunctionMiddleware,
+} from "../utils/buildDependentFunctionsRecord.ts";
 import type { TApplicationServices } from "./services.ts";
 
 const USE_CASES = {
@@ -27,8 +30,8 @@ export function composeUseCases({
     // TODO: ultimately, there should be a function that takes a record of record of useCases and builds all at once.
     // TODO: should composed types be introduced for objects like builtUseCases?
     return {
-        admin: build({ repositories }, USE_CASES.admin, middleware),
-        lfg: build({ repositories, services: services.lfg }, USE_CASES.lfg, middleware),
-        search: build({ queries }, USE_CASES.search, middleware),
+        admin: buildDependentFunctionsRecord({ repositories }, USE_CASES.admin, middleware),
+        lfg: buildDependentFunctionsRecord({ repositories, services: services.lfg }, USE_CASES.lfg, middleware),
+        search: buildDependentFunctionsRecord({ queries }, USE_CASES.search, middleware),
     };
 }

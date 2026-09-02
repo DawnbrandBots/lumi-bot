@@ -3,7 +3,7 @@ import type { AutocompleteInteraction, CacheType } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import type { TSearchUseCases } from "../../../src/application/search/useCases.types.ts";
-import { build } from "../../../src/composition/utils/proxify.ts";
+import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/persistence/mikroOrm/queries/getEntitiesForGeneratingSearchAliases.ts";
 import { FuseSearchEngine } from "../../../src/infrastructure/search/fuse/engine.ts";
@@ -36,7 +36,10 @@ beforeAll(async () => {
     });
     const suggestSearchResults: TSearchUseCases["suggestSearchResults"] = (arg) =>
         searchEngine.search(arg.input, arg.limit);
-    searchAutocomplete = build({ useCases: { search: { suggestSearchResults } } }, AUTOCOMPLETE.search);
+    searchAutocomplete = buildDependentFunctionsRecord(
+        { useCases: { search: { suggestSearchResults } } },
+        AUTOCOMPLETE.search,
+    );
 });
 
 afterAll(async () => {

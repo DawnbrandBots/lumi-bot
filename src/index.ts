@@ -3,7 +3,7 @@ import { Client, Events, GatewayIntentBits, InteractionType } from "discord.js";
 import { composeApplication } from "./composition/application.ts";
 import { composeInfrastructure } from "./composition/infrastructure.ts";
 import { createSearchEngine } from "./composition/infrastructure/search.ts";
-import { buildFunction } from "./composition/utils/proxify.ts";
+import { buildDependentFunction } from "./composition/utils/buildDependentFunctionsRecord.ts";
 import { appMikroOrmConfig } from "./infrastructure/persistence/mikroOrm/config.ts";
 import { initOrm } from "./infrastructure/persistence/mikroOrm/orm.ts";
 import { AUTOCOMPLETE } from "./presentation/discord/autocomplete.ts";
@@ -17,6 +17,7 @@ import {
 import type {
     TBuiltCommandAutocompleteHandler,
     TCommandAutocompleteHandler,
+    TCommandDependencies,
 } from "./presentation/discord/commands/types.ts";
 import { handleClientReady as clientReadyHandler } from "./presentation/discord/eventHandlers/clientReady.ts";
 import type { TInteractionCreateEventInteraction } from "./presentation/discord/eventHandlers/interactionCreate.ts";
@@ -50,13 +51,15 @@ const messageCreateHandler: THandleMessageCreate = (interaction) =>
 const getRawCommandRunHandler = getRawCommandRunHandlerFromCommands(COMMANDS);
 const getCommandRunHandler: TBuiltCommandRunHandlerGetter = (interaction) => {
     const command = getRawCommandRunHandler(interaction);
-    return command ? buildFunction(presentationDependencies, command) : undefined;
+    // TODO: not sure buildDependentFunction is even needed here?
+    return command ? buildDependentFunction(presentationDependencies, command) : undefined;
 };
 
-const getRawAutocompleteHandler = getRawAutocompleteHandlerFromHandlers<TCommandAutocompleteHandler>(AUTOCOMPLETE);
+const getRawAutocompleteHandler =
+    getRawAutocompleteHandlerFromHandlers<TCommandAutocompleteHandler<TCommandDependencies>>(AUTOCOMPLETE);
 const getAutocompleteHandler: TAutocompleteHandlerGetter<TBuiltCommandAutocompleteHandler> = (interaction) => {
     const autocomplete = getRawAutocompleteHandler(interaction);
-    return autocomplete ? buildFunction(presentationDependencies, autocomplete) : undefined;
+    return autocomplete ? buildDependentFunction(presentationDependencies, autocomplete) : undefined;
 };
 
 const commandInteraction: THandleCommandInteraction = (interaction) =>

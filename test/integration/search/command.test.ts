@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { composeApplication } from "../../../src/composition/application.ts";
 import { composeInfrastructure } from "../../../src/composition/infrastructure.ts";
 import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
-import { build } from "../../../src/composition/utils/proxify.ts";
+import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/types.ts";
 import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
@@ -30,7 +30,7 @@ beforeAll(async () => {
         if (!command) {
             throw new Error("No run handler found for test interaction.");
         }
-        return build({ useCases }, { command }).command(interaction);
+        return buildDependentFunctionsRecord({ useCases }, { command }).command(interaction);
     };
 });
 

@@ -9,7 +9,7 @@ import { describe, expect, test, vi } from "vitest";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
-import { build } from "../../../src/composition/utils/proxify.ts";
+import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
 import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
@@ -122,7 +122,7 @@ async function runCommand(useCases: TApplicationUseCases, interaction: ChatInput
     if (!command) {
         throw new Error("No run handler found for test interaction.");
     }
-    await build({ useCases }, { command }).command(interaction);
+    await buildDependentFunctionsRecord({ useCases }, { command }).command(interaction);
 }
 
 describe("lfg-manage command", () => {

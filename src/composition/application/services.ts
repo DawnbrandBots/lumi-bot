@@ -5,7 +5,7 @@ import { removePlayerFromRoom } from "../../application/lfg/services/removePlaye
 import { transferRoom } from "../../application/lfg/services/transferRoom.ts";
 import type { TLfgServices } from "../../application/lfg/types.ts";
 import type { TApplicationRepositories } from "../../application/repositories.types.ts";
-import { build } from "../utils/proxify.ts";
+import { buildDependentFunctionsRecord } from "../utils/buildDependentFunctionsRecord.ts";
 
 const SERVICES = {
     lfg: {
@@ -32,6 +32,6 @@ export function composeServices({
             return lfgServices;
         },
     };
-    const lfgServices: TLfgServices = build(dependencies, SERVICES.lfg);
+    const lfgServices: TLfgServices = buildDependentFunctionsRecord(dependencies, SERVICES.lfg);
     return { lfg: lfgServices };
 }
