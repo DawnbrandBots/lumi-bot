@@ -2,9 +2,9 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
 import type { ISearchIndexEntry } from "../../../src/domain/search/types.ts";
-import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/database/mikroOrm/repositories/search/getEntitiesForGeneratingSearchAliases.ts";
-import type { ISearchEngine } from "../../../src/infrastructure/search/engine.types.ts";
-import { FuseSearchEngine } from "../../../src/infrastructure/search/fuse/engine.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/queries/getEntitiesForGeneratingSearchAliases.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/wrappers/searchEngine/types.ts";
+import { FuseSearchEngine } from "../../../src/infrastructure/wrappers/searchEngine/fuse/engine.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES, SEARCH_RANKING_KNOWN_FAILURE_CASES } from "./constants.ts";
 

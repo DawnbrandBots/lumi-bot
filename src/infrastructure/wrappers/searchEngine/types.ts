@@ -1,4 +1,4 @@
-import type { ISearchIndexEntry } from "../../domain/search/types.ts";
+import type { ISearchIndexEntry } from "../../../domain/search/types.ts";
 
 /** Handles user text searches. */
 export interface ISearchEngine<Items extends ISearchIndexEntry> {
