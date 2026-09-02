@@ -2,11 +2,11 @@ import type { EntityManager } from "@mikro-orm/sqlite";
 import type { TApplicationPersistence } from "../../application/persistence.types.ts";
 import type { TSearchPersistence } from "../../application/search/persistence.types.ts";
 import type { TSearchIndexEntry } from "../../domain/search/types.ts";
-import ADMIN_REPOSITORIES from "../../infrastructure/repositories/admin.ts";
-import LFG_REPOSITORIES from "../../infrastructure/repositories/lfg.ts";
-import { getGameDataEntityForSearchResult } from "../../infrastructure/queries/getGameDataEntityForSearchResult.ts";
-import { QUERIES } from "../../infrastructure/queries.ts";
-import type { ISearchEngine } from "../../infrastructure/wrappers/searchEngine/types.ts";
+import { getGameDataEntityForSearchResult } from "../../infrastructure/persistence/mikroOrm/queries/getGameDataEntityForSearchResult.ts";
+import ADMIN_REPOSITORIES from "../../infrastructure/persistence/mikroOrm/repositories/admin.ts";
+import LFG_REPOSITORIES from "../../infrastructure/persistence/mikroOrm/repositories/lfg.ts";
+import { QUERIES } from "../../infrastructure/search/queries.ts";
+import type { ISearchEngine } from "../../infrastructure/search/types.ts";
 import { build } from "../utils/proxify.ts";
 
 export type TComposePersistenceArgument = {

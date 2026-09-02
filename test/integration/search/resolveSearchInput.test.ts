@@ -8,8 +8,8 @@ import { resolveSearchInput } from "../../../src/application/search/useCases/res
 import { composePersistence } from "../../../src/composition/infrastructure/persistence.ts";
 import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
-import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/queries/getGameDataEntityForSearchResult.ts";
-import type { ISearchEngine } from "../../../src/infrastructure/wrappers/searchEngine/types.ts";
+import { getGameDataEntityForSearchResult } from "../../../src/infrastructure/persistence/mikroOrm/queries/getGameDataEntityForSearchResult.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT } from "./constants.ts";
 

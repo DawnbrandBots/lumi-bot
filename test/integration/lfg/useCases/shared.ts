@@ -4,7 +4,7 @@ import type { TLfgUseCases } from "../../../../src/application/lfg/useCases.ts";
 import { composeApplication } from "../../../../src/composition/application.ts";
 import { composeInfrastructure } from "../../../../src/composition/infrastructure.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";
-import { LfgRoom } from "../../../../src/infrastructure/wrappers/orm/mikroOrm/models/lfg/room.ts";
+import { LfgRoom } from "../../../../src/infrastructure/persistence/mikroOrm/models/lfg/room.ts";
 import { migrationMikroOrmConfig } from "../../../mikro-orm.test.config.ts";
 import getSameConfigInMemory from "../../../utils/getSameConfigInMemory.ts";
 import { EMPTY_SEARCH_ENGINE } from "../../../utils/searchEngine.ts";

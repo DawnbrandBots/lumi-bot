@@ -6,7 +6,7 @@ import { composeInfrastructure } from "../../../src/composition/infrastructure.t
 import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
 import { build } from "../../../src/composition/utils/proxify.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
-import type { ISearchEngine } from "../../../src/infrastructure/wrappers/searchEngine/types.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/types.ts";
 import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
