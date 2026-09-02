@@ -27,9 +27,7 @@ type TAllCommandCommandRegistrationData =
     | typeof nestedCommandCommandRegistrationData
     | typeof plainCommandCommandRegistrationData;
 
-/**
- * Fake command handlers tree tests attempt to retrieve handlers from.
- */
+/** Fake command handlers tree tests attempt to retrieve handlers from. */
 export const commandHandlers = {
     search: rootRun,
     rooms: {

@@ -4,9 +4,7 @@ import type { TSearchOrmEntity } from "./types.ts";
 
 /** Defines what ORM entity should be searched for. */
 export interface ISearchConfig<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
-    /**
-     * ORM entity class required to search for an entry.
-     */
+    /** ORM entity class required to search for an entry. */
     class: EntityName<EntityType>;
     /**
      * MikroORM populate paths for fetched entities.

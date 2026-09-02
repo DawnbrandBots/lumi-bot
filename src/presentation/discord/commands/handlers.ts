@@ -43,9 +43,7 @@ export type TCommandRunHandlerGetter = (interaction: TCommandInteraction) => TCo
 export type TBuiltCommandRunHandlerGetter = (interaction: TCommandInteraction) => TBuiltCommandRunHandler | undefined;
 
 // TODO: funky business to review
-/**
- * Creates a getter for the raw run handler matching an interaction's command and subcommand route.
- */
+/** Creates a getter for the raw run handler matching an interaction's command and subcommand route. */
 export function getCommandRunHandler(
     commands: Record<string, THandlerTree<TCommandRunHandler>>,
 ): TCommandRunHandlerGetter {

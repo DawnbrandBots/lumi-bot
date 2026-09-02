@@ -10,18 +10,14 @@ export type TSearchKind = TSearchableEntity["kind"];
 export type ISearchEntityMap = { [Entity in TSearchableEntity as Entity["kind"]]: Entity };
 export type TSearchEntity<Kind extends TSearchKind> = ISearchEntityMap[Kind];
 
-/**
- * Properties required for entities to be searchable.
- */
+/** Properties required for entities to be searchable. */
 export interface ISearchableEntity {
     readonly id: TId;
     readonly kind: string;
     readonly name: string;
 }
 
-/**
- * Properties of objects stored and retrieved by the search engine.
- */
+/** Properties of objects stored and retrieved by the search engine. */
 export interface ISearchIndexEntry {
     readonly id: TId;
     readonly kind: string;

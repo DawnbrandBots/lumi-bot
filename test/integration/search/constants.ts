@@ -1,8 +1,6 @@
 export const NO_SEARCH_RESULT_INPUT = "qzxv qzxv qzxv";
 
-/**
- * Used for testing search results at different layers of the search feature
- */
+/** Used for testing search results at different layers of the search feature */
 export const SEARCH_RANKING_CASES = [
     {
         expectedId: "ROYAL_SWORD",

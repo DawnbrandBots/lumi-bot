@@ -6,13 +6,9 @@
  */
 export function toAsciiTable(arg: {
     readonly data: (string | number)[][];
-    /**
-     * Maximum size of cells not on the first column.
-     */
+    /** Maximum size of cells not on the first column. */
     readonly cellPadding: number;
-    /**
-     * Maximum size of cells on the first column.
-     */
+    /** Maximum size of cells on the first column. */
     readonly rowHeaderPadding?: number;
 }) {
     if (!arg.data[0]) {

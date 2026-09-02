@@ -9,12 +9,8 @@ export interface IColor {
     readonly kind: "color";
     readonly id: TId;
     readonly name: string;
-    /**
-     * Color against which this one deals more damage.
-     */
+    /** Color against which this one deals more damage. */
     readonly strongAgainst: IColor | null | undefined;
-    /**
-     * Color against which this one deals less damage.
-     */
+    /** Color against which this one deals less damage. */
     readonly weakAgainst: IColor | null | undefined;
 }

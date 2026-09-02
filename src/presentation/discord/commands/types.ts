@@ -31,12 +31,8 @@ export type TCommandRunHandler = (
 ) => MaybePromise<void>;
 
 export type TBuiltCommandRunHandler = (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<void>;
-/**
- * Executes a Discord chat-input command, replies to its interaction and may run other Discrod-related actions like sending additional messages.
- */
-/**
- * Produces choices for an option focused by a Discord autocomplete interaction.
- */
+/** Executes a Discord chat-input command, replies to its interaction and may run other Discrod-related actions like sending additional messages. */
+/** Produces choices for an option focused by a Discord autocomplete interaction. */
 export type TCommandAutocompleteHandler<Dependencies = never> = (
     dependencies: Dependencies,
     interaction: AutocompleteInteraction<CacheType>,
@@ -54,26 +50,20 @@ export type TBuiltCommandAutocompleteHandler = (
  */
 export type ICommandRegistrationData = RESTPostAPIChatInputApplicationCommandsJSONBody;
 
-/**
- * Combines a Discord command registration data with application-only help metadata.
- */
+/** Combines a Discord command registration data with application-only help metadata. */
 export type ICommandRuntimeInfo<CommandRegistrationData extends ICommandRegistrationData> = {
     readonly commandRegistrationData: CommandRegistrationData;
     readonly pingEquivalent?: string;
 };
 
-/**
- * Extracts the options declared directly on command registration data, a subcommand or a subcommand group.
- */
+/** Extracts the options declared directly on command registration data, a subcommand or a subcommand group. */
 type TOptionsOf<Parent> = Parent extends {
     readonly options: infer Options extends readonly APIApplicationCommandOption[];
 }
     ? Options
     : readonly [];
 
-/**
- * Extracts the subcommands and subcommand groups from an options tuple.
- */
+/** Extracts the subcommands and subcommand groups from an options tuple. */
 type TSubcommandRoute<Options extends readonly APIApplicationCommandOption[]> = Extract<
     Options[number],
     {
@@ -81,17 +71,13 @@ type TSubcommandRoute<Options extends readonly APIApplicationCommandOption[]> = 
     }
 >;
 
-/**
- * Extracts the options that explicitly enable Discord autocomplete.
- */
+/** Extracts the options that explicitly enable Discord autocomplete. */
 type TAutocompletableOption<Options extends readonly APIApplicationCommandOption[]> = Extract<
     Options[number],
     { readonly autocomplete: true }
 >;
 
-/**
- * Derives either one root run handler or a nested map of handlers for every subcommand route.
- */
+/** Derives either one root run handler or a nested map of handlers for every subcommand route. */
 type TRunHandlersForOptions<Options extends readonly APIApplicationCommandOption[]> = [
     TSubcommandRoute<Options>,
 ] extends [never]
@@ -104,9 +90,7 @@ type TRunHandlersForOptions<Options extends readonly APIApplicationCommandOption
               : TCommandRunHandler;
       };
 
-/**
- * Maps each directly declared autocomplete option name to its handler.
- */
+/** Maps each directly declared autocomplete option name to its handler. */
 type TAutocompleteHandler = (...args: never[]) => unknown;
 
 type TBasicAutocompleteHandlers<
@@ -116,9 +100,7 @@ type TBasicAutocompleteHandlers<
     readonly [Option in TAutocompletableOption<Options> as Option["name"]]: Handler;
 };
 
-/**
- * Derives autocomplete handlers beneath one subcommand or subcommand group.
- */
+/** Derives autocomplete handlers beneath one subcommand or subcommand group. */
 type TAutocompleteHandlersForSubcommandRoute<
     Option extends TSubcommandRoute<readonly APIApplicationCommandOption[]>,
     Handler extends TAutocompleteHandler,
@@ -128,9 +110,7 @@ type TAutocompleteHandlersForSubcommandRoute<
     ? TSubcommandAutocompleteHandlers<TOptionsOf<Option>, Handler>
     : TBasicAutocompleteHandlers<TOptionsOf<Option>, Handler>;
 
-/**
- * Maps only subcommand routes containing autocomplete options to their nested handler maps.
- */
+/** Maps only subcommand routes containing autocomplete options to their nested handler maps. */
 type TSubcommandAutocompleteHandlers<
     Options extends readonly APIApplicationCommandOption[],
     Handler extends TAutocompleteHandler,
@@ -155,18 +135,14 @@ export type TCommandRunHandlers<CommandRegistrationData extends ICommandRegistra
     TOptionsOf<CommandRegistrationData>
 >;
 
-/**
- * Turns command registration data into a command-name to raw run-handler map.
- */
+/** Turns command registration data into a command-name to raw run-handler map. */
 export type TCommandRunRegistry<CommandCommandRegistrationData extends ICommandRegistrationData> = {
     readonly [
         CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]
     ]: TCommandRunHandlers<CommandRegistrationData>;
 };
 
-/**
- * Autocomplete handlers required by the options declaring `autocomplete: true`.
- */
+/** Autocomplete handlers required by the options declaring `autocomplete: true`. */
 export type TCommandAutocompleteHandlers<
     CommandRegistrationData extends ICommandRegistrationData,
     Handler extends TAutocompleteHandler = TCommandAutocompleteHandler,
@@ -174,9 +150,7 @@ export type TCommandAutocompleteHandlers<
     ? TBasicAutocompleteHandlers<TOptionsOf<CommandRegistrationData>, Handler>
     : TSubcommandAutocompleteHandlers<TOptionsOf<CommandRegistrationData>, Handler>;
 
-/**
- * Turns command registration data into a command-name to autocomplete-handler map.
- */
+/** Turns command registration data into a command-name to autocomplete-handler map. */
 export type TCommandAutocompleteRegistry<
     CommandCommandRegistrationData extends ICommandRegistrationData,
     Handler extends TAutocompleteHandler = TCommandAutocompleteHandler,
@@ -223,9 +197,7 @@ export type TCommandHandlers<CommandRegistrationData extends ICommandRegistratio
     ? { readonly autocomplete?: never }
     : { readonly autocomplete: TCommandAutocompleteHandlers<CommandRegistrationData> });
 
-/**
- * Turns a {@link ICommandRegistrationData} union into a ({@link ICommandRegistrationData.name} to {@link TCommandHandlers})-map.
- */
+/** Turns a {@link ICommandRegistrationData} union into a ({@link ICommandRegistrationData.name} to {@link TCommandHandlers})-map. */
 export type TCommandRegistry<CommandCommandRegistrationData extends ICommandRegistrationData> = {
     readonly [
         CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]

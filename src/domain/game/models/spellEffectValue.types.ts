@@ -1,13 +1,9 @@
 import type { EStat } from "./stat.types.ts";
 
 export const ESpellEffectValueUnitKind = {
-    /**
-     * Value is exactly the value described.
-     */
+    /** Value is exactly the value described. */
     FIXED: "FIXED",
-    /**
-     * Value is a percentage of a stat of the spell user.
-     */
+    /** Value is a percentage of a stat of the spell user. */
     PERCENT: "PERCENT",
 } as const;
 
@@ -51,9 +47,7 @@ export interface ISpellEffectValueEffectivenessItem {
  * Eg. X damage, X HP restored, stat drops by X percent...
  */
 export interface ISpellEffectValue {
-    /**
-     * Value of spell effect for the spell's level 1.
-     */
+    /** Value of spell effect for the spell's level 1. */
     readonly base: number;
     readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;
     readonly unit: ISpellEffectValueUnit;

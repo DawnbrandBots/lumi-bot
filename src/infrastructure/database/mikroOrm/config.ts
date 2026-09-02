@@ -48,9 +48,7 @@ if (!LUMI_STATE_DB_DIR || !LUMI_STATIC_DB_DIR || !LUMI_STATE_DB_NAME || !LUMI_GA
     );
 }
 
-/**
- * Game data entities. Not managed by migrations. Rather, their dedicated DB is recreated during deployment.
- */
+/** Game data entities. Not managed by migrations. Rather, their dedicated DB is recreated during deployment. */
 export const GAME_DATA_ENTITIES = [
     SpellEffect,
     WeaponSkill,
@@ -79,9 +77,7 @@ export const GAME_DATA_ENTITIES = [
     SpellShape,
 ];
 
-/**
- * Main db entities.
- */
+/** Main db entities. */
 const RUNTIME_ENTITIES = [GuildConfig, GuildConfigLfgRole, LfgRoom, LfgRoomPlayer];
 
 const STATE_DB_NAME = path.join(LUMI_STATE_DB_DIR, `${LUMI_STATE_DB_NAME}.db3`);
@@ -89,9 +85,7 @@ const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.db3`);
 
 const GAME_DB_SCHEMA = "game";
 
-/**
- * Main ORM config used at runtime. Default CLI config.
- */
+/** Main ORM config used at runtime. Default CLI config. */
 export const appMikroOrmConfig = defineConfig({
     entities: [...GAME_DATA_ENTITIES, ...RUNTIME_ENTITIES],
     dbName: STATE_DB_NAME,
@@ -113,9 +107,7 @@ export const appMikroOrmConfig = defineConfig({
     metadataCache: { enabled: false },
 });
 
-/**
- * ORM config used to manipulate only the static game data db.
- */
+/** ORM config used to manipulate only the static game data db. */
 export const staticGameDataMikroOrmConfig = defineConfig({
     contextName: "static-game-data",
     entities: GAME_DATA_ENTITIES,
@@ -123,9 +115,7 @@ export const staticGameDataMikroOrmConfig = defineConfig({
     metadataCache: { enabled: false },
 });
 
-/**
- * ORM config used for migrating non-game data entities.
- */
+/** ORM config used for migrating non-game data entities. */
 export const migrationMikroOrmConfig = defineConfig({
     contextName: "migration",
     entities: RUNTIME_ENTITIES,

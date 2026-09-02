@@ -8,31 +8,21 @@ import type { EStatChange } from "./statChange.types.ts";
 import type { IWeaponType } from "./weaponType.types.ts";
 
 export const ESpellEffectTarget = {
-    /**
-     * Effect targets tile the spell was dragged on.
-     */
+    /** Effect targets tile the spell was dragged on. */
     ANY: "ANY",
-    /**
-     * Effect targets spell user's tile.
-     */
+    /** Effect targets spell user's tile. */
     SELF: "SELF",
-    /**
-     * Effect targets targets and spell user's tiles.
-     */
+    /** Effect targets targets and spell user's tiles. */
     DUAL: "DUAL",
 } as const;
 
-/**
- * Which tiles are targeted by a spell effect.
- */
+/** Which tiles are targeted by a spell effect. */
 export interface ISpellEffectTarget {
     readonly kind: keyof typeof ESpellEffectTarget;
     readonly asString: string;
 }
 
-/**
- * For summon effects. Eg. HP and Atk of the summoned unit.
- */
+/** For summon effects. Eg. HP and Atk of the summoned unit. */
 // TODO: scale property added in later PR
 export interface ISummonEffectStatValue {
     readonly base: number;
@@ -80,9 +70,7 @@ export type TSpellEffectKindToEffectMap = {
     SUMMON: ISummonEffect;
 };
 
-/**
- * Something that occurs on tiles a spell is dragged on, and affects units on these tiles.
- */
+/** Something that occurs on tiles a spell is dragged on, and affects units on these tiles. */
 export interface ISpellEffect {
     readonly kind: (typeof ESpellEffectKind)[keyof typeof ESpellEffectKind];
     readonly target?: keyof typeof ESpellEffectTarget | null;
@@ -93,26 +81,20 @@ export interface ISpellEffect {
     readonly shapeOverride?: ISpellShape | null;
 }
 
-/**
- * Effect that deals damage to units.
- */
+/** Effect that deals damage to units. */
 export interface IDamageEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.DAMAGE;
     readonly amount: ISpellEffectValue;
     readonly color: IColor;
 }
 
-/**
- * Effect that restores HP to units.
- */
+/** Effect that restores HP to units. */
 export interface IHealEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.HEAL;
     readonly amount: ISpellEffectValue;
 }
 
-/**
- * Effect that moves units.
- */
+/** Effect that moves units. */
 export interface IMovementEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.MOVEMENT;
     readonly direction: keyof typeof EDirection;
@@ -120,9 +102,7 @@ export interface IMovementEffect extends ISpellEffect {
     readonly target: keyof typeof ESpellEffectTarget;
 }
 
-/**
- * Effect that influences the receiver's stats.
- */
+/** Effect that influences the receiver's stats. */
 export interface IStatEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.STAT;
     readonly statChange: keyof typeof EStatChange;
@@ -131,18 +111,14 @@ export interface IStatEffect extends ISpellEffect {
     readonly stat: keyof typeof EStat;
 }
 
-/**
- * Effect that grants a status effect.
- */
+/** Effect that grants a status effect. */
 export interface IStatusEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.STATUS;
     readonly effect: IStatEffect | IRepeatEffect;
     readonly target: keyof typeof ESpellEffectTarget;
 }
 
-/**
- * Effect that repeats another effect a certain number of times.
- */
+/** Effect that repeats another effect a certain number of times. */
 export interface IRepeatEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.REPEAT;
     readonly effect: IDamageEffect | IHealEffect;
@@ -150,16 +126,12 @@ export interface IRepeatEffect extends ISpellEffect {
     readonly interval: number;
 }
 
-/**
- * Effect moves user to target tile.
- */
+/** Effect moves user to target tile. */
 export interface IWarpEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.WARP;
 }
 
-/**
- * Effect that summons obstacles on tiles.
- */
+/** Effect that summons obstacles on tiles. */
 export interface IObstacleEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.OBSTACLE;
     readonly obstacleType: keyof typeof EObstacleType;
@@ -167,17 +139,13 @@ export interface IObstacleEffect extends ISpellEffect {
     readonly hp: ISummonEffectStatValue;
 }
 
-/**
- * Effect that grants effects to tiles.
- */
+/** Effect that grants effects to tiles. */
 export interface ITileEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.TILE;
     readonly repeat: IRepeatEffect;
 }
 
-/**
- * Effect that summons units on your side.
- */
+/** Effect that summons units on your side. */
 export interface ISummonEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.SUMMON;
     readonly movementType: IMovementType;
@@ -186,9 +154,7 @@ export interface ISummonEffect extends ISpellEffect {
     readonly atk: ISummonEffectStatValue;
 }
 
-/**
- * Spell effects which do not only appear as nested inside other effects.
- */
+/** Spell effects which do not only appear as nested inside other effects. */
 export type TRootSpellEffect =
     | IDamageEffect
     | IHealEffect

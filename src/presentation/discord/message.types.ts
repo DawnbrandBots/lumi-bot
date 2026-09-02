@@ -7,9 +7,7 @@ export const enum EMessageKind {
     ERROR = "ERROR",
 }
 
-/**
- * Pre-made formatters should already have a color which shouldn't be overidden by the caller.
- */
+/** Pre-made formatters should already have a color which shouldn't be overidden by the caller. */
 export type IChildMessageArgCustomProps = {
     embed: Omit<APIEmbed, "color">;
 };

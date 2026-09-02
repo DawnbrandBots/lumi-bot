@@ -5,31 +5,21 @@ import type { TRootSpellEffect } from "./spellEffect.types.ts";
 import type { IWeaponType } from "./weaponType.types.ts";
 
 export const ESpellRole = {
-    /**
-     * Spell usable by one disciple only, no matter the side.
-     */
+    /** Spell usable by one disciple only, no matter the side. */
     EX: "EX",
-    /**
-     * Spell usable when fighting for the Light.
-     */
+    /** Spell usable when fighting for the Light. */
     LIGHT: "LIGHT",
-    /**
-     * Spell usable when fighting for the Shadow.
-     */
+    /** Spell usable when fighting for the Shadow. */
     SHADOW: "SHADOW",
 } as const;
 
-/**
- * Role by which a spell can be used.
- */
+/** Role by which a spell can be used. */
 export interface ISpellRole {
     readonly kind: keyof typeof ESpellRole;
     readonly name: string;
 }
 
-/**
- * Tiles that will be affected by a spell when dragged on the grid.
- */
+/** Tiles that will be affected by a spell when dragged on the grid. */
 export interface ISpellShape {
     readonly id: string;
     readonly name: string;
@@ -40,34 +30,24 @@ export interface ISpellShape {
      * - `.` for tiles not part of the shape
      */
     readonly tiles: string;
-    /**
-     * Covers more than one tile.
-     */
+    /** Covers more than one tile. */
     readonly isAoe: boolean;
 }
 
 export const ESpellDraggingMode = {
-    /**
-     * Spell targets tile on which it was dragged.
-     */
+    /** Spell targets tile on which it was dragged. */
     ANY: "ANY",
-    /**
-     * Spell targets user no matter which tile it was dragged on.
-     */
+    /** Spell targets user no matter which tile it was dragged on. */
     SELF: "SELF",
 } as const;
 
-/**
- * Determines which units are targeted by a spell depending on where it was dragged on the grid.
- */
+/** Determines which units are targeted by a spell depending on where it was dragged on the grid. */
 export interface ISpellDraggingMode {
     readonly kind: keyof typeof ESpellDraggingMode;
     readonly asString: string;
 }
 
-/**
- * Referred to as "magic skill" in Fire Emblem Shadows.
- */
+/** Referred to as "magic skill" in Fire Emblem Shadows. */
 export interface ISpell {
     readonly kind: "spell";
     readonly id: TId;
@@ -92,18 +72,12 @@ export interface ISpell {
      * `null`ish means no countdown.
      */
     readonly countdown?: number | null;
-    /**
-     * Seconds the player must wait to use another spell after using this one.
-     */
+    /** Seconds the player must wait to use another spell after using this one. */
     readonly cooldown: number;
-    /**
-     * Effects created by the spell when dragged on the grid, in order of activation.
-     */
+    /** Effects created by the spell when dragged on the grid, in order of activation. */
     readonly effects: TRootSpellEffect[];
     readonly shape: ISpellShape;
-    /**
-     * Kind of units that this spell can only be used by.
-     */
+    /** Kind of units that this spell can only be used by. */
     readonly onlyFor?: IMovementType | IWeaponType | null;
     readonly draggingMode: keyof typeof ESpellDraggingMode;
 }

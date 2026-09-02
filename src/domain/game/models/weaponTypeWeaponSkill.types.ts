@@ -6,8 +6,6 @@ export interface IWeaponTypeWeaponSkill {
     readonly kind: "weaponTypeWeaponSkill";
     readonly weaponType: IWeaponType;
     readonly weaponSkill: IWeaponSkill;
-    /**
-     * Number in weapon type skill name (eg. 1 for "Armor Bane 1").
-     */
+    /** Number in weapon type skill name (eg. 1 for "Armor Bane 1"). */
     readonly rank: 1 | 2 | 3;
 }

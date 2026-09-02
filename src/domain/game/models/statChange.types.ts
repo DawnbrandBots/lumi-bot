@@ -4,9 +4,7 @@ export const EStatChange = {
     LIMIT: "LIMIT",
 } as const;
 
-/**
- * For stat spell effects. Eg; INCREASE and DECREASE.
- */
+/** For stat spell effects. Eg; INCREASE and DECREASE. */
 export interface IStatChange {
     readonly id: keyof typeof EStatChange;
     readonly verb: string;

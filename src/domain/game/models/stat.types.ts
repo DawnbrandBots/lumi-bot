@@ -8,9 +8,7 @@ export const EStat = {
     COOLDOWN: "COOLDOWN",
 } as const;
 
-/**
- * Describes a unit's stat. Eg. Atk, HP, Movement...
- */
+/** Describes a unit's stat. Eg. Atk, HP, Movement... */
 export interface IStat {
     readonly id: keyof typeof EStat;
     readonly name: string;
