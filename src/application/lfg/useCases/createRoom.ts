@@ -1,12 +1,12 @@
-import { ELfgResultKind } from "../types.ts";
-import { isInvalidRoomCode } from "../services/isInvalidRoomCode.ts";
+import { isValidRoomCode } from "../../../domain/lfg/rules/room.ts";
 import type { TLfgUseCaseBase } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 
 export const createRoom: TLfgUseCaseBase<
     "createRoom",
     "repositories.lfg.findRoomByUser" | "repositories.lfg.findRoomByCode" | "repositories.lfg.createRoom"
 > = async function (dependencies, { guildId, owner, code }) {
-    if (isInvalidRoomCode(code)) {
+    if (!isValidRoomCode(code)) {
         return { kind: ELfgResultKind.INVALID_ROOM_CODE } as const;
     }
 
