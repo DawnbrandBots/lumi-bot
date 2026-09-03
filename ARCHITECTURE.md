@@ -32,15 +32,65 @@ Contains the core logic for the bot. Its code enforces that received input respe
 
 `application/` code has no knowledge of how it was called (which is `presentation/`'s concern) nor of how the bot interacts with the outside world (which is `infastructure/`'s concern).
 
+`application/` defines its own API for interacting with the outside world through interfaces. `infrastructure/` is responsible for implementing `application/`'s API. Essentially, `application/` defines the _what_ and `infrastructure/` the _how_.
+
+```ts
+// Not actual code from src/, for illustration purposes only.
+
+interface ILfgRoomRepository {
+    getById(id: string): ILfgRoom;
+}
+
+class LfgUseCases {
+    constructor(private deps: { repositories: { lfg: ILfgRoomRepository } }) {}
+
+    getRoomById(id: string) {
+        return this.deps.repositories.lfg(id);
+    }
+}
+```
+
 Each `application/` subdirectory contains code for individual features of the bot. e.g. `admin/` for Discord server admin controls, `search/` for the game data search feature and `lfg/` for the _looking for game_/_friend battles_ room management feature.
 
-Each feature directory has a `useCases/` subdirectory containing the API that may be called by the `presentation/` layer. Each feature directory may also have a `services/` subdirectory containing shared code not meant to be accessed by `presentation/`.
+Each feature directory has a `useCases/` subdirectory containing the API that may be called by the `presentation/` layer. Each feature directory may also have a `services/` subdirectory which code is only meant to be accessed by use cases and services themselves.
 
-The only other layers which API `application/` may interact with are `application/` and `domain/`.
+The only other layers which API `application/` may interact with are `infrastructure/` and `domain/`.
+
+##### `infrastructure/`
+
+Contains code called by `application/` to allow it to communicate with the "outside world". The "outside world" includes things like databases and REST APIs.
+
+```ts
+// Not actual code from src/, for illustration purposes only.
+
+// ILfgRoomRepository defined in application layer
+class LfgRepository implements ILfgRoomRepository {
+    constructor(private em: EntityManager) {}
+
+    getById(id) {
+        return this.em.find(LfgRoom, { id });
+    }
+}
+```
 
 ##### `composition/`
 
-Contains code responsible for linking code from all other layers into something that can actually run.
+Contains code responsible for linking code from all other layers into something that can actually run. The application's entrypoint should ideally only import code from this layer.
+
+```ts
+// Not actual code from src/, for illustration purposes only.
+
+const orm = await MikroORM.init(config);
+const em = em.fork();
+const repositories = { lfg: new LfgRepository(em) };
+const useCases = { lfg: new LfgUseCases({ repositories }) };
+const commands = { lfg: { room: new LfgRoomCommand({ useCases }) } };
+const interactionCreateHandler = new InteractionHandler({ commands });
+const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
+const bot = new Client({ intents });
+bot.on(Events.InteractionCreate, interactionCreateHandler);
+await bot.login();
+```
 
 #### Concepts seen in multiple layers
 
