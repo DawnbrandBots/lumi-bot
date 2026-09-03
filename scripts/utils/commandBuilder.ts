@@ -33,7 +33,7 @@ import type {
 import { ApplicationCommandOptionType, SlashCommandBuilder } from "discord.js";
 
 import type { ICommandRegistrationData } from "../../src/presentation/discord/commands/types.ts";
-// TODO: disable eslint error for next line (due to variable only referred to in comments)? How is eslint ignoring this in CI anyway?
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- referred to in comment
 import type allCommandRuntimeInfo from "../../src/presentation/discord/runtimeInfo.ts";
 
 type TNameAndDescriptionData = Pick<
