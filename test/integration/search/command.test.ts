@@ -5,10 +5,10 @@ import { composeApplication } from "../../../src/composition/application.ts";
 import { composeInfrastructure } from "../../../src/composition/infrastructure.ts";
 import { createSearchEngine } from "../../../src/composition/infrastructure/search.ts";
 import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
+import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
 import type { ISearchEngine } from "../../../src/infrastructure/search/types.ts";
-import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
 import type { TBuiltCommandRunHandler } from "../../../src/presentation/discord/commands/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
@@ -66,6 +66,7 @@ describe("search command messages", () => {
                 getSubcommandGroup: () => null,
                 getSubcommand: () => null,
                 getString: (optionName: string) => (optionName === SEARCH_TERMS_OPTION_NAME ? name : null),
+                getBoolean: () => true,
             },
             reply,
             followUp,
