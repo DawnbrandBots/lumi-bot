@@ -1,8 +1,6 @@
-import type { MaybePromise } from "../../utils/types.ts";
 import type { TSearchIndexEntry } from "../../domain/search/types.ts";
+import type { MaybePromise } from "../../utils/types.ts";
 import type { TSearchResult } from "./types.ts";
-
-export type { TSearchUseCaseBase, TSearchUseCaseDependencies } from "./types.ts";
 
 export type TSearchUseCaseArgs = {
     readonly resolveSearchInput: string;

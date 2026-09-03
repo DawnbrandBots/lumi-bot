@@ -1,8 +1,10 @@
 import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import { EAdminResultKind, type TAdminUseCases } from "../../../src/application/admin/types.ts";
+import { EAdminResultKind } from "../../../src/application/admin/types.ts";
+import type { TAdminUseCases } from "../../../src/application/admin/useCases.types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
+import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import {
     ADMIN_ACTION_OPTION_NAME,
@@ -17,7 +19,6 @@ import {
     ADMIN_ROLE_OPTION_NAME,
 } from "../../../src/presentation/discord/commands/admin/constants.ts";
 import type { TAdminCommandArgs } from "../../../src/presentation/discord/commands/admin/types.ts";
-import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";

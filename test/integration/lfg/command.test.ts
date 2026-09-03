@@ -1,13 +1,13 @@
 import type { ChatInputCommandInteraction, InteractionResponse } from "discord.js";
 import { channelMention, ChannelType, MessageFlags, roleMention, userMention } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
-import type { TAdminUseCases } from "../../../src/application/admin/types.ts";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
+import type { TAdminUseCases } from "../../../src/application/admin/useCases.types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
-import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
+import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,

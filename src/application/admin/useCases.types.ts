@@ -1,7 +1,5 @@
 import type { TAdminResultTypes } from "./types.ts";
 
-export type { TAdminUseCaseBase, TAdminUseCaseDependencies } from "./types.ts";
-
 export type TAdminUseCaseArgs = {
     readonly addLfgRole: {
         readonly guildId: string;

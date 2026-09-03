@@ -1,8 +1,6 @@
 import type { Paths, PickDeep } from "type-fest";
 import type { TApplicationRepositories } from "../repositories.types.ts";
 import type { TAdminUseCaseArgs, TAdminUseCases } from "./useCases.types.ts";
-export type { TAdminRepository } from "./repositories.types.ts";
-export type { TAdminUseCaseArgs, TAdminUseCases } from "./useCases.types.ts";
 
 export type TAdminUseCaseDependencies = {
     readonly repositories: TApplicationRepositories;
