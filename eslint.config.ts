@@ -48,4 +48,85 @@ export default defineConfig(
      * ```
      */
     { ...eslintConfigPrettier, files: checkedFiles },
+    {
+        files: ["src/domain/**/*.{js,mjs,cjs,ts,mts,cts}"],
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [
+                        {
+                            regex: "^.*(?:application|composition|infrastructure|presentation)/.*$",
+                            message: "Domain code must not depend on outer layers.",
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
+        files: ["src/application/**/*.{js,mjs,cjs,ts,mts,cts}"],
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [
+                        {
+                            regex: "^.*(?:composition|infrastructure|presentation)/.*$",
+                            message:
+                                "Application code must not depend on composition, infrastructure, or presentation.",
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
+        files: ["src/infrastructure/**/*.{js,mjs,cjs,ts,mts,cts}"],
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [
+                        {
+                            regex: "^.*(?:composition|presentation)/.*$",
+                            message: "Infrastructure code must not depend on composition or presentation.",
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
+        files: ["src/presentation/**/*.{js,mjs,cjs,ts,mts,cts}"],
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [
+                        {
+                            regex: "^.*(?:composition|infrastructure)/.*$",
+                            message: "Presentation code must not depend on composition or infrastructure.",
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
+        files: ["src/utils/**/*.{js,mjs,cjs,ts,mts,cts}"],
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [
+                        {
+                            regex: "^.*(?:application|composition|domain|infrastructure|presentation)/.*$",
+                            message: "Generic utilities must not depend on application-specific layers.",
+                        },
+                    ],
+                },
+            ],
+        },
+    },
 );

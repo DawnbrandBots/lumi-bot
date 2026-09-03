@@ -1,0 +1,462 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mapLfgResultToMessageBase > maps 'already in a room' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Leave your current room before creating a new one.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'already in target room' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "\`alpha\`: <@owner> (owner), <@player-1>, <@player-2>",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'cannot kick yourself' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Use \`lfg leave\` to leave your room.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'cannot transfer to yourself' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Choose another player in your room.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'empty room list' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 12745742,
+      "description": "### Rooms
+No active rooms. :(
+### Server config
+- LFG channel: _Not configured_
+- LFG roles: _Not configured_
+- LFG roles ping cooldown: _Not configured_",
+    },
+  ],
+  "kind": "NEUTRAL",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'invalid room code' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Room codes must be between 1 and 8 characters.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed current owner selected for tr…' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "<@owner> already owns room \`alpha\`.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed ownership transfer' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> transferred \`alpha\`'s ownership to <@player-1>.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player already in a room' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "<@owner> is already in a room.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player already in target room' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "<@owner> is already in room \`alpha\`.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player kick with ownership tr…' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> kicked <@owner> from \`alpha\`. Ownership transferred to <@player-2>.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player kick with room deletio…' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> kicked <@owner> from \`alpha\`. Room deleted.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player kick' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> kicked <@player-1> from \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player move with ownership tr…' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> moved <@owner> to room \`alpha\`. Ownership of \`beta\` transferred to <@player-2>.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player move with room deletio…' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> moved <@owner> to room \`alpha\`. Room \`beta\` deleted.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player move' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> moved <@player-1> to room \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed player not in target room' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "<@player-1> is not in room \`alpha\`.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed room code change' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> changed room \`beta\`'s code to \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed room creation' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> created room \`alpha\` with <@owner> as owner.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'managed room disband' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@admin> disbanded \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'non-empty room list' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 12745742,
+      "description": "### Rooms
+- \`alpha\`: <@owner> (owner), <@player-1>, <@player-2>
+### Server config
+- LFG channel: _Not configured_
+- LFG roles: _Not configured_
+- LFG roles ping cooldown: _Not configured_",
+    },
+  ],
+  "kind": "NEUTRAL",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'not in a room' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Join or create a room first.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'not room owner' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Only the room owner can do that.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'ownership transferred' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@owner> transferred \`alpha\`'s ownership to <@player-1>.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'player kicked' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@owner> kicked <@player-1> from \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'player not in room' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "<@target> is not in your room.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room already exists' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Room \`alpha\` already exists.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room code changed' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@owner> changed room \`beta\`'s code to \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room created' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@owner> created room \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room disbanded' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@owner> disbanded \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room full' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Room \`alpha\` already has 3 players.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room joined with previous room context' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@player-1> joined room \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room left and deleted' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@owner> left \`alpha\`. Room deleted.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room left and ownership transferred' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@owner> left \`alpha\`. Ownership transferred to <@player-1>",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room left' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "<@player-1> left \`alpha\`.",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room not found' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "Room \`alpha\` does not exist.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'status with configured LFG channel' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 12745742,
+      "description": "### Rooms
+- \`alpha\`: <@owner> (owner), <@player-1>, <@player-2>
+### Server config
+- LFG channel: <#public-channel>
+- LFG roles:
+  - <@&pingable-role> (pingable immediately)
+  - <@&cooldown-role> (pingable on <t:1784456100>)
+- LFG roles ping cooldown: 45 minutes",
+    },
+  ],
+  "kind": "NEUTRAL",
+}
+`;

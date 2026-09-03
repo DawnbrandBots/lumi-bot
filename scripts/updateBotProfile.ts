@@ -1,5 +1,5 @@
 import { REST, Routes } from "discord.js";
-import { DISCORD_BOT_ABOUT_ME } from "../src/bot/constants.ts";
+import { DISCORD_BOT_ABOUT_ME } from "../src/presentation/discord/constants.ts";
 
 const tokenKey = "DISCORD_TOKEN";
 const token = process.env[tokenKey];

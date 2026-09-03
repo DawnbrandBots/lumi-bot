@@ -58,7 +58,8 @@
   "mikro-orm": {
     "preferTs": true,
     "configPaths": [
-      "./src/mikro-orm.config.ts"
+      "./dist/infrastructure/persistence/mikroOrm/config.js",
+      "./src/infrastructure/persistence/mikroOrm/config.ts"
     ]
   }
 }

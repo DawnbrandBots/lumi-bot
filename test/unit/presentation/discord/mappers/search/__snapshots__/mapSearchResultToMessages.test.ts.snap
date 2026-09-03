@@ -1,0 +1,74 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mapSearchResultToMessages > FOUND_BY_ENGINE_BUT_NOT_BY_DB 1`] = `
+{
+  "reply": {
+    "content": "-# Everyone point and laugh at <@1454944471358898209>! <:emoji:1474191899781758976>",
+    "embeds": [
+      {
+        "color": 10038562,
+        "description": "Result found in search engine but not in database",
+        "fields": [
+          {
+            "inline": true,
+            "name": "Entity kind",
+            "value": "weapon",
+          },
+          {
+            "inline": true,
+            "name": "Id",
+            "value": "MISSING_WEAPON",
+          },
+        ],
+      },
+    ],
+    "kind": "ERROR",
+  },
+}
+`;
+
+exports[`mapSearchResultToMessages > INPUT_TOO_LONG 1`] = `
+{
+  "reply": {
+    "embeds": [
+      {
+        "color": 15548997,
+        "description": "Input too long. Maximum is 48 characters.",
+      },
+    ],
+    "kind": "NEGATIVE",
+  },
+}
+`;
+
+exports[`mapSearchResultToMessages > NO_RESULT 1`] = `
+{
+  "reply": {
+    "embeds": [
+      {
+        "color": 15548997,
+        "description": "Search yielded no result",
+      },
+    ],
+    "kind": "NEGATIVE",
+  },
+}
+`;
+
+exports[`mapSearchResultToMessages > SUCCESS 1`] = `
+{
+  "followUps": [],
+  "reply": {
+    "embeds": [
+      {
+        "color": 5763719,
+        "description": "-# No known source media for this song :(",
+        "fields": [],
+        "footer": undefined,
+        "title": "Test Music",
+      },
+    ],
+    "kind": "POSITIVE",
+  },
+}
+`;
