@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getAutocompleteHandler } from "../../../../../../src/presentation/discord/autocomplete/handlers.ts";
+import getAutocompleteHandler from "../../../../../../src/composition/presentation/getAutocompleteHandler.ts";
 import {
     autocompleteHandlers,
     findAutocomplete,

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getCommandRunHandler } from "../../../../../../src/presentation/discord/commands/handlers.ts";
+import getCommandRunHandler from "../../../../../../src/composition/presentation/getCommandRunHandler.ts";
 import { commandHandlers, findRun, getMockChatInputInteraction, moveRun, rootRun } from "./fixtures.ts";
 
 describe(getCommandRunHandler.name, () => {

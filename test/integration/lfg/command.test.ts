@@ -7,7 +7,7 @@ import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/ty
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
 import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
-import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
+import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,

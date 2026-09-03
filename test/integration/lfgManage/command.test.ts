@@ -12,7 +12,7 @@ import type { TApplicationUseCases } from "../../../src/application/useCases.typ
 import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
 import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
-import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
+import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 import {
     LFG_CODE_OPTION_NAME,
     LFG_NEW_CODE_OPTION_NAME,

@@ -17,7 +17,7 @@ import {
     ADMIN_ROLE_OPTION_NAME,
 } from "../../../src/presentation/discord/commands/admin/constants.ts";
 import type { TAdminCommandArgs } from "../../../src/presentation/discord/commands/admin/types.ts";
-import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
+import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 
 const GUILD_ID = "guild-1";
 const CHANNEL_ID = "channel-1";

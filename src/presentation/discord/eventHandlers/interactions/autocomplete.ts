@@ -1,5 +1,4 @@
-import type { TAutocompleteHandlerGetter } from "../../autocomplete/handlers.ts";
-import type { TBuiltCommandAutocompleteHandler } from "../../commands/types.ts";
+import type { TAutocompleteHandlerGetter, TBuiltCommandAutocompleteHandler } from "../../commands/types.ts";
 import type { TAutocompleteInteraction } from "./autocomplete.types.ts";
 
 export async function handleAutocompleteInteraction(arg: {

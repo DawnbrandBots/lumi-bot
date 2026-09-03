@@ -1,5 +1,5 @@
 import type { CacheType, CommandInteraction } from "discord.js";
-import type { TBuiltCommandRunHandlerGetter } from "../../commands/handlers.ts";
+import type { TBuiltCommandRunHandlerGetter } from "../../commands/types.ts";
 
 export async function handleCommandInteraction(arg: {
     interaction: CommandInteraction<CacheType>;

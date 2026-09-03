@@ -31,6 +31,12 @@ export type TCommandRunHandler = (
 ) => MaybePromise<void>;
 
 export type TBuiltCommandRunHandler = (interaction: ChatInputCommandInteraction<CacheType>) => MaybePromise<void>;
+export type TCommandRunHandlerGetter = (
+    interaction: ChatInputCommandInteraction<CacheType>,
+) => TCommandRunHandler | undefined;
+export type TBuiltCommandRunHandlerGetter = (
+    interaction: ChatInputCommandInteraction<CacheType>,
+) => TBuiltCommandRunHandler | undefined;
 /** Executes a Discord chat-input command, replies to its interaction and may run other Discrod-related actions like sending additional messages. */
 /** Produces choices for an option focused by a Discord autocomplete interaction. */
 export type TCommandAutocompleteHandler<Dependencies = never> = (
@@ -41,6 +47,9 @@ export type TCommandAutocompleteHandler<Dependencies = never> = (
 export type TBuiltCommandAutocompleteHandler = (
     interaction: AutocompleteInteraction<CacheType>,
 ) => MaybePromise<ApplicationCommandOptionChoiceData[]>;
+export type TAutocompleteHandlerGetter<Handler extends (...args: never[]) => unknown> = (
+    interaction: AutocompleteInteraction<CacheType>,
+) => Handler | undefined;
 
 /**
  * The Discord API representation of a chat-input command.
