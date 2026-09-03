@@ -26,7 +26,10 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 ### Locally with Node
 
 1. Install Node.js 24+ LTS with Yarn v1. [Fast Node Manager](https://github.com/Schniz/fnm) is a good option for managing multiple installations.
-1. `cp .env.template .env`, fill in secrets and change default values at your convenience.
+1. ```
+   cp .env.template .env
+   ```
+1. Fill in secrets and change default values at your convenience.
 1. ```
    yarn
    yarn build
@@ -38,13 +41,23 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
 
 ### Locally with Docker Compose
 
-1. `cp .env.docker.template .env.docker`, fill in secrets and override default values (set in `docker-compose.yaml`) at your convenience.
-1. `docker compose --env-file .env.docker up --build`
+1. ```
+   cp .env.docker.template .env.docker
+   ```
+1. Fill in secrets and override default values (set in `docker-compose.yaml`) at your convenience.
+1. ```
+   docker compose --env-file .env.docker up --build
+   ```
 
 ## Running tests
 
-1. `cp .env.test.template .env.test` and change default values at your convenience.
-1. `yarn test`
+1. ```
+   cp .env.test.template .env.test
+   ```
+1. Change default values at your convenience.
+1. ```
+   yarn test
+   ```
 
 ## Deployment
 
