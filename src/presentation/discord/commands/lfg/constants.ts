@@ -3,7 +3,6 @@ export const LFG_CODE_OPTION_NAME = "code";
 export const LFG_NEW_CODE_OPTION_NAME = "new_code";
 export const LFG_PLAYER_OPTION_NAME = "player";
 export const LFG_ROLE_OPTION_NAME = "role";
-export const LFG_SHOW_RESPONSE_OPTION_NAME = "show_response";
 
 export const LFG_CREATE_SUBCOMMAND_NAME = "create";
 export const LFG_JOIN_SUBCOMMAND_NAME = "join";

@@ -1,6 +1,8 @@
 import { ApplicationIntegrationType, InteractionContextType } from "discord.js";
 import type { ICommandRegistrationData } from "./types.ts";
 
+export const SHOW_RESPONSE_OPTION_NAME = "show_response";
+
 export const DISCORD_COMMAND_DEFAULTS = {
     integration_types: [ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall],
     contexts: [InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel],

@@ -1,11 +1,12 @@
 import { MessageFlags } from "discord.js";
 import { describe, expect, test } from "vitest";
 import { ELfgResultKind } from "../../../../../../src/application/lfg/types.ts";
+import { SHOW_RESPONSE_OPTION_NAME } from "../../../../../../src/presentation/discord/commands/constants.ts";
 import {
     mapLfgMessageBaseToInteractionReply,
     mapLfgResultToMessageBase,
 } from "../../../../../../src/presentation/discord/mappers/lfg.ts";
-import { GUILD_CONFIG, LfgConstants, PUBLIC_CHANNEL_ID, ROOM } from "./fixtures.ts";
+import { GUILD_CONFIG, PUBLIC_CHANNEL_ID, ROOM } from "./fixtures.ts";
 
 const defaultOptions = { getBoolean: () => false } as const;
 
@@ -80,7 +81,7 @@ describe(mapLfgMessageBaseToInteractionReply.name, () => {
         expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
     });
 
-    test(`message visible to everyone when ${LfgConstants.LFG_SHOW_RESPONSE_OPTION_NAME} is true`, () => {
+    test(`message visible to everyone when ${SHOW_RESPONSE_OPTION_NAME} is true`, () => {
         const messageBase = mapLfgResultToMessageBase({
             result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: null, rooms: [ROOM] } },
             callerId: "owner",
