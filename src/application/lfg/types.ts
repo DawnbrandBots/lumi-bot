@@ -5,18 +5,6 @@ import type { IUser } from "../../domain/lfg/models/user.types.ts";
 import type { MaybePromise } from "../../utils/types.ts";
 import type { TApplicationRepositories } from "../repositories.types.ts";
 import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
-export type {
-    TChangeLfgRoomCode,
-    TCreateLfgRoom,
-    TFindLfgRoomByCode,
-    TFindLfgRoomByUser,
-    TLfgRepository,
-    TListLfgRooms,
-    TMoveUserToLfgRoom,
-    TRemoveLfgRoom,
-    TRemoveLfgRoomPlayer,
-    TSetLfgRoomOwner,
-} from "./repositories.types.ts";
 
 export const enum ELfgResultKind {
     ROOMS_LISTED = "ROOMS_LISTED",
@@ -202,50 +190,40 @@ export type TGetOwnedLfgRoomResult =
           readonly value: TOwnedRoomFailure;
       };
 
-export type TGetOwnedLfgRoom = (arg: {
-    readonly guildId: string;
-    readonly owner: IUser;
-}) => MaybePromise<TGetOwnedLfgRoomResult>;
-
-export type TChangeLfgRoomCodeInRoom = (arg: {
-    readonly guildId: string;
-    readonly room: TLfgRoom;
-    readonly newCode: string;
-}) => MaybePromise<
-    TLfgResultOfKind<
-        ELfgResultKind.ROOM_CODE_CHANGED | ELfgResultKind.INVALID_ROOM_CODE | ELfgResultKind.ROOM_ALREADY_EXISTS
-    >
->;
-
-export type TKickFromLfgRoom = (arg: {
-    readonly guildId: string;
-    readonly room: TLfgRoom;
-    readonly target: IUser;
-}) => MaybePromise<TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM>>;
-
-export type TRemovePlayerFromLfgRoom = (arg: {
-    readonly room: TLfgRoom;
-    readonly userId: string;
-}) => MaybePromise<TLfgPlayerRemovalResult>;
-
-export type TTransferLfgRoom = (arg: {
-    readonly guildId: string;
-    readonly room: TLfgRoom;
-    readonly target: IUser;
-}) => MaybePromise<
-    TLfgResultOfKind<
-        | ELfgResultKind.OWNERSHIP_TRANSFERRED
-        | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
-        | ELfgResultKind.PLAYER_NOT_IN_ROOM
-    >
->;
-
 export type TLfgServices = {
-    readonly changeRoomCodeInRoom: TChangeLfgRoomCodeInRoom;
-    readonly getOwnedRoom: TGetOwnedLfgRoom;
-    readonly kickFromRoom: TKickFromLfgRoom;
-    readonly removePlayerFromRoom: TRemovePlayerFromLfgRoom;
-    readonly transferRoom: TTransferLfgRoom;
+    readonly changeRoomCodeInRoom: (arg: {
+        readonly guildId: string;
+        readonly room: TLfgRoom;
+        readonly newCode: string;
+    }) => MaybePromise<
+        TLfgResultOfKind<
+            ELfgResultKind.ROOM_CODE_CHANGED | ELfgResultKind.INVALID_ROOM_CODE | ELfgResultKind.ROOM_ALREADY_EXISTS
+        >
+    >;
+    readonly getOwnedRoom: (arg: {
+        readonly guildId: string;
+        readonly owner: IUser;
+    }) => MaybePromise<TGetOwnedLfgRoomResult>;
+    readonly kickFromRoom: (arg: {
+        readonly guildId: string;
+        readonly room: TLfgRoom;
+        readonly target: IUser;
+    }) => MaybePromise<TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM>>;
+    readonly removePlayerFromRoom: (arg: {
+        readonly room: TLfgRoom;
+        readonly userId: string;
+    }) => MaybePromise<TLfgPlayerRemovalResult>;
+    readonly transferRoom: (arg: {
+        readonly guildId: string;
+        readonly room: TLfgRoom;
+        readonly target: IUser;
+    }) => MaybePromise<
+        TLfgResultOfKind<
+            | ELfgResultKind.OWNERSHIP_TRANSFERRED
+            | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
+            | ELfgResultKind.PLAYER_NOT_IN_ROOM
+        >
+    >;
 };
 
 export type TLfgDependencies = {
