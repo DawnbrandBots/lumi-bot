@@ -1,17 +1,27 @@
 ## Summary
 
-_If this PR solves an opened issue, then the summary can just be the reference to that issue._
+<!--
 
-_Otherwise, briefly explain what this PR does._
+Explain what this PR does.
 
-_It is recommended to include illustrations (such as images) if the changes are visual._
+Prefer present active to passive voice. e.g. "Adds `/lfg ping` command." instead of "`/lfg ping` command added.".
 
-## Description
+Include screenshots for visual changes.
 
-_List and explain final changes._
+Remove all Markdown comments when you are done.
 
-_You may not need to repeat explanations left as comment in the changes._
+-->
 
-## TODO
+## Checklist
 
-_Edit this section freely as the PR progresses. You may remove it entirely._
+<!--
+
+Tick each task when they're done. If some weren't done, ideally explain why. e.g. - [ ] ~~Updated tests~~: This refactor affected no tests
+
+-->
+
+- [ ] Updated tests
+- [ ] Added documentation
+- [ ] Updated `eslint.config.ts`
+- [ ] Updated `ARCHITECTURE.md`
+- [ ] Labelled the PR
