@@ -3,6 +3,7 @@ import { SEARCH_MAX_INPUT_LENGTH } from "../../../application/search/constants.t
 import { DISCORD_COMMAND_DEFAULTS } from "../commands/constants.ts";
 import { SEARCH_TERMS_OPTION_NAME } from "../commands/search/constants.ts";
 import type { ICommandRegistrationData } from "../commands/types.ts";
+import { SHOW_RESPONSE_OPTION } from "./shared.ts";
 
 export const searchCommandCommandRegistrationData = {
     ...DISCORD_COMMAND_DEFAULTS,
@@ -17,5 +18,6 @@ export const searchCommandCommandRegistrationData = {
             max_length: SEARCH_MAX_INPUT_LENGTH,
             autocomplete: true,
         },
+        SHOW_RESPONSE_OPTION,
     ],
 } as const satisfies ICommandRegistrationData;
