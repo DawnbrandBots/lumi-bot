@@ -1,4 +1,3 @@
-
 const err = () => {
     throw new Error(
         `Attempted to access own keys of a record built with ${proxify.name} by providing a function but no source for keys.`,
