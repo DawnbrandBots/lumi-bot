@@ -1,5 +1,14 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import type { ICommandRegistrationData } from "../../../../../src/presentation/discord/commands/types.ts";
+import type {
+    ICommandRegistrationData,
+    TCommandAutocompleteHandler,
+    TCommandAutocompleteRegistry,
+    TCommandRunHandler,
+    TCommandRunRegistry,
+} from "../../../../../src/presentation/discord/commands/types.ts";
+
+declare const run: TCommandRunHandler;
+declare const autocomplete: TCommandAutocompleteHandler;
 
 export const rootCommandCommandRegistrationData = {
     name: "search",
@@ -69,3 +78,68 @@ export const plainCommandCommandRegistrationData = {
     name: "plain",
     description: "Has no autocomplete options.",
 } as const satisfies ICommandRegistrationData;
+
+type TCommandRegistrationData =
+    | typeof rootCommandCommandRegistrationData
+    | typeof nestedCommandCommandRegistrationData
+    | typeof plainCommandCommandRegistrationData;
+
+const runRegistry = {
+    search: run,
+    rooms: {
+        list: run,
+        find: run,
+        admin: {
+            move: run,
+            remove: run,
+        },
+    },
+    plain: run,
+} satisfies TCommandRunRegistry<TCommandRegistrationData>;
+void runRegistry;
+
+const autocompleteRegistry = {
+    search: {
+        query: autocomplete,
+    },
+    rooms: {
+        find: {
+            query: autocomplete,
+        },
+        admin: {
+            move: {
+                destination: autocomplete,
+            },
+        },
+    },
+    plain: {},
+} satisfies TCommandAutocompleteRegistry<TCommandRegistrationData>;
+void autocompleteRegistry;
+
+const missingRunHandler = {
+    search: run,
+    rooms: {
+        list: run,
+        find: run,
+        // @ts-expect-error -- Every subcommand in a group requires a run handler.
+        admin: {
+            move: run,
+            // remove handler missing
+        },
+    },
+    plain: run,
+} satisfies TCommandRunRegistry<TCommandRegistrationData>;
+void missingRunHandler;
+
+const missingAutocompleteHandler = {
+    search: autocompleteRegistry.search,
+    // @ts-expect-error -- Every autocomplete option requires a handler at the same route.
+    rooms: {
+        find: {
+            query: autocomplete,
+        },
+        // admin subcommand group missing
+    },
+    plain: {},
+} satisfies TCommandAutocompleteRegistry<TCommandRegistrationData>;
+void missingAutocompleteHandler;

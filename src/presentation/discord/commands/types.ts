@@ -1,8 +1,8 @@
 /**
  * @file
  * Disclaimer: Codex generated most of this file.
- * See ./types.test.ts to understand how.
- * Most importantly: see the command handler mapping types below.
+ * See type tests under test/ to understand how these types should be used.
+ * Most importantly: see {@link TCommandRunRegistry} and {@link TCommandAutocompleteRegistry}'s comments.
  */
 
 import type {
@@ -144,7 +144,36 @@ export type TCommandRunHandlers<CommandRegistrationData extends ICommandRegistra
     TOptionsOf<CommandRegistrationData>
 >;
 
-/** Turns command registration data into a command-name to raw run-handler map. */
+/**
+ * Turns command registration data into a command-name to raw run-handler map.
+ *
+ * @example
+ * ```ts
+ * const lfgCommandRegistrationData = {
+ *     name: "lfg",
+ *     description: "Manages LFG rooms.",
+ *     options: [
+ *         {
+ *             type: ApplicationCommandOptionType.Subcommand,
+ *             name: "create",
+ *             description: "Creates a room.",
+ *         },
+ *         {
+ *             type: ApplicationCommandOptionType.Subcommand,
+ *             name: "join",
+ *             description: "Joins a room.",
+ *         },
+ *     ],
+ * } as const satisfies ICommandRegistrationData;
+ *
+ * const runHandlers = {
+ *     lfg: {
+ *         create: runCreateRoom,
+ *         join: runJoinRoom,
+ *     },
+ * } satisfies TCommandRunRegistry<typeof lfgCommandRegistrationData>;
+ * ```
+ */
 export type TCommandRunRegistry<CommandCommandRegistrationData extends ICommandRegistrationData> = {
     readonly [
         CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]
@@ -159,7 +188,36 @@ export type TCommandAutocompleteHandlers<
     ? TBasicAutocompleteHandlers<TOptionsOf<CommandRegistrationData>, Handler>
     : TSubcommandAutocompleteHandlers<TOptionsOf<CommandRegistrationData>, Handler>;
 
-/** Turns command registration data into a command-name to autocomplete-handler map. */
+/**
+ * Turns command registration data into a command-name to autocomplete-handler map.
+ *
+ * @example
+ * ```ts
+ * const lfgCommandRegistrationData = {
+ *     name: "lfg",
+ *     description: "Manages LFG rooms.",
+ *     options: [{
+ *         type: ApplicationCommandOptionType.Subcommand,
+ *         name: "join",
+ *         description: "Joins a room.",
+ *         options: [{
+ *             type: ApplicationCommandOptionType.String,
+ *             name: "code",
+ *             description: "Room code.",
+ *             autocomplete: true,
+ *         }],
+ *     }],
+ * } as const satisfies ICommandRegistrationData;
+ *
+ * const autocompleteHandlers = {
+ *     lfg: {
+ *         join: {
+ *             code: autocompleteRoomCode,
+ *         },
+ *     },
+ * } satisfies TCommandAutocompleteRegistry<typeof lfgCommandRegistrationData>;
+ * ```
+ */
 export type TCommandAutocompleteRegistry<
     CommandCommandRegistrationData extends ICommandRegistrationData,
     Handler extends TAutocompleteHandler = TCommandAutocompleteHandler,
