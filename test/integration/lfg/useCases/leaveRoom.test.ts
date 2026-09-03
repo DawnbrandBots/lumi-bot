@@ -1,0 +1,50 @@
+import { describe, expect, test } from "vitest";
+import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
+import { leaveRoom } from "../../../../src/application/lfg/useCases/leaveRoom.ts";
+import { ELfgPlayerRemovalKind } from "../../../../src/domain/lfg/models/playerRemoval.types.ts";
+import { GUILD_ID, OWNER, PLAYER_1, PLAYER_2, useLfgUseCases } from "./shared.ts";
+
+describe(leaveRoom.name, () => {
+    const lfg = useLfgUseCases();
+
+    test("deletes the room when the last player leaves", async () => {
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+
+        const response = await lfg.useCases.leaveRoom({ guildId: GUILD_ID, user: OWNER });
+
+        expect(response).toEqual({
+            kind: ELfgResultKind.ROOM_LEFT,
+            value: { kind: ELfgPlayerRemovalKind.ROOM_DELETED, userId: OWNER.id, code: "room" },
+        });
+        expect(await lfg.getRooms(GUILD_ID)).toEqual([]);
+    });
+
+    test("transfers ownership to the earliest remaining player", async () => {
+        await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_2, code: "room" });
+
+        const response = await lfg.useCases.leaveRoom({ guildId: GUILD_ID, user: OWNER });
+
+        expect(response).toEqual({
+            kind: ELfgResultKind.ROOM_LEFT,
+            value: {
+                kind: ELfgPlayerRemovalKind.OWNERSHIP_TRANSFERRED,
+                userId: OWNER.id,
+                code: "room",
+                newOwnerId: PLAYER_1.id,
+            },
+        });
+        expect((await lfg.getRooms(GUILD_ID))[0]).toEqual({
+            code: "room",
+            ownerId: PLAYER_1.id,
+            playerIds: [PLAYER_1.id, PLAYER_2.id],
+        });
+    });
+
+    test("rejects users who are not in a room", async () => {
+        const response = await lfg.useCases.leaveRoom({ guildId: GUILD_ID, user: OWNER });
+
+        expect(response).toEqual({ kind: ELfgResultKind.NOT_IN_A_ROOM });
+    });
+});

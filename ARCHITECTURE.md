@@ -1,0 +1,147 @@
+# Architecture
+
+Describes this repository's architecture. See [MAINTAINER_NOTES.md](/MAINTAINER_NOTES.md) for remarks about the repository's current shortcomings regarding architecture and code cleanliness.
+
+## File structure
+
+### `src/`
+
+Contains source code for the bot's runtime. `src/`'s represent layers, each containing code with specific responsibilites.
+
+Some parts of the source code may apply some concepts from [Domain Driven Design](https://redis.io/glossary/domain-driven-design-ddd/), though the whole repository does not strictly to this approach (...yet?).
+
+#### Layers
+
+##### `domain/`
+
+Contains the code representing _business_ concepts and rules that the bot's features manipulate.
+
+`domain/` code has no reference to code outside of itself.
+
+##### `presentation/`
+
+Contains code for handling platform-specific requests sent to the bot. The bot currently only handles requests coming from Discord clients, which is why `presentation/`'s only direct subdirectory is `discord/`. The bot may later offer other ways to interact with it, such as a REST API of its own.
+
+Each `presentation/`'s subdirectory contains code for handling the multiple ways a platform's clients may send requests to the bot. In the case of `discord/`, Lumi may reply to requests sent in the form of regular messages or [interactions](https://docs.discord.com/developers/interactions/overview) (e.g. slash commands, message components, autocomplete).
+
+The only other layer which API `presentation/` may interact with is `application/`.
+
+##### `application/`
+
+Contains the core logic for the bot. Its code enforces that received input respects `domain/` rules then may run tasks involving `domain/` models by calling upon `infrastructure/`'s API.
+
+`application/` code has no knowledge of how it was called (which is `presentation/`'s concern) nor of how the bot interacts with the outside world (which is `infastructure/`'s concern).
+
+`application/` defines its own API for interacting with the outside world through interfaces. `infrastructure/` is responsible for implementing `application/`'s API. Essentially, `application/` defines the _what_ and `infrastructure/` the _how_.
+
+```ts
+// Not actual code from src/, for illustration purposes only.
+
+interface ILfgRoomRepository {
+    getById(id: string): ILfgRoom;
+}
+
+class LfgUseCases {
+    constructor(private deps: { repositories: { lfg: ILfgRoomRepository } }) {}
+
+    getRoomById(id: string) {
+        return this.deps.repositories.lfg(id);
+    }
+}
+```
+
+Each `application/` subdirectory contains code for individual features of the bot. e.g. `admin/` for Discord server admin controls, `search/` for the game data search feature and `lfg/` for the _looking for game_/_friend battles_ room management feature.
+
+Each feature directory has a `useCases/` subdirectory containing the API that may be called by the `presentation/` layer. Each feature directory may also have a `services/` subdirectory which code is only meant to be accessed by use cases and services themselves.
+
+The only other layers which API `application/` may interact with are `infrastructure/` and `domain/`.
+
+##### `infrastructure/`
+
+Contains code called by `application/` to allow it to communicate with the "outside world". The "outside world" includes things like databases and REST APIs.
+
+```ts
+// Not actual code from src/, for illustration purposes only.
+
+// ILfgRoomRepository defined in application layer
+class LfgRepository implements ILfgRoomRepository {
+    constructor(private em: EntityManager) {}
+
+    getById(id) {
+        return this.em.find(LfgRoom, { id });
+    }
+}
+```
+
+##### `composition/`
+
+Contains code responsible for linking code from all other layers into something that can actually run. The application's entrypoint should ideally only import code from this layer.
+
+```ts
+// Not actual code from src/, for illustration purposes only.
+
+const orm = await MikroORM.init(config);
+const em = em.fork();
+const repositories = { lfg: new LfgRepository(em) };
+const useCases = { lfg: new LfgUseCases({ repositories }) };
+const commands = { lfg: { room: new LfgRoomCommand({ useCases }) } };
+const interactionCreateHandler = new InteractionHandler({ commands });
+const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
+const bot = new Client({ intents });
+bot.on(Events.InteractionCreate, interactionCreateHandler);
+await bot.login();
+```
+
+#### Concepts seen in multiple layers
+
+##### Mappers
+
+`domain/` and `application/` do not contain references to other layers. `infrastructure/` and `presentation/` must provide/return instances of `application/` models to interact with it, and may also have to translate `application/` models intances to another model that a client or another API understands.
+
+Mappers are functions which only purpose is creating an object which conforms to a certain layer's interface from another object.
+
+For example, Lumi may reply to the `/search` command sent from Discord with data about Kurt.
+
+```ts
+// Not actual code from src/, for illustration purposes only.
+
+/** A simplistic representation of what Discord expects bots to send them to create a chat message to respond a slash command. */
+interface IDiscordSlashCommandReply {
+    /** Text that will appear in the Discord message sent by the bot as a reply to a slash command. */
+    content: string;
+}
+
+/** A simplistic domain model for data about Fire Emblem Shadows disciples. */
+interface IDiscipleData {
+    name: string;
+    epithet: string;
+    favoriteWeaponName: string;
+}
+
+/**
+ * IDiscipleData cannot be returned as is to Discord because it does not conform to the expected model.
+ * This mapper is responsible for creating an instance of IDiscordSlashCommandReply from an instance of IDiscipleData so that Discord accepts the reply from the bot and Discord users may see Kurt's data presented in a Discord message.
+ */
+function mapDiscipleDataToDiscordSlashCommandReply(data: IDiscipleData): IDiscordSlashCommandReply {
+    return {
+        content: `**${data.name}, ${data.epithet}**\n${data.name}'s favorite weapon is ${data.favoriteWeaponName}.`,
+    };
+}
+```
+
+### `data/`
+
+Contains Fire Emblem Shadows game data in the form of JSON files.
+
+### `scripts/`
+
+Contains files meant to be run from the CLI. Each script should have at least one `package.json` `scripts` entry pointing at it.
+
+### `test/`
+
+The application's tests.
+
+#### Test types
+
+- `unit/` tests: Each `*.test.ts` file contains test cases for a single function. Dependencies are always mocked.
+- `integration/` tests: They ensure that code in at least two adjacent layers work correctly in some scenarios that can happen at runtime. Some dependencies from deeper layers may be mocked.

@@ -1,19 +1,23 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import getSearchItems from "../../../src/loaders/searchItems.ts";
-import { FuseSearchEngine } from "../../../src/search/engine.ts";
-import type { ISearchEngine, ISearchItem } from "../../../src/search/types.ts";
+import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
+import type { ISearchIndexEntry } from "../../../src/domain/search/types.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/persistence/mikroOrm/queries/getEntitiesForGeneratingSearchAliases.ts";
+import { FuseSearchEngine } from "../../../src/infrastructure/search/fuse/engine.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES, SEARCH_RANKING_KNOWN_FAILURE_CASES } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
-let searchEngine: ISearchEngine<ISearchItem>;
+let searchEngine: ISearchEngine<ISearchIndexEntry>;
 
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<ISearchItem>({ items: await getSearchItems(em) });
+    searchEngine = new FuseSearchEngine<ISearchIndexEntry>({
+        items: generateSearchIndexEntries(await getEntitiesForGeneratingSearchAliases({ em })),
+    });
 });
 
 afterAll(async () => {
@@ -34,8 +38,8 @@ describe(FuseSearchEngine.name, () => {
             });
         }
 
-        test("returns undefined when there is no result", () => {
-            expect(searchEngine.searchOne(NO_SEARCH_RESULT_INPUT)).toBeUndefined();
+        test("returns null when there is no result", () => {
+            expect(searchEngine.searchOne(NO_SEARCH_RESULT_INPUT)).toBeNull();
         });
     });
 

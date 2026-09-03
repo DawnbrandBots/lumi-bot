@@ -1,0 +1,1 @@
+export const ROLE_PING_MINIMUM_COOLDOWN_MINUTES = 0;

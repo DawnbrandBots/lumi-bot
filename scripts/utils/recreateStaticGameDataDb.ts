@@ -2,9 +2,7 @@ import { type Options } from "@mikro-orm/sqlite";
 import fs from "node:fs";
 import recreateDb from "./recreateDb.ts";
 
-/**
- * Creates an SQLite database with game data.
- */
+/** Creates an SQLite database with game data. */
 export default async function recreateStaticGameDataDb(config: Options): Promise<void> {
     const orm = await recreateDb(config);
 

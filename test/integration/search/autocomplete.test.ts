@@ -1,20 +1,24 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import type { AutocompleteInteraction, CacheType } from "discord.js";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import { SEARCH_TERMS_OPTION_NAME } from "../../../src/bot/constants.ts";
-import SEARCH_CONFIGS from "../../../src/loaders/searchConfigs.ts";
-import getSearchItems from "../../../src/loaders/searchItems.ts";
-import { getSearchCommand } from "../../../src/search/command/handlers.ts";
-import { SEARCH_AUTOCOMPLETE_RESULTS_LIMIT } from "../../../src/search/constants.ts";
-import { FuseSearchEngine } from "../../../src/search/engine.ts";
-import type { ISearchEngine, TSearchItem } from "../../../src/search/types.ts";
+import { generateSearchIndexEntries } from "../../../src/application/search/searchAliases.ts";
+import type { TSearchUseCases } from "../../../src/application/search/useCases.types.ts";
+import { AUTOCOMPLETE } from "../../../src/composition/presentation/autocomplete.ts";
+import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
+import type { TSearchIndexEntry } from "../../../src/domain/search/types.ts";
+import { getEntitiesForGeneratingSearchAliases } from "../../../src/infrastructure/persistence/mikroOrm/queries/getEntitiesForGeneratingSearchAliases.ts";
+import { FuseSearchEngine } from "../../../src/infrastructure/search/fuse/engine.ts";
+import type { ISearchEngine } from "../../../src/infrastructure/search/types.ts";
+import { SEARCH_TERMS_OPTION_NAME } from "../../../src/presentation/discord/commands/search/constants.ts";
+import type { TBuiltCommandAutocompleteHandler } from "../../../src/presentation/discord/commands/types.ts";
 import { initTestGameOrm } from "../../utils/orm.ts";
 import { NO_SEARCH_RESULT_INPUT, SEARCH_RANKING_CASES, SEARCH_RANKING_KNOWN_FAILURE_CASES } from "./constants.ts";
 
 let orm: Awaited<ReturnType<typeof initTestGameOrm>>;
 let em: EntityManager;
-let searchEngine: ISearchEngine<TSearchItem>;
-let searchCommand: ReturnType<typeof getSearchCommand>;
+let searchEngine: ISearchEngine<TSearchIndexEntry>;
+let searchAutocomplete: { readonly terms: TBuiltCommandAutocompleteHandler };
+const SEARCH_AUTOCOMPLETE_RESULTS_LIMIT = 5;
 
 function getMockAutocompleteInteraction(input: string, optionName: string) {
     return {
@@ -27,8 +31,15 @@ function getMockAutocompleteInteraction(input: string, optionName: string) {
 beforeAll(async () => {
     orm = await initTestGameOrm();
     em = orm.em.fork();
-    searchEngine = new FuseSearchEngine<TSearchItem>({ items: await getSearchItems(em) });
-    searchCommand = getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS });
+    searchEngine = new FuseSearchEngine<TSearchIndexEntry>({
+        items: generateSearchIndexEntries(await getEntitiesForGeneratingSearchAliases({ em })),
+    });
+    const suggestSearchResults: TSearchUseCases["suggestSearchResults"] = (arg) =>
+        searchEngine.search(arg.input, arg.limit);
+    searchAutocomplete = buildDependentFunctionsRecord(
+        { useCases: { search: { suggestSearchResults } } },
+        AUTOCOMPLETE.search,
+    );
 });
 
 afterAll(async () => {
@@ -37,11 +48,13 @@ afterAll(async () => {
 
 describe("search autocomplete", () => {
     for (const { expectedName, inputs } of SEARCH_RANKING_CASES) {
-        test.each(inputs)(`%s returns ${expectedName} as first choice`, (input) => {
+        test.each(inputs)(`%s returns ${expectedName} as first choice`, async (input) => {
             expect(
-                searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
-                    getMockAutocompleteInteraction(input, SEARCH_TERMS_OPTION_NAME),
-                )?.[0],
+                (
+                    await searchAutocomplete[SEARCH_TERMS_OPTION_NAME](
+                        getMockAutocompleteInteraction(input, SEARCH_TERMS_OPTION_NAME),
+                    )
+                )[0],
             ).toEqual({
                 name: expectedName,
                 value: expectedName,
@@ -50,11 +63,13 @@ describe("search autocomplete", () => {
     }
 
     for (const { expectedName, inputs } of SEARCH_RANKING_KNOWN_FAILURE_CASES) {
-        test.fails.each(inputs)(`%s returns ${expectedName} as first choice`, (input) => {
+        test.fails.each(inputs)(`%s returns ${expectedName} as first choice`, async (input) => {
             expect(
-                searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
-                    getMockAutocompleteInteraction(input, SEARCH_TERMS_OPTION_NAME),
-                )?.[0],
+                (
+                    await searchAutocomplete[SEARCH_TERMS_OPTION_NAME](
+                        getMockAutocompleteInteraction(input, SEARCH_TERMS_OPTION_NAME),
+                    )
+                )[0],
             ).toEqual({
                 name: expectedName,
                 value: expectedName,
@@ -62,24 +77,24 @@ describe("search autocomplete", () => {
         });
     }
 
-    test("returns an empty array on empty input", () => {
+    test("returns an empty array on empty input", async () => {
         expect(
-            searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
+            await searchAutocomplete[SEARCH_TERMS_OPTION_NAME](
                 getMockAutocompleteInteraction("", SEARCH_TERMS_OPTION_NAME),
             ),
         ).toEqual([]);
     });
 
-    test("returns an empty array when there is no result", () => {
+    test("returns an empty array when there is no result", async () => {
         expect(
-            searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
+            await searchAutocomplete[SEARCH_TERMS_OPTION_NAME](
                 getMockAutocompleteInteraction(NO_SEARCH_RESULT_INPUT, SEARCH_TERMS_OPTION_NAME),
             ),
         ).toEqual([]);
     });
 
-    test(`returns at most ${SEARCH_AUTOCOMPLETE_RESULTS_LIMIT} choices mapped from item names`, () => {
-        const choices = searchCommand.autocomplete[SEARCH_TERMS_OPTION_NAME](
+    test(`returns at most ${SEARCH_AUTOCOMPLETE_RESULTS_LIMIT} choices mapped from item names`, async () => {
+        const choices = await searchAutocomplete[SEARCH_TERMS_OPTION_NAME](
             getMockAutocompleteInteraction("Sword", SEARCH_TERMS_OPTION_NAME),
         );
 

@@ -1,116 +1,35 @@
 import debug from "debug";
-import { ActivityType, Events, userMention } from "discord.js";
-import { getAdminCommand } from "./admin/command/handlers.ts";
-import { AdminFeature } from "./admin/feature.ts";
-import { getCommandAutocompleteHandler, getCommandRunHandler } from "./bot/commands/handlers.ts";
-import type { TCommandRegistry } from "./bot/commands/types.ts";
-import { DISCORD_BOT_ACTIVITY } from "./bot/constants.ts";
-import { getHelpCommand } from "./help/command/handlers.ts";
-import helpFeature from "./help/feature.ts";
-import mapHelpFeatureReturnToMessage from "./help/mapper.ts";
-import { getLfgCommand } from "./lfg/command/handlers.ts";
-import { LfgFeature } from "./lfg/feature.ts";
-import { getLfgManageCommand } from "./lfgManage/command/handlers.ts";
-import { getLinksCommand } from "./links/command/handlers.ts";
-import getBot from "./loaders/bot.ts";
-import type { TAllCommandApiInfo } from "./loaders/commandRuntimeInfo.ts";
-import getOrm from "./loaders/orm.ts";
-import SEARCH_CONFIGS from "./loaders/searchConfigs.ts";
-import getSearchItems from "./loaders/searchItems.ts";
-import { appMikroOrmConfig } from "./mikro-orm.config.ts";
-import { getSearchCommand } from "./search/command/handlers.ts";
-import { FuseSearchEngine } from "./search/engine.ts";
-import searchFeature from "./search/feature.ts";
-import mapSearchFeatureReturnToMessages from "./search/mapper.ts";
-import isKeyOfExactObject from "./utils/isKeyOfExactObject.ts";
+import { Client, Events, GatewayIntentBits } from "discord.js";
+import { composeApplication } from "./composition/application.ts";
+import { composeInfrastructure } from "./composition/infrastructure.ts";
+import { createSearchEngine } from "./composition/infrastructure/search.ts";
+import { composePresentation } from "./composition/presentation.ts";
+import { appMikroOrmConfig } from "./infrastructure/persistence/mikroOrm/config.ts";
+import { initOrm } from "./infrastructure/persistence/mikroOrm/orm.ts";
 
-const log = debug("bot");
+const log = debug("index.ts");
 
-const orm = await getOrm(appMikroOrmConfig);
-const em = orm.em.fork();
+const orm = await initOrm(appMikroOrmConfig);
+// TODO: if not using RequestContext, useContext still necessary?
+const em = orm.em.fork({ useContext: true });
+const searchEngine = await createSearchEngine({ em });
 
-const searchItems = await getSearchItems(em);
-const searchEngine = new FuseSearchEngine({ items: searchItems });
-const bot = getBot();
+const { queries, repositories, withinTransaction } = composeInfrastructure({ em, searchEngine });
 
-const adminFeature = new AdminFeature({ em });
-const lfgFeature = new LfgFeature({ em });
-const commands = {
-    admin: getAdminCommand({ adminFeature }),
-    search: getSearchCommand({ searchEngine, em, configs: SEARCH_CONFIGS }),
-    help: getHelpCommand(),
-    links: getLinksCommand(),
-    lfg: getLfgCommand({ adminFeature, lfgFeature }),
-    "lfg-manage": getLfgManageCommand({ adminFeature, lfgFeature }),
-} satisfies TCommandRegistry<TAllCommandApiInfo>;
-
-bot.on(Events.ClientReady, (client) => {
-    log(`Logged in as ${bot.user?.tag} - ${bot.user?.id}`);
-    client.user.setActivity(DISCORD_BOT_ACTIVITY, { type: ActivityType.Custom });
+const { useCases: builtUseCases } = composeApplication({
+    queries,
+    repositories,
+    useCaseMiddleware: withinTransaction,
 });
 
-bot.on(Events.MessageCreate, async (interaction) => {
-    log(interaction);
+const eventHandlers = composePresentation({ useCases: builtUseCases });
 
-    if (interaction.author.bot) {
-        return;
-    }
-    const mentionedUsers = interaction.mentions.parsedUsers;
-    if (!mentionedUsers.has(interaction.client.user.id)) {
-        return;
-    }
-    const botMention = userMention(interaction.client.user.id);
-    if (interaction.content === botMention) {
-        const message = mapHelpFeatureReturnToMessage(helpFeature());
-        await interaction.reply(message);
-        return;
-    }
-    const startingBotMentionAndSpaceStr = botMention + " ";
-    if (!interaction.content.startsWith(startingBotMentionAndSpaceStr)) {
-        return;
-    }
-    const input = interaction.content.slice(startingBotMentionAndSpaceStr.length);
-    const result = await searchFeature({ em, searchEngine, configs: SEARCH_CONFIGS, input });
-    const { reply, followUps } = mapSearchFeatureReturnToMessages(result);
-    await interaction.reply(reply);
-    for (const followUp of followUps ?? []) {
-        await interaction.reply(followUp);
-    }
-});
-
-bot.on(Events.InteractionCreate, async (interaction) => {
-    log(interaction);
-
-    if (interaction.isChatInputCommand()) {
-        if (!isKeyOfExactObject(commands, interaction.commandName)) {
-            // TODO: this should be reported in another PR
-            return;
-        }
-        const command = commands[interaction.commandName];
-        const run = getCommandRunHandler(command, interaction);
-        if (!run) {
-            // TODO: this should be reported in another PR
-            return;
-        }
-        await run(interaction);
-        return;
-    } else if (interaction.isAutocomplete()) {
-        if (!isKeyOfExactObject(commands, interaction.commandName)) {
-            // TODO: this should be reported in another PR
-            return;
-        }
-        const command = commands[interaction.commandName];
-        const autocomplete = getCommandAutocompleteHandler(command, interaction);
-        const choices = await autocomplete?.(interaction);
-        if (!choices) {
-            // TODO: this should be reported in another PR
-            await interaction.respond([]);
-            return;
-        }
-        await interaction.respond(choices);
-        return;
-    }
-});
-
+const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
+const bot = new Client({ intents });
+bot.on(Events.ClientReady, eventHandlers[Events.ClientReady]);
+bot.on(Events.MessageCreate, eventHandlers[Events.MessageCreate]);
+bot.on(Events.InteractionCreate, eventHandlers[Events.InteractionCreate]);
 // Implicitly use DISCORD_TOKEN
 await bot.login();
+
+log("index.ts done!");
