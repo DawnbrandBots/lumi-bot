@@ -54,12 +54,12 @@ Lumi does not require more setup than described in [Running Lumi](#running-lumi)
 
 ### GitHub Actions
 
-The `.github/deploy.yml` GitHub Actions workflow will run `docker-compose.yaml` on a remote device exposed through [Tailscale](https://tailscale.com/):
+The `.github/workflows/deploy.yml` GitHub Actions workflow uses Docker Compose to control a Docker daemon on a remote host reachable over a [Tailscale](https://tailscale.com/) tailnet. The Docker daemon is accessed over its authenticated TLS TCP endpoint. A Tailscale access policy must permit nodes tagged `tag:github-actions` to reach only the Docker TCP port on the designated deployment host.
 
 - [Tailscale quickstart](https://tailscale.com/docs/how-to/quickstart)
+- [OAuth Clients](https://tailscale.com/docs/features/oauth-clients)
+    - When you get to creating a Trust Credential, make sure to give it the `github-actions` tag.
 - [Configure remote access for Docker daemon](https://docs.docker.com/engine/daemon/remote-access/)
-
-<!-- TODO: may need to mention the github-actions tag -->
 
 Required variables to set in [`Settings` > `Secrets and variables` > `Actions`](https://github.com/DawnbrandBots/lumi-bot/settings/secrets/actions):
 
