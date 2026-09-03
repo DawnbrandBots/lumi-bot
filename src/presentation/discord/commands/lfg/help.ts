@@ -3,5 +3,5 @@ import type { TLfgCommandBase } from "./types.ts";
 
 // TODO: omit type argument when nothing is needed?
 export const help: TLfgCommandBase<"useCases"> = function () {
-    return { kind: ELfgResultKind.HELP_REQUESTED };
+    return { kind: ELfgResultKind.HELP };
 };

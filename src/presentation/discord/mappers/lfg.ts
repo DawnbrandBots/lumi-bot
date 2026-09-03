@@ -358,7 +358,7 @@ export function mapLfgResultToMessageBase({
                     description: `${userMention(callerId)} disbanded ${formatRoomCode(result.value.code)}.`,
                 },
             });
-        case ELfgResultKind.HELP_REQUESTED:
+        case ELfgResultKind.HELP:
             return createLfgHelpMessageBase();
         case ELfgResultKind.LFG_ROLE_PINGED:
             if (isPublic) {

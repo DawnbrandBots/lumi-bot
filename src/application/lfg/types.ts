@@ -29,7 +29,7 @@ export const enum ELfgResultKind {
     // TODO: one one hand, HELP_REQUESTED could be removed
     // on the other, maybe this is a sign some kinds (or all?)
     // actually belong at the presentation level rather than application
-    HELP_REQUESTED = "HELP_REQUESTED",
+    HELP = "HELP",
     LFG_CHANNEL_NOT_FOUND = "LFG_CHANNEL_NOT_FOUND",
     LFG_ROLE_CANNOT_BE_EVERYONE = "LFG_ROLE_CANNOT_BE_EVERYONE",
     LFG_ROLE_NOT_CONFIGURED = "LFG_ROLE_NOT_CONFIGURED",
@@ -88,7 +88,7 @@ type TLfgResultValueByKind = {
             | ELfgResultKind.NOT_ROOM_OWNER
             | ELfgResultKind.CANNOT_KICK_YOURSELF
             | ELfgResultKind.NOT_IN_A_ROOM
-            | ELfgResultKind.HELP_REQUESTED
+            | ELfgResultKind.HELP
             | ELfgResultKind.LFG_CHANNEL_NOT_FOUND
             | ELfgResultKind.LFG_ROLE_CANNOT_BE_EVERYONE
             | ELfgResultKind.LFG_ROLE_NOT_CONFIGURED
