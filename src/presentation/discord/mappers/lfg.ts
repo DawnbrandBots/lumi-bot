@@ -21,6 +21,7 @@ import {
 } from "../../../domain/game/constants.ts";
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
 import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
+import { SHOW_RESPONSE_OPTION_NAME } from "../commands/constants.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
@@ -35,7 +36,6 @@ import {
     LFG_PING_SUBCOMMAND_NAME,
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
-    LFG_SHOW_RESPONSE_OPTION_NAME,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfg/constants.ts";
@@ -482,7 +482,7 @@ export function mapLfgMessageBaseToInteractionReply({
     >;
     guildConfig: LfgReplyGuildConfig | null;
 }) {
-    const displayToEveryone = interaction.options.getBoolean(LFG_SHOW_RESPONSE_OPTION_NAME, false);
+    const displayToEveryone = interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false);
 
     if (
         displayToEveryone ||

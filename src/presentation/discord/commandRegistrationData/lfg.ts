@@ -24,13 +24,13 @@ import {
     LFG_PING_SUBCOMMAND_NAME,
     LFG_PLAYER_OPTION_NAME,
     LFG_ROLE_OPTION_NAME,
-    LFG_SHOW_RESPONSE_OPTION_NAME,
     LFG_STATUS_SUBCOMMAND_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfg/constants.ts";
 import type { ICommandRegistrationData } from "../commands/types.ts";
+import { SHOW_RESPONSE_OPTION } from "./shared.ts";
 
 const roomCodeOption = {
     type: ApplicationCommandOptionType.String,
@@ -98,13 +98,7 @@ export const lfgCommandCommandRegistrationData = {
             type: ApplicationCommandOptionType.Subcommand,
             name: LFG_STATUS_SUBCOMMAND_NAME,
             description: LFG_STATUS_SUBCOMMAND_DESCRIPTION,
-            options: [
-                {
-                    type: ApplicationCommandOptionType.Boolean,
-                    name: LFG_SHOW_RESPONSE_OPTION_NAME,
-                    description: "Show response to everyone. false by default.",
-                },
-            ],
+            options: [SHOW_RESPONSE_OPTION],
         },
         {
             type: ApplicationCommandOptionType.Subcommand,

@@ -1,7 +1,6 @@
 import { heading, HeadingLevel, inlineCode, italic, unorderedList, userMention } from "discord.js";
 import * as constants from "../../../../../../src/domain/game/constants.ts";
 import type { IRoom } from "../../../../../../src/domain/lfg/models/room.types.ts";
-import { LFG_SHOW_RESPONSE_OPTION_NAME } from "../../../../../../src/presentation/discord/commands/lfg/constants.ts";
 
 export const ROOM: IRoom = {
     code: "alpha",
@@ -34,7 +33,6 @@ export const LfgConstants = {
     LFG_NOT_ROOM_OWNER_DESCRIPTION: "Only the room owner can do that.",
     LFG_CANNOT_KICK_YOURSELF_DESCRIPTION: `Use ${inlineCode("lfg leave")} to leave your room.`,
     LFG_NOT_IN_A_ROOM_DESCRIPTION: "Join or create a room first.",
-    LFG_SHOW_RESPONSE_OPTION_NAME,
 } as const;
 
 export function statusDescription({
