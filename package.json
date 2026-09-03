@@ -27,9 +27,9 @@
     "yarn": "1.22.x"
   },
   "dependencies": {
-    "@mikro-orm/core": "^7.1.6",
-    "@mikro-orm/migrations": "^7.1.6",
-    "@mikro-orm/sqlite": "^7.1.6",
+    "@mikro-orm/core": "^7.1.14",
+    "@mikro-orm/migrations": "^7.1.14",
+    "@mikro-orm/sqlite": "^7.1.14",
     "debug": "^4.4.3",
     "discord.js": "~14.27.0",
     "fastest-levenshtein": "^1.0.16",
@@ -37,19 +37,19 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@mikro-orm/cli": "^7.1.6",
-    "@tsconfig/node24": "^24.0.4",
+    "@mikro-orm/cli": "^7.1.14",
+    "@tsconfig/node24": "^24.0.5",
     "@types/debug": "^4.1.13",
-    "@types/node": "^26.1.1",
-    "@vitest/coverage-v8": "4.1.10",
-    "eslint": "^10.7.0",
+    "@types/node": "^26.4.0",
+    "@vitest/coverage-v8": "4.1.11",
+    "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.7.0",
+    "globals": "^17.11.0",
     "prettier": "3.9.6",
-    "type-fest": "^5.8.0",
+    "type-fest": "^5.9.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.64.0",
-    "vitest": "^4.1.10"
+    "typescript-eslint": "^8.69.0",
+    "vitest": "^4.1.11"
   },
   "optionalDependencies": {
     "bufferutil": "^4.1.0",
