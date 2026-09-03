@@ -1,5 +1,3 @@
-import isKeyOfExactObject from "../../utils/isKeyOfExactObject.ts";
-
 export type THandler = (...args: never[]) => unknown;
 export type THandlerTree<Handler extends THandler> = Handler | IHandlerMap<Handler>;
 
@@ -14,15 +12,10 @@ function isHandlerMap<Handler extends THandler>(
 }
 
 export default function getHandlerAtRoute<Handler extends THandler>(
-    handlers: Record<string, THandlerTree<Handler>>,
-    commandName: string,
+    tree: THandlerTree<Handler>,
     route: readonly string[],
 ): Handler | undefined {
-    if (!isKeyOfExactObject(handlers, commandName)) {
-        return undefined;
-    }
-
-    let current: THandlerTree<Handler> | undefined = handlers[commandName];
+    let current: THandlerTree<Handler> | undefined = tree;
 
     for (const part of route) {
         if (!isHandlerMap(current)) {
