@@ -1,33 +1,11 @@
 import debug from "debug";
-import { Client, Events, GatewayIntentBits, InteractionType } from "discord.js";
+import { Client, Events, GatewayIntentBits } from "discord.js";
 import { composeApplication } from "./composition/application.ts";
 import { composeInfrastructure } from "./composition/infrastructure.ts";
 import { createSearchEngine } from "./composition/infrastructure/search.ts";
-import { buildDependentFunction } from "./composition/utils/buildDependentFunctionsRecord.ts";
+import { composePresentation } from "./composition/presentation.ts";
 import { appMikroOrmConfig } from "./infrastructure/persistence/mikroOrm/config.ts";
 import { initOrm } from "./infrastructure/persistence/mikroOrm/orm.ts";
-import { AUTOCOMPLETE } from "./presentation/discord/autocomplete.ts";
-import type { TAutocompleteHandlerGetter } from "./presentation/discord/autocomplete/handlers.ts";
-import { getAutocompleteHandler as getRawAutocompleteHandlerFromHandlers } from "./presentation/discord/autocomplete/handlers.ts";
-import { COMMANDS } from "./presentation/discord/commands.ts";
-import {
-    getCommandRunHandler as getRawCommandRunHandlerFromCommands,
-    type TBuiltCommandRunHandlerGetter,
-} from "./presentation/discord/commands/handlers.ts";
-import type {
-    TBuiltCommandAutocompleteHandler,
-    TCommandAutocompleteHandler,
-    TCommandDependencies,
-} from "./presentation/discord/commands/types.ts";
-import { handleClientReady as clientReadyHandler } from "./presentation/discord/eventHandlers/clientReady.ts";
-import type { TInteractionCreateEventInteraction } from "./presentation/discord/eventHandlers/interactionCreate.ts";
-import { handleAutocompleteInteraction } from "./presentation/discord/eventHandlers/interactions/autocomplete.ts";
-import type { THandleAutocompleteInteraction } from "./presentation/discord/eventHandlers/interactions/autocomplete.types.ts";
-import { handleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.ts";
-import type { THandleCommandInteraction } from "./presentation/discord/eventHandlers/interactions/command.types.ts";
-import type { THandleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
-import { handleMessageCreate } from "./presentation/discord/eventHandlers/messageCreate.ts";
-import { createErrorMessage } from "./presentation/discord/message.ts";
 
 const log = debug("index.ts");
 
@@ -41,83 +19,13 @@ const { useCases: builtUseCases } = composeApplication({
     repositories,
     useCaseMiddleware: withinTransaction,
 });
-
-const presentationDependencies = { useCases: builtUseCases };
-
-const messageCreateHandler: THandleMessageCreate = (interaction) =>
-    handleMessageCreate({ interaction, resolveSearchInput: builtUseCases.search.resolveSearchInput });
-
-// TODO: "raw" command run handler? Confirm what it is later.
-const getRawCommandRunHandler = getRawCommandRunHandlerFromCommands(COMMANDS);
-const getCommandRunHandler: TBuiltCommandRunHandlerGetter = (interaction) => {
-    const command = getRawCommandRunHandler(interaction);
-    // TODO: not sure buildDependentFunction is even needed here?
-    return command ? buildDependentFunction(presentationDependencies, command) : undefined;
-};
-
-const getRawAutocompleteHandler =
-    getRawAutocompleteHandlerFromHandlers<TCommandAutocompleteHandler<TCommandDependencies>>(AUTOCOMPLETE);
-const getAutocompleteHandler: TAutocompleteHandlerGetter<TBuiltCommandAutocompleteHandler> = (interaction) => {
-    const autocomplete = getRawAutocompleteHandler(interaction);
-    return autocomplete ? buildDependentFunction(presentationDependencies, autocomplete) : undefined;
-};
-
-const commandInteraction: THandleCommandInteraction = (interaction) =>
-    handleCommandInteraction({ getCommandRunHandler, interaction });
-const autocompleteInteraction: THandleAutocompleteInteraction = (interaction) =>
-    handleAutocompleteInteraction({ getAutocompleteHandler, interaction });
-const BUILT_INTERACTION_CREATE_INTERACTION_TYPE_HANDLERS: {
-    [K in TInteractionCreateEventInteraction["type"]]?: (
-        int: TInteractionCreateEventInteraction & { type: K },
-    ) => unknown;
-} = {
-    [InteractionType.ApplicationCommand]: commandInteraction,
-    [InteractionType.ApplicationCommandAutocomplete]: autocompleteInteraction,
-};
-
-const ACTION_WHEN_INTERACTION_HANDLER_NOT_FOUND: {
-    [K in TInteractionCreateEventInteraction["type"]]?: (
-        int: TInteractionCreateEventInteraction & { type: K },
-    ) => unknown;
-} = {
-    [InteractionType.ApplicationCommand]: (interaction) =>
-        interaction.reply(createErrorMessage({ embed: { description: "Command handler not found" } })),
-    [InteractionType.ApplicationCommandAutocomplete]: (interaction) => interaction.respond([]),
-};
-
-function defaultHandlerIfAbsent<K extends TInteractionCreateEventInteraction["type"]>(arg: {
-    interactionCreateInteractionTypeHandler: (
-        interaction: TInteractionCreateEventInteraction & { type: K },
-    ) => ((interaction: TInteractionCreateEventInteraction & { type: K }) => unknown) | null;
-    interaction: TInteractionCreateEventInteraction & { type: K };
-}) {
-    return (
-        arg.interactionCreateInteractionTypeHandler(arg.interaction) ??
-        ACTION_WHEN_INTERACTION_HANDLER_NOT_FOUND[arg.interaction.type]
-    );
-}
-
-const interactionCreateHandler = <K extends TInteractionCreateEventInteraction["type"]>(
-    interaction: TInteractionCreateEventInteraction & { type: K },
-) =>
-    defaultHandlerIfAbsent<K>({
-        interactionCreateInteractionTypeHandler: (interaction) =>
-            BUILT_INTERACTION_CREATE_INTERACTION_TYPE_HANDLERS[interaction.type] ?? null,
-        interaction,
-    })?.(interaction);
-
-// TODO: not needed unless returned by some function/keys iterated on
-const EVENT_HANDLERS = {
-    [Events.ClientReady]: clientReadyHandler,
-    [Events.MessageCreate]: messageCreateHandler,
-    [Events.InteractionCreate]: interactionCreateHandler,
-} as const;
+const eventHandlers = composePresentation({ useCases: builtUseCases });
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
 const bot = new Client({ intents });
-bot.on(Events.ClientReady, EVENT_HANDLERS[Events.ClientReady]);
-bot.on(Events.MessageCreate, EVENT_HANDLERS[Events.MessageCreate]);
-bot.on(Events.InteractionCreate, EVENT_HANDLERS[Events.InteractionCreate]);
+bot.on(Events.ClientReady, eventHandlers[Events.ClientReady]);
+bot.on(Events.MessageCreate, eventHandlers[Events.MessageCreate]);
+bot.on(Events.InteractionCreate, eventHandlers[Events.InteractionCreate]);
 // Implicitly use DISCORD_TOKEN
 await bot.login();
 
