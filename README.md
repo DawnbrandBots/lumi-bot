@@ -34,8 +34,8 @@ Lumi displays Fire Emblem Shadows data in chat in reponse to use of the `/search
    yarn
    yarn build
    yarn register user-install
-   yarn db:recreate
-   yarn db:migrate
+   yarn db:game:recreate
+   yarn db:lumi:migrate
    yarn start
    ```
 
@@ -87,8 +87,8 @@ Required variables to set in [`Settings` > `Secrets and variables` > `Actions`](
 
 ## Inner workings
 
-Game data is stored as JSON files under `/data/`. `yarn db:recreate` recreates an [sqlite](https://sqlite.org) database using these JSON files as source.
-Bot features data is stored in a separate sqlite database. `yarn db:migrate` to create it.
+Game data is stored as JSON files under `/data/`. `yarn db:game:recreate` recreates an [sqlite](https://sqlite.org) database using these JSON files as source.
+Bot features data is stored in a separate sqlite database. `yarn db:lumi:migrate` to create it.
 The server connects to the main database and attaches the game data database in a single [MikroORM](https://mikro-orm.io/) connection.
 
 Searchable game data is loaded into a [fuse.js](https://www.fusejs.io/) instance at startup, which is then used as source for the `/search` feature.
