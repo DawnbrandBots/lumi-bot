@@ -21,7 +21,7 @@ Tick each task when they're done. If some weren't done, ideally explain why. e.g
 -->
 
 - [ ] Updated tests
-- [ ] Added documentation
+- [ ] Updated documentation
 - [ ] Updated `eslint.config.ts`
 - [ ] Updated `ARCHITECTURE.md`
 - [ ] Labelled the PR
