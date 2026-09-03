@@ -79,8 +79,6 @@ export function composeUseCases({
     readonly services: TApplicationServices;
     readonly middleware: TBuildableFunctionMiddleware;
 }): TApplicationUseCases {
-    // TODO: ultimately, there should be a function that takes a record of record of useCases and builds all at once.
-    // TODO: should composed types be introduced for objects like builtUseCases?
     return {
         admin: buildDependentFunctionsRecord({ repositories }, USE_CASES.admin, middleware),
         lfg: buildDependentFunctionsRecord({ repositories, services: services.lfg }, USE_CASES.lfg, middleware),

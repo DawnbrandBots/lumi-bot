@@ -23,7 +23,6 @@ export interface ISpellEffectTarget {
 }
 
 /** For summon effects. Eg. HP and Atk of the summoned unit. */
-// TODO: scale property added in later PR
 export interface ISummonEffectStatValue {
     readonly base: number;
     readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;

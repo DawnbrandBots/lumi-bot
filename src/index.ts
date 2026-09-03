@@ -13,12 +13,15 @@ const orm = await initOrm(appMikroOrmConfig);
 // TODO: if not using RequestContext, useContext still necessary?
 const em = orm.em.fork({ useContext: true });
 const searchEngine = await createSearchEngine({ em });
+
 const { queries, repositories, withinTransaction } = composeInfrastructure({ em, searchEngine });
+
 const { useCases: builtUseCases } = composeApplication({
     queries,
     repositories,
     useCaseMiddleware: withinTransaction,
 });
+
 const eventHandlers = composePresentation({ useCases: builtUseCases });
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages];
