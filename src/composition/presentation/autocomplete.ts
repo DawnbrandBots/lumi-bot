@@ -1,7 +1,7 @@
-import type { TAllCommandRegistrationData } from "./commandRegistrationData.ts";
-import type { TCommandAutocompleteRegistry } from "./commands/types.ts";
-import autocompleteRoomCode from "./services/lfg/autocompleteRoomCode.ts";
-import autocompleteSearchTerms from "./services/search/autocompleteSearchTerms.ts";
+import type { TAllCommandRegistrationData } from "../../presentation/discord/commandRegistrationData.ts";
+import type { TCommandAutocompleteRegistry } from "../../presentation/discord/commands/types.ts";
+import autocompleteRoomCode from "../../presentation/discord/services/lfg/autocompleteRoomCode.ts";
+import autocompleteSearchTerms from "../../presentation/discord/services/search/autocompleteSearchTerms.ts";
 
 export const AUTOCOMPLETE = {
     admin: {},

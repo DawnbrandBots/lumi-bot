@@ -8,3 +8,8 @@ export type TAdminCommandBase<ArgPaths extends Paths<TAdminCommandArgs>> = (
     arg: PickDeep<TAdminCommandArgs, ArgPaths>,
     interaction: TGuildCommandInteraction,
 ) => Promise<InteractionReplyOptions>;
+
+export type TAdminCommand = (
+    arg: TAdminCommandArgs,
+    interaction: TGuildCommandInteraction,
+) => Promise<InteractionReplyOptions>;

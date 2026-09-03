@@ -1,9 +1,7 @@
 import { Events, InteractionType } from "discord.js";
 import type { TApplicationUseCases } from "../application/useCases.types.ts";
-import { AUTOCOMPLETE } from "../presentation/discord/autocomplete.ts";
 import type { TAutocompleteHandlerGetter } from "../presentation/discord/autocomplete/handlers.ts";
 import { getAutocompleteHandler as getRawAutocompleteHandlerFromHandlers } from "../presentation/discord/autocomplete/handlers.ts";
-import { COMMANDS } from "../presentation/discord/commands.ts";
 import {
     getCommandRunHandler as getRawCommandRunHandlerFromCommands,
     type TBuiltCommandRunHandlerGetter,
@@ -22,6 +20,8 @@ import type { THandleCommandInteraction } from "../presentation/discord/eventHan
 import type { THandleMessageCreate } from "../presentation/discord/eventHandlers/messageCreate.ts";
 import { handleMessageCreate } from "../presentation/discord/eventHandlers/messageCreate.ts";
 import { createErrorMessage } from "../presentation/discord/message.ts";
+import { AUTOCOMPLETE } from "./presentation/autocomplete.ts";
+import { COMMANDS } from "./presentation/commands.ts";
 import { buildDependentFunction } from "./utils/buildDependentFunctionsRecord.ts";
 
 export function composePresentation({ useCases }: { readonly useCases: TApplicationUseCases }) {

@@ -17,7 +17,6 @@ export type {
     TRemoveLfgRoomPlayer,
     TSetLfgRoomOwner,
 } from "./repositories.types.ts";
-export type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
     ROOMS_LISTED = "ROOMS_LISTED",

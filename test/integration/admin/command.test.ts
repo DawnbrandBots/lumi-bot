@@ -2,8 +2,8 @@ import { ChannelType, MessageFlags, PermissionFlagsBits, type ChatInputCommandIn
 import { describe, expect, test, vi } from "vitest";
 import { EAdminResultKind, type TAdminUseCases } from "../../../src/application/admin/types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
+import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
 import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
-import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import {
     ADMIN_ACTION_OPTION_NAME,
     ADMIN_CHANNEL_OPTION_NAME,

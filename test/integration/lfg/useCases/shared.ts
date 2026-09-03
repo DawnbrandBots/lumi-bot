@@ -1,6 +1,6 @@
 import { MikroORM } from "@mikro-orm/sqlite";
 import { afterEach, beforeEach } from "vitest";
-import type { TLfgUseCases } from "../../../../src/application/lfg/useCases.ts";
+import type TLfgUseCases from "../../../../src/application/lfg/useCases.types.ts";
 import { composeApplication } from "../../../../src/composition/application.ts";
 import { composeInfrastructure } from "../../../../src/composition/infrastructure.ts";
 import type { IUser } from "../../../../src/domain/lfg/models/user.types.ts";

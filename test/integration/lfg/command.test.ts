@@ -5,8 +5,8 @@ import type { TAdminUseCases } from "../../../src/application/admin/types.ts";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
+import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
 import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
-import { COMMANDS } from "../../../src/presentation/discord/commands.ts";
 import { getCommandRunHandler } from "../../../src/presentation/discord/commands/handlers.ts";
 import {
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,

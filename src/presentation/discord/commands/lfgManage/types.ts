@@ -9,3 +9,8 @@ export type TLfgManageCommandBase<ArgPaths extends Paths<TLfgManageCommandArgs>>
     arg: PickDeep<TLfgManageCommandArgs, ArgPaths>,
     interaction: TGuildCommandInteraction,
 ) => MaybePromise<TLfgResult>;
+
+export type TLfgManageFeatureCommand = (
+    arg: TLfgManageCommandArgs,
+    interaction: TGuildCommandInteraction,
+) => MaybePromise<TLfgResult>;
