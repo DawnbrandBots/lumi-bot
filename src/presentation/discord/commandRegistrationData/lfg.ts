@@ -27,7 +27,7 @@ import {
     LFG_STATUS_SUBCOMMAND_DESCRIPTION,
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
-    LFG_TRANSFER_SUBCOMMAND_NAME
+    LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfg/constants.ts";
 import type { ICommandRegistrationData } from "../commands/types.ts";
 import { SHOW_RESPONSE_OPTION } from "./shared.ts";
