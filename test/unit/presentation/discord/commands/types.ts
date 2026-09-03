@@ -1,13 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import type {
-    ICommandRegistrationData,
-    TCommandAutocompleteHandler,
-    TCommandHandlers,
-    TCommandRunHandler,
-} from "../../../../../src/presentation/discord/commands/types.ts";
-
-declare const run: TCommandRunHandler;
-declare const autocomplete: TCommandAutocompleteHandler;
+import type { ICommandRegistrationData } from "../../../../../src/presentation/discord/commands/types.ts";
 
 export const rootCommandCommandRegistrationData = {
     name: "search",
@@ -22,13 +14,6 @@ export const rootCommandCommandRegistrationData = {
         },
     ],
 } as const satisfies ICommandRegistrationData;
-
-export const rootCommandHandlers = {
-    run,
-    autocomplete: {
-        query: autocomplete,
-    },
-} satisfies TCommandHandlers<typeof rootCommandCommandRegistrationData>;
 
 export const nestedCommandCommandRegistrationData = {
     name: "rooms",
@@ -80,61 +65,7 @@ export const nestedCommandCommandRegistrationData = {
     ],
 } as const satisfies ICommandRegistrationData;
 
-export const nestedCommandHandlers = {
-    run: {
-        list: run,
-        find: run,
-        admin: {
-            move: run,
-            remove: run,
-        },
-    },
-    autocomplete: {
-        find: {
-            query: autocomplete,
-        },
-        admin: {
-            move: {
-                destination: autocomplete,
-            },
-        },
-    },
-} satisfies TCommandHandlers<typeof nestedCommandCommandRegistrationData>;
-
-const missingRunHandler = {
-    run: {
-        list: run,
-        find: run,
-        // @ts-expect-error -- Every subcommand in a group requires a run handler.
-        admin: {
-            move: run,
-        },
-    },
-    autocomplete: nestedCommandHandlers.autocomplete,
-} satisfies TCommandHandlers<typeof nestedCommandCommandRegistrationData>;
-void missingRunHandler;
-
-const missingAutocompleteHandler = {
-    run: nestedCommandHandlers.run,
-    // @ts-expect-error -- Every autocomplete option requires a handler at the same route.
-    autocomplete: {
-        find: {
-            query: autocomplete,
-        },
-    },
-} satisfies TCommandHandlers<typeof nestedCommandCommandRegistrationData>;
-void missingAutocompleteHandler;
-
 export const plainCommandCommandRegistrationData = {
     name: "plain",
     description: "Has no autocomplete options.",
 } as const satisfies ICommandRegistrationData;
-
-const unexpectedAutocompleteHandler = {
-    run,
-    // @ts-expect-error -- Commands without autocomplete options must not advertise a handler map.
-    autocomplete: {
-        query: autocomplete,
-    },
-} satisfies TCommandHandlers<typeof plainCommandCommandRegistrationData>;
-void unexpectedAutocompleteHandler;

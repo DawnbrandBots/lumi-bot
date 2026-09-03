@@ -2,7 +2,7 @@
  * @file
  * Disclaimer: Codex generated most of this file.
  * See ./types.test.ts to understand how.
- * Most importantly: see {@link TCommandHandlers}'s comment.
+ * Most importantly: see the command handler mapping types below.
  */
 
 import type {
@@ -167,48 +167,4 @@ export type TCommandAutocompleteRegistry<
     readonly [
         CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]
     ]: TCommandAutocompleteHandlers<CommandRegistrationData, Handler>;
-};
-
-/**
- * Object with two trees `run` and `autocomplete` containing functions that will be executed for a specific command/command option when receiving a command/autocomplete interaction.
- *
- * Examples:
- *
- * ```
- * const searchCommandHandlers = {
- *   run: () => {},
- *   autocomplete: {
- *     query: () => {},
- *   },
- * }
- * const lfgCommandHandlers = {
- *   run: {
- *     create: () => {},
- *     join: () => {}
- *     // ...
- *   },
- *
- *   autocomplete: {
- *     create: {
- *       code: () => {},
- *     },
- *     join: {
- *       code: () => {},
- *     },
- *     // ...
- *   },
- * }
- * ```
- */
-export type TCommandHandlers<CommandRegistrationData extends ICommandRegistrationData> = {
-    readonly run: TCommandRunHandlers<CommandRegistrationData>;
-} & (keyof TCommandAutocompleteHandlers<CommandRegistrationData> extends never
-    ? { readonly autocomplete?: never }
-    : { readonly autocomplete: TCommandAutocompleteHandlers<CommandRegistrationData> });
-
-/** Turns a {@link ICommandRegistrationData} union into a ({@link ICommandRegistrationData.name} to {@link TCommandHandlers})-map. */
-export type TCommandRegistry<CommandCommandRegistrationData extends ICommandRegistrationData> = {
-    readonly [
-        CommandRegistrationData in CommandCommandRegistrationData as CommandRegistrationData["name"]
-    ]: TCommandHandlers<CommandRegistrationData>;
 };
