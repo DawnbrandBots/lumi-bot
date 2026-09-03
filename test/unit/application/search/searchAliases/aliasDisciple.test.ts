@@ -1,15 +1,17 @@
 import { describe, expect, test } from "vitest";
-import { aliasDisciple } from "../../../../../src/application/search/searchAliases.ts";
+import { SEARCH_ALIAS_GENERATORS } from "../../../../../src/application/search/searchAliases.ts";
 
-describe(aliasDisciple.name, () => {
+const generators = SEARCH_ALIAS_GENERATORS.disciple;
+
+describe("disciple alias generators", () => {
     test("includes aliases from the disciple, their weapon and their spells", () => {
         const disciple = {
             name: "Kurt",
             prfWeapon: { name: "Royal Sword +" },
             spells: [{ name: "Ennea Fire EX" }, { name: "Dark Crossfire + Tome" }],
-        } satisfies Parameters<typeof aliasDisciple>[0];
+        } satisfies Parameters<typeof generators.relative>[0];
 
-        expect([...aliasDisciple(disciple)]).toEqual([
+        expect([...generators.standalone(disciple), ...generators.relative(disciple)]).toEqual([
             "Kurt",
             "Royal Sword + disciple",
             "Royal Sword Plus disciple",

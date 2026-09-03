@@ -1,5 +1,5 @@
 import type { SqlEntityManager } from "@mikro-orm/sqlite";
-import type { TSearchAliasEntities } from "../../../../application/search/searchAliases.types.ts";
+import type { TSearchAliasEntities } from "../../../../application/search/searchAliases.ts";
 import { Disciple } from "../models/game/disciple.ts";
 import { Music } from "../models/game/music.ts";
 import { Spell } from "../models/game/spell.ts";

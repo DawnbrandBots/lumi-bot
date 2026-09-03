@@ -1,7 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { aliasMusic } from "../../../../../src/application/search/searchAliases.ts";
+import { SEARCH_ALIAS_GENERATORS } from "../../../../../src/application/search/searchAliases.ts";
 
-describe(aliasMusic.name, () => {
+const generators = SEARCH_ALIAS_GENERATORS.music;
+
+describe("music alias generators", () => {
     test.each([
         [
             "without disciple relations",
@@ -28,10 +30,10 @@ describe(aliasMusic.name, () => {
             },
             ["Betrayal – The Exiled Prince (Results screen)", "Shadow Kurt results screen music"],
         ],
-    ] satisfies ReadonlyArray<readonly [string, Parameters<typeof aliasMusic>[0], string[]]>)(
+    ] satisfies ReadonlyArray<readonly [string, Parameters<typeof generators.relative>[0], string[]]>)(
         "%s",
         (_, music, expected) => {
-            expect([...aliasMusic(music)]).toEqual(expected);
+            expect([...generators.standalone(music), ...generators.relative(music)]).toEqual(expected);
         },
     );
 });

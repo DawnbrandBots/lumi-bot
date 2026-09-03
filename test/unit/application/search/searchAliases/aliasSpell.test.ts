@@ -1,8 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { aliasSpell } from "../../../../../src/application/search/searchAliases.ts";
+import { SEARCH_ALIAS_GENERATORS } from "../../../../../src/application/search/searchAliases.ts";
 import { ESpellRole } from "../../../../../src/domain/game/models/spell.types.ts";
 
-describe(aliasSpell.name, () => {
+const generators = SEARCH_ALIAS_GENERATORS.spell;
+
+describe("spell alias generators", () => {
     test.each([
         [
             "without plus or relative aliases",
@@ -40,10 +42,10 @@ describe(aliasSpell.name, () => {
             },
             ["Crosswind Grav", "CWG"],
         ],
-    ] satisfies ReadonlyArray<readonly [string, Parameters<typeof aliasSpell>[0], string[]]>)(
+    ] satisfies ReadonlyArray<readonly [string, Parameters<typeof generators.relative>[0], string[]]>)(
         "%s",
         (_, spell, expected) => {
-            expect([...aliasSpell(spell)]).toEqual(expected);
+            expect([...generators.standalone(spell), ...generators.relative(spell)]).toEqual(expected);
         },
     );
 });

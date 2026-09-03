@@ -1,7 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { aliasWeaponSkill } from "../../../../../src/application/search/searchAliases.ts";
+import { SEARCH_ALIAS_GENERATORS } from "../../../../../src/application/search/searchAliases.ts";
 
-describe(aliasWeaponSkill.name, () => {
+const generators = SEARCH_ALIAS_GENERATORS.weaponSkill;
+
+describe("weapon skill alias generators", () => {
     test.each([
         [
             "without unique weapons",
@@ -19,10 +21,10 @@ describe(aliasWeaponSkill.name, () => {
             },
             ["Royal Scion", "Royal Sword + weapon skill", "Royal Sword Plus weapon skill"],
         ],
-    ] satisfies ReadonlyArray<readonly [string, Parameters<typeof aliasWeaponSkill>[0], string[]]>)(
+    ] satisfies ReadonlyArray<readonly [string, Parameters<typeof generators.relative>[0], string[]]>)(
         "%s",
         (_, weaponSkill, expected) => {
-            expect([...aliasWeaponSkill(weaponSkill)]).toEqual(expected);
+            expect([...generators.standalone(weaponSkill), ...generators.relative(weaponSkill)]).toEqual(expected);
         },
     );
 });
