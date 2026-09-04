@@ -1,7 +1,7 @@
 import debug from "debug";
 import type { ClientEvents, Events } from "discord.js";
-import type { THandleAutocompleteInteraction } from "./interactions/autocomplete.types.ts";
-import type { THandleCommandInteraction } from "./interactions/command.types.ts";
+import type { THandleAutocompleteInteraction } from "./interactions/autocomplete.ts";
+import type { THandleCommandInteraction } from "./interactions/command.ts";
 
 export type TInteractionCreateEventInteraction = ClientEvents[Events.InteractionCreate][0];
 export type THandleInteractionCreate = (interaction: TInteractionCreateEventInteraction) => Promise<void>;
