@@ -12,11 +12,11 @@ Remove all Markdown comments when you are done.
 
 -->
 
-## Checklist
+## Reminders
 
 <!--
 
-Tick each task when they're done. If some weren't done, ideally explain why. e.g. - [ ] ~~Updated tests~~: This refactor affected no tests
+Optional. They may be removed from the final PR message.
 
 -->
 
