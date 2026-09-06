@@ -31,6 +31,8 @@ export const LFG_CANNOT_PING_EVERYONE_DESCRIPTION = "`@everyone` cannot be pinge
 export const LFG_ROLE_NOT_CONFIGURED_DESCRIPTION = "This role is not configured for LFG pings.";
 export const LFG_ROLE_TO_PING_DELETED_DESCRIPTION = "Role to ping appears to no longer exist.";
 
+// Uses the room's id is instead of the code so the room can be joined even when its code changes,
+// and to prevent joining a newer room with the same code.
 export const LFG_JOIN_BUTTON_ID_PREFIX = `lfg:join:`;
 
 export function formatJoinButtonId<T extends string>(roomId: T): `lfg:join:${T}` {

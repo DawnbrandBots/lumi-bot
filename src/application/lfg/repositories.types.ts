@@ -14,6 +14,7 @@ export type TLfgRepository = {
     readonly findRoomByCode: (arg: { readonly guildId: string; readonly code: string }) => MaybePromise<IRoom | null>;
     // TODO: validity of requiring guildId on top of roomid?
     // "findRoomByIdInSameGuild?"
+    // Should there be variants of each use case depending on whether the call is scoped to the guild or the whole database?
     readonly findRoomById: (arg: { readonly guildId: string; readonly roomId: string }) => MaybePromise<IRoom | null>;
     readonly findRoomByUser: (arg: { readonly guildId: string; readonly userId: string }) => MaybePromise<IRoom | null>;
     readonly listRooms: (arg: { readonly guildId: string }) => MaybePromise<readonly IRoom[]>;

@@ -4,9 +4,9 @@ import { ChannelType } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
 import { type TLfgResult } from "../../../application/lfg/types.ts";
+import type { TGuildCommandInteraction, TGuildComponentInteraction } from "../commands/types.ts";
 import { mapLfgMessageBaseToInteractionReply, mapLfgResultToMessageBase } from "../mappers/lfg.ts";
 import { EMessageKind } from "../message.types.ts";
-import type { TGuildCommandInteraction, TGuildComponentInteraction } from "./types.ts";
 
 const log = debug("bot:lfg");
 
@@ -33,7 +33,7 @@ async function sendPublicCopy(
  * If the interaction was sent from the LFG channel, the reply is public.
  * Else, the reply is ephemeral and a public message is sent to the LFG channel if it exists.
  */
-export async function runLfgSubcommand({
+export async function lfgResponder({
     guildConfig,
     interaction,
     result,

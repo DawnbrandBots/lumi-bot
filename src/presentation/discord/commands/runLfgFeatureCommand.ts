@@ -1,5 +1,5 @@
+import { lfgResponder } from "../responders/lfg.ts";
 import type { TLfgFeatureCommand } from "./lfg/types.ts";
-import { runLfgSubcommand } from "./runLfgSubcommand.ts";
 import { runLfgWithGuild } from "./runLfgWithGuild.ts";
 import type { TCommandRunHandler } from "./types.ts";
 
@@ -9,7 +9,7 @@ export function runLfgFeatureCommand(command: TLfgFeatureCommand): TCommandRunHa
             interaction,
             run: async (guildInteraction) => {
                 const configResult = await arg.useCases.admin.getGuildConfig({ guildId: guildInteraction.guildId });
-                await runLfgSubcommand({
+                await lfgResponder({
                     guildConfig: configResult.value,
                     interaction: guildInteraction,
                     result: await command(arg, guildInteraction),

@@ -309,7 +309,6 @@ export function mapLfgResultToMessageBase({
                 return {
                     kind: EMessageKind.POSITIVE,
                     components: [
-                        // TODO: tempted to use the regular JSON structure
                         new ContainerBuilder()
                             .setAccentColor(DISCORD_MESSAGE_POSITIVE_COLOR)
                             .addSectionComponents((section) =>

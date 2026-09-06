@@ -2,7 +2,7 @@ import type { MessageComponentInteraction } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TApplicationUseCases } from "../../../../application/useCases.types.ts";
 import { LFG_JOIN_BUTTON_ID_PREFIX } from "../../commands/lfg/constants.ts";
-import { runLfgSubcommand } from "../../commands/runLfgSubcommand.ts";
+import { lfgResponder } from "../../responders/lfg.ts";
 
 export type THandleComponentInteraction = (interaction: MessageComponentInteraction) => Promise<void>;
 
@@ -22,8 +22,7 @@ export async function handleComponentInteraction(arg: {
             roomId,
         });
         const { value: guildConfig } = await arg.useCases.admin.getGuildConfig({ guildId: arg.interaction.guildId });
-        // TODO: hint that this function should be renamed
-        await runLfgSubcommand({ guildConfig, interaction: arg.interaction, result });
+        await lfgResponder({ guildConfig, interaction: arg.interaction, result });
         return;
     }
     // TODO: this should be reported in another PR
