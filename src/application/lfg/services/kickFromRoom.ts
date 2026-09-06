@@ -1,12 +1,13 @@
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
+import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
+import type { TLfgServiceBase, TLfgServices } from "../types.ts";
 import { ELfgResultKind } from "../types.ts";
-import type { TLfgRoom, TLfgServiceBase, TLfgServices } from "../types.ts";
 
 function applyPlayerRemoval(
-    room: TLfgRoom,
+    room: IRoom,
     userId: string,
     removalResult: Awaited<ReturnType<TLfgServices["removePlayerFromRoom"]>>,
-): TLfgRoom {
+): IRoom {
     return {
         ...room,
         ownerId:

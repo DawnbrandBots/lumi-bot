@@ -9,7 +9,7 @@ describe(changeOwnedRoomCode.name, () => {
 
     test("changes an owned room's code", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "old" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "old" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "old" });
 
         const response = await lfg.useCases.changeOwnedRoomCode({
             guildId: GUILD_ID,
@@ -64,7 +64,7 @@ describe(changeOwnedRoomCode.name, () => {
 
     test("rejects non-owners", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "old" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "old" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "old" });
 
         const response = await lfg.useCases.changeOwnedRoomCode({
             guildId: GUILD_ID,

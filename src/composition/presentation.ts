@@ -1,3 +1,4 @@
+import type { ClientEvents } from "discord.js";
 import { Events, InteractionType } from "discord.js";
 import type { TApplicationUseCases } from "../application/useCases.types.ts";
 import type {
@@ -8,11 +9,12 @@ import type {
     TCommandDependencies,
 } from "../presentation/discord/commands/types.ts";
 import { handleClientReady as clientReadyHandler } from "../presentation/discord/eventHandlers/clientReady.ts";
-import type { TInteractionCreateEventInteraction } from "../presentation/discord/eventHandlers/interactionCreate.ts";
+import type { THandleAutocompleteInteraction } from "../presentation/discord/eventHandlers/interactions/autocomplete.ts";
 import { handleAutocompleteInteraction } from "../presentation/discord/eventHandlers/interactions/autocomplete.ts";
-import type { THandleAutocompleteInteraction } from "../presentation/discord/eventHandlers/interactions/autocomplete.types.ts";
+import type { THandleCommandInteraction } from "../presentation/discord/eventHandlers/interactions/command.ts";
 import { handleCommandInteraction } from "../presentation/discord/eventHandlers/interactions/command.ts";
-import type { THandleCommandInteraction } from "../presentation/discord/eventHandlers/interactions/command.types.ts";
+import type { THandleComponentInteraction } from "../presentation/discord/eventHandlers/interactions/component.ts";
+import { handleComponentInteraction } from "../presentation/discord/eventHandlers/interactions/component.ts";
 import type { THandleMessageCreate } from "../presentation/discord/eventHandlers/messageCreate.ts";
 import { handleMessageCreate } from "../presentation/discord/eventHandlers/messageCreate.ts";
 import { createErrorMessage } from "../presentation/discord/message.ts";
@@ -21,6 +23,9 @@ import { COMMANDS } from "./presentation/commands.ts";
 import getRawAutocompleteHandlerFromHandlers from "./presentation/getAutocompleteHandler.ts";
 import getRawCommandRunHandlerFromCommands from "./presentation/getCommandRunHandler.ts";
 import { buildDependentFunction } from "./utils/buildDependentFunctionsRecord.ts";
+
+export type TInteractionCreateEventInteraction = ClientEvents[Events.InteractionCreate][0];
+export type THandleInteractionCreate = (interaction: TInteractionCreateEventInteraction) => Promise<void>;
 
 export function composePresentation({ useCases }: { readonly useCases: TApplicationUseCases }) {
     const presentationDependencies = { useCases };
@@ -46,6 +51,9 @@ export function composePresentation({ useCases }: { readonly useCases: TApplicat
         handleCommandInteraction({ getCommandRunHandler, interaction });
     const autocompleteInteraction: THandleAutocompleteInteraction = (interaction) =>
         handleAutocompleteInteraction({ getAutocompleteHandler, interaction });
+    const componentInteraction: THandleComponentInteraction = (interaction) =>
+        handleComponentInteraction({ interaction, useCases: presentationDependencies.useCases });
+
     const BUILT_INTERACTION_CREATE_INTERACTION_TYPE_HANDLERS: {
         [K in TInteractionCreateEventInteraction["type"]]?: (
             int: TInteractionCreateEventInteraction & { type: K },
@@ -53,6 +61,7 @@ export function composePresentation({ useCases }: { readonly useCases: TApplicat
     } = {
         [InteractionType.ApplicationCommand]: commandInteraction,
         [InteractionType.ApplicationCommandAutocomplete]: autocompleteInteraction,
+        [InteractionType.MessageComponent]: componentInteraction,
     };
 
     const ACTION_WHEN_INTERACTION_HANDLER_NOT_FOUND: {

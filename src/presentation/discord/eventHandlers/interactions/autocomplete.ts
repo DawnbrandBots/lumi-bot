@@ -1,5 +1,8 @@
+import type { AutocompleteInteraction, CacheType } from "discord.js";
 import type { TAutocompleteHandlerGetter, TBuiltCommandAutocompleteHandler } from "../../commands/types.ts";
-import type { TAutocompleteInteraction } from "./autocomplete.types.ts";
+
+export type TAutocompleteInteraction = AutocompleteInteraction<CacheType>;
+export type THandleAutocompleteInteraction = (interaction: TAutocompleteInteraction) => Promise<void>;
 
 export async function handleAutocompleteInteraction(arg: {
     interaction: TAutocompleteInteraction;

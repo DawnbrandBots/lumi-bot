@@ -8,7 +8,7 @@ describe(transferRoomToPlayer.name, () => {
 
     test("transfers ownership in the room identified by code", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
         const response = await lfg.useCases.transferRoomToPlayer({ guildId: GUILD_ID, code: "room", target: PLAYER_1 });
 

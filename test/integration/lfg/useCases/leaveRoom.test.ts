@@ -21,8 +21,8 @@ describe(leaveRoom.name, () => {
 
     test("transfers ownership to the earliest remaining player", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_2, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_2, code: "room" });
 
         const response = await lfg.useCases.leaveRoom({ guildId: GUILD_ID, user: OWNER });
 

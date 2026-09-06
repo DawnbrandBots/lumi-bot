@@ -43,10 +43,15 @@ export type TLfgUseCaseArgs = {
         readonly guildId: string;
         readonly user: IUser;
     };
-    readonly movePlayerToRoom: {
+    readonly movePlayerToRoomByCode: {
         readonly guildId: string;
         readonly user: IUser;
         readonly code: string;
+    };
+    readonly movePlayerToRoomById: {
+        readonly guildId: string;
+        readonly user: IUser;
+        readonly roomId: string;
     };
     readonly transferRoomToPlayer: {
         readonly guildId: string;

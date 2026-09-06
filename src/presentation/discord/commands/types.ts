@@ -12,12 +12,14 @@ import type {
     AutocompleteInteraction,
     CacheType,
     ChatInputCommandInteraction,
+    MessageComponentInteraction,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "discord.js";
 import type { TApplicationUseCases } from "../../../application/useCases.types.ts";
 import type { MaybePromise, ThisGuardType } from "../../../utils/types.ts";
 
 export type TGuildCommandInteraction = ThisGuardType<ChatInputCommandInteraction["inGuild"]>;
+export type TGuildComponentInteraction = ThisGuardType<MessageComponentInteraction["inGuild"]>;
 
 export type TCommandArgs = {
     readonly useCases: TApplicationUseCases;

@@ -17,7 +17,7 @@ exports[`mapLfgResultToMessageBase > maps 'already in target room' 1`] = `
   "embeds": [
     {
       "color": 15548997,
-      "description": "\`alpha\`: <@owner> (owner), <@player-1>, <@player-2>",
+      "description": "You are already in room \`alpha\`.",
     },
   ],
   "kind": "NEGATIVE",
@@ -322,6 +322,38 @@ exports[`mapLfgResultToMessageBase > maps 'player not in room' 1`] = `
 }
 `;
 
+exports[`mapLfgResultToMessageBase > maps 'public room created' 1`] = `
+{
+  "components": [
+    {
+      "accent_color": 5763719,
+      "components": [
+        {
+          "accessory": {
+            "custom_id": "lfg:join:room-id",
+            "label": "Join",
+            "style": 1,
+            "type": 2,
+          },
+          "components": [
+            {
+              "content": "<@owner> created room \`alpha\`.",
+              "type": 10,
+            },
+          ],
+          "type": 9,
+        },
+      ],
+      "type": 17,
+    },
+  ],
+  "flags": [
+    32768,
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
 exports[`mapLfgResultToMessageBase > maps 'room already exists' 1`] = `
 {
   "embeds": [
@@ -436,6 +468,18 @@ exports[`mapLfgResultToMessageBase > maps 'room not found' 1`] = `
     {
       "color": 15548997,
       "description": "Room \`alpha\` does not exist.",
+    },
+  ],
+  "kind": "NEGATIVE",
+}
+`;
+
+exports[`mapLfgResultToMessageBase > maps 'room referenced by button no longer e…' 1`] = `
+{
+  "embeds": [
+    {
+      "color": 15548997,
+      "description": "This room no longer exists.",
     },
   ],
   "kind": "NEGATIVE",

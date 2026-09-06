@@ -8,7 +8,7 @@ describe(transferOwnedRoomToPlayer.name, () => {
 
     test("transfers ownership to another room player", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
         const response = await lfg.useCases.transferOwnedRoomToPlayer({
             guildId: GUILD_ID,
@@ -52,7 +52,7 @@ describe(transferOwnedRoomToPlayer.name, () => {
 
     test("rejects non-owners", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
         const response = await lfg.useCases.transferOwnedRoomToPlayer({
             guildId: GUILD_ID,

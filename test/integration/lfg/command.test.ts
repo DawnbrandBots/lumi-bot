@@ -24,6 +24,7 @@ import {
 const GUILD_ID = "guild-1";
 const USER_ID = "user-1";
 const ROOM_CODE = "room";
+const ROOM_ID = "room-id";
 const PUBLIC_CHANNEL_ID = "public-channel";
 const OTHER_CHANNEL_ID = "other-channel";
 const ROLE_ID = "role-1";
@@ -34,7 +35,7 @@ const POSITIVE_RESULT = {
     kind: ELfgResultKind.ROOM_CREATED,
     value: {
         userId: USER_ID,
-        room: { code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] },
+        room: { id: ROOM_ID, code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] },
     },
 } satisfies TLfgResult;
 
@@ -61,7 +62,8 @@ function getLfgUseCaseMocks(result: TLfgResult) {
         kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
         kickPlayerFromOwnedRoom: vi.fn().mockResolvedValue(result),
         leaveRoom: vi.fn().mockResolvedValue(result),
-        movePlayerToRoom: vi.fn().mockResolvedValue(result),
+        movePlayerToRoomByCode: vi.fn().mockResolvedValue(result),
+        movePlayerToRoomById: vi.fn().mockResolvedValue(result),
         transferRoomToPlayer: vi.fn().mockResolvedValue(result),
         transferOwnedRoomToPlayer: vi.fn().mockResolvedValue(result),
     };
@@ -76,6 +78,7 @@ function getInteractionFixture({
     roleExists = true,
     channelExists = true,
     roleId = ROLE_ID,
+    showResponse = false,
 }: {
     readonly channelId: string;
     readonly send?: ReturnType<typeof vi.fn>;
@@ -83,6 +86,7 @@ function getInteractionFixture({
     readonly roleExists?: boolean;
     readonly channelExists?: boolean;
     readonly roleId?: string;
+    readonly showResponse?: boolean;
 }) {
     const channelFetch = vi.fn().mockResolvedValue(channelExists ? { type: ChannelType.GuildText, send } : null);
     const roleFetch = vi.fn().mockResolvedValue(roleExists ? { id: roleId, name: ROLE_NAME } : null);
@@ -106,7 +110,7 @@ function getInteractionFixture({
             getSubcommand: vi.fn().mockReturnValue(subcommand),
             getString: vi.fn((name: string) => (name === LFG_CODE_OPTION_NAME ? ROOM_CODE : null)),
             getRole: vi.fn((name: string) => (name === LFG_ROLE_OPTION_NAME ? { id: roleId } : null)),
-            getBoolean: vi.fn().mockReturnValue(false),
+            getBoolean: vi.fn().mockReturnValue(showResponse),
         },
         reply,
     } as unknown as ChatInputCommandInteraction;
@@ -183,10 +187,11 @@ describe("lfg command", () => {
 
         await runCommand(command, interaction);
 
+        // TODO: we could just test the whole reply shape
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         const publicMessage = send.mock.calls[0]?.[0] as { readonly flags?: unknown } | undefined;
-        expect(publicMessage?.flags).toBeUndefined();
+        expect(publicMessage?.flags).toEqual([MessageFlags.IsComponentsV2]);
     });
 
     test("replies publicly in the configured channel", async () => {
@@ -195,9 +200,34 @@ describe("lfg command", () => {
 
         await runCommand(command, interaction);
 
+        // TODO: we could just test the whole reply shape
         const publicReply = reply.mock.calls[0]?.[0] as { readonly flags?: unknown } | undefined;
-        expect(publicReply?.flags).toBeUndefined();
+        expect(publicReply?.flags).toEqual([MessageFlags.IsComponentsV2]);
         expect(channelFetch).not.toHaveBeenCalled();
+    });
+
+    test("replies publicly when requested", async () => {
+        const command = getCommand({ result: POSITIVE_RESULT, channel: null });
+        const { interaction, reply } = getInteractionFixture({
+            channelId: OTHER_CHANNEL_ID,
+            showResponse: true,
+        });
+
+        await runCommand(command, interaction);
+
+        expect(reply).toHaveBeenCalledWith(expect.not.objectContaining({ flags: [MessageFlags.Ephemeral] }));
+    });
+
+    test("replies ephemerally to a non-positive result in the configured channel", async () => {
+        const command = getCommand({
+            result: { kind: ELfgResultKind.INVALID_ROOM_CODE },
+            channel: PUBLIC_CHANNEL_ID,
+        });
+        const { interaction, reply } = getInteractionFixture({ channelId: PUBLIC_CHANNEL_ID });
+
+        await runCommand(command, interaction);
+
+        expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
     });
 
     test("dispatches lfg change-code", async () => {

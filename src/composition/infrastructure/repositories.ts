@@ -16,6 +16,7 @@ import type { TAdminRepositoryFunction } from "../../infrastructure/persistence/
 import { changeRoomCode } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/changeRoomCode.ts";
 import { createRoom } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/createRoom.ts";
 import { findRoomByCode } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/findRoomByCode.ts";
+import { findRoomById } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/findRoomById.ts";
 import { findRoomByUser } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/findRoomByUser.ts";
 import { listRooms } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/listRooms.ts";
 import { moveUserToRoom } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/moveUserToRoom.ts";
@@ -42,6 +43,7 @@ const LFG_REPOSITORY: { [K in keyof TLfgRepository]: TLfgRepositoryFunction<TLfg
     changeRoomCode,
     createRoom,
     findRoomByCode,
+    findRoomById,
     findRoomByUser,
     listRooms,
     moveUserToRoom,

@@ -3,6 +3,7 @@ import * as constants from "../../../../../../src/domain/game/constants.ts";
 import type { IRoom } from "../../../../../../src/domain/lfg/models/room.types.ts";
 
 export const ROOM: IRoom = {
+    id: "room-id",
     code: "alpha",
     ownerId: "owner",
     playerIds: ["player-1", "owner", "player-2"],

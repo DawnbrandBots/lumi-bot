@@ -49,6 +49,14 @@ describe(mapLfgResultToMessageBase.name, () => {
             },
         },
         {
+            name: "public room created",
+            input: {
+                result: { kind: ELfgResultKind.ROOM_CREATED, value: { userId: "owner", room: ROOM } },
+                callerId: "owner",
+                isPublic: true,
+            },
+        },
+        {
             name: "managed room creation",
             input: {
                 result: { kind: ELfgResultKind.ROOM_CREATED, value: { userId: "owner", room: ROOM } },
@@ -289,6 +297,13 @@ describe(mapLfgResultToMessageBase.name, () => {
             name: "room not found",
             input: {
                 result: { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code: ROOM.code } },
+                callerId: "owner",
+            },
+        },
+        {
+            name: "room referenced by button no longer exists",
+            input: {
+                result: { kind: ELfgResultKind.ROOM_NOT_FOUND, value: {} },
                 callerId: "owner",
             },
         },

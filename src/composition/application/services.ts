@@ -1,6 +1,7 @@
 import { changeRoomCodeInRoom } from "../../application/lfg/services/changeRoomCodeInRoom.ts";
 import { getOwnedRoom } from "../../application/lfg/services/getOwnedRoom.ts";
 import { kickFromRoom } from "../../application/lfg/services/kickFromRoom.ts";
+import { movePlayerToExistingRoom } from "../../application/lfg/services/movePlayerToExistingRoom.ts";
 import { removePlayerFromRoom } from "../../application/lfg/services/removePlayerFromRoom.ts";
 import { transferRoom } from "../../application/lfg/services/transferRoom.ts";
 import type { TLfgServices } from "../../application/lfg/types.ts";
@@ -12,6 +13,7 @@ const SERVICES = {
         changeRoomCodeInRoom,
         getOwnedRoom,
         kickFromRoom,
+        movePlayerToExistingRoom,
         removePlayerFromRoom,
         transferRoom,
     },
