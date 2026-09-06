@@ -1,19 +1,17 @@
 import debug from "debug";
 import type { TextChannel } from "discord.js";
 import { ChannelType } from "discord.js";
+import type { PickDeep } from "type-fest";
+import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
 import { type TLfgResult } from "../../../application/lfg/types.ts";
 import { mapLfgMessageBaseToInteractionReply, mapLfgResultToMessageBase } from "../mappers/lfg.ts";
 import { EMessageKind } from "../message.types.ts";
-import type { TGuildCommandInteraction } from "./types.ts";
+import type { TGuildCommandInteraction, TGuildComponentInteraction } from "./types.ts";
 
 const log = debug("bot:lfg");
 
-type TLfgReplyGuildConfig = {
-    readonly lfgChannel: string | null;
-};
-
 async function sendPublicCopy(
-    interaction: TGuildCommandInteraction,
+    interaction: TGuildCommandInteraction | TGuildComponentInteraction,
     channelId: string,
     message: Parameters<TextChannel["send"]>[0],
 ): Promise<void> {
@@ -40,8 +38,8 @@ export async function runLfgSubcommand({
     interaction,
     result,
 }: {
-    readonly guildConfig: TLfgReplyGuildConfig | null;
-    readonly interaction: TGuildCommandInteraction;
+    readonly guildConfig: PickDeep<TAdminGuildConfig, "lfgChannel"> | null;
+    readonly interaction: TGuildCommandInteraction | TGuildComponentInteraction;
     readonly result: TLfgResult;
 }): Promise<void> {
     const lfgChannelExists = !!guildConfig?.lfgChannel;

@@ -13,6 +13,8 @@ import type { THandleAutocompleteInteraction } from "../presentation/discord/eve
 import { handleAutocompleteInteraction } from "../presentation/discord/eventHandlers/interactions/autocomplete.ts";
 import type { THandleCommandInteraction } from "../presentation/discord/eventHandlers/interactions/command.ts";
 import { handleCommandInteraction } from "../presentation/discord/eventHandlers/interactions/command.ts";
+import type { THandleComponentInteraction } from "../presentation/discord/eventHandlers/interactions/component.ts";
+import { handleComponentInteraction } from "../presentation/discord/eventHandlers/interactions/component.ts";
 import type { THandleMessageCreate } from "../presentation/discord/eventHandlers/messageCreate.ts";
 import { handleMessageCreate } from "../presentation/discord/eventHandlers/messageCreate.ts";
 import { createErrorMessage } from "../presentation/discord/message.ts";
@@ -46,6 +48,9 @@ export function composePresentation({ useCases }: { readonly useCases: TApplicat
         handleCommandInteraction({ getCommandRunHandler, interaction });
     const autocompleteInteraction: THandleAutocompleteInteraction = (interaction) =>
         handleAutocompleteInteraction({ getAutocompleteHandler, interaction });
+    const componentInteraction: THandleComponentInteraction = (interaction) =>
+        handleComponentInteraction({ interaction, useCases: presentationDependencies.useCases });
+
     const BUILT_INTERACTION_CREATE_INTERACTION_TYPE_HANDLERS: {
         [K in TInteractionCreateEventInteraction["type"]]?: (
             int: TInteractionCreateEventInteraction & { type: K },
@@ -53,6 +58,7 @@ export function composePresentation({ useCases }: { readonly useCases: TApplicat
     } = {
         [InteractionType.ApplicationCommand]: commandInteraction,
         [InteractionType.ApplicationCommandAutocomplete]: autocompleteInteraction,
+        [InteractionType.MessageComponent]: componentInteraction,
     };
 
     const ACTION_WHEN_INTERACTION_HANDLER_NOT_FOUND: {

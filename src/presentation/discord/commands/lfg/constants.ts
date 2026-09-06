@@ -30,3 +30,9 @@ export const LFG_NO_CHANNEL_TO_PING_DESCRIPTION = "LFG channel does not exist.";
 export const LFG_CANNOT_PING_EVERYONE_DESCRIPTION = "`@everyone` cannot be pinged by LFG.";
 export const LFG_ROLE_NOT_CONFIGURED_DESCRIPTION = "This role is not configured for LFG pings.";
 export const LFG_ROLE_TO_PING_DELETED_DESCRIPTION = "Role to ping appears to no longer exist.";
+
+export const LFG_JOIN_BUTTON_ID_PREFIX = `lfg:join:`;
+
+export function formatJoinButtonId<T extends string>(roomId: T): `lfg:join:${T}` {
+    return `${LFG_JOIN_BUTTON_ID_PREFIX}${roomId}`;
+}

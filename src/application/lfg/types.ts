@@ -53,7 +53,10 @@ type TLfgResultValueByKind = {
         readonly leftRoomCode?: string;
         readonly removalResult?: TLfgPlayerRemovalResult;
     };
-    [ELfgResultKind.ROOM_NOT_FOUND]: { readonly code: string };
+    [ELfgResultKind.ROOM_NOT_FOUND]: {
+        /** There may be no code to display in the reply when attempting to join a room by id. */
+        readonly code?: string;
+    };
     [ELfgResultKind.ALREADY_IN_TARGET_ROOM]: { readonly userId: string; readonly room: IRoom };
     [ELfgResultKind.ROOM_IS_FULL]: { readonly code: string };
     [ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF]: { readonly userId: string; readonly code: string };
@@ -129,7 +132,13 @@ export type TLfgResultTypes = {
         | ELfgResultKind.ROOM_ALREADY_EXISTS
         | ELfgResultKind.ROOM_NOT_FOUND
     >;
-    movePlayerToRoom: TLfgResultOfKind<
+    movePlayerToRoomByCode: TLfgResultOfKind<
+        | ELfgResultKind.ROOM_JOINED
+        | ELfgResultKind.ROOM_NOT_FOUND
+        | ELfgResultKind.ALREADY_IN_TARGET_ROOM
+        | ELfgResultKind.ROOM_IS_FULL
+    >;
+    movePlayerToRoomById: TLfgResultOfKind<
         | ELfgResultKind.ROOM_JOINED
         | ELfgResultKind.ROOM_NOT_FOUND
         | ELfgResultKind.ALREADY_IN_TARGET_ROOM
@@ -165,10 +174,6 @@ export type TLfgResultTypes = {
     >;
 };
 
-export type TLfgRoom = IRoom & {
-    readonly id: string;
-};
-
 export type TLfgStatusGuildConfig = {
     readonly lfgChannel: string | null;
     readonly lfgRolePingCooldownMinutes: number | null;
@@ -183,7 +188,7 @@ type TOwnedRoomFailure = TLfgResultOfKind<ELfgResultKind.NOT_IN_A_ROOM | ELfgRes
 export type TGetOwnedLfgRoomResult =
     | {
           readonly success: true;
-          readonly value: { readonly room: TLfgRoom };
+          readonly value: { readonly room: IRoom };
       }
     | {
           readonly success: false;
@@ -193,7 +198,7 @@ export type TGetOwnedLfgRoomResult =
 export type TLfgServices = {
     readonly changeRoomCodeInRoom: (arg: {
         readonly guildId: string;
-        readonly room: TLfgRoom;
+        readonly room: IRoom;
         readonly newCode: string;
     }) => MaybePromise<
         TLfgResultOfKind<
@@ -206,16 +211,25 @@ export type TLfgServices = {
     }) => MaybePromise<TGetOwnedLfgRoomResult>;
     readonly kickFromRoom: (arg: {
         readonly guildId: string;
-        readonly room: TLfgRoom;
+        readonly room: IRoom;
         readonly target: IUser;
     }) => MaybePromise<TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM>>;
+    readonly movePlayerToExistingRoom: (arg: {
+        readonly guildId: string;
+        readonly user: IUser;
+        readonly room: IRoom;
+    }) => MaybePromise<
+        TLfgResultOfKind<
+            ELfgResultKind.ROOM_JOINED | ELfgResultKind.ALREADY_IN_TARGET_ROOM | ELfgResultKind.ROOM_IS_FULL
+        >
+    >;
     readonly removePlayerFromRoom: (arg: {
-        readonly room: TLfgRoom;
+        readonly room: IRoom;
         readonly userId: string;
     }) => MaybePromise<TLfgPlayerRemovalResult>;
     readonly transferRoom: (arg: {
         readonly guildId: string;
-        readonly room: TLfgRoom;
+        readonly room: IRoom;
         readonly target: IUser;
     }) => MaybePromise<
         TLfgResultOfKind<

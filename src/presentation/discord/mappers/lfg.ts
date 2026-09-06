@@ -1,7 +1,9 @@
 import type { ChatInputCommandInteraction, InteractionReplyOptions } from "discord.js";
 import {
     bold,
+    ButtonStyle,
     channelMention,
+    ContainerBuilder,
     heading,
     inlineCode,
     italic,
@@ -24,6 +26,7 @@ import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
 import { SHOW_RESPONSE_OPTION_NAME } from "../commands/constants.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
+    formatJoinButtonId,
     LFG_CANNOT_PING_EVERYONE_DESCRIPTION,
     LFG_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_COMMAND_NAME,
@@ -39,6 +42,8 @@ import {
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfg/constants.ts";
+import type { TGuildComponentInteraction } from "../commands/types.ts";
+import { DISCORD_MESSAGE_POSITIVE_COLOR } from "../constants.ts";
 import { createErrorMessage, createNegativeMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 import { EMessageKind } from "../message.types.ts";
 
@@ -265,7 +270,7 @@ function formatAlreadyInRoom(callerId: string, userId: string) {
 
 function formatAlreadyInTargetRoom(callerId: string, userId: string, room: IRoom) {
     if (callerId === userId) {
-        return formatRoom(room);
+        return `You are already in room ${formatRoomCode(room.code)}.`;
     }
     return `${userMention(userId)} is already in room ${formatRoomCode(room.code)}.`;
 }
@@ -300,6 +305,32 @@ export function mapLfgResultToMessageBase({
             });
         }
         case ELfgResultKind.ROOM_CREATED:
+            if (isPublic) {
+                return {
+                    kind: EMessageKind.POSITIVE,
+                    components: [
+                        // TODO: tempted to use the regular JSON structure
+                        new ContainerBuilder()
+                            .setAccentColor(DISCORD_MESSAGE_POSITIVE_COLOR)
+                            .addSectionComponents((section) =>
+                                section
+                                    .addTextDisplayComponents((textDisplay) =>
+                                        textDisplay.setContent(
+                                            formatRoomCreated(callerId, result.value.userId, result.value.room),
+                                        ),
+                                    )
+                                    .setButtonAccessory((button) =>
+                                        button
+                                            .setCustomId(formatJoinButtonId(result.value.room.id))
+                                            .setLabel("Join")
+                                            .setStyle(ButtonStyle.Primary),
+                                    ),
+                            )
+                            .toJSON(),
+                    ],
+                    flags: [MessageFlags.IsComponentsV2],
+                } as const;
+            }
             return createPositiveMessage({
                 embed: {
                     description: formatRoomCreated(callerId, result.value.userId, result.value.room),
@@ -396,7 +427,9 @@ export function mapLfgResultToMessageBase({
         case ELfgResultKind.ROOM_NOT_FOUND:
             return createNegativeMessage({
                 embed: {
-                    description: `Room ${formatRoomCode(result.value.code)} does not exist.`,
+                    description: !result.value.code
+                        ? "This room no longer exists."
+                        : `Room ${formatRoomCode(result.value.code)} does not exist.`,
                 },
             });
         case ELfgResultKind.ALREADY_IN_TARGET_ROOM:
@@ -476,13 +509,14 @@ export function mapLfgMessageBaseToInteractionReply({
 }: {
     messageBase: ReturnType<typeof mapLfgResultToMessageBase>;
     // Using Pick before of PickDeep to avoid "type too complex" error
-    interaction: PickDeep<
-        Pick<ChatInputCommandInteraction, "options" | "channelId">,
-        "options.getBoolean" | "channelId"
-    >;
+    interaction:
+        | PickDeep<Pick<ChatInputCommandInteraction, "options" | "channelId">, "options.getBoolean" | "channelId">
+        | Pick<TGuildComponentInteraction, "channelId">;
     guildConfig: LfgReplyGuildConfig | null;
 }) {
-    const displayToEveryone = interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false);
+    // TODO: move to caller?
+    const displayToEveryone =
+        "options" in interaction && interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false);
 
     if (
         displayToEveryone ||

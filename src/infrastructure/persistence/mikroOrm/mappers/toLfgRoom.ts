@@ -1,7 +1,7 @@
-import type { TLfgRoom } from "../../../../application/lfg/types.ts";
+import type { IRoom } from "../../../../domain/lfg/models/room.types.ts";
 import type { LfgRoom } from "../models/lfg/room.ts";
 
-export function toLfgRoom(room: LfgRoom): TLfgRoom {
+export function toLfgRoom(room: LfgRoom): IRoom {
     return {
         id: room.id,
         code: room.code,

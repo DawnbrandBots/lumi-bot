@@ -24,6 +24,7 @@ import {
 const GUILD_ID = "guild-1";
 const USER_ID = "user-1";
 const ROOM_CODE = "room";
+const ROOM_ID = "room-id";
 const PUBLIC_CHANNEL_ID = "public-channel";
 const OTHER_CHANNEL_ID = "other-channel";
 const ROLE_ID = "role-1";
@@ -34,7 +35,7 @@ const POSITIVE_RESULT = {
     kind: ELfgResultKind.ROOM_CREATED,
     value: {
         userId: USER_ID,
-        room: { code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] },
+        room: { id: ROOM_ID, code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] },
     },
 } satisfies TLfgResult;
 
@@ -61,7 +62,8 @@ function getLfgUseCaseMocks(result: TLfgResult) {
         kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
         kickPlayerFromOwnedRoom: vi.fn().mockResolvedValue(result),
         leaveRoom: vi.fn().mockResolvedValue(result),
-        movePlayerToRoom: vi.fn().mockResolvedValue(result),
+        movePlayerToRoomByCode: vi.fn().mockResolvedValue(result),
+        movePlayerToRoomById: vi.fn().mockResolvedValue(result),
         transferRoomToPlayer: vi.fn().mockResolvedValue(result),
         transferOwnedRoomToPlayer: vi.fn().mockResolvedValue(result),
     };
@@ -183,10 +185,11 @@ describe("lfg command", () => {
 
         await runCommand(command, interaction);
 
+        // TODO: we could just test the whole reply shape
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
         const publicMessage = send.mock.calls[0]?.[0] as { readonly flags?: unknown } | undefined;
-        expect(publicMessage?.flags).toBeUndefined();
+        expect(publicMessage?.flags).toEqual([MessageFlags.IsComponentsV2]);
     });
 
     test("replies publicly in the configured channel", async () => {
@@ -195,8 +198,9 @@ describe("lfg command", () => {
 
         await runCommand(command, interaction);
 
+        // TODO: we could just test the whole reply shape
         const publicReply = reply.mock.calls[0]?.[0] as { readonly flags?: unknown } | undefined;
-        expect(publicReply?.flags).toBeUndefined();
+        expect(publicReply?.flags).toEqual([MessageFlags.IsComponentsV2]);
         expect(channelFetch).not.toHaveBeenCalled();
     });
 

@@ -1,19 +1,11 @@
 import { AMOUNT_OF_PLAYERS_IN_A_BATTLE } from "../../../domain/game/constants.ts";
+import type { TLfgServiceBase } from "../types.ts";
 import { ELfgResultKind } from "../types.ts";
-import type { TLfgUseCaseBase } from "../types.ts";
 
-export const movePlayerToRoom: TLfgUseCaseBase<
-    "movePlayerToRoom",
-    | "repositories.lfg.findRoomByCode"
-    | "repositories.lfg.findRoomByUser"
-    | "repositories.lfg.moveUserToRoom"
-    | "services.removePlayerFromRoom"
-> = async function (dependencies, { guildId, user, code }) {
-    const room = await dependencies.repositories.lfg.findRoomByCode({ guildId, code });
-    if (!room) {
-        return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
-    }
-
+export const movePlayerToExistingRoom: TLfgServiceBase<
+    "movePlayerToExistingRoom",
+    "repositories.lfg.findRoomByUser" | "repositories.lfg.moveUserToRoom" | "services.removePlayerFromRoom"
+> = async function (dependencies, { guildId, user, room }) {
     const currentRoom = await dependencies.repositories.lfg.findRoomByUser({ guildId, userId: user.id });
     if (currentRoom?.id === room.id) {
         return {
@@ -23,7 +15,7 @@ export const movePlayerToRoom: TLfgUseCaseBase<
     }
 
     if (room.playerIds.length >= AMOUNT_OF_PLAYERS_IN_A_BATTLE) {
-        return { kind: ELfgResultKind.ROOM_IS_FULL, value: { code } } as const;
+        return { kind: ELfgResultKind.ROOM_IS_FULL, value: { code: room.code } } as const;
     }
 
     const leftRoomCode = currentRoom?.code;

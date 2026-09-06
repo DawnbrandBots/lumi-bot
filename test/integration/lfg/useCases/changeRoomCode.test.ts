@@ -9,7 +9,7 @@ describe(changeRoomCode.name, () => {
 
     test("changes the room code identified by code", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "old" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "old" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "old" });
 
         const response = await lfg.useCases.changeRoomCode({ guildId: GUILD_ID, code: "old", newCode: NEW_ROOM_CODE });
 

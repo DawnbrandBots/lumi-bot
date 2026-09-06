@@ -10,10 +10,11 @@ import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
+import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
-import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 import {
+    formatJoinButtonId,
     LFG_CODE_OPTION_NAME,
     LFG_NEW_CODE_OPTION_NAME,
     LFG_PLAYER_OPTION_NAME,
@@ -27,6 +28,7 @@ const GUILD_ID = "guild-1";
 const ADMIN_ID = "admin";
 const PLAYER_ID = "player";
 const ROOM_CODE = "room";
+const ROOM_ID = "room-id";
 const NEW_ROOM_CODE = "new-room";
 const PUBLIC_CHANNEL_ID = "public-channel";
 const OTHER_CHANNEL_ID = "other-channel";
@@ -77,7 +79,8 @@ function getCommand({ result, channel = null }: { readonly result: TLfgResult; r
         changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
         createRoom: vi.fn().mockResolvedValue(result),
         disbandOwnedRoom: vi.fn().mockResolvedValue(result),
-        movePlayerToRoom: vi.fn().mockResolvedValue(result),
+        movePlayerToRoomByCode: vi.fn().mockResolvedValue(result),
+        movePlayerToRoomById: vi.fn().mockResolvedValue(result),
         getLfgStatus: vi.fn().mockResolvedValue(result),
         kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
         kickPlayerFromOwnedRoom: vi.fn().mockResolvedValue(result),
@@ -152,19 +155,19 @@ describe("lfg-manage command", () => {
                 kind: ELfgResultKind.ROOM_CREATED,
                 value: {
                     userId: PLAYER_ID,
-                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
+                    room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
             } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, owner: { id: PLAYER_ID }, code: ROOM_CODE },
         },
         {
             subcommand: "move",
-            method: "movePlayerToRoom",
+            method: "movePlayerToRoomByCode",
             result: {
                 kind: ELfgResultKind.ROOM_JOINED,
                 value: {
                     userId: PLAYER_ID,
-                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
+                    room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
             } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, user: { id: PLAYER_ID }, code: ROOM_CODE },
@@ -189,7 +192,7 @@ describe("lfg-manage command", () => {
                 value: {
                     userId: PLAYER_ID,
                     targetId: PLAYER_ID,
-                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [] },
+                    room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [] },
                     removalResult: { kind: ELfgPlayerRemovalKind.ROOM_DELETED },
                 },
             } satisfies TLfgResult,
@@ -203,7 +206,7 @@ describe("lfg-manage command", () => {
                 value: {
                     userId: PLAYER_ID,
                     targetId: PLAYER_ID,
-                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
+                    room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
             } satisfies TLfgResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, target: { id: PLAYER_ID } },
@@ -244,7 +247,7 @@ describe("lfg-manage command", () => {
                 kind: ELfgResultKind.ROOM_CREATED,
                 value: {
                     userId: PLAYER_ID,
-                    room: { code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
+                    room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
             },
         });
@@ -255,15 +258,14 @@ describe("lfg-manage command", () => {
 
         expect(reply).toHaveBeenCalledWith(expect.objectContaining({ flags: [MessageFlags.Ephemeral] }));
         expect(channelFetch).toHaveBeenCalledWith(PUBLIC_CHANNEL_ID);
-        expect(send).toHaveBeenCalledWith(
-            expect.objectContaining({
-                embeds: [
-                    expect.objectContaining({
-                        description: `${userMention(ADMIN_ID)} created room \`${ROOM_CODE}\` with ${userMention(PLAYER_ID)} as owner.`,
-                    }),
-                ],
-            }),
-        );
+        expect(send.mock.calls[0]?.[0]).toMatchObject({
+            flags: [MessageFlags.IsComponentsV2],
+            components: [
+                {
+                    components: [{ accessory: { custom_id: formatJoinButtonId(ROOM_ID) } }],
+                },
+            ],
+        });
     });
 
     test("does not publish negative results", async () => {

@@ -8,7 +8,7 @@ describe(disbandOwnedRoom.name, () => {
 
     test("deletes the room when called by the owner", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
         const response = await lfg.useCases.disbandOwnedRoom({ guildId: GUILD_ID, owner: OWNER });
 
@@ -21,7 +21,7 @@ describe(disbandOwnedRoom.name, () => {
 
     test("rejects non-owners", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
         const response = await lfg.useCases.disbandOwnedRoom({ guildId: GUILD_ID, owner: PLAYER_1 });
 

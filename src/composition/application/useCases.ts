@@ -16,7 +16,8 @@ import { getLfgStatus } from "../../application/lfg/useCases/getLfgStatus.ts";
 import { kickPlayerFromOwnedRoom } from "../../application/lfg/useCases/kickPlayerFromOwnedRoom.ts";
 import { kickPlayerFromRoom } from "../../application/lfg/useCases/kickPlayerFromRoom.ts";
 import { leaveRoom } from "../../application/lfg/useCases/leaveRoom.ts";
-import { movePlayerToRoom } from "../../application/lfg/useCases/movePlayerToRoom.ts";
+import { movePlayerToRoomByCode } from "../../application/lfg/useCases/movePlayerToRoomByCode.ts";
+import { movePlayerToRoomById } from "../../application/lfg/useCases/movePlayerToRoomById.ts";
 import { transferOwnedRoomToPlayer } from "../../application/lfg/useCases/transferOwnedRoomToPlayer.ts";
 import { transferRoomToPlayer } from "../../application/lfg/useCases/transferRoomToPlayer.ts";
 import type { TApplicationQueries } from "../../application/queries.types.ts";
@@ -45,7 +46,8 @@ const LFG_USE_CASES = {
     kickPlayerFromRoom: kickPlayerFromRoom,
     kickPlayerFromOwnedRoom: kickPlayerFromOwnedRoom,
     leaveRoom: leaveRoom,
-    movePlayerToRoom: movePlayerToRoom,
+    movePlayerToRoomByCode: movePlayerToRoomByCode,
+    movePlayerToRoomById: movePlayerToRoomById,
     transferRoomToPlayer: transferRoomToPlayer,
     transferOwnedRoomToPlayer: transferOwnedRoomToPlayer,
 };

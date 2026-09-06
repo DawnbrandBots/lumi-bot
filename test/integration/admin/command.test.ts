@@ -73,6 +73,7 @@ async function runCommand(useCases: TApplicationUseCases, interaction: ChatInput
 
 function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandArgs {
     return {
+        // TODO: some cleanup to do here... why this giant object?
         useCases: {
             admin: {
                 addLfgRole: vi.fn(),
@@ -96,7 +97,8 @@ function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandAr
                 kickPlayerFromRoom: vi.fn(),
                 kickPlayerFromOwnedRoom: vi.fn(),
                 leaveRoom: vi.fn(),
-                movePlayerToRoom: vi.fn(),
+                movePlayerToRoomByCode: vi.fn(),
+                movePlayerToRoomById: vi.fn(),
                 transferRoomToPlayer: vi.fn(),
                 transferOwnedRoomToPlayer: vi.fn(),
             },

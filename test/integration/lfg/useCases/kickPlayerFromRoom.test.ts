@@ -9,7 +9,7 @@ describe(kickPlayerFromRoom.name, () => {
 
     test("removes a player from the room identified by code", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
         const response = await lfg.useCases.kickPlayerFromRoom({ guildId: GUILD_ID, code: "room", target: PLAYER_1 });
 
@@ -26,7 +26,7 @@ describe(kickPlayerFromRoom.name, () => {
 
     test("removes the owner and transfers ownership", async () => {
         await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
-        await lfg.useCases.movePlayerToRoom({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
+        await lfg.useCases.movePlayerToRoomByCode({ guildId: GUILD_ID, user: PLAYER_1, code: "room" });
 
         const response = await lfg.useCases.kickPlayerFromRoom({ guildId: GUILD_ID, code: "room", target: OWNER });
 
