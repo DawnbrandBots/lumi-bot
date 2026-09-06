@@ -1,3 +1,4 @@
+import type { ClientEvents } from "discord.js";
 import { Events, InteractionType } from "discord.js";
 import type { TApplicationUseCases } from "../application/useCases.types.ts";
 import type {
@@ -8,7 +9,6 @@ import type {
     TCommandDependencies,
 } from "../presentation/discord/commands/types.ts";
 import { handleClientReady as clientReadyHandler } from "../presentation/discord/eventHandlers/clientReady.ts";
-import type { TInteractionCreateEventInteraction } from "../presentation/discord/eventHandlers/interactionCreate.ts";
 import type { THandleAutocompleteInteraction } from "../presentation/discord/eventHandlers/interactions/autocomplete.ts";
 import { handleAutocompleteInteraction } from "../presentation/discord/eventHandlers/interactions/autocomplete.ts";
 import type { THandleCommandInteraction } from "../presentation/discord/eventHandlers/interactions/command.ts";
@@ -23,6 +23,9 @@ import { COMMANDS } from "./presentation/commands.ts";
 import getRawAutocompleteHandlerFromHandlers from "./presentation/getAutocompleteHandler.ts";
 import getRawCommandRunHandlerFromCommands from "./presentation/getCommandRunHandler.ts";
 import { buildDependentFunction } from "./utils/buildDependentFunctionsRecord.ts";
+
+export type TInteractionCreateEventInteraction = ClientEvents[Events.InteractionCreate][0];
+export type THandleInteractionCreate = (interaction: TInteractionCreateEventInteraction) => Promise<void>;
 
 export function composePresentation({ useCases }: { readonly useCases: TApplicationUseCases }) {
     const presentationDependencies = { useCases };
