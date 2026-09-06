@@ -1,9 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { ELfgResultKind } from "../../../../src/application/lfg/types.ts";
 import { movePlayerToRoomById } from "../../../../src/application/lfg/useCases/movePlayerToRoomById.ts";
-import expectTypeGuard from "../../../utils/expectTypeGuard.ts";
+import typeGuardExpectToStrictEqual from "../../../utils/typeGuardExpectToStrictEqual.ts";
 import { GUILD_ID, OTHER_GUILD_ID, OWNER, PLAYER_1, useLfgUseCases } from "./shared.ts";
-
 const expectedRoomCreated = {
     kind: ELfgResultKind.ROOM_CREATED,
     value: {
@@ -18,7 +17,7 @@ const expectedRoomCreated = {
 } as const;
 // TODO: nice, but can this be made generic and reused in other places?
 function expectRoomCreated(creation: unknown): asserts creation is typeof expectedRoomCreated {
-    expectTypeGuard<typeof expectedRoomCreated>(creation, expectedRoomCreated);
+    typeGuardExpectToStrictEqual<typeof expectedRoomCreated>(creation, expectedRoomCreated);
 }
 
 describe(movePlayerToRoomById.name, () => {
