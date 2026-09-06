@@ -5,7 +5,6 @@ export const movePlayerToRoomById: TLfgUseCaseBase<
     "movePlayerToRoomById",
     "repositories.lfg.findRoomById" | "services.movePlayerToExistingRoom"
 > = async function (dependencies, { guildId, user, roomId }) {
-    // TODO: are we testing/mentioning anywhere that we're passing guildId on top of roomId to ensure that the room is in the same guild?
     const room = await dependencies.repositories.lfg.findRoomById({ guildId, roomId });
     if (!room) {
         return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: {} } as const;

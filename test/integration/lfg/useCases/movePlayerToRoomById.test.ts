@@ -24,7 +24,6 @@ describe(movePlayerToRoomById.name, () => {
     const lfg = useLfgUseCases();
 
     test("joins an existing room", async () => {
-        // TODO: asser
         const creation = await lfg.useCases.createRoom({ guildId: GUILD_ID, owner: OWNER, code: "room" });
         expectRoomCreated(creation);
 
