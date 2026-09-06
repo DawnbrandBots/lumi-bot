@@ -4,6 +4,7 @@ import { ChannelType } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
 import { type TLfgResult } from "../../../application/lfg/types.ts";
+import { SHOW_RESPONSE_OPTION_NAME } from "../commands/constants.ts";
 import type { TGuildCommandInteraction, TGuildComponentInteraction } from "../commands/types.ts";
 import { mapLfgMessageBaseToInteractionReply, mapLfgResultToMessageBase } from "../mappers/lfg.ts";
 import { EMessageKind } from "../message.types.ts";
@@ -53,8 +54,9 @@ export async function lfgResponder({
 
     const maybePublicMessage = mapLfgMessageBaseToInteractionReply({
         messageBase: maybePublicMessageBase,
-        interaction,
-        guildConfig,
+        displayToEveryone: "options" in interaction && interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false),
+        channelId: interaction.channelId,
+        lfgChannelId: guildConfig?.lfgChannel,
     });
 
     await interaction.reply(maybePublicMessage);

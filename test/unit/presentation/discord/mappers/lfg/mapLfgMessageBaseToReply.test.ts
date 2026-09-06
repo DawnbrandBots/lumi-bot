@@ -1,14 +1,11 @@
 import { MessageFlags } from "discord.js";
 import { describe, expect, test } from "vitest";
 import { ELfgResultKind } from "../../../../../../src/application/lfg/types.ts";
-import { SHOW_RESPONSE_OPTION_NAME } from "../../../../../../src/presentation/discord/commands/constants.ts";
 import {
     mapLfgMessageBaseToInteractionReply,
     mapLfgResultToMessageBase,
 } from "../../../../../../src/presentation/discord/mappers/lfg.ts";
 import { GUILD_CONFIG, PUBLIC_CHANNEL_ID, ROOM } from "./fixtures.ts";
-
-const defaultOptions = { getBoolean: () => false } as const;
 
 describe(mapLfgMessageBaseToInteractionReply.name, () => {
     test("keeps positive messages public in the configured channel", () => {
@@ -22,8 +19,8 @@ describe(mapLfgMessageBaseToInteractionReply.name, () => {
 
         const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
-            interaction: { channelId: PUBLIC_CHANNEL_ID, options: defaultOptions },
-            guildConfig: GUILD_CONFIG,
+            channelId: PUBLIC_CHANNEL_ID,
+            lfgChannelId: GUILD_CONFIG.lfgChannel,
         });
 
         expect(reply).toEqual(messageBase);
@@ -41,8 +38,8 @@ describe(mapLfgMessageBaseToInteractionReply.name, () => {
 
         const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
-            interaction: { channelId: "other-channel", options: defaultOptions },
-            guildConfig: GUILD_CONFIG,
+            channelId: "other-channel",
+            lfgChannelId: GUILD_CONFIG.lfgChannel,
         });
 
         expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
@@ -59,8 +56,7 @@ describe(mapLfgMessageBaseToInteractionReply.name, () => {
 
         const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
-            interaction: { channelId: "other-channel", options: defaultOptions },
-            guildConfig: null,
+            channelId: "other-channel",
         });
 
         expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
@@ -74,14 +70,14 @@ describe(mapLfgMessageBaseToInteractionReply.name, () => {
 
         const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
-            interaction: { channelId: PUBLIC_CHANNEL_ID, options: defaultOptions },
-            guildConfig: GUILD_CONFIG,
+            channelId: PUBLIC_CHANNEL_ID,
+            lfgChannelId: GUILD_CONFIG.lfgChannel,
         });
 
         expect(reply).toMatchObject({ flags: [MessageFlags.Ephemeral] });
     });
 
-    test(`message visible to everyone when ${SHOW_RESPONSE_OPTION_NAME} is true`, () => {
+    test("keeps a message public when displayToEveryone is true", () => {
         const messageBase = mapLfgResultToMessageBase({
             result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: null, rooms: [ROOM] } },
             callerId: "owner",
@@ -89,8 +85,9 @@ describe(mapLfgMessageBaseToInteractionReply.name, () => {
 
         const reply = mapLfgMessageBaseToInteractionReply({
             messageBase,
-            interaction: { channelId: PUBLIC_CHANNEL_ID, options: { getBoolean: () => true } },
-            guildConfig: GUILD_CONFIG,
+            channelId: PUBLIC_CHANNEL_ID,
+            displayToEveryone: true,
+            lfgChannelId: GUILD_CONFIG.lfgChannel,
         });
 
         expect(reply).not.toHaveProperty("flags");

@@ -1,4 +1,4 @@
-import type { ChatInputCommandInteraction, InteractionReplyOptions } from "discord.js";
+import type { InteractionReplyOptions } from "discord.js";
 import {
     bold,
     ButtonStyle,
@@ -13,7 +13,6 @@ import {
     unorderedList,
     userMention,
 } from "discord.js";
-import type { PickDeep } from "type-fest";
 import type { TLfgResultOfKind, TLfgStatusGuildConfig } from "../../../application/lfg/types.ts";
 import { ELfgResultKind, type TLfgResult } from "../../../application/lfg/types.ts";
 import {
@@ -23,7 +22,6 @@ import {
 } from "../../../domain/game/constants.ts";
 import { ELfgPlayerRemovalKind } from "../../../domain/lfg/models/playerRemoval.types.ts";
 import type { IRoom } from "../../../domain/lfg/models/room.types.ts";
-import { SHOW_RESPONSE_OPTION_NAME } from "../commands/constants.ts";
 import formatCommand from "../commands/formatCommand.ts";
 import {
     formatJoinButtonId,
@@ -42,7 +40,6 @@ import {
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfg/constants.ts";
-import type { TGuildComponentInteraction } from "../commands/types.ts";
 import { DISCORD_MESSAGE_POSITIVE_COLOR } from "../constants.ts";
 import { createErrorMessage, createNegativeMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 import { EMessageKind } from "../message.types.ts";
@@ -116,11 +113,6 @@ type LfgRoleStatus = {
 /** Guild config fields needed to render the LFG status output. */
 type LfgStatusGuildConfig = Pick<TLfgStatusGuildConfig, "lfgChannel" | "lfgRolePingCooldownMinutes"> & {
     readonly lfgRoles?: Iterable<LfgRoleStatus>;
-};
-
-/** Guild config fields needed to decide whether an LFG reply should be public. */
-type LfgReplyGuildConfig = {
-    readonly lfgChannel: string | null;
 };
 
 function formatList(rooms: readonly IRoom[]) {
@@ -501,27 +493,17 @@ export function mapLfgResultToMessageBase({
     }
 }
 
-export function mapLfgMessageBaseToInteractionReply({
-    messageBase,
-    interaction,
-    guildConfig,
-}: {
+export function mapLfgMessageBaseToInteractionReply(arg: {
     messageBase: ReturnType<typeof mapLfgResultToMessageBase>;
-    // Using Pick before of PickDeep to avoid "type too complex" error
-    interaction:
-        | PickDeep<Pick<ChatInputCommandInteraction, "options" | "channelId">, "options.getBoolean" | "channelId">
-        | Pick<TGuildComponentInteraction, "channelId">;
-    guildConfig: LfgReplyGuildConfig | null;
+    channelId: string;
+    lfgChannelId?: string | null;
+    displayToEveryone?: boolean | null;
 }) {
-    // TODO: move to caller?
-    const displayToEveryone =
-        "options" in interaction && interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false);
-
     if (
-        displayToEveryone ||
-        (messageBase.kind === EMessageKind.POSITIVE && interaction.channelId === guildConfig?.lfgChannel)
+        arg?.displayToEveryone ||
+        (arg.messageBase.kind === EMessageKind.POSITIVE && arg.channelId === arg?.lfgChannelId)
     ) {
-        return messageBase;
+        return arg.messageBase;
     }
-    return { ...messageBase, flags: [MessageFlags.Ephemeral] } as const;
+    return { ...arg.messageBase, flags: [MessageFlags.Ephemeral] } as const;
 }
