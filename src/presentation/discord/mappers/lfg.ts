@@ -492,18 +492,3 @@ export function mapLfgResultToMessageBase({
             });
     }
 }
-
-export function mapLfgMessageBaseToInteractionReply(arg: {
-    messageBase: ReturnType<typeof mapLfgResultToMessageBase>;
-    channelId: string;
-    lfgChannelId?: string | null;
-    displayToEveryone?: boolean | null;
-}) {
-    if (
-        arg?.displayToEveryone ||
-        (arg.messageBase.kind === EMessageKind.POSITIVE && arg.channelId === arg?.lfgChannelId)
-    ) {
-        return arg.messageBase;
-    }
-    return { ...arg.messageBase, flags: [MessageFlags.Ephemeral] } as const;
-}

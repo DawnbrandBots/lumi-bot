@@ -1,12 +1,12 @@
 import debug from "debug";
 import type { TextChannel } from "discord.js";
-import { ChannelType } from "discord.js";
+import { ChannelType, MessageFlags } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
 import { type TLfgResult } from "../../../application/lfg/types.ts";
 import { SHOW_RESPONSE_OPTION_NAME } from "../commands/constants.ts";
 import type { TGuildCommandInteraction, TGuildComponentInteraction } from "../commands/types.ts";
-import { mapLfgMessageBaseToInteractionReply, mapLfgResultToMessageBase } from "../mappers/lfg.ts";
+import { mapLfgResultToMessageBase } from "../mappers/lfg.ts";
 import { EMessageKind } from "../message.types.ts";
 
 const log = debug("bot:lfg");
@@ -52,12 +52,13 @@ export async function lfgResponder({
         isPublic: interactionSentFromLfgChannel,
     });
 
-    const maybePublicMessage = mapLfgMessageBaseToInteractionReply({
-        messageBase: maybePublicMessageBase,
-        displayToEveryone: "options" in interaction && interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false),
-        channelId: interaction.channelId,
-        lfgChannelId: guildConfig?.lfgChannel,
-    });
+    const displayToEveryone =
+        "options" in interaction && interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false) === true;
+    const shouldReplyEphemerally =
+        !displayToEveryone && (maybePublicMessageBase.kind !== EMessageKind.POSITIVE || !interactionSentFromLfgChannel);
+    const maybePublicMessage = shouldReplyEphemerally
+        ? { ...maybePublicMessageBase, flags: [MessageFlags.Ephemeral] as const }
+        : maybePublicMessageBase;
 
     await interaction.reply(maybePublicMessage);
     if (maybePublicMessageBase.kind === EMessageKind.POSITIVE && lfgChannelExists && !interactionSentFromLfgChannel) {
