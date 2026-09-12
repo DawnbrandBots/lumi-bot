@@ -25,6 +25,8 @@ export interface IDisciple {
     readonly baseAtk: number;
     /** HP value at level 1. */
     readonly baseHp: number;
+    /** Whether the disciple was featured in a battle pass. */
+    readonly isBattlePassDisciple: boolean;
     /** @returns Atk value for the given level. */
     getAtk({ level }: { level: number }): number;
     /** @returns HP value for the given level. */
