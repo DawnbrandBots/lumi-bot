@@ -38,6 +38,7 @@ export const DISCIPLE = {
     supports: [],
     baseAtk: 42,
     baseHp: 80,
+    isBattlePassDisciple: false,
     getAtk({ level }) {
         return Math.floor(this.baseAtk * (1 + 0.1 * (level - 1)));
     },
