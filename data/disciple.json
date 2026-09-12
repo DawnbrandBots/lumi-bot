@@ -127,7 +127,8 @@
     "movementType": "INFANTRY",
     "weaponType": "BOW",
     "prfWeapon": "MULAGIR_PLUS",
-    "shadowMusic": "BETRAYAL_THE_BLAZING_BLADE"
+    "shadowMusic": "BETRAYAL_THE_BLAZING_BLADE",
+    "isBattlePassDisciple": true
   },
   {
     "id": "BARTOLOMEUS",
@@ -157,7 +158,8 @@
     "movementType": "ARMORED",
     "weaponType": "STONE",
     "prfWeapon": "PRIMORDIAL_STONE_PLUS",
-    "shadowMusic": "BETRAYAL_FATES"
+    "shadowMusic": "BETRAYAL_FATES",
+    "isBattlePassDisciple": true
   },
   {
     "id": "MICAELA",
@@ -177,7 +179,8 @@
     "movementType": "FLYING",
     "weaponType": "TOME",
     "prfWeapon": "ENCLOSING_DARK_PLUS",
-    "shadowMusic": "BETRAYAL_HEROES"
+    "shadowMusic": "BETRAYAL_HEROES",
+    "isBattlePassDisciple": true
   },
   {
     "id": "ESTEL",
@@ -197,7 +200,8 @@
     "movementType": "INFANTRY",
     "weaponType": "SWORD",
     "prfWeapon": "RAGNELL_PLUS",
-    "shadowMusic": "BETRAYAL_PATH_OF_RADIANCE"
+    "shadowMusic": "BETRAYAL_PATH_OF_RADIANCE",
+    "isBattlePassDisciple": true
   },
   {
     "id": "ERMA",
@@ -217,7 +221,8 @@
     "movementType": "ARMORED",
     "weaponType": "AXE",
     "prfWeapon": "AYMR_PLUS",
-    "shadowMusic": "BETRAYAL_THREE_HOUSES"
+    "shadowMusic": "BETRAYAL_THREE_HOUSES",
+    "isBattlePassDisciple": true
   },
   {
     "id": "YUNI",
@@ -237,7 +242,8 @@
     "movementType": "CAVALRY",
     "weaponType": "LANCE",
     "prfWeapon": "SIEGMUND_PLUS",
-    "shadowMusic": "BETRAYAL_THE_SACRED_STONES"
+    "shadowMusic": "BETRAYAL_THE_SACRED_STONES",
+    "isBattlePassDisciple": true
   },
   {
     "id": "UKA",
@@ -257,7 +263,8 @@
     "movementType": "INFANTRY",
     "weaponType": "BOW",
     "prfWeapon": "SHADED_BOW_PLUS",
-    "shadowMusic": "BETRAYAL_ENGAGE"
+    "shadowMusic": "BETRAYAL_ENGAGE",
+    "isBattlePassDisciple": true
   },
   {
     "id": "RUSTY",
@@ -287,7 +294,8 @@
     "movementType": "INFANTRY",
     "weaponType": "TOME",
     "prfWeapon": "TACTICS_TOME_PLUS",
-    "shadowMusic": "BETRAYAL_AWAKENING"
+    "shadowMusic": "BETRAYAL_AWAKENING",
+    "isBattlePassDisciple": true
   },
   {
     "id": "HANYA",
@@ -307,7 +315,8 @@
     "movementType": "CAVALRY",
     "weaponType": "BOW",
     "prfWeapon": "FAILNAUGHT_PLUS",
-    "shadowMusic": "BETRAYAL_THREE_HOUSES"
+    "shadowMusic": "BETRAYAL_THREE_HOUSES",
+    "isBattlePassDisciple": true
   },
   {
     "id": "EUGENE",
@@ -327,7 +336,8 @@
     "movementType": "INFANTRY",
     "weaponType": "STONE",
     "prfWeapon": "ANCIENT_STONE_PLUS",
-    "shadowMusic": "BETRAYAL_MYSTERY_OF_THE_EMBLEM"
+    "shadowMusic": "BETRAYAL_MYSTERY_OF_THE_EMBLEM",
+    "isBattlePassDisciple": true
   },
   {
     "id": "PERENNA",
@@ -347,7 +357,8 @@
     "movementType": "INFANTRY",
     "weaponType": "TOME",
     "prfWeapon": "PRAYER_TOME_PLUS",
-    "shadowMusic": "BETRAYAL_GAIDEN_ECHOES"
+    "shadowMusic": "BETRAYAL_GAIDEN_ECHOES",
+    "isBattlePassDisciple": true
   },
   {
     "id": "YUYO",
@@ -367,7 +378,8 @@
     "movementType": "INFANTRY",
     "weaponType": "SWORD",
     "prfWeapon": "BINDING_BLADE_PLUS",
-    "shadowMusic": "BETRAYAL_BINDING_BLADE"
+    "shadowMusic": "BETRAYAL_BINDING_BLADE",
+    "isBattlePassDisciple": true
   },
   {
     "id": "LEDA",
@@ -387,7 +399,8 @@
     "movementType": "INFANTRY",
     "weaponType": "SWORD",
     "prfWeapon": "ANSWERER_PLUS",
-    "shadowMusic": "BETRAYAL_FORTUNE_S_WEAVE"
+    "shadowMusic": "BETRAYAL_FORTUNE_S_WEAVE",
+    "isBattlePassDisciple": true
   },
   {
     "id": "BLACK_KNIGHT",
