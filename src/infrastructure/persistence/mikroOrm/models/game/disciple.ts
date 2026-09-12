@@ -27,6 +27,7 @@ export const DiscipleSchema = defineEntity({
                 .manyToOne(Music)
                 .formula((columns) => raw("?? || ?", [columns.shadowMusic, "_RESULTS_SCREEN"]))
                 .inversedBy("shadowResultsScreenMusicFor"),
+        isBattlePassDisciple: p.boolean().default(false),
     },
 });
 
