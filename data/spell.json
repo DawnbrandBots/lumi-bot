@@ -3996,8 +3996,8 @@
     "onlyFor": ["movementType", "FLYING"]
   },
   {
-    "id": "SELF_STRIKE_FIRE_EX",
-    "name": "Self Strike Fire EX",
+    "id": "FIRE_SELF_FADE_EX",
+    "name": "Fire Self Fade EX",
     "disciple": "CELICA",
     "role": "EX",
     "shape": "1_TILE",
