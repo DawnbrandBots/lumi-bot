@@ -1992,7 +1992,7 @@
           "kind": "STAT",
           "statChange": "DECREASE",
           "amount": {
-            "base": 50,
+            "base": 20,
             "unit": {
               "kind": "PERCENT",
               "stat": "HP"
