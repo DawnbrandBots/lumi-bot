@@ -331,5 +331,14 @@
     "weaponType": "SWORD",
     "prfWeapon": "BINDING_BLADE_PLUS",
     "shadowMusic": "BETRAYAL_BINDING_BLADE"
+  },
+  {
+    "id": "LEDA",
+    "name": "Leda",
+    "epithet": "String Siren",
+    "movementType": "FLYING",
+    "weaponType": "BOW",
+    "prfWeapon": "KALLA_S_BOW_PLUS",
+    "shadowMusic": "BETRAYAL_FORTUNE_S_WEAVE"
   }
 ]

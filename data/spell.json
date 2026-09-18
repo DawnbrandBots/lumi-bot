@@ -4361,5 +4361,173 @@
       }
     ],
     "onlyFor": ["weaponType", "SWORD"]
+  },
+  {
+    "id": "PERFORMANCE_EX",
+    "name": "Performance EX",
+    "disciple": "LEDA",
+    "role": "EX",
+    "shape": "3X3_CROSS",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "duration": 3,
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_SPELL_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_SPELL_DAMAGE"
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_WEAPON_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_WEAPON_DAMAGE"
+        },
+        "target": "SELF"
+      }
+    ]
+  },
+  {
+    "id": "DARK_WIND_WARP_PLUS_FLYING",
+    "name": "Dark Wind Warp + Flying",
+    "disciple": "LEDA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "FLYING"]
+  },
+  {
+    "id": "DARK_HARM_CLAW_FIGHTER",
+    "name": "Dark Harm Claw Fighter",
+    "disciple": "LEDA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "COLORLESS"
+          },
+          "times": 1,
+          "interval": 0
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "SUMMON",
+        "movementType": "INFANTRY",
+        "weaponType": "CLAWS",
+        "hp": {
+          "base": 120
+        },
+        "atk": {
+          "base": 80
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "WIND_GRAV_PLUS_BOW",
+    "name": "Wind Grav + Bow",
+    "disciple": "LEDA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "LIMIT",
+          "amount": {
+            "base": 1,
+            "unit": {
+              "kind": "FIXED"
+            },
+            "scalingStrategyOverride": "NONE"
+          },
+          "stat": "MOVEMENT"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["weaponType", "BOW"]
   }
 ]
