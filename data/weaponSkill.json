@@ -160,6 +160,11 @@
     "effect": "WEAPON_DAMAGE_REDUCTION_FROM_MONSTER_20"
   },
   {
+    "id": "BLOODSTAINED_ROSE",
+    "name": "Bloodstained Rose",
+    "effect": "WEAPON_DAMAGE_WHEN_HP_LE_50_120"
+  },
+  {
     "id": "SHINING_EYE",
     "name": "Shining Eye",
     "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"

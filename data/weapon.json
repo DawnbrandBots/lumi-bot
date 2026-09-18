@@ -320,6 +320,16 @@
     "uniqueSkill": "FLEET_OF_FOOT"
   },
   {
+    "id": "KALLA_S_BOW_PLUS",
+    "name": "Kalla's Bow +",
+    "weaponType": "BOW",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BLOODSTAINED_ROSE"
+  },
+  {
     "id": "SIGHT_STONE_PLUS",
     "name": "Sight Stone +",
     "weaponType": "STONE",
@@ -728,6 +738,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "FLEET_OF_FOOT"
+  },
+  {
+    "id": "KALLA_S_BOW",
+    "name": "Kalla's Bow",
+    "weaponType": "BOW",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BLOODSTAINED_ROSE"
   },
   {
     "id": "RESOLUTE_BOW",

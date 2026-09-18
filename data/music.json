@@ -204,5 +204,13 @@
   {
     "id": "BETRAYAL_BINDING_BLADE_RESULTS_SCREEN",
     "name": "Betrayal – Binding Blade (Results screen)"
+  },
+  {
+    "id": "BETRAYAL_FORTUNE_S_WEAVE",
+    "name": "Betrayal – Fortune's Weave"
+  },
+  {
+    "id": "BETRAYAL_FORTUNE_S_WEAVE_RESULTS_SCREEN",
+    "name": "Betrayal – Fortune's Weave (Results screen)"
   }
 ]
