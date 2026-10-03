@@ -55,6 +55,18 @@
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-2.1.1.tgz#901917bc538c12b9c3613036d317847baee08cae"
   integrity sha512-LiSusze9Tc7qF03sLCujF5iZp7K+vRNEDBZ86FT9aQAv3vxMLihUvKvpsCWiQ2DJq1tVckopKm1rxomgNUc9hg==
 
+"@discordjs/core@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@discordjs/core/-/core-2.6.0.tgz#5a339591d3212decfc70bffbb7b643bdaa3fd8f6"
+  integrity sha512-rQ1Jvn4sMlFhfj3WMbtfQUBqDZ5/QEsH/HIHY+RQ/28rRyK/N95mEf/0Tp72ITKK0zdzoTSGo1AgZI/P5JnLBw==
+  dependencies:
+    "@discordjs/rest" "^2.6.2"
+    "@discordjs/util" "^1.2.0"
+    "@discordjs/ws" "^2.0.4"
+    "@sapphire/snowflake" "^3.5.5"
+    "@vladfrangu/async_event_emitter" "^2.4.6"
+    discord-api-types "^0.38.50"
+
 "@discordjs/formatters@^0.6.2":
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/@discordjs/formatters/-/formatters-0.6.2.tgz#93c4a213ceb49c9a28e8adb65d50a027579b8c30"
@@ -62,7 +74,7 @@
   dependencies:
     discord-api-types "^0.38.33"
 
-"@discordjs/rest@^2.5.1", "@discordjs/rest@^2.6.2":
+"@discordjs/rest@^2.5.1", "@discordjs/rest@^2.6.0", "@discordjs/rest@^2.6.2":
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/@discordjs/rest/-/rest-2.6.3.tgz#607dea40d038301654d6f57d8e7b07a4149f43f2"
   integrity sha512-wvOylxNYJkwKjctS/Mn5GP1w9r3/rzyH+ThD1JlAca6zEdlHs8QWBBUQJpU5Q+W6DoIj/Ljh1IPlZs7hTU+UAg==
@@ -77,7 +89,7 @@
     tslib "^2.6.3"
     undici "^6.27.0"
 
-"@discordjs/util@^1.1.0", "@discordjs/util@^1.2.0":
+"@discordjs/util@^1.1.0", "@discordjs/util@^1.1.1", "@discordjs/util@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@discordjs/util/-/util-1.2.0.tgz#a45a2b643423094eb6378060c623f4d3e6d593d4"
   integrity sha512-3LKP7F2+atl9vJFhaBjn4nOaSWahZ/yWjOvA4e5pnXkt2qyXRCHLxoBQy81GFtLGCq7K9lPm9R517M1U+/90Qg==
@@ -98,6 +110,21 @@
     discord-api-types "^0.38.1"
     tslib "^2.6.2"
     ws "^8.17.0"
+
+"@discordjs/ws@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@discordjs/ws/-/ws-2.0.4.tgz#c8178881f17c87379fe8bff7d888f671a904e6f9"
+  integrity sha512-ARXnE+qi+D7Y4trd1bKA9uhiUxQvLbOKcdehDa6NLd7FiqmDvvk8N5RGk6Ho9gdT/Wap09dz/IuLv7hNpUzt6g==
+  dependencies:
+    "@discordjs/collection" "^2.1.1"
+    "@discordjs/rest" "^2.6.0"
+    "@discordjs/util" "^1.1.1"
+    "@sapphire/async-queue" "^1.5.3"
+    "@types/ws" "^8.5.12"
+    "@vladfrangu/async_event_emitter" "^2.4.6"
+    discord-api-types "^0.38.32"
+    tslib "^2.6.3"
+    ws "^8.18.0"
 
 "@eslint-community/eslint-utils@^4.8.0", "@eslint-community/eslint-utils@^4.9.1":
   version "4.10.1"
@@ -393,7 +420,7 @@
   dependencies:
     undici-types "~8.3.0"
 
-"@types/ws@^8.5.10":
+"@types/ws@^8.5.10", "@types/ws@^8.5.12":
   version "8.18.1"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-8.18.1.tgz#48464e4bf2ddfd17db13d845467f6070ffea4aa9"
   integrity sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==
@@ -757,6 +784,11 @@ discord-api-types@^0.38.1, discord-api-types@^0.38.33, discord-api-types@^0.38.4
   version "0.38.53"
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.38.53.tgz#74c0b9fa83d8b21d6c5ab3ee9c0d84d3b813d952"
   integrity sha512-HL1zz/UuZ+bbJjA/X8Kbxx9gk8v9rJAbTeWRNYKmIdjwJ7EovjlHgoJTxcLpATfNJ+AonOtMdy3Y5MVIJAAd/A==
+
+discord-api-types@^0.38.32:
+  version "0.38.55"
+  resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.38.55.tgz#a3f247414e3dd1294a6e2c89fe1ff65b1f421bc3"
+  integrity sha512-ytuaRTzdnHUCXJ6KjL9MrItQX0xKncBKEeYI1Bst4+ud47eejH3cG6gaesYakjpPcUhh68XYS2YwGq3mmujFsA==
 
 discord.js@~14.27.0:
   version "14.27.0"
@@ -1767,6 +1799,11 @@ ws@^8.17.0:
   version "8.21.2"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.21.2.tgz#e6976cfe96161d40420689a5f051378d11b0f0ce"
   integrity sha512-54dMVAo4WIe6SKy3vBgN+9bJZqqQ8IMRevAkOLQALhi49qkkQDQfWdAZ8KQlXiEabw88ARXXdUrlvtbKQX+aKw==
+
+ws@^8.18.0:
+  version "8.21.3"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.21.3.tgz#660b4faddb6a3e575c86e078126919961f4de4fc"
+  integrity sha512-201TZ/kPWxoPr/OKWjquZR1SWKXcvxdH+e1xrx89b3YbmzLMFCLfnaG1HFIgWzJOEWZ7MvpK++odZufgYR50Rw==
 
 y18n@^5.0.5:
   version "5.0.8"

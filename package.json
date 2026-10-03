@@ -27,6 +27,7 @@
     "yarn": "1.22.x"
   },
   "dependencies": {
+    "@discordjs/core": "^2.6.0",
     "@mikro-orm/core": "^7.1.6",
     "@mikro-orm/migrations": "^7.1.6",
     "@mikro-orm/sqlite": "^7.1.6",
