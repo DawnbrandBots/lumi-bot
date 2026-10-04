@@ -1,6 +1,7 @@
 import type { PickDeep } from "type-fest";
 import { SPELL_MAXIMUM_LEVEL } from "../../../../domain/game/constants.ts";
 import type { ISpell } from "../../../../domain/game/models/spell.types.ts";
+import { ESpellEffectsKind } from "../../../../domain/game/models/spell.types.ts";
 import type { TSpellEffectKindToEffectMap } from "../../../../domain/game/models/spellEffect.types.ts";
 import type {
     ISpellEffectValue,
@@ -232,8 +233,21 @@ function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
  */
 export function spellEffectsValues(
     spell: Pick<ISpell, "role"> & {
-        readonly effects: TSpellEffectValueGetterInput[];
+        readonly effects:
+            | {
+                  readonly kind: typeof ESpellEffectsKind.NORMAL;
+                  readonly effects: TSpellEffectValueGetterInput[];
+              }
+            | {
+                  readonly kind: typeof ESpellEffectsKind.FORM_BASED;
+                  readonly light: TSpellEffectValueGetterInput[];
+                  readonly shadow: TSpellEffectValueGetterInput[];
+              };
     },
 ): ISpellEffectValueWithToLevel[][] {
-    return spell.effects.map(valuesForEffect);
+    if (spell.effects.kind === ESpellEffectsKind.NORMAL) {
+        return spell.effects.effects.map(valuesForEffect);
+    }
+
+    return [...spell.effects.light.map(valuesForEffect), ...spell.effects.shadow.map(valuesForEffect)];
 }

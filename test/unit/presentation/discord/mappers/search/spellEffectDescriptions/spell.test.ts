@@ -1,10 +1,14 @@
 /** @file Tests on {@link describeSpellEffects}. */
 
 import { describe, expect, test } from "vitest";
+import { ESpellEffectsKind } from "../../../../../../../src/domain/game/models/spell.types.ts";
 import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
 import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
 import { EStatChange } from "../../../../../../../src/domain/game/models/statChange.types.ts";
-import { describeSpellEffects } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import {
+    describeSpellEffects,
+    type TSpellEffectDescriptionsInput,
+} from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 import {
     ATK_PERCENT_VALUE_UNIT,
     CROSS_SHAPE,
@@ -13,13 +17,22 @@ import {
     SINGLE_TILE_SHAPE,
 } from "./utils.ts";
 
+type TNormalSpellEffects = Extract<TSpellEffectDescriptionsInput["effects"], { kind: typeof ESpellEffectsKind.NORMAL }>;
+
+function normalEffects(effects: TNormalSpellEffects["effects"]): TNormalSpellEffects {
+    return { kind: ESpellEffectsKind.NORMAL, effects };
+}
+
 describe(describeSpellEffects.name, () => {
     test("orders effects and selects regular or inline rendering", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
             uses: null,
             cooldown: 5,
             shape: SINGLE_TILE_SHAPE,
-            effects: [{ kind: ESpellEffectKind.WARP }, { kind: ESpellEffectKind.OBSTACLE, hp: { base: 50 } }],
+            effects: normalEffects([
+                { kind: ESpellEffectKind.WARP },
+                { kind: ESpellEffectKind.OBSTACLE, hp: { base: 50 } },
+            ]),
         };
 
         expect(describeSpellEffects(spell)).toBe(
@@ -36,7 +49,7 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: SINGLE_TILE_SHAPE,
-            effects: [{ kind: ESpellEffectKind.WARP }],
+            effects: normalEffects([{ kind: ESpellEffectKind.WARP }]),
         };
 
         expect(describeSpellEffects(spell)).toBe("After 2 seconds:\n1. Moves user to target tile.");
@@ -49,7 +62,7 @@ describe(describeSpellEffects.name, () => {
             cooldown: 3,
             onlyFor: { name: "Infantry" },
             shape: SINGLE_TILE_SHAPE,
-            effects: [{ kind: ESpellEffectKind.WARP }],
+            effects: normalEffects([{ kind: ESpellEffectKind.WARP }]),
         };
 
         expect(describeSpellEffects(spell)).toBe("1. Moves user to target tile.");
@@ -63,7 +76,7 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: CROSS_SHAPE,
-            effects: [
+            effects: normalEffects([
                 {
                     kind: ESpellEffectKind.STATUS,
                     target: ESpellEffectTarget.ANY,
@@ -92,7 +105,7 @@ describe(describeSpellEffects.name, () => {
                         duration: null,
                     },
                 },
-            ],
+            ]),
         };
 
         expect(describeSpellEffects(spell)).toBe(
@@ -112,7 +125,7 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: SINGLE_TILE_SHAPE,
-            effects: [
+            effects: normalEffects([
                 {
                     kind: ESpellEffectKind.STATUS,
                     target: ESpellEffectTarget.ANY,
@@ -135,7 +148,7 @@ describe(describeSpellEffects.name, () => {
                         duration: null,
                     },
                 },
-            ],
+            ]),
         };
 
         expect(describeSpellEffects(spell)).toBe(
@@ -151,7 +164,7 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: CROSS_SHAPE,
-            effects: [
+            effects: normalEffects([
                 {
                     kind: ESpellEffectKind.STATUS,
                     target: ESpellEffectTarget.ANY,
@@ -175,7 +188,7 @@ describe(describeSpellEffects.name, () => {
                         duration: null,
                     },
                 },
-            ],
+            ]),
         };
 
         expect(describeSpellEffects(spell)).toBe(
@@ -183,6 +196,47 @@ describe(describeSpellEffects.name, () => {
                 `1. Grants "increases HP by 10 (permanent)" to targets on a single space.`,
                 `1. Grants "increases Atk by 5 (permanent)" to targets.`,
             ].join("\n"),
+        );
+    });
+
+    test("groups form-based effects", () => {
+        const spell: Parameters<typeof describeSpellEffects>[0] = {
+            countdown: 2,
+            uses: 1,
+            cooldown: 3,
+            shape: SINGLE_TILE_SHAPE,
+            effects: {
+                kind: ESpellEffectsKind.FORM_BASED,
+                light: [
+                    {
+                        kind: ESpellEffectKind.DAMAGE,
+                        amount: { base: 60, unit: FIXED_VALUE_UNIT },
+                        color: { name: "Red" },
+                        target: ESpellEffectTarget.ANY,
+                    },
+                ],
+                shadow: [
+                    {
+                        kind: ESpellEffectKind.DAMAGE,
+                        amount: { base: 45, unit: FIXED_VALUE_UNIT },
+                        color: { name: "Red" },
+                        target: ESpellEffectTarget.ANY,
+                    },
+                ],
+            },
+        };
+
+        expect(describeSpellEffects(spell)).toBe(
+            [
+                "After 2 seconds:",
+                "In Light form:",
+                "1. Deals 60 Red damage to targets.",
+                "In Shadow form:",
+                "1. Deals 45 Red damage to targets.",
+            ].join("\n"),
+        );
+        expect(describeSpellEffects(spell, true)).toBe(
+            "After 2 seconds, in Light form: deals 60 Red damage to targets on a single space; in Shadow form: deals 45 Red damage to targets on a single space. (Uses: 1, Cooldown: 3)",
         );
     });
 });

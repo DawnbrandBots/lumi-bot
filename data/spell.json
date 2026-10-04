@@ -4529,5 +4529,64 @@
       }
     ],
     "onlyFor": ["weaponType", "BOW"]
+  },
+  {
+    "id": "BLACK_LUNA_EX",
+    "name": "Black Luna EX",
+    "disciple": "IKE",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": {
+      "light": [
+        {
+          "kind": "DAMAGE",
+          "amount": {
+            "base": 50,
+            "unit": {
+              "kind": "FIXED"
+            }
+          },
+          "color": "RED",
+          "target": "ANY"
+        },
+        {
+          "kind": "HEAL",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "target": "SELF"
+        }
+      ],
+      "shadow": [
+        {
+          "kind": "DAMAGE",
+          "amount": {
+            "base": 50,
+            "unit": {
+              "kind": "FIXED"
+            }
+          },
+          "color": "RED",
+          "target": "ANY"
+        },
+        {
+          "kind": "HEAL",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "target": "SELF"
+        }
+      ]
+    }
   }
 ]
