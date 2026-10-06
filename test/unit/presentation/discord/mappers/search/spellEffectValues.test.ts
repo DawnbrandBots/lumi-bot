@@ -6,8 +6,7 @@ import {
     ESpellEffectValueUnitKind,
 } from "../../../../../../src/domain/game/models/spellEffectValue.types.ts";
 import {
-    spellEffectsValues,
-    type ISpellEffectValueWithToLevel,
+    spellEffectsValues
 } from "../../../../../../src/presentation/discord/mappers/search/spellEffectValues.ts";
 
 function fixedValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
@@ -26,12 +25,13 @@ function percentValue(base: number, scalingStrategyOverride?: keyof typeof ESpel
     };
 }
 
-function serializeValues(values: ISpellEffectValueWithToLevel[][]) {
-    return values.map((group) =>
-        group.map((value) => ({
-            className: value.constructor.name,
-            base: value.base,
-        })),
+function serializeValues(values: ReturnType<typeof spellEffectsValues>) {
+    return (values.kind === ESpellEffectsKind.NORMAL ? values.effects : [...values.light, ...values.shadow]).map(
+        (group) =>
+            group.map((value) => ({
+                className: value.constructor.name,
+                base: value.base,
+            })),
     );
 }
 

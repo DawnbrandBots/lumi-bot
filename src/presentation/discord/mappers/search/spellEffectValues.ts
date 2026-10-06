@@ -218,7 +218,8 @@ function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
 }
 
 /**
- * Returns an array of arrays of ${@link ISpellEffectValueWithToLevel} for each spell effect. Subarrays have 0 or more entries depending on how many numeric values the effect has.
+ * Returns an object with an "effects" array of arrays of ${@link ISpellEffectValueWithToLevel} for each spell effect (or "light" and "shadow" arrays of arrays if the given spell has different effects based on form).
+ * Subarrays have 0 or more entries depending on how many numeric values the effect has.
  *
  * Some examples with actual spells from the game:
  *
@@ -244,10 +245,26 @@ export function spellEffectsValues(
                   readonly shadow: TSpellEffectValueGetterInput[];
               };
     },
-): ISpellEffectValueWithToLevel[][] {
+):
+    | {
+          kind: typeof ESpellEffectsKind.NORMAL;
+          effects: ISpellEffectValueWithToLevel[][];
+      }
+    | {
+          kind: typeof ESpellEffectsKind.FORM_BASED;
+          light: ISpellEffectValueWithToLevel[][];
+          shadow: ISpellEffectValueWithToLevel[][];
+      } {
     if (spell.effects.kind === ESpellEffectsKind.NORMAL) {
-        return spell.effects.effects.map(valuesForEffect);
+        return {
+            kind: ESpellEffectsKind.NORMAL,
+            effects: spell.effects.effects.map(valuesForEffect),
+        };
     }
 
-    return [...spell.effects.light.map(valuesForEffect), ...spell.effects.shadow.map(valuesForEffect)];
+    return {
+        kind: ESpellEffectsKind.FORM_BASED,
+        light: spell.effects.light.map(valuesForEffect),
+        shadow: spell.effects.shadow.map(valuesForEffect),
+    };
 }
