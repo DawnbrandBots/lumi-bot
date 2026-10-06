@@ -57,6 +57,7 @@ describe("search command messages", () => {
         ["Slow Self Shield EX", "cooldown increasing spell effect"],
         ["Dark Harm Sword Fighter", "damage-over-time effect dealing damage only once"],
         ["Crosswind Lock EX", "conditional rock obstacle summon on shape different than damaging effect's"],
+        ["Black Luna EX", "form dependent spell effects"],
     ])("returns the complete %s message (%s)", async (name) => {
         const reply = vi.fn();
         const followUp = vi.fn();

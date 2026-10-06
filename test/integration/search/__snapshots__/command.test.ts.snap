@@ -79,6 +79,89 @@ Lv |   7   8   9  10  11  12
 }
 `;
 
+exports[`search command messages > returns the complete Black Luna EX message (form dependent spell effects) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "fields": [
+        {
+          "inline": true,
+          "name": "Disciple",
+          "value": "Black Knight",
+        },
+        {
+          "inline": true,
+          "name": "Role",
+          "value": "EX",
+        },
+        {
+          "inline": true,
+          "name": "Uses",
+          "value": "Infinite",
+        },
+        {
+          "inline": true,
+          "name": "Cooldown",
+          "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "name": "",
+          "value": "",
+        },
+        {
+          "inline": true,
+          "name": "Shape",
+          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
+        },
+        {
+          "inline": true,
+          "name": "Effects",
+          "value": "In Light form:
+1. Grants "increases Received Weapon Damage by 50% (permanent)" to targets.
+1. Deals 60 Red damage to targets.
+In Shadow form:
+1. Grants "increases Received Weapon Damage by 20% (3 turns)" to targets.
+1. Deals 45 Red damage to targets.",
+        },
+        {
+          "name": "Values",
+          "value": "\`\`\`
+Lv  |   1   2   3   4   5   6
+────┼────────────────────────
+L1. |  50  52  55  57  60  62
+L2. |  60  66  72  78  84  90
+S1. |  20   .   .   .   .   .
+S2. |  45  49  54  58  63  67
+                             
+Lv  |   7   8   9  10  11  12
+────┼────────────────────────
+L1. |  65  67  70  72  75  80
+L2. |  96 102 108 114 120 132
+S1. |  20   .   .   .   .   .
+S2. |  72  76  81  85  90  99
+\`\`\`",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Black Luna EX, BLEX, Black Knight EX",
+      },
+      "title": "Black Luna EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
 exports[`search command messages > returns the complete Crosswind Grav EX message (limits stat status effect) 1`] = `
 {
   "embeds": [
