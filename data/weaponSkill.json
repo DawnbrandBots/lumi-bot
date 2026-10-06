@@ -30,6 +30,16 @@
     "effect": "WEAPON_DAMAGE_REDUCTION_15"
   },
   {
+    "id": "LETHAL_INSTINCT",
+    "name": "Lethal Instinct",
+    "effect": "MAX_HP_REDUCTION_5_ATK_BOOST_15"
+  },
+  {
+    "id": "PITCH_BLACK_ARMOR",
+    "name": "Pitch-Black Armor",
+    "effect": "WEAPON_DAMAGE_REDUCTION_FROM_RANGE_1_30"
+  },
+  {
     "id": "GUARDIAN_S_SOUL",
     "name": "Guardian's Soul",
     "effect": "WEAPON_DAMAGE_VS_SWORD_30"

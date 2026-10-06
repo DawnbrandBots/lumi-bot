@@ -64,6 +64,14 @@
     "description": "Boost max HP by 5%."
   },
   {
+    "id": "MAX_HP_REDUCTION_5_ATK_BOOST_15",
+    "description": "Reduce max HP by 5% and boost Atk by 15%."
+  },
+  {
+    "id": "WEAPON_DAMAGE_REDUCTION_FROM_RANGE_1_30",
+    "description": "Take 30% less weapon damage from foes with a range of 1."
+  },
+  {
     "id": "ON_WEAPON_KILL_MAGIC_DAMAGE_REDUCTION_40_1T",
     "description": "After defeating a foe with a weapon attack, grant \"take 40% less magic damage\" (1 turn) to unit."
   },

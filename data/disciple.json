@@ -340,5 +340,23 @@
     "weaponType": "BOW",
     "prfWeapon": "KALLA_S_BOW_PLUS",
     "shadowMusic": "BETRAYAL_FORTUNE_S_WEAVE"
+  },
+  {
+    "id": "DIETRICH",
+    "name": "Dietrich",
+    "epithet": "Fair Shadow",
+    "movementType": "INFANTRY",
+    "weaponType": "SWORD",
+    "prfWeapon": "ANSWERER_PLUS",
+    "shadowMusic": "BETRAYAL_FORTUNE_S_WEAVE"
+  },
+  {
+    "id": "BLACK_KNIGHT",
+    "name": "Black Knight",
+    "epithet": "Sword Spirit",
+    "movementType": "ARMORED",
+    "weaponType": "SWORD",
+    "prfWeapon": "ALONDITE_PLUS",
+    "shadowMusic": "BETRAYAL_RADIANT_DAWN"
   }
 ]
