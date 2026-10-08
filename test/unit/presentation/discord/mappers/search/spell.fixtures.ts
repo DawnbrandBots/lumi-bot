@@ -2,7 +2,7 @@
 
 import type { ISpell } from "../../../../../../src/domain/game/models/spell.types.ts";
 import {
-    ESpellDraggingMode,
+    ESpellDraggingModeKind,
     ESpellEffectsKind,
     ESpellRole,
 } from "../../../../../../src/domain/game/models/spell.types.ts";
@@ -42,5 +42,8 @@ export const SPELL = {
         isAoe: false,
     },
     onlyFor: null,
-    draggingMode: ESpellDraggingMode.ANY,
+    draggingMode: {
+        kind: ESpellEffectsKind.NORMAL,
+        draggingMode: ESpellDraggingModeKind.ANY,
+    },
 } satisfies ISpell;

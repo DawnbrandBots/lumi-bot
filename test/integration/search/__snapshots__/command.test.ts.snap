@@ -28,6 +28,11 @@ exports[`search command messages > returns the complete Axe Fighter + Infantry m
         },
         {
           "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
+          "inline": true,
           "name": "Only for",
           "value": "Infantry units",
         },
@@ -99,6 +104,11 @@ exports[`search command messages > returns the complete Black Luna EX message (f
           "inline": true,
           "name": "Cooldown",
           "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
         },
         {
           "name": "",
@@ -179,6 +189,11 @@ exports[`search command messages > returns the complete Crosswind Grav EX messag
           "value": "5 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -247,6 +262,11 @@ exports[`search command messages > returns the complete Crosswind Lock EX messag
           "inline": true,
           "name": "Cooldown",
           "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
         },
         {
           "name": "",
@@ -319,6 +339,11 @@ exports[`search command messages > returns the complete Dark Cross Poison Patch 
           "value": "5 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -384,6 +409,11 @@ exports[`search command messages > returns the complete Dark Crossfire + Tome me
           "inline": true,
           "name": "Cooldown",
           "value": "4 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
         },
         {
           "inline": true,
@@ -459,6 +489,11 @@ exports[`search command messages > returns the complete Dark Harm Sword Fighter 
           "value": "1 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -531,6 +566,11 @@ exports[`search command messages > returns the complete Dark Tetrafire message (
           "value": "5 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -597,6 +637,11 @@ exports[`search command messages > returns the complete Dual Invigorate EX messa
           "inline": true,
           "name": "Cooldown",
           "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
         },
         {
           "name": "",
@@ -669,6 +714,11 @@ exports[`search command messages > returns the complete Elfire message (plain da
           "value": "5 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -734,6 +784,11 @@ exports[`search command messages > returns the complete Heal Warp EX message (wa
           "inline": true,
           "name": "Cooldown",
           "value": "5 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
         },
         {
           "name": "",
@@ -804,6 +859,11 @@ exports[`search command messages > returns the complete Self Cross Shield messag
           "value": "1 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "User tile only",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -871,6 +931,11 @@ exports[`search command messages > returns the complete Self Mend message (singl
           "value": "5 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "User tile only",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -936,6 +1001,11 @@ exports[`search command messages > returns the complete Slow Self Shield EX mess
           "inline": true,
           "name": "Cooldown",
           "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
         },
         {
           "name": "",
@@ -1008,6 +1078,11 @@ exports[`search command messages > returns the complete Tetrathunder Wall EX mes
           "value": "5 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -1078,6 +1153,11 @@ exports[`search command messages > returns the complete Thunder Self Edge EX mes
           "value": "5 seconds",
         },
         {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
+        },
+        {
           "name": "",
           "value": "",
         },
@@ -1146,6 +1226,11 @@ exports[`search command messages > returns the complete Trinity Shield Edge EX m
           "inline": true,
           "name": "Cooldown",
           "value": "1 seconds",
+        },
+        {
+          "inline": true,
+          "name": "Dragging mode",
+          "value": "Any tile",
         },
         {
           "name": "",

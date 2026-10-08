@@ -1,6 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { ISpell } from "../../../../../domain/game/models/spell.types.ts";
 import { ESpellRole } from "../../../../../domain/game/models/spell.types.ts";
+import SpellRules from "../../../../../domain/game/rules/spell.ts";
 import { Disciple } from "./disciple.ts";
 import { MovementType } from "./movementType.ts";
 import { FormBasedSpellEffects, NormalSpellEffects } from "./spellEffects.ts";
@@ -33,6 +34,10 @@ export const SpellSchema = defineEntity({
 export class Spell extends SpellSchema.class implements ISpell {
     get kind() {
         return "spell" as const;
+    }
+
+    get draggingMode(): ISpell["draggingMode"] {
+        return SpellRules.draggingMode(this);
     }
 }
 SpellSchema.setClass(Spell);

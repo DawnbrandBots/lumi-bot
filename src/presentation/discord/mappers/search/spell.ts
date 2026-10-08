@@ -1,7 +1,7 @@
 import { codeBlock, type APIEmbed } from "discord.js";
 import {
     ESpellEffectsKind,
-    type ESpellDraggingMode,
+    type ESpellDraggingModeKind,
     type ESpellRole,
     type ISpell,
     type ISpellShape,
@@ -26,13 +26,28 @@ const tileEmojis: Record<string, string> = {
 export const SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS = {
     ANY: "Any tile",
     SELF: "User tile only",
-} as const satisfies Record<keyof typeof ESpellDraggingMode, string>;
+} as const satisfies Record<keyof typeof ESpellDraggingModeKind, string>;
 
 export const SPELL_ROLE_DESCRIPTION_STRINGS = {
     EX: "EX",
     LIGHT: "Light",
     SHADOW: "Shadow",
 } as const satisfies Record<keyof typeof ESpellRole, string>;
+
+function formatSpellDraggingMode(draggingMode: ISpell["draggingMode"]): string {
+    if (draggingMode.kind === ESpellEffectsKind.NORMAL) {
+        return SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.draggingMode];
+    }
+
+    if (draggingMode.light === draggingMode.shadow) {
+        return SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.light];
+    }
+
+    return [
+        `Light: ${SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.light]}`,
+        `Shadow: ${SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.shadow]}`,
+    ].join("\n");
+}
 
 export function formatSpellShape(shape: Pick<ISpellShape, "tiles">): string {
     return shape.tiles.replaceAll(/(.{5})(?<!$)/g, "$1\n").replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
@@ -124,6 +139,11 @@ export default function mapSpellToMessage(spell: ISpell) {
         {
             name: "Cooldown",
             value: spell.cooldown + " seconds",
+            inline: true,
+        },
+        {
+            name: "Dragging mode",
+            value: formatSpellDraggingMode(spell.draggingMode),
             inline: true,
         },
         ...(onlyFor ? [onlyFor] : []),
