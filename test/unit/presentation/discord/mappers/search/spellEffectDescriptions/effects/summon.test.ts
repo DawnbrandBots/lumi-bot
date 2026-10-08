@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { ESpellEffectKind } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
-import { SINGLE_TILE_SHAPE } from "./utils.ts";
+import { ESpellEffectKind } from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { SINGLE_TILE_SHAPE } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.SUMMON.name, () => {
     test("describes the summoned unit and stats", () => {

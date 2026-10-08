@@ -1,9 +1,12 @@
 import { describe, expect, test } from "vitest";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
-import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
-import { EStatChange } from "../../../../../../../src/domain/game/models/statChange.types.ts";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
-import { CROSS_SHAPE, RECEIVED_WEAPON_DAMAGE_PERCENT_VALUE_UNIT } from "./utils.ts";
+import {
+    ESpellEffectKind,
+    ESpellEffectTarget,
+} from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { EStat } from "../../../../../../../../src/domain/game/models/stat.types.ts";
+import { EStatChange } from "../../../../../../../../src/domain/game/models/statChange.types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { CROSS_SHAPE, RECEIVED_WEAPON_DAMAGE_PERCENT_VALUE_UNIT } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STATUS.name, () => {
     test("describes a self-targeted status over an area", () => {

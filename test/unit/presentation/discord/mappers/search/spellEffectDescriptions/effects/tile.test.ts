@@ -1,7 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
-import { COLORLESS_COLOR, CROSS_SHAPE, FIXED_VALUE_UNIT } from "./utils.ts";
+import {
+    ESpellEffectKind,
+    ESpellEffectTarget,
+} from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { COLORLESS_COLOR, CROSS_SHAPE, FIXED_VALUE_UNIT } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.TILE.name, () => {
     test("describes a repeated effect on shaped tiles", () => {
