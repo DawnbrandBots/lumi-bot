@@ -218,6 +218,17 @@ function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
     return SPELL_EFFECT_VALUE_GETTERS[effect.kind](effect);
 }
 
+type TSpellEffects<EffectsArrayType> =
+    | {
+          readonly kind: typeof ESpellEffectsKind.NORMAL;
+          readonly effects: EffectsArrayType;
+      }
+    | {
+          readonly kind: typeof ESpellEffectsKind.FORM_BASED;
+          readonly light: EffectsArrayType;
+          readonly shadow: EffectsArrayType;
+      };
+
 /**
  * Returns an object with an "effects" array of arrays of ${@link ISpellEffectValueWithToLevel} for each spell effect (or "light" and "shadow" arrays of arrays if the given spell has different effects based on form).
  * Subarrays have 0 or more entries depending on how many numeric values the effect has.
@@ -234,28 +245,8 @@ function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
  * - "Minor Pull" as argument returns an array with one empty subarray since it only has one effect with no numeric value.
  */
 export function spellEffectsValues(
-    spell: Pick<ISpell, "role"> & {
-        readonly effects:
-            | {
-                  readonly kind: typeof ESpellEffectsKind.NORMAL;
-                  readonly effects: TSpellEffectValueGetterInput[];
-              }
-            | {
-                  readonly kind: typeof ESpellEffectsKind.FORM_BASED;
-                  readonly light: TSpellEffectValueGetterInput[];
-                  readonly shadow: TSpellEffectValueGetterInput[];
-              };
-    },
-):
-    | {
-          kind: typeof ESpellEffectsKind.NORMAL;
-          effects: ISpellEffectValueWithToLevel[][];
-      }
-    | {
-          kind: typeof ESpellEffectsKind.FORM_BASED;
-          light: ISpellEffectValueWithToLevel[][];
-          shadow: ISpellEffectValueWithToLevel[][];
-      } {
+    spell: Pick<ISpell, "role"> & { readonly effects: TSpellEffects<TSpellEffectValueGetterInput[]> },
+): TSpellEffects<ISpellEffectValueWithToLevel[][]> {
     if (spell.effects.kind === ESpellEffectsKind.NORMAL) {
         return {
             kind: ESpellEffectsKind.NORMAL,
