@@ -4609,7 +4609,7 @@
       },
       {
         "kind": "MOVEMENT",
-        "direction": "UP",
+        "direction": "DOWN",
         "count": 1,
         "target": "SELF"
       }
