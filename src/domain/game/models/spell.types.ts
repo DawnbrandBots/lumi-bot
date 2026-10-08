@@ -97,5 +97,4 @@ export interface ISpell {
     readonly shape: ISpellShape;
     /** Kind of units that this spell can only be used by. */
     readonly onlyFor?: IMovementType | IWeaponType | null;
-    readonly draggingMode: keyof typeof ESpellDraggingMode;
 }

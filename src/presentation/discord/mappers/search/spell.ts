@@ -126,11 +126,6 @@ export default function mapSpellToMessage(spell: ISpell) {
             value: spell.cooldown + " seconds",
             inline: true,
         },
-        {
-            name: "Dragging mode",
-            value: SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[spell.draggingMode],
-            inline: true,
-        },
         ...(onlyFor ? [onlyFor] : []),
         // Shape and effects are separated because they may
         // take a lot of vertical space compared to other fields.

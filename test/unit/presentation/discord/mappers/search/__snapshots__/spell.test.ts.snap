@@ -91,11 +91,6 @@ exports[`mapSpellToMessage > with a disciple and usage restrictions 1`] = `
         },
         {
           "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "inline": true,
           "name": "Only for",
           "value": "Sword units",
         },
@@ -160,11 +155,6 @@ exports[`mapSpellToMessage > without a disciple 1`] = `
           "inline": true,
           "name": "Cooldown",
           "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
         },
         {
           "name": "",
