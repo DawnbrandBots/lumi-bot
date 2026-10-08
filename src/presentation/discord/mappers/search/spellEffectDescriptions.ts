@@ -369,11 +369,6 @@ function describeNormalSpellEffects(
 ): string {
     let res = "";
 
-    if (spell.countdown) {
-        res += `After ${spell.countdown} seconds`;
-    }
-    const nonEmptyRes = !!res.length;
-
     const statusEffects = effects.filter(isStatusEffect);
     const firstStatusEffect = statusEffects[0];
     // The description intro for status effects ("Grants status to <TARGETS>:") can be long.
@@ -390,27 +385,18 @@ function describeNormalSpellEffects(
     ) {
         // TODO: target guaranteed to exist for IStatusEffect, but type should be updated to reflect that
         const target = describeTarget(firstStatusEffect, spell, inline)!;
-        if (nonEmptyRes) {
-            res += INLINE_DESCRIPTION_SEPARATOR;
-        }
-        const grantsStr = (nonEmptyRes ? "g" : "G") + "rants";
         const descriptions = statusEffects.map((effect) => describeSpellEffect(effect.effect, spell, inline));
         if (inline) {
-            res += `${grantsStr} "${descriptions.map(lowercaseFirstLetter).join(INLINE_DESCRIPTION_SEPARATOR)}" to ${target}.`;
+            res += `Grants "${descriptions.map(lowercaseFirstLetter).join(INLINE_DESCRIPTION_SEPARATOR)}" to ${target}.`;
         } else {
-            res += [
-                `${grantsStr} statuses to ${target}:`,
-                ...descriptions.map((description) => `1. ${description}.`),
-            ].join(REGULAR_DESCRIPTION_SEPARATOR);
+            res += [`Grants statuses to ${target}:`, ...descriptions.map((description) => `1. ${description}.`)].join(
+                REGULAR_DESCRIPTION_SEPARATOR,
+            );
         }
     } else {
-        if (nonEmptyRes) {
-            res += inline ? INLINE_DESCRIPTION_SEPARATOR : ":" + REGULAR_DESCRIPTION_SEPARATOR;
-        }
         const descriptions = effects.map((effect) => describeSpellEffect(effect, spell, inline));
-        const firstDescription = nonEmptyRes ? lowercaseFirstLetter(descriptions[0]!) : descriptions[0]!;
         res += inline
-            ? `${[firstDescription, ...descriptions.slice(1).map(lowercaseFirstLetter)].join(INLINE_DESCRIPTION_SEPARATOR)}.`
+            ? `${[descriptions[0]!, ...descriptions.slice(1).map(lowercaseFirstLetter)].join(INLINE_DESCRIPTION_SEPARATOR)}.`
             : descriptions.map((description) => `1. ${description}.`).join(REGULAR_DESCRIPTION_SEPARATOR);
     }
 
@@ -429,15 +415,20 @@ export function describeSpellEffects(
      */
     inline = false,
 ): string {
+    const countdown = spell.countdown ? `After ${spell.countdown} seconds` : "";
+
     if (spell.effects.kind === ESpellEffectsKind.NORMAL) {
-        const description = describeNormalSpellEffects(spell, spell.effects.effects, inline);
+        const effectDescription = describeNormalSpellEffects(spell, spell.effects.effects, inline);
+        const description = countdown
+            ? inline
+                ? `${countdown}, ${lowercaseFirstLetter(effectDescription)}`
+                : `${countdown}:${REGULAR_DESCRIPTION_SEPARATOR}${effectDescription}`
+            : effectDescription;
         return inline ? description + formatInlineSpellProperties(spell) : description;
     }
 
-    const spellWithoutCountdown = { ...spell, countdown: null };
-    const light = describeNormalSpellEffects(spellWithoutCountdown, spell.effects.light, inline);
-    const shadow = describeNormalSpellEffects(spellWithoutCountdown, spell.effects.shadow, inline);
-    const countdown = spell.countdown ? `After ${spell.countdown} seconds` : "";
+    const light = describeNormalSpellEffects(spell, spell.effects.light, inline);
+    const shadow = describeNormalSpellEffects(spell, spell.effects.shadow, inline);
 
     if (inline) {
         const trimPeriod = (description: string) => description.replace(/\.$/, "");
