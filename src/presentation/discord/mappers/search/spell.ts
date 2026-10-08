@@ -82,7 +82,6 @@ function formatSpellValues({
                       ...formatInnerTableRows({ values: values.light, levelsRow, indexColumnPrefix: "L" }),
                       ...formatInnerTableRows({ values: values.shadow, levelsRow, indexColumnPrefix: "S" }),
                   ];
-        console.log(rows);
         const data = [["Lv", ...levelsRow], ...rows];
         return toAsciiTable({ data, cellPadding: 3 });
     };
