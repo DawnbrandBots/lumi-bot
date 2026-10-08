@@ -5,9 +5,7 @@ import {
     ESpellEffectScalingStrategy,
     ESpellEffectValueUnitKind,
 } from "../../../../../../src/domain/game/models/spellEffectValue.types.ts";
-import {
-    spellEffectsValues
-} from "../../../../../../src/presentation/discord/mappers/search/spellEffectValues.ts";
+import { spellEffectsValues } from "../../../../../../src/presentation/discord/mappers/search/spellEffectValues.ts";
 
 function fixedValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
     return {
@@ -35,135 +33,150 @@ function serializeValues(values: ReturnType<typeof spellEffectsValues>) {
     );
 }
 
-type TNormalSpellEffects = Extract<
-    Parameters<typeof spellEffectsValues>[0]["effects"],
-    { kind: typeof ESpellEffectsKind.NORMAL }
->;
-
-function normalEffects(effects: TNormalSpellEffects["effects"]): TNormalSpellEffects {
-    return { kind: ESpellEffectsKind.NORMAL, effects };
-}
-
 describe(spellEffectsValues.name, () => {
     test.each([
         [
             "damage and heal values",
             {
                 role: ESpellRole.EX,
-                effects: normalEffects([
-                    {
-                        kind: ESpellEffectKind.DAMAGE,
-                        amount: fixedValue(50),
-                    },
-                    {
-                        kind: ESpellEffectKind.HEAL,
-                        amount: fixedValue(30),
-                    },
-                ]),
+                effects: {
+                    kind: ESpellEffectsKind.NORMAL,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.DAMAGE,
+                            amount: fixedValue(50),
+                        },
+                        {
+                            kind: ESpellEffectKind.HEAL,
+                            amount: fixedValue(30),
+                        },
+                    ],
+                },
             },
         ],
         [
             "stat value and nested effectiveness values",
             {
                 role: ESpellRole.EX,
-                effects: normalEffects([
-                    {
-                        kind: ESpellEffectKind.STAT,
-                        amount: percentValue(20),
-                    },
-                    {
-                        kind: ESpellEffectKind.STATUS,
-                        effect: {
+                effects: {
+                    kind: ESpellEffectsKind.NORMAL,
+                    effects: [
+                        {
                             kind: ESpellEffectKind.STAT,
-                            amount: {
-                                ...percentValue(30),
-                                effectiveness: [{ base: 0 }],
+                            amount: percentValue(20),
+                        },
+                        {
+                            kind: ESpellEffectKind.STATUS,
+                            effect: {
+                                kind: ESpellEffectKind.STAT,
+                                amount: {
+                                    ...percentValue(30),
+                                    effectiveness: [{ base: 0 }],
+                                },
                             },
                         },
-                    },
-                ]),
+                    ],
+                },
             },
         ],
         [
             "damage with effectiveness values",
             {
                 role: ESpellRole.EX,
-                effects: normalEffects([
-                    {
-                        kind: ESpellEffectKind.DAMAGE,
-                        amount: {
-                            ...fixedValue(25),
-                            effectiveness: [{ base: 40 }],
+                effects: {
+                    kind: ESpellEffectsKind.NORMAL,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.DAMAGE,
+                            amount: {
+                                ...fixedValue(25),
+                                effectiveness: [{ base: 40 }],
+                            },
                         },
-                    },
-                ]),
+                    ],
+                },
             },
         ],
         [
             "summon values",
             {
                 role: ESpellRole.EX,
-                effects: normalEffects([
-                    {
-                        kind: ESpellEffectKind.SUMMON,
-                        hp: {
-                            base: 70,
+                effects: {
+                    kind: ESpellEffectsKind.NORMAL,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.SUMMON,
+                            hp: {
+                                base: 70,
+                            },
+                            atk: {
+                                base: 45,
+                            },
                         },
-                        atk: {
-                            base: 45,
-                        },
-                    },
-                ]),
+                    ],
+                },
             },
         ],
         [
             "heal value followed by valueless movement",
             {
                 role: ESpellRole.EX,
-                effects: normalEffects([
-                    {
-                        kind: ESpellEffectKind.HEAL,
-                        amount: fixedValue(35),
-                    },
-                    {
-                        kind: ESpellEffectKind.MOVEMENT,
-                    },
-                ]),
+                effects: {
+                    kind: ESpellEffectsKind.NORMAL,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.HEAL,
+                            amount: fixedValue(35),
+                        },
+                        {
+                            kind: ESpellEffectKind.MOVEMENT,
+                        },
+                    ],
+                },
             },
         ],
         [
             "only valueless movement",
             {
                 role: ESpellRole.EX,
-                effects: normalEffects([
-                    {
-                        kind: ESpellEffectKind.MOVEMENT,
-                    },
-                ]),
+                effects: {
+                    kind: ESpellEffectsKind.NORMAL,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.MOVEMENT,
+                        },
+                    ],
+                },
             },
         ],
         [
             "shadow percent damage",
             {
                 role: ESpellRole.SHADOW,
-                effects: normalEffects([
-                    {
-                        kind: ESpellEffectKind.DAMAGE,
-                        amount: percentValue(35, ESpellEffectScalingStrategy.DARK_SLASH),
-                    },
-                ]),
+                effects: {
+                    kind: ESpellEffectsKind.NORMAL,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.DAMAGE,
+                            amount: percentValue(35, ESpellEffectScalingStrategy.DARK_SLASH),
+                        },
+                    ],
+                },
             },
         ],
         [
             "non-scaling value",
             {
                 role: ESpellRole.EX,
-                effects: normalEffects([
-                    {
-                        kind: ESpellEffectKind.DAMAGE,
-                        amount: fixedValue(50, ESpellEffectScalingStrategy.NONE),
-                    },
-                ]),
+                effects: {
+                    kind: ESpellEffectsKind.NORMAL,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.DAMAGE,
+                            amount: fixedValue(50, ESpellEffectScalingStrategy.NONE),
+                        },
+                    ],
+                },
             },
         ],
         [

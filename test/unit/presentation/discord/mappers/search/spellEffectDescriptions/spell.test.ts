@@ -5,10 +5,7 @@ import { ESpellEffectsKind } from "../../../../../../../src/domain/game/models/s
 import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
 import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
 import { EStatChange } from "../../../../../../../src/domain/game/models/statChange.types.ts";
-import {
-    describeSpellEffects,
-    type TSpellEffectDescriptionsInput,
-} from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { describeSpellEffects } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 import {
     ATK_PERCENT_VALUE_UNIT,
     CROSS_SHAPE,
@@ -17,22 +14,16 @@ import {
     SINGLE_TILE_SHAPE,
 } from "./utils.ts";
 
-type TNormalSpellEffects = Extract<TSpellEffectDescriptionsInput["effects"], { kind: typeof ESpellEffectsKind.NORMAL }>;
-
-function normalEffects(effects: TNormalSpellEffects["effects"]): TNormalSpellEffects {
-    return { kind: ESpellEffectsKind.NORMAL, effects };
-}
-
 describe(describeSpellEffects.name, () => {
     test("orders effects and selects regular or inline rendering", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
             uses: null,
             cooldown: 5,
             shape: SINGLE_TILE_SHAPE,
-            effects: normalEffects([
-                { kind: ESpellEffectKind.WARP },
-                { kind: ESpellEffectKind.OBSTACLE, hp: { base: 50 } },
-            ]),
+            effects: {
+                kind: ESpellEffectsKind.NORMAL,
+                effects: [{ kind: ESpellEffectKind.WARP }, { kind: ESpellEffectKind.OBSTACLE, hp: { base: 50 } }],
+            },
         };
 
         expect(describeSpellEffects(spell)).toBe(
@@ -49,7 +40,10 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: SINGLE_TILE_SHAPE,
-            effects: normalEffects([{ kind: ESpellEffectKind.WARP }]),
+            effects: {
+                kind: ESpellEffectsKind.NORMAL,
+                effects: [{ kind: ESpellEffectKind.WARP }],
+            },
         };
 
         expect(describeSpellEffects(spell)).toBe("After 2 seconds:\n1. Moves user to target tile.");
@@ -62,7 +56,10 @@ describe(describeSpellEffects.name, () => {
             cooldown: 3,
             onlyFor: { name: "Infantry" },
             shape: SINGLE_TILE_SHAPE,
-            effects: normalEffects([{ kind: ESpellEffectKind.WARP }]),
+            effects: {
+                kind: ESpellEffectsKind.NORMAL,
+                effects: [{ kind: ESpellEffectKind.WARP }],
+            },
         };
 
         expect(describeSpellEffects(spell)).toBe("1. Moves user to target tile.");
@@ -76,36 +73,39 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: CROSS_SHAPE,
-            effects: normalEffects([
-                {
-                    kind: ESpellEffectKind.STATUS,
-                    target: ESpellEffectTarget.ANY,
-                    effect: {
-                        kind: ESpellEffectKind.STAT,
-                        stat: EStat.HP,
-                        statChange: EStatChange.INCREASE,
-                        amount: {
-                            base: 20,
-                            unit: HP_PERCENT_VALUE_UNIT,
+            effects: {
+                kind: ESpellEffectsKind.NORMAL,
+                effects: [
+                    {
+                        kind: ESpellEffectKind.STATUS,
+                        target: ESpellEffectTarget.ANY,
+                        effect: {
+                            kind: ESpellEffectKind.STAT,
+                            stat: EStat.HP,
+                            statChange: EStatChange.INCREASE,
+                            amount: {
+                                base: 20,
+                                unit: HP_PERCENT_VALUE_UNIT,
+                            },
+                            duration: null,
                         },
-                        duration: null,
                     },
-                },
-                {
-                    kind: ESpellEffectKind.STATUS,
-                    target: ESpellEffectTarget.ANY,
-                    effect: {
-                        kind: ESpellEffectKind.STAT,
-                        stat: EStat.ATK,
-                        statChange: EStatChange.INCREASE,
-                        amount: {
-                            base: 30,
-                            unit: ATK_PERCENT_VALUE_UNIT,
+                    {
+                        kind: ESpellEffectKind.STATUS,
+                        target: ESpellEffectTarget.ANY,
+                        effect: {
+                            kind: ESpellEffectKind.STAT,
+                            stat: EStat.ATK,
+                            statChange: EStatChange.INCREASE,
+                            amount: {
+                                base: 30,
+                                unit: ATK_PERCENT_VALUE_UNIT,
+                            },
+                            duration: null,
                         },
-                        duration: null,
                     },
-                },
-            ]),
+                ],
+            },
         };
 
         expect(describeSpellEffects(spell)).toBe(
@@ -125,30 +125,33 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: SINGLE_TILE_SHAPE,
-            effects: normalEffects([
-                {
-                    kind: ESpellEffectKind.STATUS,
-                    target: ESpellEffectTarget.ANY,
-                    effect: {
-                        kind: ESpellEffectKind.STAT,
-                        stat: EStat.HP,
-                        statChange: EStatChange.INCREASE,
-                        amount: { base: 10, unit: FIXED_VALUE_UNIT },
-                        duration: null,
+            effects: {
+                kind: ESpellEffectsKind.NORMAL,
+                effects: [
+                    {
+                        kind: ESpellEffectKind.STATUS,
+                        target: ESpellEffectTarget.ANY,
+                        effect: {
+                            kind: ESpellEffectKind.STAT,
+                            stat: EStat.HP,
+                            statChange: EStatChange.INCREASE,
+                            amount: { base: 10, unit: FIXED_VALUE_UNIT },
+                            duration: null,
+                        },
                     },
-                },
-                {
-                    kind: ESpellEffectKind.STATUS,
-                    target: ESpellEffectTarget.SELF,
-                    effect: {
-                        kind: ESpellEffectKind.STAT,
-                        stat: EStat.ATK,
-                        statChange: EStatChange.INCREASE,
-                        amount: { base: 5, unit: FIXED_VALUE_UNIT },
-                        duration: null,
+                    {
+                        kind: ESpellEffectKind.STATUS,
+                        target: ESpellEffectTarget.SELF,
+                        effect: {
+                            kind: ESpellEffectKind.STAT,
+                            stat: EStat.ATK,
+                            statChange: EStatChange.INCREASE,
+                            amount: { base: 5, unit: FIXED_VALUE_UNIT },
+                            duration: null,
+                        },
                     },
-                },
-            ]),
+                ],
+            },
         };
 
         expect(describeSpellEffects(spell)).toBe(
@@ -164,31 +167,34 @@ describe(describeSpellEffects.name, () => {
             uses: null,
             cooldown: 5,
             shape: CROSS_SHAPE,
-            effects: normalEffects([
-                {
-                    kind: ESpellEffectKind.STATUS,
-                    target: ESpellEffectTarget.ANY,
-                    shapeOverride: SINGLE_TILE_SHAPE,
-                    effect: {
-                        kind: ESpellEffectKind.STAT,
-                        stat: EStat.HP,
-                        statChange: EStatChange.INCREASE,
-                        amount: { base: 10, unit: FIXED_VALUE_UNIT },
-                        duration: null,
+            effects: {
+                kind: ESpellEffectsKind.NORMAL,
+                effects: [
+                    {
+                        kind: ESpellEffectKind.STATUS,
+                        target: ESpellEffectTarget.ANY,
+                        shapeOverride: SINGLE_TILE_SHAPE,
+                        effect: {
+                            kind: ESpellEffectKind.STAT,
+                            stat: EStat.HP,
+                            statChange: EStatChange.INCREASE,
+                            amount: { base: 10, unit: FIXED_VALUE_UNIT },
+                            duration: null,
+                        },
                     },
-                },
-                {
-                    kind: ESpellEffectKind.STATUS,
-                    target: ESpellEffectTarget.ANY,
-                    effect: {
-                        kind: ESpellEffectKind.STAT,
-                        stat: EStat.ATK,
-                        statChange: EStatChange.INCREASE,
-                        amount: { base: 5, unit: FIXED_VALUE_UNIT },
-                        duration: null,
+                    {
+                        kind: ESpellEffectKind.STATUS,
+                        target: ESpellEffectTarget.ANY,
+                        effect: {
+                            kind: ESpellEffectKind.STAT,
+                            stat: EStat.ATK,
+                            statChange: EStatChange.INCREASE,
+                            amount: { base: 5, unit: FIXED_VALUE_UNIT },
+                            duration: null,
+                        },
                     },
-                },
-            ]),
+                ],
+            },
         };
 
         expect(describeSpellEffects(spell)).toBe(
