@@ -1,10 +1,7 @@
+import type { TSpellEffectValueUnit } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
 import { ESpellEffectValueUnitKind } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
 import { EStat } from "../../../../src/domain/game/models/stat.types.ts";
 import type { TSpellEffectDescriptionsInput } from "../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
-
-type TRootSpellEffect = TSpellEffectDescriptionsInput["effects"][number];
-type TDamageEffect = Extract<TRootSpellEffect, { kind: "DAMAGE" }>;
-type TSpellEffectValueUnit = TDamageEffect["amount"]["unit"];
 
 export const SINGLE_TILE_SHAPE = {
     id: "1_TILE",
@@ -18,9 +15,10 @@ export const CROSS_SHAPE = {
     isAoe: true,
 } satisfies TSpellEffectDescriptionsInput["shape"];
 
-export const RED_COLOR = { name: "Red" } satisfies TDamageEffect["color"];
-export const BLUE_COLOR = { name: "Blue" } satisfies TDamageEffect["color"];
-export const COLORLESS_COLOR = { name: "Colorless" } satisfies TDamageEffect["color"];
+type TColor = { name: string };
+export const RED_COLOR = { name: "Red" } satisfies TColor;
+export const BLUE_COLOR = { name: "Blue" } satisfies TColor;
+export const COLORLESS_COLOR = { name: "Colorless" } satisfies TColor;
 
 export const FIXED_VALUE_UNIT = {
     kind: ESpellEffectValueUnitKind.FIXED,

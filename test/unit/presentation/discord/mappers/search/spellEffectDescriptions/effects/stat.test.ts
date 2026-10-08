@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { ESpellEffectKind } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
-import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
-import { EStatChange } from "../../../../../../../src/domain/game/models/statChange.types.ts";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
-import { ATK_PERCENT_VALUE_UNIT, FIXED_VALUE_UNIT, SINGLE_TILE_SHAPE } from "./utils.ts";
+import { ESpellEffectKind } from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { EStat } from "../../../../../../../../src/domain/game/models/stat.types.ts";
+import { EStatChange } from "../../../../../../../../src/domain/game/models/statChange.types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { ATK_PERCENT_VALUE_UNIT, FIXED_VALUE_UNIT, SINGLE_TILE_SHAPE } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.STAT.name, () => {
     test("describes a percentage of the affected stat and a duration", () => {

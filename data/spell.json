@@ -4529,5 +4529,264 @@
       }
     ],
     "onlyFor": ["weaponType", "BOW"]
+  },
+  {
+    "id": "MOVING_SHADOW_EX",
+    "name": "Moving Shadow EX",
+    "disciple": "DIETRICH",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 7,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "INCREASE",
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "SELF"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "FIRE_WARP",
+    "name": "Fire Warp",
+    "disciple": "DIETRICH",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 7,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "WARP",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_FIRE_SELF_PULL",
+    "name": "Dark Fire Self Pull",
+    "disciple": "DIETRICH",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 1,
+        "target": "SELF"
+      }
+    ]
+  },
+  {
+    "id": "DARK_MAGE_ARMOR_PLUS_INFANTRY",
+    "name": "Dark Mage Armor + Infantry",
+    "disciple": "DIETRICH",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "ARMORED",
+        "weaponType": "TOME",
+        "hp": {
+          "base": 180
+        },
+        "atk": {
+          "base": 50
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "INFANTRY"]
+  },
+  {
+    "id": "BLACK_LUNA_EX",
+    "name": "Black Luna EX",
+    "disciple": "BLACK_KNIGHT",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": {
+      "light": [
+        {
+          "kind": "STATUS",
+          "effect": {
+            "kind": "STAT",
+            "statChange": "INCREASE",
+            "amount": {
+              "base": 50,
+              "unit": {
+                "kind": "PERCENT",
+                "stat": "RECEIVED_WEAPON_DAMAGE"
+              }
+            },
+            "stat": "RECEIVED_WEAPON_DAMAGE"
+          },
+          "target": "ANY"
+        },
+        {
+          "kind": "DAMAGE",
+          "amount": {
+            "base": 60,
+            "unit": {
+              "kind": "FIXED"
+            }
+          },
+          "color": "RED",
+          "target": "ANY"
+        }
+      ],
+      "shadow": [
+        {
+          "kind": "STATUS",
+          "effect": {
+            "kind": "STAT",
+            "statChange": "INCREASE",
+            "duration": 3,
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "PERCENT",
+                "stat": "RECEIVED_WEAPON_DAMAGE"
+              },
+              "scalingStrategyOverride": "NONE"
+            },
+            "stat": "RECEIVED_WEAPON_DAMAGE"
+          },
+          "target": "ANY"
+        },
+        {
+          "kind": "DAMAGE",
+          "amount": {
+            "base": 45,
+            "unit": {
+              "kind": "FIXED"
+            }
+          },
+          "color": "RED",
+          "target": "ANY"
+        }
+      ]
+    }
+  },
+  {
+    "id": "RAPID_FIRE_STRIKE",
+    "name": "Rapid Fire Strike",
+    "disciple": "BLACK_KNIGHT",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "MOVEMENT",
+        "direction": "DOWN",
+        "count": 2,
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_SELF_HEAL_PLUS_ARMORED",
+    "name": "Dark Self Heal + Armored",
+    "disciple": "BLACK_KNIGHT",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "HEAL",
+        "amount": {
+          "base": 180,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": ["movementType", "ARMORED"]
+  },
+  {
+    "id": "DARK_SELF_WARD_PLUS_ARMORED",
+    "name": "Dark Self Ward + Armored",
+    "disciple": "BLACK_KNIGHT",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "duration": 3,
+          "amount": {
+            "base": 30,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "RECEIVED_SPELL_DAMAGE"
+            }
+          },
+          "stat": "RECEIVED_SPELL_DAMAGE"
+        },
+        "target": "SELF"
+      }
+    ],
+    "onlyFor": ["movementType", "ARMORED"]
   }
 ]

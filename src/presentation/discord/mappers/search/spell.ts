@@ -1,9 +1,10 @@
 import { codeBlock, type APIEmbed } from "discord.js";
-import type {
-    ESpellDraggingMode,
-    ESpellRole,
-    ISpell,
-    ISpellShape,
+import {
+    ESpellEffectsKind,
+    type ESpellDraggingModeKind,
+    type ESpellRole,
+    type ISpell,
+    type ISpellShape,
 } from "../../../../domain/game/models/spell.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
@@ -25,7 +26,7 @@ const tileEmojis: Record<string, string> = {
 export const SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS = {
     ANY: "Any tile",
     SELF: "User tile only",
-} as const satisfies Record<keyof typeof ESpellDraggingMode, string>;
+} as const satisfies Record<keyof typeof ESpellDraggingModeKind, string>;
 
 export const SPELL_ROLE_DESCRIPTION_STRINGS = {
     EX: "EX",
@@ -33,19 +34,54 @@ export const SPELL_ROLE_DESCRIPTION_STRINGS = {
     SHADOW: "Shadow",
 } as const satisfies Record<keyof typeof ESpellRole, string>;
 
+function formatSpellDraggingMode(draggingMode: ISpell["draggingMode"]): string {
+    if (draggingMode.kind === ESpellEffectsKind.NORMAL) {
+        return SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.draggingMode];
+    }
+
+    if (draggingMode.light === draggingMode.shadow) {
+        return SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.light];
+    }
+
+    return [
+        `Light: ${SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.light]}`,
+        `Shadow: ${SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.shadow]}`,
+    ].join("\n");
+}
+
 export function formatSpellShape(shape: Pick<ISpellShape, "tiles">): string {
     return shape.tiles.replaceAll(/(.{5})(?<!$)/g, "$1\n").replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
 }
 
-function formatSpellValues({ spell, values }: { spell: ISpell; values: ISpellEffectValueWithToLevel[][] }): string {
+function formatInnerTableRows(arg: {
+    values: ISpellEffectValueWithToLevel[][];
+    levelsRow: number[];
+    indexColumnPrefix: string;
+}) {
+    return arg.values.flatMap((values, index) => {
+        return values.map((value, valueIndex) => [
+            valueIndex === 0 ? `${arg.indexColumnPrefix}${index + 1}.` : "",
+            ...arg.levelsRow.map((level, index) => (!value.scalesWithLevel && index > 0 ? "." : value.toLevel(level))),
+        ]);
+    });
+}
+
+function formatSpellValues({
+    spell,
+    values,
+}: {
+    spell: ISpell;
+    values: ReturnType<typeof spellEffectsValues>;
+}): string {
     const innerTable = (rangeArg: { start: number; end: number }) => {
         const levelsRow = Array.from(range(rangeArg));
-        const rows = values.flatMap((values, index) => {
-            return values.map((value, valueIndex) => [
-                valueIndex === 0 ? `${index + 1}.` : "",
-                ...levelsRow.map((level, index) => (!value.scalesWithLevel && index > 0 ? "." : value.toLevel(level))),
-            ]);
-        });
+        const rows =
+            values.kind === ESpellEffectsKind.NORMAL
+                ? formatInnerTableRows({ values: values.effects, levelsRow, indexColumnPrefix: "" })
+                : [
+                      ...formatInnerTableRows({ values: values.light, levelsRow, indexColumnPrefix: "L" }),
+                      ...formatInnerTableRows({ values: values.shadow, levelsRow, indexColumnPrefix: "S" }),
+                  ];
         const data = [["Lv", ...levelsRow], ...rows];
         return toAsciiTable({ data, cellPadding: 3 });
     };
@@ -70,7 +106,11 @@ export default function mapSpellToMessage(spell: ISpell) {
     const shapeStr = formatSpellShape(spell.shape);
 
     const values = spellEffectsValues(spell);
-    const valuesStr = values.some((valuesSubArray) => valuesSubArray.length) && formatSpellValues({ spell, values });
+    const valuesStr =
+        (values.kind === ESpellEffectsKind.FORM_BASED
+            ? values.light.some((valuesSubArray) => valuesSubArray.length) ||
+              values.shadow.some((valuesSubArray) => valuesSubArray.length)
+            : values.effects.some((valuesSubArray) => valuesSubArray.length)) && formatSpellValues({ spell, values });
     const effectsStr = describeSpellEffects(spell);
 
     const onlyFor = spell.onlyFor && {
@@ -102,7 +142,7 @@ export default function mapSpellToMessage(spell: ISpell) {
         },
         {
             name: "Dragging mode",
-            value: SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[spell.draggingMode],
+            value: formatSpellDraggingMode(spell.draggingMode),
             inline: true,
         },
         ...(onlyFor ? [onlyFor] : []),

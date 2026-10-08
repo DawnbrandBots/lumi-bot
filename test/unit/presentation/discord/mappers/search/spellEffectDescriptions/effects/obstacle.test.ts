@@ -2,9 +2,9 @@ import { describe, expect, test } from "vitest";
 import {
     ESpellEffectKind,
     ESpellEffectTileType,
-} from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
-import { CROSS_SHAPE, SINGLE_TILE_SHAPE } from "./utils.ts";
+} from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { CROSS_SHAPE, SINGLE_TILE_SHAPE } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.OBSTACLE.name, () => {
     test("describes a single summoned obstacle's HP", () => {

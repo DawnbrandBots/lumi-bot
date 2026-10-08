@@ -1,8 +1,11 @@
 import { describe, expect, test } from "vitest";
-import { EDirection } from "../../../../../../../src/domain/game/models/direction.types.ts";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
-import { CROSS_SHAPE } from "./utils.ts";
+import { EDirection } from "../../../../../../../../src/domain/game/models/direction.types.ts";
+import {
+    ESpellEffectKind,
+    ESpellEffectTarget,
+} from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { CROSS_SHAPE } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.MOVEMENT.name, () => {
     test.each([

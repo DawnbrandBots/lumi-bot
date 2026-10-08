@@ -4,6 +4,24 @@ import type { IMovementType } from "./movement.types.ts";
 import type { TRootSpellEffect } from "./spellEffect.types.ts";
 import type { IWeaponType } from "./weaponType.types.ts";
 
+export const ESpellEffectsKind = {
+    NORMAL: "NORMAL",
+    FORM_BASED: "FORM_BASED",
+} as const;
+
+export interface INormalSpellEffects {
+    readonly kind: typeof ESpellEffectsKind.NORMAL;
+    readonly effects: TRootSpellEffect[];
+}
+
+export interface IFormBasedSpellEffects {
+    readonly kind: typeof ESpellEffectsKind.FORM_BASED;
+    readonly light: TRootSpellEffect[];
+    readonly shadow: TRootSpellEffect[];
+}
+
+export type TSpellEffects = INormalSpellEffects | IFormBasedSpellEffects;
+
 export const ESpellRole = {
     /** Spell usable by one disciple only, no matter the side. */
     EX: "EX",
@@ -34,18 +52,32 @@ export interface ISpellShape {
     readonly isAoe: boolean;
 }
 
-export const ESpellDraggingMode = {
+export const ESpellDraggingModeKind = {
     /** Spell targets tile on which it was dragged. */
     ANY: "ANY",
     /** Spell targets user no matter which tile it was dragged on. */
     SELF: "SELF",
 } as const;
+export type TSpellDraggingModeKind = (typeof ESpellDraggingModeKind)[keyof typeof ESpellDraggingModeKind];
 
 /** Determines which units are targeted by a spell depending on where it was dragged on the grid. */
 export interface ISpellDraggingMode {
-    readonly kind: keyof typeof ESpellDraggingMode;
+    readonly kind: keyof typeof ESpellDraggingModeKind;
     readonly asString: string;
 }
+
+export interface INormalSpellDraggingMode {
+    readonly kind: typeof ESpellEffectsKind.NORMAL;
+    readonly draggingMode: TSpellDraggingModeKind;
+}
+
+export interface IFormBasedSpellDraggingMode {
+    readonly kind: typeof ESpellEffectsKind.FORM_BASED;
+    readonly light: TSpellDraggingModeKind;
+    readonly shadow: TSpellDraggingModeKind;
+}
+
+export type TSpellDraggingMode = INormalSpellDraggingMode | IFormBasedSpellDraggingMode;
 
 /** Referred to as "magic skill" in Fire Emblem Shadows. */
 export interface ISpell {
@@ -75,9 +107,9 @@ export interface ISpell {
     /** Seconds the player must wait to use another spell after using this one. */
     readonly cooldown: number;
     /** Effects created by the spell when dragged on the grid, in order of activation. */
-    readonly effects: TRootSpellEffect[];
+    readonly effects: TSpellEffects;
     readonly shape: ISpellShape;
     /** Kind of units that this spell can only be used by. */
     readonly onlyFor?: IMovementType | IWeaponType | null;
-    readonly draggingMode: keyof typeof ESpellDraggingMode;
+    readonly draggingMode: TSpellDraggingMode;
 }

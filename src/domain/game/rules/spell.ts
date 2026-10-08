@@ -1,19 +1,34 @@
-import type { PickDeep } from "type-fest";
-import type { ISpell } from "../models/spell.types.ts";
-import { ESpellDraggingMode } from "../models/spell.types.ts";
+import type { ISpell, TSpellDraggingModeKind } from "../models/spell.types.ts";
+import { ESpellDraggingModeKind, ESpellEffectsKind } from "../models/spell.types.ts";
+import type { TRootSpellEffect, TSpellEffectTargetKind } from "../models/spellEffect.types.ts";
 import { ESpellEffectTarget } from "../models/spellEffect.types.ts";
 
-export function draggingModeKind(spellData: PickDeep<ISpell, `effects.${number}.target`>): ISpell["draggingMode"] {
-    // TODO: target being nullable is due to some spell effects being wrongly typed:
-    // damage and healing effects can be nested, in which case they don't have a target,
-    // but they always have a target at the root as effects at the rool level of Spell.effects
-    // This needs to be fixed eventually!!
-    return spellData.effects.every((effect) => effect.target === ESpellEffectTarget.SELF)
-        ? ESpellDraggingMode.SELF
-        : ESpellDraggingMode.ANY;
+export function draggingModeKind(targets: readonly TSpellEffectTargetKind[]): TSpellDraggingModeKind {
+    return targets.every((target) => target === ESpellEffectTarget.SELF)
+        ? ESpellDraggingModeKind.SELF
+        : ESpellDraggingModeKind.ANY;
+}
+
+export function draggingMode(spell: Pick<ISpell, "effects">): ISpell["draggingMode"] {
+    const mapEffects = (effects: readonly Pick<TRootSpellEffect, "target">[]) =>
+        draggingModeKind(effects.map((effect) => effect.target!));
+
+    if (spell.effects.kind === ESpellEffectsKind.NORMAL) {
+        return {
+            kind: ESpellEffectsKind.NORMAL,
+            draggingMode: mapEffects(spell.effects.effects),
+        };
+    }
+
+    return {
+        kind: ESpellEffectsKind.FORM_BASED,
+        light: mapEffects(spell.effects.light),
+        shadow: mapEffects(spell.effects.shadow),
+    };
 }
 
 const Spell = {
+    draggingMode,
     draggingModeKind,
 };
 

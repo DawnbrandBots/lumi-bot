@@ -2,7 +2,8 @@ import { ESpellEffectValueUnitKind } from "../../../../../../../src/domain/game/
 import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
 import type { TSpellEffectDescriptionsInput } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 
-type TRootSpellEffect = TSpellEffectDescriptionsInput["effects"][number];
+type TNormalSpellEffects = Extract<TSpellEffectDescriptionsInput["effects"], { kind: "NORMAL" }>;
+type TRootSpellEffect = TNormalSpellEffects["effects"][number];
 type TDamageEffect = Extract<TRootSpellEffect, { kind: "DAMAGE" }>;
 type TSpellEffectValueUnit = TDamageEffect["amount"]["unit"];
 

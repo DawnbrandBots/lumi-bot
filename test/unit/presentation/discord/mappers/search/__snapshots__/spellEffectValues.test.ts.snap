@@ -32,6 +32,23 @@ exports[`spellEffectsValues > damage with effectiveness values 1`] = `
 ]
 `;
 
+exports[`spellEffectsValues > form-based values 1`] = `
+[
+  [
+    {
+      "base": 60,
+      "className": "Percent10ScaleValue",
+    },
+  ],
+  [
+    {
+      "base": 45,
+      "className": "Percent10ScaleValue",
+    },
+  ],
+]
+`;
+
 exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
 [
   [

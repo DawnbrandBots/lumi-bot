@@ -15,6 +15,7 @@ export const ESpellEffectTarget = {
     /** Effect targets targets and spell user's tiles. */
     DUAL: "DUAL",
 } as const;
+export type TSpellEffectTargetKind = (typeof ESpellEffectTarget)[keyof typeof ESpellEffectTarget];
 
 /** Which tiles are targeted by a spell effect. */
 export interface ISpellEffectTarget {

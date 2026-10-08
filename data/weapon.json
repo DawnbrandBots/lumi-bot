@@ -60,6 +60,26 @@
     "uniqueSkill": "HEIR_OF_FLAME"
   },
   {
+    "id": "ANSWERER_PLUS",
+    "name": "Answerer +",
+    "weaponType": "SWORD",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "LETHAL_INSTINCT"
+  },
+  {
+    "id": "ALONDITE_PLUS",
+    "name": "Alondite +",
+    "weaponType": "SWORD",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "PITCH_BLACK_ARMOR"
+  },
+  {
     "id": "SHIELD_LANCE_PLUS",
     "name": "Shield Lance +",
     "weaponType": "LANCE",
@@ -450,6 +470,26 @@
     "uniqueSkill": "BATTLE_FERVOR"
   },
   {
+    "id": "ANSWERER",
+    "name": "Answerer",
+    "weaponType": "SWORD",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "LETHAL_INSTINCT"
+  },
+  {
+    "id": "ALONDITE",
+    "name": "Alondite",
+    "weaponType": "SWORD",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "PITCH_BLACK_ARMOR"
+  },
+  {
     "id": "SHIELD_LANCE",
     "name": "Shield Lance",
     "weaponType": "LANCE",
@@ -498,6 +538,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "PRIDEFUL_SOUL"
+  },
+  {
+    "id": "RESOLUTE_LANCE",
+    "name": "Resolute Lance",
+    "weaponType": "LANCE",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
   },
   {
     "id": "BULL_AXE",
@@ -638,6 +688,15 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "BATTLE_FERVOR"
+  },
+  {
+    "id": "MOONFLARE_TOME",
+    "name": "Moonflare Tome",
+    "weaponType": "TOME",
+    "level": 7,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3
   },
   {
     "id": "PANTHER_STAFF",
@@ -838,6 +897,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "SHINING_EYE"
+  },
+  {
+    "id": "1_YEAR_CAKE_TOME",
+    "name": "1-Year Cake Tome",
+    "weaponType": "TOME",
+    "level": 6,
+    "hp": 5,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "FOX_S_TRICKERY"
   },
   {
     "id": "SILVER_SWORD",
@@ -1202,6 +1271,15 @@
     "id": "ICE_CREAM_AXE",
     "name": "Ice Cream Axe",
     "weaponType": "AXE",
+    "level": 4,
+    "hp": 5,
+    "atk": 20,
+    "freeSkillSlots": 3
+  },
+  {
+    "id": "BOUQUET_SWORD",
+    "name": "Bouquet Sword",
+    "weaponType": "SWORD",
     "level": 4,
     "hp": 5,
     "atk": 20,

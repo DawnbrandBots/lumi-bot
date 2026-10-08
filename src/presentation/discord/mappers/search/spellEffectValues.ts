@@ -1,6 +1,7 @@
 import type { PickDeep } from "type-fest";
 import { SPELL_MAXIMUM_LEVEL } from "../../../../domain/game/constants.ts";
 import type { ISpell } from "../../../../domain/game/models/spell.types.ts";
+import { ESpellEffectsKind } from "../../../../domain/game/models/spell.types.ts";
 import type { TSpellEffectKindToEffectMap } from "../../../../domain/game/models/spellEffect.types.ts";
 import type {
     ISpellEffectValue,
@@ -110,18 +111,19 @@ export class MinionAtkValue extends Value implements ISpellEffectValueWithToLeve
         return { kind: "FIXED" } as const;
     }
 
-    // Minions' Atk grows by 20% for every level until 9, then 10% until level 11, then finally 20% for level 12.
     public toLevel(level: number) {
-        return level < 2
-            ? this.base
-            : Math.floor(this.base + (this.base * MinionAtkValue.LEVEL_PERCENTS[level - 2]!) / 100);
+        return Math.floor(this.base + (this.base * MinionAtkValue.LEVEL_PERCENTS[level - 1]!) / 100);
     }
 
     public get scalesWithLevel() {
         return true;
     }
 
-    private static LEVEL_PERCENTS = [20, 40, 60, 80, 100, 120, 140, 160, 170, 180, 200] as const;
+    /**
+     * Percentage increase for each level of the minion's attack.
+     * Notice that the percentage only increases by 10 for levels 10 and 11 instead of 20 like other levels.
+     */
+    private static LEVEL_PERCENTS = [0, 20, 40, 60, 80, 100, 120, 140, 160, 170, 180, 200] as const;
 }
 
 /** Dark Slash-like spells effect value increases by exactly 5 per level. */
@@ -216,8 +218,20 @@ function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
     return SPELL_EFFECT_VALUE_GETTERS[effect.kind](effect);
 }
 
+type TSpellEffects<EffectsArrayType> =
+    | {
+          readonly kind: typeof ESpellEffectsKind.NORMAL;
+          readonly effects: EffectsArrayType;
+      }
+    | {
+          readonly kind: typeof ESpellEffectsKind.FORM_BASED;
+          readonly light: EffectsArrayType;
+          readonly shadow: EffectsArrayType;
+      };
+
 /**
- * Returns an array of arrays of ${@link ISpellEffectValueWithToLevel} for each spell effect. Subarrays have 0 or more entries depending on how many numeric values the effect has.
+ * Returns an object with an "effects" array of arrays of ${@link ISpellEffectValueWithToLevel} for each spell effect (or "light" and "shadow" arrays of arrays if the given spell has different effects based on form).
+ * Subarrays have 0 or more entries depending on how many numeric values the effect has.
  *
  * Some examples with actual spells from the game:
  *
@@ -231,9 +245,18 @@ function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
  * - "Minor Pull" as argument returns an array with one empty subarray since it only has one effect with no numeric value.
  */
 export function spellEffectsValues(
-    spell: Pick<ISpell, "role"> & {
-        readonly effects: TSpellEffectValueGetterInput[];
-    },
-): ISpellEffectValueWithToLevel[][] {
-    return spell.effects.map(valuesForEffect);
+    spell: Pick<ISpell, "role"> & { readonly effects: TSpellEffects<TSpellEffectValueGetterInput[]> },
+): TSpellEffects<ISpellEffectValueWithToLevel[][]> {
+    if (spell.effects.kind === ESpellEffectsKind.NORMAL) {
+        return {
+            kind: ESpellEffectsKind.NORMAL,
+            effects: spell.effects.effects.map(valuesForEffect),
+        };
+    }
+
+    return {
+        kind: ESpellEffectsKind.FORM_BASED,
+        light: spell.effects.light.map(valuesForEffect),
+        shadow: spell.effects.shadow.map(valuesForEffect),
+    };
 }

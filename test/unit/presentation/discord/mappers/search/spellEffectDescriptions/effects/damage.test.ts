@@ -1,7 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
-import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
-import { ATK_PERCENT_VALUE_UNIT, BLUE_COLOR, FIXED_VALUE_UNIT, RED_COLOR, SINGLE_TILE_SHAPE } from "./utils.ts";
+import {
+    ESpellEffectKind,
+    ESpellEffectTarget,
+} from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
+import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { ATK_PERCENT_VALUE_UNIT, BLUE_COLOR, FIXED_VALUE_UNIT, RED_COLOR, SINGLE_TILE_SHAPE } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE.name, () => {
     test("describes fixed damage, effectiveness and its target", () => {

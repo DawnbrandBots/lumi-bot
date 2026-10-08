@@ -135,6 +135,14 @@
     "id": "BETRAYAL_PATH_OF_RADIANCE_RESULTS_SCREEN",
     "name": "Betrayal – Path of Radiance (Results screen)"
   },
+  {
+    "id": "BETRAYAL_RADIANT_DAWN",
+    "name": "Betrayal – Radiant Dawn"
+  },
+  {
+    "id": "BETRAYAL_RADIANT_DAWN_RESULTS_SCREEN",
+    "name": "Betrayal – Radiant Dawn (Results screen)"
+  },
   { "id": "BETRAYAL_FATES", "url": "https://www.youtube.com/watch?v=I4g29E9Oero&t=2481s", "name": "Betrayal – Fates" },
   {
     "id": "BETRAYAL_FATES_RESULTS_SCREEN",
