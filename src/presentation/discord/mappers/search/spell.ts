@@ -34,12 +34,11 @@ function formatSpellDraggingMode(draggingMode: ISpell["draggingMode"]): string |
 function formatInnerTableRows(arg: {
     values: ISpellEffectValueWithToLevel[][];
     levelsRow: number[];
-    indexColumnPrefix: string;
-    indexColumnSuffix: string;
+    indexFormat: (index: number) => string;
 }) {
     return arg.values.flatMap((values, index) => {
         return values.map((value, valueIndex) => [
-            valueIndex === 0 ? `${arg.indexColumnPrefix}${index + 1}${arg.indexColumnSuffix}` : "",
+            valueIndex === 0 ? arg.indexFormat(index + 1) : "",
             ...arg.levelsRow.map((level, index) => (!value.scalesWithLevel && index > 0 ? "." : value.toLevel(level))),
         ]);
     });
@@ -59,21 +58,18 @@ function formatSpellValues({
                 ? formatInnerTableRows({
                       values: values.effects,
                       levelsRow,
-                      indexColumnPrefix: "",
-                      indexColumnSuffix: ".",
+                      indexFormat: (index) => `${index}.`,
                   })
                 : [
                       ...formatInnerTableRows({
                           values: values.light,
                           levelsRow,
-                          indexColumnPrefix: "L",
-                          indexColumnSuffix: "",
+                          indexFormat: (index) => `L${index}`,
                       }),
                       ...formatInnerTableRows({
                           values: values.shadow,
                           levelsRow,
-                          indexColumnPrefix: "S",
-                          indexColumnSuffix: "",
+                          indexFormat: (index) => `S${index}`,
                       }),
                   ];
         const data = [["", ...levelsRow], ...rows];
