@@ -9,13 +9,7 @@ exports[`mapMusicToMessage > with a URL and linked disciple 1`] = `
   ],
   "reply": {
     "embed": {
-      "description": undefined,
-      "fields": [
-        {
-          "name": "Shadow music for",
-          "value": "Kurt",
-        },
-      ],
+      "description": "Music that plays in Moon Room for Shadow Kurt.",
       "title": "Shadow Theme",
     },
   },
@@ -27,13 +21,8 @@ exports[`mapMusicToMessage > without a URL 1`] = `
   "followUps": [],
   "reply": {
     "embed": {
-      "description": "-# No known source media for this song :(",
-      "fields": [
-        {
-          "name": "Shadow music for",
-          "value": "Kurt",
-        },
-      ],
+      "description": "-# No known source media for this song :(
+Music that plays in Moon Room for Shadow Kurt.",
       "title": "Shadow Theme",
     },
   },
@@ -49,8 +38,7 @@ exports[`mapMusicToMessage > without linked disciples 1`] = `
   ],
   "reply": {
     "embed": {
-      "description": undefined,
-      "fields": [],
+      "description": "",
       "title": "Shadow Theme",
     },
   },

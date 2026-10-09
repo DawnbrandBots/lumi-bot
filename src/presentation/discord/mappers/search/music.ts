@@ -1,39 +1,37 @@
 import { subtext } from "discord.js";
 import type { IDisciple } from "../../../../domain/game/models/disciple.types.ts";
 import type { IMusic } from "../../../../domain/game/models/music.types.ts";
-import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "./constants.ts";
 
-function formatShadowMusicFor(shadowMusicFor: Iterable<IDisciple> | null | undefined, name: string) {
+function formatShadowMusicFor(shadowMusicFor: Iterable<IDisciple> | null | undefined, intro: string) {
     const shadowMusicForArray = shadowMusicFor && Array.from(shadowMusicFor);
 
     return shadowMusicForArray && shadowMusicForArray.length
-        ? {
-              name,
-              value: Array.from(shadowMusicFor)
-                  .map((disciple) => disciple.name)
-                  .join(", "),
-          }
+        ? `${intro} ${Array.from(shadowMusicFor)
+              .map((disciple) => disciple.name)
+              .join(", ")}.`
         : null;
 }
 
 export default function mapMusicToMessage(music: IMusic) {
-    const shadowMusicFor = formatShadowMusicFor(music.shadowMusicFor, "Shadow music for");
+    const shadowMusicFor = formatShadowMusicFor(music.shadowMusicFor, "Music that plays in Moon Room for Shadow");
     const shadowResultsScreenMusicFor = formatShadowMusicFor(
         music.shadowResultsScreenMusicFor,
-        "Shadow results screen music for",
+        "Music that plays on the battle results screen for Shadow",
     );
 
-    const fields = [
-        ...(shadowMusicFor ? [shadowMusicFor] : []),
-        ...(shadowResultsScreenMusicFor ? [shadowResultsScreenMusicFor] : []),
-    ];
+    const description = [
+        music.url ? undefined : subtext("No known source media for this song :("),
+        shadowMusicFor,
+        shadowResultsScreenMusicFor,
+    ]
+        .filter((s) => s != null)
+        .join("\n");
 
     return {
         reply: {
             embed: {
                 title: music.name,
-                description: music.url ? undefined : SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA,
-                fields,
+                description: description,
             },
         },
         followUps: music.url ? [{ content: subtext(music.url) }] : [],

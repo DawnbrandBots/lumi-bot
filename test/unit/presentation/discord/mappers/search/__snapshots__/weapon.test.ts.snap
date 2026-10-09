@@ -4,34 +4,13 @@ exports[`mapWeaponToMessage > with an exclusive disciple 1`] = `
 {
   "reply": {
     "embed": {
+      "description": "Level 6 Sword, exclusive to Kurt",
       "fields": [
         {
-          "inline": true,
-          "name": "Level",
-          "value": "6",
-        },
-        {
-          "inline": true,
-          "name": "Weapon Type",
-          "value": "Sword",
-        },
-        {
-          "inline": true,
-          "name": "Free skill slots count",
-          "value": "2",
-        },
-        {
-          "inline": true,
-          "name": "Exclusive to",
-          "value": "Kurt",
-        },
-        {
-          "name": "Weapon Type skill",
-          "value": "Armor Bane 1: Deals more damage to Armored units.",
-        },
-        {
-          "name": "Unique skill",
-          "value": "Royal Focus: Increases damage dealt by this weapon.",
+          "name": "Skills",
+          "value": "- **Armor Bane 1**: Deals more damage to Armored units.
+- **Royal Focus**: Increases damage dealt by this weapon.
+- 2 free skill slots",
         },
         {
           "name": "Stats",
@@ -53,29 +32,13 @@ exports[`mapWeaponToMessage > with skills 1`] = `
 {
   "reply": {
     "embed": {
+      "description": "Level 6 Sword",
       "fields": [
         {
-          "inline": true,
-          "name": "Level",
-          "value": "6",
-        },
-        {
-          "inline": true,
-          "name": "Weapon Type",
-          "value": "Sword",
-        },
-        {
-          "inline": true,
-          "name": "Free skill slots count",
-          "value": "2",
-        },
-        {
-          "name": "Weapon Type skill",
-          "value": "Armor Bane 1: Deals more damage to Armored units.",
-        },
-        {
-          "name": "Unique skill",
-          "value": "Royal Focus: Increases damage dealt by this weapon.",
+          "name": "Skills",
+          "value": "- **Armor Bane 1**: Deals more damage to Armored units.
+- **Royal Focus**: Increases damage dealt by this weapon.
+- 2 free skill slots",
         },
         {
           "name": "Stats",
@@ -97,21 +60,11 @@ exports[`mapWeaponToMessage > without optional skills 1`] = `
 {
   "reply": {
     "embed": {
+      "description": "Level 6 Sword",
       "fields": [
         {
-          "inline": true,
-          "name": "Level",
-          "value": "6",
-        },
-        {
-          "inline": true,
-          "name": "Weapon Type",
-          "value": "Sword",
-        },
-        {
-          "inline": true,
-          "name": "Free skill slots count",
-          "value": "2",
+          "name": "Skills",
+          "value": "- 2 free skill slots",
         },
         {
           "name": "Stats",

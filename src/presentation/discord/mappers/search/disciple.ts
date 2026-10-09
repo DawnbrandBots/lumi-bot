@@ -1,11 +1,10 @@
-import { hyperlink, unorderedList, type APIEmbed } from "discord.js";
+import { bold, codeBlock, hyperlink, unorderedList } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../../../domain/game/constants.ts";
-import { describeSpellEffects } from "./spellEffectDescriptions.ts";
 import type { IDisciple } from "../../../../domain/game/models/disciple.types.ts";
 import type { IMusic } from "../../../../domain/game/models/music.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
-import { SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA } from "./constants.ts";
+import { describeSpellEffects } from "./spellEffectDescriptions.ts";
 
 export function getDiscipleBaseStatsTable(disciple: Pick<IDisciple, "getHp" | "getAtk">): (string | number)[][] {
     const relevantLevels = Array.from(
@@ -18,61 +17,44 @@ export function getDiscipleBaseStatsTable(disciple: Pick<IDisciple, "getHp" | "g
     ];
 }
 
-function formatShadowMusicStrValue(music: IMusic) {
-    return music.url
-        ? hyperlink(music.name, music.url)
-        : `${music.name}\n  ${SEARCH_MUSIC_HANDLE_NO_KNOWN_SOURCE_MEDIA}`;
+function formatShadowMusicStrValue(music: Pick<IMusic, "name" | "url">) {
+    return music.url ? hyperlink(music.name, music.url) : music.name;
 }
 
 export default function mapDiscipleToMessage(disciple: IDisciple) {
-    const spellsStr = [...disciple.spells]
-        .map((spell) => `- **${spell.name}**: ${describeSpellEffects(spell, true)}`)
-        .join("\n");
+    const typesStr = `${disciple.weaponType.name} ${disciple.movementType.name} disciple`;
+    const prfStr = `${bold("PRF")}: ${disciple.prfWeapon.name}`;
+
+    const shadowMusicStr = `${bold("Theme")}: ${formatShadowMusicStrValue(disciple.shadowMusic)}${disciple.shadowResultsScreenMusic.url ? ` (${formatShadowMusicStrValue({ name: "results screen", url: disciple.shadowResultsScreenMusic.url })})` : ""}`;
+
+    const spellsStr = unorderedList(
+        [...disciple.spells].map((spell) => `${bold(spell.name)}: ${describeSpellEffects(spell, true)}`),
+    );
 
     const baseStatsTable = getDiscipleBaseStatsTable(disciple);
     const baseStatsTableAscii = toAsciiTable({ data: baseStatsTable, cellPadding: 3 });
-    const baseStatsStr = `\`\`\`\n${baseStatsTableAscii}\n\`\`\``;
+    const baseStatsStr = codeBlock(baseStatsTableAscii);
 
-    const shadowMusicStr = unorderedList([
-        formatShadowMusicStrValue(disciple.shadowMusic),
-        formatShadowMusicStrValue(disciple.shadowResultsScreenMusic),
-    ]);
-
-    const fields: NonNullable<APIEmbed["fields"]> = [
-        {
-            name: "Weapon Type",
-            value: disciple.weaponType.name,
-            inline: true,
-        },
-        {
-            name: "Movement Type",
-            value: disciple.movementType.name,
-            inline: true,
-        },
-        {
-            name: "PRF Weapon",
-            value: disciple.prfWeapon.name,
-            inline: true,
-        },
-        {
-            name: "Shadow music",
-            value: shadowMusicStr,
-            inline: true,
-        },
+    const title = `${disciple.name}, ${disciple.epithet}`;
+    const description = [typesStr, prfStr, shadowMusicStr].join("\n");
+    const fields = [
         {
             name: "Spells",
             value: spellsStr,
+            inline: false,
         },
         {
             name: "Base stats",
             value: baseStatsStr,
+            inline: false,
         },
     ];
 
     return {
         reply: {
             embed: {
-                title: `${disciple.name}, ${disciple.epithet}`,
+                title,
+                description,
                 fields,
             },
         },

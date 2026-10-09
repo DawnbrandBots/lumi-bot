@@ -1,66 +1,44 @@
-import { codeBlock, type APIEmbed } from "discord.js";
+import type { APIEmbedField } from "discord.js";
+import { codeBlock, italic, type APIEmbed } from "discord.js";
 import {
+    ESpellDraggingModeKind,
     ESpellEffectsKind,
-    type ESpellDraggingModeKind,
-    type ESpellRole,
+    ESpellRole,
     type ISpell,
-    type ISpellShape,
 } from "../../../../domain/game/models/spell.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
-import {
-    DISCORD_BLACK_SQUARE_EMOJI_CALL,
-    DISCORD_BLUE_SQUARE_EMOJI_CALL,
-    DISCORD_RED_SQUARE_EMOJI_CALL,
-} from "../../constants.ts";
 import { describeSpellEffects } from "./spellEffectDescriptions.ts";
 import type { ISpellEffectValueWithToLevel } from "./spellEffectValues.ts";
 import { spellEffectsValues } from "./spellEffectValues.ts";
 
-const tileEmojis: Record<string, string> = {
-    X: DISCORD_RED_SQUARE_EMOJI_CALL,
-    O: DISCORD_BLUE_SQUARE_EMOJI_CALL,
-    ".": DISCORD_BLACK_SQUARE_EMOJI_CALL,
-};
-
-export const SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS = {
-    ANY: "Any tile",
-    SELF: "User tile only",
-} as const satisfies Record<keyof typeof ESpellDraggingModeKind, string>;
-
-export const SPELL_ROLE_DESCRIPTION_STRINGS = {
-    EX: "EX",
-    LIGHT: "Light",
-    SHADOW: "Shadow",
-} as const satisfies Record<keyof typeof ESpellRole, string>;
-
-function formatSpellDraggingMode(draggingMode: ISpell["draggingMode"]): string {
+function formatSpellDraggingMode(draggingMode: ISpell["draggingMode"]): string | null {
     if (draggingMode.kind === ESpellEffectsKind.NORMAL) {
-        return SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.draggingMode];
+        return draggingMode.draggingMode === ESpellDraggingModeKind.SELF ? "self-targeting" : null;
     }
 
-    if (draggingMode.light === draggingMode.shadow) {
-        return SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.light];
+    if (draggingMode.light === ESpellDraggingModeKind.SELF && draggingMode.shadow === ESpellDraggingModeKind.SELF) {
+        return "self-targeting";
     }
 
-    return [
-        `Light: ${SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.light]}`,
-        `Shadow: ${SPELL_DRAGGING_MODE_DESCRIPTION_STRINGS[draggingMode.shadow]}`,
-    ].join("\n");
-}
+    const maybeSideWithSelfTargetingDraggingMode = (["light", "shadow"] as const).find(
+        (side) => draggingMode[side] === ESpellDraggingModeKind.SELF,
+    );
+    if (!maybeSideWithSelfTargetingDraggingMode) {
+        return null;
+    }
 
-export function formatSpellShape(shape: Pick<ISpellShape, "tiles">): string {
-    return shape.tiles.replaceAll(/(.{5})(?<!$)/g, "$1\n").replaceAll(/./g, (tile) => tileEmojis[tile] ?? tile);
+    return `self-targeting (${maybeSideWithSelfTargetingDraggingMode} form only)`;
 }
 
 function formatInnerTableRows(arg: {
     values: ISpellEffectValueWithToLevel[][];
     levelsRow: number[];
-    indexColumnPrefix: string;
+    indexFormat: (index: number) => string;
 }) {
     return arg.values.flatMap((values, index) => {
         return values.map((value, valueIndex) => [
-            valueIndex === 0 ? `${arg.indexColumnPrefix}${index + 1}.` : "",
+            valueIndex === 0 ? arg.indexFormat(index + 1) : "",
             ...arg.levelsRow.map((level, index) => (!value.scalesWithLevel && index > 0 ? "." : value.toLevel(level))),
         ]);
     });
@@ -72,18 +50,30 @@ function formatSpellValues({
 }: {
     spell: ISpell;
     values: ReturnType<typeof spellEffectsValues>;
-}): string {
+}): [APIEmbedField, APIEmbedField] | [APIEmbedField] {
     const innerTable = (rangeArg: { start: number; end: number }) => {
         const levelsRow = Array.from(range(rangeArg));
         const rows =
             values.kind === ESpellEffectsKind.NORMAL
-                ? formatInnerTableRows({ values: values.effects, levelsRow, indexColumnPrefix: "" })
+                ? formatInnerTableRows({
+                      values: values.effects,
+                      levelsRow,
+                      indexFormat: (index) => `${index}.`,
+                  })
                 : [
-                      ...formatInnerTableRows({ values: values.light, levelsRow, indexColumnPrefix: "L" }),
-                      ...formatInnerTableRows({ values: values.shadow, levelsRow, indexColumnPrefix: "S" }),
+                      ...formatInnerTableRows({
+                          values: values.light,
+                          levelsRow,
+                          indexFormat: (index) => `L${index}`,
+                      }),
+                      ...formatInnerTableRows({
+                          values: values.shadow,
+                          levelsRow,
+                          indexFormat: (index) => `S${index}`,
+                      }),
                   ];
-        const data = [["Lv", ...levelsRow], ...rows];
-        return toAsciiTable({ data, cellPadding: 3 });
+        const data = [["", ...levelsRow], ...rows];
+        return toAsciiTable({ data, cellPadding: 3, omitVerticalSeparator: true });
     };
 
     if (spell.disciple) {
@@ -96,83 +86,75 @@ function formatSpellValues({
             end: 13,
         });
 
-        return codeBlock(innerTable1 + "\n" + " ".repeat(innerTable1.indexOf("\n")) + "\n" + innerTable2);
+        // Values are split between two tables, each in an embed field of their own, so that the two tables can be displayed side by side on PC,
+        // but stacked vertically on mobile.
+        // It appears the two tables, side by side, as they are currently formatted, take just the right amount of horizontal space to fit in an embed on PC.
+        return [
+            { name: "Effects' values by level", value: codeBlock(innerTable1), inline: true },
+            // Empty or blank characters-only name would cause the title HTML element in embed field to disappear, not just exist and have an empty string as content.
+            // On PC, this results in the field's value being lifted up, thus not aligning horizontally with the previous field's value.
+            // On mobile, an empty name does NOT result in the value being lifted up, so no vertical space can be saved.
+            { name: "-", value: codeBlock(innerTable2), inline: true },
+        ];
     } else {
-        return codeBlock(innerTable({ start: 1, end: 2 }));
+        return [{ name: "Effects' values by level", value: codeBlock(innerTable({ start: 1, end: 2 })) }];
     }
 }
 
+const SPELL_UNLOCK_INDEX_STRS = ["1st", "2nd", "3rd"];
+const SPELL_ROLE_STR = {
+    LIGHT: "Light",
+    SHADOW: "Shadow",
+};
+
+function formatDiscipleSpellUnlock(spell: Pick<ISpell, "id" | "disciple" | "role">): string {
+    if (!spell.disciple) {
+        return italic("Spell not associated to any disciple");
+    }
+
+    const spellIndex = [...spell.disciple.spells].findIndex((s) => s.id === spell.id);
+    const spellUnlockIndexStr = SPELL_UNLOCK_INDEX_STRS[spellIndex - 1];
+    const roleStr =
+        spell.role === ESpellRole.EX
+            ? "EX"
+            : `${spellUnlockIndexStr ? `${spellUnlockIndexStr} ` : ""}unlockable spell, ${SPELL_ROLE_STR[spell.role]} side`;
+    return `${spell.disciple.name}'s ${roleStr}`;
+}
+
 export default function mapSpellToMessage(spell: ISpell) {
-    const shapeStr = formatSpellShape(spell.shape);
+    const propertiesStr = [
+        `${spell.uses ? (spell.uses === 1 ? "Single use" : `${spell.uses} uses`) : "Infinite uses"}`,
+        `${spell.cooldown}s cooldown`,
+        `targets ${spell.shape.name}`,
+        spell.onlyFor ? `only for ${spell.onlyFor.name} units` : undefined,
+        formatSpellDraggingMode(spell.draggingMode),
+    ]
+        .filter(Boolean)
+        .join(", ");
+
+    const description = [formatDiscipleSpellUnlock(spell), propertiesStr].filter(Boolean).join("\n");
 
     const values = spellEffectsValues(spell);
-    const valuesStr =
+    const valuesFields =
         (values.kind === ESpellEffectsKind.FORM_BASED
             ? values.light.some((valuesSubArray) => valuesSubArray.length) ||
               values.shadow.some((valuesSubArray) => valuesSubArray.length)
             : values.effects.some((valuesSubArray) => valuesSubArray.length)) && formatSpellValues({ spell, values });
     const effectsStr = describeSpellEffects(spell);
 
-    const onlyFor = spell.onlyFor && {
-        name: "Only for",
-        value: `${spell.onlyFor.name} units`,
-        inline: true,
-    };
-
     const fields: APIEmbed["fields"] = [
-        {
-            name: "Disciple",
-            value: spell.disciple?.name || "*None*",
-            inline: true,
-        },
-        {
-            name: "Role",
-            value: SPELL_ROLE_DESCRIPTION_STRINGS[spell.role],
-            inline: true,
-        },
-        {
-            name: "Uses",
-            value: !spell.uses ? "Infinite" : spell.uses + "",
-            inline: true,
-        },
-        {
-            name: "Cooldown",
-            value: spell.cooldown + " seconds",
-            inline: true,
-        },
-        {
-            name: "Dragging mode",
-            value: formatSpellDraggingMode(spell.draggingMode),
-            inline: true,
-        },
-        ...(onlyFor ? [onlyFor] : []),
-        // Shape and effects are separated because they may
-        // take a lot of vertical space compared to other fields.
-        { name: "", value: "" },
-        {
-            name: "Shape",
-            value: shapeStr,
-            inline: true,
-        },
         {
             name: "Effects",
             value: effectsStr,
-            inline: true,
         },
-        ...(valuesStr
-            ? [
-                  {
-                      name: "Values",
-                      value: valuesStr,
-                  },
-              ]
-            : []),
+        ...(valuesFields ? valuesFields : []),
     ];
 
     return {
         reply: {
             embed: {
                 title: spell.name,
+                description,
                 fields,
             },
         },
