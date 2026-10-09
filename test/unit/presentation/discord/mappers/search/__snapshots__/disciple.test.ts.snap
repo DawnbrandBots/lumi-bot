@@ -4,34 +4,17 @@ exports[`mapDiscipleToMessage > with an unlinked shadow music 1`] = `
 {
   "reply": {
     "embed": {
+      "description": "Sword Infantry disciple
+**PRF**: Royal Sword
+**Theme**: Betrayal - The Exiled Prince ([results screen](https://example.com/victory))",
       "fields": [
         {
-          "inline": true,
-          "name": "Weapon Type",
-          "value": "Sword",
-        },
-        {
-          "inline": true,
-          "name": "Movement Type",
-          "value": "Infantry",
-        },
-        {
-          "inline": true,
-          "name": "PRF Weapon",
-          "value": "Royal Sword",
-        },
-        {
-          "inline": true,
-          "name": "Shadow music",
-          "value": "- Betrayal - The Exiled Prince
-  -# No known source media for this song :(
-- [Victory - The Exiled Prince](https://example.com/victory)",
-        },
-        {
+          "inline": false,
           "name": "Spells",
           "value": "- **Elfire**: Deals 60 Red damage to targets on a single space.",
         },
         {
+          "inline": false,
           "name": "Base stats",
           "value": "\`\`\`
 Level |   1   8   9  10  11
@@ -51,33 +34,17 @@ exports[`mapDiscipleToMessage > with linked shadow music 1`] = `
 {
   "reply": {
     "embed": {
+      "description": "Sword Infantry disciple
+**PRF**: Royal Sword
+**Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))",
       "fields": [
         {
-          "inline": true,
-          "name": "Weapon Type",
-          "value": "Sword",
-        },
-        {
-          "inline": true,
-          "name": "Movement Type",
-          "value": "Infantry",
-        },
-        {
-          "inline": true,
-          "name": "PRF Weapon",
-          "value": "Royal Sword",
-        },
-        {
-          "inline": true,
-          "name": "Shadow music",
-          "value": "- [Betrayal - The Exiled Prince](https://example.com/betrayal)
-- [Victory - The Exiled Prince](https://example.com/victory)",
-        },
-        {
+          "inline": false,
           "name": "Spells",
           "value": "- **Elfire**: Deals 60 Red damage to targets on a single space.",
         },
         {
+          "inline": false,
           "name": "Base stats",
           "value": "\`\`\`
 Level |   1   8   9  10  11

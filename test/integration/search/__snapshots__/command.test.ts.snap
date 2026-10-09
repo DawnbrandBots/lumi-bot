@@ -5,67 +5,31 @@ exports[`search command messages > returns the complete Axe Fighter + Infantry m
   "embeds": [
     {
       "color": 5763719,
+      "description": "Estel's 1st unlockable spell, Light side
+Single use, 1s cooldown, targets single space, only for Infantry units",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Estel",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "Light",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "1",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "1 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "inline": true,
-          "name": "Only for",
-          "value": "Infantry units",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Summons Axe Infantry minion with 75 HP and 60 Atk.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  75  82  90  97 105 112
-   |  60  72  84  96 108 120
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. | 120 127 135 142 150 165
-   | 132 144 156 162 168 180
+     1   2   3   4   5   6
+── ───────────────────────
+1.  75  82  90  97 105 112
+    60  72  84  96 108 120
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1. 120 127 135 142 150 165
+   132 144 156 162 168 180
 \`\`\`",
         },
       ],
@@ -84,47 +48,10 @@ exports[`search command messages > returns the complete Black Luna EX message (f
   "embeds": [
     {
       "color": 5763719,
+      "description": "Black Knight's EX
+Infinite uses, 5s cooldown, targets single space",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Black Knight",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "In Light form:
 1. Grants "increases Received Weapon Damage by 50% (permanent)" to targets.
@@ -134,21 +61,27 @@ In Shadow form:
 1. Deals 45 Red damage to targets.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv  |   1   2   3   4   5   6
-────┼────────────────────────
-L1. |  50  52  55  57  60  62
-L2. |  60  66  72  78  84  90
-S1. |  20   .   .   .   .   .
-S2. |  45  49  54  58  63  67
-                             
-Lv  |   7   8   9  10  11  12
-────┼────────────────────────
-L1. |  65  67  70  72  75  80
-L2. |  96 102 108 114 120 132
-S1. |  20   .   .   .   .   .
-S2. |  72  76  81  85  90  99
+     1   2   3   4   5   6
+── ───────────────────────
+L1  50  52  55  57  60  62
+L2  60  66  72  78  84  90
+S1  20   .   .   .   .   .
+S2  45  49  54  58  63  67
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+L1  65  67  70  72  75  80
+L2  96 102 108 114 120 132
+S1  20   .   .   .   .   .
+S2  72  76  81  85  90  99
 \`\`\`",
         },
       ],
@@ -167,63 +100,32 @@ exports[`search command messages > returns the complete Crosswind Grav EX messag
   "embeds": [
     {
       "color": 5763719,
+      "description": "Claude's EX
+Infinite uses, 5s cooldown, targets 3x3 cross",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Claude",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::blue_square::red_square::blue_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Deals 40 Green damage to targets.
 1. Grants "limits Movement to 1 (permanent)" to targets.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  40  44  48  52  56  60
-2. |   1   .   .   .   .   .
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  64  68  72  76  80  88
-2. |   1   .   .   .   .   .
+     1   2   3   4   5   6
+── ───────────────────────
+1.  40  44  48  52  56  60
+2.   1   .   .   .   .   .
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  64  68  72  76  80  88
+2.   1   .   .   .   .   .
 \`\`\`",
         },
       ],
@@ -242,63 +144,32 @@ exports[`search command messages > returns the complete Crosswind Lock EX messag
   "embeds": [
     {
       "color": 5763719,
+      "description": "Yuyo's EX
+Single use, 5s cooldown, targets 3x3 cross",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Yuyo",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "1",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::blue_square::red_square::blue_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Deals 70 Green damage to targets.
 1. Summons an obstacle with 180 HP on a single space if it is flat ground.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  70  77  84  91  98 105
-2. | 180 198 216 234 252 270
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. | 112 119 126 133 140 154
-2. | 288 306 324 342 360 396
+     1   2   3   4   5   6
+── ───────────────────────
+1.  70  77  84  91  98 105
+2. 180 198 216 234 252 270
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1. 112 119 126 133 140 154
+2. 288 306 324 342 360 396
 \`\`\`",
         },
       ],
@@ -317,60 +188,29 @@ exports[`search command messages > returns the complete Dark Cross Poison Patch 
   "embeds": [
     {
       "color": 5763719,
+      "description": "Corrin's 3rd unlockable spell, Shadow side
+Single use, 5s cooldown, targets 3x3 cross",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Corrin",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "Shadow",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "1",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::blue_square::red_square::blue_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Grants effect to target tiles: Deals 25 Colorless damage every 3 seconds (5 times).",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  25  27  30  32  35  37
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  40  42  45  47  50  55
+     1   2   3   4   5   6
+── ───────────────────────
+1.  25  27  30  32  35  37
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  40  42  45  47  50  55
 \`\`\`",
         },
       ],
@@ -389,66 +229,30 @@ exports[`search command messages > returns the complete Dark Crossfire + Tome me
   "embeds": [
     {
       "color": 5763719,
+      "description": "Robin's 1st unlockable spell, Shadow side
+Infinite uses, 4s cooldown, targets 3x3 cross, only for Tome units",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Robin",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "Shadow",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "4 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "inline": true,
-          "name": "Only for",
-          "value": "Tome units",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::blue_square::red_square::blue_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "After 2 seconds:
 1. Grants "deals 40 Red damage every 6 seconds (2 times)" to targets.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  40  44  48  52  56  60
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  64  68  72  76  80  88
+     1   2   3   4   5   6
+── ───────────────────────
+1.  40  44  48  52  56  60
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  64  68  72  76  80  88
 \`\`\`",
         },
       ],
@@ -467,65 +271,34 @@ exports[`search command messages > returns the complete Dark Harm Sword Fighter 
   "embeds": [
     {
       "color": 5763719,
+      "description": "Celica's 3rd unlockable spell, Shadow side
+Single use, 1s cooldown, targets single space",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Celica",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "Shadow",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "1",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "1 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Grants "deals 20 Colorless damage (1 time)" to user.
 1. Summons Sword Infantry minion with 110 HP and 85 Atk.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  20  22  24  26  28  30
-2. | 110 121 132 143 154 165
-   |  85 102 119 136 153 170
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  32  34  36  38  40  44
-2. | 176 187 198 209 220 242
-   | 187 204 221 229 238 255
+     1   2   3   4   5   6
+── ───────────────────────
+1.  20  22  24  26  28  30
+2. 110 121 132 143 154 165
+    85 102 119 136 153 170
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  32  34  36  38  40  44
+2. 176 187 198 209 220 242
+   187 204 221 229 238 255
 \`\`\`",
         },
       ],
@@ -544,61 +317,30 @@ exports[`search command messages > returns the complete Dark Tetrafire message (
   "embeds": [
     {
       "color": 5763719,
+      "description": "Ike's 3rd unlockable spell, Shadow side
+Infinite uses, 5s cooldown, targets 2x2 square",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Ike",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "Shadow",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::blue_square::blue_square::black_large_square::black_large_square:
-:black_large_square::blue_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "After 2 seconds:
 1. Deals 75 Red damage to targets.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  75  82  90  97 105 112
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. | 120 127 135 142 150 165
+     1   2   3   4   5   6
+── ───────────────────────
+1.  75  82  90  97 105 112
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1. 120 127 135 142 150 165
 \`\`\`",
         },
       ],
@@ -617,63 +359,32 @@ exports[`search command messages > returns the complete Dual Invigorate EX messa
   "embeds": [
     {
       "color": 5763719,
+      "description": "Ananke's EX
+Single use, 1s cooldown, targets single space",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Ananke",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "1",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "1 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Grants "increases HP by 10% (permanent)" to user and targets.
 1. Restores 10 HP to user and targets.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  10  10  11  11  12  12
-2. |  10  11  12  13  14  15
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  13  13  14  14  15  16
-2. |  16  17  18  19  20  22
+     1   2   3   4   5   6
+── ───────────────────────
+1.  10  10  11  11  12  12
+2.  10  11  12  13  14  15
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  13  13  14  14  15  16
+2.  16  17  18  19  20  22
 \`\`\`",
         },
       ],
@@ -692,60 +403,29 @@ exports[`search command messages > returns the complete Elfire message (plain da
   "embeds": [
     {
       "color": 5763719,
+      "description": "Kurt's 1st unlockable spell, Light side
+Infinite uses, 5s cooldown, targets single space",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Kurt",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "Light",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Deals 60 Red damage to targets.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  60  66  72  78  84  90
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  96 102 108 114 120 132
+     1   2   3   4   5   6
+── ───────────────────────
+1.  60  66  72  78  84  90
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  96 102 108 114 120 132
 \`\`\`",
         },
       ],
@@ -764,61 +444,30 @@ exports[`search command messages > returns the complete Heal Warp EX message (wa
   "embeds": [
     {
       "color": 5763719,
+      "description": "Sai's EX
+Infinite uses, 5s cooldown, targets single space",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Sai",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Restores 50 HP to targets.
 1. Moves user to target tile.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  50  55  60  65  70  75
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  80  85  90  95 100 110
+     1   2   3   4   5   6
+── ───────────────────────
+1.  50  55  60  65  70  75
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  80  85  90  95 100 110
 \`\`\`",
         },
       ],
@@ -837,60 +486,29 @@ exports[`search command messages > returns the complete Self Cross Shield messag
   "embeds": [
     {
       "color": 5763719,
+      "description": "Corrin's 2nd unlockable spell, Light side
+Infinite uses, 1s cooldown, targets 3x3 cross, self-targeting",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Corrin",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "Light",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "1 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "User tile only",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::blue_square::red_square::blue_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Grants "decreases Received Weapon Damage by 30% (3 turns)" to targets in shape centered around user.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  30  31  33  34  36  37
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  39  40  42  43  45  48
+     1   2   3   4   5   6
+── ───────────────────────
+1.  30  31  33  34  36  37
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  39  40  42  43  45  48
 \`\`\`",
         },
       ],
@@ -909,60 +527,29 @@ exports[`search command messages > returns the complete Self Mend message (singl
   "embeds": [
     {
       "color": 5763719,
+      "description": "Rose's 2nd unlockable spell, Light side
+Infinite uses, 5s cooldown, targets single space, self-targeting",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Rose",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "Light",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "User tile only",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Restores 80 HP to user.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  80  88  96 104 112 120
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. | 128 136 144 152 160 176
+     1   2   3   4   5   6
+── ───────────────────────
+1.  80  88  96 104 112 120
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1. 128 136 144 152 160 176
 \`\`\`",
         },
       ],
@@ -981,63 +568,32 @@ exports[`search command messages > returns the complete Slow Self Shield EX mess
   "embeds": [
     {
       "color": 5763719,
+      "description": "Tiki's EX
+Single use, 1s cooldown, targets single space",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Tiki",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "1",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "1 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Grants "increases Cooldown by 10% (3 turns)" to targets.
 1. Grants "decreases Received Weapon Damage by 25% (permanent)" to user.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  10   .   .   .   .   .
-2. |  25  26  27  28  30  31
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  10   .   .   .   .   .
-2. |  32  33  35  36  37  40
+     1   2   3   4   5   6
+── ───────────────────────
+1.  10   .   .   .   .   .
+2.  25  26  27  28  30  31
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  10   .   .   .   .   .
+2.  32  33  35  36  37  40
 \`\`\`",
         },
       ],
@@ -1056,63 +612,32 @@ exports[`search command messages > returns the complete Tetrathunder Wall EX mes
   "embeds": [
     {
       "color": 5763719,
+      "description": "Shea's EX
+Single use, 5s cooldown, targets 2x2 square",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Shea",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "1",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::blue_square::blue_square::black_large_square::black_large_square:
-:black_large_square::blue_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Grants "deals 40 Blue damage every 6 seconds (2 times)" to targets.
 1. Summons obstacles with 60 HP.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  40  44  48  52  56  60
-2. |  60  66  72  78  84  90
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  64  68  72  76  80  88
-2. |  96 102 108 114 120 132
+     1   2   3   4   5   6
+── ───────────────────────
+1.  40  44  48  52  56  60
+2.  60  66  72  78  84  90
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  64  68  72  76  80  88
+2.  96 102 108 114 120 132
 \`\`\`",
         },
       ],
@@ -1131,63 +656,32 @@ exports[`search command messages > returns the complete Thunder Self Edge EX mes
   "embeds": [
     {
       "color": 5763719,
+      "description": "Ephraim's EX
+Infinite uses, 5s cooldown, targets single space",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Ephraim",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "Infinite",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "5 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::red_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "1. Deals 60 Blue damage to targets.
 1. Grants "increases Atk by 30% (permanent)" to user.",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  60  66  72  78  84  90
-2. |  30  31  33  34  36  37
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  96 102 108 114 120 132
-2. |  39  40  42  43  45  48
+     1   2   3   4   5   6
+── ───────────────────────
+1.  60  66  72  78  84  90
+2.  30  31  33  34  36  37
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  96 102 108 114 120 132
+2.  39  40  42  43  45  48
 \`\`\`",
         },
       ],
@@ -1206,47 +700,10 @@ exports[`search command messages > returns the complete Trinity Shield Edge EX m
   "embeds": [
     {
       "color": 5763719,
+      "description": "Robin's EX
+Single use, 1s cooldown, targets 3x3 cross",
       "fields": [
         {
-          "inline": true,
-          "name": "Disciple",
-          "value": "Robin",
-        },
-        {
-          "inline": true,
-          "name": "Role",
-          "value": "EX",
-        },
-        {
-          "inline": true,
-          "name": "Uses",
-          "value": "1",
-        },
-        {
-          "inline": true,
-          "name": "Cooldown",
-          "value": "1 seconds",
-        },
-        {
-          "inline": true,
-          "name": "Dragging mode",
-          "value": "Any tile",
-        },
-        {
-          "name": "",
-          "value": "",
-        },
-        {
-          "inline": true,
-          "name": "Shape",
-          "value": ":black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::blue_square::red_square::blue_square::black_large_square:
-:black_large_square::black_large_square::blue_square::black_large_square::black_large_square:
-:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:",
-        },
-        {
-          "inline": true,
           "name": "Effects",
           "value": "Grants statuses to targets:
 1. Decreases Received Weapon Damage by 20% (permanent).
@@ -1254,19 +711,25 @@ exports[`search command messages > returns the complete Trinity Shield Edge EX m
 1. Decreases Color Affinity by 20% (permanent).",
         },
         {
-          "name": "Values",
+          "inline": true,
+          "name": "Effects' values by level",
           "value": "\`\`\`
-Lv |   1   2   3   4   5   6
-───┼────────────────────────
-1. |  20  21  22  23  24  25
-2. |  30  31  33  34  36  37
-3. |  20   .   .   .   .   .
-                            
-Lv |   7   8   9  10  11  12
-───┼────────────────────────
-1. |  26  27  28  29  30  32
-2. |  39  40  42  43  45  48
-3. |  20   .   .   .   .   .
+     1   2   3   4   5   6
+── ───────────────────────
+1.  20  21  22  23  24  25
+2.  30  31  33  34  36  37
+3.  20   .   .   .   .   .
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  26  27  28  29  30  32
+2.  39  40  42  43  45  48
+3.  20   .   .   .   .   .
 \`\`\`",
         },
       ],
