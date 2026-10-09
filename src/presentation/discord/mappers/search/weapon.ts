@@ -1,8 +1,10 @@
-import type { APIEmbed } from "discord.js";
+import { bold, italic, unorderedList, type APIEmbed } from "discord.js";
 import type { IWeapon } from "../../../../domain/game/models/weapon.types.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
 
 export default function mapWeaponToMessage(weapon: IWeapon) {
+    const introStr = `Level ${weapon.level} ${weapon.weaponType.name}${weapon.prfDisciple ? `, exclusive to ${weapon.prfDisciple.name}` : ""}`;
+
     const statsTable = [
         ["Variant", "Atk", "(-)", "HP"],
         [
@@ -21,41 +23,21 @@ export default function mapWeaponToMessage(weapon: IWeapon) {
     const statsTableAscii = toAsciiTable({ data: statsTable, cellPadding: 3 });
     const statsTableStr = `\`\`\`\n${statsTableAscii}\n\`\`\``;
 
-    const exclusivity = weapon.prfDisciple && {
-        name: "Exclusive to",
-        value: weapon.prfDisciple.name,
-        inline: true,
-    };
-
-    const weaponTypeSkill = weapon.weaponTypeSkill && {
-        name: "Weapon Type skill",
-        value: `${weapon.weaponTypeSkill.name}: ${weapon.weaponTypeSkill.description}`,
-    };
-
-    const uniqueSkill = weapon.uniqueSkill && {
-        name: "Unique skill",
-        value: `${weapon.uniqueSkill.name}: ${weapon.uniqueSkill.description}`,
-    };
+    const skillsStr = unorderedList(
+        [
+            weapon.weaponTypeSkill && `${bold(weapon.weaponTypeSkill.name)}: ${weapon.weaponTypeSkill.description}`,
+            weapon.uniqueSkill && `${bold(weapon.uniqueSkill.name)}: ${weapon.uniqueSkill.description}`,
+            weapon.freeSkillSlots > 0
+                ? `${weapon.freeSkillSlots} free skill slot${weapon.freeSkillSlots !== 1 ? "s" : ""}`
+                : italic(`No free skill slots`),
+        ].filter((s) => s != null),
+    );
 
     const fields: APIEmbed["fields"] = [
         {
-            name: "Level",
-            value: weapon.level + "",
-            inline: true,
+            name: "Skills",
+            value: skillsStr,
         },
-        {
-            name: "Weapon Type",
-            value: weapon.weaponType.name,
-            inline: true,
-        },
-        {
-            name: "Free skill slots count",
-            value: weapon.freeSkillSlots + "",
-            inline: true,
-        },
-        ...(exclusivity ? [exclusivity] : []),
-        ...(weaponTypeSkill ? [weaponTypeSkill] : []),
-        ...(uniqueSkill ? [uniqueSkill] : []),
         {
             name: "Stats",
             value: statsTableStr,
@@ -65,6 +47,7 @@ export default function mapWeaponToMessage(weapon: IWeapon) {
         reply: {
             embed: {
                 title: weapon.name,
+                description: introStr,
                 fields: fields,
             },
         },
