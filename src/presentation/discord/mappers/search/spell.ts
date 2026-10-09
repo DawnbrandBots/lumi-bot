@@ -51,7 +51,6 @@ function formatSpellValues({
 }: {
     spell: ISpell;
     values: ReturnType<typeof spellEffectsValues>;
-    // }): [APIEmbedField, APIEmbedField, APIEmbedField] | [APIEmbedField, APIEmbedField] {
 }): [APIEmbedField, APIEmbedField] | [APIEmbedField] {
     const innerTable = (rangeArg: { start: number; end: number }) => {
         const levelsRow = Array.from(range(rangeArg));
@@ -91,18 +90,6 @@ function formatSpellValues({
             end: 13,
         });
 
-        // // Values are split between two tables, each in an embed field of their own, so that the two tables can be displayed side by side on PC,
-        // // but stacked vertically on mobile.
-        // // It appears the two tables, side by side, as they are currently formatted, take just the right amount of horizontal space to fit in an embed on PC.
-        // return [
-        //     { name: "Effects' values by level", value: "" },
-        //     { name: "", value: codeBlock(innerTable1), inline: true },
-        //     // Empty or blank characters-only name would cause the title HTML element in embed field to disappear, not just exist and have an empty string as content.
-        //     // On PC, this results in the field's value being lifted up, thus not aligning horizontally with the previous field's value.
-        //     // On mobile, an empty name does NOT result in the value being lifted up, so no vertical space can be saved.
-        //     { name: "", value: codeBlock(innerTable2), inline: true },
-        // ];
-
         // Values are split between two tables, each in an embed field of their own, so that the two tables can be displayed side by side on PC,
         // but stacked vertically on mobile.
         // It appears the two tables, side by side, as they are currently formatted, take just the right amount of horizontal space to fit in an embed on PC.
@@ -114,11 +101,6 @@ function formatSpellValues({
             { name: "-", value: codeBlock(innerTable2), inline: true },
         ];
     } else {
-        // return [
-        //     { name: "Effects' values by level", value: "" },
-        //     { name: "Effects' values by level", value: codeBlock(innerTable({ start: 1, end: 2 })) },
-        // ];
-
         return [{ name: "Effects' values by level", value: codeBlock(innerTable({ start: 1, end: 2 })) }];
     }
 }
