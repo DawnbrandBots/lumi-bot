@@ -10,7 +10,9 @@ export function toAsciiTable(arg: {
     readonly cellPadding: number;
     /** Maximum size of cells on the first column. */
     readonly rowHeaderPadding?: number;
+    readonly omitVerticalSeparator?: boolean;
 }) {
+    arg = { omitVerticalSeparator: false, ...arg };
     if (!arg.data[0]) {
         throw new Error("No first row");
     }
@@ -18,28 +20,33 @@ export function toAsciiTable(arg: {
         arg.rowHeaderPadding ??
         arg.data.reduce((acc, row) => Math.max(acc, row[0]?.toString().length ?? 0), -Infinity) + 1;
     function formatRow(row: (string | number)[]) {
-        return rowToStr({ row, rowHeaderPadding, cellPadding: arg.cellPadding });
+        return rowToStr({
+            row,
+            rowHeaderPadding,
+            cellPadding: arg.cellPadding,
+            omitVerticalSeparator: arg.omitVerticalSeparator,
+        });
     }
     const firstRow = formatRow(arg.data[0]);
-    const rowSeparator = "─".repeat(rowHeaderPadding) + "┼" + "─".repeat(firstRow.length - rowHeaderPadding - 1);
+    const rowSeparator =
+        "─".repeat(rowHeaderPadding - Number(arg.omitVerticalSeparator)) +
+        (arg.omitVerticalSeparator ? " " : "┼") +
+        "─".repeat(firstRow.length - rowHeaderPadding - Number(!arg.omitVerticalSeparator));
     return [firstRow, rowSeparator, ...arg.data.slice(1).map(formatRow)].join("\n");
 }
 
-function rowToStr({
-    row,
-    rowHeaderPadding,
-    cellPadding,
-}: {
-    row: (string | number)[];
-    rowHeaderPadding: number;
-    cellPadding: number;
+function rowToStr(arg: {
+    readonly row: (string | number)[];
+    readonly rowHeaderPadding: number;
+    readonly cellPadding: number;
+    readonly omitVerticalSeparator?: boolean;
 }) {
     return (
-        row[0]?.toString().padEnd(rowHeaderPadding, " ") +
-        "| " +
-        row
+        arg.row[0]?.toString().padEnd(arg.rowHeaderPadding, " ") +
+        (arg.omitVerticalSeparator ? "" : "| ") +
+        arg.row
             .slice(1)
-            .map((n) => `${n}`.padStart(cellPadding, " "))
+            .map((n) => `${n}`.padStart(arg.cellPadding, " "))
             .join(" ")
     );
 }
