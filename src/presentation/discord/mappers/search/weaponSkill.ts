@@ -1,57 +1,34 @@
-import type { APIEmbed } from "discord.js";
+import { bold } from "discord.js";
 import type { IWeaponSkill } from "../../../../domain/game/models/weaponSkill.types.ts";
 import type { IWeaponTypeWeaponSkill } from "../../../../domain/game/models/weaponTypeWeaponSkill.types.ts";
 
 export function getWeaponTypeSkillRankString(rank: IWeaponTypeWeaponSkill["rank"], weaponTypeName: string): string {
     switch (rank) {
         case 1:
-            return `Possessed by ${weaponTypeName} weapons of level 3.`;
+            return `level 3 ${weaponTypeName}s`;
         case 2:
-            return `Possessed by ${weaponTypeName} weapons of level 5.`;
+            return `level 5 ${weaponTypeName}s`;
         case 3:
-            return `Possessed by ${weaponTypeName} weapons of level 6, 7 and 8.`;
+            return `level 6 to 8 ${weaponTypeName}s`;
     }
 }
 
 export default function mapWeaponSkillToMessage(weaponSkill: IWeaponSkill) {
-    const weaponTypeSkillStr = Array.from(weaponSkill.weaponTypeWeaponSkills)
-        .map((weaponTypeWeaponSkill) =>
-            getWeaponTypeSkillRankString(weaponTypeWeaponSkill.rank, weaponTypeWeaponSkill.weaponType.name),
-        )
-        .join("\n");
+    const description = [
+        `${bold("Effect")}: ${weaponSkill.description}`,
+        `${bold("Weapons")}: ${[
+            ...Array.from(weaponSkill.uniqueSkillWeapons).map((weapon) => weapon.name),
+            ...Array.from(weaponSkill.weaponTypeWeaponSkills).map((weaponTypeWeaponSkill) =>
+                getWeaponTypeSkillRankString(weaponTypeWeaponSkill.rank, weaponTypeWeaponSkill.weaponType.name),
+            ),
+        ].join(", ")}.`,
+    ].join("\n");
 
-    const uniqueSkillWeapons = Array.from(weaponSkill.uniqueSkillWeapons)
-        .map((weapon) => weapon.name)
-        .join(", ");
-
-    const fields: APIEmbed["fields"] = [
-        {
-            name: "Effect",
-            value: weaponSkill.description,
-            inline: true,
-        },
-        ...(weaponTypeSkillStr.length > 0
-            ? [
-                  {
-                      name: "Weapon Type Skill",
-                      value: weaponTypeSkillStr,
-                  },
-              ]
-            : []),
-        ...(uniqueSkillWeapons.length > 0
-            ? [
-                  {
-                      name: "Unique skill for weapon(s)",
-                      value: uniqueSkillWeapons,
-                  },
-              ]
-            : []),
-    ];
     return {
         reply: {
             embed: {
                 title: weaponSkill.name,
-                fields: fields,
+                description: description,
             },
         },
     };
