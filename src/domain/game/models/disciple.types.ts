@@ -21,6 +21,8 @@ export interface IDisciple {
     readonly shadowResultsScreenMusic: IMusic;
     /** Spells this disciple provides as their souls are collected. */
     readonly spells: Iterable<ISpell>;
+    /** Other disciples this disciple has supports with. */
+    readonly supports: Iterable<IDisciple>;
     /** Atk value at level 1. */
     readonly baseAtk: number;
     /** HP value at level 1. */
