@@ -29,6 +29,7 @@ import weaponSkills from "../../../../data/weaponSkill.json" with { type: "json"
 import weaponSkillEffects from "../../../../data/weaponSkillEffect.json" with { type: "json" };
 import weaponTypes from "../../../../data/weaponType.json" with { type: "json" };
 import weaponTypeWeaponSkills from "../../../../data/weaponTypeWeaponSkill.json" with { type: "json" };
+import getMikroOrmTableEntities from "../../../../scripts/utils/getMikroOrmTableEntities.ts";
 
 // DB already created once in vitest global setup file.
 
@@ -44,32 +45,38 @@ afterEach(async () => {
 
 test(`${recreateStaticGameDataDb.name} creates a database with expected count of entities in each table`, async () => {
     const em = orm.em.fork();
+    const expectedCounts = {
+        Color: colors.length,
+        Disciple: disciples.length,
+        MovementType: movementTypes.length,
+        Music: music.length,
+        Spell: spells.length,
+        SpellShape: spellShapes.length,
+        Support: supports.length,
+        Weapon: weapons.length,
+        WeaponSkill: weaponSkills.length,
+        WeaponSkillEffect: weaponSkillEffects.length,
+        WeaponType: weaponTypes.length,
+        WeaponTypeWeaponSkill: weaponTypeWeaponSkills.length,
+    } as const;
+
+    const expectedCountsKeys = new Set(Object.keys(expectedCounts));
+    const tableEntitiesNames = new Set(getMikroOrmTableEntities(orm).map((entityMetadata) => entityMetadata.className));
+    expect(expectedCountsKeys.symmetricDifference(tableEntitiesNames).size).toBe(0);
+
     const counts = {
-        color: await em.count(Color),
-        disciple: await em.count(Disciple),
-        movementType: await em.count(MovementType),
-        music: await em.count(Music),
-        spell: await em.count(Spell),
-        spellShape: await em.count(SpellShape),
-        support: await em.count(Support),
-        weapon: await em.count(Weapon),
-        weaponSkill: await em.count(WeaponSkill),
-        weaponSkillEffect: await em.count(WeaponSkillEffect),
-        weaponType: await em.count(WeaponType),
-        weaponTypeWeaponSkill: await em.count(WeaponTypeWeaponSkill),
+        Color: await em.count(Color),
+        Disciple: await em.count(Disciple),
+        MovementType: await em.count(MovementType),
+        Music: await em.count(Music),
+        Spell: await em.count(Spell),
+        SpellShape: await em.count(SpellShape),
+        Support: await em.count(Support),
+        Weapon: await em.count(Weapon),
+        WeaponSkill: await em.count(WeaponSkill),
+        WeaponSkillEffect: await em.count(WeaponSkillEffect),
+        WeaponType: await em.count(WeaponType),
+        WeaponTypeWeaponSkill: await em.count(WeaponTypeWeaponSkill),
     };
-    expect(counts).toStrictEqual({
-        color: colors.length,
-        disciple: disciples.length,
-        movementType: movementTypes.length,
-        music: music.length,
-        spell: spells.length,
-        spellShape: spellShapes.length,
-        support: supports.length,
-        weapon: weapons.length,
-        weaponSkill: weaponSkills.length,
-        weaponSkillEffect: weaponSkillEffects.length,
-        weaponType: weaponTypes.length,
-        weaponTypeWeaponSkill: weaponTypeWeaponSkills.length,
-    });
+    expect(counts).toStrictEqual(expectedCounts);
 });
