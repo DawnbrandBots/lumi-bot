@@ -1,11 +1,42 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`mapDiscipleToMessage > with an unlinked shadow music 1`] = `
+exports[`mapDiscipleToMessage > base 1`] = `
 {
   "reply": {
     "embed": {
       "description": "Sword Infantry disciple
-This disciple has no supports
+_This disciple has no supports_
+**PRF**: Royal Sword
+**Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))",
+      "fields": [
+        {
+          "inline": false,
+          "name": "Spells",
+          "value": "- **Elfire**: Deals 60 Red damage to targets on a single space.",
+        },
+        {
+          "inline": false,
+          "name": "Base stats",
+          "value": "\`\`\`
+Level |   1   8   9  10  11
+──────┼────────────────────
+HP    |  80 136 144 152 160
+Atk   |  42  71  75  79  84
+\`\`\`",
+        },
+      ],
+      "title": "Kurt, Exiled Prince",
+    },
+  },
+}
+`;
+
+exports[`mapDiscipleToMessage > unlinked shadow music 1`] = `
+{
+  "reply": {
+    "embed": {
+      "description": "Sword Infantry disciple
+_This disciple has no supports_
 **PRF**: Royal Sword
 **Theme**: Betrayal - The Exiled Prince ([results screen](https://example.com/victory))",
       "fields": [
@@ -31,12 +62,12 @@ Atk   |  42  71  75  79  84
 }
 `;
 
-exports[`mapDiscipleToMessage > with linked shadow music 1`] = `
+exports[`mapDiscipleToMessage > with supports 1`] = `
 {
   "reply": {
     "embed": {
       "description": "Sword Infantry disciple
-This disciple has no supports
+**Supports**: Gotthold, Carina
 **PRF**: Royal Sword
 **Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))",
       "fields": [
