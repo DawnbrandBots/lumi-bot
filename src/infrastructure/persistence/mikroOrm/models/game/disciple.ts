@@ -4,6 +4,7 @@ import DiscipleRules from "../../../../../domain/game/rules/disciple.ts";
 import { MovementType } from "./movementType.ts";
 import { Music } from "./music.ts";
 import { Spell } from "./spell.ts";
+import { Support } from "./support.ts";
 import { Weapon } from "./weapon.ts";
 import { WeaponType } from "./weaponType.ts";
 
@@ -17,6 +18,8 @@ export const DiscipleSchema = defineEntity({
         weaponType: () => p.manyToOne(WeaponType),
         prfWeapon: () => p.oneToOne(Weapon).inversedBy("prfDisciple").owner(),
         spells: () => p.oneToMany(Spell).mappedBy("disciple"),
+        supportsAsDiscipleOne: () => p.oneToMany(Support).mappedBy("discipleOne"),
+        supportsAsDiscipleTwo: () => p.oneToMany(Support).mappedBy("discipleTwo"),
         shadowMusic: () => p.manyToOne(Music).inversedBy("shadowMusicFor"),
         shadowResultsScreenMusic: () =>
             p
