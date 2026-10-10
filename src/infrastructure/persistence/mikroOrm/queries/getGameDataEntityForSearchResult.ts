@@ -27,7 +27,7 @@ export type ISearchConfigs = {
     [Kind in TSearchKind]: ISearchConfig<TSearchOrmEntity<Kind>, string>;
 };
 
-const disciplePopulate = ["supports"] as const;
+const disciplePopulate = ["*"] as const;
 const spellPopulate = ["*"] as const;
 const weaponPopulate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.effect", "prfDisciple"] as const;
 
