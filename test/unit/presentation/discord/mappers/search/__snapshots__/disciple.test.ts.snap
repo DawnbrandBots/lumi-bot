@@ -5,6 +5,7 @@ exports[`mapDiscipleToMessage > with an unlinked shadow music 1`] = `
   "reply": {
     "embed": {
       "description": "Sword Infantry disciple
+This disciple has no supports
 **PRF**: Royal Sword
 **Theme**: Betrayal - The Exiled Prince ([results screen](https://example.com/victory))",
       "fields": [
@@ -35,6 +36,7 @@ exports[`mapDiscipleToMessage > with linked shadow music 1`] = `
   "reply": {
     "embed": {
       "description": "Sword Infantry disciple
+This disciple has no supports
 **PRF**: Royal Sword
 **Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))",
       "fields": [

@@ -27,11 +27,15 @@ export type ISearchConfigs = {
     [Kind in TSearchKind]: ISearchConfig<TSearchOrmEntity<Kind>, string>;
 };
 
+const disciplePopulate = ["supports"] as const;
 const spellPopulate = ["*"] as const;
 const weaponPopulate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.effect", "prfDisciple"] as const;
 
 const SEARCH_CONFIGS = {
-    disciple: { class: Disciple } as const satisfies ISearchConfig<Disciple>,
+    disciple: { class: Disciple, populate: disciplePopulate } as const satisfies ISearchConfig<
+        Disciple,
+        (typeof disciplePopulate)[number]
+    >,
     music: { class: Music } as const satisfies ISearchConfig<Music>,
     spell: { class: Spell, populate: spellPopulate } as const satisfies ISearchConfig<
         Spell,

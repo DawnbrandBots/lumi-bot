@@ -1,4 +1,4 @@
-import { bold, codeBlock, hyperlink, unorderedList } from "discord.js";
+import { bold, codeBlock, hyperlink, italic, unorderedList } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../../../domain/game/constants.ts";
 import type { IDisciple } from "../../../../domain/game/models/disciple.types.ts";
 import type { IMusic } from "../../../../domain/game/models/music.types.ts";
@@ -23,6 +23,12 @@ function formatShadowMusicStrValue(music: Pick<IMusic, "name" | "url">) {
 
 export default function mapDiscipleToMessage(disciple: IDisciple) {
     const typesStr = `${disciple.weaponType.name} ${disciple.movementType.name} disciple`;
+
+    const supports = [...disciple.supports];
+    const supportsStr =
+        supports.length > 0
+            ? `${bold("Supports")}: ${supports.map(({ name }) => name).join(", ")}`
+            : italic("This disciple has no supports");
     const prfStr = `${bold("PRF")}: ${disciple.prfWeapon.name}`;
 
     const shadowMusicStr = `${bold("Theme")}: ${formatShadowMusicStrValue(disciple.shadowMusic)}${disciple.shadowResultsScreenMusic.url ? ` (${formatShadowMusicStrValue({ name: "results screen", url: disciple.shadowResultsScreenMusic.url })})` : ""}`;
@@ -36,7 +42,7 @@ export default function mapDiscipleToMessage(disciple: IDisciple) {
     const baseStatsStr = codeBlock(baseStatsTableAscii);
 
     const title = `${disciple.name}, ${disciple.epithet}`;
-    const description = [typesStr, prfStr, shadowMusicStr].join("\n");
+    const description = [typesStr, supportsStr, prfStr, shadowMusicStr].join("\n");
     const fields = [
         {
             name: "Spells",
