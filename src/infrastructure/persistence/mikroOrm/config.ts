@@ -12,6 +12,7 @@ import { MovementType } from "./models/game/movementType.ts";
 import { ObstacleEffect } from "./models/game/obstacleEffect.ts";
 import { RepeatEffect } from "./models/game/repeatEffect.ts";
 import { Spell } from "./models/game/spell.ts";
+import { Support } from "./models/game/support.ts";
 import { SpellEffect } from "./models/game/spellEffect.ts";
 import { SpellEffectValue } from "./models/game/spellEffectValue.ts";
 import { SpellEffectValueEffectivenessItem } from "./models/game/spellEffectValueEffectivenessItem.ts";
@@ -69,6 +70,7 @@ export const GAME_DATA_ENTITIES = [
     ObstacleEffect,
     SummonEffect,
     Disciple,
+    Support,
     MovementType,
     Spell,
     SpellEffectValueEffectivenessItem,
