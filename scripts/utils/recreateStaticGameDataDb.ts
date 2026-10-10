@@ -25,7 +25,11 @@ const mappers = {
             };
         }
     },
-};
+    Support: ([discipleOne, discipleTwo]: [string, string]) => ({
+        discipleOne: { name: discipleOne },
+        discipleTwo: { name: discipleTwo },
+    }),
+} as const;
 
 /** Creates an SQLite database with game data. */
 export default async function recreateStaticGameDataDb(config: Options): Promise<void> {
@@ -51,9 +55,10 @@ export default async function recreateStaticGameDataDb(config: Options): Promise
                 encoding: "utf-8",
             });
             const mapper = mappers[entityName as keyof typeof mappers];
-            // TODO: figure out actual typing
             const entries = (JSON.parse(str) as object[]).map((entry) =>
-                mapper ? mapper(entry as Parameters<typeof mapper>[0]) : entry,
+                // TODO: booooo I used any I know I know. Proper validation incoming in a future PR.
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+                mapper ? mapper(entry as any) : entry,
             );
             // Types for insertMany and the likes do not accept strings as first argument,
             // yet passing an entity name string does work as a replacement for passing a constructor at runtime.
