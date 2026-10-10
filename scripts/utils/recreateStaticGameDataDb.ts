@@ -25,10 +25,7 @@ const mappers = {
             };
         }
     },
-    Support: ([discipleOne, discipleTwo]: [string, string]) => ({
-        discipleOne: { name: discipleOne },
-        discipleTwo: { name: discipleTwo },
-    }),
+    Support: ([discipleOne, discipleTwo]: [string, string]) => ({ discipleOne, discipleTwo }),
 } as const;
 
 /** Creates an SQLite database with game data. */
