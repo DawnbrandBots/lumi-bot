@@ -83,7 +83,7 @@ exports[`spellEffectsValues > shadow percent damage 1`] = `
   [
     {
       "base": 35,
-      "className": "DarkSlashValue",
+      "className": "Fixed5ScaleValue",
     },
   ],
 ]
