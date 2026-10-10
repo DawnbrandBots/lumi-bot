@@ -5,9 +5,9 @@ exports[`mapDiscipleToMessage > base 1`] = `
   "reply": {
     "embed": {
       "description": "Sword Infantry disciple
-_This disciple has no supports_
 **PRF**: Royal Sword
-**Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))",
+**Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))
+_This disciple has no supports_",
       "fields": [
         {
           "inline": false,
@@ -36,9 +36,9 @@ exports[`mapDiscipleToMessage > unlinked shadow music 1`] = `
   "reply": {
     "embed": {
       "description": "Sword Infantry disciple
-_This disciple has no supports_
 **PRF**: Royal Sword
-**Theme**: Betrayal - The Exiled Prince ([results screen](https://example.com/victory))",
+**Theme**: Betrayal - The Exiled Prince ([results screen](https://example.com/victory))
+_This disciple has no supports_",
       "fields": [
         {
           "inline": false,
@@ -67,9 +67,9 @@ exports[`mapDiscipleToMessage > with supports 1`] = `
   "reply": {
     "embed": {
       "description": "Sword Infantry disciple
-**Supports**: Gotthold, Carina
 **PRF**: Royal Sword
-**Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))",
+**Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))
+**Supports**: Gotthold, Carina",
       "fields": [
         {
           "inline": false,

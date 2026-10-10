@@ -24,14 +24,14 @@ function formatShadowMusicStrValue(music: Pick<IMusic, "name" | "url">) {
 export default function mapDiscipleToMessage(disciple: IDisciple) {
     const typesStr = `${disciple.weaponType.name} ${disciple.movementType.name} disciple`;
 
+    const shadowMusicStr = `${bold("Theme")}: ${formatShadowMusicStrValue(disciple.shadowMusic)}${disciple.shadowResultsScreenMusic.url ? ` (${formatShadowMusicStrValue({ name: "results screen", url: disciple.shadowResultsScreenMusic.url })})` : ""}`;
+
     const supports = [...disciple.supports];
     const supportsStr =
         supports.length > 0
             ? `${bold("Supports")}: ${supports.map(({ name }) => name).join(", ")}`
             : italic("This disciple has no supports");
     const prfStr = `${bold("PRF")}: ${disciple.prfWeapon.name}`;
-
-    const shadowMusicStr = `${bold("Theme")}: ${formatShadowMusicStrValue(disciple.shadowMusic)}${disciple.shadowResultsScreenMusic.url ? ` (${formatShadowMusicStrValue({ name: "results screen", url: disciple.shadowResultsScreenMusic.url })})` : ""}`;
 
     const spellsStr = unorderedList(
         [...disciple.spells].map((spell) => `${bold(spell.name)}: ${describeSpellEffects(spell, true)}`),
@@ -42,7 +42,7 @@ export default function mapDiscipleToMessage(disciple: IDisciple) {
     const baseStatsStr = codeBlock(baseStatsTableAscii);
 
     const title = `${disciple.name}, ${disciple.epithet}`;
-    const description = [typesStr, supportsStr, prfStr, shadowMusicStr].join("\n");
+    const description = [typesStr, prfStr, shadowMusicStr, supportsStr].join("\n");
     const fields = [
         {
             name: "Spells",
