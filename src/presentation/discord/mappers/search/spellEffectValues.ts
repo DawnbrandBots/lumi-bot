@@ -145,7 +145,7 @@ const SPELL_EFFECT_VALUE_SCALING_STRATEGIES = {
     NONE: (arg) => new NonScalingValue(arg),
     ADDITIVE_BASE_PERCENT_10: (arg) => new Percent10ScaleValue(arg),
     ADDITIVE_BASE_PERCENT_5: (arg) => new Percent5ScaleValue(arg),
-    DARK_SLASH: (arg) => new DarkSlashValue(arg),
+    ADDITIVE_FIXED_5: (arg) => new DarkSlashValue(arg),
     MINION_ATK: (arg) => new MinionAtkValue(arg),
 } as const satisfies Record<
     keyof typeof ESpellEffectScalingStrategy,

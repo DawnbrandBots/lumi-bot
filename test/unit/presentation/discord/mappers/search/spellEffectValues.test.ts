@@ -158,7 +158,7 @@ describe(spellEffectsValues.name, () => {
                     effects: [
                         {
                             kind: ESpellEffectKind.DAMAGE,
-                            amount: percentValue(35, ESpellEffectScalingStrategy.DARK_SLASH),
+                            amount: percentValue(35, ESpellEffectScalingStrategy.ADDITIVE_FIXED_5),
                         },
                     ],
                 },

@@ -602,7 +602,7 @@
             "kind": "PERCENT",
             "stat": "ATK"
           },
-          "scalingStrategyOverride": "DARK_SLASH"
+          "scalingStrategyOverride": "ADDITIVE_FIXED_5"
         },
         "color": "COLORLESS",
         "target": "ANY"
@@ -3439,7 +3439,7 @@
             "kind": "PERCENT",
             "stat": "ATK"
           },
-          "scalingStrategyOverride": "DARK_SLASH"
+          "scalingStrategyOverride": "ADDITIVE_FIXED_5"
         },
         "color": "BLUE",
         "target": "ANY"
@@ -4354,7 +4354,7 @@
             "kind": "PERCENT",
             "stat": "ATK"
           },
-          "scalingStrategyOverride": "DARK_SLASH"
+          "scalingStrategyOverride": "ADDITIVE_FIXED_5"
         },
         "color": "RED",
         "target": "ANY"
