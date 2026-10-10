@@ -35,6 +35,7 @@ export const DISCIPLE = {
     shadowMusic: SHADOW_MUSIC,
     shadowResultsScreenMusic: SHADOW_RESULTS_SCREEN_MUSIC,
     spells: [SPELL],
+    supports: [],
     baseAtk: 42,
     baseHp: 80,
     getAtk({ level }) {

@@ -2,6 +2,7 @@ import { type Options } from "@mikro-orm/sqlite";
 import fs from "node:fs";
 import spells from "../../data/spell.json" with { type: "json" };
 import { ESpellEffectsKind } from "../../src/domain/game/models/spell.types.ts";
+import getMikroOrmTableEntities from "./getMikroOrmTableEntities.ts";
 import recreateDb from "./recreateDb.ts";
 
 const mappers = {
@@ -25,19 +26,16 @@ const mappers = {
             };
         }
     },
-};
+    Support: ([discipleOne, discipleTwo]: [string, string]) => ({ discipleOne, discipleTwo }),
+} as const;
 
 /** Creates an SQLite database with game data. */
 export default async function recreateStaticGameDataDb(config: Options): Promise<void> {
     const orm = await recreateDb(config);
 
     const em = orm.em.fork();
-    // Get only metadata of Mikro-ORM entities that represent tables.
-    // eg. embeddables are entities that do not have tables:
-    // https://mikro-orm.io/docs/embeddables
-    const metadata = [...orm.getMetadata().getAll().values()].filter(
-        (entityMetadata) => entityMetadata.tableName && !entityMetadata.embeddable,
-    );
+
+    const metadata = getMikroOrmTableEntities(orm);
 
     try {
         const connection = orm.em.getConnection();
@@ -51,9 +49,10 @@ export default async function recreateStaticGameDataDb(config: Options): Promise
                 encoding: "utf-8",
             });
             const mapper = mappers[entityName as keyof typeof mappers];
-            // TODO: figure out actual typing
             const entries = (JSON.parse(str) as object[]).map((entry) =>
-                mapper ? mapper(entry as Parameters<typeof mapper>[0]) : entry,
+                // TODO: booooo I used any I know I know. Proper validation incoming in a future PR.
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+                mapper ? mapper(entry as any) : entry,
             );
             // Types for insertMany and the likes do not accept strings as first argument,
             // yet passing an entity name string does work as a replacement for passing a constructor at runtime.

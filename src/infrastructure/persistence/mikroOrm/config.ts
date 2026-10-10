@@ -21,6 +21,7 @@ import { SpellShape } from "./models/game/spellShape.ts";
 import { StatEffect } from "./models/game/statEffect.ts";
 import { StatusEffect } from "./models/game/statusEffect.ts";
 import { SummonEffect } from "./models/game/summonEffect.ts";
+import { Support } from "./models/game/support.ts";
 import { TileEffect } from "./models/game/tileEffect.ts";
 import { WarpEffect } from "./models/game/warpEffect.ts";
 import { Weapon } from "./models/game/weapon.ts";
@@ -69,6 +70,7 @@ export const GAME_DATA_ENTITIES = [
     ObstacleEffect,
     SummonEffect,
     Disciple,
+    Support,
     MovementType,
     Spell,
     SpellEffectValueEffectivenessItem,

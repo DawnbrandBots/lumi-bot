@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import type { IDisciple } from "../../../../../../src/domain/game/models/disciple.types.ts";
 import mapDiscipleToMessage, {
     getDiscipleBaseStatsTable,
 } from "../../../../../../src/presentation/discord/mappers/search/disciple.ts";
@@ -21,15 +22,26 @@ describe(getDiscipleBaseStatsTable.name, () => {
 
 describe(mapDiscipleToMessage.name, () => {
     test.each([
-        ["with linked shadow music", DISCIPLE],
+        ["base", DISCIPLE],
         [
-            "with an unlinked shadow music",
+            "unlinked shadow music",
             {
                 ...DISCIPLE,
                 shadowMusic: {
                     ...DISCIPLE.shadowMusic,
                     url: null,
                 },
+            },
+        ],
+        [
+            "with supports",
+            {
+                ...DISCIPLE,
+                supports: [
+                    { name: "Gotthold" },
+                    { name: "Carina" },
+                    // TODO: narrow mapDiscipleToMessage's input type once IDisciple does not use Iterable for lists anymore
+                ] as IDisciple["supports"],
             },
         ],
     ])("%s", (_, disciple) => {
