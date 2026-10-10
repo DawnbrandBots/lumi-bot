@@ -34,6 +34,13 @@ export class Disciple extends DiscipleSchema.class implements IDisciple {
         return "disciple" as const;
     }
 
+    public get supports(): Iterable<IDisciple> {
+        return [
+            ...this.supportsAsDiscipleOne.getItems().map(({ discipleTwo }) => discipleTwo),
+            ...this.supportsAsDiscipleTwo.getItems().map(({ discipleOne }) => discipleOne),
+        ];
+    }
+
     public get baseHp() {
         return DiscipleRules.baseHp(this);
     }
