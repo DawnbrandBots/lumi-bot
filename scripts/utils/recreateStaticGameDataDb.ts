@@ -2,6 +2,7 @@ import { type Options } from "@mikro-orm/sqlite";
 import fs from "node:fs";
 import spells from "../../data/spell.json" with { type: "json" };
 import { ESpellEffectsKind } from "../../src/domain/game/models/spell.types.ts";
+import getMikroOrmTableEntities from "./getMikroOrmTableEntities.ts";
 import recreateDb from "./recreateDb.ts";
 
 const mappers = {
@@ -33,12 +34,8 @@ export default async function recreateStaticGameDataDb(config: Options): Promise
     const orm = await recreateDb(config);
 
     const em = orm.em.fork();
-    // Get only metadata of Mikro-ORM entities that represent tables.
-    // eg. embeddables are entities that do not have tables:
-    // https://mikro-orm.io/docs/embeddables
-    const metadata = [...orm.getMetadata().getAll().values()].filter(
-        (entityMetadata) => entityMetadata.tableName && !entityMetadata.embeddable,
-    );
+
+    const metadata = getMikroOrmTableEntities(orm);
 
     try {
         const connection = orm.em.getConnection();
