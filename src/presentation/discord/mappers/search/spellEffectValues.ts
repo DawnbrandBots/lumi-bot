@@ -127,17 +127,11 @@ export class MinionAtkValue extends Value implements ISpellEffectValueWithToLeve
 }
 
 /** Dark Slash-like spells effect value increases by exactly 5 per level. */
-export class DarkSlashValue extends ValueWithScale implements ISpellEffectValueWithToLevelAndConsistentScale {
-    public get unit() {
-        return { kind: "PERCENT" } as const;
-    }
-
-    public get scale() {
-        return 5;
-    }
-
-    public get scalesWithLevel() {
-        return true;
+export class FixedScaleValue extends ValueWithScale implements ISpellEffectValueWithToLevelAndConsistentScale {
+    public readonly scale: number;
+    public constructor(arg: { base: number; scale: number }) {
+        super(arg);
+        this.scale = arg.scale;
     }
 }
 
@@ -145,7 +139,8 @@ const SPELL_EFFECT_VALUE_SCALING_STRATEGIES = {
     NONE: (arg) => new NonScalingValue(arg),
     ADDITIVE_BASE_PERCENT_10: (arg) => new Percent10ScaleValue(arg),
     ADDITIVE_BASE_PERCENT_5: (arg) => new Percent5ScaleValue(arg),
-    DARK_SLASH: (arg) => new DarkSlashValue(arg),
+    ADDITIVE_FIXED_5: (arg) => new FixedScaleValue({ ...arg, scale: 5 }),
+    ADDITIVE_FIXED_2: (arg) => new FixedScaleValue({ ...arg, scale: 2 }),
     MINION_ATK: (arg) => new MinionAtkValue(arg),
 } as const satisfies Record<
     keyof typeof ESpellEffectScalingStrategy,
