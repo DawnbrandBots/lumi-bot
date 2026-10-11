@@ -2157,7 +2157,8 @@
           "unit": {
             "kind": "PERCENT",
             "stat": "ATK"
-          }
+          },
+          "scalingStrategyOverride": "ADDITIVE_FIXED_2"
         },
         "target": "SELF"
       }
