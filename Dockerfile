@@ -28,5 +28,7 @@ ENV REVISION=${REVISION}
 WORKDIR /app
 COPY --from=build /app/dist .
 COPY COPYING .
-USER node
+# 1000:1000 -> node user:group in official node docker image
+# Have to use ids instead of names to pass hadolint check.
+USER 1000:1000
 CMD ["node", "--enable-source-maps", "."]
