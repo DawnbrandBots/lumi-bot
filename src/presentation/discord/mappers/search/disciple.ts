@@ -60,7 +60,7 @@ export default function mapDiscipleToMessage(disciple: IDisciple) {
     ];
 
     // TODO: switch between portraits
-    const portraitName = `FESH_${disciple.name}_${disciple.epithet.replace(" ", "_")}_shadow.jpg`;
+    const portraitName = `FESH_${`${disciple.name}_${disciple.epithet}`.replaceAll(" ", "_")}_shadow.jpg`;
     const hash = createHash("md5").update(portraitName).digest("hex");
     const url = `https://cdn.fireemblemwiki.org/${hash[0]}/${hash.slice(0, 2)}/${portraitName}`;
 
