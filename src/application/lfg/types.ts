@@ -8,6 +8,7 @@ import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
     STATUS = "STATUS",
+    ROOM_LIST = "ROOM_LIST",
     ROOM_CREATED = "ROOM_CREATED",
     ROOM_CODE_CHANGED = "ROOM_CODE_CHANGED",
     INVALID_ROOM_CODE = "INVALID_ROOM_CODE",
@@ -43,6 +44,7 @@ type TLfgResultValueByKind = {
         readonly guildConfig: TLfgStatusGuildConfig | null;
         readonly rooms: readonly IRoom[];
     };
+    [ELfgResultKind.ROOM_LIST]: readonly IRoom[];
     [ELfgResultKind.ROOM_CREATED]: { readonly userId: string; readonly room: IRoom };
     [ELfgResultKind.ROOM_CODE_CHANGED]: { readonly oldCode: string; readonly newCode: string };
     [ELfgResultKind.ALREADY_IN_A_ROOM]: { readonly userId: string };
@@ -107,12 +109,11 @@ export type TLfgResultOfKind<Kind extends ELfgResultKind> =
             : { readonly kind: Kind; readonly value: TLfgResultValueByKind[Kind] }
         : never;
 
-export type TLfgResult = {
-    [Kind in ELfgResultKind]: TLfgResultOfKind<Kind>;
-}[ELfgResultKind];
+export type TLfgResult = { [Kind in ELfgResultKind]: TLfgResultOfKind<Kind> }[ELfgResultKind];
 
 export type TLfgResultTypes = {
     getLfgStatus: TLfgResultOfKind<ELfgResultKind.STATUS>;
+    getRoomList: TLfgResultOfKind<ELfgResultKind.ROOM_LIST>;
     createRoom: TLfgResultOfKind<
         | ELfgResultKind.ROOM_CREATED
         | ELfgResultKind.INVALID_ROOM_CODE

@@ -13,6 +13,7 @@ import { createRoom } from "../../application/lfg/useCases/createRoom.ts";
 import { disbandOwnedRoom } from "../../application/lfg/useCases/disbandOwnedRoom.ts";
 import { disbandRoom } from "../../application/lfg/useCases/disbandRoom.ts";
 import { getLfgStatus } from "../../application/lfg/useCases/getLfgStatus.ts";
+import { getRoomList } from "../../application/lfg/useCases/getRoomList.ts";
 import { kickPlayerFromOwnedRoom } from "../../application/lfg/useCases/kickPlayerFromOwnedRoom.ts";
 import { kickPlayerFromRoom } from "../../application/lfg/useCases/kickPlayerFromRoom.ts";
 import { leaveRoom } from "../../application/lfg/useCases/leaveRoom.ts";
@@ -43,6 +44,7 @@ const LFG_USE_CASES = {
     disbandRoom: disbandRoom,
     disbandOwnedRoom: disbandOwnedRoom,
     getLfgStatus: getLfgStatus,
+    getRoomList: getRoomList,
     kickPlayerFromRoom: kickPlayerFromRoom,
     kickPlayerFromOwnedRoom: kickPlayerFromOwnedRoom,
     leaveRoom: leaveRoom,

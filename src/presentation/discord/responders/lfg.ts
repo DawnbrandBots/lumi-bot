@@ -3,9 +3,9 @@ import type { TextChannel } from "discord.js";
 import { ChannelType, MessageFlags } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TAdminGuildConfig } from "../../../application/admin/types.ts";
-import { type TLfgResult } from "../../../application/lfg/types.ts";
 import { SHOW_RESPONSE_OPTION_NAME } from "../commands/constants.ts";
 import type { TGuildCommandInteraction, TGuildComponentInteraction } from "../commands/types.ts";
+import type { TLfgPresentationResult } from "../commands/types/lfg.types.ts";
 import { mapLfgResultToMessageBase } from "../mappers/lfg.ts";
 import { EMessageKind } from "../message.types.ts";
 
@@ -41,7 +41,7 @@ export async function lfgResponder({
 }: {
     readonly guildConfig: PickDeep<TAdminGuildConfig, "lfgChannel"> | null;
     readonly interaction: TGuildCommandInteraction | TGuildComponentInteraction;
-    readonly result: TLfgResult;
+    readonly result: TLfgPresentationResult;
 }): Promise<void> {
     const lfgChannelExists = !!guildConfig?.lfgChannel;
     const interactionSentFromLfgChannel = lfgChannelExists && interaction.channelId === guildConfig.lfgChannel;

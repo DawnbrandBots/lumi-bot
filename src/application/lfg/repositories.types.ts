@@ -14,7 +14,10 @@ export type TLfgRepository = {
     readonly findRoomByCode: (arg: { readonly guildId: string; readonly code: string }) => MaybePromise<IRoom | null>;
     readonly findRoomById: (arg: { readonly guildId?: string; readonly roomId: string }) => MaybePromise<IRoom | null>;
     readonly findRoomByUser: (arg: { readonly guildId: string; readonly userId: string }) => MaybePromise<IRoom | null>;
-    readonly listRooms: (arg: { readonly guildId: string }) => MaybePromise<readonly IRoom[]>;
+    readonly listRooms: (arg: {
+        readonly guildId: string;
+        readonly omitFullRooms?: boolean;
+    }) => MaybePromise<readonly IRoom[]>;
     readonly removeRoom: (arg: { readonly roomId: string }) => MaybePromise<void>;
     readonly removeRoomPlayer: (arg: { readonly roomId: string; readonly userId: string }) => MaybePromise<void>;
     readonly moveUserToRoom: (arg: { readonly roomId: string; readonly userId: string }) => MaybePromise<IRoom>;

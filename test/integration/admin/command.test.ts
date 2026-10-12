@@ -94,6 +94,7 @@ function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandAr
                 disbandRoom: vi.fn(),
                 disbandOwnedRoom: vi.fn(),
                 getLfgStatus: vi.fn(),
+                getRoomList: vi.fn(),
                 kickPlayerFromRoom: vi.fn(),
                 kickPlayerFromOwnedRoom: vi.fn(),
                 leaveRoom: vi.fn(),

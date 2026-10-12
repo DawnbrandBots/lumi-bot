@@ -14,7 +14,7 @@ import {
     userMention,
 } from "discord.js";
 import type { TLfgResultOfKind, TLfgStatusGuildConfig } from "../../../application/lfg/types.ts";
-import { ELfgResultKind, type TLfgResult } from "../../../application/lfg/types.ts";
+import { ELfgResultKind } from "../../../application/lfg/types.ts";
 import {
     AMOUNT_OF_PLAYERS_IN_A_BATTLE,
     FRIEND_BATTLE_CODE_MAXIMUM_LENGTH,
@@ -40,6 +40,7 @@ import {
     LFG_STATUS_SUBCOMMAND_NAME,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfg/constants.ts";
+import type { TLfgPresentationResult } from "../commands/types/lfg.types.ts";
 import { DISCORD_MESSAGE_POSITIVE_COLOR } from "../constants.ts";
 import { createErrorMessage, createNegativeMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 import { EMessageKind } from "../message.types.ts";
@@ -286,7 +287,7 @@ export function mapLfgResultToMessageBase({
     callerId,
     isPublic,
 }: {
-    result: TLfgResult;
+    result: TLfgPresentationResult;
     callerId: string;
     isPublic?: boolean;
 }) {
