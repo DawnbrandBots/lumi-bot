@@ -7,7 +7,7 @@ import type { TApplicationRepositories } from "../repositories.types.ts";
 import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
-    ROOMS_LISTED = "ROOMS_LISTED",
+    STATUS = "STATUS",
     ROOM_CREATED = "ROOM_CREATED",
     ROOM_CODE_CHANGED = "ROOM_CODE_CHANGED",
     INVALID_ROOM_CODE = "INVALID_ROOM_CODE",
@@ -39,7 +39,7 @@ export const enum ELfgResultKind {
 }
 
 type TLfgResultValueByKind = {
-    [ELfgResultKind.ROOMS_LISTED]: {
+    [ELfgResultKind.STATUS]: {
         readonly guildConfig: TLfgStatusGuildConfig | null;
         readonly rooms: readonly IRoom[];
     };
@@ -112,7 +112,7 @@ export type TLfgResult = {
 }[ELfgResultKind];
 
 export type TLfgResultTypes = {
-    getLfgStatus: TLfgResultOfKind<ELfgResultKind.ROOMS_LISTED>;
+    getLfgStatus: TLfgResultOfKind<ELfgResultKind.STATUS>;
     createRoom: TLfgResultOfKind<
         | ELfgResultKind.ROOM_CREATED
         | ELfgResultKind.INVALID_ROOM_CODE

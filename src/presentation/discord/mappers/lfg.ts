@@ -291,7 +291,7 @@ export function mapLfgResultToMessageBase({
     isPublic?: boolean;
 }) {
     switch (result.kind) {
-        case ELfgResultKind.ROOMS_LISTED: {
+        case ELfgResultKind.STATUS: {
             return createNeutralMessage({
                 embed: { description: formatStatus(result.value.rooms, result.value.guildConfig) },
             });

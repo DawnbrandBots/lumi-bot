@@ -13,7 +13,7 @@ describe(getLfgStatus.name, () => {
         const response = await lfg.useCases.getLfgStatus({ guildId: GUILD_ID });
 
         expect(response).toMatchObject({
-            kind: ELfgResultKind.ROOMS_LISTED,
+            kind: ELfgResultKind.STATUS,
             value: {
                 guildConfig: null,
                 rooms: [{ code: "one", ownerId: OWNER.id, playerIds: [OWNER.id] }],
