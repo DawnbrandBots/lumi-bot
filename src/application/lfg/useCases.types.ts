@@ -29,6 +29,10 @@ export type TLfgUseCaseArgs = {
     readonly getLfgStatus: {
         readonly guildId: string;
     };
+    readonly getRoomList: {
+        readonly guildId: string;
+        readonly omitFullRooms?: boolean;
+    };
     readonly kickPlayerFromRoom: {
         readonly guildId: string;
         readonly code: string;

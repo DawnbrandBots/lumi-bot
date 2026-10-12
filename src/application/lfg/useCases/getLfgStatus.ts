@@ -1,5 +1,5 @@
-import { ELfgResultKind } from "../types.ts";
 import type { TLfgUseCaseBase } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 
 export const getLfgStatus: TLfgUseCaseBase<
     "getLfgStatus",
@@ -11,7 +11,7 @@ export const getLfgStatus: TLfgUseCaseBase<
     ]);
 
     return {
-        kind: ELfgResultKind.ROOMS_LISTED,
+        kind: ELfgResultKind.STATUS,
         value: { guildConfig, rooms },
     } as const;
 };
