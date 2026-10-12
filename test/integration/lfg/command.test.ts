@@ -3,7 +3,7 @@ import { channelMention, ChannelType, MessageFlags, roleMention, userMention } f
 import { describe, expect, test, vi } from "vitest";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
 import type { TAdminUseCases } from "../../../src/application/admin/useCases.types.ts";
-import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
+import { ELfgResultKind } from "../../../src/application/lfg/types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
 import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
@@ -20,6 +20,7 @@ import {
     LFG_ROLE_OPTION_NAME,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
 } from "../../../src/presentation/discord/commands/lfg/constants.ts";
+import type { TLfgPresentationResult } from "../../../src/presentation/discord/commands/types/lfg.types.ts";
 
 const GUILD_ID = "guild-1";
 const USER_ID = "user-1";
@@ -37,7 +38,7 @@ const POSITIVE_RESULT = {
         userId: USER_ID,
         room: { id: ROOM_ID, code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID] },
     },
-} satisfies TLfgResult;
+} satisfies TLfgPresentationResult;
 
 type ReplyArg = {
     readonly allowedMentions?: unknown;
@@ -51,7 +52,7 @@ function getSetLfgRoleLastPingedAtMock() {
     return vi.fn<TAdminUseCases["setLfgRoleLastPingedAt"]>();
 }
 
-function getLfgUseCaseMocks(result: TLfgResult) {
+function getLfgUseCaseMocks(result: TLfgPresentationResult) {
     return {
         changeRoomCode: vi.fn().mockResolvedValue(result),
         changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
@@ -59,6 +60,7 @@ function getLfgUseCaseMocks(result: TLfgResult) {
         disbandRoom: vi.fn().mockResolvedValue(result),
         disbandOwnedRoom: vi.fn().mockResolvedValue(result),
         getLfgStatus: vi.fn().mockResolvedValue(result),
+        getRoomList: vi.fn().mockResolvedValue(result),
         kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
         kickPlayerFromOwnedRoom: vi.fn().mockResolvedValue(result),
         leaveRoom: vi.fn().mockResolvedValue(result),
@@ -126,7 +128,7 @@ function getCommand({
     lfgRolePingCooldownMinutes = undefined,
     setLfgRoleLastPingedAt = getSetLfgRoleLastPingedAtMock(),
 }: {
-    readonly result: TLfgResult;
+    readonly result: TLfgPresentationResult;
     readonly channel: string | null;
     readonly lfgUseCases?: LfgUseCasesMock;
     readonly lfgRole?: string | null;
@@ -237,7 +239,7 @@ describe("lfg command", () => {
                 oldCode: "old",
                 newCode: ROOM_CODE,
             },
-        } satisfies TLfgResult;
+        } satisfies TLfgPresentationResult;
         const lfgUseCases = getLfgUseCaseMocks(result);
         const command = getCommand({ result, channel: null, lfgUseCases });
         const { interaction } = getInteractionFixture({

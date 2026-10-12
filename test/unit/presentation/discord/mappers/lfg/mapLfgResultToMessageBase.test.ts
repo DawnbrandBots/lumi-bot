@@ -19,21 +19,21 @@ describe(mapLfgResultToMessageBase.name, () => {
         {
             name: "non-empty room list",
             input: {
-                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: null, rooms: [ROOM] } },
+                result: { kind: ELfgResultKind.STATUS, value: { guildConfig: null, rooms: [ROOM] } },
                 callerId: "owner",
             },
         },
         {
             name: "empty room list",
             input: {
-                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: null, rooms: [] } },
+                result: { kind: ELfgResultKind.STATUS, value: { guildConfig: null, rooms: [] } },
                 callerId: "owner",
             },
         },
         {
             name: "status with configured LFG channel",
             input: {
-                result: { kind: ELfgResultKind.ROOMS_LISTED, value: { guildConfig: GUILD_CONFIG, rooms: [ROOM] } },
+                result: { kind: ELfgResultKind.STATUS, value: { guildConfig: GUILD_CONFIG, rooms: [ROOM] } },
                 callerId: "owner",
             },
             setup: () => {

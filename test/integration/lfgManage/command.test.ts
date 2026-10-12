@@ -7,7 +7,7 @@ import {
 } from "discord.js";
 import { describe, expect, test, vi } from "vitest";
 import { EAdminResultKind } from "../../../src/application/admin/types.ts";
-import { ELfgResultKind, type TLfgResult } from "../../../src/application/lfg/types.ts";
+import { ELfgResultKind } from "../../../src/application/lfg/types.ts";
 import type { TApplicationUseCases } from "../../../src/application/useCases.types.ts";
 import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
 import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
@@ -23,6 +23,7 @@ import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_COMMAND_NAME,
 } from "../../../src/presentation/discord/commands/lfgManage/constants.ts";
+import type { TLfgPresentationResult } from "../../../src/presentation/discord/commands/types/lfg.types.ts";
 
 const GUILD_ID = "guild-1";
 const ADMIN_ID = "admin";
@@ -73,7 +74,13 @@ function getInteractionFixture({
     return { channelFetch, interaction, reply, send };
 }
 
-function getCommand({ result, channel = null }: { readonly result: TLfgResult; readonly channel?: string | null }) {
+function getCommand({
+    result,
+    channel = null,
+}: {
+    readonly result: TLfgPresentationResult;
+    readonly channel?: string | null;
+}) {
     const lfgUseCases = {
         changeRoomCode: vi.fn().mockResolvedValue(result),
         changeOwnedRoomCode: vi.fn().mockResolvedValue(result),
@@ -82,6 +89,7 @@ function getCommand({ result, channel = null }: { readonly result: TLfgResult; r
         movePlayerToRoomByCode: vi.fn().mockResolvedValue(result),
         movePlayerToRoomById: vi.fn().mockResolvedValue(result),
         getLfgStatus: vi.fn().mockResolvedValue(result),
+        getRoomList: vi.fn().mockResolvedValue(result),
         kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
         kickPlayerFromOwnedRoom: vi.fn().mockResolvedValue(result),
         leaveRoom: vi.fn().mockResolvedValue(result),
@@ -157,7 +165,7 @@ describe("lfg-manage command", () => {
                     userId: PLAYER_ID,
                     room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
-            } satisfies TLfgResult,
+            } satisfies TLfgPresentationResult,
             expectedArg: { guildId: GUILD_ID, owner: { id: PLAYER_ID }, code: ROOM_CODE },
         },
         {
@@ -169,7 +177,7 @@ describe("lfg-manage command", () => {
                     userId: PLAYER_ID,
                     room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
-            } satisfies TLfgResult,
+            } satisfies TLfgPresentationResult,
             expectedArg: { guildId: GUILD_ID, user: { id: PLAYER_ID }, code: ROOM_CODE },
         },
         {
@@ -181,7 +189,7 @@ describe("lfg-manage command", () => {
                     oldCode: ROOM_CODE,
                     newCode: NEW_ROOM_CODE,
                 },
-            } satisfies TLfgResult,
+            } satisfies TLfgPresentationResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, newCode: NEW_ROOM_CODE },
         },
         {
@@ -195,7 +203,7 @@ describe("lfg-manage command", () => {
                     room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [] },
                     removalResult: { kind: ELfgPlayerRemovalKind.ROOM_DELETED },
                 },
-            } satisfies TLfgResult,
+            } satisfies TLfgPresentationResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, target: { id: PLAYER_ID } },
         },
         {
@@ -208,7 +216,7 @@ describe("lfg-manage command", () => {
                     targetId: PLAYER_ID,
                     room: { id: ROOM_ID, code: ROOM_CODE, ownerId: PLAYER_ID, playerIds: [PLAYER_ID] },
                 },
-            } satisfies TLfgResult,
+            } satisfies TLfgPresentationResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, target: { id: PLAYER_ID } },
         },
         {
@@ -217,7 +225,7 @@ describe("lfg-manage command", () => {
             result: {
                 kind: ELfgResultKind.ROOM_DISBANDED,
                 value: { userId: PLAYER_ID, code: ROOM_CODE },
-            } satisfies TLfgResult,
+            } satisfies TLfgPresentationResult,
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE },
         },
     ] as const)("dispatches $subcommand", async ({ expectedArg, method, result, subcommand }) => {
