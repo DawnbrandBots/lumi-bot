@@ -40,6 +40,4 @@ export function describeUnitSelector(selector: TUnitSelectorDescriptionInput): s
         case EUnitSelectorProperty.WEAPON_RANGE:
             return `units with a range of ${selector.value}`;
     }
-
-    selector satisfies never;
 }
