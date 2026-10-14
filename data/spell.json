@@ -4689,11 +4689,11 @@
               "base": 20,
               "unit": {
                 "kind": "PERCENT",
-                "stat": "RECEIVED_WEAPON_DAMAGE"
+                "stat": "RECEIVED_SPELL_DAMAGE"
               },
               "scalingStrategyOverride": "NONE"
             },
-            "stat": "RECEIVED_WEAPON_DAMAGE"
+            "stat": "RECEIVED_SPELL_DAMAGE"
           },
           "target": "ANY"
         },
