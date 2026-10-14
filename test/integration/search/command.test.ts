@@ -45,6 +45,7 @@ describe("search command messages", () => {
         ["Dark Tetrafire", "countdown before damage"],
         ["Self Mend", "single-tile self heal"],
         ["Self Cross Shield", "area self-targeted status"],
+        ["Crossedge Boost EX", "stat effect only for"],
         ["Trinity Shield Edge EX", "shared status intro"],
         ["Dark Crossfire + Tome", "countdown with shared status intro"],
         ["Thunder Self Edge EX", "mixed damage and status"],

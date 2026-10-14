@@ -5,6 +5,7 @@ import type { ISpellShape } from "./spell.types.ts";
 import type { ESpellEffectScalingStrategy, ISpellEffectValue } from "./spellEffectValue.types.ts";
 import type { EStat } from "./stat.types.ts";
 import type { EStatChange } from "./statChange.types.ts";
+import type { TUnitSelector } from "./unitSelector.types.ts";
 import type { IWeaponType } from "./weaponType.types.ts";
 
 export const ESpellEffectTarget = {
@@ -109,6 +110,7 @@ export interface IStatEffect extends ISpellEffect {
     readonly amount: ISpellEffectValue;
     readonly duration: number | null | undefined;
     readonly stat: keyof typeof EStat;
+    readonly onlyFor?: TUnitSelector;
 }
 
 /** Effect that grants a status effect. */

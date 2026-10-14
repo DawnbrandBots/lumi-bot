@@ -2035,19 +2035,14 @@
           "kind": "STAT",
           "statChange": "INCREASE",
           "amount": {
-            "base": 0,
-            "effectiveness": [
-              {
-                "appliesTo": { "property": "movementType", "movementType": "INFANTRY" },
-                "base": 1
-              }
-            ],
+            "base": 1,
             "unit": {
               "kind": "FIXED"
             },
             "scalingStrategyOverride": "NONE"
           },
-          "stat": "MOVEMENT"
+          "stat": "MOVEMENT",
+          "onlyFor": { "property": "movementType", "movementType": "INFANTRY" }
         },
         "target": "ANY"
       }
