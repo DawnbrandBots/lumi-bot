@@ -1,4 +1,5 @@
 import type { EStat } from "./stat.types.ts";
+import type { TUnitSelector } from "./unitSelector.types.ts";
 
 export const ESpellEffectValueUnitKind = {
     /** Value is exactly the value described. */
@@ -37,7 +38,7 @@ export type TSpellEffectValueUnit = ISpellEffectValueFixedUnit | ISpellEffectVal
  * For example: Arrow spells' effect have 40 base damage against Flying units instead of the normal 25.
  */
 export interface ISpellEffectValueEffectivenessItem {
-    readonly kind: string;
+    readonly appliesTo: TUnitSelector;
     readonly base: number;
     readonly scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy | null;
 }

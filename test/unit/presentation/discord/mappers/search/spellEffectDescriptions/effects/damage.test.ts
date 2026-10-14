@@ -4,6 +4,7 @@ import {
     ESpellEffectTarget,
 } from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
 import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { EUnitSelectorProperty } from "../../../../../../../../src/domain/game/models/unitSelector.types.ts";
 import { ATK_PERCENT_VALUE_UNIT, BLUE_COLOR, FIXED_VALUE_UNIT, RED_COLOR, SINGLE_TILE_SHAPE } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE.name, () => {
@@ -13,7 +14,15 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.DAMAGE.name, () => {
             amount: {
                 base: 60,
                 unit: FIXED_VALUE_UNIT,
-                effectiveness: [{ base: 90, kind: "Flying" }],
+                effectiveness: [
+                    {
+                        base: 90,
+                        appliesTo: {
+                            property: EUnitSelectorProperty.MOVEMENT_TYPE,
+                            value: { name: "Flying" },
+                        },
+                    },
+                ],
             },
             color: RED_COLOR,
             target: ESpellEffectTarget.ANY,

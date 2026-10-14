@@ -9,6 +9,7 @@ import { Disciple } from "./models/game/disciple.ts";
 import { HealEffect } from "./models/game/healEffect.ts";
 import { MovementEffect } from "./models/game/movementEffect.ts";
 import { MovementType } from "./models/game/movementType.ts";
+import { MovementTypeUnitSelector } from "./models/game/movementTypeUnitSelector.ts";
 import { ObstacleEffect } from "./models/game/obstacleEffect.ts";
 import { RepeatEffect } from "./models/game/repeatEffect.ts";
 import { Spell } from "./models/game/spell.ts";
@@ -23,11 +24,16 @@ import { StatusEffect } from "./models/game/statusEffect.ts";
 import { SummonEffect } from "./models/game/summonEffect.ts";
 import { Support } from "./models/game/support.ts";
 import { TileEffect } from "./models/game/tileEffect.ts";
+import { UnitKindSelector } from "./models/game/unitKindSelector.ts";
+import { UnitRoleSelector } from "./models/game/unitRoleSelector.ts";
+import { UnitSelector } from "./models/game/unitSelector.ts";
 import { WarpEffect } from "./models/game/warpEffect.ts";
 import { Weapon } from "./models/game/weapon.ts";
 import { WeaponSkill } from "./models/game/weaponSkill.ts";
 import { WeaponSkillEffect } from "./models/game/weaponSkillEffect.ts";
 import { WeaponType } from "./models/game/weaponType.ts";
+import { WeaponRangeUnitSelector } from "./models/game/weaponRangeUnitSelector.ts";
+import { WeaponTypeUnitSelector } from "./models/game/weaponTypeUnitSelector.ts";
 import { WeaponTypeWeaponSkill } from "./models/game/weaponTypeWeaponSkill.ts";
 import { LfgRoom } from "./models/lfg/room.ts";
 import { LfgRoomPlayer } from "./models/lfg/roomPlayer.ts";
@@ -72,6 +78,12 @@ export const GAME_DATA_ENTITIES = [
     Disciple,
     Support,
     MovementType,
+    UnitSelector,
+    UnitKindSelector,
+    UnitRoleSelector,
+    MovementTypeUnitSelector,
+    WeaponTypeUnitSelector,
+    WeaponRangeUnitSelector,
     Spell,
     SpellEffectValueEffectivenessItem,
     SpellEffectValueFixedUnit,
