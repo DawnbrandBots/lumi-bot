@@ -28,7 +28,6 @@ const unitRoleStrs = {
     SHADOW: "Shadow units",
 } as const;
 
-/** Describes the units selected by a unit property and its expected value. */
 export function describeUnitSelector(selector: TUnitSelectorDescriptionInput): string {
     switch (selector.property) {
         case EUnitSelectorProperty.KIND:
