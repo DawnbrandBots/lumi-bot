@@ -80,6 +80,16 @@
     "uniqueSkill": "PITCH_BLACK_ARMOR"
   },
   {
+    "id": "CAPTAIN_S_SWORD_PLUS",
+    "name": "Captain's Sword +",
+    "weaponType": "SWORD",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "STORMY_CROSSING"
+  },
+  {
     "id": "SHIELD_LANCE_PLUS",
     "name": "Shield Lance +",
     "weaponType": "LANCE",
@@ -488,6 +498,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "PITCH_BLACK_ARMOR"
+  },
+  {
+    "id": "CAPTAIN_S_SWORD",
+    "name": "Captain's Sword",
+    "weaponType": "SWORD",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "STORMY_CROSSING"
   },
   {
     "id": "SHIELD_LANCE",
