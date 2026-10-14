@@ -1,3 +1,4 @@
+import type { APIEmbed } from "discord.js";
 import { bold, codeBlock, hyperlink, italic, unorderedList } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../../../domain/game/constants.ts";
 import type { IDisciple } from "../../../../domain/game/models/disciple.types.ts";
@@ -5,6 +6,8 @@ import type { IMusic } from "../../../../domain/game/models/music.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
 import { describeSpellEffects } from "./spellEffectDescriptions.ts";
+
+import { createHash } from "node:crypto";
 
 export function getDiscipleBaseStatsTable(disciple: Pick<IDisciple, "getHp" | "getAtk">): (string | number)[][] {
     const relevantLevels = Array.from(
@@ -56,13 +59,19 @@ export default function mapDiscipleToMessage(disciple: IDisciple) {
         },
     ];
 
+    // TODO: switch between portraits
+    const portraitName = `FESH_${`${disciple.name}_${disciple.epithet}`.replaceAll(" ", "_")}_shadow.jpg`;
+    const hash = createHash("md5").update(portraitName).digest("hex");
+    const url = `https://cdn.fireemblemwiki.org/${hash[0]}/${hash.slice(0, 2)}/${portraitName}`;
+
     return {
         reply: {
             embed: {
                 title,
                 description,
                 fields,
-            },
+                thumbnail: { url },
+            } satisfies APIEmbed,
         },
     };
 }
