@@ -4,6 +4,7 @@ import {
     ESpellEffectTarget,
 } from "../../../../../../../../src/domain/game/models/spellEffect.types.ts";
 import { SPELL_EFFECT_DESCRIPTION_FORMATTERS } from "../../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import { EUnitSelectorProperty } from "../../../../../../../../src/domain/game/models/unitSelector.types.ts";
 import { FIXED_VALUE_UNIT, SINGLE_TILE_SHAPE } from "../utils.ts";
 
 describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.HEAL.name, () => {
@@ -15,7 +16,15 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.HEAL.name, () => {
                     amount: {
                         base: 40,
                         unit: FIXED_VALUE_UNIT,
-                        effectiveness: [{ base: 70, kind: "Armored" }],
+                        effectiveness: [
+                            {
+                                base: 70,
+                                appliesTo: {
+                                    property: EUnitSelectorProperty.MOVEMENT_TYPE,
+                                    value: { name: "Armored" },
+                                },
+                            },
+                        ],
                     },
                     target: ESpellEffectTarget.SELF,
                 },

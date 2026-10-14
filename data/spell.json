@@ -239,7 +239,7 @@
           "base": 40,
           "effectiveness": [
             {
-              "kind": "RANGED",
+              "appliesTo": { "property": "weaponType.range", "range": 2 },
               "base": 70
             }
           ],
@@ -345,7 +345,7 @@
               },
               "effectiveness": [
                 {
-                  "kind": "FLYING",
+                  "appliesTo": { "property": "movementType", "movementType": "FLYING" },
                   "base": 40
                 }
               ]
@@ -1325,7 +1325,7 @@
               },
               "effectiveness": [
                 {
-                  "kind": "FLYING",
+                  "appliesTo": { "property": "movementType", "movementType": "FLYING" },
                   "base": 40
                 }
               ]
@@ -1812,7 +1812,7 @@
               },
               "effectiveness": [
                 {
-                  "kind": "CAVALRY",
+                  "appliesTo": { "property": "movementType", "movementType": "CAVALRY" },
                   "base": 40
                 }
               ]
@@ -2038,7 +2038,7 @@
             "base": 0,
             "effectiveness": [
               {
-                "kind": "INFANTRY",
+                "appliesTo": { "property": "movementType", "movementType": "INFANTRY" },
                 "base": 1
               }
             ],
@@ -2647,7 +2647,7 @@
           "base": 30,
           "effectiveness": [
             {
-              "kind": "MINION",
+              "appliesTo": { "property": "kind", "unitKind": "MINION" },
               "base": 90
             }
           ],
@@ -3002,7 +3002,7 @@
               "base": 20,
               "effectiveness": [
                 {
-                  "kind": "CAVALRY",
+                  "appliesTo": { "property": "movementType", "movementType": "CAVALRY" },
                   "base": 40
                 }
               ],
@@ -3350,7 +3350,7 @@
           "base": 50,
           "effectiveness": [
             {
-              "kind": "MINION",
+              "appliesTo": { "property": "kind", "unitKind": "MINION" },
               "base": 90
             }
           ],
@@ -3385,7 +3385,7 @@
               },
               "effectiveness": [
                 {
-                  "kind": "FLYING",
+                  "appliesTo": { "property": "movementType", "movementType": "FLYING" },
                   "base": 40
                 }
               ]
@@ -3641,7 +3641,7 @@
               },
               "effectiveness": [
                 {
-                  "kind": "FLYING",
+                  "appliesTo": { "property": "movementType", "movementType": "FLYING" },
                   "base": 40
                 }
               ]
@@ -3924,7 +3924,7 @@
               "base": 20,
               "effectiveness": [
                 {
-                  "kind": "ARMORED",
+                  "appliesTo": { "property": "movementType", "movementType": "ARMORED" },
                   "base": 40
                 }
               ],
@@ -3956,7 +3956,7 @@
           "base": 30,
           "effectiveness": [
             {
-              "kind": "MINION",
+              "appliesTo": { "property": "kind", "unitKind": "MINION" },
               "base": 90
             }
           ],
@@ -4324,7 +4324,7 @@
           "base": 40,
           "effectiveness": [
             {
-              "kind": "RANGED",
+              "appliesTo": { "property": "weaponType.range", "range": 2 },
               "base": 70
             }
           ],

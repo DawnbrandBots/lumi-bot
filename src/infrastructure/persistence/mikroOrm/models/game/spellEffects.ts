@@ -10,7 +10,8 @@ import { SummonEffect } from "./summonEffect.ts";
 import { TileEffect } from "./tileEffect.ts";
 import { WarpEffect } from "./warpEffect.ts";
 
-const ROOT_EFFECT_TYPES = [
+// Prevent crash due to cyclic import
+const rootEffectTypes = () => [
     DamageEffect,
     HealEffect,
     WarpEffect,
@@ -40,7 +41,7 @@ export const NormalSpellEffectsSchema = defineEntity({
     discriminatorValue: ESpellEffectsKind.NORMAL,
     properties: {
         kind: p.enum([ESpellEffectsKind.NORMAL]),
-        effects: () => p.embedded(ROOT_EFFECT_TYPES).array(),
+        effects: () => p.embedded(rootEffectTypes()).array(),
     },
 });
 export class NormalSpellEffects extends NormalSpellEffectsSchema.class implements INormalSpellEffects {}
@@ -53,8 +54,8 @@ export const FormBasedSpellEffectsSchema = defineEntity({
     discriminatorValue: ESpellEffectsKind.FORM_BASED,
     properties: {
         kind: p.enum([ESpellEffectsKind.FORM_BASED]),
-        light: () => p.embedded(ROOT_EFFECT_TYPES).array(),
-        shadow: () => p.embedded(ROOT_EFFECT_TYPES).array(),
+        light: () => p.embedded(rootEffectTypes()).array(),
+        shadow: () => p.embedded(rootEffectTypes()).array(),
     },
 });
 export class FormBasedSpellEffects extends FormBasedSpellEffectsSchema.class implements IFormBasedSpellEffects {}

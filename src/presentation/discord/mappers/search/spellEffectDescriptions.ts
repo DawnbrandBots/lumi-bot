@@ -25,6 +25,10 @@ import { ESpellEffectValueUnitKind } from "../../../../domain/game/models/spellE
 import type { EStat } from "../../../../domain/game/models/stat.types.ts";
 import type { EStatChange } from "../../../../domain/game/models/statChange.types.ts";
 import type { IWeaponType } from "../../../../domain/game/models/weaponType.types.ts";
+import {
+    describeUnitSelector,
+    type TUnitSelectorDescriptionInput,
+} from "./spellEffectDescriptions/unitSelectorDescriptions.ts";
 
 export const STAT_DESCRIPTION_STRINGS = {
     HP: "HP",
@@ -64,7 +68,11 @@ export type TSpellEffectDescriptionContext = PickDeep<ISpell, "shape.id" | "shap
 type TSpellEffectShapeInput = TSpellEffectDescriptionContext["shape"];
 
 export type TSpellEffectValue = PickDeep<ISpellEffectValue, "base"> & {
-    readonly effectiveness?: ReadonlyArray<PickDeep<ISpellEffectValueEffectivenessItem, "kind" | "base">> | null;
+    readonly effectiveness?: ReadonlyArray<
+        PickDeep<ISpellEffectValueEffectivenessItem, "base"> & {
+            readonly appliesTo: TUnitSelectorDescriptionInput;
+        }
+    > | null;
     unit: PickDeep<ISpellEffectValueFixedUnit, "kind"> | PickDeep<ISpellEffectValuePercentUnit, "kind" | "stat">;
 };
 
@@ -120,9 +128,6 @@ type TRootSpellEffectInput = TDomainRootSpellEffect | TRootSpellEffect;
 export type TDescribedSpellEffect =
     TSpellEffect | TSpellEffectDescriptionInputMap[keyof TSpellEffectDescriptionInputMap];
 
-type TSpellEffectDescriptionOnlyFor =
-    PickDeep<IMovementType, "name"> | PickDeep<IWeaponType, "name"> | null | undefined;
-
 export type TSpellEffectDescriptionsInput = TSpellEffectDescriptionContext &
     PickDeep<ISpell, "countdown" | "uses" | "cooldown"> & {
         effects:
@@ -135,7 +140,7 @@ export type TSpellEffectDescriptionsInput = TSpellEffectDescriptionContext &
                   light: TRootSpellEffect[];
                   shadow: TRootSpellEffect[];
               };
-        onlyFor?: TSpellEffectDescriptionOnlyFor;
+        onlyFor?: Pick<IMovementType, "name"> | Pick<IWeaponType, "name"> | null;
     };
 
 type TSpellEffectDescriptionsArgument = ISpell | TSpellEffectDescriptionsInput;
@@ -176,7 +181,9 @@ function formatEffectiveness(amount: ISpellEffectValue | TSpellEffectValue, prep
         return "";
     }
 
-    return ` (${amount.effectiveness.map(({ base, kind }) => `${base} ${preposition} ${kind} units`).join(", ")})`;
+    return ` (${amount.effectiveness
+        .map(({ base, appliesTo }) => `${base} ${preposition} ${describeUnitSelector(appliesTo)}`)
+        .join(", ")})`;
 }
 
 function isStatusEffect(
