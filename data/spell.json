@@ -4784,5 +4784,188 @@
       }
     ],
     "onlyFor": ["movementType", "ARMORED"]
+  },
+  {
+    "id": "SHARK_FANG_EX",
+    "name": "Shark Fang EX",
+    "disciple": "MAGNUS",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 1,
+    "effects": {
+      "light": [
+        {
+          "kind": "STATUS",
+          "effect": {
+            "kind": "STAT",
+            "statChange": "INCREASE",
+            "duration": 3,
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "PERCENT",
+                "stat": "RECEIVED_SPELL_DAMAGE"
+              },
+              "scalingStrategyOverride": "NONE"
+            },
+            "stat": "RECEIVED_SPELL_DAMAGE",
+            "onlyFor": { "property": "role", "unitRole": "LIGHT" }
+          },
+          "target": "ANY"
+        },
+        {
+          "kind": "STATUS",
+          "effect": {
+            "kind": "STAT",
+            "statChange": "INCREASE",
+            "duration": 3,
+            "amount": {
+              "base": 80,
+              "unit": {
+                "kind": "PERCENT",
+                "stat": "ATK"
+              }
+            },
+            "stat": "ATK"
+          },
+          "target": "ANY"
+        }
+      ],
+      "shadow": [
+        {
+          "kind": "STATUS",
+          "effect": {
+            "kind": "STAT",
+            "statChange": "INCREASE",
+            "amount": {
+              "base": 20,
+              "unit": {
+                "kind": "PERCENT",
+                "stat": "RECEIVED_WEAPON_DAMAGE"
+              }
+            },
+            "stat": "RECEIVED_WEAPON_DAMAGE",
+            "onlyFor": { "property": "role", "unitRole": "SHADOW" }
+          },
+          "target": "ANY"
+        },
+        {
+          "kind": "STATUS",
+          "effect": {
+            "kind": "STAT",
+            "statChange": "INCREASE",
+            "amount": {
+              "base": 80,
+              "unit": {
+                "kind": "PERCENT",
+                "stat": "ATK"
+              }
+            },
+            "stat": "ATK"
+          },
+          "target": "ANY"
+        }
+      ]
+    }
+  },
+  {
+    "id": "PIKE_FIRE",
+    "name": "Pike Fire",
+    "disciple": "MAGNUS",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "DAMAGE",
+            "amount": {
+              "base": 20,
+              "effectiveness": [
+                {
+                  "appliesTo": { "property": "movementType", "movementType": "CAVALRY" },
+                  "base": 40
+                }
+              ],
+              "unit": {
+                "kind": "FIXED"
+              }
+            },
+            "color": "RED"
+          },
+          "times": 2,
+          "interval": 6
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "FIRE_SWORD",
+    "name": "Fire Sword",
+    "disciple": "MAGNUS",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 40,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 30,
+          "unit": {
+            "kind": "PERCENT",
+            "stat": "ATK"
+          }
+        },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_SELF_REGEN",
+    "name": "Dark Self Regen",
+    "disciple": "MAGNUS",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "REPEAT",
+          "effect": {
+            "kind": "HEAL",
+            "amount": {
+              "base": 50,
+              "unit": {
+                "kind": "FIXED"
+              }
+            }
+          },
+          "times": 5,
+          "interval": 6
+        },
+        "target": "SELF"
+      }
+    ]
   }
 ]

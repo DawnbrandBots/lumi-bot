@@ -358,5 +358,14 @@
     "weaponType": "SWORD",
     "prfWeapon": "ALONDITE_PLUS",
     "shadowMusic": "BETRAYAL_RADIANT_DAWN"
+  },
+  {
+    "id": "MAGNUS",
+    "name": "Magnus",
+    "epithet": "Tidal Merc",
+    "movementType": "INFANTRY",
+    "weaponType": "SWORD",
+    "prfWeapon": "CAPTAIN_S_SWORD_PLUS",
+    "shadowMusic": "BETRAYAL_AN_ISLAND_APART"
   }
 ]

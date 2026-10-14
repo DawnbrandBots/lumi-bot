@@ -608,6 +608,60 @@ Infinite uses, 5s cooldown, targets single space, self-targeting",
 }
 `;
 
+exports[`search command messages > returns the complete Shark Fang EX message (form dependent spell effects AND only status effects) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "Magnus's EX
+Infinite uses, 1s cooldown, targets single space",
+      "fields": [
+        {
+          "name": "Effects",
+          "value": "In Light form:
+Grants statuses to targets:
+1. Increases Received Spell Damage by 20% (Light units only, 3 turns).
+1. Increases Atk by 80% (3 turns).
+In Shadow form:
+Grants statuses to targets:
+1. Increases Received Weapon Damage by 20% (Shadow units only, permanent).
+1. Increases Atk by 80% (permanent).",
+        },
+        {
+          "inline": true,
+          "name": "Effects' values by level",
+          "value": "\`\`\`
+     1   2   3   4   5   6
+── ───────────────────────
+L1  20   .   .   .   .   .
+L2  80  84  88  92  96 100
+S1  20  21  22  23  24  25
+S2  80  84  88  92  96 100
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+L1  20   .   .   .   .   .
+L2 104 108 112 116 120 128
+S1  26  27  28  29  30  32
+S2 104 108 112 116 120 128
+\`\`\`",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Shark Fang EX, SFEX, Magnus EX",
+      },
+      "title": "Shark Fang EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
 exports[`search command messages > returns the complete Slow Self Shield EX message (cooldown increasing spell effect) 1`] = `
 {
   "embeds": [

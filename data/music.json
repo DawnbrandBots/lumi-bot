@@ -59,6 +59,10 @@
     "name": "Labyrinth: Academy"
   },
   {
+    "id": "LABYRINTH_GROTTO",
+    "name": "Labyrinth: Grotto"
+  },
+  {
     "id": "BETRAYAL_EXILED_PRINCE",
     "url": "https://www.youtube.com/watch?v=I4g29E9Oero&t=684s",
     "name": "Betrayal – The Exiled Prince"
@@ -106,6 +110,14 @@
   {
     "id": "BETRAYAL_SOVEREIGN_AXE_RESULTS_SCREEN",
     "name": "Betrayal - Sovereign Axe (Results screen)"
+  },
+  {
+    "id": "BETRAYAL_AN_ISLAND_APART",
+    "name": "Betrayal - An Island Apart"
+  },
+  {
+    "id": "BETRAYAL_AN_ISLAND_APART_RESULTS_SCREEN",
+    "name": "Betrayal - An Island Apart (Results screen)"
   },
   {
     "id": "BETRAYAL_THE_BLAZING_BLADE",

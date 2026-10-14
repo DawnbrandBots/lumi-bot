@@ -253,5 +253,10 @@
     "id": "BATTLE_FERVOR",
     "name": "Battle Fervor",
     "effect": "ON_WEAPON_KILL_ATK_BOOST_50_3T"
+  },
+  {
+    "id": "STORMY_CROSSING",
+    "name": "Stormy Crossing",
+    "effect": "ON_WEAPON_KILL_MAGIC_COOLDOWN_REDUCTION_20_1T"
   }
 ]
