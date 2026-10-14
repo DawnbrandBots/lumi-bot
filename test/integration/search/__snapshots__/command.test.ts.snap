@@ -95,6 +95,51 @@ S2  72  76  81  85  90  99
 }
 `;
 
+exports[`search command messages > returns the complete Crossedge Boost EX message (stat effect only for) 1`] = `
+{
+  "embeds": [
+    {
+      "color": 5763719,
+      "description": "Estel's EX
+Infinite uses, 1s cooldown, targets 3x3 cross",
+      "fields": [
+        {
+          "name": "Effects",
+          "value": "Grants statuses to targets:
+1. Increases Atk by 30% (permanent).
+1. Increases Movement by 1 (Infantry units only, permanent).",
+        },
+        {
+          "inline": true,
+          "name": "Effects' values by level",
+          "value": "\`\`\`
+     1   2   3   4   5   6
+── ───────────────────────
+1.  30  31  33  34  36  37
+2.   1   .   .   .   .   .
+\`\`\`",
+        },
+        {
+          "inline": true,
+          "name": "-",
+          "value": "\`\`\`
+     7   8   9  10  11  12
+── ───────────────────────
+1.  39  40  42  43  45  48
+2.   1   .   .   .   .   .
+\`\`\`",
+        },
+      ],
+      "footer": {
+        "text": "Search aliases: Crossedge Boost EX, CEBEX, Estel EX",
+      },
+      "title": "Crossedge Boost EX",
+    },
+  ],
+  "kind": "POSITIVE",
+}
+`;
+
 exports[`search command messages > returns the complete Crosswind Grav EX message (limits stat status effect) 1`] = `
 {
   "embeds": [

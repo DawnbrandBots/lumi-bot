@@ -96,7 +96,8 @@ type TSpellEffectDescriptionInputMapWithoutKind = {
         TEffectWithOptionalTargetInput;
     HEAL: TEffectWithAmountInput & TEffectWithOptionalTargetInput;
     MOVEMENT: PickDeep<TSpellEffectKindToEffectMap["MOVEMENT"], "target" | "count" | "direction">;
-    STAT: PickDeep<TSpellEffectKindToEffectMap["STAT"], "stat" | "statChange" | "duration"> & TEffectWithAmountInput;
+    STAT: PickDeep<TSpellEffectKindToEffectMap["STAT"], "stat" | "statChange" | "duration" | "onlyFor"> &
+        TEffectWithAmountInput;
     REPEAT: PickDeep<TSpellEffectKindToEffectMap["REPEAT"], "interval" | "times"> & {
         readonly effect: TSpellEffectDescriptionInputMap["DAMAGE" | "HEAL"];
     };
@@ -181,9 +182,9 @@ function formatEffectiveness(amount: ISpellEffectValue | TSpellEffectValue, prep
         return "";
     }
 
-    return ` (${amount.effectiveness
+    return `${amount.effectiveness
         .map(({ base, appliesTo }) => `${base} ${preposition} ${describeUnitSelector(appliesTo)}`)
-        .join(", ")})`;
+        .join(", ")}`;
 }
 
 function isStatusEffect(
@@ -273,7 +274,7 @@ function describeValueEffect(
     const amountStr = formatSpellEffectValue(effect.amount);
     const effectivenessStr = formatEffectiveness(effect.amount, effectivenessPreposition);
 
-    return `${verb} ${amountStr} ${object}${targetStr}${effectivenessStr}`;
+    return `${verb} ${amountStr} ${object}${targetStr}${effectivenessStr && ` (${effectivenessStr})`}`;
 }
 
 export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctions = {
@@ -302,8 +303,9 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
         const valueStr = formatSpellEffectValue(effect.amount, effect.stat);
         const effectivenessStr = formatEffectiveness(effect.amount, "for");
         const statChange = STAT_CHANGE_DESCRIPTION_STRINGS[effect.statChange];
+        const onlyForStr = effect.onlyFor ? `${describeUnitSelector(effect.onlyFor)} only` : "";
 
-        return `${statChange.verb} ${STAT_DESCRIPTION_STRINGS[effect.stat]} ${statChange.preposition} ${valueStr}${effectivenessStr} (${effect.duration == null ? "permanent" : effect.duration + " turns"})`;
+        return `${statChange.verb} ${STAT_DESCRIPTION_STRINGS[effect.stat]} ${statChange.preposition} ${valueStr} (${[effectivenessStr, onlyForStr, effect.duration == null ? "permanent" : effect.duration + " turns"].filter((s) => !!s).join(", ")})`;
     },
     STATUS(effect, spell, inline) {
         const description = lowercaseFirstLetter(describeSpellEffect(effect.effect, spell, inline));
