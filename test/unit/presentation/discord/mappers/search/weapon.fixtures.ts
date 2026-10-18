@@ -22,6 +22,7 @@ export const UNIQUE_WEAPON_SKILL = {
         kind: "weaponSkillEffect",
         id: "ROYAL_FOCUS_EFFECT",
         description: "Increases damage dealt by this weapon.",
+        effects: [{ kind: "WEAPON_DAMAGE_CHANGE", action: "DEAL_TO", change: "INCREASE", amount: 15 }],
     },
     description: "Increases damage dealt by this weapon.",
     uniqueSkillWeapons: [],

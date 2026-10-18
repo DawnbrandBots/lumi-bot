@@ -77,6 +77,7 @@ export type TWeaponSkillEffectPart =
 export interface IWeaponSkillEffect {
     readonly kind: "weaponSkillEffect";
     readonly id: TId;
-    // To be replaced by structured effects when weapon skill data and descriptions are migrated.
+    readonly effects: TWeaponSkillEffectPart[];
+    // Kept until the search result descriptions are migrated to effects.
     readonly description: string;
 }

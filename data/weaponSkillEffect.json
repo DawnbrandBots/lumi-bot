@@ -1,138 +1,427 @@
 [
   {
     "id": "WEAPON_DAMAGE_VS_AXE_30",
-    "description": "Deal 30% more weapon damage against Axe foes."
+    "description": "Deal 30% more weapon damage against Axe foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "AXE" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_SWORD_30",
-    "description": "Deal 30% more weapon damage against Sword foes."
+    "description": "Deal 30% more weapon damage against Sword foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "SWORD" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_LANCE_30",
-    "description": "Deal 30% more weapon damage against Lance foes."
+    "description": "Deal 30% more weapon damage against Lance foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "LANCE" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_STAFF_30",
-    "description": "Deal 30% more weapon damage against Staff foes."
+    "description": "Deal 30% more weapon damage against Staff foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "STAFF" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_STONE_40",
-    "description": "Deal 40% more weapon damage against Stone foes."
+    "description": "Deal 40% more weapon damage against Stone foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 40,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "STONE" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_WHEN_HP_GE_50_20",
-    "description": "Deal 20% more weapon damage while HP equals or is greater than 50%."
+    "description": "Deal 20% more weapon damage while HP equals or is greater than 50%.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 20,
+        "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_WHEN_HP_GE_50_30",
-    "description": "Deal 30% more weapon damage while HP equals or is greater than 50%."
+    "description": "Deal 30% more weapon damage while HP equals or is greater than 50%.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 30,
+        "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_WHEN_HP_LE_50_120",
-    "description": "Deal 120% more weapon damage while HP equals or is lower than 50%."
+    "description": "Deal 120% more weapon damage while HP equals or is lower than 50%.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 120,
+        "condition": { "kind": "HP", "operand": "LOWER_OR_EQUAL", "percentage": 50 }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_15",
-    "description": "Deal 15% more weapon damage."
+    "description": "Deal 15% more weapon damage.",
+    "effects": [{ "kind": "WEAPON_DAMAGE_CHANGE", "action": "DEAL_TO", "change": "INCREASE", "amount": 15 }]
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_FROM_SWORD_30",
-    "description": "Take 30% less weapon damage from Sword foes."
+    "description": "Take 30% less weapon damage from Sword foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "TAKE_FROM",
+        "change": "DECREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "SWORD" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15",
-    "description": "Take 15% less weapon damage while HP equals or is greater than 50%."
+    "description": "Take 15% less weapon damage while HP equals or is greater than 50%.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "TAKE_FROM",
+        "change": "DECREASE",
+        "amount": 15,
+        "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_LE_50_40",
-    "description": "Take 40% less weapon damage while HP equals or is lower than 50%."
+    "description": "Take 40% less weapon damage while HP equals or is lower than 50%.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "TAKE_FROM",
+        "change": "DECREASE",
+        "amount": 40,
+        "condition": { "kind": "HP", "operand": "LOWER_OR_EQUAL", "percentage": 50 }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_FROM_LANCE_30",
-    "description": "Take 30% less weapon damage from Lance foes."
+    "description": "Take 30% less weapon damage from Lance foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "TAKE_FROM",
+        "change": "DECREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "LANCE" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_FROM_MONSTER_20",
-    "description": "Take 20% less weapon damage from monsters."
+    "description": "Take 20% less weapon damage from monsters.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "TAKE_FROM",
+        "change": "DECREASE",
+        "amount": 20,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "kind", "unitKind": "MINION" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_15",
-    "description": "Take 15% less weapon damage."
+    "description": "Take 15% less weapon damage.",
+    "effects": [{ "kind": "WEAPON_DAMAGE_CHANGE", "action": "TAKE_FROM", "change": "DECREASE", "amount": 15 }]
   },
   {
     "id": "MAX_HP_BOOST_5",
-    "description": "Boost max HP by 5%."
+    "description": "Boost max HP by 5%.",
+    "effects": [{ "kind": "STAT_CHANGE", "stat": "MAX_HP", "change": "INCREASE", "amount": 5 }]
   },
   {
     "id": "MAX_HP_REDUCTION_5_ATK_BOOST_15",
-    "description": "Reduce max HP by 5% and boost Atk by 15%."
+    "description": "Reduce max HP by 5% and boost Atk by 15%.",
+    "effects": [
+      { "kind": "STAT_CHANGE", "stat": "MAX_HP", "change": "DECREASE", "amount": 5 },
+      { "kind": "STAT_CHANGE", "stat": "ATK", "change": "INCREASE", "amount": 15 }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_FROM_RANGE_1_30",
-    "description": "Take 30% less weapon damage from foes with a range of 1."
+    "description": "Take 30% less weapon damage from foes with a range of 1.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "TAKE_FROM",
+        "change": "DECREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType.range", "range": 1 } }
+      }
+    ]
   },
   {
     "id": "ON_WEAPON_KILL_MAGIC_DAMAGE_REDUCTION_40_1T",
-    "description": "After defeating a foe with a weapon attack, grant \"take 40% less magic damage\" (1 turn) to unit."
+    "description": "After defeating a foe with a weapon attack, grant \"take 40% less magic damage\" (1 turn) to unit.",
+    "effects": [
+      {
+        "kind": "ON_AUTO_ATTACK_KILL",
+        "effect": {
+          "kind": "STAT_CHANGE",
+          "stat": "RECEIVED_SPELL_DAMAGE",
+          "change": "DECREASE",
+          "amount": 40,
+          "duration": 1
+        }
+      }
+    ]
   },
   {
     "id": "ON_WEAPON_KILL_MAGIC_COOLDOWN_REDUCTION_20_1T",
-    "description": "After defeating a foe with a weapon attack, grant \"reduce magic cooldown by 20%\" (1 turn) to unit."
+    "description": "After defeating a foe with a weapon attack, grant \"reduce magic cooldown by 20%\" (1 turn) to unit.",
+    "effects": [
+      {
+        "kind": "ON_AUTO_ATTACK_KILL",
+        "effect": {
+          "kind": "STAT_CHANGE",
+          "stat": "COOLDOWN",
+          "change": "DECREASE",
+          "amount": 20,
+          "duration": 1
+        }
+      }
+    ]
   },
   {
     "id": "ON_WEAPON_KILL_RECEIVED_WEAPON_DAMAGE_REDUCTION_90_1T",
-    "description": "After defeating a foe with a weapon attack, grant \"take 90% less weapon damage\" (1 turn) to unit."
+    "description": "After defeating a foe with a weapon attack, grant \"take 90% less weapon damage\" (1 turn) to unit.",
+    "effects": [
+      {
+        "kind": "ON_AUTO_ATTACK_KILL",
+        "effect": {
+          "kind": "STAT_CHANGE",
+          "stat": "RECEIVED_WEAPON_DAMAGE",
+          "change": "DECREASE",
+          "amount": 90,
+          "duration": 1
+        }
+      }
+    ]
   },
   {
     "id": "ON_WEAPON_KILL_ATK_BOOST_50_3T",
-    "description": "After defeating a foe with a weapon attack, grant \"boost Atk by 50%\" (3 turns) to unit."
+    "description": "After defeating a foe with a weapon attack, grant \"boost Atk by 50%\" (3 turns) to unit.",
+    "effects": [
+      {
+        "kind": "ON_AUTO_ATTACK_KILL",
+        "effect": {
+          "kind": "STAT_CHANGE",
+          "stat": "ATK",
+          "change": "INCREASE",
+          "amount": 50,
+          "duration": 3
+        }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_MONSTER_50",
-    "description": "Deal 50% more weapon damage against monsters."
+    "description": "Deal 50% more weapon damage against monsters.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 50,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "kind", "unitKind": "MINION" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_20",
-    "description": "Deal 20% more weapon damage against Cavalry foes."
+    "description": "Deal 20% more weapon damage against Cavalry foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 20,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_30",
-    "description": "Deal 30% more weapon damage against Cavalry foes."
+    "description": "Deal 30% more weapon damage against Cavalry foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_40",
-    "description": "Deal 40% more weapon damage against Cavalry foes."
+    "description": "Deal 40% more weapon damage against Cavalry foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 40,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_50",
-    "description": "Deal 50% more weapon damage against Cavalry foes."
+    "description": "Deal 50% more weapon damage against Cavalry foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 50,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_FLYING_30",
-    "description": "Deal 30% more weapon damage against Flying foes."
+    "description": "Deal 30% more weapon damage against Flying foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_FLYING_40",
-    "description": "Deal 40% more weapon damage against Flying foes."
+    "description": "Deal 40% more weapon damage against Flying foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 40,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_FLYING_50",
-    "description": "Deal 50% more weapon damage against Flying foes."
+    "description": "Deal 50% more weapon damage against Flying foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 50,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_ARMORED_20",
-    "description": "Deal 20% more weapon damage against Armored foes."
+    "description": "Deal 20% more weapon damage against Armored foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 20,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_ARMORED_30",
-    "description": "Deal 30% more weapon damage against Armored foes."
+    "description": "Deal 30% more weapon damage against Armored foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 30,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_ARMORED_40",
-    "description": "Deal 40% more weapon damage against Armored foes."
+    "description": "Deal 40% more weapon damage against Armored foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 40,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
+      }
+    ]
   },
   {
     "id": "WEAPON_DAMAGE_VS_ARMORED_50",
-    "description": "Deal 50% more weapon damage against Armored foes."
+    "description": "Deal 50% more weapon damage against Armored foes.",
+    "effects": [
+      {
+        "kind": "WEAPON_DAMAGE_CHANGE",
+        "action": "DEAL_TO",
+        "change": "INCREASE",
+        "amount": 50,
+        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
+      }
+    ]
   }
 ]
