@@ -8,5 +8,5 @@ export const STAT_DESCRIPTION_STRINGS = {
     RECEIVED_SPELL_DAMAGE: "Received Spell Damage",
     MOVEMENT: "Movement",
     COLOR_AFFINITY: "Color Affinity",
-    COOLDOWN: "Cooldown",
+    SPELL_COOLDOWN: "Spell Cooldown",
 } as const satisfies Record<keyof typeof EStat, string>;

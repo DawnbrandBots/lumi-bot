@@ -144,13 +144,13 @@ test.each<{
         input: {
             effect: {
                 kind: "STATUS_EFFECT_ON_AUTO_ATTACK_KILL",
-                stat: "COOLDOWN",
+                stat: "SPELL_COOLDOWN",
                 change: "DECREASE",
                 amount: 20,
                 duration: 1,
             },
         },
-        expected: 'After defeating a foe with a weapon attack, grant "reduce spell cooldown by 20% (1 turn)" to user.',
+        expected: 'After defeating a foe with a weapon attack, grant "reduce Spell Cooldown by 20% (1 turn)" to user.',
     },
     {
         name: "attack increase after an auto-attack kill",

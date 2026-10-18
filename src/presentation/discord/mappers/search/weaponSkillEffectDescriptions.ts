@@ -1,3 +1,4 @@
+import { EStat } from "../../../../domain/game/models/stat.types.ts";
 import type {
     IWeaponSkillFoeCondition,
     IWeaponSkillHpCondition,
@@ -70,12 +71,12 @@ function describeStatChange(
     stat: IWeaponSkillStatusEffectOnAutoAttackKill["stat"],
     change: IWeaponSkillStatChange,
 ): string {
-    if (stat === "RECEIVED_WEAPON_DAMAGE" || stat === "RECEIVED_SPELL_DAMAGE") {
+    if (stat === EStat.RECEIVED_WEAPON_DAMAGE || stat === EStat.RECEIVED_SPELL_DAMAGE) {
         return `Take ${change.amount}% ${DAMAGE_CHANGE_STRINGS[change.change]} ${DAMAGE_TYPE_STRINGS[stat]} damage`;
     }
 
-    if (stat === "COOLDOWN") {
-        return `${COOLDOWN_CHANGE_VERBS[change.change]} spell cooldown by ${change.amount}%`;
+    if (stat === EStat.SPELL_COOLDOWN) {
+        return `${COOLDOWN_CHANGE_VERBS[change.change]} ${STAT_DESCRIPTION_STRINGS[stat]} by ${change.amount}%`;
     }
 
     return `${STAT_CHANGE_VERBS[change.change]} ${STAT_DESCRIPTION_STRINGS[stat]} by ${change.amount}%`;
@@ -83,13 +84,13 @@ function describeStatChange(
 
 function describeStatEffect(effect: IWeaponSkillStatEffect): string {
     if (effect.MAX_HP && effect.ATK) {
-        return `${describeStatChange("MAX_HP", effect.MAX_HP)} and ${lowercaseFirstLetter(describeStatChange("ATK", effect.ATK))}`;
+        return `${describeStatChange(EStat.MAX_HP, effect.MAX_HP)} and ${lowercaseFirstLetter(describeStatChange(EStat.ATK, effect.ATK))}`;
     }
     if (effect.MAX_HP) {
-        return describeStatChange("MAX_HP", effect.MAX_HP);
+        return describeStatChange(EStat.MAX_HP, effect.MAX_HP);
     }
     if (effect.ATK) {
-        return describeStatChange("ATK", effect.ATK);
+        return describeStatChange(EStat.ATK, effect.ATK);
     }
     throw new Error("A stat effect must change at least one stat");
 }
