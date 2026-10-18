@@ -28,14 +28,20 @@ export const EWeaponSkillCondition = {
     HP: "HP",
 } as const;
 
-export interface IWeaponSkillStatEffect {
-    readonly kind: typeof EWeaponSkillEffectKind.STAT_CHANGE;
-    readonly stat: keyof typeof EStat;
+export interface IWeaponSkillStatChange {
     readonly change: keyof typeof EWeaponSkillEffectChange;
     readonly amount: number;
 }
 
-export interface IWeaponSkillTimedStatEffect extends IWeaponSkillStatEffect {
+export interface IWeaponSkillStatEffect {
+    readonly kind: typeof EWeaponSkillEffectKind.STAT_CHANGE;
+    readonly MAX_HP?: IWeaponSkillStatChange | null;
+    readonly ATK?: IWeaponSkillStatChange | null;
+}
+
+export interface IWeaponSkillTimedStatEffect extends IWeaponSkillStatChange {
+    readonly kind: typeof EWeaponSkillEffectKind.STAT_CHANGE;
+    readonly stat: keyof typeof EStat;
     readonly duration: number;
 }
 
@@ -77,5 +83,5 @@ export type TWeaponSkillEffectPart =
 export interface IWeaponSkillEffect {
     readonly kind: "weaponSkillEffect";
     readonly id: TId;
-    readonly effects: TWeaponSkillEffectPart[];
+    readonly effect: TWeaponSkillEffectPart;
 }

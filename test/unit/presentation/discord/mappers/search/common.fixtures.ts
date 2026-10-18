@@ -40,15 +40,13 @@ const ARMORED_MOVEMENT_TYPE = {
 export const WEAPON_SKILL_EFFECT = {
     kind: "weaponSkillEffect",
     id: "ARMOR_BANE_EFFECT",
-    effects: [
-        {
-            kind: "WEAPON_DAMAGE_CHANGE",
-            action: "DEAL_TO",
-            change: "INCREASE",
-            amount: 30,
-            condition: { kind: "FOE", foeSelector: { property: "movementType", value: ARMORED_MOVEMENT_TYPE } },
-        },
-    ],
+    effect: {
+        kind: "WEAPON_DAMAGE_CHANGE",
+        action: "DEAL_TO",
+        change: "INCREASE",
+        amount: 30,
+        condition: { kind: "FOE", foeSelector: { property: "movementType", value: ARMORED_MOVEMENT_TYPE } },
+    },
 } satisfies IWeaponSkillEffect;
 
 export const WEAPON_TYPE = {

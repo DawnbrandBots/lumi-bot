@@ -8,10 +8,10 @@ export const WeaponSkillEffectSchema = defineEntity({
     name: "WeaponSkillEffect",
     properties: {
         id: p.string().primary(),
-        effects: () =>
+        effect: () =>
             p
                 .embedded([WeaponSkillOnAutoAttackKillEffect, WeaponSkillStatEffect, WeaponSkillWeaponDamageEffect])
-                .array(),
+                .object(),
     },
 });
 

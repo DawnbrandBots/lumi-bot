@@ -3,7 +3,9 @@ import type {
     IWeaponSkillFoeCondition,
     IWeaponSkillHpCondition,
     IWeaponSkillOnAutoAttackKillEffect,
+    IWeaponSkillStatChange,
     IWeaponSkillStatEffect,
+    IWeaponSkillTimedStatEffect,
     IWeaponSkillWeaponDamageEffect,
 } from "../../../../domain/game/models/weaponSkillEffect.types.ts";
 import {
@@ -28,9 +30,7 @@ type TWeaponSkillWeaponDamageEffectInput = Omit<IWeaponSkillWeaponDamageEffect, 
 };
 
 export type TWeaponSkillEffectDescriptionInput = {
-    readonly effects: ReadonlyArray<
-        IWeaponSkillOnAutoAttackKillEffect | IWeaponSkillStatEffect | TWeaponSkillWeaponDamageEffectInput
-    >;
+    readonly effect: IWeaponSkillOnAutoAttackKillEffect | IWeaponSkillStatEffect | TWeaponSkillWeaponDamageEffectInput;
 };
 
 function lowercaseFirstLetter(description: string): string {
@@ -67,16 +67,29 @@ const HP_THRESHOLD_STRINGS = {
     LOWER_OR_EQUAL: "at most",
 } as const satisfies Record<keyof typeof EWeaponSkillHpOperand, string>;
 
+function describeStatChange(stat: IWeaponSkillTimedStatEffect["stat"], change: IWeaponSkillStatChange): string {
+    if (stat === "RECEIVED_WEAPON_DAMAGE" || stat === "RECEIVED_SPELL_DAMAGE") {
+        return `Take ${change.amount}% ${DAMAGE_CHANGE_STRINGS[change.change]} ${DAMAGE_TYPE_STRINGS[stat]} damage`;
+    }
+
+    if (stat === "COOLDOWN") {
+        return `${COOLDOWN_CHANGE_VERBS[change.change]} spell cooldown by ${change.amount}%`;
+    }
+
+    return `${STAT_CHANGE_VERBS[change.change]} ${STAT_DESCRIPTION_STRINGS[stat]} by ${change.amount}%`;
+}
+
 function describeStatEffect(effect: IWeaponSkillStatEffect): string {
-    if (effect.stat === "RECEIVED_WEAPON_DAMAGE" || effect.stat === "RECEIVED_SPELL_DAMAGE") {
-        return `Take ${effect.amount}% ${DAMAGE_CHANGE_STRINGS[effect.change]} ${DAMAGE_TYPE_STRINGS[effect.stat]} damage`;
+    if (effect.MAX_HP && effect.ATK) {
+        return `${describeStatChange("MAX_HP", effect.MAX_HP)} and ${lowercaseFirstLetter(describeStatChange("ATK", effect.ATK))}`;
     }
-
-    if (effect.stat === "COOLDOWN") {
-        return `${COOLDOWN_CHANGE_VERBS[effect.change]} spell cooldown by ${effect.amount}%`;
+    if (effect.MAX_HP) {
+        return describeStatChange("MAX_HP", effect.MAX_HP);
     }
-
-    return `${STAT_CHANGE_VERBS[effect.change]} ${STAT_DESCRIPTION_STRINGS[effect.stat]} by ${effect.amount}%`;
+    if (effect.ATK) {
+        return describeStatChange("ATK", effect.ATK);
+    }
+    throw new Error("A stat effect must change at least one stat");
 }
 
 function describeWeaponDamageEffect(effect: TWeaponSkillWeaponDamageEffectInput): string {
@@ -93,12 +106,12 @@ function describeWeaponDamageEffect(effect: TWeaponSkillWeaponDamageEffectInput)
 }
 
 function describeOnAutoAttackKillEffect(effect: IWeaponSkillOnAutoAttackKillEffect): string {
-    const status = lowercaseFirstLetter(describeStatEffect(effect.effect));
+    const status = lowercaseFirstLetter(describeStatChange(effect.effect.stat, effect.effect));
     const duration = `${effect.effect.duration} turn${effect.effect.duration === 1 ? "" : "s"}`;
     return `After defeating a foe with a weapon attack, grant "${status} (${duration})" to user`;
 }
 
-function describeEffect(effect: TWeaponSkillEffectDescriptionInput["effects"][number]): string {
+function describeEffect(effect: TWeaponSkillEffectDescriptionInput["effect"]): string {
     switch (effect.kind) {
         case EWeaponSkillEffectKind.ON_AUTO_ATTACK_KILL:
             return describeOnAutoAttackKillEffect(effect);
@@ -109,18 +122,9 @@ function describeEffect(effect: TWeaponSkillEffectDescriptionInput["effects"][nu
     }
 }
 
-/** Describes every part of a weapon skill effect in a single sentence. */
+/** Describes a weapon skill effect in a single sentence. */
 export function describeWeaponSkillEffects(
     weaponSkillEffect: IWeaponSkillEffect | TWeaponSkillEffectDescriptionInput,
 ): string {
-    const descriptions = weaponSkillEffect.effects.map(describeEffect);
-    const last = descriptions.at(-1);
-    if (!last) {
-        return "";
-    }
-    if (descriptions.length === 1) {
-        return `${last}.`;
-    }
-
-    return `${descriptions.slice(0, -1).join(", ")} and ${lowercaseFirstLetter(last)}.`;
+    return `${describeEffect(weaponSkillEffect.effect)}.`;
 }

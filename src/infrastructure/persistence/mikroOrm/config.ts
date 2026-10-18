@@ -37,6 +37,7 @@ import { WeaponSkillFoeCondition } from "./models/game/weaponSkillFoeCondition.t
 import { WeaponSkillHpCondition } from "./models/game/weaponSkillHpCondition.ts";
 import { WeaponSkillOnAutoAttackKillEffect } from "./models/game/weaponSkillOnAutoAttackKillEffect.ts";
 import { WeaponSkillStatEffect } from "./models/game/weaponSkillStatEffect.ts";
+import { WeaponSkillStatChange } from "./models/game/weaponSkillStatChange.ts";
 import { WeaponSkillTimedStatEffect } from "./models/game/weaponSkillTimedStatEffect.ts";
 import { WeaponSkillWeaponDamageEffect } from "./models/game/weaponSkillWeaponDamageEffect.ts";
 import { WeaponType } from "./models/game/weaponType.ts";
@@ -74,6 +75,7 @@ export const GAME_DATA_ENTITIES = [
     WeaponSkillHpCondition,
     WeaponSkillOnAutoAttackKillEffect,
     WeaponSkillStatEffect,
+    WeaponSkillStatChange,
     WeaponSkillTimedStatEffect,
     WeaponSkillWeaponDamageEffect,
     WeaponTypeWeaponSkill,

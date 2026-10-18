@@ -1,393 +1,334 @@
 [
   {
     "id": "WEAPON_DAMAGE_VS_AXE_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "AXE" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "AXE" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_SWORD_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "SWORD" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "SWORD" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_LANCE_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "LANCE" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "LANCE" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_STAFF_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "STAFF" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "STAFF" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_STONE_40",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 40,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "STONE" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 40,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "STONE" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_WHEN_HP_GE_50_20",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 20,
-        "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 20,
+      "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_WHEN_HP_GE_50_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 30,
-        "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 30,
+      "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_WHEN_HP_LE_50_120",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 120,
-        "condition": { "kind": "HP", "operand": "LOWER_OR_EQUAL", "percentage": 50 }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 120,
+      "condition": { "kind": "HP", "operand": "LOWER_OR_EQUAL", "percentage": 50 }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_15",
-    "effects": [{ "kind": "WEAPON_DAMAGE_CHANGE", "action": "DEAL_TO", "change": "INCREASE", "amount": 15 }]
+    "effect": { "kind": "WEAPON_DAMAGE_CHANGE", "action": "DEAL_TO", "change": "INCREASE", "amount": 15 }
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_FROM_SWORD_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "TAKE_FROM",
-        "change": "DECREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "SWORD" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "TAKE_FROM",
+      "change": "DECREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "SWORD" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_GE_50_15",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "TAKE_FROM",
-        "change": "DECREASE",
-        "amount": 15,
-        "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "TAKE_FROM",
+      "change": "DECREASE",
+      "amount": 15,
+      "condition": { "kind": "HP", "operand": "GREATER_OR_EQUAL", "percentage": 50 }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_WHEN_HP_LE_50_40",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "TAKE_FROM",
-        "change": "DECREASE",
-        "amount": 40,
-        "condition": { "kind": "HP", "operand": "LOWER_OR_EQUAL", "percentage": 50 }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "TAKE_FROM",
+      "change": "DECREASE",
+      "amount": 40,
+      "condition": { "kind": "HP", "operand": "LOWER_OR_EQUAL", "percentage": 50 }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_FROM_LANCE_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "TAKE_FROM",
-        "change": "DECREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "LANCE" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "TAKE_FROM",
+      "change": "DECREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType", "weaponType": "LANCE" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_FROM_MONSTER_20",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "TAKE_FROM",
-        "change": "DECREASE",
-        "amount": 20,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "kind", "unitKind": "MINION" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "TAKE_FROM",
+      "change": "DECREASE",
+      "amount": 20,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "kind", "unitKind": "MINION" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_15",
-    "effects": [{ "kind": "WEAPON_DAMAGE_CHANGE", "action": "TAKE_FROM", "change": "DECREASE", "amount": 15 }]
+    "effect": { "kind": "WEAPON_DAMAGE_CHANGE", "action": "TAKE_FROM", "change": "DECREASE", "amount": 15 }
   },
   {
     "id": "MAX_HP_BOOST_5",
-    "effects": [{ "kind": "STAT_CHANGE", "stat": "MAX_HP", "change": "INCREASE", "amount": 5 }]
+    "effect": { "kind": "STAT_CHANGE", "MAX_HP": { "change": "INCREASE", "amount": 5 } }
   },
   {
     "id": "MAX_HP_REDUCTION_5_ATK_BOOST_15",
-    "effects": [
-      { "kind": "STAT_CHANGE", "stat": "MAX_HP", "change": "DECREASE", "amount": 5 },
-      { "kind": "STAT_CHANGE", "stat": "ATK", "change": "INCREASE", "amount": 15 }
-    ]
+    "effect": {
+      "kind": "STAT_CHANGE",
+      "MAX_HP": { "change": "DECREASE", "amount": 5 },
+      "ATK": { "change": "INCREASE", "amount": 15 }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_REDUCTION_FROM_RANGE_1_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "TAKE_FROM",
-        "change": "DECREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType.range", "range": 1 } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "TAKE_FROM",
+      "change": "DECREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "weaponType.range", "range": 1 } }
+    }
   },
   {
     "id": "ON_WEAPON_KILL_MAGIC_DAMAGE_REDUCTION_40_1T",
-    "effects": [
-      {
-        "kind": "ON_AUTO_ATTACK_KILL",
-        "effect": {
-          "kind": "STAT_CHANGE",
-          "stat": "RECEIVED_SPELL_DAMAGE",
-          "change": "DECREASE",
-          "amount": 40,
-          "duration": 1
-        }
+    "effect": {
+      "kind": "ON_AUTO_ATTACK_KILL",
+      "effect": {
+        "kind": "STAT_CHANGE",
+        "stat": "RECEIVED_SPELL_DAMAGE",
+        "change": "DECREASE",
+        "amount": 40,
+        "duration": 1
       }
-    ]
+    }
   },
   {
     "id": "ON_WEAPON_KILL_MAGIC_COOLDOWN_REDUCTION_20_1T",
-    "effects": [
-      {
-        "kind": "ON_AUTO_ATTACK_KILL",
-        "effect": {
-          "kind": "STAT_CHANGE",
-          "stat": "COOLDOWN",
-          "change": "DECREASE",
-          "amount": 20,
-          "duration": 1
-        }
+    "effect": {
+      "kind": "ON_AUTO_ATTACK_KILL",
+      "effect": {
+        "kind": "STAT_CHANGE",
+        "stat": "COOLDOWN",
+        "change": "DECREASE",
+        "amount": 20,
+        "duration": 1
       }
-    ]
+    }
   },
   {
     "id": "ON_WEAPON_KILL_RECEIVED_WEAPON_DAMAGE_REDUCTION_90_1T",
-    "effects": [
-      {
-        "kind": "ON_AUTO_ATTACK_KILL",
-        "effect": {
-          "kind": "STAT_CHANGE",
-          "stat": "RECEIVED_WEAPON_DAMAGE",
-          "change": "DECREASE",
-          "amount": 90,
-          "duration": 1
-        }
+    "effect": {
+      "kind": "ON_AUTO_ATTACK_KILL",
+      "effect": {
+        "kind": "STAT_CHANGE",
+        "stat": "RECEIVED_WEAPON_DAMAGE",
+        "change": "DECREASE",
+        "amount": 90,
+        "duration": 1
       }
-    ]
+    }
   },
   {
     "id": "ON_WEAPON_KILL_ATK_BOOST_50_3T",
-    "effects": [
-      {
-        "kind": "ON_AUTO_ATTACK_KILL",
-        "effect": {
-          "kind": "STAT_CHANGE",
-          "stat": "ATK",
-          "change": "INCREASE",
-          "amount": 50,
-          "duration": 3
-        }
+    "effect": {
+      "kind": "ON_AUTO_ATTACK_KILL",
+      "effect": {
+        "kind": "STAT_CHANGE",
+        "stat": "ATK",
+        "change": "INCREASE",
+        "amount": 50,
+        "duration": 3
       }
-    ]
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_MONSTER_50",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 50,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "kind", "unitKind": "MINION" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 50,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "kind", "unitKind": "MINION" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_20",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 20,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 20,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_40",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 40,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 40,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_CAVALRY_50",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 50,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 50,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "CAVALRY" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_FLYING_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_FLYING_40",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 40,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 40,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_FLYING_50",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 50,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 50,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "FLYING" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_ARMORED_20",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 20,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 20,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_ARMORED_30",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 30,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 30,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_ARMORED_40",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 40,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 40,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
+    }
   },
   {
     "id": "WEAPON_DAMAGE_VS_ARMORED_50",
-    "effects": [
-      {
-        "kind": "WEAPON_DAMAGE_CHANGE",
-        "action": "DEAL_TO",
-        "change": "INCREASE",
-        "amount": 50,
-        "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
-      }
-    ]
+    "effect": {
+      "kind": "WEAPON_DAMAGE_CHANGE",
+      "action": "DEAL_TO",
+      "change": "INCREASE",
+      "amount": 50,
+      "condition": { "kind": "FOE", "foeSelector": { "property": "movementType", "movementType": "ARMORED" } }
+    }
   }
 ]
