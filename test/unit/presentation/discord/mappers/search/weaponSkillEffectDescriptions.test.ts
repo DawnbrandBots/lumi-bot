@@ -93,17 +93,17 @@ test.each<{
         expected: "Deal 15% more weapon damage.",
     },
     {
-        name: "permanent stat change",
+        name: "permanent HP stat change",
         input: { effect: { kind: "STAT_CHANGE", HP: { change: "INCREASE", amount: 5 } } },
         expected: "Boost HP by 5%.",
     },
     {
-        name: "attack-only stat change",
+        name: "permanent Atk stat change",
         input: { effect: { kind: "STAT_CHANGE", ATK: { change: "INCREASE", amount: 15 } } },
         expected: "Boost Atk by 15%.",
     },
     {
-        name: "multiple stat changes",
+        name: "permanent HP and Atk stat changes",
         input: {
             effect: {
                 kind: "STAT_CHANGE",
