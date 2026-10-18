@@ -3742,11 +3742,11 @@
             "base": 10,
             "unit": {
               "kind": "PERCENT",
-              "stat": "COOLDOWN"
+              "stat": "SPELL_COOLDOWN"
             },
             "scalingStrategyOverride": "NONE"
           },
-          "stat": "COOLDOWN"
+          "stat": "SPELL_COOLDOWN"
         },
         "target": "ANY"
       },

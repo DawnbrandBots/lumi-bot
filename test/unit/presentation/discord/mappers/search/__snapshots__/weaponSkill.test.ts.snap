@@ -4,7 +4,7 @@ exports[`mapWeaponSkillToMessage > with weapon type and unique usages 1`] = `
 {
   "reply": {
     "embed": {
-      "description": "**Effect**: Deals more damage to Armored units.
+      "description": "**Effect**: Deal 30% more weapon damage against Armored units.
 **Weapons**: Royal Sword, level 5 Swords.",
       "title": "Armor Bane 2",
     },
@@ -16,7 +16,7 @@ exports[`mapWeaponSkillToMessage > without usages 1`] = `
 {
   "reply": {
     "embed": {
-      "description": "**Effect**: Deals more damage to Armored units.
+      "description": "**Effect**: Deal 30% more weapon damage against Armored units.
 **Weapons**: .",
       "title": "Armor Bane 2",
     },

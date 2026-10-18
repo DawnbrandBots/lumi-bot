@@ -26,10 +26,27 @@ export const INFANTRY_MOVEMENT_TYPE = {
     },
 } satisfies IMovementType;
 
+const ARMORED_MOVEMENT_TYPE = {
+    ...INFANTRY_MOVEMENT_TYPE,
+    id: "ARMORED",
+    name: "Armored",
+    baseHp: 88,
+    baseAtkByRange: {
+        1: 30,
+        2: 20,
+    },
+} satisfies IMovementType;
+
 export const WEAPON_SKILL_EFFECT = {
     kind: "weaponSkillEffect",
     id: "ARMOR_BANE_EFFECT",
-    description: "Deals more damage to Armored units.",
+    effect: {
+        kind: "WEAPON_DAMAGE_CHANGE",
+        action: "DEAL_TO",
+        change: "INCREASE",
+        amount: 30,
+        condition: { kind: "FOE", foeSelector: { property: "movementType", value: ARMORED_MOVEMENT_TYPE } },
+    },
 } satisfies IWeaponSkillEffect;
 
 export const WEAPON_TYPE = {

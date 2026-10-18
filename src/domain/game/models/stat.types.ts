@@ -5,7 +5,7 @@ export const EStat = {
     RECEIVED_SPELL_DAMAGE: "RECEIVED_SPELL_DAMAGE",
     MOVEMENT: "MOVEMENT",
     COLOR_AFFINITY: "COLOR_AFFINITY",
-    COOLDOWN: "COOLDOWN",
+    SPELL_COOLDOWN: "SPELL_COOLDOWN",
 } as const;
 
 /** Describes a unit's stat. Eg. Atk, HP, Movement... */

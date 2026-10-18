@@ -17,7 +17,6 @@ export const WEAPON_SKILL = {
     id: "ARMOR_BANE_2",
     name: "Armor Bane 2",
     effect: WEAPON_SKILL_EFFECT,
-    description: WEAPON_SKILL_EFFECT.description,
     uniqueSkillWeapons: [WEAPON],
     weaponTypeWeaponSkills: [WEAPON_TYPE_WEAPON_SKILL],
 } satisfies IWeaponSkill;

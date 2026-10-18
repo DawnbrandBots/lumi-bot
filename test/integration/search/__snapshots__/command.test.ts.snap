@@ -672,7 +672,7 @@ Single use, 1s cooldown, targets single space",
       "fields": [
         {
           "name": "Effects",
-          "value": "1. Grants "increases Cooldown by 10% (3 turns)" to targets.
+          "value": "1. Grants "increases Spell Cooldown by 10% (3 turns)" to targets.
 1. Grants "decreases Received Weapon Damage by 25% (permanent)" to user.",
         },
         {

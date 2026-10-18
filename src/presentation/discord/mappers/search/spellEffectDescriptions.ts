@@ -29,16 +29,7 @@ import {
     describeUnitSelector,
     type TUnitSelectorDescriptionInput,
 } from "./spellEffectDescriptions/unitSelectorDescriptions.ts";
-
-export const STAT_DESCRIPTION_STRINGS = {
-    HP: "HP",
-    ATK: "Atk",
-    RECEIVED_WEAPON_DAMAGE: "Received Weapon Damage",
-    RECEIVED_SPELL_DAMAGE: "Received Spell Damage",
-    MOVEMENT: "Movement",
-    COLOR_AFFINITY: "Color Affinity",
-    COOLDOWN: "Cooldown",
-} as const satisfies Record<keyof typeof EStat, string>;
+import { STAT_DESCRIPTION_STRINGS } from "./statDescriptions.ts";
 
 export const DIRECTION_DESCRIPTION_STRINGS = {
     UP: "up",

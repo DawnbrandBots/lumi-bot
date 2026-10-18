@@ -30,7 +30,15 @@ import { UnitSelector } from "./models/game/unitSelector.ts";
 import { WarpEffect } from "./models/game/warpEffect.ts";
 import { Weapon } from "./models/game/weapon.ts";
 import { WeaponSkill } from "./models/game/weaponSkill.ts";
+import { WeaponSkillCondition } from "./models/game/weaponSkillCondition.ts";
 import { WeaponSkillEffect } from "./models/game/weaponSkillEffect.ts";
+import { WeaponSkillEffectPart } from "./models/game/weaponSkillEffectPart.ts";
+import { WeaponSkillFoeCondition } from "./models/game/weaponSkillFoeCondition.ts";
+import { WeaponSkillHpCondition } from "./models/game/weaponSkillHpCondition.ts";
+import { WeaponSkillStatEffect } from "./models/game/weaponSkillStatEffect.ts";
+import { WeaponSkillStatChange } from "./models/game/weaponSkillStatChange.ts";
+import { WeaponSkillStatusEffectOnAutoAttackKill } from "./models/game/weaponSkillStatusEffectOnAutoAttackKill.ts";
+import { WeaponSkillWeaponDamageEffect } from "./models/game/weaponSkillWeaponDamageEffect.ts";
 import { WeaponType } from "./models/game/weaponType.ts";
 import { WeaponRangeUnitSelector } from "./models/game/weaponRangeUnitSelector.ts";
 import { WeaponTypeUnitSelector } from "./models/game/weaponTypeUnitSelector.ts";
@@ -60,6 +68,14 @@ export const GAME_DATA_ENTITIES = [
     SpellEffect,
     WeaponSkill,
     WeaponSkillEffect,
+    WeaponSkillCondition,
+    WeaponSkillEffectPart,
+    WeaponSkillFoeCondition,
+    WeaponSkillHpCondition,
+    WeaponSkillStatEffect,
+    WeaponSkillStatChange,
+    WeaponSkillStatusEffectOnAutoAttackKill,
+    WeaponSkillWeaponDamageEffect,
     WeaponTypeWeaponSkill,
     Weapon,
     WeaponType,
