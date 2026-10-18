@@ -3,7 +3,7 @@ import type { EStat } from "./stat.types.ts";
 import type { TUnitSelector } from "./unitSelector.types.ts";
 
 export const EWeaponSkillEffectKind = {
-    ON_AUTO_ATTACK_KILL: "ON_AUTO_ATTACK_KILL",
+    STATUS_EFFECT_ON_AUTO_ATTACK_KILL: "STATUS_EFFECT_ON_AUTO_ATTACK_KILL",
     STAT_CHANGE: "STAT_CHANGE",
     WEAPON_DAMAGE_CHANGE: "WEAPON_DAMAGE_CHANGE",
 } as const;
@@ -39,12 +39,6 @@ export interface IWeaponSkillStatEffect {
     readonly ATK?: IWeaponSkillStatChange | null;
 }
 
-export interface IWeaponSkillTimedStatEffect extends IWeaponSkillStatChange {
-    readonly kind: typeof EWeaponSkillEffectKind.STAT_CHANGE;
-    readonly stat: keyof typeof EStat;
-    readonly duration: number;
-}
-
 export interface IWeaponSkillHpCondition {
     readonly kind: typeof EWeaponSkillCondition.HP;
     readonly operand: keyof typeof EWeaponSkillHpOperand;
@@ -66,14 +60,15 @@ export interface IWeaponSkillWeaponDamageEffect {
     readonly condition?: IWeaponSkillHpCondition | IWeaponSkillFoeCondition | null;
 }
 
-/** An effect that occurs after the wielder triggers an event. */
-export interface IWeaponSkillOnAutoAttackKillEffect {
-    readonly kind: typeof EWeaponSkillEffectKind.ON_AUTO_ATTACK_KILL;
-    readonly effect: IWeaponSkillTimedStatEffect;
+/** A status effect granted after the wielder defeats a foe with a weapon attack. */
+export interface IWeaponSkillStatusEffectOnAutoAttackKill extends IWeaponSkillStatChange {
+    readonly kind: typeof EWeaponSkillEffectKind.STATUS_EFFECT_ON_AUTO_ATTACK_KILL;
+    readonly stat: keyof typeof EStat;
+    readonly duration: number;
 }
 
 export type TWeaponSkillEffectPart =
-    IWeaponSkillOnAutoAttackKillEffect | IWeaponSkillStatEffect | IWeaponSkillWeaponDamageEffect;
+    IWeaponSkillStatusEffectOnAutoAttackKill | IWeaponSkillStatEffect | IWeaponSkillWeaponDamageEffect;
 
 /**
  * Effect that a weapon skill grants.

@@ -162,53 +162,41 @@
   {
     "id": "ON_WEAPON_KILL_MAGIC_DAMAGE_REDUCTION_40_1T",
     "effect": {
-      "kind": "ON_AUTO_ATTACK_KILL",
-      "effect": {
-        "kind": "STAT_CHANGE",
-        "stat": "RECEIVED_SPELL_DAMAGE",
-        "change": "DECREASE",
-        "amount": 40,
-        "duration": 1
-      }
+      "kind": "STATUS_EFFECT_ON_AUTO_ATTACK_KILL",
+      "stat": "RECEIVED_SPELL_DAMAGE",
+      "change": "DECREASE",
+      "amount": 40,
+      "duration": 1
     }
   },
   {
     "id": "ON_WEAPON_KILL_MAGIC_COOLDOWN_REDUCTION_20_1T",
     "effect": {
-      "kind": "ON_AUTO_ATTACK_KILL",
-      "effect": {
-        "kind": "STAT_CHANGE",
-        "stat": "COOLDOWN",
-        "change": "DECREASE",
-        "amount": 20,
-        "duration": 1
-      }
+      "kind": "STATUS_EFFECT_ON_AUTO_ATTACK_KILL",
+      "stat": "COOLDOWN",
+      "change": "DECREASE",
+      "amount": 20,
+      "duration": 1
     }
   },
   {
     "id": "ON_WEAPON_KILL_RECEIVED_WEAPON_DAMAGE_REDUCTION_90_1T",
     "effect": {
-      "kind": "ON_AUTO_ATTACK_KILL",
-      "effect": {
-        "kind": "STAT_CHANGE",
-        "stat": "RECEIVED_WEAPON_DAMAGE",
-        "change": "DECREASE",
-        "amount": 90,
-        "duration": 1
-      }
+      "kind": "STATUS_EFFECT_ON_AUTO_ATTACK_KILL",
+      "stat": "RECEIVED_WEAPON_DAMAGE",
+      "change": "DECREASE",
+      "amount": 90,
+      "duration": 1
     }
   },
   {
     "id": "ON_WEAPON_KILL_ATK_BOOST_50_3T",
     "effect": {
-      "kind": "ON_AUTO_ATTACK_KILL",
-      "effect": {
-        "kind": "STAT_CHANGE",
-        "stat": "ATK",
-        "change": "INCREASE",
-        "amount": 50,
-        "duration": 3
-      }
+      "kind": "STATUS_EFFECT_ON_AUTO_ATTACK_KILL",
+      "stat": "ATK",
+      "change": "INCREASE",
+      "amount": 50,
+      "duration": 3
     }
   },
   {

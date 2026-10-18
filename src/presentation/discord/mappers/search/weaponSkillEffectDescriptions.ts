@@ -2,10 +2,9 @@ import type {
     IWeaponSkillEffect,
     IWeaponSkillFoeCondition,
     IWeaponSkillHpCondition,
-    IWeaponSkillOnAutoAttackKillEffect,
     IWeaponSkillStatChange,
     IWeaponSkillStatEffect,
-    IWeaponSkillTimedStatEffect,
+    IWeaponSkillStatusEffectOnAutoAttackKill,
     IWeaponSkillWeaponDamageEffect,
 } from "../../../../domain/game/models/weaponSkillEffect.types.ts";
 import {
@@ -30,7 +29,8 @@ type TWeaponSkillWeaponDamageEffectInput = Omit<IWeaponSkillWeaponDamageEffect, 
 };
 
 export type TWeaponSkillEffectDescriptionInput = {
-    readonly effect: IWeaponSkillOnAutoAttackKillEffect | IWeaponSkillStatEffect | TWeaponSkillWeaponDamageEffectInput;
+    readonly effect:
+        IWeaponSkillStatusEffectOnAutoAttackKill | IWeaponSkillStatEffect | TWeaponSkillWeaponDamageEffectInput;
 };
 
 function lowercaseFirstLetter(description: string): string {
@@ -67,7 +67,10 @@ const HP_THRESHOLD_STRINGS = {
     LOWER_OR_EQUAL: "at most",
 } as const satisfies Record<keyof typeof EWeaponSkillHpOperand, string>;
 
-function describeStatChange(stat: IWeaponSkillTimedStatEffect["stat"], change: IWeaponSkillStatChange): string {
+function describeStatChange(
+    stat: IWeaponSkillStatusEffectOnAutoAttackKill["stat"],
+    change: IWeaponSkillStatChange,
+): string {
     if (stat === "RECEIVED_WEAPON_DAMAGE" || stat === "RECEIVED_SPELL_DAMAGE") {
         return `Take ${change.amount}% ${DAMAGE_CHANGE_STRINGS[change.change]} ${DAMAGE_TYPE_STRINGS[stat]} damage`;
     }
@@ -105,16 +108,16 @@ function describeWeaponDamageEffect(effect: TWeaponSkillWeaponDamageEffectInput)
     return `${action.verb} ${effect.amount}% ${DAMAGE_CHANGE_STRINGS[effect.change]} weapon damage${condition}`;
 }
 
-function describeOnAutoAttackKillEffect(effect: IWeaponSkillOnAutoAttackKillEffect): string {
-    const status = lowercaseFirstLetter(describeStatChange(effect.effect.stat, effect.effect));
-    const duration = `${effect.effect.duration} turn${effect.effect.duration === 1 ? "" : "s"}`;
+function describeStatusEffectOnAutoAttackKill(effect: IWeaponSkillStatusEffectOnAutoAttackKill): string {
+    const status = lowercaseFirstLetter(describeStatChange(effect.stat, effect));
+    const duration = `${effect.duration} turn${effect.duration === 1 ? "" : "s"}`;
     return `After defeating a foe with a weapon attack, grant "${status} (${duration})" to user`;
 }
 
 function describeEffect(effect: TWeaponSkillEffectDescriptionInput["effect"]): string {
     switch (effect.kind) {
-        case EWeaponSkillEffectKind.ON_AUTO_ATTACK_KILL:
-            return describeOnAutoAttackKillEffect(effect);
+        case EWeaponSkillEffectKind.STATUS_EFFECT_ON_AUTO_ATTACK_KILL:
+            return describeStatusEffectOnAutoAttackKill(effect);
         case EWeaponSkillEffectKind.STAT_CHANGE:
             return describeStatEffect(effect);
         case EWeaponSkillEffectKind.WEAPON_DAMAGE_CHANGE:

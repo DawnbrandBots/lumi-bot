@@ -1,7 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/sqlite";
 import type { IWeaponSkillEffect } from "../../../../../domain/game/models/weaponSkillEffect.types.ts";
-import { WeaponSkillOnAutoAttackKillEffect } from "./weaponSkillOnAutoAttackKillEffect.ts";
 import { WeaponSkillStatEffect } from "./weaponSkillStatEffect.ts";
+import { WeaponSkillStatusEffectOnAutoAttackKill } from "./weaponSkillStatusEffectOnAutoAttackKill.ts";
 import { WeaponSkillWeaponDamageEffect } from "./weaponSkillWeaponDamageEffect.ts";
 
 export const WeaponSkillEffectSchema = defineEntity({
@@ -10,7 +10,11 @@ export const WeaponSkillEffectSchema = defineEntity({
         id: p.string().primary(),
         effect: () =>
             p
-                .embedded([WeaponSkillOnAutoAttackKillEffect, WeaponSkillStatEffect, WeaponSkillWeaponDamageEffect])
+                .embedded([
+                    WeaponSkillStatusEffectOnAutoAttackKill,
+                    WeaponSkillStatEffect,
+                    WeaponSkillWeaponDamageEffect,
+                ])
                 .object(),
     },
 });
