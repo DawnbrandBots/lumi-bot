@@ -1,7 +1,7 @@
 import { bold, italic, unorderedList, type APIEmbed } from "discord.js";
 import type { IWeapon } from "../../../../domain/game/models/weapon.types.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
-import { describeWeaponSkillEffects } from "./weaponSkillEffectDescriptions.ts";
+import { describeWeaponSkillEffect } from "./weaponSkillEffectDescriptions.ts";
 
 export default function mapWeaponToMessage(weapon: IWeapon) {
     const introStr = `Level ${weapon.level} ${weapon.weaponType.name}${weapon.prfDisciple ? `, exclusive to ${weapon.prfDisciple.name}` : ""}`;
@@ -27,9 +27,9 @@ export default function mapWeaponToMessage(weapon: IWeapon) {
     const skillsStr = unorderedList(
         [
             weapon.weaponTypeSkill &&
-                `${bold(weapon.weaponTypeSkill.name)}: ${describeWeaponSkillEffects(weapon.weaponTypeSkill.effect)}`,
+                `${bold(weapon.weaponTypeSkill.name)}: ${describeWeaponSkillEffect(weapon.weaponTypeSkill.effect)}`,
             weapon.uniqueSkill &&
-                `${bold(weapon.uniqueSkill.name)}: ${describeWeaponSkillEffects(weapon.uniqueSkill.effect)}`,
+                `${bold(weapon.uniqueSkill.name)}: ${describeWeaponSkillEffect(weapon.uniqueSkill.effect)}`,
             weapon.freeSkillSlots > 0
                 ? `${weapon.freeSkillSlots} free skill slot${weapon.freeSkillSlots !== 1 ? "s" : ""}`
                 : italic(`No free skill slots`),

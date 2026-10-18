@@ -1,7 +1,7 @@
 import { bold } from "discord.js";
 import type { IWeaponSkill } from "../../../../domain/game/models/weaponSkill.types.ts";
 import type { IWeaponTypeWeaponSkill } from "../../../../domain/game/models/weaponTypeWeaponSkill.types.ts";
-import { describeWeaponSkillEffects } from "./weaponSkillEffectDescriptions.ts";
+import { describeWeaponSkillEffect } from "./weaponSkillEffectDescriptions.ts";
 
 export function getWeaponTypeSkillRankString(rank: IWeaponTypeWeaponSkill["rank"], weaponTypeName: string): string {
     switch (rank) {
@@ -16,7 +16,7 @@ export function getWeaponTypeSkillRankString(rank: IWeaponTypeWeaponSkill["rank"
 
 export default function mapWeaponSkillToMessage(weaponSkill: IWeaponSkill) {
     const description = [
-        `${bold("Effect")}: ${describeWeaponSkillEffects(weaponSkill.effect)}`,
+        `${bold("Effect")}: ${describeWeaponSkillEffect(weaponSkill.effect)}`,
         `${bold("Weapons")}: ${[
             ...Array.from(weaponSkill.uniqueSkillWeapons).map((weapon) => weapon.name),
             ...Array.from(weaponSkill.weaponTypeWeaponSkills).map((weaponTypeWeaponSkill) =>

@@ -1,5 +1,4 @@
 import type {
-    IWeaponSkillEffect,
     IWeaponSkillFoeCondition,
     IWeaponSkillHpCondition,
     IWeaponSkillStatChange,
@@ -114,20 +113,19 @@ function describeStatusEffectOnAutoAttackKill(effect: IWeaponSkillStatusEffectOn
     return `After defeating a foe with a weapon attack, grant "${status} (${duration})" to user`;
 }
 
-function describeEffect(effect: TWeaponSkillEffectDescriptionInput["effect"]): string {
-    switch (effect.kind) {
-        case EWeaponSkillEffectKind.STATUS_EFFECT_ON_AUTO_ATTACK_KILL:
-            return describeStatusEffectOnAutoAttackKill(effect);
-        case EWeaponSkillEffectKind.STAT_CHANGE:
-            return describeStatEffect(effect);
-        case EWeaponSkillEffectKind.WEAPON_DAMAGE_CHANGE:
-            return describeWeaponDamageEffect(effect);
-    }
-}
+type TEffect = TWeaponSkillEffectDescriptionInput["effect"];
+type TEffectByKind = { [Kind in TEffect["kind"]]: Extract<TEffect, { kind: Kind }> };
+
+const EFFECT_DESCRIPTIONS: { [Kind in keyof TEffectByKind]: (effect: TEffectByKind[Kind]) => string } = {
+    [EWeaponSkillEffectKind.STATUS_EFFECT_ON_AUTO_ATTACK_KILL]: describeStatusEffectOnAutoAttackKill,
+    [EWeaponSkillEffectKind.STAT_CHANGE]: describeStatEffect,
+    [EWeaponSkillEffectKind.WEAPON_DAMAGE_CHANGE]: describeWeaponDamageEffect,
+};
 
 /** Describes a weapon skill effect in a single sentence. */
-export function describeWeaponSkillEffects(
-    weaponSkillEffect: IWeaponSkillEffect | TWeaponSkillEffectDescriptionInput,
-): string {
-    return `${describeEffect(weaponSkillEffect.effect)}.`;
+export function describeWeaponSkillEffect<Kind extends keyof TEffectByKind>(weaponSkillEffect: {
+    readonly effect: TEffectByKind[Kind];
+}): string {
+    const effect = weaponSkillEffect.effect;
+    return `${EFFECT_DESCRIPTIONS[effect.kind](effect)}.`;
 }

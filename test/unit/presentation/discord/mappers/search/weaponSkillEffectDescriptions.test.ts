@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import {
-    describeWeaponSkillEffects,
+    describeWeaponSkillEffect,
     type TWeaponSkillEffectDescriptionInput,
 } from "../../../../../../src/presentation/discord/mappers/search/weaponSkillEffectDescriptions.ts";
 
@@ -166,11 +166,11 @@ test.each<{
         expected: 'After defeating a foe with a weapon attack, grant "boost Atk by 50% (3 turns)" to user.',
     },
 ])("describes $name", ({ input, expected }) => {
-    expect(describeWeaponSkillEffects(input)).toBe(expected);
+    expect(describeWeaponSkillEffect(input)).toBe(expected);
 });
 
 test("rejects a stat effect without a stat change", () => {
-    expect(() => describeWeaponSkillEffects({ effect: { kind: "STAT_CHANGE" } })).toThrow(
+    expect(() => describeWeaponSkillEffect({ effect: { kind: "STAT_CHANGE" } })).toThrow(
         "A stat effect must change at least one stat",
     );
 });
