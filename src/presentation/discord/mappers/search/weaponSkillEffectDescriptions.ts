@@ -92,6 +92,7 @@ function describeStatEffect(effect: IWeaponSkillStatEffect): string {
     if (effect.ATK) {
         return describeStatChange(EStat.ATK, effect.ATK);
     }
+    // TODO: throwing here is one thing, but the input object should have been validated to indeed containing at least one property
     throw new Error("A stat effect must change at least one stat");
 }
 
