@@ -17,8 +17,8 @@ test.each([
     ["ROYAL_SCION", "Deal 30% more weapon damage against Axe units."],
     ["SKILLED_HUNTER", "Deal 20% more weapon damage against Cavalry units."],
     ["PITCH_BLACK_ARMOR", "Take 30% less weapon damage from units with a range of 1."],
-    ["FOX_S_TRICKERY", "Boost Max HP by 5%."],
-    ["LETHAL_INSTINCT", "Reduce Max HP by 5% and boost Atk by 15%."],
+    ["FOX_S_TRICKERY", "Boost HP by 5%."],
+    ["LETHAL_INSTINCT", "Reduce HP by 5% and boost Atk by 15%."],
     ["BATTLE_FERVOR", 'After defeating a foe with a weapon attack, grant "boost Atk by 50% (3 turns)" to user.'],
 ] as const)("hydrates %s's effect for its search result", async (id, expected) => {
     const skill = await getGameDataEntityForSearchResult({ em: orm.em.fork() }, { kind: "weaponSkill", id });

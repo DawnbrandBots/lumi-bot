@@ -35,7 +35,7 @@ export interface IWeaponSkillStatChange {
 
 export interface IWeaponSkillStatEffect {
     readonly kind: typeof EWeaponSkillEffectKind.STAT_CHANGE;
-    readonly MAX_HP?: IWeaponSkillStatChange | null;
+    readonly HP?: IWeaponSkillStatChange | null;
     readonly ATK?: IWeaponSkillStatChange | null;
 }
 

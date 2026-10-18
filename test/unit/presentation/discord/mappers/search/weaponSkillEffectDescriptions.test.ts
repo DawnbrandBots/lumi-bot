@@ -94,8 +94,8 @@ test.each<{
     },
     {
         name: "permanent stat change",
-        input: { effect: { kind: "STAT_CHANGE", MAX_HP: { change: "INCREASE", amount: 5 } } },
-        expected: "Boost Max HP by 5%.",
+        input: { effect: { kind: "STAT_CHANGE", HP: { change: "INCREASE", amount: 5 } } },
+        expected: "Boost HP by 5%.",
     },
     {
         name: "attack-only stat change",
@@ -107,11 +107,11 @@ test.each<{
         input: {
             effect: {
                 kind: "STAT_CHANGE",
-                MAX_HP: { change: "DECREASE", amount: 5 },
+                HP: { change: "DECREASE", amount: 5 },
                 ATK: { change: "INCREASE", amount: 15 },
             },
         },
-        expected: "Reduce Max HP by 5% and boost Atk by 15%.",
+        expected: "Reduce HP by 5% and boost Atk by 15%.",
     },
     {
         name: "spell damage reduction after an auto-attack kill",

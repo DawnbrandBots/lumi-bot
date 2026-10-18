@@ -83,11 +83,11 @@ function describeStatChange(
 }
 
 function describeStatEffect(effect: IWeaponSkillStatEffect): string {
-    if (effect.MAX_HP && effect.ATK) {
-        return `${describeStatChange(EStat.MAX_HP, effect.MAX_HP)} and ${lowercaseFirstLetter(describeStatChange(EStat.ATK, effect.ATK))}`;
+    if (effect.HP && effect.ATK) {
+        return `${describeStatChange(EStat.HP, effect.HP)} and ${lowercaseFirstLetter(describeStatChange(EStat.ATK, effect.ATK))}`;
     }
-    if (effect.MAX_HP) {
-        return describeStatChange(EStat.MAX_HP, effect.MAX_HP);
+    if (effect.HP) {
+        return describeStatChange(EStat.HP, effect.HP);
     }
     if (effect.ATK) {
         return describeStatChange(EStat.ATK, effect.ATK);

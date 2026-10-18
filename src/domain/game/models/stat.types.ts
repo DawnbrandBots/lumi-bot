@@ -1,7 +1,5 @@
 export const EStat = {
     HP: "HP",
-    // TODO: does MAX_HP really belong here?
-    MAX_HP: "MAX_HP",
     ATK: "ATK",
     RECEIVED_WEAPON_DAMAGE: "RECEIVED_WEAPON_DAMAGE",
     RECEIVED_SPELL_DAMAGE: "RECEIVED_SPELL_DAMAGE",

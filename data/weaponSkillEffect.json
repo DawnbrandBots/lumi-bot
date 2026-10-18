@@ -139,13 +139,13 @@
   },
   {
     "id": "MAX_HP_BOOST_5",
-    "effect": { "kind": "STAT_CHANGE", "MAX_HP": { "change": "INCREASE", "amount": 5 } }
+    "effect": { "kind": "STAT_CHANGE", "HP": { "change": "INCREASE", "amount": 5 } }
   },
   {
     "id": "MAX_HP_REDUCTION_5_ATK_BOOST_15",
     "effect": {
       "kind": "STAT_CHANGE",
-      "MAX_HP": { "change": "DECREASE", "amount": 5 },
+      "HP": { "change": "DECREASE", "amount": 5 },
       "ATK": { "change": "INCREASE", "amount": 15 }
     }
   },

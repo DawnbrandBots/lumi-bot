@@ -13,7 +13,7 @@ export const WeaponSkillStatEffectSchema = defineEntity({
     discriminatorValue: EWeaponSkillEffectKind.STAT_CHANGE,
     properties: {
         kind: p.enum([EWeaponSkillEffectKind.STAT_CHANGE]),
-        MAX_HP: () => p.embedded(WeaponSkillStatChange).object().nullable(),
+        HP: () => p.embedded(WeaponSkillStatChange).object().nullable(),
         ATK: () => p.embedded(WeaponSkillStatChange).object().nullable(),
     },
 });
