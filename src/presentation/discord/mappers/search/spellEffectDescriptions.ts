@@ -32,6 +32,7 @@ import {
 
 export const STAT_DESCRIPTION_STRINGS = {
     HP: "HP",
+    MAX_HP: "Max HP",
     ATK: "Atk",
     RECEIVED_WEAPON_DAMAGE: "Received Weapon Damage",
     RECEIVED_SPELL_DAMAGE: "Received Spell Damage",
