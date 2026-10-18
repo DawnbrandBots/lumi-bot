@@ -19,9 +19,5 @@ export class WeaponSkill extends WeaponSkillSchema.class implements IWeaponSkill
     get kind() {
         return "weaponSkill" as const;
     }
-
-    get description(): string {
-        return this.effect.description;
-    }
 }
 WeaponSkillSchema.setClass(WeaponSkill);

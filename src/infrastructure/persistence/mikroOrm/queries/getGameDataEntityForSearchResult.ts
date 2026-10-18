@@ -11,14 +11,7 @@ import type { TSearchOrmEntity } from "./types.ts";
 export interface ISearchConfig<EntityType extends ISearchableEntity, PopulateHint extends string = never> {
     /** ORM entity class required to search for an entry. */
     class: EntityName<EntityType>;
-    /**
-     * MikroORM populate paths for fetched entities.
-     * Search mappers might need deeply nested properties that need to be referred to explicitly
-     * because just using ["*"] won't populate them.
-     *
-     * Example: Weapon's search handler displaying the unique skill's effect description.
-     * That's a property twice nested that needs to be explictly populated with ["uniqueSkill.effect"]
-     */
+    /** MikroORM populate paths for fetched entities. */
     populate?: Populate<EntityType, PopulateHint>;
 }
 
@@ -29,7 +22,7 @@ export type ISearchConfigs = {
 
 const disciplePopulate = ["*"] as const;
 const spellPopulate = ["*"] as const;
-const weaponPopulate = ["weaponType", "weaponType.weaponSkills.effect", "uniqueSkill.effect", "prfDisciple"] as const;
+const weaponPopulate = ["*"] as const;
 
 const SEARCH_CONFIGS = {
     disciple: { class: Disciple, populate: disciplePopulate } as const satisfies ISearchConfig<

@@ -8,8 +8,8 @@ exports[`mapWeaponToMessage > with an exclusive disciple 1`] = `
       "fields": [
         {
           "name": "Skills",
-          "value": "- **Armor Bane 1**: Deals more damage to Armored units.
-- **Royal Focus**: Increases damage dealt by this weapon.
+          "value": "- **Armor Bane 1**: Deal 30% more weapon damage against Armored units.
+- **Royal Focus**: Deal 15% more weapon damage.
 - 2 free skill slots",
         },
         {
@@ -36,8 +36,8 @@ exports[`mapWeaponToMessage > with skills 1`] = `
       "fields": [
         {
           "name": "Skills",
-          "value": "- **Armor Bane 1**: Deals more damage to Armored units.
-- **Royal Focus**: Increases damage dealt by this weapon.
+          "value": "- **Armor Bane 1**: Deal 30% more weapon damage against Armored units.
+- **Royal Focus**: Deal 15% more weapon damage.
 - 2 free skill slots",
         },
         {

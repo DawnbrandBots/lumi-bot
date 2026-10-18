@@ -40,7 +40,6 @@ const ARMORED_MOVEMENT_TYPE = {
 export const WEAPON_SKILL_EFFECT = {
     kind: "weaponSkillEffect",
     id: "ARMOR_BANE_EFFECT",
-    description: "Deals more damage to Armored units.",
     effects: [
         {
             kind: "WEAPON_DAMAGE_CHANGE",

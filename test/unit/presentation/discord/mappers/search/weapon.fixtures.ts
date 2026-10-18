@@ -9,7 +9,6 @@ export const WEAPON_TYPE_SKILL = {
     id: "ARMOR_BANE_1",
     name: "Armor Bane 1",
     effect: WEAPON_SKILL_EFFECT,
-    description: WEAPON_SKILL_EFFECT.description,
     uniqueSkillWeapons: [],
     weaponTypeWeaponSkills: [],
 } satisfies IWeaponSkill;
@@ -21,10 +20,8 @@ export const UNIQUE_WEAPON_SKILL = {
     effect: {
         kind: "weaponSkillEffect",
         id: "ROYAL_FOCUS_EFFECT",
-        description: "Increases damage dealt by this weapon.",
         effects: [{ kind: "WEAPON_DAMAGE_CHANGE", action: "DEAL_TO", change: "INCREASE", amount: 15 }],
     },
-    description: "Increases damage dealt by this weapon.",
     uniqueSkillWeapons: [],
     weaponTypeWeaponSkills: [],
 } satisfies IWeaponSkill;
