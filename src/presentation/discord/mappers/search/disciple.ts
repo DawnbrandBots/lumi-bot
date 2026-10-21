@@ -1,4 +1,4 @@
-import { bold, codeBlock, hyperlink, italic, unorderedList } from "discord.js";
+import { bold, codeBlock, hyperlink, italic, quote, unorderedList } from "discord.js";
 import { DISCIPLE_MAXIXUM_LEVEL, DISCIPLE_MINIMUM_RELEVANT_LEVEL } from "../../../../domain/game/constants.ts";
 import type { IDisciple } from "../../../../domain/game/models/disciple.types.ts";
 import type { IMusic } from "../../../../domain/game/models/music.types.ts";
@@ -42,7 +42,8 @@ export default function mapDiscipleToMessage(disciple: IDisciple) {
     const baseStatsStr = codeBlock(baseStatsTableAscii);
 
     const title = `${disciple.name}, ${disciple.epithet}`;
-    const description = [typesStr, prfStr, shadowMusicStr, supportsStr].join("\n");
+    const description = [quote(disciple.description), typesStr, prfStr, shadowMusicStr, supportsStr].join("\n");
+
     const fields = [
         {
             name: "Spells",
