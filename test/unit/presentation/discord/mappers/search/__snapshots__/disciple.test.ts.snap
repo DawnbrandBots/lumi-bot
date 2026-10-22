@@ -4,7 +4,8 @@ exports[`mapDiscipleToMessage > base 1`] = `
 {
   "reply": {
     "embed": {
-      "description": "Sword Infantry disciple
+      "description": "> Prince of the kingdom of Ast. Noble and kindhearted. Vows to take back and rebuild the kingdom.
+Sword Infantry disciple
 **PRF**: Royal Sword
 **Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))
 _This disciple has no supports_",
@@ -35,7 +36,8 @@ exports[`mapDiscipleToMessage > unlinked shadow music 1`] = `
 {
   "reply": {
     "embed": {
-      "description": "Sword Infantry disciple
+      "description": "> Prince of the kingdom of Ast. Noble and kindhearted. Vows to take back and rebuild the kingdom.
+Sword Infantry disciple
 **PRF**: Royal Sword
 **Theme**: Betrayal - The Exiled Prince ([results screen](https://example.com/victory))
 _This disciple has no supports_",
@@ -66,7 +68,8 @@ exports[`mapDiscipleToMessage > with supports 1`] = `
 {
   "reply": {
     "embed": {
-      "description": "Sword Infantry disciple
+      "description": "> Prince of the kingdom of Ast. Noble and kindhearted. Vows to take back and rebuild the kingdom.
+Sword Infantry disciple
 **PRF**: Royal Sword
 **Theme**: [Betrayal - The Exiled Prince](https://example.com/betrayal) ([results screen](https://example.com/victory))
 **Supports**: Gotthold, Carina",

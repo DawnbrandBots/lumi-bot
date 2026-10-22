@@ -29,6 +29,7 @@ export const DISCIPLE = {
     id: "KURT",
     name: "Kurt",
     epithet: "Exiled Prince",
+    description: "Prince of the kingdom of Ast. Noble and kindhearted. Vows to take back and rebuild the kingdom.",
     movementType: INFANTRY_MOVEMENT_TYPE,
     weaponType: WEAPON_TYPE,
     prfWeapon: WEAPON,
