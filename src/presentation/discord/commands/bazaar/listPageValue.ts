@@ -27,7 +27,7 @@ export function parseBazaarListPageValue(value: string, guildId: string): TBazaa
         (side !== EListingSide.PURCHASE && side !== EListingSide.SALE) ||
         (itemValue && !item) ||
         !Number.isSafeInteger(page) ||
-        page < 0 ||
+        page < 1 ||
         extra.length
     ) {
         return null;

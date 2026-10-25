@@ -27,23 +27,32 @@ export function mapBazaarListResultToMessage(
     filter: TBazaarUseCaseArgs["listListings"],
     requestedPage: number,
 ) {
-    const pageCount = Math.max(1, Math.ceil(listings.length / BAZAAR_LIST_PAGE_SIZE));
-    const page = Math.min(requestedPage, pageCount - 1);
-    const pageListings = listings.slice(page * BAZAAR_LIST_PAGE_SIZE, (page + 1) * BAZAAR_LIST_PAGE_SIZE);
+    const pageCount = getBazaarPageCount(listings.length);
+    const pageListings = listings.slice(
+        (requestedPage - 1) * BAZAAR_LIST_PAGE_SIZE,
+        requestedPage * BAZAAR_LIST_PAGE_SIZE,
+    );
+    if (!isBazaarListPageInRange(listings.length, requestedPage)) {
+        return createNegativeMessage({
+            embed: {
+                description: `Page ${requestedPage} does not exist. There are ${pageCount} page${pageCount === 1 ? "" : "s"}.`,
+            },
+        });
+    }
     const components =
         pageCount > 1
             ? [
                   new ActionRowBuilder<ButtonBuilder>().addComponents(
                       new ButtonBuilder()
-                          .setCustomId(formatBazaarListPageValue({ filter, page: page - 1 }))
+                          .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage - 1 }))
                           .setLabel("Previous")
                           .setStyle(ButtonStyle.Secondary)
-                          .setDisabled(page === 0),
+                          .setDisabled(requestedPage === 1),
                       new ButtonBuilder()
-                          .setCustomId(formatBazaarListPageValue({ filter, page: page + 1 }))
+                          .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage + 1 }))
                           .setLabel("Next")
                           .setStyle(ButtonStyle.Secondary)
-                          .setDisabled(page === pageCount - 1),
+                          .setDisabled(requestedPage === pageCount),
                   ),
               ]
             : [];
@@ -52,11 +61,19 @@ export function mapBazaarListResultToMessage(
             title: "Bazaar listings",
             description: pageListings.length ? pageListings.map(formatListing).join("\n\n") : "No matching listings.",
             footer: {
-                text: `Page ${page + 1}/${pageCount} · ${listings.length} listing${listings.length === 1 ? "" : "s"}`,
+                text: `Page ${requestedPage}/${pageCount} · ${listings.length} listing${listings.length === 1 ? "" : "s"}`,
             },
         },
         components,
     });
+}
+
+export function getBazaarPageCount(listingCount: number): number {
+    return Math.max(1, Math.ceil(listingCount / BAZAAR_LIST_PAGE_SIZE));
+}
+
+export function isBazaarListPageInRange(listingCount: number, page: number): boolean {
+    return Number.isSafeInteger(page) && page >= 1 && page <= getBazaarPageCount(listingCount);
 }
 
 export function mapBazaarMutationResultToMessage(

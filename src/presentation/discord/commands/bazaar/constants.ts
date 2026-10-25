@@ -9,5 +9,6 @@ export const BAZAAR_ITEM_OPTION_NAME = "item";
 export const BAZAAR_QUANTITY_OPTION_NAME = "quantity";
 export const BAZAAR_PRICE_OPTION_NAME = "price";
 export const BAZAAR_USER_OPTION_NAME = "user";
+export const BAZAAR_PAGE_OPTION_NAME = "page";
 export const BAZAAR_LIST_PAGE_SIZE = 5;
 export const BAZAAR_LIST_COMPONENT_PREFIX = "bazaar-list:";
