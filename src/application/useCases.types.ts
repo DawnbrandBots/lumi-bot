@@ -1,4 +1,5 @@
 import type { TAdminUseCases } from "./admin/useCases.types.ts";
+import type { TBazaarUseCases } from "./bazaar/useCases.types.ts";
 import type { TLfgUseCases } from "./lfg/useCases.types.ts";
 import type { TSearchUseCases } from "./search/useCases.types.ts";
 
@@ -6,6 +7,7 @@ import type { TSearchUseCases } from "./search/useCases.types.ts";
 // TODO: also is this the right layer for it?
 export type TApplicationUseCases = {
     readonly admin: TAdminUseCases;
+    readonly bazaar: TBazaarUseCases;
     readonly lfg: TLfgUseCases;
     readonly search: TSearchUseCases;
 };
