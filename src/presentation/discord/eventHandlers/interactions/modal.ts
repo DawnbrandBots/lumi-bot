@@ -4,6 +4,7 @@ import type { TApplicationUseCases } from "../../../../application/useCases.type
 import { BAZAAR_PAGE_INPUT_ID } from "../../commands/bazaar/constants.ts";
 import { parseBazaarPageModalValue } from "../../commands/bazaar/listPageValue.ts";
 import { isBazaarListPageInRange, mapBazaarListResultToMessage } from "../../mappers/bazaar.ts";
+import { resolveUserDisplayName } from "../../services/bazaar/resolveUserDisplayName.ts";
 
 export type THandleModalSubmitInteraction = (interaction: ModalSubmitInteraction) => Promise<void>;
 
@@ -20,7 +21,15 @@ export async function handleModalSubmitInteraction(arg: {
     }
     const page = Number(arg.interaction.fields.getTextInputValue(BAZAAR_PAGE_INPUT_ID));
     const result = await arg.useCases.bazaar.listListings(pageState.filter);
-    const message = mapBazaarListResultToMessage(result.value.listings, pageState.filter, page, false);
+    const requestedUserName = await resolveUserDisplayName(arg.interaction.client, pageState.filter.ownerId);
+    const message = mapBazaarListResultToMessage(
+        result.value.listings,
+        pageState.filter,
+        page,
+        false,
+        result.value.item,
+        requestedUserName,
+    );
     if (!isBazaarListPageInRange(result.value.listings.length, page)) {
         await arg.interaction.reply({ ...message, flags: [MessageFlags.Ephemeral] });
         return;

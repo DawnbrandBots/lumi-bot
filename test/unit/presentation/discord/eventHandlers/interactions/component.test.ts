@@ -92,7 +92,7 @@ describe(handleComponentInteraction.name, () => {
 
         expect(fixture.listListings).toHaveBeenCalledWith(filter);
         expect(fixture.update).toHaveBeenCalledWith(
-            expect.objectContaining({ embeds: [expect.objectContaining({ title: "Bazaar listings" })] }),
+            expect.objectContaining({ embeds: [expect.objectContaining({ title: "Bazaar sale listings" })] }),
         );
         expect(fixture.movePlayerToRoomById).not.toHaveBeenCalled();
     });

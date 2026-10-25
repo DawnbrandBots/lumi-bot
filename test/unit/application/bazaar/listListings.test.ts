@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { listListings } from "../../../../src/application/bazaar/useCases/listListings.ts";
 import { EBazaarResultKind } from "../../../../src/application/bazaar/types.ts";
 import { EListingSide } from "../../../../src/domain/bazaar/models/listing.types.ts";
-import { GUILD_ID, getBazaarDependencies, LISTING, OWNER_ID, WEAPON_REFERENCE } from "./fixtures.ts";
+import { GUILD_ID, getBazaarDependencies, LISTING, OWNER_ID, WEAPON_ITEM, WEAPON_REFERENCE } from "./fixtures.ts";
 
 describe(listListings.name, () => {
     test("passes filters and orders listings by most recent change", async () => {
@@ -33,7 +33,7 @@ describe(listListings.name, () => {
         expect(listListingsRepository).toHaveBeenCalledWith(arg);
         expect(result).toEqual({
             kind: EBazaarResultKind.LISTINGS_LISTED,
-            value: { listings: [newest, middle, oldest] },
+            value: { item: WEAPON_ITEM, listings: [newest, middle, oldest] },
         });
     });
 });

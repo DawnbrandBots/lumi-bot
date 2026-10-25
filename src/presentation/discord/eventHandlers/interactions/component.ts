@@ -12,6 +12,7 @@ import { formatBazaarPageModalValue, parseBazaarListPageValue } from "../../comm
 import { LFG_JOIN_BUTTON_ID_PREFIX } from "../../commands/lfg/constants.ts";
 import { mapBazaarListResultToMessage } from "../../mappers/bazaar.ts";
 import { lfgResponder } from "../../responders/lfg.ts";
+import { resolveUserDisplayName } from "../../services/bazaar/resolveUserDisplayName.ts";
 
 export type THandleComponentInteraction = (interaction: MessageComponentInteraction) => Promise<void>;
 
@@ -55,8 +56,16 @@ export async function handleComponentInteraction(arg: {
         const page = parseBazaarListPageValue(arg.interaction.customId, arg.interaction.guildId);
         if (page) {
             const result = await arg.useCases.bazaar.listListings(page.filter);
+            const requestedUserName = await resolveUserDisplayName(arg.interaction.client, page.filter.ownerId);
             await arg.interaction.update(
-                mapBazaarListResultToMessage(result.value.listings, page.filter, page.page, false),
+                mapBazaarListResultToMessage(
+                    result.value.listings,
+                    page.filter,
+                    page.page,
+                    false,
+                    result.value.item,
+                    requestedUserName,
+                ),
             );
             return;
         }
