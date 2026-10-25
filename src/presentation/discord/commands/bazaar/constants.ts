@@ -12,3 +12,5 @@ export const BAZAAR_USER_OPTION_NAME = "user";
 export const BAZAAR_PAGE_OPTION_NAME = "page";
 export const BAZAAR_LIST_PAGE_SIZE = 10;
 export const BAZAAR_LIST_COMPONENT_PREFIX = "bazaar-list:";
+export const BAZAAR_PAGE_MODAL_PREFIX = "bazaar-page-modal:";
+export const BAZAAR_PAGE_INPUT_ID = "bazaar-page-number";
