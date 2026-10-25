@@ -22,14 +22,14 @@ export async function handleModalSubmitInteraction(arg: {
     const page = Number(arg.interaction.fields.getTextInputValue(BAZAAR_PAGE_INPUT_ID));
     const result = await arg.useCases.bazaar.listListings(pageState.filter);
     const requestedUserName = await resolveUserDisplayName(arg.interaction.client, pageState.filter.ownerId);
-    const message = mapBazaarListResultToMessage(
-        result.value.listings,
-        pageState.filter,
-        page,
-        false,
-        result.value.item,
+    const message = mapBazaarListResultToMessage({
+        listings: result.value.listings,
+        filter: pageState.filter,
+        requestedPage: page,
+        showActionRow: false,
+        requestedItem: result.value.item,
         requestedUserName,
-    );
+    });
     if (!isBazaarListPageInRange(result.value.listings.length, page)) {
         await arg.interaction.reply({ ...message, flags: [MessageFlags.Ephemeral] });
         return;

@@ -58,14 +58,14 @@ export async function handleComponentInteraction(arg: {
             const result = await arg.useCases.bazaar.listListings(page.filter);
             const requestedUserName = await resolveUserDisplayName(arg.interaction.client, page.filter.ownerId);
             await arg.interaction.update(
-                mapBazaarListResultToMessage(
-                    result.value.listings,
-                    page.filter,
-                    page.page,
-                    false,
-                    result.value.item,
+                mapBazaarListResultToMessage({
+                    listings: result.value.listings,
+                    filter: page.filter,
+                    requestedPage: page.page,
+                    showActionRow: false,
+                    requestedItem: result.value.item,
                     requestedUserName,
-                ),
+                }),
             );
             return;
         }
