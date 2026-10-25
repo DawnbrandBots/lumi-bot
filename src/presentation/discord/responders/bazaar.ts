@@ -21,14 +21,14 @@ export async function bazaarResponder({
     if (result.kind === EBazaarResultKind.LISTINGS_LISTED && filter) {
         const showResponse = interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false) === true;
         const requestedUser = filter.ownerId ? interaction.options.getUser(BAZAAR_USER_OPTION_NAME, false) : null;
-        const message = mapBazaarListResultToMessage(
-            result.value.listings,
+        const message = mapBazaarListResultToMessage({
+            listings: result.value.listings,
             filter,
-            page,
-            showResponse,
-            result.value.item,
-            requestedUser?.displayName,
-        );
+            requestedPage: page,
+            showActionRow: showResponse,
+            requestedItem: result.value.item,
+            requestedUserName: requestedUser?.displayName,
+        });
         const isValidPage = isBazaarListPageInRange(result.value.listings.length, page);
         await interaction.reply(
             !isValidPage || !showResponse ? { ...message, flags: [MessageFlags.Ephemeral] } : message,

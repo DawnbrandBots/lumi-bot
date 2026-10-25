@@ -22,19 +22,25 @@ describe(mapBazaarListResultToMessage.name, () => {
             "Owner One",
         ],
     ] as const)("formats the title for filter %#", (filter, title, userName) => {
-        const message = mapBazaarListResultToMessage([LISTING], filter, 1, true, undefined, userName);
+        const message = mapBazaarListResultToMessage({
+            listings: [LISTING],
+            filter,
+            requestedPage: 1,
+            showActionRow: true,
+            requestedUserName: userName,
+        });
 
         expect(message.embeds[0]?.title).toBe(title);
     });
 
     test("includes an item in the title when no matching listings are returned", () => {
-        const message = mapBazaarListResultToMessage(
-            [],
-            { guildId: "guild-1", side: EListingSide.SALE, item: WEAPON_REFERENCE },
-            1,
-            true,
-            WEAPON_ITEM,
-        );
+        const message = mapBazaarListResultToMessage({
+            listings: [],
+            filter: { guildId: "guild-1", side: EListingSide.SALE, item: WEAPON_REFERENCE },
+            requestedPage: 1,
+            showActionRow: true,
+            requestedItem: WEAPON_ITEM,
+        });
 
         expect(message.embeds[0]?.title).toBe("Bazaar sale listings for Royal Sword + (ATK)");
     });

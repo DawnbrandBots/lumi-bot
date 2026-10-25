@@ -54,14 +54,21 @@ function formatListTitle(
     return `Bazaar ${side} listings${filter.ownerId && requestedUserName ? ` by ${requestedUserName}` : ""}${item ? ` for ${formatItem(item)}` : ""}`;
 }
 
-export function mapBazaarListResultToMessage(
-    listings: readonly IListing[],
-    filter: TBazaarUseCaseArgs["listListings"],
-    requestedPage: number,
-    showActionRow: boolean,
-    requestedItem?: TListableItem,
-    requestedUserName?: string,
-) {
+export function mapBazaarListResultToMessage({
+    listings,
+    filter,
+    requestedPage,
+    showActionRow,
+    requestedItem,
+    requestedUserName,
+}: {
+    readonly listings: readonly IListing[];
+    readonly filter: TBazaarUseCaseArgs["listListings"];
+    readonly requestedPage: number;
+    readonly showActionRow: boolean;
+    readonly requestedItem?: TListableItem;
+    readonly requestedUserName?: string;
+}) {
     const pageCount = getBazaarPageCount(listings.length);
     const pageListings = listings.slice(
         (requestedPage - 1) * BAZAAR_LIST_PAGE_SIZE,
