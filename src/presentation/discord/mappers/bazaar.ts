@@ -3,9 +3,9 @@ import { EBazaarResultKind, type TBazaarResult } from "../../../application/baza
 import type { TBazaarUseCaseArgs } from "../../../application/bazaar/useCases.types.ts";
 import type { TListableItem } from "../../../domain/bazaar/models/listableItem.types.ts";
 import type { IListing } from "../../../domain/bazaar/models/listing.types.ts";
-import { createNegativeMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 import { BAZAAR_LIST_PAGE_SIZE } from "../commands/bazaar/constants.ts";
 import { formatBazaarListPageValue, formatBazaarPageModalValue } from "../commands/bazaar/listPageValue.ts";
+import { createNegativeMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 
 function formatItem(item: TListableItem): string {
     switch (item.kind) {
@@ -41,24 +41,20 @@ export function mapBazaarListResultToMessage(
     }
     const components = [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
-            ...(pageCount > 1
-                ? [
-                      new ButtonBuilder()
-                          .setCustomId(formatBazaarListPageValue({ filter, page: Math.max(1, requestedPage - 1) }))
-                          .setLabel("⬅️")
-                          .setStyle(ButtonStyle.Secondary)
-                          .setDisabled(requestedPage === 1),
-                      new ButtonBuilder()
-                          .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage + 1 }))
-                          .setLabel("➡️")
-                          .setStyle(ButtonStyle.Secondary)
-                          .setDisabled(requestedPage === pageCount),
-                  ]
-                : []),
+            new ButtonBuilder()
+                .setCustomId(formatBazaarListPageValue({ filter, page: Math.max(1, requestedPage - 1) }))
+                .setLabel("⬅️")
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(requestedPage === 1),
             new ButtonBuilder()
                 .setCustomId(formatBazaarPageModalValue({ filter, page: requestedPage }))
                 .setLabel("Go to page")
                 .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage + 1 }))
+                .setLabel("➡️")
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(requestedPage === pageCount),
         ),
     ];
     return createNeutralMessage({
