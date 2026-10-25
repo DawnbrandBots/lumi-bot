@@ -1,0 +1,13 @@
+export const BAZAAR_COMMAND_NAME = "bazaar";
+export const BAZAAR_MANAGE_COMMAND_NAME = "bazaar-manage";
+export const BAZAAR_UPSERT_GROUP_NAME = "upsert";
+export const BAZAAR_DELETE_GROUP_NAME = "delete";
+export const BAZAAR_LIST_GROUP_NAME = "list";
+export const BAZAAR_PURCHASE_SUBCOMMAND_NAME = "purchase";
+export const BAZAAR_SALE_SUBCOMMAND_NAME = "sale";
+export const BAZAAR_ITEM_OPTION_NAME = "item";
+export const BAZAAR_QUANTITY_OPTION_NAME = "quantity";
+export const BAZAAR_PRICE_OPTION_NAME = "price";
+export const BAZAAR_USER_OPTION_NAME = "user";
+export const BAZAAR_LIST_PAGE_SIZE = 5;
+export const BAZAAR_LIST_COMPONENT_PREFIX = "bazaar-list:";
