@@ -10,21 +10,27 @@ import {
 } from "../../../../../../src/presentation/discord/commands/bazaar/handlers.ts";
 import {
     BAZAAR_ITEM_OPTION_NAME,
+    BAZAAR_PAGE_OPTION_NAME,
     BAZAAR_PRICE_OPTION_NAME,
     BAZAAR_QUANTITY_OPTION_NAME,
 } from "../../../../../../src/presentation/discord/commands/bazaar/constants.ts";
 
 function createFixture({
     itemValue = "w:weapon-1:ATK",
+    page = null,
     showResponse = false,
-}: { readonly itemValue?: string | null; readonly showResponse?: boolean } = {}) {
+}: { readonly itemValue?: string | null; readonly page?: number | null; readonly showResponse?: boolean } = {}) {
     const reply = vi.fn();
     const interaction = {
         guildId: "guild-1",
         inGuild: vi.fn().mockReturnValue(true),
         options: {
             getBoolean: vi.fn().mockReturnValue(showResponse),
-            getInteger: vi.fn((name: string) => (name === BAZAAR_QUANTITY_OPTION_NAME ? 0 : null)),
+            getInteger: vi.fn((name: string) => {
+                if (name === BAZAAR_QUANTITY_OPTION_NAME) return 0;
+                if (name === BAZAAR_PAGE_OPTION_NAME) return page;
+                return null;
+            }),
             getString: vi.fn((name: string) => (name === BAZAAR_ITEM_OPTION_NAME ? itemValue : null)),
             getUser: vi.fn().mockReturnValue(null),
         },
@@ -70,11 +76,12 @@ describe("Bazaar command handlers", () => {
         [false, [MessageFlags.Ephemeral]],
         [true, undefined],
     ] as const)("uses requested list visibility when show_response is %s", async (showResponse, flags) => {
-        const fixture = createFixture({ itemValue: null, showResponse });
+        const fixture = createFixture({ itemValue: null, page: 1, showResponse });
 
         await listSaleListings(fixture.dependencies, fixture.interaction);
 
         expect(fixture.listListings).toHaveBeenCalledWith({ guildId: "guild-1", side: EListingSide.SALE });
+        expect(fixture.interaction.options.getInteger).toHaveBeenCalledWith(BAZAAR_PAGE_OPTION_NAME, false);
         if (flags) {
             expect(fixture.reply).toHaveBeenCalledWith(expect.objectContaining({ flags }));
         } else {
@@ -82,5 +89,18 @@ describe("Bazaar command handlers", () => {
                 expect.objectContaining({ flags: [MessageFlags.Ephemeral] }),
             );
         }
+    });
+
+    test("reports a page number that does not exist", async () => {
+        const fixture = createFixture({ itemValue: null, page: 2 });
+
+        await listSaleListings(fixture.dependencies, fixture.interaction);
+
+        expect(fixture.reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ description: expect.stringContaining("Page 2 does not exist") })],
+            }),
+        );
     });
 });

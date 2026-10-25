@@ -8,6 +8,7 @@ import { runWithAdminPermission } from "../admin/runWithAdminPermission.ts";
 import type { TCommandDependencies, TCommandRunHandler, TGuildCommandInteraction } from "../types.ts";
 import {
     BAZAAR_ITEM_OPTION_NAME,
+    BAZAAR_PAGE_OPTION_NAME,
     BAZAAR_PRICE_OPTION_NAME,
     BAZAAR_QUANTITY_OPTION_NAME,
     BAZAAR_USER_OPTION_NAME,
@@ -99,7 +100,12 @@ export function createListListingsHandler(side: TListingSide): TBazaarCommandHan
                 ...(item ? { item } : {}),
             };
             const result = await dependencies.useCases.bazaar.listListings(filter);
-            await bazaarResponder({ filter, interaction: guildInteraction, result });
+            await bazaarResponder({
+                filter,
+                interaction: guildInteraction,
+                page: guildInteraction.options.getInteger(BAZAAR_PAGE_OPTION_NAME, false) ?? 1,
+                result,
+            });
         });
 }
 

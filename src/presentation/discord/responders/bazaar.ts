@@ -4,6 +4,7 @@ import type { TBazaarUseCaseArgs } from "../../../application/bazaar/useCases.ty
 import { SHOW_RESPONSE_OPTION_NAME } from "../commands/constants.ts";
 import type { TGuildCommandInteraction } from "../commands/types.ts";
 import { mapBazaarListResultToMessage, mapBazaarMutationResultToMessage } from "../mappers/bazaar.ts";
+import { isBazaarListPageInRange } from "../mappers/bazaar.ts";
 
 export async function bazaarResponder({
     filter,
@@ -19,7 +20,10 @@ export async function bazaarResponder({
     if (result.kind === EBazaarResultKind.LISTINGS_LISTED && filter) {
         const message = mapBazaarListResultToMessage(result.value.listings, filter, page);
         const showResponse = interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false) === true;
-        await interaction.reply(showResponse ? message : { ...message, flags: [MessageFlags.Ephemeral] });
+        const isValidPage = isBazaarListPageInRange(result.value.listings.length, page);
+        await interaction.reply(
+            !isValidPage || !showResponse ? { ...message, flags: [MessageFlags.Ephemeral] } : message,
+        );
         return;
     }
     if (result.kind !== EBazaarResultKind.LISTINGS_LISTED) {
