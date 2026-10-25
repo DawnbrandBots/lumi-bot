@@ -44,7 +44,7 @@ export function mapBazaarListResultToMessage(
             new ButtonBuilder()
                 .setCustomId(formatBazaarListPageValue({ filter, page: Math.max(1, requestedPage - 1) }))
                 .setLabel("⬅️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Primary)
                 .setDisabled(requestedPage === 1),
             new ButtonBuilder()
                 .setCustomId(formatBazaarPageModalValue({ filter, page: requestedPage }))
@@ -53,7 +53,7 @@ export function mapBazaarListResultToMessage(
             new ButtonBuilder()
                 .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage + 1 }))
                 .setLabel("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Primary)
                 .setDisabled(requestedPage === pageCount),
         ),
     ];
