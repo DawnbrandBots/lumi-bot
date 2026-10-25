@@ -1,5 +1,6 @@
 import type { EntityManager } from "@mikro-orm/sqlite";
 import type { TAdminRepository } from "../../application/admin/repositories.types.ts";
+import type { TBazaarRepository } from "../../application/bazaar/repositories.types.ts";
 import type { TLfgRepository } from "../../application/lfg/repositories.types.ts";
 import type { TApplicationRepositories } from "../../application/repositories.types.ts";
 import { addLfgRole } from "../../infrastructure/persistence/mikroOrm/repositories/admin/addLfgRole.ts";
@@ -13,6 +14,10 @@ import { setLfgChannel } from "../../infrastructure/persistence/mikroOrm/reposit
 import { setLfgRoleLastPingedAt } from "../../infrastructure/persistence/mikroOrm/repositories/admin/setLfgRoleLastPingedAt.ts";
 import { setLfgRolePingCooldown } from "../../infrastructure/persistence/mikroOrm/repositories/admin/setLfgRolePingCooldown.ts";
 import type { TAdminRepositoryFunction } from "../../infrastructure/persistence/mikroOrm/repositories/admin/types.ts";
+import { deleteListing } from "../../infrastructure/persistence/mikroOrm/repositories/bazaar/deleteListing.ts";
+import { listListings } from "../../infrastructure/persistence/mikroOrm/repositories/bazaar/listListings.ts";
+import type { TBazaarRepositoryFunction } from "../../infrastructure/persistence/mikroOrm/repositories/bazaar/types.ts";
+import { upsertListing } from "../../infrastructure/persistence/mikroOrm/repositories/bazaar/upsertListing.ts";
 import { changeRoomCode } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/changeRoomCode.ts";
 import { createRoom } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/createRoom.ts";
 import { findRoomByCode } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/findRoomByCode.ts";
@@ -52,15 +57,23 @@ const LFG_REPOSITORY: { [K in keyof TLfgRepository]: TLfgRepositoryFunction<TLfg
     setRoomOwner,
 };
 
+const BAZAAR_REPOSITORY: { [K in keyof TBazaarRepository]: TBazaarRepositoryFunction<TBazaarRepository[K]> } = {
+    deleteListing,
+    listListings,
+    upsertListing,
+};
+
 const REPOSITORIES = {
     // TODO: might be better if repositories are organized by aggregate instead of "feature"
     admin: ADMIN_REPOSITORY,
+    bazaar: BAZAAR_REPOSITORY,
     lfg: LFG_REPOSITORY,
 } as const;
 
 export function composeRepositories({ em }: { readonly em: EntityManager }): TApplicationRepositories {
     return {
         admin: buildDependentFunctionsRecord({ em }, REPOSITORIES.admin),
+        bazaar: buildDependentFunctionsRecord({ em }, REPOSITORIES.bazaar),
         lfg: buildDependentFunctionsRecord({ em }, REPOSITORIES.lfg),
     };
 }

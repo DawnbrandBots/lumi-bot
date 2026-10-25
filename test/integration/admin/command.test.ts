@@ -75,6 +75,11 @@ function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandAr
     return {
         // TODO: some cleanup to do here... why this giant object?
         useCases: {
+            bazaar: {
+                deleteListing: vi.fn(),
+                listListings: vi.fn(),
+                upsertListing: vi.fn(),
+            },
             admin: {
                 addLfgRole: vi.fn(),
                 clearLfgChannel: vi.fn(),
