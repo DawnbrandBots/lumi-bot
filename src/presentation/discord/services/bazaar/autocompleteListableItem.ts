@@ -4,7 +4,7 @@ import { EWeaponVariant } from "../../../../domain/game/models/weaponVariant.typ
 import { formatListableItemValue } from "../../commands/bazaar/itemValue.ts";
 import type { TServiceBase } from "../types.ts";
 
-const SEARCH_RESULT_LIMIT = 10;
+const SEARCH_RESULT_LIMIT = 5;
 const DISCORD_CHOICE_LIMIT = 25;
 
 export const autocompleteListableItem: TServiceBase<
