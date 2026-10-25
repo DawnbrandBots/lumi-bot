@@ -1,28 +1,7 @@
-import type { TListableItem } from "../../../domain/bazaar/models/listableItem.types.ts";
-import { isDiscipleWithListableSoul, isListableWeaponLevel } from "../../../domain/bazaar/rules/listableItem.ts";
 import { isBazaarListingPriceNumber, isBazaarListingQuantityNumber } from "../../../domain/bazaar/rules/listing.ts";
-import type { TBazaarDependencies, TBazaarUseCaseBase, TListableItemReference } from "../types.ts";
+import { resolveListableItem } from "./resolveListableItem.ts";
+import type { TBazaarUseCaseBase } from "../types.ts";
 import { EBazaarResultKind } from "../types.ts";
-
-async function resolveListableItem(
-    dependencies: Pick<TBazaarDependencies, "queries">,
-    reference: TListableItemReference,
-): Promise<TListableItem | null> {
-    switch (reference.kind) {
-        case "weapon": {
-            const weapon = await dependencies.queries.bazaar.findWeaponById({ weaponId: reference.weaponId });
-            return weapon && isListableWeaponLevel(weapon.level)
-                ? { kind: "weapon", weapon: { id: weapon.id, name: weapon.name }, variant: reference.variant }
-                : null;
-        }
-        case "soul": {
-            const disciple = await dependencies.queries.bazaar.findDiscipleById({ discipleId: reference.discipleId });
-            return disciple && isDiscipleWithListableSoul(disciple)
-                ? { kind: "soul", disciple: { id: disciple.id, name: disciple.name } }
-                : null;
-        }
-    }
-}
 
 export const upsertListing: TBazaarUseCaseBase<
     "upsertListing",

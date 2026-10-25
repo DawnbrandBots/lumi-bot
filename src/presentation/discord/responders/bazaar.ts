@@ -2,6 +2,7 @@ import { MessageFlags } from "discord.js";
 import { EBazaarResultKind, type TBazaarResult } from "../../../application/bazaar/types.ts";
 import type { TBazaarUseCaseArgs } from "../../../application/bazaar/useCases.types.ts";
 import { SHOW_RESPONSE_OPTION_NAME } from "../commands/constants.ts";
+import { BAZAAR_USER_OPTION_NAME } from "../commands/bazaar/constants.ts";
 import type { TGuildCommandInteraction } from "../commands/types.ts";
 import { mapBazaarListResultToMessage, mapBazaarMutationResultToMessage } from "../mappers/bazaar.ts";
 import { isBazaarListPageInRange } from "../mappers/bazaar.ts";
@@ -19,7 +20,15 @@ export async function bazaarResponder({
 }): Promise<void> {
     if (result.kind === EBazaarResultKind.LISTINGS_LISTED && filter) {
         const showResponse = interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false) === true;
-        const message = mapBazaarListResultToMessage(result.value.listings, filter, page, showResponse);
+        const requestedUser = filter.ownerId ? interaction.options.getUser(BAZAAR_USER_OPTION_NAME, false) : null;
+        const message = mapBazaarListResultToMessage(
+            result.value.listings,
+            filter,
+            page,
+            showResponse,
+            result.value.item,
+            requestedUser?.displayName,
+        );
         const isValidPage = isBazaarListPageInRange(result.value.listings.length, page);
         await interaction.reply(
             !isValidPage || !showResponse ? { ...message, flags: [MessageFlags.Ephemeral] } : message,

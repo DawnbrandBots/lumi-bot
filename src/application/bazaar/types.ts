@@ -34,7 +34,7 @@ type TBazaarResultValueByKind = {
     [EBazaarResultKind.LISTING_UPDATED]: { readonly listing: IListing };
     [EBazaarResultKind.LISTING_UNCHANGED]: { readonly listing: IListing };
     [EBazaarResultKind.LISTING_DELETED]: { readonly listing: IListing };
-    [EBazaarResultKind.LISTINGS_LISTED]: { readonly listings: readonly IListing[] };
+    [EBazaarResultKind.LISTINGS_LISTED]: { readonly listings: readonly IListing[]; readonly item?: IListing["item"] };
 } & {
     [
         _ in

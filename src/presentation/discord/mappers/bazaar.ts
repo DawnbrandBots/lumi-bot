@@ -1,6 +1,11 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, time, userMention } from "discord.js";
-import { EBazaarResultKind, type TBazaarResult } from "../../../application/bazaar/types.ts";
+import {
+    EBazaarResultKind,
+    type TBazaarResult,
+    type TListableItemReference,
+} from "../../../application/bazaar/types.ts";
 import type { TBazaarUseCaseArgs } from "../../../application/bazaar/useCases.types.ts";
+import { EListingSide } from "../../../domain/bazaar/models/listing.types.ts";
 import type { TListableItem } from "../../../domain/bazaar/models/listableItem.types.ts";
 import type { IListing } from "../../../domain/bazaar/models/listing.types.ts";
 import { BAZAAR_LIST_PAGE_SIZE } from "../commands/bazaar/constants.ts";
@@ -22,11 +27,40 @@ function formatListing(listing: IListing): string {
     return `**${formatItem(listing.item)}** — ${quantity} · ${price}\n${userMention(listing.ownerId)} · updated ${time(listing.updatedAt, "R")}`;
 }
 
+function isMatchingItem(item: TListableItem, reference: TListableItemReference): boolean {
+    switch (item.kind) {
+        case "weapon":
+            return (
+                reference.kind === "weapon" &&
+                item.weapon.id === reference.weaponId &&
+                item.variant === reference.variant
+            );
+        case "soul":
+            return reference.kind === "soul" && item.disciple.id === reference.discipleId;
+    }
+}
+
+function formatListTitle(
+    listings: readonly IListing[],
+    filter: TBazaarUseCaseArgs["listListings"],
+    requestedItem?: TListableItem,
+    requestedUserName?: string,
+): string {
+    const side = filter.side === EListingSide.PURCHASE ? "purchase" : "sale";
+    const reference = filter.item;
+    const item =
+        requestedItem ??
+        (reference ? listings.find((listing) => isMatchingItem(listing.item, reference))?.item : undefined);
+    return `Bazaar ${side} listings${filter.ownerId && requestedUserName ? ` by ${requestedUserName}` : ""}${item ? ` for ${formatItem(item)}` : ""}`;
+}
+
 export function mapBazaarListResultToMessage(
     listings: readonly IListing[],
     filter: TBazaarUseCaseArgs["listListings"],
     requestedPage: number,
     showActionRow: boolean,
+    requestedItem?: TListableItem,
+    requestedUserName?: string,
 ) {
     const pageCount = getBazaarPageCount(listings.length);
     const pageListings = listings.slice(
@@ -42,7 +76,7 @@ export function mapBazaarListResultToMessage(
     }
     const message = createNeutralMessage({
         embed: {
-            title: "Bazaar listings",
+            title: formatListTitle(listings, filter, requestedItem, requestedUserName),
             description: pageListings.length ? pageListings.map(formatListing).join("\n\n") : "No matching listings.",
             footer: {
                 text: `Page ${requestedPage}/${pageCount} · ${listings.length} listing${listings.length === 1 ? "" : "s"}`,
