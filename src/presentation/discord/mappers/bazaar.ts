@@ -26,6 +26,7 @@ export function mapBazaarListResultToMessage(
     listings: readonly IListing[],
     filter: TBazaarUseCaseArgs["listListings"],
     requestedPage: number,
+    showActionRow: boolean,
 ) {
     const pageCount = getBazaarPageCount(listings.length);
     const pageListings = listings.slice(
@@ -39,25 +40,7 @@ export function mapBazaarListResultToMessage(
             },
         });
     }
-    const components = [
-        new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder()
-                .setCustomId(formatBazaarListPageValue({ filter, page: Math.max(1, requestedPage - 1) }))
-                .setLabel("⬅️")
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(requestedPage === 1),
-            new ButtonBuilder()
-                .setCustomId(formatBazaarPageModalValue({ filter, page: requestedPage }))
-                .setLabel("Go to page")
-                .setStyle(ButtonStyle.Secondary),
-            new ButtonBuilder()
-                .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage + 1 }))
-                .setLabel("➡️")
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(requestedPage === pageCount),
-        ),
-    ];
-    return createNeutralMessage({
+    const message = createNeutralMessage({
         embed: {
             title: "Bazaar listings",
             description: pageListings.length ? pageListings.map(formatListing).join("\n\n") : "No matching listings.",
@@ -65,8 +48,31 @@ export function mapBazaarListResultToMessage(
                 text: `Page ${requestedPage}/${pageCount} · ${listings.length} listing${listings.length === 1 ? "" : "s"}`,
             },
         },
-        components,
     });
+    if (showActionRow) {
+        return message;
+    }
+    return {
+        ...message,
+        components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(
+                new ButtonBuilder()
+                    .setCustomId(formatBazaarListPageValue({ filter, page: Math.max(1, requestedPage - 1) }))
+                    .setLabel("⬅️")
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(requestedPage === 1),
+                new ButtonBuilder()
+                    .setCustomId(formatBazaarPageModalValue({ filter, page: requestedPage }))
+                    .setLabel("Go to page")
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage + 1 }))
+                    .setLabel("➡️")
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(requestedPage === pageCount),
+            ),
+        ],
+    };
 }
 
 export function getBazaarPageCount(listingCount: number): number {

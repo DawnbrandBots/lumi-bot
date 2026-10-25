@@ -7,9 +7,9 @@ import {
 } from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TApplicationUseCases } from "../../../../application/useCases.types.ts";
-import { LFG_JOIN_BUTTON_ID_PREFIX } from "../../commands/lfg/constants.ts";
 import { BAZAAR_PAGE_INPUT_ID, BAZAAR_PAGE_MODAL_PREFIX } from "../../commands/bazaar/constants.ts";
 import { formatBazaarPageModalValue, parseBazaarListPageValue } from "../../commands/bazaar/listPageValue.ts";
+import { LFG_JOIN_BUTTON_ID_PREFIX } from "../../commands/lfg/constants.ts";
 import { mapBazaarListResultToMessage } from "../../mappers/bazaar.ts";
 import { lfgResponder } from "../../responders/lfg.ts";
 
@@ -55,7 +55,9 @@ export async function handleComponentInteraction(arg: {
         const page = parseBazaarListPageValue(arg.interaction.customId, arg.interaction.guildId);
         if (page) {
             const result = await arg.useCases.bazaar.listListings(page.filter);
-            await arg.interaction.update(mapBazaarListResultToMessage(result.value.listings, page.filter, page.page));
+            await arg.interaction.update(
+                mapBazaarListResultToMessage(result.value.listings, page.filter, page.page, false),
+            );
             return;
         }
     }
