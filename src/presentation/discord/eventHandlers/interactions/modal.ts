@@ -20,7 +20,7 @@ export async function handleModalSubmitInteraction(arg: {
     }
     const page = Number(arg.interaction.fields.getTextInputValue(BAZAAR_PAGE_INPUT_ID));
     const result = await arg.useCases.bazaar.listListings(pageState.filter);
-    const message = mapBazaarListResultToMessage(result.value.listings, pageState.filter, page);
+    const message = mapBazaarListResultToMessage(result.value.listings, pageState.filter, page, false);
     if (!isBazaarListPageInRange(result.value.listings.length, page)) {
         await arg.interaction.reply({ ...message, flags: [MessageFlags.Ephemeral] });
         return;

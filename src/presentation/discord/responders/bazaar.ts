@@ -18,8 +18,8 @@ export async function bazaarResponder({
     readonly result: TBazaarResult;
 }): Promise<void> {
     if (result.kind === EBazaarResultKind.LISTINGS_LISTED && filter) {
-        const message = mapBazaarListResultToMessage(result.value.listings, filter, page);
         const showResponse = interaction.options.getBoolean(SHOW_RESPONSE_OPTION_NAME, false) === true;
+        const message = mapBazaarListResultToMessage(result.value.listings, filter, page, showResponse);
         const isValidPage = isBazaarListPageInRange(result.value.listings.length, page);
         await interaction.reply(
             !isValidPage || !showResponse ? { ...message, flags: [MessageFlags.Ephemeral] } : message,

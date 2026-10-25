@@ -91,6 +91,14 @@ describe("Bazaar command handlers", () => {
         }
     });
 
+    test("does not include page navigation in a public response", async () => {
+        const fixture = createFixture({ itemValue: null, page: 1, showResponse: true });
+
+        await listSaleListings(fixture.dependencies, fixture.interaction);
+
+        expect(fixture.reply.mock.calls[0]?.[0]).not.toHaveProperty("components");
+    });
+
     test("reports a page number that does not exist", async () => {
         const fixture = createFixture({ itemValue: null, page: 2 });
 
