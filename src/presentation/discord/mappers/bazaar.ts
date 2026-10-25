@@ -45,12 +45,12 @@ export function mapBazaarListResultToMessage(
                 ? [
                       new ButtonBuilder()
                           .setCustomId(formatBazaarListPageValue({ filter, page: Math.max(1, requestedPage - 1) }))
-                          .setLabel("Previous")
+                          .setLabel("⬅️")
                           .setStyle(ButtonStyle.Secondary)
                           .setDisabled(requestedPage === 1),
                       new ButtonBuilder()
                           .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage + 1 }))
-                          .setLabel("Next")
+                          .setLabel("➡️")
                           .setStyle(ButtonStyle.Secondary)
                           .setDisabled(requestedPage === pageCount),
                   ]
