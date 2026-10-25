@@ -1,6 +1,6 @@
 import type { TBazaarUseCaseArgs } from "../../../../application/bazaar/useCases.types.ts";
 import { EListingSide } from "../../../../domain/bazaar/models/listing.types.ts";
-import { BAZAAR_LIST_COMPONENT_PREFIX } from "./constants.ts";
+import { BAZAAR_LIST_COMPONENT_PREFIX, BAZAAR_PAGE_MODAL_PREFIX } from "./constants.ts";
 import { formatListableItemValue, parseListableItemValue } from "./itemValue.ts";
 
 export type TBazaarListPage = {
@@ -41,4 +41,19 @@ export function parseBazaarListPageValue(value: string, guildId: string): TBazaa
         },
         page,
     };
+}
+
+export function formatBazaarPageModalValue(page: TBazaarListPage): string {
+    return `${BAZAAR_PAGE_MODAL_PREFIX}${encodeURIComponent(formatBazaarListPageValue(page))}`;
+}
+
+export function parseBazaarPageModalValue(value: string, guildId: string): TBazaarListPage | null {
+    if (!value.startsWith(BAZAAR_PAGE_MODAL_PREFIX)) {
+        return null;
+    }
+    try {
+        return parseBazaarListPageValue(decodeURIComponent(value.slice(BAZAAR_PAGE_MODAL_PREFIX.length)), guildId);
+    } catch {
+        return null;
+    }
 }

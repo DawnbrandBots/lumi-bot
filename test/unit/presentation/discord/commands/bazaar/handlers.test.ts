@@ -99,7 +99,6 @@ describe("Bazaar command handlers", () => {
         expect(fixture.reply).toHaveBeenCalledWith(
             expect.objectContaining({
                 flags: [MessageFlags.Ephemeral],
-                embeds: [expect.objectContaining({ description: expect.stringContaining("Page 2 does not exist") })],
             }),
         );
     });

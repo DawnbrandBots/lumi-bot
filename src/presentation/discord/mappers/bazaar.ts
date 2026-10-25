@@ -5,7 +5,7 @@ import type { TListableItem } from "../../../domain/bazaar/models/listableItem.t
 import type { IListing } from "../../../domain/bazaar/models/listing.types.ts";
 import { createNegativeMessage, createNeutralMessage, createPositiveMessage } from "../message.ts";
 import { BAZAAR_LIST_PAGE_SIZE } from "../commands/bazaar/constants.ts";
-import { formatBazaarListPageValue } from "../commands/bazaar/listPageValue.ts";
+import { formatBazaarListPageValue, formatBazaarPageModalValue } from "../commands/bazaar/listPageValue.ts";
 
 function formatItem(item: TListableItem): string {
     switch (item.kind) {
@@ -39,12 +39,12 @@ export function mapBazaarListResultToMessage(
             },
         });
     }
-    const components =
-        pageCount > 1
-            ? [
-                  new ActionRowBuilder<ButtonBuilder>().addComponents(
+    const components = [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+            ...(pageCount > 1
+                ? [
                       new ButtonBuilder()
-                          .setCustomId(formatBazaarListPageValue({ filter, page: requestedPage - 1 }))
+                          .setCustomId(formatBazaarListPageValue({ filter, page: Math.max(1, requestedPage - 1) }))
                           .setLabel("Previous")
                           .setStyle(ButtonStyle.Secondary)
                           .setDisabled(requestedPage === 1),
@@ -53,9 +53,14 @@ export function mapBazaarListResultToMessage(
                           .setLabel("Next")
                           .setStyle(ButtonStyle.Secondary)
                           .setDisabled(requestedPage === pageCount),
-                  ),
-              ]
-            : [];
+                  ]
+                : []),
+            new ButtonBuilder()
+                .setCustomId(formatBazaarPageModalValue({ filter, page: requestedPage }))
+                .setLabel("Go to page")
+                .setStyle(ButtonStyle.Secondary),
+        ),
+    ];
     return createNeutralMessage({
         embed: {
             title: "Bazaar listings",

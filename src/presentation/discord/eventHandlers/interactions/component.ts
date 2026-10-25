@@ -1,8 +1,15 @@
-import type { MessageComponentInteraction } from "discord.js";
+import {
+    ActionRowBuilder,
+    ModalBuilder,
+    TextInputBuilder,
+    TextInputStyle,
+    type MessageComponentInteraction,
+} from "discord.js";
 import type { PickDeep } from "type-fest";
 import type { TApplicationUseCases } from "../../../../application/useCases.types.ts";
 import { LFG_JOIN_BUTTON_ID_PREFIX } from "../../commands/lfg/constants.ts";
-import { parseBazaarListPageValue } from "../../commands/bazaar/listPageValue.ts";
+import { BAZAAR_PAGE_INPUT_ID, BAZAAR_PAGE_MODAL_PREFIX } from "../../commands/bazaar/constants.ts";
+import { formatBazaarPageModalValue, parseBazaarListPageValue } from "../../commands/bazaar/listPageValue.ts";
 import { mapBazaarListResultToMessage } from "../../mappers/bazaar.ts";
 import { lfgResponder } from "../../responders/lfg.ts";
 
@@ -16,6 +23,35 @@ export async function handleComponentInteraction(arg: {
     >;
 }) {
     if (arg.interaction.isButton() && arg.interaction.inGuild()) {
+        if (arg.interaction.customId.startsWith(BAZAAR_PAGE_MODAL_PREFIX)) {
+            try {
+                const page = parseBazaarListPageValue(
+                    decodeURIComponent(arg.interaction.customId.slice(BAZAAR_PAGE_MODAL_PREFIX.length)),
+                    arg.interaction.guildId,
+                );
+                if (page) {
+                    await arg.interaction.showModal(
+                        new ModalBuilder()
+                            .setCustomId(formatBazaarPageModalValue(page))
+                            .setTitle("Go to Bazaar page")
+                            .addComponents(
+                                new ActionRowBuilder<TextInputBuilder>().addComponents(
+                                    new TextInputBuilder()
+                                        .setCustomId(BAZAAR_PAGE_INPUT_ID)
+                                        .setLabel("Page number")
+                                        .setStyle(TextInputStyle.Short)
+                                        .setMinLength(1)
+                                        .setMaxLength(6)
+                                        .setRequired(true),
+                                ),
+                            ),
+                    );
+                    return;
+                }
+            } catch {
+                // Ignore malformed component identifiers.
+            }
+        }
         const page = parseBazaarListPageValue(arg.interaction.customId, arg.interaction.guildId);
         if (page) {
             const result = await arg.useCases.bazaar.listListings(page.filter);
