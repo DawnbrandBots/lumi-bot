@@ -40,6 +40,11 @@
     "effect": "WEAPON_DAMAGE_REDUCTION_FROM_RANGE_1_30"
   },
   {
+    "id": "STORMY_CROSSING",
+    "name": "Stormy Crossing",
+    "effect": "ON_WEAPON_KILL_MAGIC_COOLDOWN_REDUCTION_20_1T"
+  },
+  {
     "id": "GUARDIAN_S_SOUL",
     "name": "Guardian's Soul",
     "effect": "WEAPON_DAMAGE_VS_SWORD_30"
@@ -175,6 +180,11 @@
     "effect": "WEAPON_DAMAGE_WHEN_HP_LE_50_120"
   },
   {
+    "id": "BURROWING_DREAD",
+    "name": "Burrowing Dread",
+    "effect": "WEAPON_DAMAGE_15"
+  },
+  {
     "id": "SHINING_EYE",
     "name": "Shining Eye",
     "effect": "WEAPON_DAMAGE_WHEN_HP_GE_50_30"
@@ -253,10 +263,5 @@
     "id": "BATTLE_FERVOR",
     "name": "Battle Fervor",
     "effect": "ON_WEAPON_KILL_ATK_BOOST_50_3T"
-  },
-  {
-    "id": "STORMY_CROSSING",
-    "name": "Stormy Crossing",
-    "effect": "ON_WEAPON_KILL_MAGIC_COOLDOWN_REDUCTION_20_1T"
   }
 ]

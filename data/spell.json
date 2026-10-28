@@ -2700,7 +2700,7 @@
     "disciple": "EPHRAIM",
     "role": "SHADOW",
     "shape": "1_TILE",
-    "uses": 1,
+    "uses": 3,
     "cooldown": 3,
     "countdown": 2,
     "effects": [
@@ -4967,5 +4967,131 @@
         "target": "SELF"
       }
     ]
+  },
+  {
+    "id": "WIND_BIND_EX",
+    "name": "Wind Bind EX",
+    "disciple": "BERNADETTA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 5,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 60,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "LIMIT",
+          "duration": 1,
+          "amount": {
+            "base": 0,
+            "unit": {
+              "kind": "FIXED"
+            },
+            "scalingStrategyOverride": "NONE"
+          },
+          "stat": "MOVEMENT"
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "WIND_EDGE_BREAK_PLUS_CAVALRY",
+    "name": "Wind Edge Break + Cavalry",
+    "disciple": "BERNADETTA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": {
+          "base": 50,
+          "unit": {
+            "kind": "FIXED"
+          }
+        },
+        "color": "GREEN",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "ATK"
+            }
+          },
+          "stat": "ATK"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "CAVALRY"]
+  },
+  {
+    "id": "ROCK",
+    "name": "Rock",
+    "disciple": "BERNADETTA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": 2,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "OBSTACLE",
+        "obstacleType": "ROCK",
+        "onlyOn": "GROUND",
+        "hp": {
+          "base": 180
+        },
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "DARK_FRAGILITY_PLUS_CAVALRY",
+    "name": "Dark Fragility + Cavalry",
+    "disciple": "BERNADETTA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 20,
+            "unit": {
+              "kind": "PERCENT",
+              "stat": "HP"
+            }
+          },
+          "stat": "HP"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["movementType", "CAVALRY"]
   }
 ]
