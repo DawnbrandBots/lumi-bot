@@ -408,5 +408,15 @@
     "weaponType": "SWORD",
     "prfWeapon": "CAPTAIN_S_SWORD_PLUS",
     "shadowMusic": "BETRAYAL_AN_ISLAND_APART"
+  },
+  {
+    "id": "BERNADETTA",
+    "name": "Bernadetta",
+    "epithet": "Wary Badger",
+    "description": "A homebody who lives in seclusion. You may gain her trust, but good luck convincing her to come outside.",
+    "movementType": "CAVALRY",
+    "weaponType": "BOW",
+    "prfWeapon": "INEXHAUSTIBLE_PLUS",
+    "shadowMusic": "BETRAYAL_THREE_HOUSES"
   }
 ]

@@ -360,6 +360,16 @@
     "uniqueSkill": "BLOODSTAINED_ROSE"
   },
   {
+    "id": "INEXHAUSTIBLE_PLUS",
+    "name": "Inexhaustible +",
+    "weaponType": "BOW",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BURROWING_DREAD"
+  },
+  {
     "id": "SIGHT_STONE_PLUS",
     "name": "Sight Stone +",
     "weaponType": "STONE",
@@ -610,6 +620,16 @@
     "uniqueSkill": "DEMON_REPELLER"
   },
   {
+    "id": "RESOLUTE_AXE",
+    "name": "Resolute Axe",
+    "weaponType": "AXE",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BATTLE_FERVOR"
+  },
+  {
     "id": "SOLAR_CLAWS",
     "name": "Solar Claws",
     "weaponType": "CLAWS",
@@ -769,6 +789,15 @@
     "uniqueSkill": "BATTLE_FERVOR"
   },
   {
+    "id": "MOONFLARE_STAFF",
+    "name": "Moonflare Staff",
+    "weaponType": "STAFF",
+    "level": 7,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3
+  },
+  {
     "id": "MULAGIR",
     "name": "Mulagir",
     "weaponType": "BOW",
@@ -837,6 +866,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "BATTLE_FERVOR"
+  },
+  {
+    "id": "INEXHAUSTIBLE",
+    "name": "Inexhaustible",
+    "weaponType": "BOW",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "BURROWING_DREAD"
   },
   {
     "id": "SIGHT_STONE",
