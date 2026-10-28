@@ -1,5 +1,7 @@
 import { describe, expect, test } from "vitest";
 import getAutocompleteHandler from "../../../../../../src/composition/presentation/getAutocompleteHandler.ts";
+import { AUTOCOMPLETE } from "../../../../../../src/composition/presentation/autocomplete.ts";
+import { autocompleteListableItem } from "../../../../../../src/presentation/discord/services/bazaar/autocompleteListableItem.ts";
 import {
     autocompleteHandlers,
     findAutocomplete,
@@ -32,5 +34,15 @@ describe(getAutocompleteHandler.name, () => {
         const interaction = getMockAutocompleteInteraction(interactionOptions);
 
         expect(getAutocompleteHandler(autocompleteHandlers)(interaction)).toBe(expected);
+    });
+
+    test.each([
+        { commandName: "bazaar", focusedOption: "item", subcommand: "sale", subcommandGroup: "upsert" },
+        { commandName: "bazaar", focusedOption: "item", subcommand: "purchase", subcommandGroup: "list" },
+        { commandName: "bazaar-manage", focusedOption: "item", subcommand: "sale", subcommandGroup: "delete" },
+    ] as const)("routes production Bazaar autocomplete for $commandName $subcommandGroup $subcommand", (options) => {
+        expect(getAutocompleteHandler(AUTOCOMPLETE)(getMockAutocompleteInteraction(options))).toBe(
+            autocompleteListableItem,
+        );
     });
 });

@@ -1,4 +1,6 @@
 import { adminCommandRuntimeInfo } from "./runtimeInfo/admin.ts";
+import { bazaarCommandRuntimeInfo } from "./runtimeInfo/bazaar.ts";
+import { bazaarManageCommandRuntimeInfo } from "./runtimeInfo/bazaarManage.ts";
 import { helpCommandRuntimeInfo } from "./runtimeInfo/help.ts";
 import { lfgCommandRuntimeInfo } from "./runtimeInfo/lfg.ts";
 import { lfgManageCommandRuntimeInfo } from "./runtimeInfo/lfgManage.ts";
@@ -12,6 +14,8 @@ const allCommandRuntimeInfo = [
     lfgCommandRuntimeInfo,
     lfgManageCommandRuntimeInfo,
     adminCommandRuntimeInfo,
+    bazaarCommandRuntimeInfo,
+    bazaarManageCommandRuntimeInfo,
 ] as const;
 
 export type TAllCommandRuntimeInfo = (typeof allCommandRuntimeInfo)[number];

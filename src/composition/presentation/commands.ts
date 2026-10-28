@@ -2,11 +2,26 @@ import type { TAllCommandRegistrationData } from "../../presentation/discord/com
 import type { adminCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/admin.ts";
 import type { lfgCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/lfg.ts";
 import type { lfgManageCommandCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/lfgManage.ts";
+import type { bazaarCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/bazaar.ts";
+import type { bazaarManageCommandRegistrationData } from "../../presentation/discord/commandRegistrationData/bazaarManage.ts";
 import { lfgChannel } from "../../presentation/discord/commands/admin/lfg/channel.ts";
 import { lfgRole } from "../../presentation/discord/commands/admin/lfg/role.ts";
 import { lfgRolePingCooldown } from "../../presentation/discord/commands/admin/lfg/rolePingCooldown.ts";
 import { lfgShow } from "../../presentation/discord/commands/admin/lfg/show.ts";
 import { help } from "../../presentation/discord/commands/help.ts";
+import {
+    deleteManagedPurchaseListing,
+    deleteManagedSaleListing,
+    deletePurchaseListing,
+    deleteSaleListing,
+    listPurchaseListings,
+    listSaleListings,
+    upsertManagedPurchaseListing,
+    upsertManagedSaleListing,
+    upsertPurchaseListing,
+    upsertSaleListing,
+    withBazaarManagePermission,
+} from "../../presentation/discord/commands/bazaar/handlers.ts";
 import { changeCode as changeOwnedRoomCode } from "../../presentation/discord/commands/lfg/changeCode.ts";
 import { create as createOwnedLfgRoom } from "../../presentation/discord/commands/lfg/create.ts";
 import { disband as disbandOwnedRoom } from "../../presentation/discord/commands/lfg/disband.ts";
@@ -65,8 +80,27 @@ export const LFG_MANAGE_COMMANDS = {
     disband: runLfgManageFeatureCommand(disbandManagedLfgRoom),
 } satisfies TCommandRunHandlers<typeof lfgManageCommandCommandRegistrationData>;
 
+export const BAZAAR_COMMANDS = {
+    upsert: { purchase: upsertPurchaseListing, sale: upsertSaleListing },
+    delete: { purchase: deletePurchaseListing, sale: deleteSaleListing },
+    list: { purchase: listPurchaseListings, sale: listSaleListings },
+} satisfies TCommandRunHandlers<typeof bazaarCommandRegistrationData>;
+
+export const BAZAAR_MANAGE_COMMANDS = {
+    upsert: {
+        purchase: withBazaarManagePermission(upsertManagedPurchaseListing),
+        sale: withBazaarManagePermission(upsertManagedSaleListing),
+    },
+    delete: {
+        purchase: withBazaarManagePermission(deleteManagedPurchaseListing),
+        sale: withBazaarManagePermission(deleteManagedSaleListing),
+    },
+} satisfies TCommandRunHandlers<typeof bazaarManageCommandRegistrationData>;
+
 export const COMMANDS = {
     admin: ADMIN_COMMANDS,
+    bazaar: BAZAAR_COMMANDS,
+    "bazaar-manage": BAZAAR_MANAGE_COMMANDS,
     lfg: LFG_COMMANDS,
     "lfg-manage": LFG_MANAGE_COMMANDS,
     search,

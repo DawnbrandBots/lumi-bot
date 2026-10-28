@@ -7,6 +7,9 @@ import { removeLfgRole } from "../../application/admin/useCases/removeLfgRole.ts
 import { setLfgChannel } from "../../application/admin/useCases/setLfgChannel.ts";
 import { setLfgRoleLastPingedAt } from "../../application/admin/useCases/setLfgRoleLastPingedAt.ts";
 import { setLfgRolePingCooldown } from "../../application/admin/useCases/setLfgRolePingCooldown.ts";
+import { deleteListing } from "../../application/bazaar/useCases/deleteListing.ts";
+import { listListings } from "../../application/bazaar/useCases/listListings.ts";
+import { upsertListing } from "../../application/bazaar/useCases/upsertListing.ts";
 import { changeOwnedRoomCode } from "../../application/lfg/useCases/changeOwnedRoomCode.ts";
 import { changeRoomCode } from "../../application/lfg/useCases/changeRoomCode.ts";
 import { createRoom } from "../../application/lfg/useCases/createRoom.ts";
@@ -66,8 +69,15 @@ const ADMIN_USE_CASES = {
     setLfgRolePingCooldown,
 };
 
+const BAZAAR_USE_CASES = {
+    deleteListing,
+    listListings,
+    upsertListing,
+};
+
 const USE_CASES = {
     admin: ADMIN_USE_CASES,
+    bazaar: BAZAAR_USE_CASES,
     lfg: LFG_USE_CASES,
     search: SEARCH_USE_CASES,
 } as const;
@@ -85,6 +95,7 @@ export function composeUseCases({
 }): TApplicationUseCases {
     return {
         admin: buildDependentFunctionsRecord({ repositories }, USE_CASES.admin, middleware),
+        bazaar: buildDependentFunctionsRecord({ queries, repositories }, USE_CASES.bazaar, middleware),
         lfg: buildDependentFunctionsRecord({ repositories, services: services.lfg }, USE_CASES.lfg, middleware),
         search: buildDependentFunctionsRecord({ queries }, USE_CASES.search, middleware),
     };

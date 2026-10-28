@@ -15,6 +15,8 @@ import type { THandleCommandInteraction } from "../presentation/discord/eventHan
 import { handleCommandInteraction } from "../presentation/discord/eventHandlers/interactions/command.ts";
 import type { THandleComponentInteraction } from "../presentation/discord/eventHandlers/interactions/component.ts";
 import { handleComponentInteraction } from "../presentation/discord/eventHandlers/interactions/component.ts";
+import type { THandleModalSubmitInteraction } from "../presentation/discord/eventHandlers/interactions/modal.ts";
+import { handleModalSubmitInteraction } from "../presentation/discord/eventHandlers/interactions/modal.ts";
 import type { THandleMessageCreate } from "../presentation/discord/eventHandlers/messageCreate.ts";
 import { handleMessageCreate } from "../presentation/discord/eventHandlers/messageCreate.ts";
 import { createErrorMessage } from "../presentation/discord/message.ts";
@@ -53,6 +55,8 @@ export function composePresentation({ useCases }: { readonly useCases: TApplicat
         handleAutocompleteInteraction({ getAutocompleteHandler, interaction });
     const componentInteraction: THandleComponentInteraction = (interaction) =>
         handleComponentInteraction({ interaction, useCases: presentationDependencies.useCases });
+    const modalSubmitInteraction: THandleModalSubmitInteraction = (interaction) =>
+        handleModalSubmitInteraction({ interaction, useCases: presentationDependencies.useCases });
 
     const BUILT_INTERACTION_CREATE_INTERACTION_TYPE_HANDLERS: {
         [K in TInteractionCreateEventInteraction["type"]]?: (
@@ -62,6 +66,7 @@ export function composePresentation({ useCases }: { readonly useCases: TApplicat
         [InteractionType.ApplicationCommand]: commandInteraction,
         [InteractionType.ApplicationCommandAutocomplete]: autocompleteInteraction,
         [InteractionType.MessageComponent]: componentInteraction,
+        [InteractionType.ModalSubmit]: modalSubmitInteraction,
     };
 
     const ACTION_WHEN_INTERACTION_HANDLER_NOT_FOUND: {

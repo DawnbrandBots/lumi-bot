@@ -121,6 +121,11 @@ function getCommand({
         getGuildConfig,
         command: {
             admin: adminUseCases,
+            bazaar: {
+                deleteListing: vi.fn(),
+                listListings: vi.fn(),
+                upsertListing: vi.fn(),
+            },
             lfg: lfgUseCases,
             search: searchUseCases,
         } satisfies TApplicationUseCases,

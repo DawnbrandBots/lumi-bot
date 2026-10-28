@@ -15,6 +15,7 @@ type TService = (
 ) => MaybePromise<ApplicationCommandOptionChoiceData[]>;
 
 export type TServices = {
+    readonly autocompleteListableItem: TService;
     readonly autocompleteRoomCode: TService;
     readonly autocompleteSearchTerms: TService;
 };
