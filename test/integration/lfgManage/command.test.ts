@@ -89,7 +89,7 @@ function getCommand({
         movePlayerToRoomByCode: vi.fn().mockResolvedValue(result),
         movePlayerToRoomById: vi.fn().mockResolvedValue(result),
         getLfgStatus: vi.fn().mockResolvedValue(result),
-        pingOwnedRoom: vi.fn().mockResolvedValue(result),
+        pingCurrentRoom: vi.fn().mockResolvedValue(result),
         pingRoom: vi.fn().mockResolvedValue(result),
         getRoomList: vi.fn().mockResolvedValue(result),
         kickPlayerFromRoom: vi.fn().mockResolvedValue(result),

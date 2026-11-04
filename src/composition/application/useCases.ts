@@ -1,4 +1,4 @@
-import { pingOwnedRoom } from "../../application/lfg/useCases/pingOwnedRoom.ts";
+import { pingCurrentRoom } from "../../application/lfg/useCases/pingCurrentRoom.ts";
 import { pingRoom } from "../../application/lfg/useCases/pingRoom.ts";
 import { addLfgRole } from "../../application/admin/useCases/addLfgRole.ts";
 import { clearLfgChannel } from "../../application/admin/useCases/clearLfgChannel.ts";
@@ -41,7 +41,7 @@ export const SEARCH_USE_CASES = {
 
 const LFG_USE_CASES = {
     pingRoom,
-    pingOwnedRoom,
+    pingCurrentRoom,
     changeRoomCode: changeRoomCode,
     changeOwnedRoomCode: changeOwnedRoomCode,
     createRoom: createRoom,
