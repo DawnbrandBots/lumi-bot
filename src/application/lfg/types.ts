@@ -114,9 +114,7 @@ export type TLfgResultOfKind<Kind extends ELfgResultKind> =
 export type TLfgResult = { [Kind in ELfgResultKind]: TLfgResultOfKind<Kind> }[ELfgResultKind];
 
 export type TLfgResultTypes = {
-    pingOwnedRoom: TLfgResultOfKind<
-        ELfgResultKind.ROOM_PINGED | ELfgResultKind.NOT_ROOM_OWNER | ELfgResultKind.NOT_IN_A_ROOM
-    >;
+    pingCurrentRoom: TLfgResultOfKind<ELfgResultKind.ROOM_PINGED | ELfgResultKind.NOT_IN_A_ROOM>;
     pingRoom: TLfgResultOfKind<ELfgResultKind.ROOM_PINGED | ELfgResultKind.ROOM_NOT_FOUND>;
     getLfgStatus: TLfgResultOfKind<ELfgResultKind.STATUS>;
     getRoomList: TLfgResultOfKind<ELfgResultKind.ROOM_LIST>;

@@ -60,7 +60,7 @@ function getLfgUseCaseMocks(result: TLfgPresentationResult) {
         disbandRoom: vi.fn().mockResolvedValue(result),
         disbandOwnedRoom: vi.fn().mockResolvedValue(result),
         getLfgStatus: vi.fn().mockResolvedValue(result),
-        pingOwnedRoom: vi.fn().mockResolvedValue(result),
+        pingCurrentRoom: vi.fn().mockResolvedValue(result),
         pingRoom: vi.fn().mockResolvedValue(result),
         getRoomList: vi.fn().mockResolvedValue(result),
         kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
@@ -209,6 +209,10 @@ describe("lfg command", () => {
         });
         const { interaction, reply, send } = getInteractionFixture({ channelId, subcommand: "ping-room" });
         await runCommand(fixture, interaction);
+        expect(fixture.lfg.pingCurrentRoom).toHaveBeenCalledWith({
+            guildId: GUILD_ID,
+            user: { id: USER_ID },
+        });
         const destination = channelId === PUBLIC_CHANNEL_ID ? reply : send;
         expect(destination).toHaveBeenCalledWith(
             expect.objectContaining({

@@ -3,7 +3,7 @@ import type { MaybePromise } from "../../utils/types.ts";
 import type { TLfgResultTypes } from "./types.ts";
 
 export type TLfgUseCaseArgs = {
-    readonly pingOwnedRoom: { readonly guildId: string; readonly owner: IUser };
+    readonly pingCurrentRoom: { readonly guildId: string; readonly user: IUser };
     readonly pingRoom: { readonly guildId: string; readonly code: string };
     readonly changeRoomCode: {
         readonly guildId: string;
