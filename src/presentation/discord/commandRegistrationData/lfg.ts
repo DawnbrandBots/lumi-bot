@@ -29,6 +29,7 @@ import {
     LFG_TRANSFER_SUBCOMMAND_DESCRIPTION,
     LFG_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfg/constants.ts";
+import { LFG_PING_ROOM_SUBCOMMAND_NAME } from "../commands/lfg/constants.ts";
 import type { ICommandRegistrationData } from "../commands/types.ts";
 import { SHOW_RESPONSE_OPTION } from "./shared.ts";
 
@@ -54,6 +55,11 @@ export const lfgCommandCommandRegistrationData = {
     contexts: [InteractionContextType.Guild],
     integration_types: [ApplicationIntegrationType.GuildInstall],
     options: [
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_PING_ROOM_SUBCOMMAND_NAME,
+            description: "Ping all players in your room.",
+        },
         {
             type: ApplicationCommandOptionType.Subcommand,
             name: LFG_CREATE_SUBCOMMAND_NAME,

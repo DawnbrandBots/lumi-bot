@@ -383,6 +383,17 @@ export function mapLfgResultToMessageBase({
             });
         case ELfgResultKind.HELP:
             return createLfgHelpMessageBase();
+        case ELfgResultKind.ROOM_PINGED:
+            if (isPublic) {
+                return {
+                    kind: EMessageKind.POSITIVE,
+                    content: `${userMention(callerId)} pinged room ${inlineCode(result.value.room.code)}: ${result.value.room.playerIds.map(userMention).join(" ")}.`,
+                    allowedMentions: { parse: [], users: [...result.value.room.playerIds] },
+                };
+            }
+            return createPositiveMessage({
+                embed: { description: `Pinged ${inlineCode(result.value.room.code)} players.` },
+            });
         case ELfgResultKind.LFG_ROLE_PINGED:
             if (isPublic) {
                 return {

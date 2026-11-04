@@ -60,6 +60,8 @@ function getLfgUseCaseMocks(result: TLfgPresentationResult) {
         disbandRoom: vi.fn().mockResolvedValue(result),
         disbandOwnedRoom: vi.fn().mockResolvedValue(result),
         getLfgStatus: vi.fn().mockResolvedValue(result),
+        pingOwnedRoom: vi.fn().mockResolvedValue(result),
+        pingRoom: vi.fn().mockResolvedValue(result),
         getRoomList: vi.fn().mockResolvedValue(result),
         kickPlayerFromRoom: vi.fn().mockResolvedValue(result),
         kickPlayerFromOwnedRoom: vi.fn().mockResolvedValue(result),
@@ -173,6 +175,50 @@ async function runCommand(useCases: TApplicationUseCases, interaction: ChatInput
 }
 
 describe("lfg command", () => {
+    test("does not ping when the LFG channel is not configured", async () => {
+        const fixture = getCommand({
+            channel: null,
+            result: {
+                kind: ELfgResultKind.ROOM_PINGED,
+                value: { room: { id: ROOM_ID, code: ROOM_CODE, ownerId: "owner", playerIds: ["owner"] } },
+            },
+        });
+        const { interaction, reply, send } = getInteractionFixture({
+            channelId: OTHER_CHANNEL_ID,
+            subcommand: "ping-room",
+        });
+        await runCommand(fixture, interaction);
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ description: "LFG channel does not exist." })],
+            }),
+        );
+        expect(send).not.toHaveBeenCalled();
+    });
+
+    test.each([PUBLIC_CHANNEL_ID, OTHER_CHANNEL_ID])("pings room players from %s", async (channelId) => {
+        const fixture = getCommand({
+            channel: PUBLIC_CHANNEL_ID,
+            result: {
+                kind: ELfgResultKind.ROOM_PINGED,
+                value: {
+                    room: { id: ROOM_ID, code: ROOM_CODE, ownerId: USER_ID, playerIds: [USER_ID, "other-player"] },
+                },
+            },
+        });
+        const { interaction, reply, send } = getInteractionFixture({ channelId, subcommand: "ping-room" });
+        await runCommand(fixture, interaction);
+        const destination = channelId === PUBLIC_CHANNEL_ID ? reply : send;
+        expect(destination).toHaveBeenCalledWith(
+            expect.objectContaining({
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                content: expect.stringContaining("<@other-player>"),
+                allowedMentions: { parse: [], users: [USER_ID, "other-player"] },
+            }),
+        );
+    });
+
     test("replies ephemerally when no channel is configured", async () => {
         const command = getCommand({ result: POSITIVE_RESULT, channel: null });
         const { channelFetch, interaction, reply } = getInteractionFixture({ channelId: OTHER_CHANNEL_ID });

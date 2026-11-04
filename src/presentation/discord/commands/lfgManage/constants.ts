@@ -1,3 +1,5 @@
+export const LFG_MANAGE_PING_ROOM_SUBCOMMAND_NAME = "ping-room";
+
 export const LFG_MANAGE_COMMAND_NAME = "lfg-manage";
 
 export const LFG_MANAGE_CREATE_SUBCOMMAND_NAME = "create";

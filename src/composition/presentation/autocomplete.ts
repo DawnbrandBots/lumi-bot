@@ -10,6 +10,7 @@ export const AUTOCOMPLETE = {
     links: {},
     lfg: { join: { code: autocompleteAvailableRoomCode } },
     "lfg-manage": {
+        "ping-room": { code: autocompleteRoomCode },
         move: { code: autocompleteAvailableRoomCode },
         "change-code": { code: autocompleteRoomCode },
         kick: { code: autocompleteRoomCode },
