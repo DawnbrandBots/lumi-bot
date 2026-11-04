@@ -19,6 +19,8 @@ Use \`/lfg join\` to join a room, or \`/lfg create\` to create one as the owner.
 Still missing players? Use \`/lfg ping\` to ping users who have a role dedicated to LFG.
 \`/lfg ping\` enters a cooldown period for the pinged role after use.
 
+While in a room, you may use \`/lfg ping-room\` to ping all players in your room. Use it to draw your partners' attention before sending a message, like to announce you are going to leave soon.
+
 When you are done playing, use \`/lfg leave\` so other players can see that you are not playing anymore.
 
 In general, please encourage each other to ensure that \`/lfg status\`'s output is always up-to-date.
