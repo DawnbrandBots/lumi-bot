@@ -34,6 +34,7 @@ import {
     LFG_KICK_SUBCOMMAND_NAME,
     LFG_LEAVE_SUBCOMMAND_NAME,
     LFG_NO_CHANNEL_TO_PING_DESCRIPTION,
+    LFG_PING_ROOM_SUBCOMMAND_NAME,
     LFG_PING_SUBCOMMAND_NAME,
     LFG_ROLE_NOT_CONFIGURED_DESCRIPTION,
     LFG_ROLE_TO_PING_DELETED_DESCRIPTION,
@@ -62,6 +63,8 @@ Use ${formatCommand([LFG_COMMAND_NAME, LFG_JOIN_SUBCOMMAND_NAME])} to join a roo
 
 Still missing players? Use ${formatCommand([LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME])} to ping users who have a role dedicated to LFG.
 ${formatCommand([LFG_COMMAND_NAME, LFG_PING_SUBCOMMAND_NAME])} enters a cooldown period for the pinged role after use.
+
+While in a room, you may use ${formatCommand([LFG_COMMAND_NAME, LFG_PING_ROOM_SUBCOMMAND_NAME])} to ping all players in your room. Use it to draw your partners' attention before sending a message, like to announce you are going to leave soon.
 
 When you are done playing, use ${formatCommand([LFG_COMMAND_NAME, LFG_LEAVE_SUBCOMMAND_NAME])} so other players can see that you are not playing anymore.
 
@@ -383,6 +386,17 @@ export function mapLfgResultToMessageBase({
             });
         case ELfgResultKind.HELP:
             return createLfgHelpMessageBase();
+        case ELfgResultKind.ROOM_PINGED:
+            if (isPublic) {
+                return {
+                    kind: EMessageKind.POSITIVE,
+                    content: `${userMention(callerId)} pinged room ${inlineCode(result.value.room.code)}: ${result.value.room.playerIds.map(userMention).join(" ")}.`,
+                    allowedMentions: { parse: [], users: [...result.value.room.playerIds] },
+                };
+            }
+            return createPositiveMessage({
+                embed: { description: `Pinged ${inlineCode(result.value.room.code)} players.` },
+            });
         case ELfgResultKind.LFG_ROLE_PINGED:
             if (isPublic) {
                 return {

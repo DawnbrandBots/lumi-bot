@@ -1,3 +1,5 @@
+export const LFG_PING_ROOM_SUBCOMMAND_NAME = "ping-room";
+
 export const LFG_COMMAND_NAME = "lfg";
 export const LFG_CODE_OPTION_NAME = "code";
 export const LFG_NEW_CODE_OPTION_NAME = "new_code";

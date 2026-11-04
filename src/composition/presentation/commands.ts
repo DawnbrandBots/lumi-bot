@@ -23,6 +23,8 @@ import { disband as disbandManagedLfgRoom } from "../../presentation/discord/com
 import { kick as kickFromManagedLfgRoom } from "../../presentation/discord/commands/lfgManage/kick.ts";
 import { move } from "../../presentation/discord/commands/lfgManage/move.ts";
 import { transfer as transferManagedLfgRoom } from "../../presentation/discord/commands/lfgManage/transfer.ts";
+import { pingRoom as pingOwnedLfgRoom } from "../../presentation/discord/commands/lfg/pingRoom.ts";
+import { pingRoom as pingManagedLfgRoom } from "../../presentation/discord/commands/lfgManage/pingRoom.ts";
 import { links } from "../../presentation/discord/commands/links.ts";
 import { runLfgFeatureCommand } from "../../presentation/discord/commands/runLfgFeatureCommand.ts";
 import { runLfgManageFeatureCommand } from "../../presentation/discord/commands/runLfgManageFeatureCommand.ts";
@@ -44,6 +46,7 @@ export const ADMIN_COMMANDS = {
 } satisfies TCommandRunHandlers<typeof adminCommandCommandRegistrationData>;
 
 export const LFG_COMMANDS = {
+    "ping-room": runLfgFeatureCommand(pingOwnedLfgRoom),
     create: runLfgFeatureCommand(createOwnedLfgRoom),
     "change-code": runLfgFeatureCommand(changeOwnedRoomCode),
     join: runLfgFeatureCommand(joinLfgRoom),
@@ -57,6 +60,7 @@ export const LFG_COMMANDS = {
 } satisfies TCommandRunHandlers<typeof lfgCommandCommandRegistrationData>;
 
 export const LFG_MANAGE_COMMANDS = {
+    "ping-room": runLfgManageFeatureCommand(pingManagedLfgRoom),
     create: runLfgManageFeatureCommand(createManagedLfgRoom),
     move: runLfgManageFeatureCommand(move),
     "change-code": runLfgManageFeatureCommand(changeRoomCode),

@@ -18,6 +18,7 @@ import {
     LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
     LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfgManage/constants.ts";
+import { LFG_MANAGE_PING_ROOM_SUBCOMMAND_NAME } from "../commands/lfgManage/constants.ts";
 import type { ICommandRegistrationData } from "../commands/types.ts";
 
 const playerOption = {
@@ -54,6 +55,12 @@ export const lfgManageCommandCommandRegistrationData = {
     integration_types: [ApplicationIntegrationType.GuildInstall],
     default_member_permissions: PermissionFlagsBits.ManageGuild.toString(),
     options: [
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_MANAGE_PING_ROOM_SUBCOMMAND_NAME,
+            description: "Ping all players in a room.",
+            options: [autocompletedRoomCodeOption],
+        },
         {
             type: ApplicationCommandOptionType.Subcommand,
             name: LFG_MANAGE_CREATE_SUBCOMMAND_NAME,

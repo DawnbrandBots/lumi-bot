@@ -7,6 +7,7 @@ import type { TApplicationRepositories } from "../repositories.types.ts";
 import type { TLfgUseCaseArgs, TLfgUseCases } from "./useCases.types.ts";
 
 export const enum ELfgResultKind {
+    ROOM_PINGED = "ROOM_PINGED",
     STATUS = "STATUS",
     ROOM_LIST = "ROOM_LIST",
     ROOM_CREATED = "ROOM_CREATED",
@@ -40,6 +41,7 @@ export const enum ELfgResultKind {
 }
 
 type TLfgResultValueByKind = {
+    [ELfgResultKind.ROOM_PINGED]: { readonly room: IRoom };
     [ELfgResultKind.STATUS]: {
         readonly guildConfig: TLfgStatusGuildConfig | null;
         readonly rooms: readonly IRoom[];
@@ -112,6 +114,10 @@ export type TLfgResultOfKind<Kind extends ELfgResultKind> =
 export type TLfgResult = { [Kind in ELfgResultKind]: TLfgResultOfKind<Kind> }[ELfgResultKind];
 
 export type TLfgResultTypes = {
+    pingOwnedRoom: TLfgResultOfKind<
+        ELfgResultKind.ROOM_PINGED | ELfgResultKind.NOT_ROOM_OWNER | ELfgResultKind.NOT_IN_A_ROOM
+    >;
+    pingRoom: TLfgResultOfKind<ELfgResultKind.ROOM_PINGED | ELfgResultKind.ROOM_NOT_FOUND>;
     getLfgStatus: TLfgResultOfKind<ELfgResultKind.STATUS>;
     getRoomList: TLfgResultOfKind<ELfgResultKind.ROOM_LIST>;
     createRoom: TLfgResultOfKind<
