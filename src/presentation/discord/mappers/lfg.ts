@@ -349,6 +349,21 @@ export function mapLfgResultToMessageBase({
                     ),
                 },
             });
+        case ELfgResultKind.PLAYERS_SWAPPED:
+            return createPositiveMessage({
+                embed: {
+                    description: `${userMention(callerId)} swapped ${userMention(result.value.firstUserId)} and ${userMention(result.value.secondUserId)}:
+- ${userMention(result.value.firstUserId)} was ${result.value.secondRoomCode ? `moved to ${formatRoomCode(result.value.secondRoomCode)}` : `removed from ${formatRoomCode(result.value.firstRoomCode ?? "")}`}.
+- ${userMention(result.value.secondUserId)} was ${result.value.firstRoomCode ? `moved to ${formatRoomCode(result.value.firstRoomCode)}` : `removed from ${formatRoomCode(result.value.secondRoomCode ?? "")}`}.${
+                        result.value.ownershipTransfers.length
+                            ? `
+
+Ownership transfers:
+${result.value.ownershipTransfers.map((transfer) => `- ${userMention(transfer.newOwnerId)} now owns ${formatRoomCode(transfer.roomCode)}.`).join("\n")}`
+                            : ""
+                    }`,
+                },
+            });
         case ELfgResultKind.OWNERSHIP_TRANSFERRED:
             return createPositiveMessage({
                 embed: {
@@ -418,6 +433,12 @@ export function mapLfgResultToMessageBase({
                     description: `Room codes must be between ${FRIEND_BATTLE_CODE_MINIMUM_LENGTH} and ${FRIEND_BATTLE_CODE_MAXIMUM_LENGTH} characters.`,
                 },
             });
+        case ELfgResultKind.ATTEMPTED_TO_SWAP_THE_SAME_PLAYER:
+            return createNegativeMessage({ embed: { description: "Choose two different players." } });
+        case ELfgResultKind.CANNOT_SWAP_TWO_PLAYERS_NOT_IN_A_ROOM:
+            return createNegativeMessage({ embed: { description: "Neither player is in a room." } });
+        case ELfgResultKind.CANNOT_SWAP_PLAYERS_IN_SAME_ROOM:
+            return createNegativeMessage({ embed: { description: "Both players are already in the same room." } });
         case ELfgResultKind.ALREADY_IN_A_ROOM:
             return createNegativeMessage({
                 embed: {

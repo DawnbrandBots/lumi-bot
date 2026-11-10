@@ -22,6 +22,7 @@ import { create as createManagedLfgRoom } from "../../presentation/discord/comma
 import { disband as disbandManagedLfgRoom } from "../../presentation/discord/commands/lfgManage/disband.ts";
 import { kick as kickFromManagedLfgRoom } from "../../presentation/discord/commands/lfgManage/kick.ts";
 import { move } from "../../presentation/discord/commands/lfgManage/move.ts";
+import { swap } from "../../presentation/discord/commands/lfgManage/swap.ts";
 import { transfer as transferManagedLfgRoom } from "../../presentation/discord/commands/lfgManage/transfer.ts";
 import { pingRoom as pingOwnedLfgRoom } from "../../presentation/discord/commands/lfg/pingRoom.ts";
 import { pingRoom as pingManagedLfgRoom } from "../../presentation/discord/commands/lfgManage/pingRoom.ts";
@@ -63,6 +64,7 @@ export const LFG_MANAGE_COMMANDS = {
     "ping-room": runLfgManageFeatureCommand(pingManagedLfgRoom),
     create: runLfgManageFeatureCommand(createManagedLfgRoom),
     move: runLfgManageFeatureCommand(move),
+    swap: runLfgManageFeatureCommand(swap),
     "change-code": runLfgManageFeatureCommand(changeRoomCode),
     kick: runLfgManageFeatureCommand(kickFromManagedLfgRoom),
     transfer: runLfgManageFeatureCommand(transferManagedLfgRoom),

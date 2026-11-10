@@ -64,6 +64,11 @@ export type TLfgUseCaseArgs = {
         readonly code: string;
         readonly target: IUser;
     };
+    readonly swapPlayers: {
+        readonly guildId: string;
+        readonly firstUser: IUser;
+        readonly secondUser: IUser;
+    };
     readonly transferOwnedRoomToPlayer: {
         readonly guildId: string;
         readonly owner: IUser;

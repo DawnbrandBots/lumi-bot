@@ -23,6 +23,7 @@ import { moveUserToRoom } from "../../infrastructure/persistence/mikroOrm/reposi
 import { removeRoom } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/removeRoom.ts";
 import { removeRoomPlayer } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/removeRoomPlayer.ts";
 import { setRoomOwner } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/setRoomOwner.ts";
+import { swapPlayers } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/swapPlayers.ts";
 import type { TLfgRepositoryFunction } from "../../infrastructure/persistence/mikroOrm/repositories/lfg/types.ts";
 import { buildDependentFunctionsRecord } from "../utils/buildDependentFunctionsRecord.ts";
 
@@ -50,6 +51,7 @@ const LFG_REPOSITORY: { [K in keyof TLfgRepository]: TLfgRepositoryFunction<TLfg
     removeRoom,
     removeRoomPlayer,
     setRoomOwner,
+    swapPlayers,
 };
 
 const REPOSITORIES = {

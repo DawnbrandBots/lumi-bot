@@ -16,6 +16,9 @@ import {
     LFG_MANAGE_DISBAND_SUBCOMMAND_NAME,
     LFG_MANAGE_KICK_SUBCOMMAND_NAME,
     LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
+    LFG_MANAGE_SWAP_SUBCOMMAND_NAME,
+    LFG_MANAGE_FIRST_PLAYER_OPTION_NAME,
+    LFG_MANAGE_SECOND_PLAYER_OPTION_NAME,
     LFG_MANAGE_TRANSFER_SUBCOMMAND_NAME,
 } from "../commands/lfgManage/constants.ts";
 import { LFG_MANAGE_PING_ROOM_SUBCOMMAND_NAME } from "../commands/lfgManage/constants.ts";
@@ -72,6 +75,15 @@ export const lfgManageCommandCommandRegistrationData = {
             name: LFG_MANAGE_MOVE_SUBCOMMAND_NAME,
             description: "Move a player to a room.",
             options: [{ ...playerOption, description: "Player to move." }, autocompletedRoomCodeOption],
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: LFG_MANAGE_SWAP_SUBCOMMAND_NAME,
+            description: "Swap two players between their rooms.",
+            options: [
+                { ...playerOption, name: LFG_MANAGE_FIRST_PLAYER_OPTION_NAME, description: "First player." },
+                { ...playerOption, name: LFG_MANAGE_SECOND_PLAYER_OPTION_NAME, description: "Second player." },
+            ],
         },
         {
             type: ApplicationCommandOptionType.Subcommand,

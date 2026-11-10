@@ -22,6 +22,8 @@ import {
 import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_COMMAND_NAME,
+    LFG_MANAGE_FIRST_PLAYER_OPTION_NAME,
+    LFG_MANAGE_SECOND_PLAYER_OPTION_NAME,
 } from "../../../src/presentation/discord/commands/lfgManage/constants.ts";
 import type { TLfgPresentationResult } from "../../../src/presentation/discord/commands/types/lfg.types.ts";
 
@@ -66,7 +68,13 @@ function getInteractionFixture({
             getString: vi.fn((name: string) =>
                 name === LFG_CODE_OPTION_NAME ? ROOM_CODE : name === LFG_NEW_CODE_OPTION_NAME ? NEW_ROOM_CODE : null,
             ),
-            getUser: vi.fn((name: string) => (name === LFG_PLAYER_OPTION_NAME ? { id: PLAYER_ID } : null)),
+            getUser: vi.fn((name: string) =>
+                name === LFG_PLAYER_OPTION_NAME || name === LFG_MANAGE_FIRST_PLAYER_OPTION_NAME
+                    ? { id: PLAYER_ID }
+                    : name === LFG_MANAGE_SECOND_PLAYER_OPTION_NAME
+                      ? { id: "other-player" }
+                      : null,
+            ),
         },
         reply,
     } as unknown as ChatInputCommandInteraction;
@@ -97,6 +105,7 @@ function getCommand({
         leaveRoom: vi.fn().mockResolvedValue(result),
         transferRoomToPlayer: vi.fn().mockResolvedValue(result),
         transferOwnedRoomToPlayer: vi.fn().mockResolvedValue(result),
+        swapPlayers: vi.fn().mockResolvedValue(result),
         disbandRoom: vi.fn().mockResolvedValue(result),
     };
     const getGuildConfig = vi.fn().mockResolvedValue({
@@ -227,6 +236,24 @@ describe("lfg-manage command", () => {
             expectedArg: { guildId: GUILD_ID, user: { id: PLAYER_ID }, code: ROOM_CODE },
         },
         {
+            subcommand: "swap",
+            method: "swapPlayers",
+            result: {
+                kind: ELfgResultKind.PLAYERS_SWAPPED,
+                value: {
+                    firstUserId: PLAYER_ID,
+                    secondUserId: "other-player",
+                    firstRoomCode: ROOM_CODE,
+                    ownershipTransfers: [],
+                },
+            } satisfies TLfgPresentationResult,
+            expectedArg: {
+                guildId: GUILD_ID,
+                firstUser: { id: PLAYER_ID },
+                secondUser: { id: "other-player" },
+            },
+        },
+        {
             subcommand: LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
             method: "changeRoomCode",
             result: {
@@ -290,6 +317,86 @@ describe("lfg-manage command", () => {
                         description: expect.stringContaining(userMention(ADMIN_ID)),
                     }),
                 ],
+            }),
+        );
+    });
+
+    test.each([
+        {
+            firstRoomCode: "first",
+            secondRoomCode: "second",
+            ownershipTransfers: [],
+            expected: `<@${ADMIN_ID}> swapped <@${PLAYER_ID}> and <@other-player>:\n- <@${PLAYER_ID}> was moved to \`second\`.\n- <@other-player> was moved to \`first\`.`,
+        },
+        {
+            firstRoomCode: "first",
+            secondRoomCode: "second",
+            ownershipTransfers: [
+                { roomCode: "first", newOwnerId: "other-player" },
+                { roomCode: "second", newOwnerId: PLAYER_ID },
+            ],
+            expected: `<@${ADMIN_ID}> swapped <@${PLAYER_ID}> and <@other-player>:\n- <@${PLAYER_ID}> was moved to \`second\`.\n- <@other-player> was moved to \`first\`.\n\nOwnership transfers:\n- <@other-player> now owns \`first\`.\n- <@${PLAYER_ID}> now owns \`second\`.`,
+        },
+        {
+            firstRoomCode: "first",
+            secondRoomCode: "second",
+            ownershipTransfers: [{ roomCode: "first", newOwnerId: "existing-player" }],
+            expected: `<@${ADMIN_ID}> swapped <@${PLAYER_ID}> and <@other-player>:\n- <@${PLAYER_ID}> was moved to \`second\`.\n- <@other-player> was moved to \`first\`.\n\nOwnership transfers:\n- <@existing-player> now owns \`first\`.`,
+        },
+        {
+            firstRoomCode: "first",
+            secondRoomCode: undefined,
+            ownershipTransfers: [{ roomCode: "first", newOwnerId: "other-player" }],
+            expected: `<@${ADMIN_ID}> swapped <@${PLAYER_ID}> and <@other-player>:\n- <@${PLAYER_ID}> was removed from \`first\`.\n- <@other-player> was moved to \`first\`.\n\nOwnership transfers:\n- <@other-player> now owns \`first\`.`,
+        },
+        {
+            firstRoomCode: undefined,
+            secondRoomCode: "second",
+            ownershipTransfers: [{ roomCode: "second", newOwnerId: PLAYER_ID }],
+            expected: `<@${ADMIN_ID}> swapped <@${PLAYER_ID}> and <@other-player>:\n- <@${PLAYER_ID}> was moved to \`second\`.\n- <@other-player> was removed from \`second\`.\n\nOwnership transfers:\n- <@${PLAYER_ID}> now owns \`second\`.`,
+        },
+    ])("formats the swap result", async (caseItem) => {
+        const { command } = getCommand({
+            result: {
+                kind: ELfgResultKind.PLAYERS_SWAPPED,
+                value: { firstUserId: PLAYER_ID, secondUserId: "other-player", ...caseItem },
+            },
+        });
+        const { interaction, reply } = getInteractionFixture({ subcommand: "swap" });
+
+        await runCommand(command, interaction);
+
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ description: caseItem.expected })],
+            }),
+        );
+    });
+
+    test.each([
+        {
+            kind: ELfgResultKind.ATTEMPTED_TO_SWAP_THE_SAME_PLAYER,
+            expected: "Choose two different players.",
+        },
+        {
+            kind: ELfgResultKind.CANNOT_SWAP_TWO_PLAYERS_NOT_IN_A_ROOM,
+            expected: "Neither player is in a room.",
+        },
+        {
+            kind: ELfgResultKind.CANNOT_SWAP_PLAYERS_IN_SAME_ROOM,
+            expected: "Both players are already in the same room.",
+        },
+    ] as const)("returns the $kind rejection message", async ({ kind, expected }) => {
+        const { command } = getCommand({ result: { kind } });
+        const { interaction, reply } = getInteractionFixture({ subcommand: "swap" });
+
+        await runCommand(command, interaction);
+
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ description: expected })],
             }),
         );
     });
