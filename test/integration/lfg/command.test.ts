@@ -70,6 +70,7 @@ function getLfgUseCaseMocks(result: TLfgPresentationResult) {
         movePlayerToRoomById: vi.fn().mockResolvedValue(result),
         transferRoomToPlayer: vi.fn().mockResolvedValue(result),
         transferOwnedRoomToPlayer: vi.fn().mockResolvedValue(result),
+        swapPlayers: vi.fn().mockResolvedValue(result),
     };
 }
 

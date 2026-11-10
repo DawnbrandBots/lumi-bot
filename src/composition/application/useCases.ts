@@ -23,6 +23,7 @@ import { movePlayerToRoomByCode } from "../../application/lfg/useCases/movePlaye
 import { movePlayerToRoomById } from "../../application/lfg/useCases/movePlayerToRoomById.ts";
 import { transferOwnedRoomToPlayer } from "../../application/lfg/useCases/transferOwnedRoomToPlayer.ts";
 import { transferRoomToPlayer } from "../../application/lfg/useCases/transferRoomToPlayer.ts";
+import { swapPlayers } from "../../application/lfg/useCases/swapPlayers.ts";
 import type { TApplicationQueries } from "../../application/queries.types.ts";
 import type { TApplicationRepositories } from "../../application/repositories.types.ts";
 import { resolveSearchInput } from "../../application/search/useCases/resolveSearchInput.ts";
@@ -56,6 +57,7 @@ const LFG_USE_CASES = {
     movePlayerToRoomById: movePlayerToRoomById,
     transferRoomToPlayer: transferRoomToPlayer,
     transferOwnedRoomToPlayer: transferOwnedRoomToPlayer,
+    swapPlayers,
 };
 
 const ADMIN_USE_CASES = {

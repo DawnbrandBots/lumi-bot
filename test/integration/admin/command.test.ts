@@ -104,6 +104,7 @@ function getAdminCommandArgs(arg: Partial<TAdminUseCases> = {}): TAdminCommandAr
                 movePlayerToRoomById: vi.fn(),
                 transferRoomToPlayer: vi.fn(),
                 transferOwnedRoomToPlayer: vi.fn(),
+                swapPlayers: vi.fn(),
             },
             search: {
                 resolveSearchInput: vi.fn(),

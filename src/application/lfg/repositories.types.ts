@@ -22,4 +22,9 @@ export type TLfgRepository = {
     readonly removeRoomPlayer: (arg: { readonly roomId: string; readonly userId: string }) => MaybePromise<void>;
     readonly moveUserToRoom: (arg: { readonly roomId: string; readonly userId: string }) => MaybePromise<IRoom>;
     readonly setRoomOwner: (arg: { readonly roomId: string; readonly ownerId: string }) => MaybePromise<IRoom>;
+    readonly swapPlayers: (arg: {
+        readonly guildId: string;
+        readonly firstUserId: string;
+        readonly secondUserId: string;
+    }) => MaybePromise<readonly { readonly roomCode: string; readonly newOwnerId: string }[]>;
 };
