@@ -263,5 +263,10 @@
     "id": "BATTLE_FERVOR",
     "name": "Battle Fervor",
     "effect": "ON_WEAPON_KILL_ATK_BOOST_50_3T"
+  },
+  {
+    "id": "STILETTO",
+    "name": "Stiletto",
+    "effect": "WEAPON_DAMAGE_REDUCTION_FROM_MONSTER_20"
   }
 ]
