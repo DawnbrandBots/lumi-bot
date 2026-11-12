@@ -260,6 +260,16 @@
     "uniqueSkill": "WHITE_ORACLE"
   },
   {
+    "id": "MERCHANT_LOG_PLUS",
+    "name": "Merchant Log +",
+    "weaponType": "TOME",
+    "level": 8,
+    "hp": 6,
+    "atk": 35,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "STILETTO"
+  },
+  {
     "id": "PANTHER_STAFF_PLUS",
     "name": "Panther Staff +",
     "weaponType": "STAFF",
@@ -718,6 +728,16 @@
     "atk": 30,
     "freeSkillSlots": 3,
     "uniqueSkill": "WHITE_ORACLE"
+  },
+  {
+    "id": "MERCHANT_LOG",
+    "name": "Merchant Log",
+    "weaponType": "TOME",
+    "level": 7,
+    "hp": 6,
+    "atk": 30,
+    "freeSkillSlots": 3,
+    "uniqueSkill": "STILETTO"
   },
   {
     "id": "RESOLUTE_TOME",

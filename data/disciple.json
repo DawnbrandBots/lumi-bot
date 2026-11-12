@@ -418,5 +418,15 @@
     "weaponType": "BOW",
     "prfWeapon": "INEXHAUSTIBLE_PLUS",
     "shadowMusic": "BETRAYAL_THREE_HOUSES"
+  },
+  {
+    "id": "CLAUDIA",
+    "name": "Claudia",
+    "epithet": "Noble Sage",
+    "description": "An erudite traveling merchant. While Hilde vexes her at times, Claudia still closely monitors her pupil's growth.",
+    "movementType": "ARMORED",
+    "weaponType": "TOME",
+    "prfWeapon": "MERCHANT_LOG_PLUS",
+    "shadowMusic": "BETRAYAL_AN_ISLAND_APART"
   }
 ]

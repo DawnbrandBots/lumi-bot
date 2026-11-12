@@ -5093,5 +5093,122 @@
       }
     ],
     "onlyFor": ["movementType", "CAVALRY"]
+  },
+  {
+    "id": "SECRET_POTION_EX",
+    "name": "Secret Potion EX",
+    "disciple": "CLAUDIA",
+    "role": "EX",
+    "shape": "1_TILE",
+    "uses": 1,
+    "cooldown": 5,
+    "effects": {
+      "light": [
+        {
+          "kind": "STATUS",
+          "effect": {
+            "kind": "STAT",
+            "statChange": "DECREASE",
+            "duration": 3,
+            "amount": {
+              "base": 20,
+              "unit": { "kind": "PERCENT", "stat": "RECEIVED_SPELL_DAMAGE" }
+            },
+            "stat": "RECEIVED_SPELL_DAMAGE"
+          },
+          "target": "DUAL"
+        }
+      ],
+      "shadow": [
+        {
+          "kind": "HEAL",
+          "amount": { "base": 120, "unit": { "kind": "FIXED" } },
+          "target": "SELF"
+        },
+        {
+          "kind": "STATUS",
+          "effect": {
+            "kind": "STAT",
+            "statChange": "DECREASE",
+            "amount": {
+              "base": 10,
+              "unit": { "kind": "PERCENT", "stat": "RECEIVED_WEAPON_DAMAGE" },
+              "scalingStrategyOverride": "NONE"
+            },
+            "stat": "RECEIVED_WEAPON_DAMAGE"
+          },
+          "target": "SELF"
+        }
+      ]
+    }
+  },
+  {
+    "id": "FRAGILITY_FIRE_PLUS_TOME",
+    "name": "Fragility Fire + Tome",
+    "disciple": "CLAUDIA",
+    "role": "LIGHT",
+    "shape": "1_TILE",
+    "uses": null,
+    "cooldown": 4,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": { "base": 40, "unit": { "kind": "FIXED" } },
+        "color": "RED",
+        "target": "ANY"
+      },
+      {
+        "kind": "STATUS",
+        "effect": {
+          "kind": "STAT",
+          "statChange": "DECREASE",
+          "amount": {
+            "base": 10,
+            "unit": { "kind": "PERCENT", "stat": "HP" },
+            "scalingStrategyOverride": "NONE"
+          },
+          "stat": "HP"
+        },
+        "target": "ANY"
+      }
+    ],
+    "onlyFor": ["weaponType", "TOME"]
+  },
+  {
+    "id": "DARK_RAPID_FIRE",
+    "name": "Dark Rapid Fire",
+    "disciple": "CLAUDIA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 3,
+    "cooldown": 3,
+    "countdown": 2,
+    "effects": [
+      {
+        "kind": "DAMAGE",
+        "amount": { "base": 30, "unit": { "kind": "FIXED" } },
+        "color": "RED",
+        "target": "ANY"
+      }
+    ]
+  },
+  {
+    "id": "TWIN_DARK_SWORD_KNIGHT",
+    "name": "Twin Dark Sword Knight",
+    "disciple": "CLAUDIA",
+    "role": "SHADOW",
+    "shape": "1_TILE",
+    "uses": 2,
+    "cooldown": 1,
+    "effects": [
+      {
+        "kind": "SUMMON",
+        "movementType": "ARMORED",
+        "weaponType": "SWORD",
+        "hp": { "base": 80 },
+        "atk": { "base": 50 },
+        "target": "ANY"
+      }
+    ]
   }
 ]
