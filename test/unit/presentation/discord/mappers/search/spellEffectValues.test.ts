@@ -6,27 +6,23 @@ import {
 } from "../../../../../../src/domain/game/models/spellEffectValue.types.ts";
 import spellEffectValues from "../../../../../../src/presentation/discord/mappers/search/spellEffectValues.ts";
 
-function fixedValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
-    return {
-        base,
-        scalingStrategyOverride,
-        unit: { kind: ESpellEffectValueUnitKind.FIXED },
-    };
-}
-
-function percentValue(base: number, scalingStrategyOverride?: keyof typeof ESpellEffectScalingStrategy) {
-    return {
-        base,
-        scalingStrategyOverride,
-        unit: { kind: ESpellEffectValueUnitKind.PERCENT },
-    };
-}
-
 describe(spellEffectValues.name, () => {
     test.each([
-        ["damage", { kind: ESpellEffectKind.DAMAGE, amount: fixedValue(50) }, [[50, 55, true]]],
-        ["healing", { kind: ESpellEffectKind.HEAL, amount: fixedValue(30) }, [[30, 33, true]]],
-        ["percentage stat boost", { kind: ESpellEffectKind.STAT, amount: percentValue(20) }, [[20, 21, true]]],
+        [
+            "damage",
+            { kind: ESpellEffectKind.DAMAGE, amount: { base: 50, unit: { kind: ESpellEffectValueUnitKind.FIXED } } },
+            [[50, 55, true]],
+        ],
+        [
+            "healing",
+            { kind: ESpellEffectKind.HEAL, amount: { base: 30, unit: { kind: ESpellEffectValueUnitKind.FIXED } } },
+            [[30, 33, true]],
+        ],
+        [
+            "percentage stat boost",
+            { kind: ESpellEffectKind.STAT, amount: { base: 20, unit: { kind: ESpellEffectValueUnitKind.PERCENT } } },
+            [[20, 21, true]],
+        ],
         [
             "status with a nested stat boost and effectiveness value",
             {
@@ -34,7 +30,8 @@ describe(spellEffectValues.name, () => {
                 effect: {
                     kind: ESpellEffectKind.STAT,
                     amount: {
-                        ...percentValue(30),
+                        base: 30,
+                        unit: { kind: ESpellEffectValueUnitKind.PERCENT },
                         effectiveness: [{ base: 0 }],
                     },
                 },
@@ -49,7 +46,8 @@ describe(spellEffectValues.name, () => {
             {
                 kind: ESpellEffectKind.DAMAGE,
                 amount: {
-                    ...fixedValue(25),
+                    base: 25,
+                    unit: { kind: ESpellEffectValueUnitKind.FIXED },
                     effectiveness: [{ base: 40 }],
                 },
             },
@@ -75,7 +73,11 @@ describe(spellEffectValues.name, () => {
             "percentage damage with fixed scaling",
             {
                 kind: ESpellEffectKind.DAMAGE,
-                amount: percentValue(35, ESpellEffectScalingStrategy.ADDITIVE_FIXED_5),
+                amount: {
+                    base: 35,
+                    unit: { kind: ESpellEffectValueUnitKind.PERCENT },
+                    scalingStrategyOverride: ESpellEffectScalingStrategy.ADDITIVE_FIXED_5,
+                },
             },
             [[35, 40, true]],
         ],
@@ -83,7 +85,11 @@ describe(spellEffectValues.name, () => {
             "non-scaling damage",
             {
                 kind: ESpellEffectKind.DAMAGE,
-                amount: fixedValue(50, ESpellEffectScalingStrategy.NONE),
+                amount: {
+                    base: 50,
+                    unit: { kind: ESpellEffectValueUnitKind.FIXED },
+                    scalingStrategyOverride: ESpellEffectScalingStrategy.NONE,
+                },
             },
             [[50, 50, false]],
         ],
