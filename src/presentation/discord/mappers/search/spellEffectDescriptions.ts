@@ -1,9 +1,12 @@
 import type { PickDeep } from "type-fest";
 import { SPELL_DEFAULT_COOLDOWN, SPELL_DEFAULT_USE_COUNT } from "../../../../domain/game/constants.ts";
 import type { EDirection } from "../../../../domain/game/models/direction.types.ts";
-import type { IMovementType } from "../../../../domain/game/models/movement.types.ts";
-import type { ISpell } from "../../../../domain/game/models/spell.types.ts";
-import { ESpellEffectsKind } from "../../../../domain/game/models/spell.types.ts";
+import {
+    ESpellCastKind,
+    type ISpell,
+    type ISpellCastProperties,
+    type TSpellCast,
+} from "../../../../domain/game/models/spell.types.ts";
 import type { ESpellEffectTileType } from "../../../../domain/game/models/spellEffect.types.ts";
 import {
     ESpellEffectKind,
@@ -24,7 +27,6 @@ import type {
 import { ESpellEffectValueUnitKind } from "../../../../domain/game/models/spellEffectValue.types.ts";
 import type { EStat } from "../../../../domain/game/models/stat.types.ts";
 import type { EStatChange } from "../../../../domain/game/models/statChange.types.ts";
-import type { IWeaponType } from "../../../../domain/game/models/weaponType.types.ts";
 import {
     describeUnitSelector,
     type TUnitSelectorDescriptionInput,
@@ -63,7 +65,7 @@ export const SPELL_EFFECT_TILE_TYPE_DESCRIPTION_STRINGS = {
     WALL: "wall",
 } as const satisfies Record<keyof typeof ESpellEffectTileType, string>;
 
-export type TSpellEffectDescriptionContext = PickDeep<ISpell, "shape.id" | "shape.name" | "shape.isAoe">;
+export type TSpellEffectDescriptionContext = PickDeep<ISpellCastProperties, "shape.id" | "shape.name" | "shape.isAoe">;
 
 type TSpellEffectShapeInput = TSpellEffectDescriptionContext["shape"];
 
@@ -129,22 +131,15 @@ type TRootSpellEffectInput = TDomainRootSpellEffect | TRootSpellEffect;
 export type TDescribedSpellEffect =
     TSpellEffect | TSpellEffectDescriptionInputMap[keyof TSpellEffectDescriptionInputMap];
 
-export type TSpellEffectDescriptionsInput = TSpellEffectDescriptionContext &
-    PickDeep<ISpell, "countdown" | "uses" | "cooldown"> & {
-        effects:
-            | {
-                  kind: typeof ESpellEffectsKind.NORMAL;
-                  effects: TRootSpellEffect[];
-              }
-            | {
-                  kind: typeof ESpellEffectsKind.FORM_BASED;
-                  light: TRootSpellEffect[];
-                  shadow: TRootSpellEffect[];
-              };
-        onlyFor?: Pick<IMovementType, "name"> | Pick<IWeaponType, "name"> | null;
+type TSpellEffectCastDescriptionInput = TSpellEffectDescriptionContext &
+    Pick<ISpellCastProperties, "countdown" | "cooldown"> & {
+        readonly effects: readonly TRootSpellEffectInput[];
     };
 
-type TSpellEffectDescriptionsArgument = ISpell | TSpellEffectDescriptionsInput;
+export type TSpellEffectDescriptionsInput = Pick<ISpell, "uses"> & {
+    readonly cast: TSpellCast<TSpellEffectCastDescriptionInput>;
+    readonly onlyFor?: Readonly<{ name: string }> | null;
+};
 
 type TSpellEffectDescriptionFunctions = {
     [K in TDescribedSpellEffect["kind"]]: (
@@ -352,7 +347,21 @@ function describeSpellEffect<K extends TDescribedSpellEffect["kind"]>(
 const REGULAR_DESCRIPTION_SEPARATOR = "\n";
 const INLINE_DESCRIPTION_SEPARATOR = ", ";
 
-function formatInlineSpellProperties(spell: TSpellEffectDescriptionsArgument): string {
+export function formatSpellCooldown(
+    arg: Readonly<{ cast: TSpellCast<{ readonly cooldown: number }>; inline: boolean }>,
+): string | undefined {
+    if (arg.cast.kind === ESpellCastKind.FORM_BASED && arg.cast.light.cooldown !== arg.cast.shadow.cooldown) {
+        return `Cooldown: ${arg.cast.light.cooldown}s (Light form), ${arg.cast.shadow.cooldown}s (Shadow form)`;
+    }
+
+    const cooldown = arg.cast.kind === ESpellCastKind.NORMAL ? arg.cast.cooldown : arg.cast.light.cooldown;
+    if (arg.inline) {
+        return cooldown === SPELL_DEFAULT_COOLDOWN ? undefined : `Cooldown: ${cooldown}`;
+    }
+    return `${cooldown}s cooldown`;
+}
+
+function formatInlineSpellProperties(spell: TSpellEffectDescriptionsInput): string {
     const properties: string[] = [];
 
     // TODO: ?? because uses can also be undefined. This field should be number only, with Infinity as default value.
@@ -360,8 +369,9 @@ function formatInlineSpellProperties(spell: TSpellEffectDescriptionsArgument): s
         properties.push(`Uses: ${spell.uses}`);
     }
 
-    if (spell.cooldown !== SPELL_DEFAULT_COOLDOWN) {
-        properties.push(`Cooldown: ${spell.cooldown}`);
+    const cooldown = formatSpellCooldown({ cast: spell.cast, inline: true });
+    if (cooldown) {
+        properties.push(cooldown);
     }
 
     if (spell.onlyFor) {
@@ -371,11 +381,12 @@ function formatInlineSpellProperties(spell: TSpellEffectDescriptionsArgument): s
     return properties.length ? ` (${properties.join(", ")})` : "";
 }
 
-function describeNormalSpellEffects(
-    spell: TSpellEffectDescriptionsArgument,
-    effects: TRootSpellEffectInput[],
-    inline: boolean,
-): string {
+function describeNormalSpellEffects(cast: TSpellEffectCastDescriptionInput, inline: boolean): string {
+    const effects = cast.effects;
+    if (effects.length === 0) {
+        return "";
+    }
+
     let res = "";
 
     const statusEffects = effects.filter(isStatusEffect);
@@ -393,8 +404,8 @@ function describeNormalSpellEffects(
         )
     ) {
         // TODO: target guaranteed to exist for IStatusEffect, but type should be updated to reflect that
-        const target = describeTarget(firstStatusEffect, spell, inline)!;
-        const descriptions = statusEffects.map((effect) => describeSpellEffect(effect.effect, spell, inline));
+        const target = describeTarget(firstStatusEffect, cast, inline)!;
+        const descriptions = statusEffects.map((effect) => describeSpellEffect(effect.effect, cast, inline));
         if (inline) {
             res += `Grants "${descriptions.map(lowercaseFirstLetter).join(INLINE_DESCRIPTION_SEPARATOR)}" to ${target}.`;
         } else {
@@ -403,18 +414,23 @@ function describeNormalSpellEffects(
             );
         }
     } else {
-        const descriptions = effects.map((effect) => describeSpellEffect(effect, spell, inline));
+        const descriptions = effects.map((effect) => describeSpellEffect(effect, cast, inline));
         res += inline
             ? `${[descriptions[0]!, ...descriptions.slice(1).map(lowercaseFirstLetter)].join(INLINE_DESCRIPTION_SEPARATOR)}.`
             : descriptions.map((description) => `1. ${description}.`).join(REGULAR_DESCRIPTION_SEPARATOR);
     }
 
-    return res;
+    if (!cast.countdown) {
+        return res;
+    }
+    const countdown = `After ${cast.countdown} ${cast.countdown === 1 ? "second" : "seconds"}`;
+    return inline
+        ? `${countdown}, ${lowercaseFirstLetter(res)}`
+        : `${countdown}:${REGULAR_DESCRIPTION_SEPARATOR}${res}`;
 }
 
-/** @returns A string describing the spell's effects. Meant to be displayed in a message on Discord. */
 export function describeSpellEffects(
-    spell: TSpellEffectDescriptionsArgument,
+    spell: TSpellEffectDescriptionsInput,
     /**
      * If false, returns the description on multiple lines, formatted in Discord Markdown.
      *
@@ -424,29 +440,28 @@ export function describeSpellEffects(
      */
     inline = false,
 ): string {
-    const countdown = spell.countdown ? `After ${spell.countdown} seconds` : "";
-
-    if (spell.effects.kind === ESpellEffectsKind.NORMAL) {
-        const effectDescription = describeNormalSpellEffects(spell, spell.effects.effects, inline);
-        const description = countdown
-            ? inline
-                ? `${countdown}, ${lowercaseFirstLetter(effectDescription)}`
-                : `${countdown}:${REGULAR_DESCRIPTION_SEPARATOR}${effectDescription}`
-            : effectDescription;
+    if (spell.cast.kind === ESpellCastKind.NORMAL) {
+        const description = describeNormalSpellEffects(spell.cast, inline);
         return inline ? description + formatInlineSpellProperties(spell) : description;
     }
 
-    const light = describeNormalSpellEffects(spell, spell.effects.light, inline);
-    const shadow = describeNormalSpellEffects(spell, spell.effects.shadow, inline);
+    const light = describeNormalSpellEffects(spell.cast.light, inline);
+    const shadow = describeNormalSpellEffects(spell.cast.shadow, inline);
 
     if (inline) {
+        const differentShapes = spell.cast.light.shape.id !== spell.cast.shadow.shape.id;
+        const lightShape =
+            differentShapes && !light.includes(spell.cast.light.shape.name)
+                ? ` (targets ${spell.cast.light.shape.name})`
+                : "";
+        const shadowShape =
+            differentShapes && !shadow.includes(spell.cast.shadow.shape.name)
+                ? ` (targets ${spell.cast.shadow.shape.name})`
+                : "";
         const trimPeriod = (description: string) => description.replace(/\.$/, "");
-        const formDescription = `In Light form: ${lowercaseFirstLetter(trimPeriod(light))}; in Shadow form: ${lowercaseFirstLetter(trimPeriod(shadow))}.`;
-        const description = countdown ? `${countdown}, ${lowercaseFirstLetter(formDescription)}` : formDescription;
+        const description = `In Light form${lightShape}: ${lowercaseFirstLetter(trimPeriod(light))}; in Shadow form${shadowShape}: ${lowercaseFirstLetter(trimPeriod(shadow))}.`;
         return description + formatInlineSpellProperties(spell);
     }
 
-    return [...(countdown ? [`${countdown}:`] : []), "In Light form:", light, "In Shadow form:", shadow].join(
-        REGULAR_DESCRIPTION_SEPARATOR,
-    );
+    return ["In Light form:", light, "In Shadow form:", shadow].join(REGULAR_DESCRIPTION_SEPARATOR);
 }

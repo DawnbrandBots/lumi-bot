@@ -1,9 +1,10 @@
 import { ESpellEffectValueUnitKind } from "../../../../../../../src/domain/game/models/spellEffectValue.types.ts";
 import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
-import type { TSpellEffectDescriptionsInput } from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import type {
+    TRootSpellEffect,
+    TSpellEffectDescriptionContext,
+} from "../../../../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 
-type TNormalSpellEffects = Extract<TSpellEffectDescriptionsInput["effects"], { kind: "NORMAL" }>;
-type TRootSpellEffect = TNormalSpellEffects["effects"][number];
 type TDamageEffect = Extract<TRootSpellEffect, { kind: "DAMAGE" }>;
 type TSpellEffectValueUnit = TDamageEffect["amount"]["unit"];
 
@@ -11,13 +12,13 @@ export const SINGLE_TILE_SHAPE = {
     id: "1_TILE",
     name: "single space",
     isAoe: false,
-} satisfies TSpellEffectDescriptionsInput["shape"];
+} satisfies TSpellEffectDescriptionContext["shape"];
 
 export const CROSS_SHAPE = {
     id: "CROSS",
     name: "3x3 cross",
     isAoe: true,
-} satisfies TSpellEffectDescriptionsInput["shape"];
+} satisfies TSpellEffectDescriptionContext["shape"];
 
 export const RED_COLOR = { name: "Red" } satisfies TDamageEffect["color"];
 export const BLUE_COLOR = { name: "Blue" } satisfies TDamageEffect["color"];

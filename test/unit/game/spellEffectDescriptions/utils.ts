@@ -1,19 +1,19 @@
 import type { TSpellEffectValueUnit } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
 import { ESpellEffectValueUnitKind } from "../../../../src/domain/game/models/spellEffectValue.types.ts";
 import { EStat } from "../../../../src/domain/game/models/stat.types.ts";
-import type { TSpellEffectDescriptionsInput } from "../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
+import type { TSpellEffectDescriptionContext } from "../../../../src/presentation/discord/mappers/search/spellEffectDescriptions.ts";
 
 export const SINGLE_TILE_SHAPE = {
     id: "1_TILE",
     name: "single space",
     isAoe: false,
-} satisfies TSpellEffectDescriptionsInput["shape"];
+} satisfies TSpellEffectDescriptionContext["shape"];
 
 export const CROSS_SHAPE = {
     id: "CROSS",
     name: "3x3 cross",
     isAoe: true,
-} satisfies TSpellEffectDescriptionsInput["shape"];
+} satisfies TSpellEffectDescriptionContext["shape"];
 
 type TColor = { name: string };
 export const RED_COLOR = { name: "Red" } satisfies TColor;

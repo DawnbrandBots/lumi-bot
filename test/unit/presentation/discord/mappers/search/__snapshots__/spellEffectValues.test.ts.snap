@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`spellEffectsValues > damage and heal values 1`] = `
+exports[`spellEffectValues > damage and heal values 1`] = `
 [
   [
     {
@@ -17,7 +17,7 @@ exports[`spellEffectsValues > damage and heal values 1`] = `
 ]
 `;
 
-exports[`spellEffectsValues > damage with effectiveness values 1`] = `
+exports[`spellEffectValues > damage with effectiveness values 1`] = `
 [
   [
     {
@@ -32,7 +32,7 @@ exports[`spellEffectsValues > damage with effectiveness values 1`] = `
 ]
 `;
 
-exports[`spellEffectsValues > form-based values 1`] = `
+exports[`spellEffectValues > different damage values 1`] = `
 [
   [
     {
@@ -49,7 +49,7 @@ exports[`spellEffectsValues > form-based values 1`] = `
 ]
 `;
 
-exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
+exports[`spellEffectValues > heal value followed by valueless movement 1`] = `
 [
   [
     {
@@ -61,7 +61,7 @@ exports[`spellEffectsValues > heal value followed by valueless movement 1`] = `
 ]
 `;
 
-exports[`spellEffectsValues > non-scaling value 1`] = `
+exports[`spellEffectValues > non-scaling value 1`] = `
 [
   [
     {
@@ -72,13 +72,13 @@ exports[`spellEffectsValues > non-scaling value 1`] = `
 ]
 `;
 
-exports[`spellEffectsValues > only valueless movement 1`] = `
+exports[`spellEffectValues > only valueless movement 1`] = `
 [
   [],
 ]
 `;
 
-exports[`spellEffectsValues > shadow percent damage 1`] = `
+exports[`spellEffectValues > shadow percent damage 1`] = `
 [
   [
     {
@@ -89,7 +89,7 @@ exports[`spellEffectsValues > shadow percent damage 1`] = `
 ]
 `;
 
-exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
+exports[`spellEffectValues > stat value and nested effectiveness values 1`] = `
 [
   [
     {
@@ -110,7 +110,7 @@ exports[`spellEffectsValues > stat value and nested effectiveness values 1`] = `
 ]
 `;
 
-exports[`spellEffectsValues > summon values 1`] = `
+exports[`spellEffectValues > summon values 1`] = `
 [
   [
     {

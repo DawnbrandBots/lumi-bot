@@ -4,23 +4,12 @@ import type { IMovementType } from "./movement.types.ts";
 import type { TRootSpellEffect } from "./spellEffect.types.ts";
 import type { IWeaponType } from "./weaponType.types.ts";
 
-export const ESpellEffectsKind = {
+export const ESpellCastKind = {
+    /** Spell properties are the same at all time during battle. */
     NORMAL: "NORMAL",
+    /** Spell properties differ based on the caster's Light or Shadow form. */
     FORM_BASED: "FORM_BASED",
 } as const;
-
-export interface INormalSpellEffects {
-    readonly kind: typeof ESpellEffectsKind.NORMAL;
-    readonly effects: TRootSpellEffect[];
-}
-
-export interface IFormBasedSpellEffects {
-    readonly kind: typeof ESpellEffectsKind.FORM_BASED;
-    readonly light: TRootSpellEffect[];
-    readonly shadow: TRootSpellEffect[];
-}
-
-export type TSpellEffects = INormalSpellEffects | IFormBasedSpellEffects;
 
 export const ESpellRole = {
     /** Spell usable by one disciple only, no matter the side. */
@@ -66,18 +55,26 @@ export interface ISpellDraggingMode {
     readonly asString: string;
 }
 
-export interface INormalSpellDraggingMode {
-    readonly kind: typeof ESpellEffectsKind.NORMAL;
+/** Properties which may have different values for spells which cast.kind is ESpellCastKind.FORM_BASED. */
+export interface ISpellCastProperties {
+    /** Seconds between using the spell and applying its effects. Nullish means no countdown. */
+    readonly countdown?: number | null;
+    /** Seconds the player must wait to use another spell after using this one. */
+    readonly cooldown: number;
+    /** Effects created by the spell when dragged on the grid, in order of activation. */
+    readonly effects: readonly TRootSpellEffect[];
+    /** Locations of tiles affected by this spell's effects relatively to the tile the spell was dragged to. */
+    readonly shape: ISpellShape;
     readonly draggingMode: TSpellDraggingModeKind;
 }
 
-export interface IFormBasedSpellDraggingMode {
-    readonly kind: typeof ESpellEffectsKind.FORM_BASED;
-    readonly light: TSpellDraggingModeKind;
-    readonly shadow: TSpellDraggingModeKind;
-}
-
-export type TSpellDraggingMode = INormalSpellDraggingMode | IFormBasedSpellDraggingMode;
+export type TSpellCast<CastProperties = ISpellCastProperties> =
+    | (CastProperties & { readonly kind: typeof ESpellCastKind.NORMAL })
+    | {
+          readonly kind: typeof ESpellCastKind.FORM_BASED;
+          readonly light: CastProperties;
+          readonly shadow: CastProperties;
+      };
 
 /** Referred to as "magic skill" in Fire Emblem Shadows. */
 export interface ISpell {
@@ -98,18 +95,7 @@ export interface ISpell {
      */
     // TODO: using Infinity might be a better fit?
     readonly uses: number | null | undefined;
-    /**
-     * Seconds between this spell is used and its effects are applied. Only concerns some Shadow spells.
-     *
-     * `null`ish means no countdown.
-     */
-    readonly countdown?: number | null;
-    /** Seconds the player must wait to use another spell after using this one. */
-    readonly cooldown: number;
-    /** Effects created by the spell when dragged on the grid, in order of activation. */
-    readonly effects: TSpellEffects;
-    readonly shape: ISpellShape;
+    readonly cast: TSpellCast;
     /** Kind of units that this spell can only be used by. */
     readonly onlyFor?: IMovementType | IWeaponType | null;
-    readonly draggingMode: TSpellDraggingMode;
 }
