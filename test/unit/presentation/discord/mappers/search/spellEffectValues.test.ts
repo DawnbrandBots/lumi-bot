@@ -1,3 +1,4 @@
+import type { ReadonlyDeep } from "type-fest";
 import { describe, expect, test } from "vitest";
 import { ESpellEffectKind } from "../../../../../../src/domain/game/models/spellEffect.types.ts";
 import {
@@ -8,24 +9,33 @@ import spellEffectValues from "../../../../../../src/presentation/discord/mapper
 
 describe(spellEffectValues.name, () => {
     test.each([
-        [
-            "damage",
-            { kind: ESpellEffectKind.DAMAGE, amount: { base: 50, unit: { kind: ESpellEffectValueUnitKind.FIXED } } },
-            [[50, 55, true]],
-        ],
-        [
-            "healing",
-            { kind: ESpellEffectKind.HEAL, amount: { base: 30, unit: { kind: ESpellEffectValueUnitKind.FIXED } } },
-            [[30, 33, true]],
-        ],
-        [
-            "percentage stat boost",
-            { kind: ESpellEffectKind.STAT, amount: { base: 20, unit: { kind: ESpellEffectValueUnitKind.PERCENT } } },
-            [[20, 21, true]],
-        ],
-        [
-            "status with a nested stat boost and effectiveness value",
-            {
+        {
+            name: "damage",
+            input: {
+                kind: ESpellEffectKind.DAMAGE,
+                amount: { base: 50, unit: { kind: ESpellEffectValueUnitKind.FIXED } },
+            },
+            expected: [[50, 55, true]],
+        },
+        {
+            name: "healing",
+            input: {
+                kind: ESpellEffectKind.HEAL,
+                amount: { base: 30, unit: { kind: ESpellEffectValueUnitKind.FIXED } },
+            },
+            expected: [[30, 33, true]],
+        },
+        {
+            name: "percentage stat boost",
+            input: {
+                kind: ESpellEffectKind.STAT,
+                amount: { base: 20, unit: { kind: ESpellEffectValueUnitKind.PERCENT } },
+            },
+            expected: [[20, 21, true]],
+        },
+        {
+            name: "status with a nested stat boost and effectiveness value",
+            input: {
                 kind: ESpellEffectKind.STATUS,
                 effect: {
                     kind: ESpellEffectKind.STAT,
@@ -36,14 +46,14 @@ describe(spellEffectValues.name, () => {
                     },
                 },
             },
-            [
+            expected: [
                 [30, 31, true],
                 [0, 0, true],
             ],
-        ],
-        [
-            "damage with an effectiveness value",
-            {
+        },
+        {
+            name: "damage with an effectiveness value",
+            input: {
                 kind: ESpellEffectKind.DAMAGE,
                 amount: {
                     base: 25,
@@ -51,27 +61,31 @@ describe(spellEffectValues.name, () => {
                     effectiveness: [{ base: 40 }],
                 },
             },
-            [
+            expected: [
                 [25, 27, true],
                 [40, 44, true],
             ],
-        ],
-        [
-            "summon HP and Atk",
-            {
+        },
+        {
+            name: "summon HP and Atk",
+            input: {
                 kind: ESpellEffectKind.SUMMON,
                 hp: { base: 70 },
                 atk: { base: 45 },
             },
-            [
+            expected: [
                 [70, 77, true],
                 [45, 54, true],
             ],
-        ],
-        ["movement without values", { kind: ESpellEffectKind.MOVEMENT }, []],
-        [
-            "percentage damage with fixed scaling",
-            {
+        },
+        {
+            name: "movement without values",
+            input: { kind: ESpellEffectKind.MOVEMENT },
+            expected: [],
+        },
+        {
+            name: "percentage damage with fixed scaling",
+            input: {
                 kind: ESpellEffectKind.DAMAGE,
                 amount: {
                     base: 35,
@@ -79,11 +93,11 @@ describe(spellEffectValues.name, () => {
                     scalingStrategyOverride: ESpellEffectScalingStrategy.ADDITIVE_FIXED_5,
                 },
             },
-            [[35, 40, true]],
-        ],
-        [
-            "non-scaling damage",
-            {
+            expected: [[35, 40, true]],
+        },
+        {
+            name: "non-scaling damage",
+            input: {
                 kind: ESpellEffectKind.DAMAGE,
                 amount: {
                     base: 50,
@@ -91,17 +105,17 @@ describe(spellEffectValues.name, () => {
                     scalingStrategyOverride: ESpellEffectScalingStrategy.NONE,
                 },
             },
-            [[50, 50, false]],
-        ],
-    ] satisfies ReadonlyArray<
-        readonly [
-            string,
-            Parameters<typeof spellEffectValues>[0],
-            readonly (readonly [base: number, levelTwo: number, scalesWithLevel: boolean])[],
-        ]
-    >)("%s", (_, effect, expected) => {
-        expect(spellEffectValues(effect).map((value) => [value.base, value.toLevel(2), value.scalesWithLevel])).toEqual(
-            expected,
-        );
+            expected: [[50, 50, false]],
+        },
+    ] satisfies ReadonlyDeep<
+        {
+            name: string;
+            input: Parameters<typeof spellEffectValues>[0];
+            expected: [base: number, levelTwo: number, scalesWithLevel: boolean][];
+        }[]
+    >)("$name", (testCase) => {
+        expect(
+            spellEffectValues(testCase.input).map((value) => [value.base, value.toLevel(2), value.scalesWithLevel]),
+        ).toEqual(testCase.expected);
     });
 });
