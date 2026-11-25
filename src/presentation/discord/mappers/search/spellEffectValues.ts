@@ -178,10 +178,10 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellEffectValueGetters = {
     MOVEMENT: noValues,
     STAT: withEffectiveness,
     STATUS(effect) {
-        return valuesForEffect(effect.effect);
+        return spellEffectValues(effect.effect);
     },
     REPEAT(effect) {
-        return valuesForEffect(effect.effect);
+        return spellEffectValues(effect.effect);
     },
     WARP: noValues,
     OBSTACLE(effect) {
@@ -192,7 +192,7 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellEffectValueGetters = {
         ];
     },
     TILE(effect) {
-        return valuesForEffect(effect.repeat);
+        return spellEffectValues(effect.repeat);
     },
     SUMMON(effect) {
         return [
@@ -210,28 +210,18 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellEffectValueGetters = {
 
 const getEffectValueGetter = functify<TSpellEffectValueGetters>(SPELL_EFFECT_VALUE_GETTERS);
 
-function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
+/**
+ * Returns the numeric values for one effect as {@link ISpellEffectValueWithToLevel} entries.
+ *
+ * Examples:
+ *
+ * - Damage, heal or stat without effectiveness: one value.
+ * - Damage, heal or stat with effectiveness: one value for regular damage, another for value against matching targets.
+ * - Summon: one value for HP, another for Atk.
+ * - Movement, warp: empty array, as movement effects' values do not scale with level.
+ */
+export default function spellEffectValues<K extends TSpellEffectValueGetterInput["kind"]>(
     effect: Extract<TSpellEffectValueGetterInput, { kind: K }> & { readonly kind: K },
 ): ISpellEffectValueWithToLevel[] {
     return getEffectValueGetter<K>(effect.kind)(effect);
-}
-
-/**
- * Returns one subarray of {@link ISpellEffectValueWithToLevel} per effect in the cast, in the same order.
- * Each subarray contains zero or more numeric values for that effect.
- *
- * Some examples with actual spell effects from the game:
- *
- * - "Aether EX"'s effects return two subarrays with one value each for damage and healing.
- * - "Crossedge Boost EX"'s effects return one subarray with the Atk boost and a second with the
- *   movement boosts for Infantry units and non-Infantry units (0).
- * - "Distant Thunder"'s effects return one subarray with the regular damage and the damage dealt to ranged units.
- * - A minion summon's effects return one subarray with the minion's HP and Atk.
- * - "Heal Pull"'s effects return one subarray with the healing value and an empty subarray for movement.
- * - "Minor Pull"'s effects return one empty subarray because it only has a movement effect, and movement effects do not have scaling values.
- */
-export default function spellEffectValues(
-    effects: readonly TSpellEffectValueGetterInput[],
-): ISpellEffectValueWithToLevel[][] {
-    return effects.map(valuesForEffect);
 }

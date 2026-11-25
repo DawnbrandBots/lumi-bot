@@ -22,127 +22,80 @@ function percentValue(base: number, scalingStrategyOverride?: keyof typeof ESpel
     };
 }
 
-function serializeValues(values: ReturnType<typeof spellEffectValues>) {
-    return values.map((group) =>
-        group.map((value) => ({
-            className: value.constructor.name,
-            base: value.base,
-        })),
-    );
-}
-
 describe(spellEffectValues.name, () => {
     test.each([
+        ["damage", { kind: ESpellEffectKind.DAMAGE, amount: fixedValue(50) }, [[50, 55, true]]],
+        ["healing", { kind: ESpellEffectKind.HEAL, amount: fixedValue(30) }, [[30, 33, true]]],
+        ["percentage stat boost", { kind: ESpellEffectKind.STAT, amount: percentValue(20) }, [[20, 21, true]]],
         [
-            "damage and heal values",
-            [
-                {
-                    kind: ESpellEffectKind.DAMAGE,
-                    amount: fixedValue(50),
-                },
-                {
-                    kind: ESpellEffectKind.HEAL,
-                    amount: fixedValue(30),
-                },
-            ],
-        ],
-        [
-            "stat value and nested effectiveness values",
-            [
-                {
+            "status with a nested stat boost and effectiveness value",
+            {
+                kind: ESpellEffectKind.STATUS,
+                effect: {
                     kind: ESpellEffectKind.STAT,
-                    amount: percentValue(20),
-                },
-                {
-                    kind: ESpellEffectKind.STATUS,
-                    effect: {
-                        kind: ESpellEffectKind.STAT,
-                        amount: {
-                            ...percentValue(30),
-                            effectiveness: [{ base: 0 }],
-                        },
-                    },
-                },
-            ],
-        ],
-        [
-            "damage with effectiveness values",
-            [
-                {
-                    kind: ESpellEffectKind.DAMAGE,
                     amount: {
-                        ...fixedValue(25),
-                        effectiveness: [{ base: 40 }],
+                        ...percentValue(30),
+                        effectiveness: [{ base: 0 }],
                     },
                 },
+            },
+            [
+                [30, 31, true],
+                [0, 0, true],
             ],
         ],
         [
-            "summon values",
-            [
-                {
-                    kind: ESpellEffectKind.SUMMON,
-                    hp: {
-                        base: 70,
-                    },
-                    atk: {
-                        base: 45,
-                    },
+            "damage with an effectiveness value",
+            {
+                kind: ESpellEffectKind.DAMAGE,
+                amount: {
+                    ...fixedValue(25),
+                    effectiveness: [{ base: 40 }],
                 },
+            },
+            [
+                [25, 27, true],
+                [40, 44, true],
             ],
         ],
         [
-            "heal value followed by valueless movement",
+            "summon HP and Atk",
+            {
+                kind: ESpellEffectKind.SUMMON,
+                hp: { base: 70 },
+                atk: { base: 45 },
+            },
             [
-                {
-                    kind: ESpellEffectKind.HEAL,
-                    amount: fixedValue(35),
-                },
-                {
-                    kind: ESpellEffectKind.MOVEMENT,
-                },
+                [70, 77, true],
+                [45, 54, true],
             ],
+        ],
+        ["movement without values", { kind: ESpellEffectKind.MOVEMENT }, []],
+        [
+            "percentage damage with fixed scaling",
+            {
+                kind: ESpellEffectKind.DAMAGE,
+                amount: percentValue(35, ESpellEffectScalingStrategy.ADDITIVE_FIXED_5),
+            },
+            [[35, 40, true]],
         ],
         [
-            "only valueless movement",
-            [
-                {
-                    kind: ESpellEffectKind.MOVEMENT,
-                },
-            ],
+            "non-scaling damage",
+            {
+                kind: ESpellEffectKind.DAMAGE,
+                amount: fixedValue(50, ESpellEffectScalingStrategy.NONE),
+            },
+            [[50, 50, false]],
         ],
-        [
-            "shadow percent damage",
-            [
-                {
-                    kind: ESpellEffectKind.DAMAGE,
-                    amount: percentValue(35, ESpellEffectScalingStrategy.ADDITIVE_FIXED_5),
-                },
-            ],
-        ],
-        [
-            "non-scaling value",
-            [
-                {
-                    kind: ESpellEffectKind.DAMAGE,
-                    amount: fixedValue(50, ESpellEffectScalingStrategy.NONE),
-                },
-            ],
-        ],
-        [
-            "different damage values",
-            [
-                {
-                    kind: ESpellEffectKind.DAMAGE,
-                    amount: fixedValue(60),
-                },
-                {
-                    kind: ESpellEffectKind.DAMAGE,
-                    amount: fixedValue(45),
-                },
-            ],
-        ],
-    ] satisfies ReadonlyArray<readonly [string, Parameters<typeof spellEffectValues>[0]]>)("%s", (_, effects) => {
-        expect(serializeValues(spellEffectValues(effects))).toMatchSnapshot();
+    ] satisfies ReadonlyArray<
+        readonly [
+            string,
+            Parameters<typeof spellEffectValues>[0],
+            readonly (readonly [base: number, levelTwo: number, scalesWithLevel: boolean])[],
+        ]
+    >)("%s", (_, effect, expected) => {
+        expect(spellEffectValues(effect).map((value) => [value.base, value.toLevel(2), value.scalesWithLevel])).toEqual(
+            expected,
+        );
     });
 });

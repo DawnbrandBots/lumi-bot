@@ -51,11 +51,11 @@ function formatInnerTableRows(arg: {
 
 function getSpellEffectValues(cast: TSpellCast) {
     return cast.kind === ESpellCastKind.NORMAL
-        ? { kind: cast.kind, effects: spellEffectValues(cast.effects) }
+        ? { kind: cast.kind, effects: cast.effects.map(spellEffectValues) }
         : {
               kind: cast.kind,
-              light: spellEffectValues(cast.light.effects),
-              shadow: spellEffectValues(cast.shadow.effects),
+              light: cast.light.effects.map(spellEffectValues),
+              shadow: cast.shadow.effects.map(spellEffectValues),
           };
 }
 
