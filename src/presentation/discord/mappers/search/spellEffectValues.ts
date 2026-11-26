@@ -165,6 +165,8 @@ const withEffectiveness = (effect: TEffectWithAmountInput) => {
         ) ?? [],
     );
 };
+const withNestedEffect = (effect: { readonly effect: TSpellEffectValueGetterInput }) =>
+    spellEffectValues(effect.effect);
 
 type TSpellEffectValueGetters = {
     [K in TSpellEffectValueGetterInput["kind"]]: (
@@ -177,12 +179,8 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellEffectValueGetters = {
     HEAL: withEffectiveness,
     MOVEMENT: noValues,
     STAT: withEffectiveness,
-    STATUS(effect) {
-        return spellEffectValues(effect.effect);
-    },
-    REPEAT(effect) {
-        return spellEffectValues(effect.effect);
-    },
+    STATUS: withNestedEffect,
+    REPEAT: withNestedEffect,
     WARP: noValues,
     OBSTACLE(effect) {
         return [
@@ -191,9 +189,7 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellEffectValueGetters = {
             }),
         ];
     },
-    TILE(effect) {
-        return spellEffectValues(effect.effect);
-    },
+    TILE: withNestedEffect,
     SUMMON(effect) {
         return [
             SPELL_EFFECT_VALUE_SCALING_STRATEGIES[
