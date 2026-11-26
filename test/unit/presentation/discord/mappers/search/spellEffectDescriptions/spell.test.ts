@@ -1,7 +1,7 @@
 /** @file Tests on {@link describeSpellEffects}. */
 
 import { describe, expect, test } from "vitest";
-import { ESpellEffectsKind } from "../../../../../../../src/domain/game/models/spell.types.ts";
+import { ESpellCastKind } from "../../../../../../../src/domain/game/models/spell.types.ts";
 import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../../src/domain/game/models/spellEffect.types.ts";
 import { EStat } from "../../../../../../../src/domain/game/models/stat.types.ts";
 import { EStatChange } from "../../../../../../../src/domain/game/models/statChange.types.ts";
@@ -18,10 +18,10 @@ describe(describeSpellEffects.name, () => {
     test("orders effects and selects regular or inline rendering", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
             uses: null,
-            cooldown: 5,
-            shape: SINGLE_TILE_SHAPE,
-            effects: {
-                kind: ESpellEffectsKind.NORMAL,
+            cast: {
+                kind: ESpellCastKind.NORMAL,
+                cooldown: 5,
+                shape: SINGLE_TILE_SHAPE,
                 effects: [{ kind: ESpellEffectKind.WARP }, { kind: ESpellEffectKind.OBSTACLE, hp: { base: 50 } }],
             },
         };
@@ -36,12 +36,12 @@ describe(describeSpellEffects.name, () => {
 
     test("prefixes a countdown", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
-            countdown: 2,
             uses: null,
-            cooldown: 5,
-            shape: SINGLE_TILE_SHAPE,
-            effects: {
-                kind: ESpellEffectsKind.NORMAL,
+            cast: {
+                kind: ESpellCastKind.NORMAL,
+                countdown: 2,
+                cooldown: 5,
+                shape: SINGLE_TILE_SHAPE,
                 effects: [{ kind: ESpellEffectKind.WARP }],
             },
         };
@@ -53,11 +53,11 @@ describe(describeSpellEffects.name, () => {
     test("appends properties with non-default values to inline descriptions", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
             uses: 1,
-            cooldown: 3,
             onlyFor: { name: "Infantry" },
-            shape: SINGLE_TILE_SHAPE,
-            effects: {
-                kind: ESpellEffectsKind.NORMAL,
+            cast: {
+                kind: ESpellCastKind.NORMAL,
+                cooldown: 3,
+                shape: SINGLE_TILE_SHAPE,
                 effects: [{ kind: ESpellEffectKind.WARP }],
             },
         };
@@ -71,10 +71,10 @@ describe(describeSpellEffects.name, () => {
     test("groups statuses which share a target", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
             uses: null,
-            cooldown: 5,
-            shape: CROSS_SHAPE,
-            effects: {
-                kind: ESpellEffectsKind.NORMAL,
+            cast: {
+                kind: ESpellCastKind.NORMAL,
+                cooldown: 5,
+                shape: CROSS_SHAPE,
                 effects: [
                     {
                         kind: ESpellEffectKind.STATUS,
@@ -123,10 +123,10 @@ describe(describeSpellEffects.name, () => {
     test("keeps statuses with different targets separate", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
             uses: null,
-            cooldown: 5,
-            shape: SINGLE_TILE_SHAPE,
-            effects: {
-                kind: ESpellEffectsKind.NORMAL,
+            cast: {
+                kind: ESpellCastKind.NORMAL,
+                cooldown: 5,
+                shape: SINGLE_TILE_SHAPE,
                 effects: [
                     {
                         kind: ESpellEffectKind.STATUS,
@@ -165,10 +165,10 @@ describe(describeSpellEffects.name, () => {
     test("keeps statuses with different shape overrides separate", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
             uses: null,
-            cooldown: 5,
-            shape: CROSS_SHAPE,
-            effects: {
-                kind: ESpellEffectsKind.NORMAL,
+            cast: {
+                kind: ESpellCastKind.NORMAL,
+                cooldown: 5,
+                shape: CROSS_SHAPE,
                 effects: [
                     {
                         kind: ESpellEffectKind.STATUS,
@@ -205,44 +205,52 @@ describe(describeSpellEffects.name, () => {
         );
     });
 
-    test("groups form-based effects", () => {
+    test("lists identical form-based effects separately with each cast's countdown", () => {
         const spell: Parameters<typeof describeSpellEffects>[0] = {
-            countdown: 2,
             uses: 1,
-            cooldown: 3,
-            shape: SINGLE_TILE_SHAPE,
-            effects: {
-                kind: ESpellEffectsKind.FORM_BASED,
-                light: [
-                    {
-                        kind: ESpellEffectKind.DAMAGE,
-                        amount: { base: 60, unit: FIXED_VALUE_UNIT },
-                        color: { name: "Red" },
-                        target: ESpellEffectTarget.ANY,
-                    },
-                ],
-                shadow: [
-                    {
-                        kind: ESpellEffectKind.DAMAGE,
-                        amount: { base: 45, unit: FIXED_VALUE_UNIT },
-                        color: { name: "Red" },
-                        target: ESpellEffectTarget.ANY,
-                    },
-                ],
+            cast: {
+                kind: ESpellCastKind.FORM_BASED,
+                light: {
+                    countdown: 2,
+                    cooldown: 3,
+                    shape: SINGLE_TILE_SHAPE,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.DAMAGE,
+                            amount: { base: 60, unit: FIXED_VALUE_UNIT },
+                            color: { name: "Red" },
+                            target: ESpellEffectTarget.ANY,
+                        },
+                    ],
+                },
+                shadow: {
+                    countdown: 2,
+                    cooldown: 7,
+                    shape: SINGLE_TILE_SHAPE,
+                    effects: [
+                        {
+                            kind: ESpellEffectKind.DAMAGE,
+                            amount: { base: 60, unit: FIXED_VALUE_UNIT },
+                            color: { name: "Red" },
+                            target: ESpellEffectTarget.ANY,
+                        },
+                    ],
+                },
             },
         };
 
         expect(describeSpellEffects(spell)).toBe(
             [
-                "After 2 seconds:",
                 "In Light form:",
+                "After 2 seconds:",
                 "1. Deals 60 Red damage to targets.",
                 "In Shadow form:",
-                "1. Deals 45 Red damage to targets.",
+                "After 2 seconds:",
+                "1. Deals 60 Red damage to targets.",
             ].join("\n"),
         );
         expect(describeSpellEffects(spell, true)).toBe(
-            "After 2 seconds, in Light form: deals 60 Red damage to targets on a single space; in Shadow form: deals 45 Red damage to targets on a single space. (Uses: 1, Cooldown: 3)",
+            "In Light form: after 2 seconds, deals 60 Red damage to targets on a single space; in Shadow form: after 2 seconds, deals 60 Red damage to targets on a single space. (Uses: 1, Cooldown: 3s (Light form), 7s (Shadow form))",
         );
     });
 });

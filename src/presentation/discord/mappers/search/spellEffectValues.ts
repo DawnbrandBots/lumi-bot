@@ -1,7 +1,5 @@
 import type { PickDeep } from "type-fest";
 import { SPELL_MAXIMUM_LEVEL } from "../../../../domain/game/constants.ts";
-import type { ISpell } from "../../../../domain/game/models/spell.types.ts";
-import { ESpellEffectsKind } from "../../../../domain/game/models/spell.types.ts";
 import type { TSpellEffectKindToEffectMap } from "../../../../domain/game/models/spellEffect.types.ts";
 import type {
     ISpellEffectValue,
@@ -11,6 +9,7 @@ import {
     ESpellEffectScalingStrategy,
     ESpellEffectValueUnitKind,
 } from "../../../../domain/game/models/spellEffectValue.types.ts";
+import functify from "../../../../utils/functify.ts";
 
 type TEffectWithAmountInput = {
     // Can't just straight up use PickDeep over IDamageEffect and IHealEffect because
@@ -167,20 +166,22 @@ const withEffectiveness = (effect: TEffectWithAmountInput) => {
     );
 };
 
-const SPELL_EFFECT_VALUE_GETTERS: {
+type TSpellEffectValueGetters = {
     [K in TSpellEffectValueGetterInput["kind"]]: (
         effect: Extract<TSpellEffectValueGetterInput, { kind: K }>,
     ) => ISpellEffectValueWithToLevel[];
-} = {
+};
+
+const SPELL_EFFECT_VALUE_GETTERS: TSpellEffectValueGetters = {
     DAMAGE: withEffectiveness,
     HEAL: withEffectiveness,
     MOVEMENT: noValues,
     STAT: withEffectiveness,
     STATUS(effect) {
-        return valuesForEffect(effect.effect);
+        return spellEffectValues(effect.effect);
     },
     REPEAT(effect) {
-        return valuesForEffect(effect.effect);
+        return spellEffectValues(effect.effect);
     },
     WARP: noValues,
     OBSTACLE(effect) {
@@ -191,7 +192,7 @@ const SPELL_EFFECT_VALUE_GETTERS: {
         ];
     },
     TILE(effect) {
-        return valuesForEffect(effect.repeat);
+        return spellEffectValues(effect.repeat);
     },
     SUMMON(effect) {
         return [
@@ -207,51 +208,20 @@ const SPELL_EFFECT_VALUE_GETTERS: {
     },
 };
 
-function valuesForEffect<K extends TSpellEffectValueGetterInput["kind"]>(
-    effect: Extract<TSpellEffectValueGetterInput, { kind: K }>,
-): ISpellEffectValueWithToLevel[] {
-    return SPELL_EFFECT_VALUE_GETTERS[effect.kind](effect);
-}
-
-type TSpellEffects<EffectsArrayType> =
-    | {
-          readonly kind: typeof ESpellEffectsKind.NORMAL;
-          readonly effects: EffectsArrayType;
-      }
-    | {
-          readonly kind: typeof ESpellEffectsKind.FORM_BASED;
-          readonly light: EffectsArrayType;
-          readonly shadow: EffectsArrayType;
-      };
+const getEffectValueGetter = functify<TSpellEffectValueGetters>(SPELL_EFFECT_VALUE_GETTERS);
 
 /**
- * Returns an object with an "effects" array of arrays of ${@link ISpellEffectValueWithToLevel} for each spell effect (or "light" and "shadow" arrays of arrays if the given spell has different effects based on form).
- * Subarrays have 0 or more entries depending on how many numeric values the effect has.
+ * Returns the numeric values for one effect as {@link ISpellEffectValueWithToLevel} entries.
  *
- * Some examples with actual spells from the game:
+ * Examples:
  *
- * - "Aether EX" as argument returns an array with two subarrays, each with one entry: the first subarray's entry represents damage while the second subarray's entry represents healing.
- * - "Crossedge Boost EX" as argument returns an array with two subarrays:
- *   1. Subarray with one entry for the Atk stat boost.
- *   2. Subarray with two entries: one for the movement boost applied to Infantry units, the other for non-Infantry units (0).
- * - "Distant Thunder" as argument returns an array with one subarray with two entries: one for the regular damage and the other for damage dealt to ranged units.
- * - Any minion spell as argument returns an array with one subarray with two entries: one for the minion's HP and the other for Atk.
- * - "Heal Pull" as argument returns an array with one subarray with one entry for the Heal effect and another subarray with no entry for the Movement effect.
- * - "Minor Pull" as argument returns an array with one empty subarray since it only has one effect with no numeric value.
+ * - Damage, heal or stat without effectiveness: one value.
+ * - Damage, heal or stat with effectiveness: one value for regular damage, another for value against matching targets.
+ * - Summon: one value for HP, another for Atk.
+ * - Movement, warp: empty array, as movement effects' values do not scale with level.
  */
-export function spellEffectsValues(
-    spell: Pick<ISpell, "role"> & { readonly effects: TSpellEffects<TSpellEffectValueGetterInput[]> },
-): TSpellEffects<ISpellEffectValueWithToLevel[][]> {
-    if (spell.effects.kind === ESpellEffectsKind.NORMAL) {
-        return {
-            kind: ESpellEffectsKind.NORMAL,
-            effects: spell.effects.effects.map(valuesForEffect),
-        };
-    }
-
-    return {
-        kind: ESpellEffectsKind.FORM_BASED,
-        light: spell.effects.light.map(valuesForEffect),
-        shadow: spell.effects.shadow.map(valuesForEffect),
-    };
+export default function spellEffectValues<K extends TSpellEffectValueGetterInput["kind"]>(
+    effect: Extract<TSpellEffectValueGetterInput, { kind: K }> & { readonly kind: K },
+): ISpellEffectValueWithToLevel[] {
+    return getEffectValueGetter<K>(effect.kind)(effect);
 }

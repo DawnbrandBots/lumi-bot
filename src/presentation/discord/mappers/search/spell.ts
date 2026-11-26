@@ -2,33 +2,38 @@ import type { APIEmbedField } from "discord.js";
 import { codeBlock, italic, type APIEmbed } from "discord.js";
 import {
     ESpellDraggingModeKind,
-    ESpellEffectsKind,
+    ESpellCastKind,
     ESpellRole,
     type ISpell,
+    type TSpellCast,
 } from "../../../../domain/game/models/spell.types.ts";
 import range from "../../../../utils/range.ts";
 import { toAsciiTable } from "../../../../utils/table.ts";
-import { describeSpellEffects } from "./spellEffectDescriptions.ts";
-import type { ISpellEffectValueWithToLevel } from "./spellEffectValues.ts";
-import { spellEffectsValues } from "./spellEffectValues.ts";
+import { describeSpellEffects, formatSpellCooldown } from "./spellEffectDescriptions.ts";
+import spellEffectValues, { type ISpellEffectValueWithToLevel } from "./spellEffectValues.ts";
 
-function formatSpellDraggingMode(draggingMode: ISpell["draggingMode"]): string | null {
-    if (draggingMode.kind === ESpellEffectsKind.NORMAL) {
-        return draggingMode.draggingMode === ESpellDraggingModeKind.SELF ? "self-targeting" : null;
+function formatSpellTargeting(cast: TSpellCast) {
+    if (cast.kind === ESpellCastKind.NORMAL) {
+        return {
+            shape: `targets ${cast.shape.name}`,
+            draggingMode: cast.draggingMode === ESpellDraggingModeKind.SELF ? "self-targeting" : undefined,
+        };
     }
 
-    if (draggingMode.light === ESpellDraggingModeKind.SELF && draggingMode.shadow === ESpellDraggingModeKind.SELF) {
-        return "self-targeting";
-    }
-
-    const maybeSideWithSelfTargetingDraggingMode = (["light", "shadow"] as const).find(
-        (side) => draggingMode[side] === ESpellDraggingModeKind.SELF,
-    );
-    if (!maybeSideWithSelfTargetingDraggingMode) {
-        return null;
-    }
-
-    return `self-targeting (${maybeSideWithSelfTargetingDraggingMode} form only)`;
+    const lightSelf = cast.light.draggingMode === ESpellDraggingModeKind.SELF;
+    const shadowSelf = cast.shadow.draggingMode === ESpellDraggingModeKind.SELF;
+    return {
+        shape:
+            cast.light.shape.id === cast.shadow.shape.id
+                ? `targets ${cast.light.shape.name}`
+                : `targets ${cast.light.shape.name} (Light form), ${cast.shadow.shape.name} (Shadow form)`,
+        draggingMode:
+            lightSelf === shadowSelf
+                ? lightSelf
+                    ? "self-targeting"
+                    : undefined
+                : `self-targeting (${lightSelf ? "light" : "shadow"} form only)`,
+    };
 }
 
 function formatInnerTableRows(arg: {
@@ -44,17 +49,27 @@ function formatInnerTableRows(arg: {
     });
 }
 
+function getSpellEffectValues(cast: TSpellCast) {
+    return cast.kind === ESpellCastKind.NORMAL
+        ? { kind: cast.kind, effects: cast.effects.map(spellEffectValues) }
+        : {
+              kind: cast.kind,
+              light: cast.light.effects.map(spellEffectValues),
+              shadow: cast.shadow.effects.map(spellEffectValues),
+          };
+}
+
 function formatSpellValues({
     spell,
     values,
 }: {
     spell: ISpell;
-    values: ReturnType<typeof spellEffectsValues>;
+    values: ReturnType<typeof getSpellEffectValues>;
 }): [APIEmbedField, APIEmbedField] | [APIEmbedField] {
     const innerTable = (rangeArg: { start: number; end: number }) => {
         const levelsRow = Array.from(range(rangeArg));
         const rows =
-            values.kind === ESpellEffectsKind.NORMAL
+            values.kind === ESpellCastKind.NORMAL
                 ? formatInnerTableRows({
                       values: values.effects,
                       levelsRow,
@@ -122,21 +137,22 @@ function formatDiscipleSpellUnlock(spell: Pick<ISpell, "id" | "disciple" | "role
 }
 
 export default function mapSpellToMessage(spell: ISpell) {
+    const targeting = formatSpellTargeting(spell.cast);
     const propertiesStr = [
         `${spell.uses ? (spell.uses === 1 ? "Single use" : `${spell.uses} uses`) : "Infinite uses"}`,
-        `${spell.cooldown}s cooldown`,
-        `targets ${spell.shape.name}`,
+        formatSpellCooldown({ cast: spell.cast, inline: false }),
+        targeting.shape,
         spell.onlyFor ? `only for ${spell.onlyFor.name} units` : undefined,
-        formatSpellDraggingMode(spell.draggingMode),
+        targeting.draggingMode,
     ]
         .filter(Boolean)
         .join(", ");
 
     const description = [formatDiscipleSpellUnlock(spell), propertiesStr].filter(Boolean).join("\n");
 
-    const values = spellEffectsValues(spell);
+    const values = getSpellEffectValues(spell.cast);
     const valuesFields =
-        (values.kind === ESpellEffectsKind.FORM_BASED
+        (values.kind === ESpellCastKind.FORM_BASED
             ? values.light.some((valuesSubArray) => valuesSubArray.length) ||
               values.shadow.some((valuesSubArray) => valuesSubArray.length)
             : values.effects.some((valuesSubArray) => valuesSubArray.length)) && formatSpellValues({ spell, values });

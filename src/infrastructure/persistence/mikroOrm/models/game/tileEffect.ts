@@ -14,9 +14,9 @@ export const TileEffectSchema = defineEntity({
         // TODO: "repeat" was originally called effect, and I wish it remained so.
         // However, a crash occurs during MikroORM's schema discovery
         // when the property is named "effect".
-        // The bug seems to occur because TileEffect is listed as a possible
-        // type for Spell.effects alongside StatusEffect, which also has an effect property.
-        // Removing either TileEffect or StatusEffect from Spell.effects removes the crash
+        // The bug seems to occur because the cast's effects can include both
+        // TileEffect and StatusEffect, which also has an effect property.
+        // Removing either type from the cast's effects removes the crash
         // but prevents either spell effect schema's class from being used at runtime.
         // I'll try to make a minimum repro later.
         // I also looked into workarounds, like renaming "effect" into something else and making it a hidden property,

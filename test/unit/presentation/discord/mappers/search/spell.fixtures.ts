@@ -3,7 +3,7 @@
 import type { ISpell } from "../../../../../../src/domain/game/models/spell.types.ts";
 import {
     ESpellDraggingModeKind,
-    ESpellEffectsKind,
+    ESpellCastKind,
     ESpellRole,
 } from "../../../../../../src/domain/game/models/spell.types.ts";
 import { ESpellEffectKind, ESpellEffectTarget } from "../../../../../../src/domain/game/models/spellEffect.types.ts";
@@ -17,10 +17,17 @@ export const SPELL = {
     disciple: null,
     role: ESpellRole.EX,
     uses: null,
-    countdown: null,
-    cooldown: 5,
-    effects: {
-        kind: ESpellEffectsKind.NORMAL,
+    cast: {
+        kind: ESpellCastKind.NORMAL,
+        countdown: null,
+        cooldown: 5,
+        shape: {
+            id: "SINGLE_TILE",
+            name: "single space",
+            tiles: "............X............",
+            isAoe: false,
+        },
+        draggingMode: ESpellDraggingModeKind.ANY,
         effects: [
             {
                 kind: ESpellEffectKind.DAMAGE,
@@ -35,15 +42,5 @@ export const SPELL = {
             },
         ],
     },
-    shape: {
-        id: "SINGLE_TILE",
-        name: "single space",
-        tiles: "............X............",
-        isAoe: false,
-    },
     onlyFor: null,
-    draggingMode: {
-        kind: ESpellEffectsKind.NORMAL,
-        draggingMode: ESpellDraggingModeKind.ANY,
-    },
 } satisfies ISpell;

@@ -1,31 +1,9 @@
 import { type Options } from "@mikro-orm/sqlite";
 import fs from "node:fs";
-import spells from "../../data/spell.json" with { type: "json" };
-import { ESpellEffectsKind } from "../../src/domain/game/models/spell.types.ts";
 import getMikroOrmTableEntities from "./getMikroOrmTableEntities.ts";
 import recreateDb from "./recreateDb.ts";
 
 const mappers = {
-    Spell: (spell: (typeof spells)[number]) => {
-        if (Array.isArray(spell.effects)) {
-            return {
-                ...spell,
-                effects: {
-                    kind: ESpellEffectsKind.NORMAL,
-                    effects: spell.effects,
-                },
-            };
-        } else {
-            return {
-                ...spell,
-                effects: {
-                    kind: ESpellEffectsKind.FORM_BASED,
-                    light: spell.effects.light,
-                    shadow: spell.effects.shadow,
-                },
-            };
-        }
-    },
     Support: ([discipleOne, discipleTwo]: [string, string]) => ({ discipleOne, discipleTwo }),
 } as const;
 
