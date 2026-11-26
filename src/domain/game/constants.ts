@@ -25,4 +25,7 @@ export const SPELL_NAME_SUFFIXES = ["Fire", "Thunder", "Wind", "Poison", "Heal",
 export const SPELL_DEFAULT_COOLDOWN = 5;
 export const SPELL_DEFAULT_USE_COUNT = null;
 export const SPELL_MAXIMUM_LEVEL = 12;
-export const SPELL_MINION_ATK_SCALE_CHANGE_LEVEL = 10;
+
+export const GOLD_MAX_AMOUNT = 999_999_999;
+
+export const INVENTORY_WEAPON_MAX_AMOUNT = 1000;

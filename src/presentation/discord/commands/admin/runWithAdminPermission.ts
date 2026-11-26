@@ -5,7 +5,7 @@ import { createErrorMessage } from "../../message.ts";
 
 export async function runWithAdminPermission(
     interaction: ChatInputCommandInteraction<CacheType>,
-    run: (interaction: TGuildCommandInteraction) => Promise<InteractionReplyOptions>,
+    run: (interaction: TGuildCommandInteraction) => Promise<InteractionReplyOptions | void>,
 ): Promise<void> {
     if (!interaction.inGuild()) {
         await interaction.reply(
@@ -33,5 +33,8 @@ export async function runWithAdminPermission(
         return;
     }
 
-    await interaction.reply(await run(interaction));
+    const reply = await run(interaction);
+    if (reply) {
+        await interaction.reply(reply);
+    }
 }

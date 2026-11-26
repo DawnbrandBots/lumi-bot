@@ -159,6 +159,11 @@ function getCommand({
             setLfgRoleLastPingedAt,
             setLfgRolePingCooldown: vi.fn(),
         },
+        bazaar: {
+            deleteListing: vi.fn(),
+            listListings: vi.fn(),
+            upsertListing: vi.fn(),
+        },
         lfg: lfgUseCases,
         search: {
             resolveSearchInput: vi.fn(),

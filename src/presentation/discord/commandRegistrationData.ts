@@ -1,4 +1,6 @@
 import { adminCommandCommandRegistrationData } from "./commandRegistrationData/admin.ts";
+import { bazaarCommandRegistrationData } from "./commandRegistrationData/bazaar.ts";
+import { bazaarManageCommandRegistrationData } from "./commandRegistrationData/bazaarManage.ts";
 import { helpCommandCommandRegistrationData } from "./commandRegistrationData/help.ts";
 import { lfgCommandCommandRegistrationData } from "./commandRegistrationData/lfg.ts";
 import { lfgManageCommandCommandRegistrationData } from "./commandRegistrationData/lfgManage.ts";
@@ -12,6 +14,8 @@ export const allCommandRegistrationData = [
     lfgCommandCommandRegistrationData,
     lfgManageCommandCommandRegistrationData,
     adminCommandCommandRegistrationData,
+    bazaarCommandRegistrationData,
+    bazaarManageCommandRegistrationData,
 ] as const;
 
 export type TAllCommandRegistrationData = (typeof allCommandRegistrationData)[number];

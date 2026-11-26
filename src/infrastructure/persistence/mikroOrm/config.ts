@@ -3,6 +3,7 @@ import { defineConfig } from "@mikro-orm/sqlite";
 import path from "node:path";
 import { GuildConfig } from "./models/admin/config.ts";
 import { GuildConfigLfgRole } from "./models/admin/configLfgRole.ts";
+import { BazaarListing } from "./models/bazaar/listing.ts";
 import { Color } from "./models/game/color.ts";
 import { DamageEffect } from "./models/game/damageEffect.ts";
 import { Disciple } from "./models/game/disciple.ts";
@@ -92,7 +93,7 @@ export const GAME_DATA_ENTITIES = [
 ];
 
 /** Main db entities. */
-const RUNTIME_ENTITIES = [GuildConfig, GuildConfigLfgRole, LfgRoom, LfgRoomPlayer];
+const RUNTIME_ENTITIES = [GuildConfig, GuildConfigLfgRole, BazaarListing, LfgRoom, LfgRoomPlayer];
 
 const STATE_DB_NAME = path.join(LUMI_STATE_DB_DIR, `${LUMI_STATE_DB_NAME}.db3`);
 const GAME_DB_NAME = path.join(LUMI_STATIC_DB_DIR, `${LUMI_GAME_DB_NAME}.db3`);
