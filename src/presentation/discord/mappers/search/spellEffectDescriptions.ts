@@ -110,7 +110,7 @@ type TSpellEffectDescriptionInputMapWithoutKind = {
     WARP: object;
     OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base" | "onlyOn">;
     TILE: TEffectWithOptionalTargetInput & {
-        readonly repeat: TSpellEffectDescriptionInputMap["REPEAT"];
+        readonly effect: TSpellEffectDescriptionInputMap["REPEAT"];
     };
     SUMMON: PickDeep<
         TSpellEffectKindToEffectMap["SUMMON"],
@@ -327,7 +327,7 @@ export const SPELL_EFFECT_DESCRIPTION_FORMATTERS: TSpellEffectDescriptionFunctio
         return `Summons ${obstaclesStr} with ${effect.hp.base} HP${placementStr}${tileConditionStr}`;
     },
     TILE(effect, spell, inline) {
-        return `Grants effect to ${describeTarget(effect, spell, inline)}: ${describeSpellEffect(effect.repeat, spell, inline)}`;
+        return `Grants effect to ${describeTarget(effect, spell, inline)}: ${describeSpellEffect(effect.effect, spell, inline)}`;
     },
     SUMMON(effect) {
         const minion = `${effect.weaponType.name} ${effect.movementType.name} minion`;

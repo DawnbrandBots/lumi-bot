@@ -144,7 +144,7 @@ export interface IObstacleEffect extends ISpellEffect {
 /** Effect that grants effects to tiles. */
 export interface ITileEffect extends ISpellEffect {
     readonly kind: typeof ESpellEffectKind.TILE;
-    readonly repeat: IRepeatEffect;
+    readonly effect: IRepeatEffect;
 }
 
 /** Effect that summons units on your side. */

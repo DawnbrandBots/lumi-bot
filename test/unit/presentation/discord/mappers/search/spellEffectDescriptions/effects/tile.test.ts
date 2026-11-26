@@ -13,7 +13,7 @@ describe(SPELL_EFFECT_DESCRIPTION_FORMATTERS.TILE.name, () => {
                 {
                     kind: ESpellEffectKind.TILE,
                     target: ESpellEffectTarget.ANY,
-                    repeat: {
+                    effect: {
                         kind: ESpellEffectKind.REPEAT,
                         effect: {
                             kind: ESpellEffectKind.DAMAGE,
