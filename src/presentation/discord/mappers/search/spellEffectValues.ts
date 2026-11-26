@@ -31,7 +31,7 @@ type TSpellEffectValueGetterInputMapWithoutKind = {
     STATUS: { readonly effect: TSpellEffectValueGetterInputMap["STAT" | "REPEAT"] };
     WARP: object;
     OBSTACLE: PickDeep<TSpellEffectKindToEffectMap["OBSTACLE"], "hp.base">;
-    TILE: { readonly repeat: TSpellEffectValueGetterInputMap["REPEAT"] };
+    TILE: { readonly effect: TSpellEffectValueGetterInputMap["REPEAT"] };
     SUMMON: PickDeep<
         TSpellEffectKindToEffectMap["SUMMON"],
         "hp.base" | "atk.base" | "hp.scalingStrategyOverride" | "atk.scalingStrategyOverride"
@@ -192,7 +192,7 @@ const SPELL_EFFECT_VALUE_GETTERS: TSpellEffectValueGetters = {
         ];
     },
     TILE(effect) {
-        return spellEffectValues(effect.repeat);
+        return spellEffectValues(effect.effect);
     },
     SUMMON(effect) {
         return [

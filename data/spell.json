@@ -1941,7 +1941,7 @@
       "effects": [
         {
           "kind": "TILE",
-          "repeat": {
+          "effect": {
             "kind": "REPEAT",
             "effect": {
               "kind": "DAMAGE",
@@ -2819,7 +2819,7 @@
       "effects": [
         {
           "kind": "TILE",
-          "repeat": {
+          "effect": {
             "kind": "REPEAT",
             "effect": {
               "kind": "HEAL",
@@ -4257,7 +4257,7 @@
       "effects": [
         {
           "kind": "TILE",
-          "repeat": {
+          "effect": {
             "kind": "REPEAT",
             "effect": {
               "kind": "HEAL",
