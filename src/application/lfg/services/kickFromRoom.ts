@@ -25,7 +25,7 @@ export const kickFromRoom: TLfgServiceBase<
     const targetRoom = await dependencies.repositories.lfg.findRoomByUser({ guildId, userId: target.id });
     if (targetRoom?.id !== room.id) {
         return {
-            kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
+            kind: ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM,
             value: { ownerId: room.ownerId, targetId: target.id, code: room.code },
         } as const;
     }

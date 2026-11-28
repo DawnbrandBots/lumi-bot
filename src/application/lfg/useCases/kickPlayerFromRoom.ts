@@ -1,13 +1,13 @@
-import { ELfgResultKind } from "../types.ts";
 import type { TLfgUseCaseBase } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 
 export const kickPlayerFromRoom: TLfgUseCaseBase<
     "kickPlayerFromRoom",
-    "repositories.lfg.findRoomByCode" | "services.kickFromRoom"
-> = async function (dependencies, { guildId, code, target }) {
-    const room = await dependencies.repositories.lfg.findRoomByCode({ guildId, code });
+    "repositories.lfg.findRoomByUser" | "services.kickFromRoom"
+> = async function (dependencies, arg) {
+    const room = await dependencies.repositories.lfg.findRoomByUser({ guildId: arg.guildId, userId: arg.target.id });
     if (!room) {
-        return { kind: ELfgResultKind.ROOM_NOT_FOUND, value: { code } } as const;
+        return { kind: ELfgResultKind.TARGET_USER_NOT_IN_ANY_ROOM, value: { targetId: arg.target.id } };
     }
-    return dependencies.services.kickFromRoom({ guildId, room, target });
+    return dependencies.services.kickFromRoom({ ...arg, room });
 };

@@ -13,6 +13,7 @@ import { COMMANDS } from "../../../src/composition/presentation/commands.ts";
 import getCommandRunHandler from "../../../src/composition/presentation/getCommandRunHandler.ts";
 import { buildDependentFunctionsRecord } from "../../../src/composition/utils/buildDependentFunctionsRecord.ts";
 import { ELfgPlayerRemovalKind } from "../../../src/domain/lfg/models/playerRemoval.types.ts";
+import { lfgManageCommandCommandRegistrationData } from "../../../src/presentation/discord/commandRegistrationData/lfgManage.ts";
 import {
     formatJoinButtonId,
     LFG_CODE_OPTION_NAME,
@@ -23,6 +24,7 @@ import {
     LFG_MANAGE_CHANGE_CODE_SUBCOMMAND_NAME,
     LFG_MANAGE_COMMAND_NAME,
     LFG_MANAGE_FIRST_PLAYER_OPTION_NAME,
+    LFG_MANAGE_KICK_SUBCOMMAND_NAME,
     LFG_MANAGE_SECOND_PLAYER_OPTION_NAME,
 } from "../../../src/presentation/discord/commands/lfgManage/constants.ts";
 import type { TLfgPresentationResult } from "../../../src/presentation/discord/commands/types/lfg.types.ts";
@@ -148,6 +150,30 @@ async function runCommand(useCases: TApplicationUseCases, interaction: ChatInput
 }
 
 describe("lfg-manage command", () => {
+    test("registers kick with only a player option", () => {
+        const kick = lfgManageCommandCommandRegistrationData.options.find(
+            (option) => option.name === LFG_MANAGE_KICK_SUBCOMMAND_NAME,
+        );
+        expect(kick?.options.map((option) => option.name)).toEqual([LFG_PLAYER_OPTION_NAME]);
+    });
+
+    test("reports when the player selected for kick has no room", async () => {
+        const { command } = getCommand({
+            result: { kind: ELfgResultKind.TARGET_USER_NOT_IN_ANY_ROOM, value: { targetId: PLAYER_ID } },
+        });
+        const { interaction, reply } = getInteractionFixture({ subcommand: LFG_MANAGE_KICK_SUBCOMMAND_NAME });
+
+        await runCommand(command, interaction);
+
+        expect(interaction.options.getString).not.toHaveBeenCalledWith(LFG_CODE_OPTION_NAME, true);
+        expect(reply).toHaveBeenCalledWith(
+            expect.objectContaining({
+                flags: [MessageFlags.Ephemeral],
+                embeds: [expect.objectContaining({ description: `${userMention(PLAYER_ID)} is not in a room.` })],
+            }),
+        );
+    });
+
     test("does not ping when the LFG channel is not configured", async () => {
         const fixture = getCommand({
             result: {
@@ -266,7 +292,7 @@ describe("lfg-manage command", () => {
             expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, newCode: NEW_ROOM_CODE },
         },
         {
-            subcommand: "kick",
+            subcommand: LFG_MANAGE_KICK_SUBCOMMAND_NAME,
             method: "kickPlayerFromRoom",
             result: {
                 kind: ELfgResultKind.PLAYER_KICKED,
@@ -277,7 +303,7 @@ describe("lfg-manage command", () => {
                     removalResult: { kind: ELfgPlayerRemovalKind.ROOM_DELETED },
                 },
             } satisfies TLfgPresentationResult,
-            expectedArg: { guildId: GUILD_ID, code: ROOM_CODE, target: { id: PLAYER_ID } },
+            expectedArg: { guildId: GUILD_ID, target: { id: PLAYER_ID } },
         },
         {
             subcommand: "transfer",

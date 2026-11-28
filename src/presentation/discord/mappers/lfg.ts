@@ -477,7 +477,7 @@ ${result.value.ownershipTransfers.map((transfer) => `- ${userMention(transfer.ne
                     description: formatCannotTransferToCurrentOwner(callerId, result.value.userId, result.value.code),
                 },
             });
-        case ELfgResultKind.PLAYER_NOT_IN_ROOM:
+        case ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM:
             return createNegativeMessage({
                 embed: {
                     description: formatPlayerNotInRoom(
@@ -487,6 +487,10 @@ ${result.value.ownershipTransfers.map((transfer) => `- ${userMention(transfer.ne
                         result.value.code,
                     ),
                 },
+            });
+        case ELfgResultKind.TARGET_USER_NOT_IN_ANY_ROOM:
+            return createNegativeMessage({
+                embed: { description: `${userMention(result.value.targetId)} is not in a room.` },
             });
         case ELfgResultKind.NOT_ROOM_OWNER:
             return createNegativeMessage({

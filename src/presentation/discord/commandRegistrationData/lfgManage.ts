@@ -95,7 +95,7 @@ export const lfgManageCommandCommandRegistrationData = {
             type: ApplicationCommandOptionType.Subcommand,
             name: LFG_MANAGE_KICK_SUBCOMMAND_NAME,
             description: "Kick a player from their room.",
-            options: [{ ...playerOption, description: "Player to kick." }, autocompletedRoomCodeOption],
+            options: [{ ...playerOption, description: "Player to kick." }],
         },
         {
             type: ApplicationCommandOptionType.Subcommand,
