@@ -1,5 +1,5 @@
-import { ELfgResultKind } from "../types.ts";
 import type { TLfgServiceBase } from "../types.ts";
+import { ELfgResultKind } from "../types.ts";
 
 export const transferRoom: TLfgServiceBase<
     "transferRoom",
@@ -16,7 +16,7 @@ export const transferRoom: TLfgServiceBase<
     const targetRoom = await dependencies.repositories.lfg.findRoomByUser({ guildId, userId: target.id });
     if (targetRoom?.id !== room.id) {
         return {
-            kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
+            kind: ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM,
             value: { ownerId: previousOwnerId, targetId: target.id, code: room.code },
         } as const;
     }

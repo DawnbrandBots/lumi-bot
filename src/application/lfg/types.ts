@@ -21,7 +21,8 @@ export const enum ELfgResultKind {
     ROOM_IS_FULL = "ROOM_IS_FULL",
     OWNERSHIP_TRANSFERRED = "OWNERSHIP_TRANSFERRED",
     CANNOT_TRANSFER_TO_YOURSELF = "CANNOT_TRANSFER_TO_YOURSELF",
-    PLAYER_NOT_IN_ROOM = "PLAYER_NOT_IN_ROOM",
+    TARGET_USER_NOT_IN_TARGET_ROOM = "TARGET_USER_NOT_IN_TARGET_ROOM",
+    TARGET_USER_NOT_IN_ANY_ROOM = "TARGET_USER_NOT_IN_ANY_ROOM",
     NOT_ROOM_OWNER = "NOT_ROOM_OWNER",
     PLAYER_KICKED = "PLAYER_KICKED",
     CANNOT_KICK_YOURSELF = "CANNOT_KICK_YOURSELF",
@@ -73,11 +74,12 @@ type TLfgResultValueByKind = {
         readonly targetId: string;
         readonly room: IRoom;
     };
-    [ELfgResultKind.PLAYER_NOT_IN_ROOM]: {
+    [ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM]: {
         readonly ownerId: string;
         readonly targetId: string;
         readonly code: string;
     };
+    [ELfgResultKind.TARGET_USER_NOT_IN_ANY_ROOM]: { readonly targetId: string };
     [ELfgResultKind.PLAYER_KICKED]: {
         readonly userId: string;
         readonly targetId: string;
@@ -172,23 +174,25 @@ export type TLfgResultTypes = {
     transferRoomToPlayer: TLfgResultOfKind<
         | ELfgResultKind.OWNERSHIP_TRANSFERRED
         | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
-        | ELfgResultKind.PLAYER_NOT_IN_ROOM
+        | ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM
         | ELfgResultKind.ROOM_NOT_FOUND
     >;
     transferOwnedRoomToPlayer: TLfgResultOfKind<
         | ELfgResultKind.OWNERSHIP_TRANSFERRED
         | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
-        | ELfgResultKind.PLAYER_NOT_IN_ROOM
+        | ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM
         | ELfgResultKind.NOT_ROOM_OWNER
         | ELfgResultKind.NOT_IN_A_ROOM
     >;
     kickPlayerFromRoom: TLfgResultOfKind<
-        ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM | ELfgResultKind.ROOM_NOT_FOUND
+        | ELfgResultKind.PLAYER_KICKED
+        | ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM
+        | ELfgResultKind.TARGET_USER_NOT_IN_ANY_ROOM
     >;
     kickPlayerFromOwnedRoom: TLfgResultOfKind<
         | ELfgResultKind.PLAYER_KICKED
         | ELfgResultKind.CANNOT_KICK_YOURSELF
-        | ELfgResultKind.PLAYER_NOT_IN_ROOM
+        | ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM
         | ELfgResultKind.NOT_ROOM_OWNER
         | ELfgResultKind.NOT_IN_A_ROOM
     >;
@@ -238,7 +242,7 @@ export type TLfgServices = {
         readonly guildId: string;
         readonly room: IRoom;
         readonly target: IUser;
-    }) => MaybePromise<TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED | ELfgResultKind.PLAYER_NOT_IN_ROOM>>;
+    }) => MaybePromise<TLfgResultOfKind<ELfgResultKind.PLAYER_KICKED | ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM>>;
     readonly movePlayerToExistingRoom: (arg: {
         readonly guildId: string;
         readonly user: IUser;
@@ -260,7 +264,7 @@ export type TLfgServices = {
         TLfgResultOfKind<
             | ELfgResultKind.OWNERSHIP_TRANSFERRED
             | ELfgResultKind.CANNOT_TRANSFER_TO_YOURSELF
-            | ELfgResultKind.PLAYER_NOT_IN_ROOM
+            | ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM
         >
     >;
 };

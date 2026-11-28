@@ -37,7 +37,6 @@ export type TLfgUseCaseArgs = {
     };
     readonly kickPlayerFromRoom: {
         readonly guildId: string;
-        readonly code: string;
         readonly target: IUser;
     };
     readonly kickPlayerFromOwnedRoom: {

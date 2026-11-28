@@ -13,7 +13,6 @@ export const AUTOCOMPLETE = {
         "ping-room": { code: autocompleteRoomCode },
         move: { code: autocompleteAvailableRoomCode },
         "change-code": { code: autocompleteRoomCode },
-        kick: { code: autocompleteRoomCode },
         transfer: { code: autocompleteRoomCode },
         disband: { code: autocompleteRoomCode },
     },

@@ -355,7 +355,7 @@ describe(mapLfgResultToMessageBase.name, () => {
             name: "player not in room",
             input: {
                 result: {
-                    kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
+                    kind: ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM,
                     value: { ownerId: "owner", targetId: "target", code: ROOM.code },
                 },
                 callerId: "owner",
@@ -365,7 +365,7 @@ describe(mapLfgResultToMessageBase.name, () => {
             name: "managed player not in target room",
             input: {
                 result: {
-                    kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
+                    kind: ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM,
                     value: { ownerId: "owner", targetId: "player-1", code: ROOM.code },
                 },
                 callerId: "admin",

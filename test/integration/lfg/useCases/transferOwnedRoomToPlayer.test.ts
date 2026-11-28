@@ -30,7 +30,7 @@ describe(transferOwnedRoomToPlayer.name, () => {
         });
 
         expect(response).toEqual({
-            kind: ELfgResultKind.PLAYER_NOT_IN_ROOM,
+            kind: ELfgResultKind.TARGET_USER_NOT_IN_TARGET_ROOM,
             value: { ownerId: OWNER.id, targetId: PLAYER_1.id, code: "room" },
         });
     });
